@@ -1,0 +1,85 @@
+.FacebookGoogleLogin {
+}
+
+.FacebookButton,
+.GoogleButton {
+  width: 120px;
+  height: 36px;
+  border-radius: 4px;
+  box-shadow: var(--primaryBoxShadow);
+  font-weight: bold;
+  text-align: center;
+}
+
+.FacebookButton i,
+.GoogleButton i {
+  margin-right: 8px;
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.FacebookButton:hover,
+.GoogleButton:hover {
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
+  transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
+  transition-delay: 0s, 0s, 0s, 0s;
+}
+
+.FacebookButton {
+  border: 1px solid #3b5998;
+  background-color: #3b5998;
+  color: white;
+  float: right;
+}
+
+.FacebookButton:hover {
+  background-color: white;
+  color: #3b5998;
+}
+
+.GoogleButton {
+  border: 1px solid #4285f4;
+  background-color: white;
+  color: #4285f4;
+  float: left;
+}
+
+.GoogleButton:hover {
+  background-color: #db3236;
+  border-color: #db3236;
+  color: white;
+}
+
+.Seperator {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.Seperator h1 {
+  overflow: hidden;
+  text-align: center;
+}
+.Seperator h1:before,
+.Seperator h1:after {
+  background-color: #333;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+.Seperator h1:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+.Seperator h1:after {
+  left: 0.5em;
+  margin-right: -50%;
+}
+
+.FacebookGoogleLogin .Header {
+  margin-bottom: 20px;
+}

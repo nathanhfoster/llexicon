@@ -1,0 +1,91 @@
+@import "./stylesM.css";
+.App {
+  height: 100%;
+  width: 100%;
+  touch-action: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: "Lato", sans-serif;
+}
+
+.Container {
+  touch-action: pan-x;
+  touch-action: pan-y;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.Center {
+  text-align: center;
+  justify-content: center;
+}
+
+body {
+  background-repeat: no-repeat;
+  overflow: hidden;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a, a:hover {
+  outline: none !important;
+  text-decoration: none !important;
+}
+
+.help {
+  display: flex;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--grey);
+  margin-bottom: 8px;
+}
+
+.help-inline {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--grey);
+  margin-left: 4px;
+}
+
+.Absolute-Center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+  background-color: transparent;
+  -webkit-border-radius: 100px;
+  transition: 200ms linear;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 5px var(--grey);
+  background: var(--grey; */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--grey);
+  border-radius: 6px;
+}
+
+input[type="file"] {
+  display: none;
+}

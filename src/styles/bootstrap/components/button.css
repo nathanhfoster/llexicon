@@ -1,0 +1,35 @@
+.btn-primary.focus,
+.btn-primary:focus,
+.btn-outline-primary.focus,
+.btn-outline-primary:focus {
+  box-shadow: 0 0 0 0.075rem var(--primaryColor) !important;
+}
+.btn-primary {
+  color: white;
+  background-color: var(--primaryColor) !important;
+  border-color: var(--primaryColor) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--quaternaryColor) !important;
+  border-color: var(--quaternaryColor) !important;
+}
+
+.btn-outline-primary {
+  border-color: var(--primaryColor) !important;
+  color: var(--primaryColor) !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primaryColor) !important;
+  color: white !important;
+}
+
+button:focus {
+  outline: 0 !important;
+}
+
+button.btn.btn-primary.nav-link,
+button.btn.btn-primary.nav-link:hover {
+  color: white;
+}

@@ -1,0 +1,9 @@
+.form-control {
+  min-height: var(--inputButtonHeight);
+}
+
+.form-control:focus {
+  border-color: var(--primaryColor) !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(var(--primaryColorRGB), 0.25) !important;
+}

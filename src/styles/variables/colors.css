@@ -1,0 +1,17 @@
+:root {
+  --cursor: url("../../images/Cursor.png"), auto;
+  --primaryColor: #199aaa;
+  --primaryColorRGB: 25, 154, 170;
+  --secondaryColor: white;
+  --tertiarycolor: black;
+  --quaternaryColor: #16a085;
+  --quinaryColor: #2de5d2;
+  --light_grey: rgb(204, 204, 204);
+  --white_smoke: #f8f9fa;
+  --white_smoke_transparent: rgba(245, 245, 245, 0.96);
+  --grey: #575e6a;
+  --slate_grey: #29303b;
+  --dark_border: rgba(29, 29, 31, 0.6);
+  --midNight: #1A2327;
+  --primaryBoxShadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+}

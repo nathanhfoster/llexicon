@@ -1,0 +1,44 @@
+@import "./stylesM.css";
+
+.NavBar {
+  height: var(--navBarHeight);
+  font-weight: bold;
+  width: 100%;
+  z-index: 3;
+  background: var(--primaryColor);
+  box-shadow: var(--primaryBoxShadow);
+  text-align: center !important;
+}
+
+.NavBar li,
+.NavBar a {
+  font-size: 18px !important;
+}
+
+.Navlink {
+  color: var(--secondaryColor) !important;
+}
+
+.Navlink:hover {
+  color: var(--tertiarycolor) !important;
+}
+
+.NavBar button.dropdown-item {
+  color: var(--primaryColor) !important;
+}
+
+@media (min-width: 768px) {
+  .NavBar li {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 40px;
+  }
+}
+
+.NavBar .NavBarImage {
+  max-height: var(--navBarImageHeight);
+  margin: 0;
+  padding: 0;
+  top: 0;
+  border-radius: 50%;
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Lexicon",
+  "short_name": "Lexi",
+  "description": "Simplified board game inspired by Dungeond and Dragons.",
+  "author": "Nathan Foster",
+  "icons": [
+    {
+      "src": "/android-chrome-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#f5f5f5",
+  "theme_color": "#29303b",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

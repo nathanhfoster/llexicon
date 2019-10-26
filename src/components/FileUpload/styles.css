@@ -1,0 +1,31 @@
+@import "./stylesM.css";
+:root {
+  --maxHeightWidth: 200px;
+}
+
+.FileUploadContainer {
+}
+
+.FileUploadContainer small {
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.FileUploadContainer img {
+  height: var(--maxHeightWidth);
+  width: var(--maxHeightWidth);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.FileUpload {
+  display: inline-block;
+  border: 2px solid var(--white_smoke_transparent);
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 16px;
+}
+
+.FileUpload:hover {
+  background-color: var(--primaryColor);
+}

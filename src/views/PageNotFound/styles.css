@@ -1,0 +1,25 @@
+.PageNotFound {
+  margin-top: 20px;
+  .pageNotFoundContainer {
+    padding: 6%;
+    .pageNotFoundImage {
+      img {
+      }
+    }
+    .pageNotFoundMessage {
+      text-align: center;
+      @mixin font {
+        font-family: "Cinzel Decorative", serif;
+        font-weight: 900;
+      }
+      h1 {
+        @include font;
+        font-size: 3.5em;
+      }
+      h4 {
+        @include font;
+        font-size: 1.5em;
+      }
+    }
+  }
+}

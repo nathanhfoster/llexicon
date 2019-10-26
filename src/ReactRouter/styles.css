@@ -1,0 +1,10 @@
+@import "./stylesM.css";
+.routeOverlay {
+    top: var(--navBarHeight);
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    right: 0;
+}

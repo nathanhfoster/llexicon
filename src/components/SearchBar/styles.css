@@ -1,0 +1,4 @@
+.SearchBar {
+  border-radius: 0.25rem;
+  box-shadow: var(--primaryBoxShadow);
+}
