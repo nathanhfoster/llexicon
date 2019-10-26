@@ -1,45 +1,46 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { Row, Col } from "reactstrap";
-import { connect as reduxConnect } from "react-redux";
-import FacebookLogin from "react-facebook-login";
-import GoogleLogin from "react-google-login";
-import { SocialAuthenticationProviders } from "../../constants";
-import { SocialAuthentication } from "../../actions/SocialAuthentication";
-import "./styles.css";
-const { REACT_APP_FACEBOOK_API, REACT_APP_GOOGLE_API } = process.env;
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import { Row, Col } from "reactstrap"
+import { connect as reduxConnect } from "react-redux"
+import FacebookLogin from "react-facebook-login"
+import GoogleLogin from "react-google-login"
+import { SocialAuthenticationProviders } from "../../constants"
+import { SocialAuthentication } from "../../actions/SocialAuthentication"
+import "./styles.css"
+const { REACT_APP_FACEBOOK_API, REACT_APP_GOOGLE_API } = process.env
 
-const mapStateToProps = ({ User }) => ({ User });
+const mapStateToProps = ({}) => ({})
 
-const mapDispatchToProps = { SocialAuthentication };
+const mapDispatchToProps = { SocialAuthentication }
 
 class FacebookGoogleLogin extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = {};
+    this.state = {}
   }
 
   static propTypes = {
-    SocialAuthentication: PropTypes.func.isRequired
-  };
+    SocialAuthentication: PropTypes.func.isRequired,
+    isLogin: PropTypes.bool
+  }
 
-  static defaultProps = {};
+  static defaultProps = {}
 
   componentWillMount() {
-    this.getState(this.props);
+    this.getState(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.getState(nextProps);
+    this.getState(nextProps)
   }
 
   getState = props => {
-    this.setState({});
-  };
+    this.setState({})
+  }
 
   responseFacebook = response => {
-    const { SocialAuthentication } = this.props;
+    const { SocialAuthentication } = this.props
     const {
       accessToken,
       data_access_expiration_time,
@@ -51,7 +52,7 @@ class FacebookGoogleLogin extends PureComponent {
       reauthorize_required_in,
       signedRequest,
       userID
-    } = response;
+    } = response
     const payload = {
       provider: SocialAuthenticationProviders.FACEBOOK,
       provider_id: id,
@@ -61,14 +62,21 @@ class FacebookGoogleLogin extends PureComponent {
       name,
       email,
       picture: picture.data.url
-    };
-    SocialAuthentication(payload);
-  };
+    }
+    SocialAuthentication(payload)
+  }
 
   responseGoogle = response => {
-    const { SocialAuthentication } = this.props;
-    const { El, tokenId, accessToken, profileObj, tokenObj, w3 } = response;
-    const { email, familyName, givenName, googleId, imageUrl, name } = profileObj;
+    const { SocialAuthentication } = this.props
+    const { El, tokenId, accessToken, profileObj, tokenObj, w3 } = response
+    const {
+      email,
+      familyName,
+      givenName,
+      googleId,
+      imageUrl,
+      name
+    } = profileObj
     const {
       access_token,
       expires_at,
@@ -80,8 +88,8 @@ class FacebookGoogleLogin extends PureComponent {
       scope,
       session_state,
       token_type
-    } = tokenObj;
-    const { Eea, Paa, U3, ig, ofa, wea } = w3;
+    } = tokenObj
+    const { Eea, Paa, U3, ig, ofa, wea } = w3
     const payload = {
       provider: SocialAuthenticationProviders.GOOGLE,
       provider_id: El || googleId,
@@ -91,13 +99,13 @@ class FacebookGoogleLogin extends PureComponent {
       name,
       email,
       picture: imageUrl
-    };
-    SocialAuthentication(payload);
-  };
+    }
+    SocialAuthentication(payload)
+  }
 
   render() {
-    const { isLogin } = this.props;
-    const Header = isLogin ? "Sign In with" : "Sign Up with";
+    const { isLogin } = this.props
+    const Header = isLogin ? "Sign In with" : "Sign Up with"
     return (
       <Row className="FacebookGoogleLogin Container">
         <Col xs={12}>
@@ -124,7 +132,11 @@ class FacebookGoogleLogin extends PureComponent {
           <GoogleLogin
             clientId={REACT_APP_GOOGLE_API}
             render={renderProps => (
-              <button className="GoogleButton" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+              <button
+                className="GoogleButton"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+              >
                 <i className="fab fa-google" />
                 Google
               </button>
@@ -136,7 +148,9 @@ class FacebookGoogleLogin extends PureComponent {
           />
         </Col>
       </Row>
-    );
+    )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(FacebookGoogleLogin);
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(
+  FacebookGoogleLogin
+)

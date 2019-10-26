@@ -2,7 +2,6 @@ import React, { PureComponent } from "react";
 import { connect as reduxConnect } from "react-redux";
 import PropTypes from "prop-types";
 import { Container, Row, Col } from "reactstrap";
-import GameBoard from "../../components/GameBoard";
 import "./styles.css";
 import "./stylesM.css";
 

@@ -5,6 +5,7 @@ import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "../ReactRouter/routes"
 import Settings from "../views/Settings"
 import Home from "../views/Home"
+import Login from "../views/Login"
 import PrivacyPolicy from "../components/PrivacyPolicy"
 import PageNotFound from "../views/PageNotFound"
 import { GetUserSettings } from "../actions/Settings"
@@ -67,7 +68,8 @@ class ReactRouter extends PureComponent {
         )
       },
       { path: [RouteMap.HOME], component: Home },
-      { path: [RouteMap.PRIVACY_POLICY], component: PrivacyPolicy }
+      { path: [RouteMap.PRIVACY_POLICY], component: PrivacyPolicy },
+      { path: [RouteMap.LOGIN], component: Login }
     ]
   }
 
