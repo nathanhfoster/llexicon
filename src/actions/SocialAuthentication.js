@@ -14,7 +14,6 @@ const SocialAuthentication = payload => dispatch => {
     .then(res => {
       const { token, id } = res.data
       dispatch(RefreshPatchUser(token, id))
-      dispatch(GetUserSettings(token, id))
       dispatch({
         type: ReduxActions.USER_SET,
         payload: res.data
