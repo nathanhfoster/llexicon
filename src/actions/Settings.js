@@ -1,48 +1,42 @@
-import { ReduxActions } from "../constants";
-import { Axios } from ".";
-import qs from "qs";
+import { ReduxActions } from "../constants"
+import { Axios } from "."
+import qs from "qs"
 
-const GetUserSettings = (token, UserId) => dispatch =>
-  Axios(token)
-    .get(`user/settings/${UserId}/view/`)
+const GetUserSettings = () => (dispatch, getState) => {
+  const { id } = getState().User
+  return Axios()
+    .get(`user/settings/${id}/view/`)
     .then(res => {
       dispatch({
         type: ReduxActions.USER_SET_SETTINGS,
         payload: res.data
-      });
+      })
     })
-    .catch(e => console.log(e));
+    .catch(e => console.log(e))
+}
 
-const PostSettings = (token, payload) => dispatch =>
-  Axios(token)
+const PostSettings = payload => dispatch =>
+  Axios()
     .post(`user/settings/`, qs.stringify(payload))
     .then(res => {
       dispatch({
         type: ReduxActions.USER_SET_SETTINGS,
         payload: res.data
-      });
-    })
-    .catch(e =>
-      dispatch({
-        type: ReduxActions.SET_API_RESPONSE,
-        payload: e.response
       })
-    );
+    })
+    .catch(e => console.log("PostSettings: ", e.response))
 
-const SetSettings = (token, id, payload) => dispatch =>
-  Axios(token)
+const SetSettings = payload => (dispatch, getState) => {
+  const { id } = getState().User.Settings
+  return Axios()
     .patch(`user/settings/${id}/`, qs.stringify(payload))
     .then(res => {
       dispatch({
         type: ReduxActions.USER_SET_SETTINGS,
         payload: res.data
-      });
-    })
-    .catch(e =>
-      dispatch({
-        type: ReduxActions.SET_API_RESPONSE,
-        payload: e.response
       })
-    );
+    })
+    .catch(e => console.log("SetSettings: ", e.response))
+}
 
-export { GetUserSettings, PostSettings, SetSettings };
+export { GetUserSettings, PostSettings, SetSettings }

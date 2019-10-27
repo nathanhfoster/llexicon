@@ -104,7 +104,7 @@ class NavBar extends PureComponent {
     return (
       <Navbar light className="NavBar" color="light" fixed="top" expand="md">
         <NavbarBrand
-          className="Logo py-0 mx-auto"
+          className="Logo"
           tag={Link}
           to={RouterLinkPush(history, RouteMap.HOME)}
           onClick={() => this.closeHamburgerMenu()}

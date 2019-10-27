@@ -1,19 +1,31 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { Container, Row, Col, FormGroup, Label, Input, Tooltip } from "reactstrap";
-import { connect as reduxConnect } from "react-redux";
-import "./styles.css";
-import { GetUserSettings, PostSettings, SetSettings } from "../../actions/Settings";
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import {
+  Container,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Input,
+  Tooltip
+} from "reactstrap"
+import { connect as reduxConnect } from "react-redux"
+import "./styles.css"
+import {
+  GetUserSettings,
+  PostSettings,
+  SetSettings
+} from "../../actions/Settings"
 
-const mapStateToProps = ({ User }) => ({ User });
+const mapStateToProps = ({ User }) => ({ User })
 
-const mapDispatchToProps = { GetUserSettings, PostSettings, SetSettings };
+const mapDispatchToProps = { GetUserSettings, PostSettings, SetSettings }
 
 class Settings extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = { ShowFooterTooltip: false, ShowPushMessagesTooltip: false };
+    this.state = { ShowFooterTooltip: false, ShowPushMessagesTooltip: false }
   }
 
   static propTypes = {
@@ -23,35 +35,56 @@ class Settings extends PureComponent {
     GetUserSettings: PropTypes.func.isRequired,
     PostSettings: PropTypes.func.isRequired,
     SetSettings: PropTypes.func.isRequired
-  };
+  }
 
-  static defaultProps = {};
+  static defaultProps = {}
 
   componentWillMount() {
-    this.getState(this.props);
+    this.getState(this.props)
   }
 
   componentDidMount() {
-    const { User, GetUserSettings } = this.props;
-    if (User.token) GetUserSettings(User.token, User.id);
+    const { User, GetUserSettings } = this.props
+    if (User.token) GetUserSettings()
   }
 
   componentWillReceiveProps(nextProps) {
-    this.getState(nextProps);
+    this.getState(nextProps)
   }
 
   getState = props => {
-    const { User } = props;
-    this.setState({ User });
-  };
+    const { User } = props
+    this.setState({ User })
+  }
 
-  toggleTooltip = e => this.setState({ [e.target.id]: !this.state[e.target.id] });
+  toggleTooltip = e =>
+    this.setState({ [e.target.id]: !this.state[e.target.id] })
+
+  handleOnClick = settingId => {
+    const {
+      User: { id, token, Settings },
+      PostSettings,
+      SetSettings
+    } = this.props
+
+    const value = Settings[settingId]
+
+    !Settings.id
+      ? PostSettings({
+          user: id,
+          [settingId]: !value
+        })
+      : SetSettings({
+          [settingId]: !value
+        })
+  }
 
   render() {
-    const { PostSettings, SetSettings } = this.props;
-    const { User, ShowFooterTooltip, ShowPushMessagesTooltip } = this.state;
-    const { Settings } = User;
-    const { show_footer, push_messages } = Settings;
+    const { PostSettings, SetSettings } = this.props
+    const { User, ShowFooterTooltip, ShowPushMessagesTooltip } = this.state
+    const { Settings } = User
+    const { show_footer, push_messages } = Settings
+
     return (
       <Container className="Settings Container">
         <Row>
@@ -65,19 +98,11 @@ class Settings extends PureComponent {
             <FormGroup check>
               <Label check>
                 <Input
+                  readOnly
                   type="radio"
                   disabled={!User.id}
                   checked={show_footer}
-                  onChange={() =>
-                    !Settings.id
-                      ? PostSettings(User.token, {
-                          user: User.id,
-                          show_footer: !show_footer
-                        })
-                      : SetSettings(User.token, Settings.id, {
-                          show_footer: !show_footer
-                        })
-                  }
+                  onClick={() => this.handleOnClick("show_footer")}
                 />
                 <span className="checkBoxText" id="ShowFooterTooltip">
                   Show footer
@@ -102,19 +127,11 @@ class Settings extends PureComponent {
             <FormGroup check>
               <Label check>
                 <Input
+                  readOnly
                   type="radio"
                   disabled={!User.id}
                   checked={push_messages}
-                  onChange={() =>
-                    !Settings.id
-                      ? PostSettings(User.token, {
-                          user: User.id,
-                          push_messages: !push_messages
-                        })
-                      : SetSettings(User.token, Settings.id, {
-                          push_messages: !push_messages
-                        })
-                  }
+                  onClick={() => this.handleOnClick("push_messages")}
                 />
                 <span className="checkBoxText" id="ShowPushMessagesTooltip">
                   Push messages
@@ -132,7 +149,7 @@ class Settings extends PureComponent {
           </Col>
         </Row>
       </Container>
-    );
+    )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Settings);
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Settings)

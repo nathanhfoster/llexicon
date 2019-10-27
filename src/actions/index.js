@@ -1,24 +1,26 @@
-import axios from "axios";
-const { REACT_APP_API_URL } = process.env;
+import axios from "axios"
+import { getState } from "../store/persist"
+const { REACT_APP_API_URL } = process.env
 
 const base = {
   Accept: "application/json"
-};
+}
 
 const baseHeaders = {
   ...base,
   "Cache-Control": "no-cache",
   "Content-Type": "application/x-www-form-urlencoded"
-};
+}
 
 const baseFormHeaders = payload => ({
   ...base,
   "Accept-Language": "en-US,en;q=0.8",
   "Content-Type": `multipart/form-data; boundary=${payload._boundary}`
-});
+})
 
-const Axios = (token, pagination) =>
-  axios.create({
+const Axios = pagination => {
+  const { token } = getState().User
+  return axios.create({
     withCredentials: token ? true : false,
     baseURL: pagination ? pagination : REACT_APP_API_URL,
     timeout: 25000,
@@ -29,10 +31,12 @@ const Axios = (token, pagination) =>
           ...baseHeaders
         }
       : baseHeaders
-  });
+  })
+}
 
-const AxiosForm = (token, payload) =>
-  axios.create({
+const AxiosForm = payload => {
+  const { token } = getState().User
+  return axios.create({
     baseURL: REACT_APP_API_URL,
     timeout: 25000,
     headers: token
@@ -41,7 +45,8 @@ const AxiosForm = (token, payload) =>
           ...baseFormHeaders(payload)
         }
       : baseFormHeaders(payload)
-  });
+  })
+}
 
 const AxiosData = (token, payload) => {
   return axios.create({
@@ -57,7 +62,7 @@ const AxiosData = (token, payload) => {
         }
       : baseHeaders,
     data: payload
-  });
-};
+  })
+}
 
-export { Axios, AxiosForm, AxiosData };
+export { Axios, AxiosForm, AxiosData }

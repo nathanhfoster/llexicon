@@ -18,8 +18,8 @@ const UserLogin = (payload, rememberMe) => dispatch =>
     })
     .catch(e => console.log("UserLogin: ", e.response))
 
-const RefreshPatchUser = (token, id) => dispatch =>
-  Axios(token)
+const RefreshPatchUser = (token, id) => (dispatch, getState) =>
+  Axios()
     .get(`users/${id}/refresh/`)
     .then(res => {
       dispatch({
@@ -49,17 +49,20 @@ const CreateUser = (payload, rememberMe) => async dispatch =>
     .then(async res => await dispatch(UserLogin(payload, rememberMe)))
     .catch(e => console.log("CreateUser: ", e.response))
 
-const UpdateUser = (id, token, payload) => async dispatch =>
-  await Axios(token)
+const UpdateUser = payload => async (dispatch, getState) => {
+  const { id } = getState().User
+  return await Axios()
     .patch(`users/${id}/`, qs.stringify(payload))
     .then(async res =>
       dispatch({ type: ReduxActions.USER_UPDATE_SUCCESS, payload: res.data })
     )
     .catch(e => console.log("UpdateUser: ", e.response))
+}
 
-const UpdateProfile = (id, token, payload) => async dispatch => {
+const UpdateProfile = payload => async (dispatch, getState) => {
+  const { id } = getState().User
   await dispatch({ type: ReduxActions.USER_UPDATE_LOADING })
-  return await AxiosForm(token, payload)
+  return await AxiosForm(payload)
     .patch(`users/${id}/`, payload)
     .then(res => {
       dispatch({
@@ -70,12 +73,10 @@ const UpdateProfile = (id, token, payload) => async dispatch => {
     .catch(e => console.log("UpdateProfile: ", e.response))
 }
 
-const Logout = () => dispatch => {
-  return dispatch({
-    type: ReduxActions.USER_SET_LOGOUT,
-    payload: null
-  })
-}
+const Logout = () => ({
+  type: ReduxActions.USER_SET_LOGOUT,
+  payload: null
+})
 
 const ClearUserApi = () => ({
   type: ReduxActions.CLEAR_USER_API

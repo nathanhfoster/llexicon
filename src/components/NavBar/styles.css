@@ -1,7 +1,6 @@
 @import "./stylesM.css";
 
 .NavBar {
-  height: var(--navBarHeight);
   font-weight: bold;
   width: 100%;
   z-index: 3;
