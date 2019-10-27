@@ -109,7 +109,7 @@ class FacebookGoogleLogin extends PureComponent {
     return (
       <Row className="FacebookGoogleLogin Container">
         <Col xs={12}>
-          <div class="Seperator">
+          <div className="Seperator">
             <h1>or</h1>
           </div>
         </Col>

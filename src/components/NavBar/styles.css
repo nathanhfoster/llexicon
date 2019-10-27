@@ -5,7 +5,6 @@
   font-weight: bold;
   width: 100%;
   z-index: 3;
-  background: var(--primaryColor);
   box-shadow: var(--primaryBoxShadow);
   text-align: center !important;
 }
@@ -16,7 +15,7 @@
 }
 
 .Navlink {
-  color: var(--secondaryColor) !important;
+  color: var(--primaryColor) !important;
 }
 
 .Navlink:hover {

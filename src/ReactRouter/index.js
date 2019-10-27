@@ -69,7 +69,14 @@ class ReactRouter extends PureComponent {
       },
       { path: [RouteMap.HOME], component: Home },
       { path: [RouteMap.PRIVACY_POLICY], component: PrivacyPolicy },
-      { path: [RouteMap.LOGIN], component: Login }
+      {
+        path: [RouteMap.LOGIN],
+        component: this.renderRedirectOrComponent(
+          User.token,
+          RouteMap.HOME,
+          Login
+        )
+      }
     ]
   }
 

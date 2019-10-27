@@ -2,8 +2,12 @@
 
 }
 
+.navbar-collapse {
+  background-color: white;
+}
+
 .navbar-brand {
-  color: var(--secondaryColor) !important;
+  color: var(--primaryColor) !important;
   font-weight: bold;
   font-family: "Varela Round", sans-serif;
 }

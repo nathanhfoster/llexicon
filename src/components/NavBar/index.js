@@ -16,7 +16,7 @@ import {
 } from "reactstrap"
 
 import { Logout } from "../../actions/User"
-import Hamburger from "../Hamburger/Hamburger"
+import Hamburger from "./Hamburger"
 const mapStateToProps = ({ User, Window }) => ({ User, Window })
 
 const mapDispatchToProps = { Logout }
@@ -56,17 +56,31 @@ class NavBar extends PureComponent {
 
   closeHamburgerMenu = () => this.setState({ collapsed: true })
 
-  renderNavLinks = () => [this.renderNavlink(RouteMap.SETTINGS, "SETTINGS", 1)]
+  renderNavLinks = () => {
+    const {
+      User: { id },
+      Logout
+    } = this.props
+    const LoggedInLinks = [
+      this.renderNavlink(RouteMap.SETTINGS, "SETTINGS"),
+      this.renderNavlink(RouteMap.LOGIN, "LOG OUT", Logout)
+    ]
+    const NotLoggedInLinks = [this.renderNavlink(RouteMap.LOGIN, "LOGIN")]
+    return id ? LoggedInLinks : NotLoggedInLinks
+  }
 
-  renderNavlink = (route, title, key) => {
+  renderNavlink = (route, title, onClick) => {
     const { history } = this.props
     return (
-      <NavItem key={key}>
+      <NavItem key={title}>
         <NavLink
           className="Navlink"
           tag={Link}
           to={RouterLinkPush(history, route)}
-          onClick={() => this.closeHamburgerMenu()}
+          onClick={() => {
+            onClick && onClick()
+            this.closeHamburgerMenu()
+          }}
         >
           {title}
         </NavLink>
@@ -79,13 +93,13 @@ class NavBar extends PureComponent {
 
   render() {
     const { collapsed } = this.state
-    const { User, Window, history, Logout } = this.props
+    const { User, Window, history } = this.props
     const { isMobile } = Window
     const UserName =
       User.token && (User.first_name || User.username).toUpperCase()
     const UserPicture = User.uploaded_picture || User.picture
     return (
-      <Navbar className="NavBar" fixed="top" expand="md">
+      <Navbar light className="NavBar" color="light" fixed="top" expand="md">
         <NavbarBrand
           className="Logo py-0 mx-auto"
           tag={Link}
@@ -98,7 +112,6 @@ class NavBar extends PureComponent {
           <NavbarToggler
             tag={Hamburger}
             onClick={() => this.toggleHamburgerMenu()}
-            className="Hamburger"
             collapsed={collapsed}
           />
         )}

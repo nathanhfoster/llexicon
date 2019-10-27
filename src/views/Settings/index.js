@@ -68,7 +68,7 @@ class Settings extends PureComponent {
                   type="radio"
                   disabled={!User.id}
                   checked={show_footer}
-                  onClick={() =>
+                  onChange={() =>
                     !Settings.id
                       ? PostSettings(User.token, {
                           user: User.id,
@@ -105,7 +105,7 @@ class Settings extends PureComponent {
                   type="radio"
                   disabled={!User.id}
                   checked={push_messages}
-                  onClick={() =>
+                  onChange={() =>
                     !Settings.id
                       ? PostSettings(User.token, {
                           user: User.id,
