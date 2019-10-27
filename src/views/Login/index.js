@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col } from "reactstrap"
+import { Container, Row, Col, Jumbotron } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../helpers/routing"
@@ -47,18 +47,14 @@ class Login extends PureComponent {
 
   render() {
     return (
-      <Container className="Login Container">
-        <Row>
-          <Col xs={12}>
-            <BasicForm
-              onSubmit={payload => this.handleOnSubmit(payload)}
-              submitLabel="Login"
-            />
-          </Col>
-          <Col xs={12}>
-            <FacebookGoogleLogin />
-          </Col>
-        </Row>
+      <Container fluid className="Login">
+        <Jumbotron className="LoginFormContainer">
+          <BasicForm
+            onSubmit={payload => this.handleOnSubmit(payload)}
+            submitLabel="Login"
+          />
+          <FacebookGoogleLogin />
+        </Jumbotron>
       </Container>
     )
   }

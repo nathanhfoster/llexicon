@@ -68,28 +68,26 @@ class FacebookGoogleLogin extends PureComponent {
 
   responseGoogle = response => {
     const { SocialAuthentication } = this.props
-    const { El, tokenId, accessToken, profileObj, tokenObj, w3 } = response
     const {
-      email,
-      familyName,
-      givenName,
-      googleId,
-      imageUrl,
-      name
-    } = profileObj
-    const {
-      access_token,
-      expires_at,
-      expires_in,
-      first_issued_at,
-      id_token,
-      idpId,
-      login_hint,
-      scope,
-      session_state,
-      token_type
-    } = tokenObj
-    const { Eea, Paa, U3, ig, ofa, wea } = w3
+      El,
+      tokenId,
+      accessToken,
+      profileObj: { email, familyName, givenName, googleId, imageUrl, name },
+      tokenObj: {
+        access_token,
+        expires_at,
+        expires_in,
+        first_issued_at,
+        id_token,
+        idpId,
+        login_hint,
+        scope,
+        session_state,
+        token_type
+      },
+      w3: { Eea, Paa, U3, ig, ofa, wea }
+    } = response
+
     const payload = {
       provider: SocialAuthenticationProviders.GOOGLE,
       provider_id: El || googleId,
@@ -100,6 +98,7 @@ class FacebookGoogleLogin extends PureComponent {
       email,
       picture: imageUrl
     }
+
     SocialAuthentication(payload)
   }
 

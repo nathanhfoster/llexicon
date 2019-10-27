@@ -1,10 +1,10 @@
 :root {
   --cursor: url("../../images/Cursor.png"), auto;
-  --primaryColor: #199aaa;
+  --primaryColor: #2980b9;
   --primaryColorRGB: 25, 154, 170;
   --secondaryColor: white;
   --tertiarycolor: black;
-  --quaternaryColor: #16a085;
+  --quaternaryColor: #3498db;
   --quinaryColor: #2de5d2;
   --light_grey: rgb(204, 204, 204);
   --white_smoke: #f8f9fa;

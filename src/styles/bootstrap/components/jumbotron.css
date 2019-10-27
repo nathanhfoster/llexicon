@@ -1,0 +1,5 @@
+.jumbotron {
+    background-color: whitesmoke;
+    box-shadow: var(--primaryBoxShadow);
+    margin: auto;
+}

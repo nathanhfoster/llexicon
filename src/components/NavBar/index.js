@@ -12,11 +12,14 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink
+  NavLink,
+  Media
 } from "reactstrap"
 
 import { Logout } from "../../actions/User"
 import Hamburger from "./Hamburger"
+import Logo from "../../images/Logo.png"
+
 const mapStateToProps = ({ User, Window }) => ({ User, Window })
 
 const mapDispatchToProps = { Logout }
@@ -106,7 +109,7 @@ class NavBar extends PureComponent {
           to={RouterLinkPush(history, RouteMap.HOME)}
           onClick={() => this.closeHamburgerMenu()}
         >
-          <i className="fas fa-book NavBarImage" />
+          <Media className=" NavBarImage" src={Logo} />
         </NavbarBrand>
         {isMobile && (
           <NavbarToggler
