@@ -23,8 +23,6 @@ ReactDOM.render(
   document.getElementById("root")
 )
 
-console.log("NODE_ENV: ", NODE_ENV)
-
 if (NODE_ENV === "development") {
   serviceWorker.unregister()
 } else {
