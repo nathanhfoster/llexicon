@@ -3,8 +3,9 @@ import { getState } from "../store/persist"
 
 const SetEditorState = payload => (dispatch, getState) => {
   const { title, editorStateHtml } = getState().TextEditor
-  if (!payload.title) payload.title = title
-  if (!payload.editorStateHtml) payload.editorStateHtml = editorStateHtml
+  if (payload.title === undefined) payload.title = title
+  if (!payload.editorStateHtml === undefined)
+    payload.editorStateHtml = editorStateHtml
   dispatch({
     type: ReduxActions.TEXT_EDITOR_SET,
     payload
