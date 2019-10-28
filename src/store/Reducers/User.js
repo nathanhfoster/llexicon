@@ -61,9 +61,7 @@ export const User = (state = defaultState, action) => {
       }
     case ReduxActions.RESET_REDUX:
       return defaultState
-    case ReduxActions.RESET_REDUX:
-      return defaultState
     default:
-      return { ...state }
+      return state
   }
 }

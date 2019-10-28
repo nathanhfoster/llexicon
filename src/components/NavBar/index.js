@@ -51,7 +51,8 @@ class NavBar extends PureComponent {
   }
 
   getState = props => {
-    this.setState({})
+    const { User } = props
+    this.setState({ User })
   }
 
   toggleHamburgerMenu = () =>
@@ -97,7 +98,8 @@ class NavBar extends PureComponent {
 
   render() {
     const { collapsed } = this.state
-    const { User, Window, history } = this.props
+    const { Window, history } = this.props
+    const { User } = this.state
     const { isMobile } = Window
     const UserName =
       User.token && (User.first_name || User.username).toUpperCase()
