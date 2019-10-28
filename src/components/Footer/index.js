@@ -4,7 +4,6 @@ import { connect as reduxConnect } from "react-redux";
 import { Collapse } from "reactstrap";
 import { withRouter, Link } from "react-router-dom";
 import "./styles.css";
-import "./stylesM.css";
 
 const mapStateToProps = ({ User, Window }) => ({
   User,

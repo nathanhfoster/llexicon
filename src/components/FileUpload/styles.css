@@ -1,10 +1,8 @@
-@import "./stylesM.css";
 :root {
   --maxHeightWidth: 200px;
 }
 
-.FileUploadContainer {
-}
+.FileUploadContainer {}
 
 .FileUploadContainer small {
   font-size: 1em;

@@ -1,6 +1,7 @@
 import React, { Component, createRef } from 'react'
 import PropTypes from 'prop-types'
-import { FixedSizeList, shouldComponentUpdate } from 'react-window'
+import { FixedSizeList } from 'react-window'
+import deepEquals from '../../helpers/deepEquals'
 import './styles.css'
 
 const TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK = 200
@@ -44,12 +45,18 @@ class SearchList extends Component {
     this.getState(this.props)
   }
 
-  shouldComponentUpdate = shouldComponentUpdate.bind(this)
+  shouldComponentUpdate(nextProps, nextState) {
+    const propsChanged = !deepEquals(this.props, nextProps)
+    const stateChanged = !deepEquals(this.state, nextState)
+
+    return propsChanged || stateChanged
+  }
 
   componentWillUpdate(nextProps, nextState) {
     const { list, listItemIdProp, defaultIdValue, listItemValueProp } = nextProps
     const currentDefaultIdValue = this.props.defaultIdValue
     const { searchValue } = nextState
+
     if (currentDefaultIdValue !== defaultIdValue) {
       if (searchValue !== 'All') {
         const defaultValueIndex = list.findIndex(e => e[listItemIdProp] === defaultIdValue)
@@ -103,8 +110,6 @@ class SearchList extends Component {
 
     this.setState({ orginalList, showDropDownIcon })
   }
-
-  componentWillUnmount() {}
 
   getTextWidth = (text, font) => {
     const canvas = document.createElement('canvas')

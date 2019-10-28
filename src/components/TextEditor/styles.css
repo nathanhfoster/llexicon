@@ -1,0 +1,175 @@
+.TextEditor {
+  font-family: "proxima_novasemibold", Arial, sans-serif;
+}
+
+.TextEditor .DraftEditor-editorContainer img {
+  max-width: 100%;
+}
+
+.TextEditor .select__option--is-disabled {
+  display: none;
+}
+
+.TextEditor a {
+  color: var(--primaryColor);
+}
+
+.TextEditor a:hover {
+  color: var(--secondaryolor);
+}
+
+.TextEditor::-webkit-scrollbar {
+  width: 4px;
+}
+
+.TextEditor .rdw-option-wrapper {
+  /* border: 1px solid #f1f1f1; */
+  padding: 18px 12px;
+  border-radius: 4px;
+  margin-left: 1px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  background-image: var(--primaryGradientBackground);
+  text-transform: capitalize;
+}
+
+.TextEditor .rdw-option-wrapper:hover {
+  background-color: var(--primaryColor);
+}
+
+.TextEditor .Wrapper .rdw-editor-toolbar {
+  margin-bottom: 8px;
+  box-shadow: 0 4px 8px rgba(230, 230, 230, var(--mainOpacity));
+}
+
+.TextEditor .Wrapper .rdw-dropdownoption-active, .TextEditor .Wrapper .rdw-dropdown-selectedtext, .TextEditor .Wrapper .rdw-dropdown-optionwrapper {
+  background-color: var(--grey);
+  color: var(--tertiarycolor);
+}
+
+.TextEditor .Wrapper .rdw-dropdownoption-default:hover {
+  color: var(--primaryColor);
+  background-color: inherit;
+}
+
+.TextEditor .Wrapper .rdw-dropdown-carettoopen {
+  border-top: 6px solid white;
+}
+
+.TextEditor .Wrapper .rdw-dropdown-carettoclose {
+  border-bottom: 6px solid white;
+}
+
+.TextEditor .Wrapper .rdw-suggestion-dropdown {
+  background-color: var(--grey);
+}
+
+.TextEditor .Wrapper .rdw-suggestion-option:hover, .TextEditor .Wrapper .rdw-suggestion-option-active {
+  background-color: var(--primaryColor);
+}
+
+.TextEditor .Wrapper .rdw-mention-link {
+  background-color: transparent;
+}
+
+.TextEditor .Wrapper .rdw-embedded-modal {
+  box-shadow: transparent;
+}
+
+.TextEditor .Wrapper .rdw-colorpicker-modal-options {
+  overflow-x: hidden;
+}
+
+.TextEditor .Wrapper .rdw-link-modal, .TextEditor .Wrapper .rdw-image-modal, .TextEditor .Wrapper .rdw-embedded-modal, .TextEditor .Wrapper .rdw-colorpicker-modal, .TextEditor .Wrapper .rdw-link-modal-input, .TextEditor .Wrapper .rdw-embedded-modal-link-input, .TextEditor .Wrapper .rdw-embedded-modal-size-input, .TextEditor .Wrapper .rdw-emoji-modal, .TextEditor .Wrapper .rdw-image-modal-url-input, .TextEditor .Wrapper .rdw-image-modal-size-input, .TextEditor .Wrapper button {
+  background-color: var(--grey);
+  box-shadow: 0 0 0 transparent;
+}
+
+.TextEditor .Wrapper .rdw-colorpicker-modal-style-label-active {
+  border-color: var(--tertiarycolor);
+}
+
+.TextEditor .Wrapper .rdw-image-modal-header-label, .TextEditor .Wrapper .rdw-embedded-modal-header-label, .TextEditor .Wrapper .rdw-image-modal-header-label-highlighted {
+  border: 0;
+}
+
+.TextEditor .Wrapper button:hover {
+  background-color: var(--primaryColor);
+  color: var(--tertiarycolor);
+}
+
+
+.TextEditor .DraftEditor-root {
+  overflow: auto;
+  padding: 0 20px 0 20px;
+}
+
+.TextEditor .Editor {
+  opacity: var(--mainOpacity);
+  background-image: var(--primaryGradientBackground);
+  border: 0;
+  border-radius: 4px;
+  /* border: 1px solid var(--gray); */
+  /* padding: 8px; */
+  letter-spacing: 1.1px;
+  min-height: calc(100vh - var(--navBarHeight) - 220px - 60px);
+  max-height: calc(100vh - var(--navBarHeight));
+  box-shadow: var(--primaryBoxShadow);
+}
+
+.TextEditor {
+  opacity: var(--mainOpacity);
+}
+
+.TextEditor .Toolbar {
+  background-image: var(--primaryGradientBackground);
+  border-radius: 4px;
+  /* border: 1px solid var(--gray); */
+   box-shadow: var(--primaryBoxShadow);
+}
+
+.TextEditor .TextEditorOutput {
+  margin-top: 20px;
+  width: 100%;
+  background-color: var(--grey);
+  border-radius: 4px;
+}
+
+/* Wrap text around images */
+
+.TextEditor figure {
+  margin: 0;
+}
+
+.TextEditor .rdw-image-left {
+  display: unset;
+  float: left;
+  margin-right: 8px;
+}
+
+.TextEditor .rdw-image-right {
+  display: unset;
+  justify-content: unset;
+  float: right;
+  margin-left: 8px;
+}
+
+/* END */
+
+.TextEditor .rdw-image-alignment-options-popup {
+  background: var(--slate_grey);
+  width: 120px;
+}
+
+.TextEditor .rdw-image-alignment-option {
+  background: var(--primaryColor);
+  text-align: center;
+  height: 30px;
+  width: 30px;
+  min-width: 30px;
+}
