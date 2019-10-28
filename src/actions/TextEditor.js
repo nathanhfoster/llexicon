@@ -1,6 +1,6 @@
 import { ReduxActions } from "../constants"
 
-const setEditorState = editorState => ({
+const SetEditorState = editorState => ({
   type: ReduxActions.TEXT_EDITOR_SET,
   payload: editorState
 })
@@ -9,4 +9,4 @@ const clearEditorState = () => ({
   type: ReduxActions.TEXT_EDITOR_CLEAR
 })
 
-export { setEditorState, clearEditorState }
+export { SetEditorState, clearEditorState }

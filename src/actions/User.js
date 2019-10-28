@@ -30,18 +30,13 @@ const RefreshPatchUser = (token, id) => (dispatch, getState) =>
     .catch(e =>
       e.response && e.response.status == 401
         ? dispatch({
-            type: ReduxActions.USER_SET_LOGOUT,
+            type: ReduxActions.RESET_REDUX,
             payload: null
           })
         : console.log(e)
     )
 
-const UserLogout = () => dispatch => {
-  return dispatch({
-    type: ReduxActions.USER_SET_LOGOUT,
-    payload: null
-  })
-}
+const UserLogout = () => ({ type: ReduxActions.RESET_REDUX })
 
 const CreateUser = (payload, rememberMe) => async dispatch =>
   await Axios()
@@ -73,11 +68,6 @@ const UpdateProfile = payload => async (dispatch, getState) => {
     .catch(e => console.log("UpdateProfile: ", e.response))
 }
 
-const Logout = () => ({
-  type: ReduxActions.USER_SET_LOGOUT,
-  payload: null
-})
-
 const ClearUserApi = () => ({
   type: ReduxActions.CLEAR_USER_API
 })
@@ -90,6 +80,5 @@ export {
   CreateUser,
   UpdateUser,
   UpdateProfile,
-  Logout,
   ClearUserApi
 }

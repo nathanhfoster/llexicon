@@ -1,25 +1,13 @@
-import React, { PureComponent } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
 import ButtonContainer from "../ButtonContainer"
-import { clearEditorState } from "../../../../actions/TextEditor"
 
-const mapDispatchToProps = { clearEditorState }
+const ClearButton = ({ onClickCallback }) => (
+  <ButtonContainer onClick={onClickCallback} title="Clear">
+    <i className="fas fa-window-close" />
+  </ButtonContainer>
+)
 
-class ClearButton extends PureComponent {
-  static propTypes = { clearEditorState: PropTypes.func.isRequired }
+ClearButton.prototypes = { PropTypes: PropTypes.func.isRequired }
 
-  handleClick = () => {
-    const { clearEditorState } = this.props
-    clearEditorState()
-  }
-
-  render() {
-    return (
-      <ButtonContainer onClick={this.handleClick} title="Clear">
-        <i className="fas fa-window-close" />
-      </ButtonContainer>
-    )
-  }
-}
-export default reduxConnect(null, mapDispatchToProps)(ClearButton)
+export default memo(ClearButton)

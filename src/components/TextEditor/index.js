@@ -1,24 +1,16 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
 
 import { EditorState, convertToRaw, ContentState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
-import draftToHtml from "draftjs-to-html"
-import htmlToDraft from "html-to-draftjs"
-import { setEditorState } from "../../actions/TextEditor"
+import { stateToHTML } from "draft-js-export-html"
+import { stateFromHTML } from "draft-js-import-html"
+// import htmlToDraft from "html-to-draftjs"
 import { options } from "./options"
 import { RemoveArrayDuplicates } from "../../helpers"
 import { ClearButton } from "./Buttons"
 import "./styles.css"
-
-const mapStateToProps = ({ TextEditor: { clearedOn, editorStateHtml } }) => ({
-  clearedOn,
-  editorStateHtml
-})
-
-const mapDispatchToProps = { setEditorState }
 
 class TextEditor extends PureComponent {
   constructor(props) {
@@ -28,6 +20,10 @@ class TextEditor extends PureComponent {
   }
 
   static propTypes = {
+    clearKey: PropTypes.string,
+    html: PropTypes.string.isRequired,
+    onChangeCallback: PropTypes.func,
+
     // import { Editor } from "react-draft-wysiwyg"
     onChange: PropTypes.func,
     onEditorStateChange: PropTypes.func,
@@ -76,9 +72,11 @@ class TextEditor extends PureComponent {
   }
 
   static defaultProps = {
-    editorState: EditorState.createEmpty(),
+    clearKey: "",
     mentions: [],
-    suggestions: []
+    suggestions: [],
+    readOnly: false,
+    toolbarHidden: false
   }
 
   componentWillMount() {
@@ -92,8 +90,15 @@ class TextEditor extends PureComponent {
   }
 
   getState = props => {
-    const { clearedOn, editorStateHtml, mentions, suggestions } = props
-    let editorState = this.htmlToEditorState(editorStateHtml)
+    const {
+      clearedOn,
+      html,
+      mentions,
+      suggestions,
+      readOnly,
+      toolbarHidden
+    } = props
+    let editorState = this.htmlToEditorState(html)
     editorState = EditorState.moveSelectionToEnd(editorState)
 
     // const suggestions = Users.map(
@@ -104,28 +109,38 @@ class TextEditor extends PureComponent {
     //       url: `/profile/${user.id}`
     //     })
     // );
-    this.setState({ clearedOn, editorState, mentions, suggestions })
+    this.setState({
+      clearedOn,
+      editorState,
+      mentions,
+      suggestions,
+      readOnly,
+      toolbarHidden
+    })
   }
 
   componentWillUnmount() {}
 
   htmlToEditorState = html => {
-    const blocksFromHtml = htmlToDraft(html)
-    const { contentBlocks, entityMap } = blocksFromHtml
-    const contentState = ContentState.createFromBlockArray(blocksFromHtml)
+    // const blocksFromHtml = htmlToDraft(html)
+    // const { contentBlocks, entityMap } = blocksFromHtml
+    // const contentState = ContentState.createFromBlockArray(blocksFromHtml)
+    const contentState = stateFromHTML(html)
+
     return EditorState.createWithContent(contentState)
   }
 
   editorStateToHtml = editorState => {
     const EditorState = editorState ? editorState.getCurrentContent() : null
-    const html = draftToHtml(convertToRaw(EditorState))
+    const html = stateToHTML(EditorState)
+
     return html
   }
 
   handleEditorStateChange = editorState => {
-    const { setEditorState } = this.props
-    const editorStateHtml = this.editorStateToHtml(editorState)
-    setEditorState(editorStateHtml)
+    const { onChangeCallback } = this.props
+    const html = this.editorStateToHtml(editorState)
+    onChangeCallback(html)
   }
 
   getMentions = EditorState => {
@@ -150,17 +165,25 @@ class TextEditor extends PureComponent {
   orderOptions = values =>
     values.filter(v => v.isFixed).concat(values.filter(v => !v.isFixed))
 
-  clearArticle = () =>
+  clearState = () =>
     this.setState({
+      clearedOn: new Date(),
       editorState: EditorState.createEmpty()
     })
 
   render() {
-    const { clearedOn, editorState, suggestions } = this.state
+    const {
+      clearedOn,
+      editorState,
+      suggestions,
+      readOnly,
+      toolbarHidden
+    } = this.state
 
     return (
       <Editor
         key={clearedOn}
+        readOnly={readOnly}
         wrapperClassName="TextEditor Wrapper"
         editorClassName="Editor"
         toolbarClassName="Toolbar"
@@ -171,14 +194,17 @@ class TextEditor extends PureComponent {
         }
         onFocus={e => e.preventDefault()}
         // onBlur={(e, editorState) => {
-        //   this.props.setEditorState(
+        //   this.props.SetEditorState(
         //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
         //   );
         // }}
         onTab={e => e.preventDefault()}
         blurInputOnSelect={false}
+        toolbarHidden={toolbarHidden}
         toolbar={options}
-        toolbarCustomButtons={[<ClearButton />]}
+        toolbarCustomButtons={[
+          <ClearButton onClickCallback={this.clearState} />
+        ]}
         mention={{
           separator: " ",
           trigger: "@",
@@ -194,4 +220,4 @@ class TextEditor extends PureComponent {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(TextEditor)
+export default TextEditor

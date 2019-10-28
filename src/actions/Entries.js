@@ -4,7 +4,6 @@ import qs from "qs"
 
 const GetUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User
-
   return Axios()
     .get(`/entries/${id}/view/`)
     .then(res => {
@@ -13,24 +12,82 @@ const GetUserEntries = () => (dispatch, getState) => {
         payload: res.data
       })
     })
-    .catch(e => console.log(e))
+    .catch(e => console.log("GetUserEntries: ", e.response))
 }
-
-const UpdateEntry = payload => ({
-  id: payload.id,
-  type: ReduxActions.ENTRY_UPDATE,
-  payload
-})
 
 const PostEntry = payload => dispatch =>
   Axios()
-    .post(`user/settings/`, qs.stringify(payload))
+    .post(`entries/`, qs.stringify(payload))
     .then(res => {
       dispatch({
-        type: ReduxActions.USER_SET_SETTINGS,
+        type: ReduxActions.ENTRY_POST,
         payload: res.data
       })
     })
-    .catch(e => console.log("PostSettings: ", e.response))
+    .catch(e => console.log("PostEntry: ", e.response))
 
-export { GetUserEntries, UpdateEntry, PostEntry }
+const UpdateReduxEntry = ({ shouldDelete, ...payload }) => ({
+  id: payload.id,
+  type: ReduxActions.ENTRY_UPDATE,
+  payload,
+  shouldDelete
+})
+
+const UpdateEntry = (id, payload) => async dispatch =>
+  await Axios()
+    .patch(`/entries/${id}/`, qs.stringify(payload))
+    .then(res => {
+      dispatch({
+        id,
+        type: ReduxActions.ENTRY_UPDATE,
+        payload: res.data
+      })
+    })
+    .catch(e => console.log("UpdateEntry: ", e.response))
+
+const UpdateEntries = () => async (dispatch, getState) => {
+  const {
+    Entries: { items }
+  } = getState()
+
+  for (let i = 0; i < items.length; i++) {
+    const entry = items[i]
+    const {
+      id,
+      author,
+      title,
+      html,
+      date_created,
+      date_updated,
+      views,
+      lastUpdated,
+      shouldDelete
+    } = entry
+    const payload = { title, html }
+    if (shouldDelete) await dispatch(DeleteEntry(id))
+    else if (lastUpdated) await dispatch(UpdateEntry(id, payload))
+  }
+}
+
+const DeleteEntry = id => async dispatch => {
+  return await Axios()
+    .delete(`/entries/${id}/`)
+    .then(res => {
+      // dispatch({
+      //   id,
+      //   type: ReduxActions.ENTRY_UPDATE,
+      //   payload: res.data,
+      //   shouldDelete: true
+      // })
+    })
+    .catch(e => console.log("DeleteEntry: ", e.response))
+}
+
+export {
+  GetUserEntries,
+  PostEntry,
+  UpdateReduxEntry,
+  UpdateEntry,
+  UpdateEntries,
+  DeleteEntry
+}

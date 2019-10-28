@@ -16,13 +16,13 @@ import {
   Media
 } from "reactstrap"
 
-import { Logout } from "../../actions/User"
+import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
 import Logo from "../../images/Logo.png"
 
 const mapStateToProps = ({ User, Window }) => ({ User, Window })
 
-const mapDispatchToProps = { Logout }
+const mapDispatchToProps = { UserLogout }
 
 class NavBar extends PureComponent {
   constructor(props) {
@@ -35,7 +35,7 @@ class NavBar extends PureComponent {
 
   static propTypes = {
     User: PropTypes.object,
-    Logout: PropTypes.func.isRequired
+    UserLogout: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
@@ -62,11 +62,12 @@ class NavBar extends PureComponent {
   renderNavLinks = () => {
     const {
       User: { id },
-      Logout
+      UserLogout
     } = this.props
     const LoggedInLinks = [
+      this.renderNavlink(RouteMap.ENTRIES, "ENTRIES"),
       this.renderNavlink(RouteMap.SETTINGS, "SETTINGS"),
-      this.renderNavlink(RouteMap.LOGIN, "LOG OUT", Logout)
+      this.renderNavlink(RouteMap.LOGIN, "LOG OUT", UserLogout)
     ]
     const NotLoggedInLinks = [this.renderNavlink(RouteMap.LOGIN, "LOGIN")]
     return id ? LoggedInLinks : NotLoggedInLinks

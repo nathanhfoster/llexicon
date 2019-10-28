@@ -1,25 +1,44 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, createRef } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import { Container, Row, Col } from "reactstrap"
+import {
+  Container,
+  Row,
+  Col,
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  Button
+} from "reactstrap"
 import TextEditor from "../../components/TextEditor"
-import { GetUserEntries } from "../../actions/Entries"
+import { PostEntry } from "../../actions/Entries"
+import { SetEditorState } from "../../actions/TextEditor"
+import PostUpdateDelete from "../../components/PostUpdateDelete"
 import "./styles.css"
 
-const mapStateToProps = ({ User }) => ({ UserId: User.id })
+const mapStateToProps = ({
+  User,
+  TextEditor: { clearedOn, editorStateHtml }
+}) => ({ UserId: User.id, clearedOn, editorStateHtml })
 
-const mapDispatchToProps = { GetUserEntries }
+const mapDispatchToProps = { PostEntry, SetEditorState }
 
 class Home extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.titleRef = createRef()
+
+    this.state = { title: "" }
   }
 
   static propTypes = {
     UserId: PropTypes.number,
-    GetUserEntries: PropTypes.func.isRequired
+    clearedOn: PropTypes.string,
+    editorStateHtml: PropTypes.string,
+    SetEditorState: PropTypes.func.isRequired,
+    PostEntry: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -30,25 +49,72 @@ class Home extends PureComponent {
     this.getState(this.props)
   }
 
-  componentDidMount() {
-    const { UserId, GetUserEntries } = this.props
-    if (UserId) GetUserEntries()
-  }
+  componentDidMount() {}
 
   componentWillReceiveProps(nextProps) {
     this.getState(nextProps)
   }
 
   getState = props => {
-    this.setState({})
+    const { editorStateHtml, clearedOn } = props
+    this.setState({ editorStateHtml, clearedOn })
+  }
+
+  handlePostEntry = () => {
+    const { UserId, PostEntry } = this.props
+    const { editorStateHtml, title, tags } = this.state
+
+    const payload = {
+      author: UserId,
+      title,
+      html: editorStateHtml,
+      tags
+    }
+
+    PostEntry(payload)
+  }
+
+  handleInputChange = e => {
+    const { id, value } = e.target
+    this.setState(currentState => ({ [id]: value }))
   }
 
   render() {
+    const { SetEditorState } = this.props
+    const { editorStateHtml, clearedOn, title } = this.state
     return (
       <Container className="Home">
         <Row>
           <Col xs={12}>
-            <TextEditor />
+            <InputGroup style={{ marginBottom: 8 }}>
+              <Input
+                type="text"
+                name="title"
+                id="title"
+                placeholder="Title..."
+                value={title}
+                onChange={this.handleInputChange}
+              />
+              <InputGroupAddon
+                addonType="append"
+                onClick={this.handlePostEntry}
+              >
+                <InputGroupText
+                  tag={Button}
+                  color="primary"
+                  style={{ color: "white" }}
+                >
+                  Post
+                </InputGroupText>
+              </InputGroupAddon>
+            </InputGroup>
+          </Col>
+          <Col xs={12}>
+            <TextEditor
+              clearKey={clearedOn}
+              html={editorStateHtml}
+              onChangeCallback={SetEditorState}
+            />
           </Col>
         </Row>
       </Container>
