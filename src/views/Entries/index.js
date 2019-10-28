@@ -44,17 +44,18 @@ class Entries extends PureComponent {
     UpdateEntries: PropTypes.func.isRequired
   }
 
-  static defaultProps = {
-    LinkedInUrl: "https://www.linkedin.com/in/nathanhfoster/"
-  }
+  static defaultProps = {}
 
   componentWillMount() {
     this.getState(this.props)
   }
 
   componentDidMount() {
-    const { UserId, GetUserEntries } = this.props
-    if (UserId) GetUserEntries()
+    const { UserId, GetUserEntries, UpdateEntries } = this.props
+    if (UserId) {
+      GetUserEntries()
+      UpdateEntries()
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,8 +68,10 @@ class Entries extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { UpdateEntries } = this.props
-    UpdateEntries()
+    const { UserId, UpdateEntries } = this.props
+    if (UserId) {
+      UpdateEntries()
+    }
   }
 
   handleDeleteEntry = id => {
@@ -118,7 +121,7 @@ class Entries extends PureComponent {
                   onClick={() => UpdateReduxEntry({ id, shouldDelete: true })}
                 >
                   <InputGroupText color="primary">
-                    <i className="fas fa-times-circle fa-2x" />
+                    <i className="fas fa-times" style={{ fontSize: 20 }} />
                   </InputGroupText>
                 </InputGroupAddon>
               </InputGroup>

@@ -41,9 +41,7 @@ class Home extends PureComponent {
     PostEntry: PropTypes.func.isRequired
   }
 
-  static defaultProps = {
-    LinkedInUrl: "https://www.linkedin.com/in/nathanhfoster/"
-  }
+  static defaultProps = {}
 
   componentWillMount() {
     this.getState(this.props)

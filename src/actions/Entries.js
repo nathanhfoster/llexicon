@@ -35,7 +35,7 @@ const UpdateReduxEntry = ({ shouldDelete, ...payload }) => ({
 
 const UpdateEntry = (id, payload) => async dispatch =>
   await Axios()
-    .patch(`/entries/${id}/`, qs.stringify(payload))
+    .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
     .then(res => {
       dispatch({
         id,
