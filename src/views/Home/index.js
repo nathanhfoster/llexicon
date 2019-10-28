@@ -3,11 +3,12 @@ import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import TextEditor from "../../components/TextEditor"
+import { GetUserEntries } from "../../actions/Entries"
 import "./styles.css"
 
-const mapStateToProps = ({ User }) => ({ User })
+const mapStateToProps = ({ User }) => ({ UserId: User.id })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { GetUserEntries }
 
 class Home extends PureComponent {
   constructor(props) {
@@ -17,7 +18,8 @@ class Home extends PureComponent {
   }
 
   static propTypes = {
-    User: PropTypes.object
+    UserId: PropTypes.number,
+    GetUserEntries: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -28,7 +30,10 @@ class Home extends PureComponent {
     this.getState(this.props)
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { UserId, GetUserEntries } = this.props
+    if (UserId) GetUserEntries()
+  }
 
   componentWillReceiveProps(nextProps) {
     this.getState(nextProps)

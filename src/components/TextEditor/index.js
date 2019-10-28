@@ -10,9 +10,11 @@ import htmlToDraft from "html-to-draftjs"
 import { setEditorState } from "../../actions/TextEditor"
 import { options } from "./options"
 import { RemoveArrayDuplicates } from "../../helpers"
+import { ClearButton } from "./Buttons"
 import "./styles.css"
 
-const mapStateToProps = ({ TextEditor: { editorStateHtml } }) => ({
+const mapStateToProps = ({ TextEditor: { clearedOn, editorStateHtml } }) => ({
+  clearedOn,
   editorStateHtml
 })
 
@@ -90,7 +92,7 @@ class TextEditor extends PureComponent {
   }
 
   getState = props => {
-    const { editorStateHtml, mentions, suggestions } = props
+    const { clearedOn, editorStateHtml, mentions, suggestions } = props
     let editorState = this.htmlToEditorState(editorStateHtml)
     editorState = EditorState.moveSelectionToEnd(editorState)
 
@@ -102,7 +104,7 @@ class TextEditor extends PureComponent {
     //       url: `/profile/${user.id}`
     //     })
     // );
-    this.setState({ editorState, mentions, suggestions })
+    this.setState({ clearedOn, editorState, mentions, suggestions })
   }
 
   componentWillUnmount() {}
@@ -154,15 +156,16 @@ class TextEditor extends PureComponent {
     })
 
   render() {
-    const { editorState, suggestions } = this.state
+    const { clearedOn, editorState, suggestions } = this.state
 
     return (
       <Editor
+        key={clearedOn}
         wrapperClassName="TextEditor Wrapper"
         editorClassName="Editor"
         toolbarClassName="Toolbar"
         defaultEditorState={editorState}
-        //editorState={editorState}
+        // editorState={editorState}
         onEditorStateChange={editorState =>
           this.handleEditorStateChange(editorState)
         }
@@ -175,6 +178,7 @@ class TextEditor extends PureComponent {
         onTab={e => e.preventDefault()}
         blurInputOnSelect={false}
         toolbar={options}
+        toolbarCustomButtons={[<ClearButton />]}
         mention={{
           separator: " ",
           trigger: "@",

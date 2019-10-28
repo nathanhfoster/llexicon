@@ -5,4 +5,8 @@ const setEditorState = editorState => ({
   payload: editorState
 })
 
-export { setEditorState }
+const clearEditorState = () => ({
+  type: ReduxActions.TEXT_EDITOR_CLEAR
+})
+
+export { setEditorState, clearEditorState }
