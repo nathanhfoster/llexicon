@@ -15,6 +15,12 @@ const GetUserEntries = () => (dispatch, getState) => {
     .catch(e => console.log("GetUserEntries: ", e.response))
 }
 
+const PostReduxEntry = ({ shouldPost, ...payload }) => ({
+  type: ReduxActions.ENTRY_POST,
+  payload,
+  shouldPost
+})
+
 const PostEntry = payload => dispatch =>
   Axios()
     .post(`entries/`, qs.stringify(payload))
@@ -45,7 +51,19 @@ const UpdateEntry = (id, payload) => async dispatch =>
     })
     .catch(e => console.log("UpdateEntry: ", e.response))
 
-const UpdateEntries = () => async (dispatch, getState) => {
+const DeleteEntry = id => async dispatch => {
+  return await Axios()
+    .delete(`/entries/${id}/`)
+    .then(res => {
+      dispatch({
+        id,
+        type: ReduxActions.ENTRY_DELETE
+      })
+    })
+    .catch(e => console.log("DeleteEntry: ", e.response))
+}
+
+const SyncEntries = () => async (dispatch, getState) => {
   const {
     Entries: { items }
   } = getState()
@@ -57,37 +75,35 @@ const UpdateEntries = () => async (dispatch, getState) => {
       author,
       title,
       html,
+      tags,
       date_created,
       date_updated,
       views,
-      lastUpdated,
-      shouldDelete
+      shouldDelete,
+      shouldPost,
+      lastUpdated
     } = entry
-    const payload = { title, html }
-    if (shouldDelete) await dispatch(DeleteEntry(id))
-    else if (lastUpdated) await dispatch(UpdateEntry(id, payload))
-  }
-}
 
-const DeleteEntry = id => async dispatch => {
-  return await Axios()
-    .delete(`/entries/${id}/`)
-    .then(res => {
-      // dispatch({
-      //   id,
-      //   type: ReduxActions.ENTRY_UPDATE,
-      //   payload: res.data,
-      //   shouldDelete: true
-      // })
-    })
-    .catch(e => console.log("DeleteEntry: ", e.response))
+    let payload
+
+    if (shouldDelete) {
+      await dispatch(DeleteEntry(id))
+    } else if (shouldPost) {
+      payload = { author, title, html, tags }
+      await dispatch(PostEntry(payload))
+    } else if (lastUpdated) {
+      payload = { title, html, tags }
+      await dispatch(UpdateEntry(id, payload))
+    }
+  }
 }
 
 export {
   GetUserEntries,
+  PostReduxEntry,
   PostEntry,
   UpdateReduxEntry,
   UpdateEntry,
-  UpdateEntries,
-  DeleteEntry
+  DeleteEntry,
+  SyncEntries
 }

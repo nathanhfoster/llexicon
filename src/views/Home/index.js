@@ -12,17 +12,16 @@ import {
   Button
 } from "reactstrap"
 import TextEditor from "../../components/TextEditor"
-import { PostEntry } from "../../actions/Entries"
+import { PostReduxEntry } from "../../actions/Entries"
 import { SetEditorState } from "../../actions/TextEditor"
-import PostUpdateDelete from "../../components/PostUpdateDelete"
 import "./styles.css"
 
 const mapStateToProps = ({
   User,
-  TextEditor: { clearedOn, editorStateHtml }
-}) => ({ UserId: User.id, clearedOn, editorStateHtml })
+  TextEditor: { clearedOn, title, editorStateHtml }
+}) => ({ UserId: User.id, clearedOn, title, editorStateHtml })
 
-const mapDispatchToProps = { PostEntry, SetEditorState }
+const mapDispatchToProps = { PostReduxEntry, SetEditorState }
 
 class Home extends PureComponent {
   constructor(props) {
@@ -38,7 +37,7 @@ class Home extends PureComponent {
     clearedOn: PropTypes.string,
     editorStateHtml: PropTypes.string,
     SetEditorState: PropTypes.func.isRequired,
-    PostEntry: PropTypes.func.isRequired
+    PostReduxEntry: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
@@ -54,27 +53,34 @@ class Home extends PureComponent {
   }
 
   getState = props => {
-    const { editorStateHtml, clearedOn } = props
-    this.setState({ editorStateHtml, clearedOn })
+    const { clearedOn, title, editorStateHtml } = props
+    this.setState({ clearedOn, title, editorStateHtml })
   }
 
   handlePostEntry = () => {
-    const { UserId, PostEntry } = this.props
+    const { UserId, PostReduxEntry } = this.props
     const { editorStateHtml, title, tags } = this.state
 
     const payload = {
       author: UserId,
       title,
       html: editorStateHtml,
-      tags
+      tags,
+      shouldPost: true
     }
 
-    PostEntry(payload)
+    PostReduxEntry(payload)
   }
 
   handleInputChange = e => {
+    const { SetEditorState } = this.props
     const { id, value } = e.target
-    this.setState(currentState => ({ [id]: value }))
+    SetEditorState({ [id]: value })
+  }
+
+  handleTextEditorChange = editorStateHtml => {
+    const { SetEditorState } = this.props
+    SetEditorState({ editorStateHtml })
   }
 
   render() {
@@ -111,7 +117,7 @@ class Home extends PureComponent {
             <TextEditor
               clearKey={clearedOn}
               html={editorStateHtml}
-              onChangeCallback={SetEditorState}
+              onChangeCallback={html => this.handleTextEditorChange(html)}
             />
           </Col>
         </Row>

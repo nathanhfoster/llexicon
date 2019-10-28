@@ -10,14 +10,13 @@ import {
   InputGroupText,
   Input
 } from "reactstrap"
+import Moment from "react-moment"
 import TextEditor from "../../components/TextEditor"
 import {
   GetUserEntries,
   UpdateReduxEntry,
-  UpdateEntries,
-  DeleteEntry
+  SyncEntries
 } from "../../actions/Entries"
-import BasicForm from "../../components/BasicForm"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -26,7 +25,7 @@ const mapStateToProps = ({
   Entries: { items }
 }) => ({ UserId: User.id, clearedOn, editorStateHtml, entries: items })
 
-const mapDispatchToProps = { GetUserEntries, UpdateReduxEntry, UpdateEntries }
+const mapDispatchToProps = { GetUserEntries, UpdateReduxEntry, SyncEntries }
 
 class Entries extends PureComponent {
   constructor(props) {
@@ -41,7 +40,7 @@ class Entries extends PureComponent {
     editorStateHtml: PropTypes.string,
     GetUserEntries: PropTypes.func.isRequired,
     UpdateReduxEntry: PropTypes.func.isRequired,
-    UpdateEntries: PropTypes.func.isRequired
+    SyncEntries: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
@@ -51,10 +50,10 @@ class Entries extends PureComponent {
   }
 
   componentDidMount() {
-    const { UserId, GetUserEntries, UpdateEntries } = this.props
+    const { UserId, GetUserEntries, SyncEntries } = this.props
     if (UserId) {
       GetUserEntries()
-      UpdateEntries()
+      SyncEntries()
     }
   }
 
@@ -68,9 +67,9 @@ class Entries extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { UserId, UpdateEntries } = this.props
+    const { UserId, SyncEntries } = this.props
     if (UserId) {
-      UpdateEntries()
+      SyncEntries()
     }
   }
 
@@ -116,6 +115,15 @@ class Entries extends PureComponent {
                     UpdateReduxEntry({ id, title: e.target.value })
                   }
                 />
+                <InputGroupAddon addonType="append">
+                  <InputGroupText color="primary">
+                    <i
+                      className="far fa-clock"
+                      style={{ fontSize: 20, marginRight: 4 }}
+                    />
+                    <Moment fromNow>{date_created}</Moment>
+                  </InputGroupText>
+                </InputGroupAddon>
                 <InputGroupAddon
                   addonType="append"
                   onClick={() => UpdateReduxEntry({ id, shouldDelete: true })}
