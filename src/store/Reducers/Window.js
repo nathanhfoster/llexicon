@@ -7,8 +7,6 @@ export const Window = (state = defaultState, action) => {
   switch (type) {
     case ReduxActions.SET_WINDOW:
       return payload;
-    case ReduxActions.RESET_REDUX:
-      return defaultState;
     default:
       return state;
   }
