@@ -59,7 +59,7 @@ export const User = (state = defaultState, action) => {
         ...state,
         Settings: { ...state.Settings, ...payload }
       }
-    case ReduxActions.RESET_REDUX:
+    case ReduxActions.REDUX_RESET:
       return defaultState
     default:
       return state

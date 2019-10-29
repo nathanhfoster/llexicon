@@ -22,6 +22,7 @@ const ReduxActions = {
   ENTRY_UPDATE: "ENTRY_UPDATE",
   ENTRY_DELETE: "ENTRY_DELETE",
 
-  RESET_REDUX: "RESET_REDUX"
+  REDUX_PERSIST: "REDUX_PERSIST",
+  REDUX_RESET: "REDUX_RESET"
 }
 export { CookieMap, SocialAuthenticationProviders, ReduxActions }

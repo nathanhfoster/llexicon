@@ -14,7 +14,7 @@ export const TextEditor = (state = defaultState, action) => {
       return { ...state, ...payload, lastUpdated: new Date() }
     case ReduxActions.TEXT_EDITOR_CLEAR:
       return { ...defaultState, clearedOn: new Date() }
-    case ReduxActions.RESET_REDUX:
+    case ReduxActions.REDUX_RESET:
       return { ...defaultState, clearedOn: new Date() }
     default:
       return state

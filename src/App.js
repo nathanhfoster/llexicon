@@ -2,17 +2,17 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Redirect } from "react-router-dom"
+import Persistor from "./store/Persistor"
 import NavBar from "./components/NavBar"
 import ReactRouter from "./ReactRouter"
 import Footer from "./components/Footer"
-import { saveState } from "./store/persist"
 import { setWindow } from "./actions/App"
 import { GetUserSettings } from "./actions/Settings"
 import "./styles/index.css"
 
 const mapStateToProps = ({ User }) => ({ User })
 
-const mapDispatchToProps = { setWindow, GetUserSettings, saveState }
+const mapDispatchToProps = { setWindow, GetUserSettings }
 
 export class App extends PureComponent {
   constructor(props) {
@@ -28,8 +28,7 @@ export class App extends PureComponent {
 
   static defaultProps = {
     setWindow,
-    GetUserSettings,
-    saveState
+    GetUserSettings
   }
 
   componentWillMount() {
@@ -49,8 +48,6 @@ export class App extends PureComponent {
   }
 
   getState = props => {
-    const { saveState } = props
-    saveState()
     this.setState({})
   }
 
@@ -73,6 +70,7 @@ export class App extends PureComponent {
       <Redirect to="/home" />
     ) : (
       <div className="App">
+        <Persistor />
         <NavBar />
         <ReactRouter />
         <Footer />

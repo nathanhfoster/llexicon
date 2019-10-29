@@ -30,13 +30,13 @@ const RefreshPatchUser = (token, id) => (dispatch, getState) =>
     .catch(e =>
       e.response && e.response.status == 401
         ? dispatch({
-            type: ReduxActions.RESET_REDUX,
+            type: ReduxActions.REDUX_RESET,
             payload: null
           })
         : console.log(e)
     )
 
-const UserLogout = () => ({ type: ReduxActions.RESET_REDUX })
+const UserLogout = () => ({ type: ReduxActions.REDUX_RESET })
 
 const CreateUser = (payload, rememberMe) => async dispatch =>
   await Axios()

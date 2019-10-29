@@ -1,5 +1,5 @@
 import { ReduxActions } from "../../constants.js"
-import { DeepClone } from "../../helpers"
+import { mergeJson } from "../../helpers"
 
 const defaultState = { items: [] }
 
@@ -7,7 +7,7 @@ export const Entries = (state = defaultState, action) => {
   const { id, shouldPost, shouldDelete, type, payload } = action
   switch (type) {
     case ReduxActions.ENTRIES_SET:
-      return { ...state, items: payload }
+      return { ...state, items: mergeJson(payload, state.items) }
     case ReduxActions.ENTRY_POST:
       return { ...state, items: [{ ...payload, shouldPost }, ...state.items] }
     case ReduxActions.ENTRY_UPDATE:
@@ -26,7 +26,7 @@ export const Entries = (state = defaultState, action) => {
       }
     case ReduxActions.ENTRY_DELETE:
       return { ...state, items: state.items.filter(item => item.id !== id) }
-    case ReduxActions.RESET_REDUX:
+    case ReduxActions.REDUX_RESET:
       return defaultState
     default:
       return state

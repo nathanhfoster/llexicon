@@ -1,3 +1,5 @@
+import { ReduxActions } from "../../constants"
+
 const LocalStorageName = "ReduxStore"
 
 const getState = () => {
@@ -13,6 +15,7 @@ const saveState = () => (dispatch, getState) => {
   const ReduxState = JSON.stringify(getState())
   try {
     localStorage.setItem(LocalStorageName, ReduxState)
+    dispatch({ type: ReduxActions.REDUX_PERSIST })
   } catch (e) {
     if (isQuotaExceeded(e)) {
       // Do something

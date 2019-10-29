@@ -66,7 +66,7 @@ const DeleteEntry = id => async dispatch => {
 const SyncEntries = () => async (dispatch, getState) => {
   const {
     Entries: { items }
-  } = getState()
+  } = await getState()
 
   for (let i = 0; i < items.length; i++) {
     const entry = items[i]

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { getState } from "../store/persist"
+import { getState } from "../store/Persistor/persist"
 const { REACT_APP_API_URL } = process.env
 
 const base = {

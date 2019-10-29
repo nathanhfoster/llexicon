@@ -8,7 +8,7 @@ import { stateToHTML } from "draft-js-export-html"
 import { stateFromHTML } from "draft-js-import-html"
 // import htmlToDraft from "html-to-draftjs"
 import { options } from "./options"
-import { RemoveArrayDuplicates } from "../../helpers"
+import { removeArrayDuplicates } from "../../helpers"
 import { ClearButton } from "./Buttons"
 import "./styles.css"
 
@@ -155,7 +155,7 @@ class TextEditor extends PureComponent {
       }
     })
 
-    return RemoveArrayDuplicates(
+    return removeArrayDuplicates(
       mentions.map(m => parseInt(m.url.split("/")[2]))
     )
   }
