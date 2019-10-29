@@ -1,9 +1,9 @@
 import { ReduxActions } from "../../constants.js"
+import { DeepClone } from "../../helpers"
 
 const defaultState = { items: [] }
 
 export const Entries = (state = defaultState, action) => {
-  let newState = { ...state }
   const { id, shouldPost, shouldDelete, type, payload } = action
   switch (type) {
     case ReduxActions.ENTRIES_SET:
@@ -11,6 +11,7 @@ export const Entries = (state = defaultState, action) => {
     case ReduxActions.ENTRY_POST:
       return { ...state, items: [{ ...payload, shouldPost }, ...state.items] }
     case ReduxActions.ENTRY_UPDATE:
+      let newState = DeepClone(state)
       const itemIndex = newState.items.findIndex(item => item.id == id)
       if (itemIndex !== -1) {
         newState.items[itemIndex] = {

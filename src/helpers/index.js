@@ -6,7 +6,7 @@ const arrayToObject = (arr, keyField) =>
 
 const objectToArray = obj => Object.keys(obj).map(key => obj[key]);
 
-const DeepCopy = arrayOrObj => JSON.parse(JSON.stringify(arrayOrObj));
+const DeepClone = arrayOrObj => JSON.parse(JSON.stringify(arrayOrObj));
 
 const isEquivalent = (obj1, obj2) =>
   JSON.stringify(obj1) === JSON.stringify(obj2);
@@ -93,7 +93,7 @@ export {
   getRandomInt,
   arrayToObject,
   objectToArray,
-  DeepCopy,
+  DeepClone,
   isEquivalent,
   isOnline,
   findMaxInt,

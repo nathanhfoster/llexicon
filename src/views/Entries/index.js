@@ -80,7 +80,7 @@ class Entries extends PureComponent {
 
   renderEntries = entries => {
     const { UpdateReduxEntry } = this.props
-    return entries.map(entry => {
+    return entries.map((entry, i) => {
       const {
         id,
         author,
@@ -95,6 +95,7 @@ class Entries extends PureComponent {
       return (
         !shouldDelete && (
           <div
+            id={id || i}
             style={{
               backgroundColor: "whitesmoke",
               marginBottom: 16,
