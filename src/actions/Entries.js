@@ -40,8 +40,8 @@ const UpdateReduxEntry = ({ shouldDelete, ...payload }) => ({
   shouldDelete
 })
 
-const UpdateEntry = (id, payload) => async dispatch =>
-  await Axios()
+const UpdateEntry = (id, payload) => dispatch =>
+  Axios()
     .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
     .then(res => {
       dispatch({
@@ -53,8 +53,8 @@ const UpdateEntry = (id, payload) => async dispatch =>
     })
     .catch(e => console.log("UpdateEntry: ", e.response))
 
-const DeleteEntry = id => async dispatch => {
-  return await Axios()
+const DeleteEntry = id => dispatch => {
+  return Axios()
     .delete(`/entries/${id}/`)
     .then(res => {
       dispatch({
@@ -65,10 +65,10 @@ const DeleteEntry = id => async dispatch => {
     .catch(e => console.log("DeleteEntry: ", e.response))
 }
 
-const SyncEntries = () => async (dispatch, getState) => {
+const SyncEntries = () => (dispatch, getState) => {
   const {
     Entries: { items }
-  } = await getState()
+  } = getState()
 
   for (let i = 0; i < items.length; i++) {
     const entry = items[i]
@@ -89,16 +89,16 @@ const SyncEntries = () => async (dispatch, getState) => {
     let payload
 
     if (shouldDelete) {
-      await dispatch(DeleteEntry(id))
+      dispatch(DeleteEntry(id))
     } else if (shouldPost) {
       payload = { author, title, html, tags }
-      await dispatch(PostEntry(payload))
+      dispatch(PostEntry(payload))
     } else if (lastUpdated) {
       payload = { title, html, tags }
-      await dispatch(UpdateEntry(id, payload))
+      dispatch(UpdateEntry(id, payload))
     }
   }
-  await dispatch(GetUserEntries())
+  dispatch(GetUserEntries())
 }
 
 export {
