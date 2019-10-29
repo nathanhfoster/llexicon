@@ -9,7 +9,7 @@ export const Entries = (state = defaultState, action) => {
     case ReduxActions.ENTRIES_SET:
       return { ...state, items: mergeJson(payload, state.items) }
     case ReduxActions.ENTRY_POST:
-      return { ...state, items: [{ ...payload, shouldPost }, ...state.items] }
+      return { ...state, items: mergeJson([{ ...payload, shouldPost }], state.items) }
     case ReduxActions.ENTRY_UPDATE:
       return {
         ...state,
