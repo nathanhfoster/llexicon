@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom"
 import App from "./App"
 import LoadingScreen from "./components/LoadingScreen"
 import * as serviceWorker from "./serviceWorker"
+import Persister from "./store/Persister"
 import { getState, saveState } from "./store/Persister/persist"
 const { NODE_ENV } = process.env
 
@@ -14,6 +15,7 @@ const ReduxStore = storeFactory(initialState)
 
 ReactDOM.render(
   <Provider store={ReduxStore}>
+    <Persister />
     <BrowserRouter>
       <Suspense fallback={<LoadingScreen />}>
         <App />
