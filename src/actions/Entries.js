@@ -66,7 +66,6 @@ const DeleteEntry = id => async dispatch => {
 }
 
 const SyncEntries = () => async (dispatch, getState) => {
-  await dispatch(GetUserEntries())
   const {
     Entries: { items }
   } = await getState()
@@ -99,6 +98,7 @@ const SyncEntries = () => async (dispatch, getState) => {
       await dispatch(UpdateEntry(id, payload))
     }
   }
+  await dispatch(GetUserEntries())
 }
 
 export {
