@@ -27,8 +27,7 @@ const PostEntry = payload => dispatch =>
     .then(res => {
       dispatch({
         type: ReduxActions.ENTRY_POST,
-        payload: res.data,
-        shouldPost: false
+        payload: res.data
       })
     })
     .catch(e => console.log("PostEntry: ", e.response))
