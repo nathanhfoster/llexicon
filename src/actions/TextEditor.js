@@ -1,5 +1,5 @@
 import { ReduxActions } from "../constants"
-import { getState } from "../store/Persistor/persist"
+import { getState } from "../store/Persister/persist"
 
 const SetEditorState = payload => (dispatch, getState) => {
   const { title, editorStateHtml } = getState().TextEditor

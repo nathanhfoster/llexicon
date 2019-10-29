@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom"
 import App from "./App"
 import LoadingScreen from "./components/LoadingScreen"
 import * as serviceWorker from "./serviceWorker"
-import { getState, saveState } from "./store/Persistor/persist"
+import { getState, saveState } from "./store/Persister/persist"
 const { NODE_ENV } = process.env
 
 const initialState = getState()

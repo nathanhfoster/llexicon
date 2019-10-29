@@ -1,15 +1,16 @@
-import React, { Component } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { saveState } from "./persist"
 
-const mapStateToProps = ({ Persistor: { lastUpdated } }) => ({ lastUpdated })
+const mapStateToProps = ({ Persister: { lastUpdated } }) => ({ lastUpdated })
 
 const mapDispatchToProps = { saveState }
 
-export class Persistor extends Component {
+export class Persister extends PureComponent {
   constructor(props) {
     super(props)
+    this.interval = null
 
     const { lastUpdated } = props
     this.state = { lastUpdated }
@@ -17,46 +18,41 @@ export class Persistor extends Component {
 
   static propTypes = { lastUpdated: PropTypes.string.isRequired }
 
-  static defaultProps = { lastUpdated: new Date() }
+  static defaultProps = { lastUpdated: new Date(), persistInterval: 1000 }
 
   componentWillMount() {
     this.getState(this.props)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const { lastUpdated } = nextState
-    const previouslyUpdated = this.state.lastUpdated
-    const updateInterval = 1000
-    const shouldPersist =
-      new Date(lastUpdated) - new Date(previouslyUpdated) > updateInterval
-
-    return shouldPersist
-  }
-
   componentWillReceiveProps(nextProps) {
+    clearInterval(this.interval)
     this.getState(nextProps)
   }
 
   getState = props => {
-    const { lastUpdated } = props
+    const { lastUpdated, persistInterval } = props
+
+    //this.interval = setInterval(() => this.persistReduxStore(), persistInterval)
+
+    this.persistReduxStore()
 
     this.setState({ lastUpdated })
   }
 
   componentWillUnmount() {
+    clearInterval(this.interval)
     const { saveState } = this.props
     saveState()
   }
 
-  persistReduxStore = lastUpdated => {
+  persistReduxStore = () => {
     const { saveState } = this.props
     saveState()
   }
 
   render() {
-    this.persistReduxStore()
     return <noscript />
   }
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Persistor)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Persister)

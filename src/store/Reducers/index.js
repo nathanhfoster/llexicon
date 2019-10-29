@@ -3,12 +3,12 @@ import { User } from "./User"
 import { TextEditor } from "./TextEditor"
 import { Entries } from "./Entries"
 import { Window } from "./Window"
-import { Persistor } from "./Persistor"
+import { Persister } from "./Persister"
 
 export const RootReducer = combineReducers({
   User,
   TextEditor,
   Entries,
   Window,
-  Persistor
+  Persister
 })

@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Redirect } from "react-router-dom"
-import Persistor from "./store/Persistor"
+import Persister from "./store/Persister"
 import NavBar from "./components/NavBar"
 import ReactRouter from "./ReactRouter"
 import Footer from "./components/Footer"
@@ -70,7 +70,7 @@ export class App extends PureComponent {
       <Redirect to="/home" />
     ) : (
       <div className="App">
-        <Persistor />
+        <Persister />
         <NavBar />
         <ReactRouter />
         <Footer />
