@@ -4,15 +4,19 @@ import qs from "qs"
 
 const GetUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User
-  return Axios()
+  Axios()
     .get(`/entries/${id}/view/`)
     .then(res => {
       dispatch({
         type: ReduxActions.ENTRIES_SET,
         payload: res.data
       })
+      return Promise.resolve
     })
-    .catch(e => console.log("GetUserEntries: ", e.response))
+    .catch(e => {
+      console.log("GetUserEntries: ", e.response)
+      return Promise.reject
+    })
 }
 
 const PostReduxEntry = ({ shouldPost, ...payload }) => ({
@@ -30,8 +34,12 @@ const PostEntry = payload => dispatch =>
         payload: res.data,
         shouldPost: false
       })
+      return Promise.resolve
     })
-    .catch(e => console.log("PostEntry: ", e.response))
+    .catch(e => {
+      console.log("PostEntry: ", e.response)
+      return Promise.reject
+    })
 
 const UpdateReduxEntry = ({ shouldDelete, ...payload }) => ({
   id: payload.id,
@@ -50,25 +58,36 @@ const UpdateEntry = (id, payload) => dispatch =>
         payload: res.data,
         lastUpdated: false
       })
+      return Promise.resolve
     })
-    .catch(e => console.log("UpdateEntry: ", e.response))
+    .catch(e => {
+      console.log("UpdateEntry: ", e.response)
+      return Promise.reject
+    })
 
-const DeleteEntry = id => dispatch => {
-  return Axios()
+const DeleteEntry = id => dispatch =>
+  Axios()
     .delete(`/entries/${id}/`)
     .then(res => {
       dispatch({
         id,
         type: ReduxActions.ENTRY_DELETE
       })
+      return Promise.resolve
     })
-    .catch(e => console.log("DeleteEntry: ", e.response))
-}
+    .catch(e => {
+      console.log("DeleteEntry: ", e.response)
+      return Promise.reject
+    })
 
-const SyncEntries = () => (dispatch, getState) => {
+const SyncEntries = () => async (dispatch, getState) => {
   const {
     Entries: { items }
   } = getState()
+
+  let dispatchDeleteEntries = []
+  let dispatchPostEntries = []
+  let dispatchUpdateEntries = []
 
   for (let i = 0; i < items.length; i++) {
     const entry = items[i]
@@ -89,17 +108,19 @@ const SyncEntries = () => (dispatch, getState) => {
     let payload
 
     if (shouldDelete) {
-      dispatch(DeleteEntry(id))
+      await dispatch(DeleteEntry(id))
     } else if (shouldPost) {
       payload = { author, title, html, tags }
-      dispatch(PostEntry(payload))
+      await dispatch(PostEntry(payload))
     } else if (lastUpdated) {
       payload = { title, html, tags }
-      dispatch(UpdateEntry(id, payload))
+      await dispatch(UpdateEntry(id, payload))
     }
   }
-  dispatch(GetUserEntries())
+  await dispatch(GetUserEntries())
 }
+
+const Sync = dispatchActions => {}
 
 export {
   GetUserEntries,
