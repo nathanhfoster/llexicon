@@ -2,20 +2,18 @@ import { ReduxActions } from "../constants"
 import { Axios } from "."
 import qs from "qs"
 
-const GetUserEntries = () => (dispatch, getState) => {
+const GetUserEntries = () => async (dispatch, getState) => {
   const { id } = getState().User
-  Axios()
+  await Axios()
     .get(`/entries/${id}/view/`)
-    .then(res => {
-      dispatch({
+    .then(async res => {
+      await dispatch({
         type: ReduxActions.ENTRIES_SET,
         payload: res.data
       })
-      return Promise.resolve
     })
     .catch(e => {
       console.log("GetUserEntries: ", e.response)
-      return Promise.reject
     })
 }
 
@@ -25,20 +23,18 @@ const PostReduxEntry = ({ shouldPost, ...payload }) => ({
   shouldPost
 })
 
-const PostEntry = payload => dispatch =>
-  Axios()
+const PostEntry = payload => async dispatch =>
+  await Axios()
     .post(`entries/`, qs.stringify(payload))
-    .then(res => {
-      dispatch({
+    .then(async res => {
+      await dispatch({
         type: ReduxActions.ENTRY_POST,
         payload: res.data,
         shouldPost: false
       })
-      return Promise.resolve
     })
     .catch(e => {
       console.log("PostEntry: ", e.response)
-      return Promise.reject
     })
 
 const UpdateReduxEntry = ({ shouldDelete, ...payload }) => ({
@@ -48,42 +44,38 @@ const UpdateReduxEntry = ({ shouldDelete, ...payload }) => ({
   shouldDelete
 })
 
-const UpdateEntry = (id, payload) => dispatch =>
-  Axios()
+const UpdateEntry = (id, payload) => async dispatch =>
+  await Axios()
     .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
-    .then(res => {
-      dispatch({
+    .then(async res => {
+      await dispatch({
         id,
         type: ReduxActions.ENTRY_UPDATE,
         payload: res.data,
         lastUpdated: false
       })
-      return Promise.resolve
     })
     .catch(e => {
       console.log("UpdateEntry: ", e.response)
-      return Promise.reject
     })
 
-const DeleteEntry = id => dispatch =>
-  Axios()
+const DeleteEntry = id => async dispatch =>
+  await Axios()
     .delete(`/entries/${id}/`)
-    .then(res => {
-      dispatch({
+    .then(async res => {
+      await dispatch({
         id,
         type: ReduxActions.ENTRY_DELETE
       })
-      return Promise.resolve
     })
     .catch(e => {
       console.log("DeleteEntry: ", e.response)
-      return Promise.reject
     })
 
 const SyncEntries = () => async (dispatch, getState) => {
   const {
     Entries: { items }
-  } = getState()
+  } = await getState()
 
   let dispatchDeleteEntries = []
   let dispatchPostEntries = []
