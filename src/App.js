@@ -7,15 +7,13 @@ import ReactRouter from "./ReactRouter"
 import Footer from "./components/Footer"
 import { setWindow } from "./actions/App"
 import { GetUserSettings } from "./actions/Settings"
-import { SyncEntries } from "./actions/Entries"
 import "./styles/index.css"
 
 const mapStateToProps = ({ User }) => ({ UserId: User.id })
 
 const mapDispatchToProps = {
   setWindow,
-  GetUserSettings,
-  SyncEntries
+  GetUserSettings
 }
 
 export class App extends PureComponent {
@@ -27,8 +25,7 @@ export class App extends PureComponent {
   static propTypes = {
     UserId: PropTypes.string,
     setWindow: PropTypes.func.isRequired,
-    GetUserSettings: PropTypes.func.isRequired,
-    SyncEntries: PropTypes.func.isRequired
+    GetUserSettings: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -41,14 +38,13 @@ export class App extends PureComponent {
   }
 
   componentDidMount() {
-    const { GetUserSettings, UserId, SyncEntries } = this.props
+    const { GetUserSettings, UserId } = this.props
 
     window.addEventListener("resize", this.updateWindowDimensions)
     this.updateWindowDimensions()
 
     if (UserId) {
       GetUserSettings()
-      SyncEntries()
     }
   }
 
@@ -61,12 +57,6 @@ export class App extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { UserId, SyncEntries } = this.props
-
-    if (UserId) {
-      SyncEntries()
-    }
-
     window.removeEventListener("resize", this.updateWindowDimensions)
   }
 
