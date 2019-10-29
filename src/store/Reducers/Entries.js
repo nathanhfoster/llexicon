@@ -7,9 +7,12 @@ export const Entries = (state = defaultState, action) => {
   const { id, shouldPost, shouldDelete, type, payload } = action
   switch (type) {
     case ReduxActions.ENTRIES_SET:
-      return { ...state, items: mergeJson(payload, state.items) }
+      return { ...state, items: payload }
     case ReduxActions.ENTRY_POST:
-      return { ...state, items: mergeJson([{ ...payload, shouldPost }], state.items) }
+      return {
+        ...state,
+        items: mergeJson([{ ...payload, shouldPost }], state.items)
+      }
     case ReduxActions.ENTRY_UPDATE:
       return {
         ...state,

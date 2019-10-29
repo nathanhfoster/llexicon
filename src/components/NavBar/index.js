@@ -113,7 +113,8 @@ class NavBar extends PureComponent {
           to={RouterLinkPush(history, RouteMap.HOME)}
           onClick={() => this.closeHamburgerMenu()}
         >
-          <Media className=" NavBarImage" src={Logo} />
+          <i className="fas fa-feather-alt NavBarImage" />
+          Add Entry
         </NavbarBrand>
         {isMobile && (
           <NavbarToggler

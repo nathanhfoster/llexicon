@@ -12,11 +12,7 @@ import {
 } from "reactstrap"
 import Moment from "react-moment"
 import TextEditor from "../../components/TextEditor"
-import {
-  GetUserEntries,
-  UpdateReduxEntry,
-  SyncEntries
-} from "../../actions/Entries"
+import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -25,7 +21,7 @@ const mapStateToProps = ({
   Entries: { items }
 }) => ({ UserId: User.id, clearedOn, editorStateHtml, entries: items })
 
-const mapDispatchToProps = { GetUserEntries, UpdateReduxEntry, SyncEntries }
+const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 
 class Entries extends PureComponent {
   constructor(props) {
@@ -38,7 +34,6 @@ class Entries extends PureComponent {
     UserId: PropTypes.number,
     clearedOn: PropTypes.string,
     editorStateHtml: PropTypes.string,
-    GetUserEntries: PropTypes.func.isRequired,
     UpdateReduxEntry: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired
   }
@@ -50,9 +45,8 @@ class Entries extends PureComponent {
   }
 
   componentDidMount() {
-    const { UserId, GetUserEntries, SyncEntries } = this.props
+    const { UserId, SyncEntries } = this.props
     if (UserId) {
-      GetUserEntries()
       SyncEntries()
     }
   }
