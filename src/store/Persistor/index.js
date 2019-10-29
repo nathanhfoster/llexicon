@@ -26,7 +26,7 @@ export class Persistor extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const { lastUpdated } = nextState
     const previouslyUpdated = this.state.lastUpdated
-    const updateInterval = 2 * 1000
+    const updateInterval = 1000
     const shouldPersist =
       new Date(lastUpdated) - new Date(previouslyUpdated) > updateInterval
 
