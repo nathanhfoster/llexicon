@@ -15,6 +15,10 @@
   color: var(--primaryColor) !important;
 }
 
+.Navlink.active {
+  color: var(--tertiarycolor) !important;
+}
+
 .Navlink:hover {
   color: var(--tertiarycolor) !important;
 }

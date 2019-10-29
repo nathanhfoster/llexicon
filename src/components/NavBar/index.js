@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, NavLink as RouterNavLink } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../helpers/routing"
 import { RouteMap } from "../../ReactRouter/routes"
 import PropTypes from "prop-types"
@@ -79,8 +79,9 @@ class NavBar extends PureComponent {
     return (
       <NavItem key={title}>
         <NavLink
+          activeClassName="active"
           className="Navlink"
-          tag={Link}
+          tag={RouterNavLink}
           to={RouterLinkPush(history, route)}
           onClick={() => {
             onClick && onClick()
@@ -108,7 +109,7 @@ class NavBar extends PureComponent {
       <Navbar light className="NavBar" color="light" fixed="top" expand="md">
         <NavbarBrand
           className="Logo"
-          tag={Link}
+          tag={RouterNavLink}
           to={RouterLinkPush(history, RouteMap.HOME)}
           onClick={() => this.closeHamburgerMenu()}
         >
