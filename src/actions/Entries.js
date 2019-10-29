@@ -27,7 +27,8 @@ const PostEntry = payload => dispatch =>
     .then(res => {
       dispatch({
         type: ReduxActions.ENTRY_POST,
-        payload: res.data
+        payload: res.data,
+        shouldPost: false
       })
     })
     .catch(e => console.log("PostEntry: ", e.response))
@@ -46,7 +47,8 @@ const UpdateEntry = (id, payload) => async dispatch =>
       dispatch({
         id,
         type: ReduxActions.ENTRY_UPDATE,
-        payload: res.data
+        payload: res.data,
+        lastUpdated: false
       })
     })
     .catch(e => console.log("UpdateEntry: ", e.response))
