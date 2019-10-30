@@ -1,17 +1,9 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, createRef } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import {
-  Container,
-  Row,
-  Col,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input
-} from "reactstrap"
-import Moment from "react-moment"
-import TextEditor from "../../components/TextEditor"
+import { Container, Row, Col } from "reactstrap"
+import Entry from "../../components/Entry"
+import { FixedSizeList } from "react-window"
 import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import "./styles.css"
 
@@ -25,6 +17,8 @@ const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 class Entries extends PureComponent {
   constructor(props) {
     super(props)
+
+    this.listRef = createRef()
 
     this.state = {}
   }
@@ -69,77 +63,30 @@ class Entries extends PureComponent {
     DeleteEntry(id)
   }
 
-  renderEntries = entries => {
-    const { UpdateReduxEntry } = this.props
-    return entries.map((entry, i) => {
-      const {
-        id,
-        author,
-        title,
-        html,
-        date_created,
-        date_updated,
-        views,
-        lastUpdated
-      } = entry
-      return (
-          <div
-            key={id || i}
-            style={{
-              backgroundColor: "rgba(245, 245, 245, 0.8)",
-              marginBottom: 16,
-              padding: "16px 0",
-              borderRadius: 4,
-              boxShadow: "var(--primaryBoxShadow)"
-            }}
-          >
-            <Col xs={12}>
-              <InputGroup key={id || i} className="EntryInput">
-                <Input
-                  type="text"
-                  name="title"
-                  id="title"
-                  placeholder="Title..."
-                  value={title}
-                  onChange={e =>
-                    UpdateReduxEntry({ id, title: e.target.value })
-                  }
-                />
-                <InputGroupAddon addonType="append">
-                  <InputGroupText color="primary">
-                    <i
-                      className="far fa-clock"
-                      style={{ fontSize: 20, marginRight: 4 }}
-                    />
-                    <Moment fromNow>{date_created || lastUpdated}</Moment>
-                  </InputGroupText>
-                </InputGroupAddon>
-                <InputGroupAddon
-                  addonType="append"
-                  onClick={() => UpdateReduxEntry({ id, shouldDelete: true })}
-                >
-                  <InputGroupText color="primary">
-                    <i className="fas fa-times" style={{ fontSize: 20 }} />
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-            </Col>
-            <Col xs={12} style={{ marginTop: 8 }}>
-              <TextEditor
-                html={html}
-                onChangeCallback={html => UpdateReduxEntry({ id, html })}
-              />
-            </Col>
-          </div>
-      )
-    })
+  renderEntries = ({ data, index, style, isScrolling }) => {
+    const entry = data[index]
+
+    return <Entry {...entry} containerStyle={style} />
   }
 
   render() {
     const { entries } = this.state
     return (
       <Container className="Entries">
-        <Row>{this.renderEntries(entries)}</Row>
+        {/* <Row>{this.renderEntries(entries)}</Row> */}
+        <Row>
+          <FixedSizeList
+            ref={this.listRef}
+            className="listSearchItemsContainer fade-in"
+            height={880}
+            width="100%"
+            itemData={entries}
+            itemCount={entries.length}
+            itemSize={381}
+          >
+            {this.renderEntries}
+          </FixedSizeList>
+        </Row>
       </Container>
     )
   }

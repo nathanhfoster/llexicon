@@ -23,6 +23,11 @@ const PostReduxEntry = ({ shouldPost, ...payload }) => ({
   shouldPost
 })
 
+const ImportReduxEntry = payload => ({
+  type: ReduxActions.ENTRY_IMPORT,
+  payload
+})
+
 const PostEntry = payload => dispatch =>
   Axios()
     .post(`entries/`, qs.stringify(payload))
@@ -123,6 +128,7 @@ const SyncEntries = () => (dispatch, getState) => {
 export {
   GetUserEntries,
   PostReduxEntry,
+  ImportReduxEntry,
   PostEntry,
   UpdateReduxEntry,
   UpdateEntry,

@@ -1,43 +1,53 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { FormGroup, Label, Input, Media, FormText } from "reactstrap";
-import { connect as reduxConnect } from "react-redux";
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
+import { FormGroup, Label, Input, Media, FormText } from "reactstrap"
 
-import "./styles.css";
+import "./styles.css"
 
 class FileUpload extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = {};
+    this.state = {}
   }
 
-  static propTypes = {};
+  static propTypes = {}
 
-  static defaultProps = {};
+  static defaultProps = {}
 
   componentWillMount() {
-    this.getState(this.props);
+    this.getState(this.props)
   }
   componentWillReceiveProps(nextProps) {
-    this.getState(nextProps);
+    this.getState(nextProps)
   }
 
   getState = props => {
-    this.setState({});
-  };
+    this.setState({})
+  }
 
   render() {
-    const { value, onChange } = this.props;
+    const { value, onChangeCallback } = this.props
     return (
       <FormGroup className="FileUploadContainer Center">
         <FormText color="white">Upload your Profile Picture</FormText>
         <Label className="FileUpload" for="fileUpload">
-          {!value ? <i className="fas fa-camera-retro fa-4x" /> : <Media src={value} />}
+          {!value ? (
+            <i className="fas fa-camera-retro fa-4x" />
+          ) : (
+            <Media src={value} />
+          )}
         </Label>
-        <Input type="file" name={value} id="fileUpload" onChange={onChange} />
+        <Input
+          type="file"
+          name={value}
+          id="fileUpload"
+          onChange={onChangeCallback}
+          multiple
+        />
       </FormGroup>
-    );
+    )
   }
 }
-export default FileUpload;
+export default FileUpload

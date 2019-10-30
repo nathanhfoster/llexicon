@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
+import ImportEntries from "../../components/ImportEntries"
 import {
   Container,
   Row,
@@ -9,7 +11,7 @@ import {
   Input,
   Tooltip
 } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+
 import "./styles.css"
 import {
   GetUserSettings,
@@ -88,10 +90,19 @@ class Settings extends PureComponent {
     return (
       <Container className="Settings Container">
         <Row>
-          <h1 className="pageHeader">SETTINGS</h1>
+          <Col xs={12}>
+            <h1 className="pageHeader">SETTINGS</h1>
+          </Col>
         </Row>
         <Row>
-          <h2 className="headerBanner">Appearance</h2>
+          <Col xs={12}>
+            <ImportEntries />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <h2 className="headerBanner">Appearance</h2>
+          </Col>
         </Row>
         <Row className="checkBoxTable">
           <Col xs={12}>

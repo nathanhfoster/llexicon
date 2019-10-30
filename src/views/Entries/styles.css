@@ -3,8 +3,3 @@
   color: var(--tertiarycolor);
 }
 
-.EntryInput .form-control, .EntryInput .input-group-text {
-  box-shadow: var(--primaryBoxShadow);
-  outline: 0px !important;
-  border: 0 !important;
-}

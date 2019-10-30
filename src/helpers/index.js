@@ -49,15 +49,14 @@ const TopKFrequentStrings = (arrayOfObjs, prop, k) => {
   else return newArray
 }
 
-const getImageBase64 = image => {
-  return new Promise((resolve, reject) => {
+const getImageBase64 = image =>
+  new Promise((resolve, reject) => {
     const reader = new FileReader()
     if (!image) reject(image)
     reader.readAsDataURL(image)
     reader.onload = () => resolve(reader.result)
     reader.onerror = error => reject(error)
   })
-}
 
 const getImageBase64ToFile = async (dataurl, filename) => {
   if (!dataurl.includes("data")) return dataurl
@@ -134,6 +133,23 @@ const mergeJson = (newData, reduxData) => {
   return reduxDataToPost.concat(mergeMapSorted)
 }
 
+const importTextFileEntries = files => {}
+
+const readmultifiles = e => {
+  const files = e.currentTarget.files
+  Object.keys(files).forEach(i => {
+    const file = files[i]
+    const reader = new FileReader()
+    reader.onload = e => {
+      const { result } = reader
+      //server call for uploading or reading the files one-by-one
+      //by using 'reader.result' or 'file'
+      console.log("readmultifiles: ", result)
+    }
+    reader.readAsBinaryString(file)
+  })
+}
+
 export {
   getRandomInt,
   arrayToObject,
@@ -151,5 +167,6 @@ export {
   getImageBase64ToFile,
   joinStrings,
   splitStrings,
-  mergeJson
+  mergeJson,
+  importTextFileEntries
 }

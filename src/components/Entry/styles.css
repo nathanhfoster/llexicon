@@ -1,0 +1,12 @@
+.Entry {
+  background-color: rgba(245, 245, 245, 0.8);
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: var(--primaryBoxShadow);
+}
+
+.EntryInput .form-control, .EntryInput .input-group-text {
+  box-shadow: var(--primaryBoxShadow);
+  outline: 0px !important;
+  border: 0 !important;
+}
