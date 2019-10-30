@@ -8,10 +8,13 @@ export const Entries = (state = defaultState, action) => {
     case ReduxActions.ENTRIES_SET:
       return { ...state, items: payload }
     case ReduxActions.ENTRY_POST:
-      return {
-        ...state,
-        items: [{ ...payload, shouldPost }].concat(state.items)
-      }
+      const entryFound = state.items.findIndex(item => item.id === id) !== -1
+      if (entryFound) return state
+      else
+        return {
+          ...state,
+          items: [{ ...payload, shouldPost }].concat(state.items)
+        }
     case ReduxActions.ENTRY_UPDATE:
       return {
         ...state,

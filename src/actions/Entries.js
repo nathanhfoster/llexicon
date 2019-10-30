@@ -28,6 +28,7 @@ const PostEntry = payload => dispatch =>
     .post(`entries/`, qs.stringify(payload))
     .then(res => {
       dispatch({
+        id: res.data.id,
         type: ReduxActions.ENTRY_POST,
         payload: res.data,
         shouldPost: false
