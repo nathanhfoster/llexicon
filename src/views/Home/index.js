@@ -13,7 +13,7 @@ import {
 } from "reactstrap"
 import TextEditor from "../../components/TextEditor"
 import { PostReduxEntry } from "../../actions/Entries"
-import { SetEditorState } from "../../actions/TextEditor"
+import { SetEditorState, clearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -21,7 +21,7 @@ const mapStateToProps = ({
   TextEditor: { clearedOn, title, editorStateHtml }
 }) => ({ UserId: User.id, clearedOn, title, editorStateHtml })
 
-const mapDispatchToProps = { PostReduxEntry, SetEditorState }
+const mapDispatchToProps = { PostReduxEntry, SetEditorState, clearEditorState }
 
 class Home extends PureComponent {
   constructor(props) {
@@ -37,6 +37,7 @@ class Home extends PureComponent {
     clearedOn: PropTypes.string,
     editorStateHtml: PropTypes.string,
     SetEditorState: PropTypes.func.isRequired,
+    clearEditorState: PropTypes.func.isRequired,
     PostReduxEntry: PropTypes.func.isRequired
   }
 
@@ -58,7 +59,7 @@ class Home extends PureComponent {
   }
 
   handlePostEntry = () => {
-    const { UserId, PostReduxEntry } = this.props
+    const { UserId, PostReduxEntry, clearEditorState } = this.props
     const { editorStateHtml, title, tags } = this.state
 
     const payload = {
@@ -70,6 +71,7 @@ class Home extends PureComponent {
     }
 
     PostReduxEntry(payload)
+    clearEditorState()
   }
 
   handleInputChange = e => {
