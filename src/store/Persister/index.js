@@ -16,7 +16,12 @@ export class Persister extends PureComponent {
     this.state = { lastUpdated }
   }
 
-  static propTypes = { lastUpdated: PropTypes.string.isRequired }
+  static propTypes = {
+    lastUpdated: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]).isRequired
+  }
 
   static defaultProps = { lastUpdated: new Date(), persistInterval: 1000 }
 

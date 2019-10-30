@@ -89,7 +89,7 @@ class Entries extends PureComponent {
       return (
         !shouldDelete && (
           <div
-            id={id || i}
+            key={id || i}
             style={{
               backgroundColor: "whitesmoke",
               marginBottom: 16,

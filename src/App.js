@@ -23,7 +23,7 @@ export class App extends PureComponent {
   }
 
   static propTypes = {
-    UserId: PropTypes.string,
+    UserId: PropTypes.number,
     setWindow: PropTypes.func.isRequired,
     GetUserSettings: PropTypes.func.isRequired
   }

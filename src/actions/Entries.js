@@ -1,13 +1,13 @@
 import { ReduxActions } from "../constants"
-import { Axios } from "."
+import { Axios, Sync } from "."
 import qs from "qs"
 
-const GetUserEntries = () => async (dispatch, getState) => {
+const GetUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User
-  await Axios()
+  return Axios()
     .get(`/entries/${id}/view/`)
-    .then(async res => {
-      await dispatch({
+    .then(res => {
+      dispatch({
         type: ReduxActions.ENTRIES_SET,
         payload: res.data
       })
@@ -23,11 +23,11 @@ const PostReduxEntry = ({ shouldPost, ...payload }) => ({
   shouldPost
 })
 
-const PostEntry = payload => async dispatch =>
-  await Axios()
+const PostEntry = payload => dispatch =>
+  Axios()
     .post(`entries/`, qs.stringify(payload))
-    .then(async res => {
-      await dispatch({
+    .then(res => {
+      dispatch({
         type: ReduxActions.ENTRY_POST,
         payload: res.data,
         shouldPost: false
@@ -44,11 +44,11 @@ const UpdateReduxEntry = ({ shouldDelete, ...payload }) => ({
   shouldDelete
 })
 
-const UpdateEntry = (id, payload) => async dispatch =>
-  await Axios()
+const UpdateEntry = (id, payload) => dispatch =>
+  Axios()
     .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
-    .then(async res => {
-      await dispatch({
+    .then(res => {
+      dispatch({
         id,
         type: ReduxActions.ENTRY_UPDATE,
         payload: res.data,
@@ -59,11 +59,11 @@ const UpdateEntry = (id, payload) => async dispatch =>
       console.log("UpdateEntry: ", e.response)
     })
 
-const DeleteEntry = id => async dispatch =>
-  await Axios()
+const DeleteEntry = id => dispatch =>
+  Axios()
     .delete(`/entries/${id}/`)
-    .then(async res => {
-      await dispatch({
+    .then(res => {
+      dispatch({
         id,
         type: ReduxActions.ENTRY_DELETE
       })
@@ -72,10 +72,10 @@ const DeleteEntry = id => async dispatch =>
       console.log("DeleteEntry: ", e.response)
     })
 
-const SyncEntries = () => async (dispatch, getState) => {
+const SyncEntries = () => (dispatch, getState) => {
   const {
     Entries: { items }
-  } = await getState()
+  } = getState()
 
   let dispatchDeleteEntries = []
   let dispatchPostEntries = []
@@ -100,19 +100,24 @@ const SyncEntries = () => async (dispatch, getState) => {
     let payload
 
     if (shouldDelete) {
-      await dispatch(DeleteEntry(id))
+      dispatchDeleteEntries.push(DeleteEntry(id))
+      continue
     } else if (shouldPost) {
       payload = { author, title, html, tags }
-      await dispatch(PostEntry(payload))
+      dispatchPostEntries.push(PostEntry(payload))
+      continue
     } else if (lastUpdated) {
       payload = { title, html, tags }
-      await dispatch(UpdateEntry(id, payload))
+      dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
   }
-  await dispatch(GetUserEntries())
-}
+  const dispatchActions = dispatchDeleteEntries
+    .concat(dispatchPostEntries)
+    .concat(dispatchUpdateEntries)
+    .concat(GetUserEntries())
 
-const Sync = dispatchActions => {}
+  dispatch(Sync(dispatchActions))
+}
 
 export {
   GetUserEntries,

@@ -65,4 +65,16 @@ const AxiosData = (token, payload) => {
   })
 }
 
-export { Axios, AxiosForm, AxiosData }
+// dispatchActions is an array of actions that will be
+// recursively called using .then promise since an action that => or returns Axios() is a promise.
+const Sync = dispatchActions => async dispatch => {
+  console.log(dispatchActions)
+  if (dispatchActions.length === 0) return
+  const [firstAction, ...restOfActions] = dispatchActions
+
+  await dispatch(firstAction).then(
+    async () => await dispatch(Sync(restOfActions))
+  )
+}
+
+export { Axios, AxiosForm, AxiosData, Sync }
