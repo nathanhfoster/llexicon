@@ -108,7 +108,7 @@ class Home extends PureComponent {
                   color="primary"
                   style={{ color: "white" }}
                 >
-                  Post
+                  <i className="fas fa-feather-alt NavBarImage" />
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>
