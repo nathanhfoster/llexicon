@@ -109,9 +109,9 @@ class Home extends PureComponent {
                   style={{ color: "white" }}
                 >
                   <i
-                    className="fas fa-cloud-upload-alt"
+                    className="fas fa-feather-alt"
                     style={{ fontSize: 20 }}
-                  />
+                  ></i>
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>
