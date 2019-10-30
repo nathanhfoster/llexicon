@@ -17,7 +17,7 @@ import "./styles.css"
 
 const mapStateToProps = ({ User, Entries: { items } }) => ({
   UserId: User.id,
-  entries: items.filter(item => item.shouldDelete)
+  entries: items.filter(item => !item.shouldDelete)
 })
 
 const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
