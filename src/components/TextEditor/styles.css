@@ -117,7 +117,7 @@
   /* border: 1px solid var(--gray); */
   /* padding: 8px; */
   letter-spacing: 1.1px;
-  /* min-height: calc(100vh - var(--navBarHeight) - 220px - 60px); */
+  min-height: 48px;
   max-height: calc(100vh - var(--navBarHeight));
   box-shadow: var(--primaryBoxShadow);
 }
