@@ -1,4 +1,4 @@
-import React, { PureComponent, createRef } from "react"
+import React, { PureComponent } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import {
@@ -26,8 +26,6 @@ const mapDispatchToProps = { PostReduxEntry, SetEditorState, clearEditorState }
 class Home extends PureComponent {
   constructor(props) {
     super(props)
-
-    this.titleRef = createRef()
 
     this.state = { title: "" }
   }
