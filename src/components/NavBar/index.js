@@ -66,15 +66,33 @@ class NavBar extends PureComponent {
       UserLogout
     } = this.props
     const LoggedInLinks = [
-      this.renderNavlink(RouteMap.ENTRIES, "ENTRIES"),
-      this.renderNavlink(RouteMap.SETTINGS, "SETTINGS"),
-      this.renderNavlink(RouteMap.LOGIN, "LOG OUT", UserLogout)
+      this.renderNavlink(
+        RouteMap.CALENDAR,
+        "CALENDAR",
+        <i className="fas fa-calendar-alt NavBarImage"></i>
+      ),
+      this.renderNavlink(
+        RouteMap.ENTRIES,
+        "ENTRIES",
+        <i className="fas fa-feather-alt NavBarImage" />
+      ),
+      this.renderNavlink(
+        RouteMap.SETTINGS,
+        "SETTINGS",
+        <i className="fas fa-cog NavBarImage" />
+      ),
+      this.renderNavlink(
+        RouteMap.LOGIN,
+        "LOG OUT",
+        <i className="fas fa-sign-out-alt NavBarImage" />,
+        UserLogout
+      )
     ]
     const NotLoggedInLinks = [this.renderNavlink(RouteMap.LOGIN, "LOGIN")]
     return id ? LoggedInLinks : NotLoggedInLinks
   }
 
-  renderNavlink = (route, title, onClick) => {
+  renderNavlink = (route, title, icon, onClick) => {
     const { history } = this.props
     return (
       <NavItem key={title}>
@@ -88,7 +106,8 @@ class NavBar extends PureComponent {
             this.closeHamburgerMenu()
           }}
         >
-          {title}
+          {icon}
+          <span className="NavBarLink">{title}</span>
         </NavLink>
       </NavItem>
     )
@@ -113,8 +132,8 @@ class NavBar extends PureComponent {
           to={RouterLinkPush(history, RouteMap.HOME)}
           onClick={() => this.closeHamburgerMenu()}
         >
-          <i className="fas fa-feather-alt NavBarImage" />
-          Add Entry
+          <i className="fas fa-plus NavBarImage" />
+          <span className="NavBarLink">Entry</span>
         </NavbarBrand>
         {isMobile && (
           <NavbarToggler

@@ -37,8 +37,13 @@
 
 .NavBar .NavBarImage {
   max-height: var(--navBarImageHeight);
-  margin: 0;
+  margin-right: 4px;
   padding: 0;
   top: 0;
   border-radius: 50%;
+  font-size: 19px;
+}
+
+.NavBar .NavBarLink {
+  font-size: 19px;
 }

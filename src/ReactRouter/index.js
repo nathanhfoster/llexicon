@@ -6,6 +6,7 @@ import { RouteMap } from "../ReactRouter/routes"
 import Settings from "../views/Settings"
 import Home from "../views/Home"
 import AddEntry from "../views/AddEntry"
+import Calendar from "../views/Calendar"
 import Entries from "../views/Entries"
 import Login from "../views/Login"
 import PrivacyPolicy from "../components/PrivacyPolicy"
@@ -71,6 +72,7 @@ class ReactRouter extends PureComponent {
       },
       { path: [RouteMap.HOME], component: Home },
       { path: [RouteMap.HOME, RouteMap.ENTRY_ADD], component: AddEntry },
+      { path: [RouteMap.CALENDAR], component: Calendar },
       {
         path: [RouteMap.ENTRIES],
         component: this.renderRedirectOrComponent(
