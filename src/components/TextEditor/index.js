@@ -91,7 +91,7 @@ class TextEditor extends PureComponent {
 
   getState = props => {
     const {
-      clearedOn,
+      clearKey,
       html,
       mentions,
       suggestions,
@@ -110,7 +110,7 @@ class TextEditor extends PureComponent {
     //     })
     // );
     this.setState({
-      clearedOn,
+      clearKey,
       editorState,
       mentions,
       suggestions,
@@ -167,13 +167,13 @@ class TextEditor extends PureComponent {
 
   clearState = () =>
     this.setState({
-      clearedOn: new Date(),
+      clearKey: new Date(),
       editorState: EditorState.createEmpty()
     })
 
   render() {
     const {
-      clearedOn,
+      clearKey,
       editorState,
       suggestions,
       readOnly,
@@ -182,7 +182,7 @@ class TextEditor extends PureComponent {
 
     return (
       <Editor
-        key={clearedOn}
+        key={clearKey}
         readOnly={readOnly}
         wrapperClassName="TextEditor Wrapper"
         editorClassName="Editor"

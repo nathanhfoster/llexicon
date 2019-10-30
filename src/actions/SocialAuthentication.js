@@ -2,7 +2,6 @@ import { ReduxActions } from "../constants"
 import { Axios } from "."
 import qs from "qs"
 import { RefreshPatchUser } from "./User"
-import { GetUserSettings } from "./Settings"
 
 const SocialAuthentication = payload => dispatch => {
   const { provider_id } = payload

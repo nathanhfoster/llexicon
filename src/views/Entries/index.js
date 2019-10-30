@@ -15,11 +15,10 @@ import TextEditor from "../../components/TextEditor"
 import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import "./styles.css"
 
-const mapStateToProps = ({
-  User,
-  TextEditor: { clearedOn, editorStateHtml },
-  Entries: { items }
-}) => ({ UserId: User.id, clearedOn, editorStateHtml, entries: items })
+const mapStateToProps = ({ User, Entries: { items } }) => ({
+  UserId: User.id,
+  entries: items
+})
 
 const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 
@@ -32,8 +31,6 @@ class Entries extends PureComponent {
 
   static propTypes = {
     UserId: PropTypes.number,
-    clearedOn: PropTypes.string,
-    editorStateHtml: PropTypes.string,
     UpdateReduxEntry: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired
   }
@@ -56,8 +53,8 @@ class Entries extends PureComponent {
   }
 
   getState = props => {
-    const { entries, editorStateHtml, clearedOn } = props
-    this.setState({ entries, editorStateHtml, clearedOn })
+    const { entries } = props
+    this.setState({ entries })
   }
 
   componentWillUnmount() {

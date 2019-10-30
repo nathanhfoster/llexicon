@@ -1,5 +1,4 @@
 import { ReduxActions } from "../constants"
-import { getState } from "../store/Persister/persist"
 
 const SetEditorState = payload => (dispatch, getState) => {
   const { title, editorStateHtml } = getState().TextEditor
@@ -12,8 +11,8 @@ const SetEditorState = payload => (dispatch, getState) => {
   })
 }
 
-const clearEditorState = () => ({
+const ClearEditorState = () => ({
   type: ReduxActions.TEXT_EDITOR_CLEAR
 })
 
-export { SetEditorState, clearEditorState }
+export { SetEditorState, ClearEditorState }

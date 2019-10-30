@@ -1,5 +1,4 @@
 import { ReduxActions } from "../../constants.js"
-import { mergeJson } from "../../helpers"
 
 const defaultState = { items: [] }
 

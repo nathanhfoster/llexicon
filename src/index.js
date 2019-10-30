@@ -7,7 +7,7 @@ import App from "./App"
 import LoadingScreen from "./components/LoadingScreen"
 import * as serviceWorker from "./serviceWorker"
 import Persister from "./store/Persister"
-import { getState, saveState } from "./store/Persister/persist"
+import { getState } from "./store/Persister/persist"
 const { NODE_ENV } = process.env
 
 const initialState = getState()
