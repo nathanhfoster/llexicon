@@ -1,7 +1,7 @@
 {
   "name": "Lexicon",
   "short_name": "Lexicon",
-  "description": "The essence of language and your life.",
+  "description": "Journal the essence of language and your life.",
   "author": "Nathan Foster",
   "icons": [
     {
@@ -21,7 +21,7 @@
     }
   ],
   "background_color": "#f5f5f5",
-  "theme_color": "#29303b",
+  "theme_color": "#2980b9",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
