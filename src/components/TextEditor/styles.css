@@ -118,7 +118,7 @@
   /* padding: 8px; */
   letter-spacing: 1.1px;
   min-height: calc(var(--inputButtonHeight) * 4);
-  max-height: 880px;
+  max-height: 100%;
   box-shadow: var(--primaryBoxShadow);
 }
 
