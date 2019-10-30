@@ -1,0 +1,8 @@
+.toolTipWrapper,
+.__react_component_tooltip,
+.__react_component_tooltip.show,
+.__react_component_tooltip.type-dark {
+  height: 160px;
+  width: 160px;
+  z-index: 99999 !important;
+}

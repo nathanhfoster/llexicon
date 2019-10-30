@@ -1,0 +1,126 @@
+.EventDetails {
+
+}
+
+.EventDetails a {
+  color: var(--primaryColor);
+}
+
+.EventDetails a:hover {
+  opacity: 0.7;
+}
+
+.circle-img {
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  position: relative;
+  overflow: hidden;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
+.circle-img img {
+  display: inline;
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
+}
+
+.Details [class*="col-"] {
+  border: 1px solid var(--grey);
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  /* background: linear-gradient(
+    to right,
+    rgba(255, 153, 0, 1) 50px,
+    rgba(0, 0, 0, 0.1) 0px,
+    rgba(0, 0, 0, 0.05) 100%
+  ); */
+}
+
+.Group {
+  padding: 0;
+  border: 1px solid var(--grey);
+  border-radius: 6px;
+}
+
+.GroupHeader {
+  font-size: 28px;
+}
+
+.MembersContainer {
+ 
+  margin: 8px;
+  padding: 8px;
+  border: 1px solid var(--grey);
+}
+
+.Member {
+}
+
+.RSVP {
+}
+
+.Preferences {
+  display: inline-block;
+  margin: 3px;
+}
+
+.Match {
+  font-weight: 600;
+  background-color: var(--primaryColor);
+  color: var(--tertiarycolor);
+  padding: 3px;
+  border-radius: 6px;
+}
+
+.Match:hover {
+  background-color: var(--tertiarycolor);
+  color: var(--secondaryColor);
+}
+
+.CharacterSignedUpWith {
+  vertical-align: baseline;
+}
+
+.CharacterSignedUpWith [class*="column"] + [class*="column"]:last-child {
+}
+
+.CharacterSignedUpWith [class*="col-"] {
+  
+}
+
+.editResponseContainer {
+  display: inline-block;
+}
+
+.MatchedCharactersContainer {
+  margin: 4px;
+  padding: 4px;
+  border: 1px solid var(--grey);
+  border-radius: 4px;
+  background-color: var(--slate_grey);
+}
+
+.MatchedCharactersContainer div {
+  display: inline-flex;
+  padding: 4px;
+  margin: 8px;
+  width: calc((100% - 70px) / 4);
+}
+
+.eventModal {
+  margin-top: 0;
+  position: absolute;
+  top: calc(50% - var(--navBarHeight));
+  left: 0;
+  right: 0;
+}
+
+.eventModal .modal-content {
+  background-color: var(--secondaryColor);
+}
