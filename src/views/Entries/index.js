@@ -88,7 +88,7 @@ class Entries extends PureComponent {
           <div
             key={id || i}
             style={{
-              backgroundColor: "whitesmoke",
+              backgroundColor: "rgba(245, 245, 245, 0.8)",
               marginBottom: 16,
               padding: "16px 0",
               borderRadius: 4,
@@ -96,7 +96,7 @@ class Entries extends PureComponent {
             }}
           >
             <Col xs={12}>
-              <InputGroup style={{ marginBottom: 8 }}>
+              <InputGroup key={id || i} className="EntryInput">
                 <Input
                   type="text"
                   name="title"
@@ -126,7 +126,7 @@ class Entries extends PureComponent {
                 </InputGroupAddon>
               </InputGroup>
             </Col>
-            <Col xs={12}>
+            <Col xs={12} style={{ marginTop: 8 }}>
               <TextEditor
                 html={html}
                 onChangeCallback={html => UpdateReduxEntry({ id, html })}

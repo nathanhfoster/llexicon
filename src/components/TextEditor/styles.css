@@ -23,7 +23,7 @@
 }
 
 .TextEditor .rdw-option-wrapper {
-  /* border: 1px solid #f1f1f1; */
+  box-shadow: var(--primaryBoxShadow);
   padding: 18px 12px;
   border-radius: 4px;
   margin-left: 1px;
