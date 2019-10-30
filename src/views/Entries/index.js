@@ -17,7 +17,7 @@ import "./styles.css"
 
 const mapStateToProps = ({ User, Entries: { items } }) => ({
   UserId: User.id,
-  entries: items
+  entries: items.filter(item => item.shouldDelete)
 })
 
 const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
@@ -80,11 +80,9 @@ class Entries extends PureComponent {
         date_created,
         date_updated,
         views,
-        lastUpdated,
-        shouldDelete
+        lastUpdated
       } = entry
       return (
-        !shouldDelete && (
           <div
             key={id || i}
             style={{
@@ -113,7 +111,7 @@ class Entries extends PureComponent {
                       className="far fa-clock"
                       style={{ fontSize: 20, marginRight: 4 }}
                     />
-                    <Moment fromNow>{date_created}</Moment>
+                    <Moment fromNow>{date_created || lastUpdated}</Moment>
                   </InputGroupText>
                 </InputGroupAddon>
                 <InputGroupAddon
@@ -133,7 +131,6 @@ class Entries extends PureComponent {
               />
             </Col>
           </div>
-        )
       )
     })
   }
