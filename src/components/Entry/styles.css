@@ -37,12 +37,11 @@
 .Entry {
   padding: 8px;
   border-radius: 4px;
-  height: calc(100% - var(--inputButtonHeight) - var(--textEditorToolBarHeight) - 16px);
+  /* height: calc(100% - var(--inputButtonHeight) - var(--textEditorToolBarHeight) - 16px); */
 }
 
 .EntryInput .form-control, .EntryInput .input-group-text {
   box-shadow: var(--primaryBoxShadow);
   outline: 0px;
   border: 0;
-  height: 100%;
 }
