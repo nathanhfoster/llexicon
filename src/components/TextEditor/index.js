@@ -175,6 +175,7 @@ class TextEditor extends PureComponent {
   })
 
   render() {
+    const { onChangeCallback } = this.props
     const {
       clearKey,
       editorState,
@@ -207,7 +208,7 @@ class TextEditor extends PureComponent {
         toolbarHidden={toolbarHidden}
         toolbar={options}
         toolbarCustomButtons={[
-          <ClearButton onClickCallback={this.clearState} />
+          <ClearButton onClickCallback={() => onChangeCallback("") } />
         ]}
         mention={{
           separator: " ",
