@@ -208,7 +208,10 @@ class TextEditor extends PureComponent {
         toolbarHidden={toolbarHidden}
         toolbar={options}
         toolbarCustomButtons={[
-          <ClearButton onClickCallback={() => onChangeCallback("") } />
+          <ClearButton onClickCallback={() => {
+            onChangeCallback("")
+            this.clearState()
+           }} />
         ]}
         mention={{
           separator: " ",
