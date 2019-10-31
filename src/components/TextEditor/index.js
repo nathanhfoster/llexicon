@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 
 import { EditorState, convertToRaw, ContentState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
-import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import { stateToHTML } from "draft-js-export-html"
 import { stateFromHTML } from "draft-js-import-html"
 // import htmlToDraft from "html-to-draftjs"
@@ -171,6 +170,10 @@ class TextEditor extends PureComponent {
       editorState: EditorState.createEmpty()
     })
 
+  EditorClass = props => ({
+    maxHeigh: 100
+  })
+
   render() {
     const {
       clearKey,
@@ -184,11 +187,12 @@ class TextEditor extends PureComponent {
       <Editor
         key={clearKey}
         readOnly={readOnly}
-        wrapperClassName="TextEditor Wrapper"
-        editorClassName="Editor"
-        toolbarClassName="Toolbar"
+        style={{ maxHeight: 100 }}
         defaultEditorState={editorState}
         // editorState={editorState}
+        toolbarClassName="Toolbar"
+        wrapperClassName="Wrapper"
+        editorClassName="Editor"
         onEditorStateChange={editorState =>
           this.handleEditorStateChange(editorState)
         }

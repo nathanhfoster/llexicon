@@ -1,12 +1,48 @@
+@media (max-width: 415px) {
+  :root {
+    --textEditorToolBarHeight: 198px;
+  }
+}
+
+@media (min-width: 416px) and (max-width: 455px) {
+  :root {
+    --textEditorToolBarHeight: 162px;
+  }
+}
+
+@media (min-width: 456px) and (max-width: 501px) {
+  :root {
+    --textEditorToolBarHeight: 172px;
+  }
+}
+
+@media (min-width: 502px) and (max-width: 767px) {
+  :root {
+    --textEditorToolBarHeight: 136px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  :root {
+    --textEditorToolBarHeight: 120px;
+  }
+}
+
+@media (min-width: 992px) {
+  :root {
+    --textEditorToolBarHeight: 90px;
+  }
+}
+
 .Entry {
-  background-color: rgba(245, 245, 245, 0.8);
-  padding: 16px;
+  padding: 8px;
   border-radius: 4px;
-  box-shadow: var(--primaryBoxShadow);
+  height: calc(100% - var(--inputButtonHeight) - var(--textEditorToolBarHeight) - 16px);
 }
 
 .EntryInput .form-control, .EntryInput .input-group-text {
   box-shadow: var(--primaryBoxShadow);
-  outline: 0px !important;
-  border: 0 !important;
+  outline: 0px;
+  border: 0;
+  height: 100%;
 }

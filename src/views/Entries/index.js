@@ -7,9 +7,14 @@ import { FixedSizeList } from "react-window"
 import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import "./styles.css"
 
-const mapStateToProps = ({ User, Entries: { items } }) => ({
+const mapStateToProps = ({
+  User,
+  Entries: { items },
+  Window: { innerHeight }
+}) => ({
   UserId: User.id,
-  entries: items.filter(item => !item.shouldDelete)
+  entries: items.filter(item => !item.shouldDelete),
+  windowHeight: innerHeight
 })
 
 const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
@@ -47,8 +52,10 @@ class Entries extends PureComponent {
   }
 
   getState = props => {
-    const { entries } = props
-    this.setState({ entries })
+    const { entries, windowHeight } = props
+    const viewPort = windowHeight - 68
+
+    this.setState({ entries, viewPort })
   }
 
   componentWillUnmount() {
@@ -66,27 +73,29 @@ class Entries extends PureComponent {
   renderEntries = ({ data, index, style, isScrolling }) => {
     const entry = data[index]
 
-    return <Entry {...entry} containerStyle={style} />
+    return (
+      <div style={style} className="EntryContainer">
+        <Entry {...entry} />
+      </div>
+    )
   }
 
   render() {
-    const { entries } = this.state
+    const { entries, viewPort } = this.state
+
     return (
       <Container className="Entries">
-        {/* <Row>{this.renderEntries(entries)}</Row> */}
-        <Row>
-          <FixedSizeList
-            ref={this.listRef}
-            className="listSearchItemsContainer fade-in"
-            height={880}
-            width="100%"
-            itemData={entries}
-            itemCount={entries.length}
-            itemSize={381}
-          >
-            {this.renderEntries}
-          </FixedSizeList>
-        </Row>
+        <FixedSizeList
+          ref={this.listRef}
+          className="listSearchItemsContainer fade-in"
+          height={viewPort}
+          width="100%"
+          itemData={entries}
+          itemCount={entries.length}
+          itemSize={viewPort / 2}
+        >
+          {this.renderEntries}
+        </FixedSizeList>
       </Container>
     )
   }

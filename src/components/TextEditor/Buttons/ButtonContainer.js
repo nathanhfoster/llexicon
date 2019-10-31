@@ -5,7 +5,18 @@ const ButtonContainer = ({ title, children, disabled, onClick }) => {
   let className = "rdw-option-wrapper"
   if (disabled) className += " rdw-option-disabled"
   return (
-    <div className={className} onClick={() => onClick()} title={title}>
+    <div
+      className={className}
+      onClick={() => onClick()}
+      title={title}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        marginBottom: 6,
+        position: "relative",
+        flexWrap: "wrap"
+      }}
+    >
       {children}
     </div>
   )

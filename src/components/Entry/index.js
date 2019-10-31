@@ -102,12 +102,10 @@ class Entry extends PureComponent {
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
-        <div style={{ marginTop: 8 }}>
-          <TextEditor
-            html={html}
-            onChangeCallback={html => UpdateReduxEntry({ id, html })}
-          />
-        </div>
+        <TextEditor
+          html={html}
+          onChangeCallback={html => UpdateReduxEntry({ id, html })}
+        />
       </div>
     )
   }

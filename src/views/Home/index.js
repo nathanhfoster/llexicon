@@ -116,7 +116,12 @@ class Home extends PureComponent {
               </InputGroupAddon>
             </InputGroup>
           </Col>
-          <Col xs={12}>
+          <Col
+            xs={12}
+            style={{
+              height: "calc(100vh - var(--navBarHeight) - 100px - 116px)"
+            }}
+          >
             <TextEditor
               clearKey={clearedOn}
               html={editorStateHtml}

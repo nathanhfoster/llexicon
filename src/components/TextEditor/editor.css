@@ -1,0 +1,6 @@
+.Editor {
+    padding: 16px;
+    border-radius: 2px;
+    box-shadow: var(--primaryBoxShadow);
+    height: calc(100% - 800px);
+}

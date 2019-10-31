@@ -1,5 +1,7 @@
-.Entries {
-  margin-top: 20px;
-  color: var(--tertiarycolor);
-}
+.Entries {}
 
+.EntryContainer {
+  /* background-color: red; */
+  background-image: var(--primaryGradientBackground);
+  border-radius: 2px;
+}

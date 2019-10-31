@@ -15,7 +15,7 @@ export const Entries = (state = defaultState, action) => {
       else
         return {
           ...state,
-          items: [{ ...payload, shouldPost }].concat(state.items)
+          items: [payload].concat(state.items)
         }
     case ReduxActions.ENTRY_UPDATE:
       return {

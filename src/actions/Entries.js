@@ -17,10 +17,10 @@ const GetUserEntries = () => (dispatch, getState) => {
     })
 }
 
-const PostReduxEntry = ({ shouldPost, ...payload }) => ({
-  type: ReduxActions.ENTRY_POST,
+const PostReduxEntry = payload => ({
+  type: ReduxActions.ENTRY_IMPORT,
   payload,
-  shouldPost
+  shouldPost: true
 })
 
 const ImportReduxEntry = payload => ({
