@@ -164,18 +164,20 @@ class TextEditor extends PureComponent {
   orderOptions = values =>
     values.filter(v => v.isFixed).concat(values.filter(v => !v.isFixed))
 
-  clearState = () =>
+  clearState = () => {
+    const { onChangeCallback } = this.props
+    onChangeCallback("")
     this.setState({
       clearKey: new Date(),
       editorState: EditorState.createEmpty()
     })
+   }
 
   EditorClass = props => ({
     maxHeigh: 100
   })
 
   render() {
-    const { onChangeCallback } = this.props
     const {
       clearKey,
       editorState,
@@ -208,10 +210,7 @@ class TextEditor extends PureComponent {
         toolbarHidden={toolbarHidden}
         toolbar={options}
         toolbarCustomButtons={[
-          <ClearButton onClickCallback={() => {
-            onChangeCallback("")
-            this.clearState()
-           }} />
+          <ClearButton onClickCallback={this.clearState} />
         ]}
         mention={{
           separator: " ",
