@@ -2,9 +2,9 @@ import { ReduxActions } from "../constants"
 import { Axios } from "."
 import qs from "qs"
 
-const setWindow = Window => ({
+const setWindow = payload => ({
   type: ReduxActions.SET_WINDOW,
-  payload: Window
+  payload
 })
 
 const ResetRedux = () => dispatch =>

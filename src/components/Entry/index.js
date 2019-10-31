@@ -102,7 +102,7 @@ class Entry extends PureComponent {
           </InputGroupAddon>
         </InputGroup>
         <TextEditor
-          height={`calc(${containerStyle.height}px - var(--inputButtonHeight) - 16px)`}
+          height={`calc(${containerStyle.height}px - var(--inputButtonHeight) - 18px)`}
           html={html}
           onChangeCallback={html => UpdateReduxEntry({ id, html })}
         />

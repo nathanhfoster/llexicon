@@ -10,11 +10,13 @@ import "./styles.css"
 const mapStateToProps = ({
   User,
   Entries: { items },
-  Window: { innerHeight }
+  Window: {
+    screen: { availHeight }
+  }
 }) => ({
   UserId: User.id,
   entries: items.filter(item => !item.shouldDelete),
-  windowHeight: innerHeight
+  viewPort: availHeight
 })
 
 const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
@@ -52,8 +54,7 @@ class Entries extends PureComponent {
   }
 
   getState = props => {
-    const { entries, windowHeight } = props
-    const viewPort = windowHeight - 68
+    const { entries, viewPort } = props
 
     this.setState({ entries, viewPort })
   }
@@ -83,7 +84,6 @@ class Entries extends PureComponent {
       <Container className="Entries">
         <FixedSizeList
           ref={this.listRef}
-          className="listSearchItemsContainer fade-in"
           height={viewPort}
           width="100%"
           itemData={entries}

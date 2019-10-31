@@ -1,13 +1,19 @@
-import { ReduxActions } from "../../constants.js";
+import { ReduxActions } from "../../constants.js"
 
-const defaultState = { innerHeight: null, innerWidth: null, isMobile: null };
+const defaultState = {
+  innerHeight: null,
+  innerWidth: null,
+  isMobile: null,
+  screen: null,
+  performance: null
+}
 
 export const Window = (state = defaultState, action) => {
-  const { type, payload } = action;
+  const { type, payload } = action
   switch (type) {
     case ReduxActions.SET_WINDOW:
-      return payload;
+      return payload
     default:
-      return state;
+      return state
   }
-};
+}

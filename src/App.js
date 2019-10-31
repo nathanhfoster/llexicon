@@ -59,13 +59,44 @@ export class App extends PureComponent {
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateWindowDimensions)
   }
-
+  //ScreenOrientation {angle: 0, type: "portrait-primary", onchange: null}
   updateWindowDimensions = () => {
     const { setWindow } = this.props
-    const { innerHeight, innerWidth } = window
+    const {
+      innerHeight,
+      innerWidth,
+      screen: {
+        availHeight,
+        availLeft,
+        availTop,
+        availWidth,
+        colorDepth,
+        height,
+        orientation: { angle, onchange, type },
+        pixelDepth,
+        width
+      },
+      performance
+    } = window
+
     const isMobile = innerWidth < 768
-    setWindow({ innerHeight, innerWidth, isMobile })
-    this.setState({ height: innerHeight, width: innerWidth, isMobile })
+    setWindow({
+      innerHeight,
+      innerWidth,
+      isMobile,
+      screen: {
+        availHeight,
+        availLeft,
+        availTop,
+        availWidth,
+        colorDepth,
+        height,
+        orientation: { angle, onchange, type },
+        pixelDepth,
+        width
+      },
+      performance
+    })
   }
 
   render() {
