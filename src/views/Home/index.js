@@ -90,7 +90,7 @@ class Home extends PureComponent {
       <Container className="Home">
         <Row>
           <Col xs={12}>
-            <InputGroup style={{ marginBottom: 8 }}>
+            <InputGroup className="EntryInput">
               <Input
                 type="text"
                 name="title"
@@ -116,13 +116,9 @@ class Home extends PureComponent {
               </InputGroupAddon>
             </InputGroup>
           </Col>
-          <Col
-            xs={12}
-            style={{
-              height: "calc(100vh - var(--navBarHeight) - 100px - 116px)"
-            }}
-          >
+          <Col xs={12}>
             <TextEditor
+              height={"calc(100vh - var(--navBarHeight) - 20px - 56px)"}
               clearKey={clearedOn}
               html={editorStateHtml}
               onChangeCallback={html => this.handleTextEditorChange(html)}

@@ -19,6 +19,8 @@ class TextEditor extends PureComponent {
   }
 
   static propTypes = {
+    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     clearKey: PropTypes.string,
     html: PropTypes.string.isRequired,
     onChangeCallback: PropTypes.func,
@@ -75,7 +77,9 @@ class TextEditor extends PureComponent {
     mentions: [],
     suggestions: [],
     readOnly: false,
-    toolbarHidden: false
+    toolbarHidden: false,
+    height: "100%",
+    width: "100%"
   }
 
   componentWillMount() {
@@ -95,7 +99,9 @@ class TextEditor extends PureComponent {
       mentions,
       suggestions,
       readOnly,
-      toolbarHidden
+      toolbarHidden,
+      height,
+      width
     } = props
     let editorState = this.htmlToEditorState(html)
     editorState = EditorState.moveSelectionToEnd(editorState)
@@ -114,7 +120,9 @@ class TextEditor extends PureComponent {
       mentions,
       suggestions,
       readOnly,
-      toolbarHidden
+      toolbarHidden,
+      height,
+      width
     })
   }
 
@@ -166,12 +174,13 @@ class TextEditor extends PureComponent {
 
   clearState = () => {
     const { onChangeCallback } = this.props
-    onChangeCallback("")
+
+    // onChangeCallback("<p></p>")
     this.setState({
       clearKey: new Date(),
       editorState: EditorState.createEmpty()
     })
-   }
+  }
 
   EditorClass = props => ({
     maxHeigh: 100
@@ -183,47 +192,50 @@ class TextEditor extends PureComponent {
       editorState,
       suggestions,
       readOnly,
-      toolbarHidden
+      toolbarHidden,
+      height,
+      width
     } = this.state
 
     return (
-      <Editor
-        key={clearKey}
-        readOnly={readOnly}
-        style={{ maxHeight: 100 }}
-        defaultEditorState={editorState}
-        // editorState={editorState}
-        toolbarClassName="Toolbar"
-        wrapperClassName="Wrapper"
-        editorClassName="Editor"
-        onEditorStateChange={editorState =>
-          this.handleEditorStateChange(editorState)
-        }
-        onFocus={e => e.preventDefault()}
-        // onBlur={(e, editorState) => {
-        //   this.props.SetEditorState(
-        //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
-        //   );
-        // }}
-        onTab={e => e.preventDefault()}
-        blurInputOnSelect={false}
-        toolbarHidden={toolbarHidden}
-        toolbar={options}
-        toolbarCustomButtons={[
-          <ClearButton onClickCallback={this.clearState} />
-        ]}
-        mention={{
-          separator: " ",
-          trigger: "@",
-          suggestions
-        }}
-        // toolbarOnFocus
-        // stripPastedStyles="off"
-        // spellCheck="off"
-        // autoCapitalize="off"
-        // autoComplete="off"
-        // autoCorrect="off"
-      />
+      <div style={{ height, width }}>
+        <Editor
+          key={clearKey}
+          readOnly={readOnly}
+          defaultEditorState={editorState}
+          // editorState={editorState}
+          toolbarClassName="Toolbar"
+          wrapperClassName="Wrapper"
+          editorClassName="Editor"
+          onEditorStateChange={editorState =>
+            this.handleEditorStateChange(editorState)
+          }
+          onFocus={e => e.preventDefault()}
+          // onBlur={(e, editorState) => {
+          //   this.props.SetEditorState(
+          //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
+          //   );
+          // }}
+          onTab={e => e.preventDefault()}
+          blurInputOnSelect={false}
+          toolbarHidden={toolbarHidden}
+          toolbar={options}
+          toolbarCustomButtons={[
+            <ClearButton onClickCallback={this.clearState} />
+          ]}
+          mention={{
+            separator: " ",
+            trigger: "@",
+            suggestions
+          }}
+          // toolbarOnFocus
+          // stripPastedStyles="off"
+          // spellCheck="off"
+          // autoCapitalize="off"
+          // autoComplete="off"
+          // autoCorrect="off"
+        />
+      </div>
     )
   }
 }

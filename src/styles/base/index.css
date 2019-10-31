@@ -1,9 +1,4 @@
 .App {
-  height: 100%;
-  width: 100%;
-  touch-action: none;
-  overflow-x: hidden;
-  overflow-y: auto;
   font-family: "Lato", sans-serif;
 }
 
@@ -65,7 +60,6 @@ a, a:hover {
 ::-webkit-scrollbar {
   display: none;
   background-color: transparent;
-  -webkit-border-radius: 100px;
   transition: 200ms linear;
 }
 
@@ -76,12 +70,12 @@ a, a:hover {
 
 ::-webkit-scrollbar-track {
   /* box-shadow: inset 0 0 5px var(--grey);
-  background: var(--grey; */
+  background: white; */
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--grey);
+  background: var(--light_grey);
   border-radius: 6px;
 }
 

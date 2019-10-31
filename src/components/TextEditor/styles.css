@@ -1,7 +1,6 @@
 @import "./editor.css";
 @import './toolbar.css';
 @import './wrapper.css';
-
 .rdw-option-wrapper {
   border: 1px solid #F1F1F1;
   padding: 5px;
@@ -975,59 +974,9 @@
   right: 0;
 }
 
-.rdw-editor-main {
-  height: 100%;
-  overflow: auto;
-  box-sizing: border-box;
-}
-
-.rdw-editor-main blockquote {
-  border-left: 5px solid #f1f1f1;
-  padding-left: 5px;
-}
-
-.rdw-editor-main pre {
-  background: #f1f1f1;
-  border-radius: 3px;
-  padding: 1px 10px;
-}
-
-.rdw-editor-toolbar {
-  padding: 6px 5px 0;
-  border-radius: 2px;
-  border: 1px solid #F1F1F1;
-  display: flex;
-  justify-content: flex-start;
-  background: white;
-  flex-wrap: wrap;
-  font-size: 15px;
-  margin-bottom: 5px;
-  user-select: none;
-  box-shadow: var(--primaryBoxShadow);
-}
-
 .public-DraftStyleDefault-block {
   margin: 1em 0;
 }
-
-.rdw-editor-wrapper:focus {
-  outline: none;
-}
-
-.rdw-editor-wrapper {
-  box-sizing: content-box;
-}
-
-/**
- * Draft v0.9.1
- *
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
 
 .DraftEditor-editorContainer, .DraftEditor-root, .public-DraftEditor-content {
   height: inherit;
@@ -1039,7 +988,9 @@
 }
 
 .DraftEditor-root {
-  position: relative
+  position: relative;
+  /* overflow: auto; */
+  /* padding: 0 20px 0 20px; */
 }
 
 .DraftEditor-editorContainer {
@@ -1240,4 +1191,36 @@
   counter-reset: ol4
 }
 
-/*# sourceMappingURL=react-draft-wysiwyg.css.map*/
+/* Wrap text around images */
+
+figure {
+  margin: 0;
+}
+
+.rdw-image-left {
+  display: unset;
+  float: left;
+  margin-right: 8px;
+}
+
+.rdw-image-right {
+  display: unset;
+  justify-content: unset;
+  float: right;
+  margin-left: 8px;
+}
+
+/* END */
+
+.rdw-image-alignment-options-popup {
+  background: var(--slate_grey);
+  width: 120px;
+}
+
+.rdw-image-alignment-option {
+  background: var(--primaryColor);
+  text-align: center;
+  height: 30px;
+  width: 30px;
+  min-width: 30px;
+}

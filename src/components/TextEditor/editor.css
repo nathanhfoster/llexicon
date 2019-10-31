@@ -1,6 +1,29 @@
 .Editor {
-    padding: 16px;
-    border-radius: 2px;
-    box-shadow: var(--primaryBoxShadow);
-    height: calc(100% - 800px);
+  padding: 8px 16px;
+  border-radius: 2px;
+  box-shadow: var(--primaryBoxShadow);
+  opacity: var(--mainOpacity);
+  height: 100%;
+  letter-spacing: 0.4px;
+}
+
+.rdw-editor-main {
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.rdw-editor-main blockquote {
+  border-left: 5px solid #f1f1f1;
+  padding-left: 5px;
+}
+
+.rdw-editor-main pre {
+  background: #f1f1f1;
+  border-radius: 3px;
+  padding: 1px 10px;
+}
+
+.Editor::-webkit-scrollbar {
+  display: block;
+  width: 4px;
 }

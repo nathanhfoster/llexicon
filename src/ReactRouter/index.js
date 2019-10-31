@@ -15,7 +15,10 @@ import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "../helpers/routing"
 import "./styles.css"
 
-const mapStateToProps = ({ User }) => ({ User })
+const mapStateToProps = ({ User, Window: { isMobile } }) => ({
+  User,
+  isMobile
+})
 
 const mapDispatchToProps = {}
 
@@ -43,8 +46,15 @@ class ReactRouter extends PureComponent {
   }
 
   getState = props => {
+    const {
+      User: { Settings },
+      isMobile
+    } = props
     const routeItems = this.getRouteItems(props)
-    this.setState({ routeItems })
+    const navbarHeight = isMobile
+      ? "var(--navBarHeightMobile)"
+      : "var(--navBarHeight)"
+    this.setState({ routeItems, Settings, navbarHeight })
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -100,9 +110,17 @@ class ReactRouter extends PureComponent {
     })
 
   render() {
-    const { routeItems } = this.state
+    const {
+      routeItems,
+      Settings: { show_footer },
+      navbarHeight
+    } = this.state
+
     return (
-      <div className="routeOverlay" style={{ bottom: 0 }}>
+      <div
+        className="routeOverlay"
+        style={{ bottom: show_footer ? navbarHeight : 0 }}
+      >
         <Switch>
           {this.renderRouteItems(routeItems)}
           <Route component={PageNotFound} />

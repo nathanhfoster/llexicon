@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 const ButtonContainer = ({ title, children, disabled, onClick }) => {
   let className = "rdw-option-wrapper"
   if (disabled) className += " rdw-option-disabled"
+
   return (
     <div
       className={className}

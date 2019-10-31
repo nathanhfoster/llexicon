@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import TextEditor from "../../components/TextEditor"
+import Divider from "../../components/Divider"
 import { UpdateReduxEntry } from "../../actions/Entries"
 import Moment from "react-moment"
 import "./styles.css"
@@ -86,11 +87,9 @@ class Entry extends PureComponent {
           />
           <InputGroupAddon addonType="append">
             <InputGroupText color="primary">
-              <i
-                className="far fa-clock"
-                style={{ fontSize: 20, marginRight: 4 }}
-              />
-              <Moment fromNow>{date_created || lastUpdated}</Moment>
+              <Moment fromNow format="MM/DD/YY MM:SS">
+                {date_created || lastUpdated}
+              </Moment>
             </InputGroupText>
           </InputGroupAddon>
           <InputGroupAddon
@@ -103,9 +102,11 @@ class Entry extends PureComponent {
           </InputGroupAddon>
         </InputGroup>
         <TextEditor
+          height={`calc(${containerStyle.height}px - var(--inputButtonHeight) - 16px)`}
           html={html}
           onChangeCallback={html => UpdateReduxEntry({ id, html })}
         />
+        <Divider />
       </div>
     )
   }

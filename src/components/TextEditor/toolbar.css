@@ -1,3 +1,20 @@
 .Toolbar {
-    
-}
+    /* background: var(--slate_grey);
+    border: 0;
+    border-radius: 4px;
+    border: 1px solid var(--gray); */
+  }
+
+  .rdw-editor-toolbar {
+    padding: 6px 5px 0;
+    border-radius: 2px;
+    border: 1px solid #F1F1F1;
+    display: flex;
+    justify-content: flex-start;
+    background: white;
+    flex-wrap: wrap;
+    font-size: 15px;
+    margin-bottom: 5px;
+    user-select: none;
+    box-shadow: var(--primaryBoxShadow);
+  }

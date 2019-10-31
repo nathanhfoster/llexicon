@@ -73,11 +73,7 @@ class Entries extends PureComponent {
   renderEntries = ({ data, index, style, isScrolling }) => {
     const entry = data[index]
 
-    return (
-      <div style={style} className="EntryContainer">
-        <Entry {...entry} />
-      </div>
-    )
+    return <Entry {...entry} containerStyle={style} />
   }
 
   render() {

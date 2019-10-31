@@ -112,7 +112,7 @@
   background: var(--slate_grey);
 }
 .react-calendar__month-view button ::-webkit-scrollbar {
-  width: 4px;
+  display: block;
 }
 .react-calendar__tile abbr {
   position: absolute;
@@ -156,7 +156,6 @@
 }
 .EventList::-webkit-scrollbar {
   display: block;
-  width: 4px;
 }
 .EventList h2 {
   opacity: var(--mainOpacity);

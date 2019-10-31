@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { FixedSizeList } from 'react-window'
 import deepEquals from '../../helpers/deepEquals'
 import './styles.css'
+import { minHeight } from '@material-ui/system'
 
 const TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK = 200
 
@@ -11,11 +12,16 @@ class SearchList extends Component {
     super(props)
     this.listRef = createRef()
     this.searchListRef = createRef()
-    const { list, listItemIdProp, listItemValueProp, defaultIdValue } = props
+    const { listItemIdProp, listItemValueProp, defaultIdValue, showDefaultListValues } = props
+    const list = this.getList(props.list)
 
     const defaultValueIndex = list.findIndex(e => e[listItemIdProp] === defaultIdValue)
-    const searchValue =
-      defaultValueIndex !== -1 ? list[defaultValueIndex][listItemValueProp] : 'None'
+
+    let searchValue
+
+    if (defaultValueIndex !== -1) searchValue = list[defaultValueIndex][listItemValueProp]
+    else if (!showDefaultListValues) searchValue = ''
+    else searchValue = 'None'
 
     this.state = {
       showList: false,
@@ -30,15 +36,20 @@ class SearchList extends Component {
     list: PropTypes.array.isRequired,
     listItemIdProp: PropTypes.string,
     listItemValueProp: PropTypes.string,
-    onListItemClick: PropTypes.func.isRequired,
+    onListItemClickCallback: PropTypes.func,
     placeholder: PropTypes.string,
-    helperText: PropTypes.string
+    helperText: PropTypes.string,
+    height: PropTypes.number.isRequired,
+    itemSize: PropTypes.number.isRequired
   }
 
   static defaultProps = {
     placeholder: 'Search..',
     listItemIdProp: 'id',
-    listItemValueProp: 'name'
+    listItemValueProp: 'name',
+    showDefaultListValues: false,
+    height: 250,
+    itemSize: 50
   }
 
   componentWillMount() {
@@ -53,15 +64,19 @@ class SearchList extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { list, listItemIdProp, defaultIdValue, listItemValueProp } = nextProps
+    const list = this.getList(nextProps.list)
+    const { listItemIdProp, defaultIdValue, listItemValueProp, showDefaultListValues } = nextProps
     const currentDefaultIdValue = this.props.defaultIdValue
     const { searchValue } = nextState
 
     if (currentDefaultIdValue !== defaultIdValue) {
       if (searchValue !== 'All') {
         const defaultValueIndex = list.findIndex(e => e[listItemIdProp] === defaultIdValue)
-        const searchValue =
-          defaultValueIndex !== -1 ? list[defaultValueIndex][listItemValueProp] : 'None'
+        let searchValue
+
+        if (defaultValueIndex !== -1) searchValue = list[defaultValueIndex][listItemValueProp]
+        else if (showDefaultListValues) searchValue = 'None'
+
         this.setState({ searchValue })
       }
     }
@@ -74,9 +89,11 @@ class SearchList extends Component {
   }
 
   getState = props => {
-    const { listItemIdProp, listItemValueProp } = props
+    const { listItemIdProp, listItemValueProp, showDefaultListValues, itemSize } = props
+    let { height } = props
+    let propsList = this.getList(props.list)
 
-    const list = [
+    const defaultListValues = [
       {
         [listItemIdProp]: 'None',
         [listItemValueProp]: 'None',
@@ -86,11 +103,25 @@ class SearchList extends Component {
         [listItemIdProp]: 'All',
         [listItemValueProp]: 'All',
         subscriptionService: false
-      },
-      ...props.list
+      }
     ]
 
-    this.setState({ list })
+    const list = showDefaultListValues ? [...defaultListValues, ...props.list] : propsList
+
+    const listHeight = list.length * itemSize
+
+    if (listHeight < height) height = listHeight
+
+    this.setState({ list, height, itemSize })
+  }
+
+  getList = list => {
+    const { listItemIdProp, listItemValueProp } = this.props
+    if (Array.isArray(list)) return list
+    else if (typeof list === 'object')
+      return Object.keys(list).map(
+        key => (key = { [listItemIdProp]: key, [listItemValueProp]: list[key] })
+      )
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -120,8 +151,8 @@ class SearchList extends Component {
   }
 
   onListItemClick = (id, value) => {
-    const { onListItemClick } = this.props
-    onListItemClick(id, value)
+    const { onListItemClickCallback } = this.props
+    if (onListItemClickCallback) onListItemClickCallback(id, value)
     this.setState({ searchValue: value, showDropDownIcon: true })
   }
 
@@ -178,7 +209,8 @@ class SearchList extends Component {
 
   render() {
     const { placeholder, helperText } = this.props
-    const { showList, showDropDownIcon, list, searchValue } = this.state
+    const { showList, showDropDownIcon, list, searchValue, height, itemSize } = this.state
+
     return (
       <div className="listSearchContainer">
         <div className="listSearchInputDropDown">
@@ -198,11 +230,12 @@ class SearchList extends Component {
           <FixedSizeList
             ref={this.listRef}
             className="listSearchItemsContainer fade-in"
-            height={250}
+            style={{ top: helperText ? 76 : 56 }}
+            height={height}
             width="calc(100% - 16px)"
             itemData={list}
             itemCount={list.length}
-            itemSize={50}
+            itemSize={itemSize}
           >
             {this.renderProjectList}
           </FixedSizeList>
