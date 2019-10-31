@@ -1,5 +1,4 @@
 .routeOverlay {
-    height: calc(100% - var(--navBarHeight));
     top: var(--navBarHeight);
     overflow-x: hidden;
     overflow-y: auto;
