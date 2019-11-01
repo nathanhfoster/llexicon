@@ -17,14 +17,12 @@ import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
-  User: {
-    id,
-    Settings: { show_footer }
-  },
+  User: { id },
   TextEditor: { clearedOn, title, editorStateHtml },
   Window: {
     innerHeight,
-    isMobile,
+    navbarHeight,
+    footerHeight,
     screen: { availHeight }
   }
 }) => ({
@@ -33,8 +31,8 @@ const mapStateToProps = ({
   title,
   editorStateHtml,
   innerHeight,
-  isMobile,
-  show_footer,
+  navbarHeight,
+  footerHeight,
   viewPort: availHeight
 })
 
@@ -74,19 +72,10 @@ class Home extends PureComponent {
       title,
       editorStateHtml,
       innerHeight,
-      isMobile,
-      show_footer,
-      viewPort
+      viewPort,
+      navbarHeight,
+      footerHeight
     } = props
-    const navbarHeight = isMobile
-      ? "var(--navBarHeightMobile)"
-      : "var(--navBarHeight)"
-
-    const footerHeight = show_footer
-      ? "0px"
-      : isMobile
-      ? "var(--footerHeightMobile)"
-      : "var(--footerHeight)"
 
     this.setState({
       clearedOn,
@@ -139,32 +128,36 @@ class Home extends PureComponent {
 
     return (
       <Container className="Home">
-        <InputGroup className="EntryInput">
-          <Input
-            type="text"
-            name="title"
-            id="title"
-            placeholder="Title..."
-            value={title}
-            onChange={this.handleInputChange}
-          />
-          <InputGroupAddon addonType="append" onClick={this.handlePostEntry}>
-            <InputGroupText
-              tag={Button}
-              color="primary"
-              style={{ color: "white" }}
-            >
-              <i className="fas fa-feather-alt" style={{ fontSize: 20 }}></i>
-            </InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
+        <Col xs={12}>
+          <InputGroup className="EntryInput">
+            <Input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Title..."
+              value={title}
+              onChange={this.handleInputChange}
+            />
+            <InputGroupAddon addonType="append" onClick={this.handlePostEntry}>
+              <InputGroupText
+                tag={Button}
+                color="primary"
+                style={{ color: "white" }}
+              >
+                <i className="fas fa-feather-alt" style={{ fontSize: 20 }}></i>
+              </InputGroupText>
+            </InputGroupAddon>
+          </InputGroup>
+        </Col>
 
-        <TextEditor
-          //height={`calc(100% - var(--inputButtonHeight))`}
-          clearKey={clearedOn}
-          html={editorStateHtml}
-          onChangeCallback={html => this.handleTextEditorChange(html)}
-        />
+        <Col xs={12} style={{ height: `calc(100% - ${navbarHeight})` }}>
+          <TextEditor
+            //height={`calc(100% - var(--inputButtonHeight))`}
+            clearKey={clearedOn}
+            html={editorStateHtml}
+            onChangeCallback={html => this.handleTextEditorChange(html)}
+          />
+        </Col>
       </Container>
     )
   }

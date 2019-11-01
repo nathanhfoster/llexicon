@@ -1,5 +1,6 @@
 .Wrapper {
   height: calc(100% - var(--textEditorToolBarHeight) - 16px);
+  /* height: 100%; */
 }
 
 .rdw-editor-wrapper:focus {

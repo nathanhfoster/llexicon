@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -62,7 +62,7 @@ class Entry extends PureComponent {
   componentWillUnmount() {}
 
   render() {
-    const { UpdateReduxEntry, containerStyle } = this.props
+    const { UpdateReduxEntry } = this.props
     const {
       id,
       author,
@@ -74,7 +74,7 @@ class Entry extends PureComponent {
       lastUpdated
     } = this.state
     return (
-      <div key={id} className="Entry" style={containerStyle}>
+      <Fragment>
         <InputGroup key={id} className="EntryInput">
           <Input
             type="text"
@@ -86,7 +86,7 @@ class Entry extends PureComponent {
           />
           <InputGroupAddon addonType="append">
             <InputGroupText color="primary">
-              <Moment fromNow format="MM/DD/YY MM:SS">
+              <Moment fromNow format="MM/DD/YY mm:ss">
                 {date_created || lastUpdated}
               </Moment>
             </InputGroupText>
@@ -100,12 +100,12 @@ class Entry extends PureComponent {
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
+
         <TextEditor
-          // height={`calc(${containerStyle.height}px - var(--inputButtonHeight) - 18px)`}
           html={html}
           onChangeCallback={html => UpdateReduxEntry({ id, html })}
         />
-      </div>
+      </Fragment>
     )
   }
 }

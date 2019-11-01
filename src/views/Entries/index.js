@@ -74,7 +74,11 @@ class Entries extends PureComponent {
   renderEntries = ({ data, index, style, isScrolling }) => {
     const entry = data[index]
 
-    return <Entry {...entry} containerStyle={style} />
+    return (
+      <div style={{ ...style, padding: 2 }}>
+        <Entry {...entry} />
+      </div>
+    )
   }
 
   render() {
@@ -82,16 +86,18 @@ class Entries extends PureComponent {
 
     return (
       <Container className="Entries">
-        <FixedSizeList
-          ref={this.listRef}
-          height={viewPort}
-          width="100%"
-          itemData={entries}
-          itemCount={entries.length}
-          itemSize={viewPort / 2}
-        >
-          {this.renderEntries}
-        </FixedSizeList>
+        <Col xs={12} style={{marginTop: 8}}>
+          <FixedSizeList
+            ref={this.listRef}
+            height={viewPort}
+            width="100%"
+            itemData={entries}
+            itemCount={entries.length}
+            itemSize={viewPort / 2}
+          >
+            {this.renderEntries}
+          </FixedSizeList>
+        </Col>
       </Container>
     )
   }

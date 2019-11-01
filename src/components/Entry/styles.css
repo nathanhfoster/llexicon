@@ -1,10 +1,3 @@
-.Entry {
-  padding: 8px;
-  border-radius: 4px;
-  /* background: red; */
-  /* background: var(--primaryGradientBackground); */
-}
-
 .EntryInput .form-control, .EntryInput .input-group-text {
   box-shadow: var(--primaryBoxShadow);
   outline: 0px;

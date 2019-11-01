@@ -9,7 +9,10 @@ import { setWindow } from "./actions/App"
 import { GetUserSettings } from "./actions/Settings"
 import "./styles/index.css"
 
-const mapStateToProps = ({ User }) => ({ UserId: User.id })
+const mapStateToProps = ({ User: { id, Settings } }) => ({
+  UserId: id,
+  Settings
+})
 
 const mapDispatchToProps = {
   setWindow,
@@ -25,7 +28,8 @@ export class App extends PureComponent {
   static propTypes = {
     UserId: PropTypes.number,
     setWindow: PropTypes.func.isRequired,
-    GetUserSettings: PropTypes.func.isRequired
+    GetUserSettings: PropTypes.func.isRequired,
+    Settings: PropTypes.object
   }
 
   static defaultProps = {
@@ -61,7 +65,10 @@ export class App extends PureComponent {
   }
   //ScreenOrientation {angle: 0, type: "portrait-primary", onchange: null}
   updateWindowDimensions = () => {
-    const { setWindow } = this.props
+    const {
+      setWindow,
+      Settings: { show_footer }
+    } = this.props
     const {
       innerHeight,
       innerWidth,
@@ -80,10 +87,23 @@ export class App extends PureComponent {
     } = window
 
     const isMobile = innerWidth < 768
+
+    const navbarHeight = isMobile
+      ? "var(--navBarHeightMobile)"
+      : "var(--navBarHeight)"
+
+    const footerHeight = show_footer
+      ? "0px"
+      : isMobile
+      ? "var(--footerHeightMobile)"
+      : "var(--footerHeight)"
+
     setWindow({
       innerHeight,
       innerWidth,
       isMobile,
+      navbarHeight,
+      footerHeight,
       screen: {
         availHeight,
         availLeft,
