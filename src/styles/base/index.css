@@ -74,7 +74,8 @@ a, a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--light_grey);
+  /* background: var(--light_grey); */
+  box-shadow: inset var(--primaryBoxShadow);
   border-radius: 6px;
 }
 

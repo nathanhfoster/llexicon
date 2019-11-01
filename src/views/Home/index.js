@@ -128,41 +128,49 @@ class Home extends PureComponent {
 
     return (
       <Container className="Home">
-        <Col xs={12}>
-          <InputGroup className="EntryInput">
-            <Input
-              type="text"
-              name="title"
-              id="title"
-              placeholder="Title..."
-              value={title}
-              onChange={this.handleInputChange}
-            />
-            <InputGroupAddon addonType="append" onClick={this.handlePostEntry}>
-              <InputGroupText
-                tag={Button}
-                color="primary"
-                style={{ color: "white" }}
+        <Row>
+          <Col xs={12}>
+            <InputGroup className="EntryInput">
+              <Input
+                type="text"
+                name="title"
+                id="title"
+                placeholder="Title..."
+                value={title}
+                onChange={this.handleInputChange}
+              />
+              <InputGroupAddon
+                addonType="append"
+                onClick={this.handlePostEntry}
               >
-                <i className="fas fa-feather-alt" style={{ fontSize: 20 }}></i>
-              </InputGroupText>
-            </InputGroupAddon>
-          </InputGroup>
-        </Col>
-
-        <Col
-          xs={12}
-          style={{
-            height: `calc(${innerHeight}px - 8px - ${navbarHeight} - var(--inputButtonHeight))`
-          }}
-        >
-          <TextEditor
-            //height={`calc(100% - var(--inputButtonHeight))`}
-            clearKey={clearedOn}
-            html={editorStateHtml}
-            onChangeCallback={html => this.handleTextEditorChange(html)}
-          />
-        </Col>
+                <InputGroupText
+                  tag={Button}
+                  color="primary"
+                  style={{ color: "white" }}
+                >
+                  <i
+                    className="fas fa-feather-alt"
+                    style={{ fontSize: 20 }}
+                  ></i>
+                </InputGroupText>
+              </InputGroupAddon>
+            </InputGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col
+            xs={12}
+            style={{
+              height: `calc(${viewPort}px - ${navbarHeight} - var(--inputButtonHeight) - 8px)`
+            }}
+          >
+            <TextEditor
+              clearKey={clearedOn}
+              html={editorStateHtml}
+              onChangeCallback={html => this.handleTextEditorChange(html)}
+            />
+          </Col>
+        </Row>
       </Container>
     )
   }

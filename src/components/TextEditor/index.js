@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 
 import { EditorState, convertToRaw, ContentState } from "draft-js"
@@ -186,6 +186,11 @@ class TextEditor extends PureComponent {
     maxHeigh: 100
   })
 
+  setEditorReference = ref => {
+    this.editorRef = ref
+    if (ref) ref.focus()
+  }
+
   render() {
     const {
       clearKey,
@@ -197,43 +202,48 @@ class TextEditor extends PureComponent {
       width
     } = this.state
 
+    // console.log(this.editorRef)
+
     return (
-      <Editor
-        key={clearKey}
-        readOnly={readOnly}
-        defaultEditorState={editorState}
-        // editorState={editorState}
-        toolbarClassName="Toolbar"
-        wrapperClassName="Wrapper"
-        editorClassName="Editor"
-        onEditorStateChange={editorState =>
-          this.handleEditorStateChange(editorState)
-        }
-        onFocus={e => e.preventDefault()}
-        // onBlur={(e, editorState) => {
-        //   this.props.SetEditorState(
-        //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
-        //   );
-        // }}
-        onTab={e => e.preventDefault()}
-        blurInputOnSelect={false}
-        toolbarHidden={toolbarHidden}
-        toolbar={options}
-        toolbarCustomButtons={[
-          <ClearButton onClickCallback={this.clearState} />
-        ]}
-        mention={{
-          separator: " ",
-          trigger: "@",
-          suggestions
-        }}
-        // toolbarOnFocus
-        // stripPastedStyles="off"
-        // spellCheck="off"
-        // autoCapitalize="off"
-        // autoComplete="off"
-        // autoCorrect="off"
-      />
+      <div style={{ height, width }}>
+        <Editor
+          editorRef={this.setEditorReference}
+          key={clearKey}
+          readOnly={readOnly}
+          defaultEditorState={editorState}
+          // editorState={editorState}
+          toolbarClassName="Toolbar"
+          wrapperClassName="Wrapper"
+          editorClassName="Editor"
+          onEditorStateChange={editorState =>
+            this.handleEditorStateChange(editorState)
+          }
+          onFocus={e => e.preventDefault()}
+          // onBlur={(e, editorState) => {
+          //   this.props.SetEditorState(
+          //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
+          //   );
+          // }}
+          onTab={e => e.preventDefault()}
+          blurInputOnSelect={false}
+          toolbarHidden={toolbarHidden}
+          toolbar={options}
+          toolbarCustomButtons={[
+            <ClearButton onClickCallback={this.clearState} />
+          ]}
+          mention={{
+            separator: " ",
+            trigger: "@",
+            suggestions
+          }}
+          // toolbarOnFocus
+          // stripPastedStyles="off"
+          // spellCheck="off"
+          // autoCapitalize="off"
+          // autoComplete="off"
+          // autoCorrect="off"
+        />
+      </div>
     )
   }
 }

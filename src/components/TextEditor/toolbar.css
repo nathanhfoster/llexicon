@@ -1,3 +1,7 @@
+:root {
+  --textEditorToolBarMarginBottom: 4px;
+}
+
 .Toolbar {
     /* background: var(--slate_grey);
     border: 0;
@@ -14,7 +18,7 @@
     background: white;
     flex-wrap: wrap;
     font-size: 15px;
-    margin-bottom: 5px;
+    margin-bottom: var(--textEditorToolBarMarginBottom);
     user-select: none;
     box-shadow: var(--primaryBoxShadow);
   }

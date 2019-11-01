@@ -11,11 +11,13 @@ const mapStateToProps = ({
   User,
   Entries: { items },
   Window: {
+    innerHeight,
     screen: { availHeight }
   }
 }) => ({
   UserId: User.id,
   entries: items.filter(item => !item.shouldDelete),
+  innerHeight,
   viewPort: availHeight
 })
 
@@ -54,9 +56,13 @@ class Entries extends PureComponent {
   }
 
   getState = props => {
-    const { entries, viewPort } = props
+    const { entries, viewPort, innerHeight } = props
 
-    this.setState({ entries, viewPort })
+    const inputButtonHeight = 46
+
+    const listHeight = viewPort
+
+    this.setState({ entries, listHeight, innerHeight })
   }
 
   componentWillUnmount() {
@@ -74,30 +80,33 @@ class Entries extends PureComponent {
   renderEntries = ({ data, index, style, isScrolling }) => {
     const entry = data[index]
 
+    const { id, ...restOfProps } = entry
+    const newId = id || index
+
     return (
-      <div key={entry.id || index} style={{ ...style, padding: 6 }}>
-        <Entry {...entry} />
-      </div>
+      <Col key={newId} style={{ ...style,  }} xs={12}>
+        <Entry id={newId} {...restOfProps} containerHeight={style.height} />
+      </Col>
     )
   }
 
   render() {
-    const { entries, viewPort } = this.state
+    const { entries, listHeight } = this.state
 
     return (
       <Container className="Entries">
-        <Col xs={12} style={{ marginTop: 8 }}>
+        <Row>
           <FixedSizeList
             ref={this.listRef}
-            height={viewPort}
+            height={listHeight}
             width="100%"
             itemData={entries}
             itemCount={entries.length}
-            itemSize={viewPort / 2}
+            itemSize={listHeight / 2}
           >
             {this.renderEntries}
           </FixedSizeList>
-        </Col>
+        </Row>
       </Container>
     )
   }

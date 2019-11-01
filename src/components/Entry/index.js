@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import TextEditor from "../../components/TextEditor"
+import Divider from "../../components/Divider"
 import { UpdateReduxEntry } from "../../actions/Entries"
 import Moment from "react-moment"
 import "./styles.css"
@@ -43,8 +44,17 @@ class Entry extends PureComponent {
       date_created,
       date_updated,
       views,
-      lastUpdated
+      lastUpdated,
+      containerHeight
     } = props
+
+    const dividerHeight = 16
+    const inputHeight = 48
+    const numberOfInputs = 1
+    const inputOffset = inputHeight * numberOfInputs
+
+    const textEditorHeight = containerHeight - inputOffset - dividerHeight
+
     this.setState({
       id,
       author,
@@ -53,7 +63,8 @@ class Entry extends PureComponent {
       date_created,
       date_updated,
       views,
-      lastUpdated
+      lastUpdated,
+      textEditorHeight
     })
   }
 
@@ -71,8 +82,10 @@ class Entry extends PureComponent {
       date_created,
       date_updated,
       views,
-      lastUpdated
+      lastUpdated,
+      textEditorHeight
     } = this.state
+
     return (
       <Fragment>
         <InputGroup key={id} className="EntryInput">
@@ -100,11 +113,12 @@ class Entry extends PureComponent {
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
-
         <TextEditor
+          height={textEditorHeight}
           html={html}
           onChangeCallback={html => UpdateReduxEntry({ id, html })}
         />
+        <Divider />
       </Fragment>
     )
   }
