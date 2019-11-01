@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, lazy } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import {
@@ -11,10 +11,11 @@ import {
   InputGroupText,
   Button
 } from "reactstrap"
-import TextEditor from "../../components/TextEditor"
 import { PostReduxEntry } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
+
+const TextEditor = lazy(() => import("../../components/TextEditor"))
 
 const mapStateToProps = ({
   User: { id },
@@ -33,7 +34,7 @@ const mapStateToProps = ({
   innerHeight,
   navbarHeight,
   footerHeight,
-  viewPort: availHeight
+  viewPortHeight: availHeight
 })
 
 const mapDispatchToProps = { PostReduxEntry, SetEditorState, ClearEditorState }
@@ -72,7 +73,7 @@ class Home extends PureComponent {
       title,
       editorStateHtml,
       innerHeight,
-      viewPort,
+      viewPortHeight,
       navbarHeight,
       footerHeight
     } = props
@@ -84,7 +85,7 @@ class Home extends PureComponent {
       innerHeight,
       navbarHeight,
       footerHeight,
-      viewPort
+      viewPortHeight
     })
   }
 
@@ -123,7 +124,7 @@ class Home extends PureComponent {
       innerHeight,
       navbarHeight,
       footerHeight,
-      viewPort
+      viewPortHeight
     } = this.state
 
     return (
@@ -161,7 +162,8 @@ class Home extends PureComponent {
           <Col
             xs={12}
             style={{
-              height: `calc(${viewPort}px - ${navbarHeight} - var(--inputButtonHeight) - 8px)`
+              // background: 'red',
+              height: `calc(${viewPortHeight}px - ${navbarHeight} - var(--inputButtonHeight) - 16px)`
             }}
           >
             <TextEditor

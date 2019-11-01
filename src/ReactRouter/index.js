@@ -1,10 +1,9 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "../ReactRouter/routes"
 import Settings from "../views/Settings"
-import Home from "../views/Home"
 import AddEntry from "../views/AddEntry"
 import Calendar from "../views/Calendar"
 import Entries from "../views/Entries"
@@ -15,9 +14,22 @@ import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "../helpers/routing"
 import "./styles.css"
 
-const mapStateToProps = ({ User, Window: { isMobile } }) => ({
+const Home = lazy(() => import("../views/Home"))
+
+const mapStateToProps = ({
   User,
-  isMobile
+  Window: {
+    isMobile,
+    navbarHeight,
+    footerHeight,
+    screen: { availHeight }
+  }
+}) => ({
+  User,
+  isMobile,
+  navbarHeight,
+  footerHeight,
+  viewPortHeight: availHeight
 })
 
 const mapDispatchToProps = {}
@@ -48,18 +60,22 @@ class ReactRouter extends PureComponent {
   getState = props => {
     const {
       User: { Settings },
-      isMobile
+      isMobile,
+      navbarHeight,
+      footerHeight,
+      viewPortHeight
     } = props
     const routeItems = this.getRouteItems(props)
-    const navbarHeight = isMobile
-      ? "var(--navBarHeightMobile)"
-      : "var(--navBarHeight)"
 
-    const footerHeight = isMobile
-      ? "var(--footerHeightMobile)"
-      : "var(--footerHeight)"
+    const routeOverlayHeight = `calc(${viewPortHeight}px - ${navbarHeight})`
 
-    this.setState({ routeItems, Settings, navbarHeight, footerHeight })
+    this.setState({
+      routeItems,
+      Settings,
+      navbarHeight,
+      footerHeight,
+      routeOverlayHeight
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -119,13 +135,15 @@ class ReactRouter extends PureComponent {
       routeItems,
       Settings: { show_footer },
       navbarHeight,
-      footerHeight
+      footerHeight,
+      routeOverlayHeight
     } = this.state
 
     return (
       <div
         className="routeOverlay"
         style={{
+          height: routeOverlayHeight,
           top: navbarHeight,
           bottom: show_footer ? footerHeight : 0
         }}

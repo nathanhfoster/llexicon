@@ -1,13 +1,14 @@
-import React, { Suspense } from "react"
+import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import storeFactory from "./store"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
-import App from "./App"
+
 import LoadingScreen from "./components/LoadingScreen"
 import * as serviceWorker from "./serviceWorker"
 import Persister from "./store/Persister"
 import { getState } from "./store/Persister/persist"
+const App = lazy(() => import('./App'))
 const { NODE_ENV } = process.env
 
 const initialState = getState()

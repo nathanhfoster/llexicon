@@ -20,7 +20,7 @@ class TextEditor extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {editorRef: null}
+    this.state = { editorRef: null }
   }
 
   static propTypes = {
@@ -97,9 +97,9 @@ class TextEditor extends PureComponent {
     const { shouldAutoFocus } = nextProps
     const { editorRef } = nextState
     const currentEditorRef = this.state.editorRef
-    
-    if(!currentEditorRef && editorRef) {
-       if(shouldAutoFocus) editorRef.focus()
+
+    if (!currentEditorRef && editorRef) {
+      if (shouldAutoFocus) editorRef.focus()
     }
   }
   componentDidMount() {}
