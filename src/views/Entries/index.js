@@ -75,7 +75,7 @@ class Entries extends PureComponent {
     const entry = data[index]
 
     return (
-      <div key={entry.id || index} style={{ ...style, padding: 2 }}>
+      <div key={entry.id || index} style={{ ...style, padding: 6 }}>
         <Entry {...entry} />
       </div>
     )
@@ -86,7 +86,7 @@ class Entries extends PureComponent {
 
     return (
       <Container className="Entries">
-        <Col xs={12} style={{marginTop: 8}}>
+        <Col xs={12} style={{ marginTop: 8 }}>
           <FixedSizeList
             ref={this.listRef}
             height={viewPort}

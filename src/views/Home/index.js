@@ -150,7 +150,12 @@ class Home extends PureComponent {
           </InputGroup>
         </Col>
 
-        <Col xs={12} style={{ height: `calc(100% - ${navbarHeight})` }}>
+        <Col
+          xs={12}
+          style={{
+            height: `calc(${innerHeight}px - 8px - ${navbarHeight} - var(--inputButtonHeight))`
+          }}
+        >
           <TextEditor
             //height={`calc(100% - var(--inputButtonHeight))`}
             clearKey={clearedOn}

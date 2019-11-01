@@ -1,5 +1,5 @@
 .Wrapper {
-  height: calc(100% - var(--textEditorToolBarHeight) - 16px);
+  height: calc(100% - var(--textEditorToolBarHeight));
   /* height: 100%; */
 }
 
@@ -11,35 +11,35 @@
   box-sizing: content-box;
 }
 
-@media (max-width: 382px) {
+@media (max-width: 413px) {
   :root {
     --textEditorToolBarHeight: 198px;
   }
 }
 
-@media (min-width: 382px) and (max-width: 423px) {
+@media (min-width: 414px) and (max-width: 453px) {
   :root {
     --textEditorToolBarHeight: 162px;
   }
 }
 
-@media (min-width: 424px) and (max-width: 469px) {
+@media (min-width: 454px) and (max-width: 499px) {
   :root {
     --textEditorToolBarHeight: 172px;
   }
 }
 
-@media (min-width: 470px) and (max-width: 991px) {
+@media (min-width: 500px) and (max-width: 767px) {
+  :root {
+    --textEditorToolBarHeight: 136px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
   :root {
     --textEditorToolBarHeight: 126px;
   }
 }
-
-/* @media (min-width: 992px) and (max-width: 991px) {
-  :root {
-    --textEditorToolBarHeight: 120px;
-  }
-} */
 
 @media (min-width: 992px) {
   :root {
