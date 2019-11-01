@@ -165,6 +165,7 @@ class Home extends PureComponent {
             }}
           >
             <TextEditor
+              shouldAutoFocus
               clearKey={clearedOn}
               html={editorStateHtml}
               onChangeCallback={html => this.handleTextEditorChange(html)}

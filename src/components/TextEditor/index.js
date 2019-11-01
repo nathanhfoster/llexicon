@@ -24,6 +24,7 @@ class TextEditor extends PureComponent {
     clearKey: PropTypes.string,
     html: PropTypes.string.isRequired,
     onChangeCallback: PropTypes.func,
+    shouldAutoFocus: PropTypes.bool,
 
     // import { Editor } from "react-draft-wysiwyg"
     onChange: PropTypes.func,
@@ -78,6 +79,7 @@ class TextEditor extends PureComponent {
     suggestions: [],
     readOnly: false,
     toolbarHidden: false,
+    shouldAutoFocus: false,
     height: "100%",
     width: "100%"
   }
@@ -187,6 +189,7 @@ class TextEditor extends PureComponent {
   })
 
   setEditorReference = ref => {
+    const { shouldAutoFocus } = this.props
     this.editorRef = ref
     if (ref) ref.focus()
   }
