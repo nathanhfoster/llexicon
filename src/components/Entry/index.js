@@ -106,7 +106,6 @@ class Entry extends PureComponent {
           html={html}
           onChangeCallback={html => UpdateReduxEntry({ id, html })}
         />
-        <Divider />
       </div>
     )
   }
