@@ -3,6 +3,11 @@ import PropTypes from "prop-types"
 
 import { EditorState, convertToRaw, ContentState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
+// import {
+//   entityMapperToComponent,
+//   customChunkRenderer,
+//   entityMapper
+// } from "utils/draft-js-helpers"
 import { stateToHTML } from "draft-js-export-html"
 import { stateFromHTML } from "draft-js-import-html"
 // import htmlToDraft from "html-to-draftjs"
@@ -14,6 +19,8 @@ import "./styles.css"
 class TextEditor extends PureComponent {
   constructor(props) {
     super(props)
+
+    this.editorRef = null
 
     this.state = {}
   }
@@ -86,6 +93,10 @@ class TextEditor extends PureComponent {
 
   componentWillMount() {
     this.getState(this.props)
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    
   }
 
   componentDidMount() {}
@@ -198,6 +209,22 @@ class TextEditor extends PureComponent {
     ref.focus()
   }
 
+  renderBlock = (block, config) => {
+    console.log(block, config)
+    if (block.getType() === "atomic") {
+      const contentState = config.getEditorState().getCurrentContent()
+      const entity = contentState.getEntity(block.getEntityAt(0))
+      return {
+        // component: entityMapperToComponent(entity),
+        editable: false,
+        props: {
+          children: () => entity.innerHTML
+        }
+      }
+    }
+    return undefined
+  }
+
   render() {
     const {
       clearKey,
@@ -214,6 +241,7 @@ class TextEditor extends PureComponent {
     return (
       <div style={{ height, width }}>
         <Editor
+          // customBlockRenderFunc={this.renderBlock}
           editorRef={this.setEditorReference}
           key={clearKey}
           readOnly={readOnly}

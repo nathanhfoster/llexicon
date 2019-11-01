@@ -974,10 +974,6 @@
   right: 0;
 }
 
-.public-DraftStyleDefault-block {
-  margin: 1em 0;
-}
-
 .DraftEditor-editorContainer, .DraftEditor-root, .public-DraftEditor-content {
   height: inherit;
   text-align: initial
