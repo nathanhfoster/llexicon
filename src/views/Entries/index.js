@@ -75,7 +75,7 @@ class Entries extends PureComponent {
     const entry = data[index]
 
     return (
-      <div style={{ ...style, padding: 2 }}>
+      <div key={entry.id || index} style={{ ...style, padding: 2 }}>
         <Entry {...entry} />
       </div>
     )
