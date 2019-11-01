@@ -3,7 +3,7 @@
   display: block;
   position: absolute;
   text-align: center;
-  background: var(--secondaryColor);
+  background: green;
   height: var(--footerHeight);
   width: 100%;
   position: fixed;
@@ -16,4 +16,10 @@
 }
 
 .MainFooter a:hover {
+}
+
+@media (max-width: 767px) {
+  .MainFooter {
+    height: var(--footerHeightMobile);
+  }
 }

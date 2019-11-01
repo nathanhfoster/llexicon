@@ -4,6 +4,7 @@
   box-shadow: var(--primaryBoxShadow);
   opacity: var(--mainOpacity);
   height: 100%;
+  height: calc(100% - 48px);
   letter-spacing: 0.4px;
 }
 

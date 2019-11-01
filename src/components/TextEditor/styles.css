@@ -843,7 +843,7 @@
 }
 
 .rdw-image-mandatory-sign {
-  color: red;
+  /* color: red; */
   margin-left: 3px;
   margin-right: 3px;
 }

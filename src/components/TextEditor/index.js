@@ -198,44 +198,42 @@ class TextEditor extends PureComponent {
     } = this.state
 
     return (
-      <div style={{ height, width }}>
-        <Editor
-          key={clearKey}
-          readOnly={readOnly}
-          defaultEditorState={editorState}
-          // editorState={editorState}
-          toolbarClassName="Toolbar"
-          wrapperClassName="Wrapper"
-          editorClassName="Editor"
-          onEditorStateChange={editorState =>
-            this.handleEditorStateChange(editorState)
-          }
-          onFocus={e => e.preventDefault()}
-          // onBlur={(e, editorState) => {
-          //   this.props.SetEditorState(
-          //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
-          //   );
-          // }}
-          onTab={e => e.preventDefault()}
-          blurInputOnSelect={false}
-          toolbarHidden={toolbarHidden}
-          toolbar={options}
-          toolbarCustomButtons={[
-            <ClearButton onClickCallback={this.clearState} />
-          ]}
-          mention={{
-            separator: " ",
-            trigger: "@",
-            suggestions
-          }}
-          // toolbarOnFocus
-          // stripPastedStyles="off"
-          // spellCheck="off"
-          // autoCapitalize="off"
-          // autoComplete="off"
-          // autoCorrect="off"
-        />
-      </div>
+      <Editor
+        key={clearKey}
+        readOnly={readOnly}
+        defaultEditorState={editorState}
+        // editorState={editorState}
+        toolbarClassName="Toolbar"
+        wrapperClassName="Wrapper"
+        editorClassName="Editor"
+        onEditorStateChange={editorState =>
+          this.handleEditorStateChange(editorState)
+        }
+        onFocus={e => e.preventDefault()}
+        // onBlur={(e, editorState) => {
+        //   this.props.SetEditorState(
+        //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
+        //   );
+        // }}
+        onTab={e => e.preventDefault()}
+        blurInputOnSelect={false}
+        toolbarHidden={toolbarHidden}
+        toolbar={options}
+        toolbarCustomButtons={[
+          <ClearButton onClickCallback={this.clearState} />
+        ]}
+        mention={{
+          separator: " ",
+          trigger: "@",
+          suggestions
+        }}
+        // toolbarOnFocus
+        // stripPastedStyles="off"
+        // spellCheck="off"
+        // autoCapitalize="off"
+        // autoComplete="off"
+        // autoCorrect="off"
+      />
     )
   }
 }

@@ -54,7 +54,12 @@ class ReactRouter extends PureComponent {
     const navbarHeight = isMobile
       ? "var(--navBarHeightMobile)"
       : "var(--navBarHeight)"
-    this.setState({ routeItems, Settings, navbarHeight })
+
+    const footerHeight = isMobile
+      ? "var(--footerHeightMobile)"
+      : "var(--footerHeight)"
+
+    this.setState({ routeItems, Settings, navbarHeight, footerHeight })
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -113,13 +118,17 @@ class ReactRouter extends PureComponent {
     const {
       routeItems,
       Settings: { show_footer },
-      navbarHeight
+      navbarHeight,
+      footerHeight
     } = this.state
 
     return (
       <div
         className="routeOverlay"
-        style={{ bottom: show_footer ? navbarHeight : 0 }}
+        style={{
+          top: navbarHeight,
+          bottom: show_footer ? footerHeight : 0
+        }}
       >
         <Switch>
           {this.renderRouteItems(routeItems)}

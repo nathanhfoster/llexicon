@@ -17,9 +17,26 @@ import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
-  User,
-  TextEditor: { clearedOn, title, editorStateHtml }
-}) => ({ UserId: User.id, clearedOn, title, editorStateHtml })
+  User: {
+    id,
+    Settings: { show_footer }
+  },
+  TextEditor: { clearedOn, title, editorStateHtml },
+  Window: {
+    innerHeight,
+    isMobile,
+    screen: { availHeight }
+  }
+}) => ({
+  UserId: id,
+  clearedOn,
+  title,
+  editorStateHtml,
+  innerHeight,
+  isMobile,
+  show_footer,
+  viewPort: availHeight
+})
 
 const mapDispatchToProps = { PostReduxEntry, SetEditorState, ClearEditorState }
 
@@ -52,8 +69,34 @@ class Home extends PureComponent {
   }
 
   getState = props => {
-    const { clearedOn, title, editorStateHtml } = props
-    this.setState({ clearedOn, title, editorStateHtml })
+    const {
+      clearedOn,
+      title,
+      editorStateHtml,
+      innerHeight,
+      isMobile,
+      show_footer,
+      viewPort
+    } = props
+    const navbarHeight = isMobile
+      ? "var(--navBarHeightMobile)"
+      : "var(--navBarHeight)"
+
+    const footerHeight = show_footer
+      ? "0px"
+      : isMobile
+      ? "var(--footerHeightMobile)"
+      : "var(--footerHeight)"
+
+    this.setState({
+      clearedOn,
+      title,
+      editorStateHtml,
+      innerHeight,
+      navbarHeight,
+      footerHeight,
+      viewPort
+    })
   }
 
   handlePostEntry = () => {
@@ -84,47 +127,44 @@ class Home extends PureComponent {
   }
 
   render() {
-    const { SetEditorState } = this.props
-    const { editorStateHtml, clearedOn, title } = this.state
+    const {
+      editorStateHtml,
+      clearedOn,
+      title,
+      innerHeight,
+      navbarHeight,
+      footerHeight,
+      viewPort
+    } = this.state
+
     return (
       <Container className="Home">
-        <Row>
-          <Col xs={12}>
-            <InputGroup className="EntryInput">
-              <Input
-                type="text"
-                name="title"
-                id="title"
-                placeholder="Title..."
-                value={title}
-                onChange={this.handleInputChange}
-              />
-              <InputGroupAddon
-                addonType="append"
-                onClick={this.handlePostEntry}
-              >
-                <InputGroupText
-                  tag={Button}
-                  color="primary"
-                  style={{ color: "white" }}
-                >
-                  <i
-                    className="fas fa-feather-alt"
-                    style={{ fontSize: 20 }}
-                  ></i>
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </Col>
-          <Col xs={12}>
-            <TextEditor
-              height={"calc(100vh - var(--navBarHeight) - 20px - 56px)"}
-              clearKey={clearedOn}
-              html={editorStateHtml}
-              onChangeCallback={html => this.handleTextEditorChange(html)}
-            />
-          </Col>
-        </Row>
+        <InputGroup className="EntryInput">
+          <Input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Title..."
+            value={title}
+            onChange={this.handleInputChange}
+          />
+          <InputGroupAddon addonType="append" onClick={this.handlePostEntry}>
+            <InputGroupText
+              tag={Button}
+              color="primary"
+              style={{ color: "white" }}
+            >
+              <i className="fas fa-feather-alt" style={{ fontSize: 20 }}></i>
+            </InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
+
+        <TextEditor
+          //height={`calc(100% - var(--inputButtonHeight))`}
+          clearKey={clearedOn}
+          html={editorStateHtml}
+          onChangeCallback={html => this.handleTextEditorChange(html)}
+        />
       </Container>
     )
   }
