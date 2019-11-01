@@ -190,8 +190,12 @@ class TextEditor extends PureComponent {
 
   setEditorReference = ref => {
     const { shouldAutoFocus } = this.props
+
+    if (!(ref && shouldAutoFocus)) return null
+
     this.editorRef = ref
-    if (ref) ref.focus()
+
+    ref.focus()
   }
 
   render() {
