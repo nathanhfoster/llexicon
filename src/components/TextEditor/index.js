@@ -20,9 +20,7 @@ class TextEditor extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.editorRef = null
-
-    this.state = {}
+    this.state = {editorRef: null}
   }
 
   static propTypes = {
@@ -96,9 +94,14 @@ class TextEditor extends PureComponent {
   }
 
   componentWillUpdate(nextProps, nextState) {
+    const { shouldAutoFocus } = nextProps
+    const { editorRef } = nextState
+    const currentEditorRef = this.state.editorRef
     
+    if(!currentEditorRef && editorRef) {
+       if(shouldAutoFocus) editorRef.focus()
+    }
   }
-
   componentDidMount() {}
 
   componentWillReceiveProps(nextProps) {
@@ -199,15 +202,7 @@ class TextEditor extends PureComponent {
     maxHeigh: 100
   })
 
-  setEditorReference = ref => {
-    const { shouldAutoFocus } = this.props
-
-    if (!(ref && shouldAutoFocus)) return null
-
-    this.editorRef = ref
-
-    ref.focus()
-  }
+  setEditorReference = editorRef => this.setState({ editorRef })
 
   renderBlock = (block, config) => {
     console.log(block, config)
