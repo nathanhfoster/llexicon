@@ -72,13 +72,10 @@ class Home extends PureComponent {
       footerHeight
     } = props
 
-    const editorHeight = `calc(${viewPortHeight}px - var(--navBarHeight) - var(--inputButtonHeight))`
-
     this.setState({
       clearedOn,
       title,
-      editorStateHtml,
-      editorHeight
+      editorStateHtml
     })
   }
 
@@ -140,14 +137,8 @@ class Home extends PureComponent {
             </InputGroup>
           </Col>
         </Row>
-        <Row>
-          <Col
-            xs={12}
-            style={{
-              // background: 'red',
-              height: editorHeight
-            }}
-          >
+        <Row className="EditorContainer">
+          <Col xs={12}>
             <TextEditor
               shouldAutoFocus
               clearKey={clearedOn}

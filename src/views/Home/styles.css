@@ -1,3 +1,7 @@
 .Home {
+  height: 100%;
+}
 
+.EditorContainer {
+  height: calc(100% - var(--navBarHeight) - var(--inputButtonHeight));
 }
