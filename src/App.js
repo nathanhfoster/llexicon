@@ -7,6 +7,7 @@ import Footer from "./components/Footer"
 import { setWindow } from "./actions/App"
 import { GetUserSettings } from "./actions/Settings"
 import "./styles/index.css"
+const ReactRouter = lazy(() => import("./ReactRouter"))
 
 const mapStateToProps = ({ User: { id, Settings } }) => ({
   UserId: id,
@@ -119,14 +120,14 @@ export class App extends PureComponent {
   }
 
   render() {
-    const { history, children } = this.props
+    const { history } = this.props
     const { pathname } = history.location
     return pathname === "/" ? (
       <Redirect to="/home" />
     ) : (
       <div className="App">
         <NavBar />
-        {children}
+        <ReactRouter /> 
         <Footer />
       </div>
     )
