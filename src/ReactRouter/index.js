@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
+import Home from "../views/Home"
 import Settings from "../views/Settings"
 import AddEntry from "../views/AddEntry"
 import Calendar from "../views/Calendar"
@@ -87,23 +88,6 @@ class ReactRouter extends PureComponent {
 
   getRouteItems = props => {
     const { User, history } = props
-
-    const Home = lazy(() => {
-      let min = 0
-      let max = 700
-      return new Promise(resolve => {
-        if (User.id) {
-          min = 0
-          max = 100
-        }
-        return setTimeout(resolve, getRandomInt(min, max))
-      }).then(
-        () =>
-          // Math.floor(Math.random() * 10) >= 4 ?
-          import("../views/Home")
-        // : Promise.reject(new Error())
-      )
-    })
 
     const { state } = history.location
     return [
