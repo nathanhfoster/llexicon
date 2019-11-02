@@ -48,13 +48,17 @@ class Login extends PureComponent {
   render() {
     return (
       <Container fluid className="Login">
-        <Jumbotron className="LoginFormContainer">
-          <BasicForm
-            onSubmit={payload => this.handleOnSubmit(payload)}
-            submitLabel="Login"
-          />
-          <FacebookGoogleLogin />
-        </Jumbotron>
+        <Row>
+          <Col xs={12}>
+            <Jumbotron className="LoginFormContainer">
+              <BasicForm
+                onSubmit={payload => this.handleOnSubmit(payload)}
+                submitLabel="Login"
+              />
+              <FacebookGoogleLogin />
+            </Jumbotron>
+          </Col>
+        </Row>
       </Container>
     )
   }

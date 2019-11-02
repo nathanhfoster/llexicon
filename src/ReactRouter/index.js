@@ -83,37 +83,35 @@ class ReactRouter extends PureComponent {
 
   getRouteItems = props => {
     const { User, history } = props
-
     const { state } = history.location
+    const {
+      ROOT,
+      HOME,
+      LOGIN,
+      ENTRY_ADD,
+      SETTINGS,
+      CALENDAR,
+      ENTRIES,
+      PRIVACY_POLICY
+    } = RouteMap
+
     return [
-      { path: [RouteMap.HOME], component: Home },
-      { path: [RouteMap.HOME, RouteMap.ENTRY_ADD], component: AddEntry },
+      { path: [ROOT, HOME], component: Home },
+      { path: [HOME, ENTRY_ADD], component: AddEntry },
       {
-        path: [RouteMap.LOGIN],
-        component: this.renderRedirectOrComponent(
-          User.token,
-          RouteMap.HOME,
-          Login
-        )
+        path: [LOGIN],
+        component: this.renderRedirectOrComponent(User.token, HOME, Login)
       },
       {
-        path: [RouteMap.SETTINGS],
-        component: this.renderRedirectOrComponent(
-          !User.token,
-          RouteMap.HOME,
-          Settings
-        )
+        path: [SETTINGS],
+        component: this.renderRedirectOrComponent(!User.token, HOME, Settings)
       },
-      { path: [RouteMap.CALENDAR], component: Calendar },
+      { path: [CALENDAR], component: Calendar },
       {
-        path: [RouteMap.ENTRIES],
-        component: this.renderRedirectOrComponent(
-          !User.token,
-          RouteMap.LOGIN,
-          Entries
-        )
+        path: [ENTRIES],
+        component: this.renderRedirectOrComponent(!User.token, LOGIN, Entries)
       },
-      { path: [RouteMap.PRIVACY_POLICY], component: PrivacyPolicy }
+      { path: [PRIVACY_POLICY], component: PrivacyPolicy }
     ]
   }
 
@@ -131,13 +129,12 @@ class ReactRouter extends PureComponent {
     } = this.state
 
     return (
-      <Container
-        fluid
-        className="App routeOverlay p-0"
+      <div
+        className="App routeOverlay"
         style={{
-          height: routeOverlayHeight,
           top: "var(--navBarHeight)",
           bottom: show_footer ? "var(--footerHeight)" : 0
+          // background: "red"
         }}
       >
         <NavBar />
@@ -146,7 +143,7 @@ class ReactRouter extends PureComponent {
           <Route component={PageNotFound} />
         </Switch>
         <Footer />
-      </Container>
+      </div>
     )
   }
 }

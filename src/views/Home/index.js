@@ -72,13 +72,13 @@ class Home extends PureComponent {
       footerHeight
     } = props
 
+    const editorHeight = `calc(${viewPortHeight}px - var(--navBarHeight) - var(--inputButtonHeight))`
+
     this.setState({
       clearedOn,
       title,
       editorStateHtml,
-      innerHeight,
-      footerHeight,
-      viewPortHeight
+      editorHeight
     })
   }
 
@@ -110,17 +110,10 @@ class Home extends PureComponent {
   }
 
   render() {
-    const {
-      editorStateHtml,
-      clearedOn,
-      title,
-      innerHeight,
-      footerHeight,
-      viewPortHeight
-    } = this.state
+    const { editorStateHtml, clearedOn, title, editorHeight } = this.state
 
     return (
-      <Container className="Home">
+      <Container className="Home Container">
         <Row>
           <Col xs={12}>
             <InputGroup className="EntryInput">
@@ -152,7 +145,7 @@ class Home extends PureComponent {
             xs={12}
             style={{
               // background: 'red',
-              height: `calc(${viewPortHeight}px - var(--navBarHeight) - var(--inputButtonHeight) - 16px)`
+              height: editorHeight
             }}
           >
             <TextEditor

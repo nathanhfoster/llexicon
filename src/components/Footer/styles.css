@@ -1,13 +1,14 @@
 .MainFooter {
   color: var(--tertiarycolor);
   display: block;
-  position: absolute;
   text-align: center;
   height: var(--footerHeight);
   width: 100%;
   position: fixed;
   bottom: 0;
   z-index: 1;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  /* background: redr; */
 }
 
 .MainFooter a {

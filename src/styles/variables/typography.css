@@ -1,19 +1,18 @@
 :root {
-  --navBarHeightMobile: 46px;
   --navBarImageHeight: 36px;
   --inputButtonHeight: 48px;
-}
-
-@media (min-width: 768px) {
-  :root {
-    --navBarHeight: 68px;
-    --footerHeight: 70px;
-  }
 }
 
 @media (max-width: 767px) {
   :root {
     --navBarHeight: 46px;
     --footerHeight: 52px
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --navBarHeight: 68px;
+    --footerHeight: 70px;
   }
 }
