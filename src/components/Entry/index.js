@@ -93,7 +93,7 @@ class Entry extends PureComponent {
             type="text"
             name="title"
             id="title"
-            placeholder="Title..."
+            placeholder="Entry title..."
             value={title}
             onChange={e => UpdateReduxEntry({ id, title: e.target.value })}
           />

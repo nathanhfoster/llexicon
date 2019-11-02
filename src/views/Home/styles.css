@@ -1,7 +1,7 @@
 .Home {
-  height: 100%;
+  height: calc(100% - 16px);
 }
 
 .EditorContainer {
-  height: calc(100% - var(--navBarHeight) - var(--inputButtonHeight));
+  height: calc(100% - var(--navBarHeight) - var(--inputButtonHeight) + 32px);
 }

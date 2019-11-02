@@ -3,6 +3,7 @@ import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import Entry from "../../components/Entry"
+import Home from "../Home"
 import { FixedSizeList } from "react-window"
 import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import "./styles.css"
@@ -95,7 +96,7 @@ class Entries extends PureComponent {
   render() {
     const { entries, listHeight, listItemHeight } = this.state
 
-    return (
+    return entries.length > 0 ? (
       <Container className="Entries">
         <Row>
           <FixedSizeList
@@ -110,6 +111,8 @@ class Entries extends PureComponent {
           </FixedSizeList>
         </Row>
       </Container>
+    ) : (
+      <Home />
     )
   }
 }

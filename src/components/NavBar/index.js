@@ -65,30 +65,38 @@ class NavBar extends PureComponent {
       User: { id },
       UserLogout
     } = this.props
+    const { CALENDAR, ENTRIES, SETTINGS, LOGIN } = RouteMap
     const LoggedInLinks = [
       this.renderNavlink(
-        RouteMap.CALENDAR,
+        CALENDAR,
         "CALENDAR",
         <i className="fas fa-calendar-alt NavBarImage"></i>
       ),
+      ,
       this.renderNavlink(
-        RouteMap.ENTRIES,
-        "ENTRIES",
-        <i className="fas fa-feather-alt NavBarImage" />
-      ),
-      this.renderNavlink(
-        RouteMap.SETTINGS,
+        SETTINGS,
         "SETTINGS",
         <i className="fas fa-cog NavBarImage" />
       ),
       this.renderNavlink(
-        RouteMap.LOGIN,
+        LOGIN,
         "LOG OUT",
         <i className="fas fa-sign-out-alt NavBarImage" />,
         UserLogout
       )
     ]
-    const NotLoggedInLinks = [this.renderNavlink(RouteMap.LOGIN, "LOGIN")]
+    const NotLoggedInLinks = [
+      this.renderNavlink(
+        ENTRIES,
+        "ENTRIES",
+        <i className="fas fa-feather-alt NavBarImage" />
+      ),
+      this.renderNavlink(
+        LOGIN,
+        "LOGIN",
+        <i className="fas fa-sign-in-alt NavBarImage" />
+      )
+    ]
     return id ? LoggedInLinks : NotLoggedInLinks
   }
 
@@ -124,12 +132,13 @@ class NavBar extends PureComponent {
     const UserName =
       User.token && (User.first_name || User.username).toUpperCase()
     const UserPicture = User.uploaded_picture || User.picture
+    const { HOME } = RouteMap
     return (
       <Navbar light className="NavBar" color="light" fixed="top" expand="md">
         <NavbarBrand
           className="Logo"
           tag={RouterNavLink}
-          to={RouterLinkPush(history, RouteMap.HOME)}
+          to={RouterLinkPush(history, HOME)}
           onClick={() => this.closeHamburgerMenu()}
         >
           <i className="fas fa-plus NavBarImage" />
