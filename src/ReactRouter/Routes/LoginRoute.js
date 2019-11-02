@@ -1,11 +1,10 @@
-import React, { PureComponent, lazy } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Route, Redirect, withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../helpers/routing"
 import { RouteMap } from "."
 import Login from "../../views/Login"
-import { getRandomInt } from "../../helpers"
 
 const mapStateToProps = ({ User }) => ({ UserToken: User.token })
 
