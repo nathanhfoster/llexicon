@@ -2,7 +2,10 @@ import React, { PureComponent, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
+import { Container, Row, Col } from "reactstrap"
 import { RouteMap } from "./Routes"
+import NavBar from "../components/NavBar"
+import Footer from "../components/Footer"
 import Home from "../views/Home"
 import Settings from "../views/Settings"
 import AddEntry from "../views/AddEntry"
@@ -19,14 +22,10 @@ import "./styles.css"
 const mapStateToProps = ({
   User,
   Window: {
-    navbarHeight,
-    footerHeight,
     screen: { availHeight }
   }
 }) => ({
   User,
-  navbarHeight,
-  footerHeight,
   viewPortHeight: availHeight
 })
 
@@ -58,20 +57,16 @@ class ReactRouter extends PureComponent {
   getState = props => {
     const {
       User: { Settings },
-      navbarHeight,
-      footerHeight,
       viewPortHeight
     } = props
     const routeItems = this.getRouteItems(props)
 
-    const routeOverlayHeight = `calc(${viewPortHeight}px - ${navbarHeight})`
+    const routeOverlayHeight = `calc(${viewPortHeight}px - var(--navBarHeight))`
 
     this.setState({
       routeItems,
-      Settings,
-      navbarHeight,
-      footerHeight,
-      routeOverlayHeight
+      routeOverlayHeight,
+      Settings
     })
   }
 
@@ -132,25 +127,26 @@ class ReactRouter extends PureComponent {
     const {
       routeItems,
       Settings: { show_footer },
-      navbarHeight,
-      footerHeight,
       routeOverlayHeight
     } = this.state
 
     return (
-      <div
-        className="routeOverlay"
+      <Container
+        fluid
+        className="App routeOverlay p-0"
         style={{
           height: routeOverlayHeight,
-          top: navbarHeight,
-          bottom: show_footer ? footerHeight : 0
+          top: "var(--navBarHeight)",
+          bottom: show_footer ? "var(--footerHeight)" : 0
         }}
       >
+        <NavBar />
         <Switch>
           {this.renderRouteItems(routeItems)}
           <Route component={PageNotFound} />
         </Switch>
-      </div>
+        <Footer />
+      </Container>
     )
   }
 }

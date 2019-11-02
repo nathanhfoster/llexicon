@@ -125,29 +125,31 @@ class NavBar extends PureComponent {
       User.token && (User.first_name || User.username).toUpperCase()
     const UserPicture = User.uploaded_picture || User.picture
     return (
-      <Navbar light className="NavBar" color="light" fixed="top" expand="md">
-        <NavbarBrand
-          className="Logo"
-          tag={RouterNavLink}
-          to={RouterLinkPush(history, RouteMap.HOME)}
-          onClick={() => this.closeHamburgerMenu()}
-        >
-          <i className="fas fa-plus NavBarImage" />
-          <span className="NavBarLink">Entry</span>
-        </NavbarBrand>
-        {isMobile && (
-          <NavbarToggler
-            tag={Hamburger}
-            onClick={() => this.toggleHamburgerMenu()}
-            collapsed={collapsed}
-          />
-        )}
-        <Collapse isOpen={!collapsed} navbar>
-          <Nav className="ml-auto" navbar>
-            {this.renderNavLinks()}
-          </Nav>
-        </Collapse>
-      </Navbar>
+      <div>
+        <Navbar light className="NavBar" color="light" fixed="top" expand="md">
+          <NavbarBrand
+            className="Logo"
+            tag={RouterNavLink}
+            to={RouterLinkPush(history, RouteMap.HOME)}
+            onClick={() => this.closeHamburgerMenu()}
+          >
+            <i className="fas fa-plus NavBarImage" />
+            <span className="NavBarLink">Entry</span>
+          </NavbarBrand>
+          {isMobile && (
+            <NavbarToggler
+              tag={Hamburger}
+              onClick={() => this.toggleHamburgerMenu()}
+              collapsed={collapsed}
+            />
+          )}
+          <Collapse isOpen={!collapsed} navbar>
+            <Nav className="ml-auto" navbar>
+              {this.renderNavLinks()}
+            </Nav>
+          </Collapse>
+        </Navbar>
+      </div>
     )
   }
 }

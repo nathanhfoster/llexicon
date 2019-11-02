@@ -21,8 +21,6 @@ const mapStateToProps = ({
   TextEditor: { clearedOn, title, editorStateHtml },
   Window: {
     innerHeight,
-    navbarHeight,
-    footerHeight,
     screen: { availHeight }
   }
 }) => ({
@@ -31,8 +29,6 @@ const mapStateToProps = ({
   title,
   editorStateHtml,
   innerHeight,
-  navbarHeight,
-  footerHeight,
   viewPortHeight: availHeight
 })
 
@@ -73,7 +69,6 @@ class Home extends PureComponent {
       editorStateHtml,
       innerHeight,
       viewPortHeight,
-      navbarHeight,
       footerHeight
     } = props
 
@@ -82,7 +77,6 @@ class Home extends PureComponent {
       title,
       editorStateHtml,
       innerHeight,
-      navbarHeight,
       footerHeight,
       viewPortHeight
     })
@@ -121,7 +115,6 @@ class Home extends PureComponent {
       clearedOn,
       title,
       innerHeight,
-      navbarHeight,
       footerHeight,
       viewPortHeight
     } = this.state
@@ -159,7 +152,7 @@ class Home extends PureComponent {
             xs={12}
             style={{
               // background: 'red',
-              height: `calc(${viewPortHeight}px - ${navbarHeight} - var(--inputButtonHeight) - 16px)`
+              height: `calc(${viewPortHeight}px - var(--navBarHeight) - var(--inputButtonHeight) - 16px)`
             }}
           >
             <TextEditor

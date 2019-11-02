@@ -8,6 +8,7 @@ import App from "./App"
 import Persister from "./store/Persister"
 import { getState } from "./store/Persister/persist"
 import * as serviceWorker from "./serviceWorker"
+const ReactRouter = lazy(() => import("./ReactRouter"))
 
 const { NODE_ENV } = process.env
 
@@ -16,12 +17,13 @@ const ReduxStore = storeFactory(initialState)
 
 ReactDOM.render(
   <Provider store={ReduxStore}>
-    <Persister />
-    <BrowserRouter>
-      <Suspense fallback={<LoadingScreen />}>
-        <App />
-      </Suspense>
-    </BrowserRouter>
+    <Suspense fallback={<LoadingScreen />}>
+      <Persister />
+      <App />
+      <BrowserRouter>
+        <ReactRouter />
+      </BrowserRouter>
+    </Suspense>
   </Provider>,
   document.getElementById("root")
 )

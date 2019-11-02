@@ -1,17 +1,12 @@
 import React, { PureComponent, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter, Redirect } from "react-router-dom"
-import NavBar from "./components/NavBar"
-import Footer from "./components/Footer"
 import { setWindow } from "./actions/App"
 import { GetUserSettings } from "./actions/Settings"
 import "./styles/index.css"
-const ReactRouter = lazy(() => import("./ReactRouter"))
 
-const mapStateToProps = ({ User: { id, Settings } }) => ({
-  UserId: id,
-  Settings
+const mapStateToProps = ({ User: { id } }) => ({
+  UserId: id
 })
 
 const mapDispatchToProps = {
@@ -28,8 +23,7 @@ export class App extends PureComponent {
   static propTypes = {
     UserId: PropTypes.number,
     setWindow: PropTypes.func.isRequired,
-    GetUserSettings: PropTypes.func.isRequired,
-    Settings: PropTypes.object
+    GetUserSettings: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -65,10 +59,7 @@ export class App extends PureComponent {
   }
 
   updateWindowDimensions = () => {
-    const {
-      setWindow,
-      Settings: { show_footer }
-    } = this.props
+    const { setWindow } = this.props
     const {
       innerHeight,
       innerWidth,
@@ -88,22 +79,10 @@ export class App extends PureComponent {
 
     const isMobile = innerWidth < 768
 
-    const navbarHeight = isMobile
-      ? "var(--navBarHeightMobile)"
-      : "var(--navBarHeight)"
-
-    const footerHeight = show_footer
-      ? "0px"
-      : isMobile
-      ? "var(--footerHeightMobile)"
-      : "var(--footerHeight)"
-
     setWindow({
       innerHeight,
       innerWidth,
       isMobile,
-      navbarHeight,
-      footerHeight,
       screen: {
         availHeight,
         availLeft,
@@ -120,20 +99,8 @@ export class App extends PureComponent {
   }
 
   render() {
-    const { history } = this.props
-    const { pathname } = history.location
-    return pathname === "/" ? (
-      <Redirect to="/home" />
-    ) : (
-      <div className="App">
-        <NavBar />
-        <ReactRouter />
-        <Footer />
-      </div>
-    )
+    return <noscript />
   }
 }
 
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(App)
-)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(App)
