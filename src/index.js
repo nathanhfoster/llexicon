@@ -15,11 +15,11 @@ const { NODE_ENV } = process.env
 const initialState = getState()
 const ReduxStore = storeFactory(initialState)
 
-const ReactRouter = lazy(() => {
+const App = lazy(() => {
   return new Promise(resolve => setTimeout(resolve, getRandomInt(0, 700))).then(
     () =>
       // Math.floor(Math.random() * 10) >= 4 ?
-      import("./ReactRouter")
+      import("./App")
     // : Promise.reject(new Error())
   )
 })
@@ -29,9 +29,7 @@ ReactDOM.render(
     <Persister />
     <BrowserRouter>
       <Suspense fallback={<LoadingScreen />}>
-        <App>
-          <ReactRouter />
-        </App>
+        <App />
       </Suspense>
     </BrowserRouter>
   </Provider>,
