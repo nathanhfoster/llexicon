@@ -1,13 +1,14 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Redirect } from "react-router-dom"
 import NavBar from "./components/NavBar"
-import ReactRouter from "./ReactRouter"
 import Footer from "./components/Footer"
 import { setWindow } from "./actions/App"
 import { GetUserSettings } from "./actions/Settings"
 import "./styles/index.css"
+
+const ReactRouter = lazy(() => import("./ReactRouter"))
 
 const mapStateToProps = ({ User: { id, Settings } }) => ({
   UserId: id,
