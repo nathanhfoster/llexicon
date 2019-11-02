@@ -127,7 +127,7 @@ export class App extends PureComponent {
     ) : (
       <div className="App">
         <NavBar />
-        <ReactRouter /> 
+        <ReactRouter />
         <Footer />
       </div>
     )

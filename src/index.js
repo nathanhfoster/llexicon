@@ -7,7 +7,6 @@ import LoadingScreen from "./components/LoadingScreen"
 import App from "./App"
 import Persister from "./store/Persister"
 import { getState } from "./store/Persister/persist"
-import { getRandomInt } from "./helpers"
 import * as serviceWorker from "./serviceWorker"
 
 const { NODE_ENV } = process.env
