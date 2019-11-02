@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Redirect } from "react-router-dom"
 import NavBar from "./components/NavBar"
-import ReactRouter from "./ReactRouter"
 import Footer from "./components/Footer"
 import { setWindow } from "./actions/App"
 import { GetUserSettings } from "./actions/Settings"
@@ -120,14 +119,14 @@ export class App extends PureComponent {
   }
 
   render() {
-    const { history } = this.props
+    const { history, children } = this.props
     const { pathname } = history.location
     return pathname === "/" ? (
       <Redirect to="/home" />
     ) : (
       <div className="App">
         <NavBar />
-        <ReactRouter />
+        {children}
         <Footer />
       </div>
     )

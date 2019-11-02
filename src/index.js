@@ -1,25 +1,37 @@
-import React, { Suspense } from "react"
+import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import storeFactory from "./store"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
-import App from "./App"
 import LoadingScreen from "./components/LoadingScreen"
-import * as serviceWorker from "./serviceWorker"
+import App from "./App"
 import Persister from "./store/Persister"
 import { getState } from "./store/Persister/persist"
+import { getRandomInt } from "./helpers"
+import * as serviceWorker from "./serviceWorker"
 
 const { NODE_ENV } = process.env
 
 const initialState = getState()
 const ReduxStore = storeFactory(initialState)
 
+const ReactRouter = lazy(() => {
+  return new Promise(resolve => setTimeout(resolve, getRandomInt(0, 700))).then(
+    () =>
+      // Math.floor(Math.random() * 10) >= 4 ?
+      import("./ReactRouter")
+    // : Promise.reject(new Error())
+  )
+})
+
 ReactDOM.render(
   <Provider store={ReduxStore}>
     <Persister />
     <BrowserRouter>
       <Suspense fallback={<LoadingScreen />}>
-        <App />
+        <App>
+          <ReactRouter />
+        </App>
       </Suspense>
     </BrowserRouter>
   </Provider>,
