@@ -63,7 +63,7 @@ export class App extends PureComponent {
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateWindowDimensions)
   }
-  //ScreenOrientation {angle: 0, type: "portrait-primary", onchange: null}
+
   updateWindowDimensions = () => {
     const {
       setWindow,

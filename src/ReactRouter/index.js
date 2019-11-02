@@ -1,10 +1,9 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
-import { RouteMap } from "../ReactRouter/routes"
+import { RouteMap } from "./Routes"
 import Settings from "../views/Settings"
-import Home from "../views/Home"
 import AddEntry from "../views/AddEntry"
 import Calendar from "../views/Calendar"
 import Entries from "../views/Entries"
@@ -13,11 +12,21 @@ import PrivacyPolicy from "../components/PrivacyPolicy"
 import PageNotFound from "../views/PageNotFound"
 import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "../helpers/routing"
+import { getRandomInt } from "../helpers"
 import "./styles.css"
 
-const mapStateToProps = ({ User, Window: { isMobile } }) => ({
+const mapStateToProps = ({
   User,
-  isMobile
+  Window: {
+    navbarHeight,
+    footerHeight,
+    screen: { availHeight }
+  }
+}) => ({
+  User,
+  navbarHeight,
+  footerHeight,
+  viewPortHeight: availHeight
 })
 
 const mapDispatchToProps = {}
@@ -48,18 +57,21 @@ class ReactRouter extends PureComponent {
   getState = props => {
     const {
       User: { Settings },
-      isMobile
+      navbarHeight,
+      footerHeight,
+      viewPortHeight
     } = props
     const routeItems = this.getRouteItems(props)
-    const navbarHeight = isMobile
-      ? "var(--navBarHeightMobile)"
-      : "var(--navBarHeight)"
 
-    const footerHeight = isMobile
-      ? "var(--footerHeightMobile)"
-      : "var(--footerHeight)"
+    const routeOverlayHeight = `calc(${viewPortHeight}px - ${navbarHeight})`
 
-    this.setState({ routeItems, Settings, navbarHeight, footerHeight })
+    this.setState({
+      routeItems,
+      Settings,
+      navbarHeight,
+      footerHeight,
+      routeOverlayHeight
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -75,6 +87,24 @@ class ReactRouter extends PureComponent {
 
   getRouteItems = props => {
     const { User, history } = props
+
+    const Home = lazy(() => {
+      let min = 0
+      let max = 700
+      return new Promise(resolve => {
+        if (User.id) {
+          min = 0
+          max = 100
+        }
+        return setTimeout(resolve, getRandomInt(min, max))
+      }).then(
+        () =>
+          // Math.floor(Math.random() * 10) >= 4 ?
+          import("../views/Home")
+        // : Promise.reject(new Error())
+      )
+    })
+
     const { state } = history.location
     return [
       {
@@ -119,13 +149,15 @@ class ReactRouter extends PureComponent {
       routeItems,
       Settings: { show_footer },
       navbarHeight,
-      footerHeight
+      footerHeight,
+      routeOverlayHeight
     } = this.state
 
     return (
       <div
         className="routeOverlay"
         style={{
+          height: routeOverlayHeight,
           top: navbarHeight,
           bottom: show_footer ? footerHeight : 0
         }}

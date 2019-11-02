@@ -33,7 +33,7 @@ const mapStateToProps = ({
   innerHeight,
   navbarHeight,
   footerHeight,
-  viewPort: availHeight
+  viewPortHeight: availHeight
 })
 
 const mapDispatchToProps = { PostReduxEntry, SetEditorState, ClearEditorState }
@@ -72,7 +72,7 @@ class Home extends PureComponent {
       title,
       editorStateHtml,
       innerHeight,
-      viewPort,
+      viewPortHeight,
       navbarHeight,
       footerHeight
     } = props
@@ -84,7 +84,7 @@ class Home extends PureComponent {
       innerHeight,
       navbarHeight,
       footerHeight,
-      viewPort
+      viewPortHeight
     })
   }
 
@@ -123,7 +123,7 @@ class Home extends PureComponent {
       innerHeight,
       navbarHeight,
       footerHeight,
-      viewPort
+      viewPortHeight
     } = this.state
 
     return (
@@ -148,10 +148,7 @@ class Home extends PureComponent {
                   color="primary"
                   style={{ color: "white" }}
                 >
-                  <i
-                    className="fas fa-feather-alt"
-                    style={{ fontSize: 20 }}
-                  ></i>
+                  <i className="fas fa-feather-alt" style={{ fontSize: 20 }} />
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>
@@ -161,7 +158,8 @@ class Home extends PureComponent {
           <Col
             xs={12}
             style={{
-              height: `calc(${viewPort}px - ${navbarHeight} - var(--inputButtonHeight) - 8px)`
+              // background: 'red',
+              height: `calc(${viewPortHeight}px - ${navbarHeight} - var(--inputButtonHeight) - 16px)`
             }}
           >
             <TextEditor

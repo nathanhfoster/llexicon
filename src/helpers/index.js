@@ -1,3 +1,5 @@
+import { lazy } from "react"
+
 const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -150,6 +152,18 @@ const readmultifiles = e => {
   })
 }
 
+const lazyLoadWithTimeOut = (min, max, componentPath) =>
+  lazy(() => {
+    return new Promise(resolve =>
+      setTimeout(resolve, getRandomInt(min, max))
+    ).then(
+      () =>
+        // Math.floor(Math.random() * 10) >= 4 ?
+        import(componentPath)
+      // : Promise.reject(new Error())
+    )
+  })
+
 export {
   getRandomInt,
   arrayToObject,
@@ -168,5 +182,6 @@ export {
   joinStrings,
   splitStrings,
   mergeJson,
-  importTextFileEntries
+  importTextFileEntries,
+  lazyLoadWithTimeOut
 }

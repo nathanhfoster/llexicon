@@ -11,14 +11,12 @@ const mapStateToProps = ({
   User,
   Entries: { items },
   Window: {
-    innerHeight,
     screen: { availHeight }
   }
 }) => ({
   UserId: User.id,
   entries: items.filter(item => !item.shouldDelete),
-  innerHeight,
-  viewPort: availHeight
+  viewPortHeight: availHeight
 })
 
 const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
@@ -56,13 +54,17 @@ class Entries extends PureComponent {
   }
 
   getState = props => {
-    const { entries, viewPort, innerHeight } = props
+    const { entries, viewPortHeight } = props
 
-    const inputButtonHeight = 46
+    const inputHeight = 46
 
-    const listHeight = viewPort
+    const listHeight = viewPortHeight - inputHeight
 
-    this.setState({ entries, listHeight, innerHeight })
+    let listItemHeight = 500
+
+    if (listHeight / 2 > listItemHeight) listItemHeight = listHeight / 2
+
+    this.setState({ entries, listHeight, listItemHeight })
   }
 
   componentWillUnmount() {
@@ -84,14 +86,14 @@ class Entries extends PureComponent {
     const newId = id || index
 
     return (
-      <Col key={newId} style={{ ...style,  }} xs={12}>
+      <Col key={newId} style={{ ...style /* background: "red" */ }} xs={12}>
         <Entry id={newId} {...restOfProps} containerHeight={style.height} />
       </Col>
     )
   }
 
   render() {
-    const { entries, listHeight } = this.state
+    const { entries, listHeight, listItemHeight } = this.state
 
     return (
       <Container className="Entries">
@@ -102,7 +104,7 @@ class Entries extends PureComponent {
             width="100%"
             itemData={entries}
             itemCount={entries.length}
-            itemSize={listHeight / 2}
+            itemSize={listItemHeight}
           >
             {this.renderEntries}
           </FixedSizeList>

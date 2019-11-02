@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, NavLink as RouterNavLink } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../helpers/routing"
-import { RouteMap } from "../../ReactRouter/routes"
+import { RouteMap } from "../../ReactRouter/Routes"
 import PropTypes from "prop-types"
 import "./styles.css"
 import {

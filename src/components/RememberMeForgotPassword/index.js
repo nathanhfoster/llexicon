@@ -1,41 +1,41 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { FormGroup, Label, Input } from "reactstrap";
-import { connect as reduxConnect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
-import { RouterLinkPush } from "../../helpers/routing";
-import { RouteMap } from "../../ReactRouter/routes";
-import "./styles.css";
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import { FormGroup, Label, Input } from "reactstrap"
+import { connect as reduxConnect } from "react-redux"
+import { withRouter, Link } from "react-router-dom"
+import { RouterLinkPush } from "../../helpers/routing"
+import { RouteMap } from "../../ReactRouter"
+import "./styles.css"
 
-const mapStateToProps = ({}) => ({});
+const mapStateToProps = ({}) => ({})
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {}
 
 class RememberMeForgotPassword extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = {};
+    this.state = {}
   }
 
-  static propTypes = {};
+  static propTypes = {}
 
-  static defaultProps = {};
+  static defaultProps = {}
 
   componentWillMount() {
-    this.getState(this.props);
+    this.getState(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.getState(nextProps);
+    this.getState(nextProps)
   }
 
   getState = props => {
-    this.setState({});
-  };
+    this.setState({})
+  }
 
   render() {
-    const { history, isLogin, onChange } = this.props;
+    const { history, isLogin, onChange } = this.props
     return (
       <FormGroup check>
         <Label check>
@@ -43,11 +43,16 @@ class RememberMeForgotPassword extends PureComponent {
           Keep me logged in
         </Label>
 
-        <Link to={RouterLinkPush(history, RouteMap.PASSWORD_RESET)} className="float-right">
+        <Link
+          to={RouterLinkPush(history, RouteMap.PASSWORD_RESET)}
+          className="float-right"
+        >
           Forgot password?
         </Link>
       </FormGroup>
-    );
+    )
   }
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(RememberMeForgotPassword));
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(RememberMeForgotPassword)
+)
