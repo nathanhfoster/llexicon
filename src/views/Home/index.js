@@ -1,6 +1,7 @@
-import React, { PureComponent, lazy } from "react"
+import React, { PureComponent } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
+import TextEditor from "../../components/TextEditor"
 import {
   Container,
   Row,
@@ -14,8 +15,6 @@ import {
 import { PostReduxEntry } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
-
-const TextEditor = lazy(() => import("../../components/TextEditor"))
 
 const mapStateToProps = ({
   User: { id },

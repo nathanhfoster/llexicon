@@ -1,4 +1,4 @@
-import React, { PureComponent, lazy } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
@@ -13,7 +13,6 @@ import PrivacyPolicy from "../components/PrivacyPolicy"
 import PageNotFound from "../views/PageNotFound"
 import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "../helpers/routing"
-import { getRandomInt } from "../helpers"
 import "./styles.css"
 
 const mapStateToProps = ({

@@ -1,6 +1,3 @@
-import HomeRoute from "./HomeRoute"
-import LoginRoute from "./LoginRoute"
-
 const RouteMap = {
   ROOT: "/",
   SETTINGS: "/settings",
@@ -12,4 +9,4 @@ const RouteMap = {
   PRIVACY_POLICY: "/privacy-policy"
 }
 
-export { HomeRoute, LoginRoute, RouteMap }
+export { RouteMap }

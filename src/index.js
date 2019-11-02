@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react"
+import React, { Suspense } from "react"
 import ReactDOM from "react-dom"
 import storeFactory from "./store"
 import { Provider } from "react-redux"
