@@ -19,6 +19,10 @@ const GetUserEntries = () => (dispatch, getState) => {
     .get(`/entries/${id}/view/`)
     .then(res => {
       dispatch({
+        type: ALERTS_SET_MESSAGE,
+        payload: { title: "Loaded", message: "Entries" }
+      })
+      dispatch({
         type: ENTRIES_SET,
         payload: res.data
       })
