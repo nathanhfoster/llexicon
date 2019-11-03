@@ -246,7 +246,7 @@ class TextEditor extends PureComponent {
           onEditorStateChange={editorState =>
             this.handleEditorStateChange(editorState)
           }
-          // onFocus={e => e.preventDefault()}
+          onFocus={e => e.preventDefault()}
           // onBlur={(e, editorState) => {
           //   this.props.SetEditorState(
           //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
