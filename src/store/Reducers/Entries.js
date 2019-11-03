@@ -1,27 +1,50 @@
 import { ReduxActions } from "../../constants.js"
+const {
+  ENTRIES_PENDING,
+  ENTRIES_ERROR,
+  ENTRY_IMPORT,
+  ENTRIES_SET,
+  ENTRY_POST,
+  ENTRY_UPDATE,
+  ENTRY_DELETE,
+  REDUX_RESET
+} = ReduxActions
 
-const defaultState = { items: [] }
+const defaultState = { items: [], isPending: false, error: null }
 
 export const Entries = (state = defaultState, action) => {
-  const { id, shouldPost, shouldDelete, type, payload } = action
+  const { id, shouldDelete, type, payload } = action
   switch (type) {
-    case ReduxActions.ENTRY_IMPORT:
-      return { ...state, items: state.items.concat(payload) }
-    case ReduxActions.ENTRIES_SET:
+    case ENTRIES_PENDING:
+      return { ...state, isPending: true }
+    case ENTRIES_ERROR:
+      return { ...state, isPending: false, error: payload }
+    case ENTRY_IMPORT:
+      return {
+        ...state,
+        items: state.items.concat(payload),
+        error: defaultState.error
+      }
+    case ENTRIES_SET:
       return { ...state, items: payload }
-    case ReduxActions.ENTRY_POST:
+    case ENTRY_POST:
       const entryFound = state.items.findIndex(item => item.id === id) !== -1
-      if (entryFound) return state
+      if (entryFound)
+        return { ...state, isPending: false, error: defaultState.error }
       else
         return {
           ...state,
+          isPending: false,
+          error: defaultState.error,
           items: [payload].concat(state.items)
         }
-    case ReduxActions.ENTRY_UPDATE:
+    case ENTRY_UPDATE:
       return {
         ...state,
-        items: state.items.map(item =>
-          item.id === id
+        isPending: false,
+        error: defaultState.error,
+        items: state.items.map((item, i) =>
+          i === id || item.id === id
             ? {
                 ...item,
                 ...payload,
@@ -31,9 +54,9 @@ export const Entries = (state = defaultState, action) => {
             : item
         )
       }
-    case ReduxActions.ENTRY_DELETE:
+    case ENTRY_DELETE:
       return { ...state, items: state.items.filter(item => item.id !== id) }
-    case ReduxActions.REDUX_RESET:
+    case REDUX_RESET:
       return defaultState
     default:
       return state

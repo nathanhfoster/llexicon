@@ -17,14 +17,12 @@ import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
-  User: { id },
   TextEditor: { clearedOn, title, editorStateHtml },
   Window: {
     innerHeight,
     screen: { availHeight }
   }
 }) => ({
-  UserId: id,
   clearedOn,
   title,
   editorStateHtml,
@@ -42,8 +40,10 @@ class Home extends PureComponent {
   }
 
   static propTypes = {
-    UserId: PropTypes.number,
-    clearedOn: PropTypes.string,
+    clearedOn: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]),
     editorStateHtml: PropTypes.string,
     SetEditorState: PropTypes.func.isRequired,
     ClearEditorState: PropTypes.func.isRequired,
@@ -80,11 +80,10 @@ class Home extends PureComponent {
   }
 
   handlePostEntry = () => {
-    const { UserId, PostReduxEntry, ClearEditorState } = this.props
+    const { PostReduxEntry, ClearEditorState } = this.props
     const { editorStateHtml, title, tags } = this.state
 
     const payload = {
-      author: UserId,
       title,
       html: editorStateHtml,
       tags,

@@ -17,9 +17,8 @@ import { SetEditorState } from "../../actions/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
-  User,
   TextEditor: { clearedOn, title, editorStateHtml }
-}) => ({ UserId: User.id, clearedOn, title, editorStateHtml })
+}) => ({ clearedOn, title, editorStateHtml })
 
 const mapDispatchToProps = { PostReduxEntry, SetEditorState }
 
@@ -33,7 +32,6 @@ class AddEntry extends PureComponent {
   }
 
   static propTypes = {
-    UserId: PropTypes.number,
     clearedOn: PropTypes.string,
     editorStateHtml: PropTypes.string,
     SetEditorState: PropTypes.func.isRequired,
@@ -58,11 +56,10 @@ class AddEntry extends PureComponent {
   }
 
   handlePostEntry = () => {
-    const { UserId, PostReduxEntry } = this.props
+    const { PostReduxEntry } = this.props
     const { editorStateHtml, title, tags } = this.state
 
     const payload = {
-      author: UserId,
       title,
       html: editorStateHtml,
       tags,

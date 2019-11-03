@@ -6,7 +6,7 @@ import { ImportReduxEntry } from "../../actions/Entries"
 
 import "./styles.css"
 
-const mapStateToProps = ({ User }) => ({ UserId: User.id })
+const mapStateToProps = ({}) => ({})
 
 const mapDispatchToProps = { ImportReduxEntry }
 
@@ -33,7 +33,7 @@ class ImportEntries extends PureComponent {
   }
 
   importEntries = e => {
-    const { UserId, ImportReduxEntry } = this.props
+    const { ImportReduxEntry } = this.props
     const files = e.currentTarget.files
     Object.keys(files).forEach(i => {
       const file = files[i]
@@ -43,7 +43,6 @@ class ImportEntries extends PureComponent {
         //server call for uploading or reading the files one-by-one
         //by using 'reader.result' or 'file'
         const payload = {
-          author: UserId,
           // title,
           html: result,
           // tags,

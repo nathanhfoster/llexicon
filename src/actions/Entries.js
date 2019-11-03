@@ -2,29 +2,39 @@ import { ReduxActions } from "../constants"
 import { Axios, Sync } from "."
 import qs from "qs"
 
+const {
+  ENTRIES_PENDING,
+  ENTRIES_ERROR,
+  ENTRIES_SET,
+  ENTRY_DELETE,
+  ENTRY_IMPORT,
+  ENTRY_POST,
+  ENTRY_UPDATE
+} = ReduxActions
+
 const GetUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/view/`)
     .then(res => {
       dispatch({
-        type: ReduxActions.ENTRIES_SET,
+        type: ENTRIES_SET,
         payload: res.data
       })
     })
     .catch(e => {
-      console.log("GetUserEntries: ", e.response)
+      const payload = JSON.parse(JSON.stringify(e.response))
+      dispatch({ type: ENTRIES_ERROR, payload })
     })
 }
 
 const PostReduxEntry = payload => ({
-  type: ReduxActions.ENTRY_IMPORT,
-  payload,
-  shouldPost: true
+  type: ENTRY_IMPORT,
+  payload: { ...payload, shouldPost: true, shouldDelete: false }
 })
 
 const ImportReduxEntry = payload => ({
-  type: ReduxActions.ENTRY_IMPORT,
+  type: ENTRY_IMPORT,
   payload
 })
 
@@ -34,18 +44,19 @@ const PostEntry = payload => dispatch =>
     .then(res => {
       dispatch({
         id: res.data.id,
-        type: ReduxActions.ENTRY_POST,
+        type: ENTRY_POST,
         payload: res.data,
         shouldPost: false
       })
     })
     .catch(e => {
-      console.log("PostEntry: ", e.response)
+      const payload = JSON.parse(JSON.stringify(e.response))
+      dispatch({ type: ENTRIES_ERROR, payload })
     })
 
-const UpdateReduxEntry = ({ shouldDelete, ...payload }) => ({
+const UpdateReduxEntry = ({ shouldDelete = false, ...payload }) => ({
   id: payload.id,
-  type: ReduxActions.ENTRY_UPDATE,
+  type: ENTRY_UPDATE,
   payload,
   shouldDelete
 })
@@ -56,13 +67,14 @@ const UpdateEntry = (id, payload) => dispatch =>
     .then(res => {
       dispatch({
         id,
-        type: ReduxActions.ENTRY_UPDATE,
+        type: ENTRY_UPDATE,
         payload: res.data,
         lastUpdated: false
       })
     })
     .catch(e => {
-      console.log("UpdateEntry: ", e.response)
+      const payload = JSON.parse(JSON.stringify(e.response))
+      dispatch({ type: ENTRIES_ERROR, payload })
     })
 
 const DeleteEntry = id => dispatch =>
@@ -71,17 +83,21 @@ const DeleteEntry = id => dispatch =>
     .then(res => {
       dispatch({
         id,
-        type: ReduxActions.ENTRY_DELETE
+        type: ENTRY_DELETE
       })
     })
     .catch(e => {
-      console.log("DeleteEntry: ", e.response)
+      const payload = JSON.parse(JSON.stringify(e.response))
+      dispatch({ type: ENTRIES_ERROR, payload })
     })
 
 const SyncEntries = () => (dispatch, getState) => {
   const {
+    User,
     Entries: { items }
   } = getState()
+
+  const UserId = User.id
 
   let dispatchDeleteEntries = []
   let dispatchPostEntries = []
@@ -91,7 +107,6 @@ const SyncEntries = () => (dispatch, getState) => {
     const entry = items[i]
     const {
       id,
-      author,
       title,
       html,
       tags,
@@ -109,7 +124,7 @@ const SyncEntries = () => (dispatch, getState) => {
       dispatchDeleteEntries.push(DeleteEntry(id))
       continue
     } else if (shouldPost) {
-      payload = { author, title, html, tags }
+      payload = { author: UserId, title, html, tags }
       dispatchPostEntries.push(PostEntry(payload))
       continue
     } else if (lastUpdated) {
