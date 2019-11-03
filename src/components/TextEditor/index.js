@@ -93,15 +93,6 @@ class TextEditor extends PureComponent {
     this.getState(this.props)
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    const { shouldAutoFocus } = nextProps
-    const { editorRef } = nextState
-    const currentEditorRef = this.state.editorRef
-
-    if (!currentEditorRef && editorRef) {
-      if (shouldAutoFocus) editorRef.focus()
-    }
-  }
   componentDidMount() {}
 
   componentWillReceiveProps(nextProps) {
@@ -117,7 +108,8 @@ class TextEditor extends PureComponent {
       readOnly,
       toolbarHidden,
       height,
-      width
+      width,
+      shouldAutoFocus
     } = props
     let editorState = this.htmlToEditorState(html)
     editorState = EditorState.moveSelectionToEnd(editorState)
@@ -138,7 +130,8 @@ class TextEditor extends PureComponent {
       readOnly,
       toolbarHidden,
       height,
-      width
+      width,
+      shouldAutoFocus
     })
   }
 
@@ -202,7 +195,12 @@ class TextEditor extends PureComponent {
     maxHeigh: 100
   })
 
-  setEditorReference = editorRef => this.setState({ editorRef })
+  setEditorReference = editorRef => {
+    if (!editorRef) return
+    const { shouldAutoFocus } = this.state
+    if (shouldAutoFocus) editorRef.focus()
+    this.setState({ editorRef })
+  }
 
   renderBlock = (block, config) => {
     console.log(block, config)
@@ -248,7 +246,7 @@ class TextEditor extends PureComponent {
           onEditorStateChange={editorState =>
             this.handleEditorStateChange(editorState)
           }
-          onFocus={e => e.preventDefault()}
+          // onFocus={e => e.preventDefault()}
           // onBlur={(e, editorState) => {
           //   this.props.SetEditorState(
           //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
