@@ -5,6 +5,7 @@ import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import LoadingScreen from "./components/LoadingScreen"
 import App from "./App"
+import AlertNotifications from "./store/AlertNotifications"
 
 import Persister from "./store/Persister"
 import { getState } from "./store/Persister/persist"
@@ -20,6 +21,7 @@ ReactDOM.render(
   <Provider store={ReduxStore}>
     <Suspense fallback={<LoadingScreen />}>
       <Persister />
+      <AlertNotifications />
       <App />
       <BrowserRouter>
         <ReactRouter />

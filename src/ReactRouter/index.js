@@ -1,11 +1,9 @@
-import React, { PureComponent, lazy } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
-import { Container, Row, Col } from "reactstrap"
 import { RouteMap } from "./Routes"
 import NavBar from "../components/NavBar"
-import AlertNotifications from "../store/AlertNotifications"
 import Footer from "../components/Footer"
 import Home from "../views/Home"
 import Settings from "../views/Settings"
@@ -139,7 +137,6 @@ class ReactRouter extends PureComponent {
         }}
       >
         <NavBar />
-        <AlertNotifications />
         <Switch>
           {this.renderRouteItems(routeItems)}
           <Route component={PageNotFound} />

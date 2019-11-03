@@ -1,4 +1,4 @@
-import React, { PureComponent, lazy } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { setWindow } from "./actions/App"
