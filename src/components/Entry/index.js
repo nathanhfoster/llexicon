@@ -99,7 +99,7 @@ class Entry extends PureComponent {
           />
           <InputGroupAddon addonType="append">
             <InputGroupText color="primary">
-              <Moment fromNow format="MM/DD/YY mm:ss">
+              <Moment fromNow format="MM/DD/YY hh:mm A">
                 {date_created || lastUpdated}
               </Moment>
             </InputGroupText>
