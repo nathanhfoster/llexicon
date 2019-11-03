@@ -3,6 +3,7 @@ import { Axios, Sync } from "."
 import qs from "qs"
 
 const {
+  ALERTS_SET_MESSAGE,
   ENTRIES_PENDING,
   ENTRIES_ERROR,
   ENTRIES_SET,
@@ -43,6 +44,10 @@ const PostEntry = payload => dispatch =>
     .post(`entries/`, qs.stringify(payload))
     .then(res => {
       dispatch({
+        type: ALERTS_SET_MESSAGE,
+        payload: { title: "Posted", message: "Entry" }
+      })
+      dispatch({
         id: res.data.id,
         type: ENTRY_POST,
         payload: res.data,
@@ -66,6 +71,10 @@ const UpdateEntry = (id, payload) => dispatch =>
     .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
     .then(res => {
       dispatch({
+        type: ALERTS_SET_MESSAGE,
+        payload: { title: "Updated", message: "Entry" }
+      })
+      dispatch({
         id,
         type: ENTRY_UPDATE,
         payload: res.data,
@@ -81,6 +90,10 @@ const DeleteEntry = id => dispatch =>
   Axios()
     .delete(`/entries/${id}/`)
     .then(res => {
+      dispatch({
+        type: ALERTS_SET_MESSAGE,
+        payload: { title: "Deleted", message: "Entry" }
+      })
       dispatch({
         id,
         type: ENTRY_DELETE

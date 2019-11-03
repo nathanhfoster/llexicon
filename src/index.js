@@ -5,6 +5,7 @@ import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import LoadingScreen from "./components/LoadingScreen"
 import App from "./App"
+
 import Persister from "./store/Persister"
 import { getState } from "./store/Persister/persist"
 import * as serviceWorker from "./serviceWorker"

@@ -9,6 +9,8 @@ const SocialAuthenticationProviders = {
 }
 
 const ReduxActions = {
+  ALERTS_SET_MESSAGE: "ALERTS_SET_MESSAGE",
+  ALERTS_CLEAR: "ALERTS_CLEAR",
   USER_SET: "USER_SET",
   USER_SET_SETTINGS: "USER_SET_SETTINGS",
 
