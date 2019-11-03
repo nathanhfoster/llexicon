@@ -110,7 +110,7 @@
   min-height: 25px;
   display: flex;
   align-items: center;
-  padding: 0 5px;
+  padding: 4px;
 }
 
 .rdw-dropdownoption-highlighted {
@@ -270,18 +270,18 @@
 
 .rdw-colorpicker-modal {
   position: absolute;
-  top: 35px;
-  left: 5px;
-  display: flex;
-  flex-direction: column;
   width: 175px;
   height: 175px;
+  top: 35px;
+  left: calc( -175px + 35px);
+  display: flex;
+  flex-direction: column;
   border: 1px solid #F1F1F1;
   padding: 15px;
   border-radius: 2px;
   z-index: 100;
   background: white;
-  box-shadow: 3px 3px 5px #BFBDBD;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .rdw-colorpicker-modal-header {
@@ -298,7 +298,7 @@
 }
 
 .rdw-colorpicker-modal-style-label-active {
-  border-bottom: 2px solid #0a66b7;
+  border-bottom: 2px solid var(--primaryColor);
 }
 
 .rdw-colorpicker-modal-options {
@@ -324,19 +324,19 @@
   width: 22px;
   height: 22px;
   min-width: 22px;
-  box-shadow: 1px 2px 1px #BFBDBD inset;
+  box-shadow: var(--primaryBoxShadow) inset;
 }
 
 .rdw-colorpicker-option:hover {
-  box-shadow: 1px 2px 1px #BFBDBD;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .rdw-colorpicker-option:active {
-  box-shadow: -1px -2px 1px #BFBDBD;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .rdw-colorpicker-option-active {
-  box-shadow: 0px 0px 2px 2px #BFBDBD;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .rdw-link-wrapper {
@@ -528,6 +528,7 @@
   cursor: pointer;
   background: white;
   text-transform: capitalize;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .rdw-embedded-modal-btn:hover {
@@ -659,11 +660,11 @@
 
 .rdw-image-modal {
   position: absolute;
+  width: 235px;
   top: 35px;
-  left: 5px;
+  left: calc(-117.5px + 30px);
   display: flex;
   flex-direction: column;
-  width: 235px;
   border: 1px solid #F1F1F1;
   padding: 15px;
   border-radius: 2px;
@@ -779,6 +780,7 @@
   cursor: pointer;
   background: white;
   text-transform: capitalize;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .rdw-image-modal-btn:hover {
