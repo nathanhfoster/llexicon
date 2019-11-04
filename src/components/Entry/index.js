@@ -109,7 +109,7 @@ class Entry extends PureComponent {
             onClick={() => UpdateReduxEntry({ id, shouldDelete: true })}
           >
             <InputGroupText color="primary">
-              <i className="fas fa-trash" style={{ fontSize: 20 }} />
+              <i className="fas fa-trash" style={{ color: "var(--danger)", fontSize: 20 }} />
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
