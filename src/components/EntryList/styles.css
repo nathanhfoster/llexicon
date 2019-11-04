@@ -1,0 +1,46 @@
+.List {
+    overflow-y: auto;
+}
+
+.ListHeader {
+    box-shadow: 0 0 5px var(--dark_border);
+    font-size: 20px;
+    line-height: 22px;
+    height: 22px;
+    background: var(--primaryGradientBackground);
+    /* fallback for old browsers */
+    /* background: -webkit-linear-gradient( to right, var(--secondaryColor), var(--slate_grey), var(--secondaryColor)); */
+    /* Chrome 10-25, Safari 5.1-6 */
+    /* background: linear-gradient( to right, var(--secondaryColor), var(--slate_grey), var(--secondaryColor)); */
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.listItem {
+    /* background-color: var(--slate_grey); */
+    border: 1px solid var(--dark_border);
+    padding: 4px;
+    opacity: var(--mainOpacity);
+}
+
+.listItem:hover {
+    border-color: var(--primaryColor);
+    background-color: var(--slate_grey) !important;
+}
+
+/* .List .list-group-item:first-child,
+  .List .list-group-item:last-child {
+    border-radius: 0 !important;
+  } */
+
+a.list-group-item .list-group-item-heading, button.list-group-item .list-group-item-heading, .list-group-item-text {
+    color: var(--tertiarycolor);
+}
+
+.EventColorLabelContainer {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    display: inline-block;
+    margin-right: 6px;
+    border-radius: 100%;
+}

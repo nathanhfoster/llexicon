@@ -11,6 +11,7 @@
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
+    "react-calendar": "^2.19.2",
     "react-dom": "^16.10.2",
     "react-draft-wysiwyg": "^1.13.2",
     "react-facebook-login": "^4.1.1",

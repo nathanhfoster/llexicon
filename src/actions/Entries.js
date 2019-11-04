@@ -7,6 +7,7 @@ const {
   ENTRIES_PENDING,
   ENTRIES_ERROR,
   ENTRIES_SET,
+  ENTRIES_SET_BY_DATE,
   ENTRY_DELETE,
   ENTRY_IMPORT,
   ENTRY_POST,
@@ -32,6 +33,24 @@ const GetUserEntries = () => (dispatch, getState) => {
       dispatch({ type: ENTRIES_ERROR, payload })
     })
 }
+
+const GetUserEntriesByDate = date => (dispatch, getState) => {
+  const { id } = getState().User
+  return Axios()
+    .post(`/entries/${id}/view_by_date/`, qs.stringify({ date }))
+    .then(res => {
+      dispatch({
+        type: ENTRIES_SET_BY_DATE,
+        payload: res.data
+      })
+    })
+    .catch(e => {
+      const payload = JSON.parse(JSON.stringify(e.response))
+      dispatch({ type: ENTRIES_ERROR, payload })
+    })
+}
+
+//{{url}}/entries/2/view_by_date/
 
 const PostReduxEntry = payload => ({
   type: ENTRY_IMPORT,
@@ -159,6 +178,7 @@ const SyncEntries = () => (dispatch, getState) => {
 
 export {
   GetUserEntries,
+  GetUserEntriesByDate,
   PostReduxEntry,
   ImportReduxEntry,
   PostEntry,

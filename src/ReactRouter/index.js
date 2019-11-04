@@ -8,7 +8,7 @@ import Footer from "../components/Footer"
 import Home from "../views/Home"
 import Settings from "../views/Settings"
 import AddEntry from "../views/AddEntry"
-import Calendar from "../views/Calendar"
+import DiaryCalendar from "../views/DiaryCalendar"
 import Entries from "../views/Entries"
 import Login from "../views/Login"
 import PrivacyPolicy from "../components/PrivacyPolicy"
@@ -105,7 +105,7 @@ class ReactRouter extends PureComponent {
         path: [SETTINGS],
         component: this.renderRedirectOrComponent(!User.token, HOME, Settings)
       },
-      { path: [CALENDAR], component: Calendar },
+      { path: [CALENDAR], component: DiaryCalendar },
       {
         path: [ENTRIES, HOME],
         component: Entries

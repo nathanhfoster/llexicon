@@ -42,11 +42,14 @@ class Entry extends PureComponent {
       title,
       html,
       date_created,
+      date_created_by_author,
       date_updated,
       views,
       lastUpdated,
       containerHeight
     } = props
+
+    console.log(date_created_by_author)
 
     const dividerHeight = 16
     const inputHeight = 48
@@ -61,6 +64,7 @@ class Entry extends PureComponent {
       title,
       html,
       date_created,
+      date_created_by_author,
       date_updated,
       views,
       lastUpdated,
@@ -80,6 +84,7 @@ class Entry extends PureComponent {
       title,
       html,
       date_created,
+      date_created_by_author,
       date_updated,
       views,
       lastUpdated,
@@ -100,7 +105,7 @@ class Entry extends PureComponent {
           <InputGroupAddon addonType="append">
             <InputGroupText color="primary">
               <Moment fromNow format="MM/DD/YY hh:mm a">
-                {date_created || lastUpdated}
+                {date_created_by_author || lastUpdated}
               </Moment>
             </InputGroupText>
           </InputGroupAddon>

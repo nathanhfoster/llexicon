@@ -4,13 +4,19 @@ const {
   ENTRIES_ERROR,
   ENTRY_IMPORT,
   ENTRIES_SET,
+  ENTRIES_SET_BY_DATE,
   ENTRY_POST,
   ENTRY_UPDATE,
   ENTRY_DELETE,
   REDUX_RESET
 } = ReduxActions
 
-const defaultState = { items: [], isPending: false, error: null }
+const defaultState = {
+  items: [],
+  itemsByDate: [],
+  isPending: false,
+  error: null
+}
 
 export const Entries = (state = defaultState, action) => {
   const { id, shouldDelete, type, payload } = action
@@ -27,6 +33,8 @@ export const Entries = (state = defaultState, action) => {
       }
     case ENTRIES_SET:
       return { ...state, items: payload }
+    case ENTRIES_SET_BY_DATE:
+      return { ...state, itemsByDate: payload }
     case ENTRY_POST:
       const entryFound = state.items.findIndex(item => item.id === id) !== -1
       if (entryFound)

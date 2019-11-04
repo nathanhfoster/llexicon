@@ -1,0 +1,49 @@
+.TileContent {
+    z-index: 4;
+    overflow-y: auto;
+    position: relative;
+    line-height: 76px;
+    max-height: 76px;
+    font-size: 13px;
+    min-width: 0;
+    align-items: center;
+    text-align: left;
+}
+
+.TileContent::-webkit-scrollbar {
+    display: block;
+}
+
+.hasEventsContainer {
+    overflow: hidden;
+    height: 24px;
+    font-size: 13px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.hasEventsContainer:hover {
+    /* background-color: var(--slate_grey); */
+}
+
+.eventLabelColor {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    display: inline-block;
+    margin-right: 4px;
+    border-radius: 100%;
+}
+
+.eventTitle {
+    flex: 1 0 0;
+    margin-left: 4px;
+    user-select: none;
+    font-family: "proxima_novasemibold", Arial, sans-serif;
+    font-weight: 700;
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 16px), transparent calc(100% - 8px), transparent);
+}

@@ -22,7 +22,7 @@
   .react-calendar__month-view button {
     height: var(--calendarMobileTileHeight);
   }
-  .react-calendar__tile abbr {
+  .react-calendar__month-view .react-calendar__tile abbr {
     position: relative;
     top: 0;
     left: 0;
