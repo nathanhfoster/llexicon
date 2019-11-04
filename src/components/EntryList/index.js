@@ -6,7 +6,6 @@ import Moment from "react-moment"
 import MomentJS from "moment"
 import { removeAttributeDuplicates } from "../../helpers"
 import "./styles.css"
-import "./stylesM.css"
 
 const mapStateToProps = ({ Entries: { items, itemsByDate } }) => ({
   entries: removeAttributeDuplicates(items.concat(itemsByDate), "id")

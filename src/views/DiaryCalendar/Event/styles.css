@@ -1,3 +1,4 @@
+@import "./stylesM.css";
 :root {
   --tooltipSizeRatio: 4px;
   --tooltipSize: calc(var(--tooltipSizeRatio) * 7);
@@ -41,16 +42,20 @@
   box-sizing: border-box;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
 .slider-tooltip * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
 .slider-tooltip-hidden {
   display: none;
 }
+
 .slider-tooltip-placement-top {
   padding: var(--tooltipRatio_6) 0 var(--tooltipRatio_3) 0;
 }
+
 .slider-tooltip-inner {
   padding: var(--tooltipRatio_4) var(--tooltipRatio_12);
   min-width: var(--tooltipSize);
@@ -65,6 +70,7 @@
   border-radius: 50%;
   box-shadow: 0 0 var(--tooltipRatio_6) var(--slate_grey);
 }
+
 .slider-tooltip-arrow {
   position: absolute;
   width: 0;
@@ -72,6 +78,7 @@
   border-color: transparent;
   border-style: solid;
 }
+
 .slider-tooltip-placement-top .slider-tooltip-arrow {
   bottom: var(--tooltipRatio_6);
   left: 50%;
@@ -79,8 +86,8 @@
   border-width: var(--tooltipRatio_6) var(--tooltipRatio_6) 0;
   border-top-color: var(--tertiarycolor);
 }
-.rc-slider-handle:hover,
-.rc-slider-handle:focus {
+
+.rc-slider-handle:hover, .rc-slider-handle:focus {
   border-color: var(--primaryColor) !important;
   box-shadow: 0 0 0 var(--tooltipRation_8) var(--primaryColor) !important;
 }

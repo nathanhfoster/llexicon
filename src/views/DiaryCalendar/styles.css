@@ -1,5 +1,8 @@
-:root {
-  --calendarTileHeight: 140px;
+
+@media (min-width: 768px) {
+  :root {
+    --calendarTileHeight: 140px;
+  }
 }
 
 .react-calendar__month-view__weekdays abbr[title], .react-calendar__month-view__weekdays__weekday abbr[title] {
@@ -129,3 +132,5 @@
   margin: 0;
   padding: 0;
 }
+
+@import "./stylesM.css";
