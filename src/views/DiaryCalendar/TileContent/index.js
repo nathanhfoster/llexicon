@@ -56,16 +56,17 @@ class TileContent extends PureComponent {
       const eventFound = entryDate.isSame(calendarDay, "day")
       const shouldRenderInMobile = mapCounter[dayOfTheYear] < 2 ? true : false
       return (
-        <Content
+      eventFound && (
+         <Content
           id={id || i}
           date_created_by_author={date_created_by_author}
           {...restOfProps}
           activeDate={date}
           staticContext={staticContext}
           view={view}
-          eventFound={eventFound}
           shouldRenderInMobile={shouldRenderInMobile}
         />
+       )
       )
     })
   }
