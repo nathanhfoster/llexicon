@@ -1,6 +1,7 @@
 @import "./stylesM.css";
 .List {
-    overflow-y: auto;
+   overflow: hidden;
+   white-space: nowrap;
 }
 
 .ListHeader {
@@ -18,14 +19,14 @@
 
 .listItem {
     /* background-color: var(--slate_grey); */
-    border: 1px solid var(--dark_border);
+    /* border: 1px solid var(--dark_border); */
+    box-shadow: var(--primaryBoxShadow);
     padding: 4px;
-    opacity: var(--mainOpacity);
 }
 
 .listItem:hover {
     border-color: var(--primaryColor);
-    background-color: var(--slate_grey) !important;
+    background-color: whitesmoke;
 }
 
 /* .List .list-group-item:first-child,

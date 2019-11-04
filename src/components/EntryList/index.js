@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { ListGroup, ListGroupItem } from "reactstrap"
+import { ListGroup, ListGroupItem, Col } from "reactstrap"
 import Moment from "react-moment"
 import MomentJS from "moment"
 import { removeAttributeDuplicates } from "../../helpers"
@@ -73,7 +73,7 @@ class EntryList extends PureComponent {
       const startDate = MomentJS(date_created_by_author)
       const sameDayEvent = startDate.isSame(activeDate, "day")
       return (
-        <div key={i} style={{ borderRadius: 0 }}>
+        <div key={i} className="ListItemContainer">
           {sameDayEvent ? (
             <ListGroupItem
               key={id}
@@ -81,11 +81,14 @@ class EntryList extends PureComponent {
               className="Clickable listItem"
               header={title}
             >
-              <span
-                className="EventColorLabelContainer"
-                style={{ backgroundColor: "var(--primaryColor)" }}
-              />
-              <Moment format="hh:mm a">{date_created_by_author}</Moment>
+              <span className="eventDate">
+                <span
+                  className="EventColorLabelContainer"
+                  style={{ backgroundColor: "var(--primaryColor)" }}
+                />
+                <Moment format="hh:mma">{date_created_by_author}</Moment>
+              </span>
+              <span className="eventTitle">{title}</span>
             </ListGroupItem>
           ) : null}
         </div>

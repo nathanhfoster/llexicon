@@ -10,6 +10,7 @@ import { withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../helpers/routing"
 import { GetUserEntriesByDate } from "../../actions/Entries"
 import "./styles.css"
+import "./stylesM.css"
 
 const mapStateToProps = ({}) => ({})
 

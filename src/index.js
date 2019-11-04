@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom"
 import LoadingScreen from "./components/LoadingScreen"
 import App from "./App"
 import AlertNotifications from "./store/AlertNotifications"
+import BackgroundImage from "./ReactRouter/BackgroundImage"
 
 import Persister from "./store/Persister"
 import { getState } from "./store/Persister/persist"
@@ -24,6 +25,7 @@ ReactDOM.render(
       <AlertNotifications />
       <App />
       <BrowserRouter>
+        {/* <BackgroundImage /> */}
         <ReactRouter />
       </BrowserRouter>
     </Suspense>

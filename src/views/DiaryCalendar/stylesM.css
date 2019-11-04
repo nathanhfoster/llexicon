@@ -7,8 +7,13 @@
     min-height: calc(var(--calendarMobileTileHeight) * 6 + 86px);
   }
   .hasEventsContainerMobile {
-    position: relative;
+    display: grid;
+    grid-column: auto;
+    position: absolute;
     height: 2vh;
+    left: 0;
+    right: 0;
+    bottom: 4px;
   }
   .eventLabelColor {
     position: absolute;

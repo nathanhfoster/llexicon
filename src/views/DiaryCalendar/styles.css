@@ -1,4 +1,3 @@
-
 @media (min-width: 768px) {
   :root {
     --calendarTileHeight: 140px;
@@ -14,7 +13,7 @@
 .react-calendar__navigation button {
   border: 0;
   height: 2em;
-  /* background-color: var(--slate_grey); */
+  background-color: transparent;
   opacity: var(--mainOpacity);
   border-bottom: 1px solid var(--dark_border);
 }
@@ -59,12 +58,12 @@
   position: relative;
   opacity: var(--mainOpacity);
   height: var(--calendarTileHeight);
-  /* background-color: var(--slate_grey); */
+  background-color: transparent;
   border: 1px solid var(--dark_border);
 }
 
 .react-calendar__month-view button:hover {
-  /* background-color: var(--grey); */
+  background-color: whitesmoke;
 }
 
 .react-calendar__month-view button:hover ::-webkit-scrollbar-thumb {
@@ -132,5 +131,3 @@
   margin: 0;
   padding: 0;
 }
-
-@import "./stylesM.css";

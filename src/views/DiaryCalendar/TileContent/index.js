@@ -46,27 +46,30 @@ class TileContent extends PureComponent {
 
   renderContent = entries => {
     const { date, staticContext, view } = this.state
-    let mapCounter = {}
+    // const mapCounter = {}
     return entries.map((entry, i) => {
       const { id, date_created_by_author, ...restOfProps } = entry
       const calendarDay = MomentJS(date)
       const entryDate = MomentJS(date_created_by_author)
-      const dayOfTheYear = calendarDay.dayOfYear()
-      mapCounter[dayOfTheYear] = mapCounter[dayOfTheYear] + 1 || 1
       const eventFound = entryDate.isSame(calendarDay, "day")
-      const shouldRenderInMobile = mapCounter[dayOfTheYear] < 2 ? true : false
+      const dayOfTheYear = calendarDay.dayOfYear()
+
+      // mapCounter[dayOfTheYear] = mapCounter[dayOfTheYear] + 1 || 1
+
+      // const shouldRenderInMobile = mapCounter[dayOfTheYear] < 2 ? true : false
+      // console.log(mapCounter[dayOfTheYear])
       return (
-      eventFound && (
-         <Content
-          id={id || i}
-          date_created_by_author={date_created_by_author}
-          {...restOfProps}
-          activeDate={date}
-          staticContext={staticContext}
-          view={view}
-          shouldRenderInMobile={shouldRenderInMobile}
-        />
-       )
+        eventFound && (
+          <Content
+            id={id || i}
+            date_created_by_author={date_created_by_author}
+            {...restOfProps}
+            activeDate={date}
+            staticContext={staticContext}
+            view={view}
+            shouldRenderInMobile={true}
+          />
+        )
       )
     })
   }

@@ -84,11 +84,6 @@ class Content extends PureComponent {
       date_updated,
       views
     } = this.state
-    // let mapCounter = {}
-
-    // const dayOfTheYear = calendarDay.dayOfYear()
-    // console.log("calendarDay: ", calendarDay)
-    // mapCounter[dayOfTheYear] = mapCounter[dayOfTheYear] + 1 || 1
 
     return view == "month" && !isMobile ? (
       <div class="TileContent">
@@ -102,10 +97,10 @@ class Content extends PureComponent {
             className="eventLabelColor"
             style={{ backgroundColor: "var(--primaryColor)" }}
           />
-          <span>
+          <span className="eventDate">
             <Moment format="hh:mma">{date_created_by_author}</Moment>
           </span>
-          <h6 className="eventTitle">{title}</h6>
+          <span className="eventTitle">{title}</span>
         </div>
       </div>
     ) : view == "month" && shouldRenderInMobile ? (

@@ -5,6 +5,6 @@
     z-index: 1;
     left: 0;
     right: 0;
-    background-image: var(--primaryGradientBackground);
-    /* background-color: red; */
+    /* background-image: var(--primaryGradientBackground); */
+    /* background-color: rgba(0, 0, 0, 0.2); */
 }

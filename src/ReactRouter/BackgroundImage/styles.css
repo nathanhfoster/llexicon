@@ -1,0 +1,11 @@
+.BackgroundImage {
+    height: 100%;
+    /* opacity: .8; */
+}
+
+.BackgroundImage img {
+    background-color: var(--secondaryColor);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}

@@ -97,7 +97,7 @@ class Entries extends PureComponent {
     const { entries, listHeight, listItemHeight } = this.state
 
     return entries.length > 0 ? (
-      <Container className="Entries">
+      <Container className="Entries Container">
         <Row>
           <FixedSizeList
             ref={this.listRef}

@@ -49,8 +49,6 @@ class Entry extends PureComponent {
       containerHeight
     } = props
 
-    console.log(date_created_by_author)
-
     const dividerHeight = 16
     const inputHeight = 48
     const numberOfInputs = 1
@@ -114,7 +112,10 @@ class Entry extends PureComponent {
             onClick={() => UpdateReduxEntry({ id, shouldDelete: true })}
           >
             <InputGroupText color="primary">
-              <i className="fas fa-trash" style={{ color: "var(--danger)", fontSize: 20 }} />
+              <i
+                className="fas fa-trash"
+                style={{ color: "var(--danger)", fontSize: 20 }}
+              />
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
