@@ -48,7 +48,7 @@ class PrivacyPolicy extends PureComponent {
 
             <p>
               Nathan Foster ("us", "we", or "our") operates the
-              https://Lexicon.com/ website (the "Service").
+              https://astraltree.com/ website (the "Service").
             </p>
 
             <p>
@@ -63,7 +63,7 @@ class PrivacyPolicy extends PureComponent {
               accordance with this policy. Unless otherwise defined in this
               Privacy Policy, terms used in this Privacy Policy have the same
               meanings as in our Terms and Conditions, accessible from
-              https://Lexicon.com/
+              https://astraltree.com/
             </p>
 
             <h2 className="headerBanner">Information Collection And Use</h2>
