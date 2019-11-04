@@ -36,7 +36,6 @@ class Content extends PureComponent {
 
   getState = props => {
     const {
-      eventFound,
       activeDate,
       view,
       author,
@@ -51,7 +50,6 @@ class Content extends PureComponent {
       shouldRenderInMobile
     } = props
     this.setState({
-      eventFound,
       view,
       author,
       tags,
@@ -73,7 +71,6 @@ class Content extends PureComponent {
   render() {
     const { history, location, match } = this.props
     const {
-      eventFound,
       isMobile,
       shouldRenderInMobile,
       view,
@@ -93,7 +90,7 @@ class Content extends PureComponent {
     // console.log("calendarDay: ", calendarDay)
     // mapCounter[dayOfTheYear] = mapCounter[dayOfTheYear] + 1 || 1
 
-    return eventFound && view == "month" && !isMobile ? (
+    return view == "month" && !isMobile ? (
       <div class="TileContent">
         <div
           onClick={() => RouterPush(history, `/calendar/event/${id}`)}
@@ -111,7 +108,7 @@ class Content extends PureComponent {
           <h6 className="eventTitle">{title}</h6>
         </div>
       </div>
-    ) : eventFound && view == "month" && shouldRenderInMobile ? (
+    ) : view == "month" && shouldRenderInMobile ? (
       <div class="hasEventsContainerMobile">
         <span
           className="eventLabelColor"
