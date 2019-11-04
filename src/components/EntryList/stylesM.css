@@ -1,7 +1,7 @@
 @media (max-width: 767px) {
     .List {
         margin: 0;
-        height: calc(var(--calendarMobileTileHeight) * 6);
+        height: calc(var(--calendarTileHeight) * 6);
     }
 }
 
