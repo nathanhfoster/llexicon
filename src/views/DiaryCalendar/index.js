@@ -53,18 +53,16 @@ class DiaryCalendar extends PureComponent {
   handleChange = activeDate => this.setState({ activeDate })
 
   Today = () => {
-    const { getYearMonthEvents } = this.props
+    const { GetUserEntriesByDate } = this.props
     const activeStartDate = new Date()
-    const payload = { date: activeStartDate }
-    getYearMonthEvents(payload)
+    GetUserEntriesByDate(activeStartDate)
     this.setState({ activeDate: activeStartDate })
   }
 
   handleActiveDateChange = ({ activeStartDate, view }) => {
-    const { getYearMonthEvents } = this.props
-    const payload = { date: activeStartDate }
-    getYearMonthEvents(payload)
-    return this.setState({ activeDate: activeStartDate })
+    const { GetUserEntriesByDate } = this.props
+    GetUserEntriesByDate(activeStartDate)
+    this.setState({ activeDate: activeStartDate })
   }
 
   render() {
@@ -82,12 +80,13 @@ class DiaryCalendar extends PureComponent {
               tileContent={props => <TileContent {...props} />}
               //tileClassName={this.tileHandler}
               minDetail={"year"}
-              handleActiveDateChange={this.handleActiveDateChange}
+              onActiveDateChange={this.handleActiveDateChange}
+              onActiveStartDateChange={this.handleActiveDateChange}
               showFixedNumberOfWeeks={true}
               next2Label={null}
               prev2Label={null}
-              nextLabel={<i className="fa fa-chevron-circle-right" />}
-              prevLabel={<i className="fa fa-chevron-circle-left" />}
+              nextLabel={<i className="fas fa-chevron-circle-right" />}
+              prevLabel={<i className="fas fa-chevron-circle-left" />}
               onClickDay={null}
             />
           </Col>
