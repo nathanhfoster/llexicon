@@ -6,23 +6,13 @@
     min-height: calc(var(--calendarTileHeight) * 6 + 86px);
   }
   .hasEventsContainerMobile {
-    display: grid;
-    grid-column: auto;
-    position: absolute;
-    height: 2vh;
-    left: 0;
-    right: 0;
-    bottom: 4px;
+    display: inline-block;
   }
-  .eventLabelColor {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    flex-shrink: 0;
-    display: inline-flex;
-    margin: 4px auto 0 auto;
+  .hasEventsContainerMobile:first-child {
+    /* margin-left: 0.75px; */
   }
+  .eventLabelColor {}
+
   .react-calendar__month-view button {
     height: var(--calendarTileHeight);
     flex: 1 0 0;

@@ -25,7 +25,10 @@ class EntryList extends PureComponent {
   }
 
   static propTypes = {
-    activeDate: PropTypes.string,
+    activeDate: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]),
     entries: PropTypes.array
   }
 
@@ -99,12 +102,11 @@ class EntryList extends PureComponent {
   render() {
     const { history } = this.props
     const { entries, activeDate } = this.state
-    return [
-      <div className="ListHeader Center">Entries</div>,
-      <ListGroup className="List">
-        {this.renderItems(activeDate, entries, history)}
-      </ListGroup>
-    ]
+    return (
+        <ListGroup className="List">
+          {this.renderItems(activeDate, entries, history)}
+        </ListGroup>
+    )
   }
 }
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryList)

@@ -70,8 +70,6 @@ const GetUserEntriesByDate = date => (dispatch, getState) => {
     })
 }
 
-//{{url}}/entries/2/view_by_date/
-
 const PostReduxEntry = payload => ({
   type: ENTRY_IMPORT,
   payload: { ...payload, shouldPost: true, shouldDelete: false }

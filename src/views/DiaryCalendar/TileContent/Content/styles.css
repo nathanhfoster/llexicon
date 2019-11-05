@@ -29,12 +29,17 @@
     background-color: rgba(55, 57, 67, 0.075);
 }
 
+@media (min-width: 768px) {
+    .eventLabelColor {
+        margin: 0 4px;
+    }
+}
+
 .eventLabelColor {
     width: 8px;
     height: 8px;
     flex-shrink: 0;
     display: inline-block;
-    margin: 0 4px;
     border-radius: 100%;
 }
 

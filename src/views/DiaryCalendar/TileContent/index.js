@@ -46,21 +46,18 @@ class TileContent extends PureComponent {
 
   renderContent = entries => {
     const { date, staticContext, view } = this.state
-    return entries.map((entry, i) => {
+    return entries.map(entry => {
       const { id, date_created_by_author, ...restOfProps } = entry
       const calendarDay = MomentJS(date)
       const entryDate = MomentJS(date_created_by_author)
       const eventFound = entryDate.isSame(calendarDay, "day")
       const dayOfTheYear = calendarDay.dayOfYear()
 
-      const uniqueId = id || i
-      console.log(uniqueId)
-
       return (
         eventFound && (
           <Content
-            key={uniqueId}
-            id={uniqueId}
+            key={id}
+            id={id}
             date_created_by_author={date_created_by_author}
             {...restOfProps}
             activeDate={date}

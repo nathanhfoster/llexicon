@@ -1,9 +1,24 @@
+@media (max-width: 767px) {
+    .TileContentContainer {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+}
+
+@media (min-width: 768px) {
+    .TileContentContainer {
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: calc(100% - 34px);
+    }
+}
+
 .TileContentContainer {
     /* background-color: red; */
-    overflow-y: auto;
-    max-height: calc(100% - 34px);
+    display: inline-block;
     position: absolute;
     top: 34px;
     left: 0;
     right: 0;
+    bottom: 0;
 }

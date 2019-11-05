@@ -1,27 +1,23 @@
 @import "./stylesM.css";
 .List {
-    overflow: hidden;
+    overflow-y: auto;
     white-space: nowrap;
+    height: calc(100% - 64px);
+    padding: 2px;
+    position: relative;
 }
 
-.ListHeader {
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-    font-size: 22px;
-    font-weight: 200;
-    line-height: 22px;
-    height: 22px;
-    background: var(--primaryGradientBackground);
-    /* fallback for old browsers */
-    /* background: -webkit-linear-gradient( to right, var(--secondaryColor), var(--slate_grey), var(--secondaryColor)); */
-    /* Chrome 10-25, Safari 5.1-6 */
-    /* background: linear-gradient( to right, var(--secondaryColor), var(--slate_grey), var(--secondaryColor)); */
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.List::-webkit-scrollbar {
+    display: block;
+    width: 4px;
 }
 
 .listItem {
     background-color: white;
-    /* border: 1px solid var(--dark_border); */
-    padding: 4px;
+    border: 1px solid rgba(55, 57, 67, 0.2);
+    border-radius: 0.25rem;
+    padding: 0 4px;
+    margin: 2px 0;
 }
 
 .listItem:hover {

@@ -26,7 +26,10 @@ class TextEditor extends PureComponent {
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    clearKey: PropTypes.string,
+    clearKey: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]),
     html: PropTypes.string.isRequired,
     onChangeCallback: PropTypes.func,
     shouldAutoFocus: PropTypes.bool,

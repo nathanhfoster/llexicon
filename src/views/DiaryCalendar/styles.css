@@ -56,6 +56,15 @@
   color: inherit;
 }
 
+.react-calendar__month-view__days {
+  /* background-color: red; */
+}
+
+.react-calendar__month-view__days button {
+  max-width: 100% !important;
+  padding: 0;
+}
+
 .react-calendar__month-view__days__day--neighboringMonth {
   /* background-color: var(--grey); */
   color: var(--grey);
@@ -125,13 +134,13 @@
 }
 
 .EventList {
-  min-height: calc(var(--calendarTileHeight) * 6 + 86px);
-  max-height: 100vh;
+  height: calc(var(--calendarTileHeight) * 6 + 86px);
+  /* max-height: 100vh; */
   /* box-shadow: var(--primaryBoxShadow); */
   background: whitesmoke;
   margin: 0;
   padding: 0;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .EventList::-webkit-scrollbar {

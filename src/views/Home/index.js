@@ -23,13 +23,15 @@ const mapStateToProps = ({
   Window: {
     innerHeight,
     screen: { availHeight }
-  }
+  },
+  Entries: { items }
 }) => ({
   clearedOn,
   title,
   editorStateHtml,
   innerHeight,
-  viewPortHeight: availHeight
+  viewPortHeight: availHeight,
+  entriesLength: items.length
 })
 
 const mapDispatchToProps = { PostReduxEntry, SetEditorState, ClearEditorState }
@@ -49,7 +51,8 @@ class Home extends PureComponent {
     editorStateHtml: PropTypes.string,
     SetEditorState: PropTypes.func.isRequired,
     ClearEditorState: PropTypes.func.isRequired,
-    PostReduxEntry: PropTypes.func.isRequired
+    PostReduxEntry: PropTypes.func.isRequired,
+    entriesLength: PropTypes.number.isRequired
   }
 
   static defaultProps = {}
@@ -82,10 +85,11 @@ class Home extends PureComponent {
   }
 
   handlePostEntry = () => {
-    const { PostReduxEntry, ClearEditorState } = this.props
+    const { PostReduxEntry, ClearEditorState, entriesLength } = this.props
     const { editorStateHtml, title, tags, date_created_by_author } = this.state
 
     const payload = {
+      id: `shouldPost-${entriesLength}`,
       title,
       html: editorStateHtml,
       tags,

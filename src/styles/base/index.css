@@ -52,8 +52,8 @@ a, a:hover {
 
 @media (min-width: 768px) {
   ::-webkit-scrollbar {
-    height: 5px;
-    width: 5px;
+    height: 4px;
+    width: 4px;
   }
 }
 
@@ -75,7 +75,7 @@ a, a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(55, 57, 67, 0.075);
+  background: rgba(55, 57, 67, 0.2);
   box-shadow: inset var(--primaryBoxShadow);
   border-radius: 6px;
 }

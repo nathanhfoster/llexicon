@@ -10,8 +10,8 @@ min-width: 767px = “If [device width] is greater than or equal to 767px, then 
 
 @media (max-width: 767px) {
   ::-webkit-scrollbar {
-    height: 3px;
-    width: 3px;
+    height: 4px;
+    width: 4px;
   }
 }
 
