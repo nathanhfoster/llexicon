@@ -5,10 +5,11 @@ import { ListGroup, ListGroupItem, Col } from "reactstrap"
 import Moment from "react-moment"
 import MomentJS from "moment"
 import { removeAttributeDuplicates } from "../../helpers"
+import { RouterPush } from "../../helpers/routing"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { items, itemsByDate } }) => ({
-  entries: removeAttributeDuplicates(items.concat(itemsByDate), "id")
+const mapStateToProps = ({ Entries: { items } }) => ({
+  entries: items
 })
 
 const mapDispatchToProps = {}
@@ -77,7 +78,7 @@ class EntryList extends PureComponent {
           {sameDayEvent ? (
             <ListGroupItem
               key={id}
-              onClick={() => history.push(`/calendar/event/${id}`)}
+              onClick={() => RouterPush(history, `/calendar/${id}`)}
               className="Clickable listItem"
               header={title}
             >

@@ -4,6 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../../../helpers/routing"
+import { RouteMap } from "../../../../ReactRouter/Routes"
 import Moment from "react-moment"
 import "./styles.css"
 
@@ -38,6 +39,7 @@ class Content extends PureComponent {
     const {
       activeDate,
       view,
+      id,
       author,
       tags,
       title,
@@ -51,6 +53,7 @@ class Content extends PureComponent {
     } = props
     this.setState({
       view,
+      id,
       author,
       tags,
       title,
@@ -85,10 +88,14 @@ class Content extends PureComponent {
       views
     } = this.state
 
+    const { ENTRY_DETAIL } = RouteMap
+
     return view == "month" && !isMobile ? (
       <div class="TileContent">
         <div
-          onClick={() => RouterPush(history, `/calendar/event/${id}`)}
+          onClick={() =>
+            RouterPush(history, ENTRY_DETAIL.replace(":entryId", `${id}`))
+          }
           className="hasEventsContainer"
           data-for={`${id}`}
           data-tip={id}

@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col } from "reactstrap"
+import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import Calendar from "react-calendar/dist/entry.nostyle"
 import TileContent from "./TileContent"
@@ -8,13 +8,14 @@ import Moment from "react-moment"
 import EntryList from "../../components/EntryList"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../helpers/routing"
+import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
 import "./styles.css"
 import "./stylesM.css"
 
-const mapStateToProps = ({}) => ({})
+const mapStateToProps = ({ Calendar: { activeDate } }) => ({ activeDate })
 
-const mapDispatchToProps = { GetUserEntriesByDate }
+const mapDispatchToProps = { SetCalendar, GetUserEntriesByDate }
 
 class DiaryCalendar extends PureComponent {
   constructor(props) {
@@ -23,7 +24,10 @@ class DiaryCalendar extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = { GetUserEntriesByDate: PropTypes.func.isRequired }
+  static propTypes = {
+    SetCalendar: PropTypes.func.isRequired,
+    GetUserEntriesByDate: PropTypes.func.isRequired
+  }
 
   static defaultProps = { activeDate: new Date() }
 
@@ -44,26 +48,27 @@ class DiaryCalendar extends PureComponent {
 
   getState = props => {
     const { activeDate } = props
-    this.setState({ activeDate })
+    this.setState({ activeDate: new Date(activeDate) })
   }
 
   componentDidUpdate(prevProps, prevState) {}
 
   componentWillUnmount() {}
 
-  handleChange = activeDate => this.setState({ activeDate })
+  handleChange = activeDate => {
+    const { SetCalendar } = this.props
+    SetCalendar({ activeDate })
+  }
 
-  Today = () => {
+  handleTodayClick = () => {
     const { GetUserEntriesByDate } = this.props
     const activeStartDate = new Date()
     GetUserEntriesByDate(activeStartDate)
-    this.setState({ activeDate: activeStartDate })
   }
 
   handleActiveDateChange = ({ activeStartDate, view }) => {
     const { GetUserEntriesByDate } = this.props
     GetUserEntriesByDate(activeStartDate)
-    this.setState({ activeDate: activeStartDate })
   }
 
   render() {
@@ -72,7 +77,16 @@ class DiaryCalendar extends PureComponent {
     return (
       <Container className="DiaryCalendar Container">
         <Row>
-          <Col md={10} xs={12} style={{ margin: 0, padding: 0 }}>
+          <Col xs={12} className="p-0">
+            <ButtonGroup>
+              <Button color="primary" onClick={this.handleTodayClick}>
+                Today
+              </Button>
+            </ButtonGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={9} xs={12} className="p-0">
             <Calendar
               //calendarType="ISO 8601"
               onChange={this.handleChange}
@@ -91,7 +105,7 @@ class DiaryCalendar extends PureComponent {
               onClickDay={null}
             />
           </Col>
-          <Col className="EventList" md={2} xs={12}>
+          <Col className="EventList" md={3} xs={12}>
             <h2>
               <Moment format="MMM D">{activeDate}</Moment>
             </h2>

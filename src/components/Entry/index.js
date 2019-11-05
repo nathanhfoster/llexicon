@@ -6,6 +6,7 @@ import TextEditor from "../../components/TextEditor"
 import Divider from "../../components/Divider"
 import { UpdateReduxEntry } from "../../actions/Entries"
 import Moment from "react-moment"
+import ConfirmAction from "../ConfirmAction"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -19,9 +20,13 @@ class Entry extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = {}
+  static propTypes = {
+    containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
+    showDivider: PropTypes.bool
+  }
 
-  static defaultProps = {}
+  static defaultProps = { showDivider: false }
 
   componentWillMount() {
     this.getState(this.props)
@@ -46,10 +51,11 @@ class Entry extends PureComponent {
       date_updated,
       views,
       lastUpdated,
-      containerHeight
+      containerHeight,
+      showDivider
     } = props
 
-    const dividerHeight = 16
+    const dividerHeight = showDivider ? 16 : 0
     const inputHeight = 48
     const numberOfInputs = 1
     const inputOffset = inputHeight * numberOfInputs
@@ -66,7 +72,8 @@ class Entry extends PureComponent {
       date_updated,
       views,
       lastUpdated,
-      textEditorHeight
+      textEditorHeight,
+      showDivider
     })
   }
 
@@ -86,7 +93,8 @@ class Entry extends PureComponent {
       date_updated,
       views,
       lastUpdated,
-      textEditorHeight
+      textEditorHeight,
+      showDivider
     } = this.state
 
     return (
@@ -107,14 +115,23 @@ class Entry extends PureComponent {
               </Moment>
             </InputGroupText>
           </InputGroupAddon>
+          {/* {show, Disabled, Icon, Size, Class, Title} */}
           <InputGroupAddon
             addonType="append"
-            onClick={() => UpdateReduxEntry({ id, shouldDelete: true })}
+            // onClick={() => UpdateReduxEntry({ id, shouldDelete: true })}
           >
-            <InputGroupText color="primary">
-              <i
-                className="fas fa-trash"
-                style={{ color: "var(--danger)", fontSize: 20 }}
+            <InputGroupText color="primary" className="p-0">
+              <ConfirmAction
+                onClickCallback={() =>
+                  UpdateReduxEntry({ id, shouldDelete: true })
+                }
+                icon={
+                  <i
+                    className="fas fa-trash"
+                    style={{ color: "var(--danger)", fontSize: 22 }}
+                  />
+                }
+                title={"Delete Entry"}
               />
             </InputGroupText>
           </InputGroupAddon>
@@ -124,7 +141,7 @@ class Entry extends PureComponent {
           html={html}
           onChangeCallback={html => UpdateReduxEntry({ id, html })}
         />
-        <Divider />
+        {showDivider && <Divider />}
       </Fragment>
     )
   }

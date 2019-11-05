@@ -4,15 +4,31 @@ import qs from "qs"
 
 const {
   ALERTS_SET_MESSAGE,
+  CALENDAR_SET,
   ENTRIES_PENDING,
   ENTRIES_ERROR,
   ENTRIES_SET,
   ENTRIES_SET_BY_DATE,
   ENTRY_DELETE,
   ENTRY_IMPORT,
+  ENTRY_SET,
   ENTRY_POST,
   ENTRY_UPDATE
 } = ReduxActions
+
+const GetUserEntry = entryId => dispatch =>
+  Axios()
+    .get(`/entries/${entryId}/`)
+    .then(res => {
+      dispatch({
+        type: ENTRY_SET,
+        payload: res.data
+      })
+    })
+    .catch(e => {
+      const payload = JSON.parse(JSON.stringify(e.response))
+      dispatch({ type: ENTRIES_ERROR, payload })
+    })
 
 const GetUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -39,6 +55,10 @@ const GetUserEntriesByDate = date => (dispatch, getState) => {
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify({ date }))
     .then(res => {
+      dispatch({
+        type: CALENDAR_SET,
+        payload: { activeDate: date }
+      })
       dispatch({
         type: ENTRIES_SET_BY_DATE,
         payload: res.data
@@ -177,6 +197,7 @@ const SyncEntries = () => (dispatch, getState) => {
 }
 
 export {
+  GetUserEntry,
   GetUserEntries,
   GetUserEntriesByDate,
   PostReduxEntry,

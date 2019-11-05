@@ -1,6 +1,6 @@
 @media (min-width: 768px) {
   :root {
-    --calendarTileHeight: 140px;
+    --calendarTileHeight: calc((100vh - 38px - 64px) / 6);
   }
 }
 
@@ -10,12 +10,21 @@
   text-decoration: none !important;
 }
 
+.react-calendar__navigation button:nth-child(1) {
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.react-calendar__navigation button:last-child {
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
 .react-calendar__navigation button {
   border: 0;
   height: 2em;
   background-color: transparent;
   opacity: var(--mainOpacity);
-  border-bottom: 1px solid var(--dark_border);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .react-calendar__navigation button:hover {
@@ -110,7 +119,7 @@
 .EventList {
   min-height: calc(var(--calendarTileHeight) * 6 + 86px);
   max-height: 100vh;
-  box-shadow: 0 0 5px var(--grey);
+  /* box-shadow: var(--primaryBoxShadow); */
   background: whitesmoke;
   margin: 0;
   padding: 0;
@@ -124,7 +133,8 @@
 .EventList h2 {
   opacity: var(--mainOpacity);
   /* background-color: var(--primaryColor); */
-  background: var(--primaryGradientBackground);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: white;
   height: 64px;
   line-height: 60px;
   text-align: center;

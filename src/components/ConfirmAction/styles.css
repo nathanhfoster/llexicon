@@ -1,0 +1,15 @@
+.ConfirmActionModal {
+    margin-top: 0;
+    position: absolute;
+    top: calc(50% - var(--navBarHeight));
+    left: 0;
+    right: 0;
+  }
+  
+  .ConfirmActionModal .modal-content {
+    background: var(--primaryGradientBackground);
+  }
+  
+  .ConfirmActionModal .close {
+    display: none;
+  }

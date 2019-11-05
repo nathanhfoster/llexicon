@@ -91,6 +91,11 @@ class NavBar extends PureComponent {
     ]
     const NotLoggedInLinks = [
       this.renderNavlink(
+        CALENDAR,
+        "CALENDAR",
+        <i className="fas fa-calendar-alt NavBarImage"></i>
+      ),
+      this.renderNavlink(
         ENTRIES,
         "ENTRIES",
         <i className="fas fa-feather-alt NavBarImage" />

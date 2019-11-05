@@ -88,7 +88,12 @@ class Entries extends PureComponent {
 
     return (
       <Col key={newId} style={{ ...style /* background: "red" */ }} xs={12}>
-        <Entry id={newId} {...restOfProps} containerHeight={style.height} />
+        <Entry
+          id={newId}
+          {...restOfProps}
+          containerHeight={style.height}
+          showDivider
+        />
       </Col>
     )
   }

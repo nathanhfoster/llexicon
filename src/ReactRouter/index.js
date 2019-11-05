@@ -9,6 +9,7 @@ import Home from "../views/Home"
 import Settings from "../views/Settings"
 import AddEntry from "../views/AddEntry"
 import DiaryCalendar from "../views/DiaryCalendar"
+import EntryDetail from "../views/EntryDetail"
 import Entries from "../views/Entries"
 import Login from "../views/Login"
 import PrivacyPolicy from "../components/PrivacyPolicy"
@@ -90,6 +91,7 @@ class ReactRouter extends PureComponent {
       ENTRY_ADD,
       SETTINGS,
       CALENDAR,
+      ENTRY_DETAIL,
       ENTRIES,
       PRIVACY_POLICY
     } = RouteMap
@@ -106,6 +108,7 @@ class ReactRouter extends PureComponent {
         component: this.renderRedirectOrComponent(!User.token, HOME, Settings)
       },
       { path: [CALENDAR], component: DiaryCalendar },
+      { path: [ENTRY_DETAIL], component: EntryDetail },
       {
         path: [ENTRIES, HOME],
         component: Entries

@@ -1,12 +1,13 @@
 @import "./stylesM.css";
 .List {
-   overflow: hidden;
-   white-space: nowrap;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .ListHeader {
-    box-shadow: 0 0 5px var(--dark_border);
-    font-size: 20px;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    font-size: 22px;
+    font-weight: 200;
     line-height: 22px;
     height: 22px;
     background: var(--primaryGradientBackground);
@@ -18,9 +19,8 @@
 }
 
 .listItem {
-    /* background-color: var(--slate_grey); */
+    background-color: white;
     /* border: 1px solid var(--dark_border); */
-    box-shadow: var(--primaryBoxShadow);
     padding: 4px;
 }
 

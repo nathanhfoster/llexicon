@@ -1,13 +1,26 @@
-.btn-primary.focus,
-.btn-primary:focus,
-.btn-outline-primary.focus,
-.btn-outline-primary:focus {
+.btn-primary.focus, .btn-primary:focus, .btn-outline-primary.focus, .btn-outline-primary:focus {
   box-shadow: 0 0 0 0.075rem var(--primaryColor) !important;
 }
+
 .btn-primary {
   color: white;
   background-color: var(--primaryColor) !important;
   border-color: var(--primaryColor) !important;
+  box-shadow: var(--primaryBoxShadow);
+}
+
+.btn-danger {
+  color: white;
+  background-color: var(--danger) !important;
+  border-color: var(--danger) !important;
+  box-shadow: var(--primaryBoxShadow);
+}
+
+.btn-inherit {
+  color: white;
+  background-color: inherit;
+  border: 0;
+  box-shadow: none !important;
 }
 
 .btn-primary:hover {
@@ -29,7 +42,6 @@ button:focus {
   outline: 0 !important;
 }
 
-button.btn.btn-primary.nav-link,
-button.btn.btn-primary.nav-link:hover {
+button.btn.btn-primary.nav-link, button.btn.btn-primary.nav-link:hover {
   color: white;
 }

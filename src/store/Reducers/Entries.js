@@ -1,10 +1,12 @@
 import { ReduxActions } from "../../constants.js"
+import { mergeJson } from "../../helpers"
 const {
   ENTRIES_PENDING,
   ENTRIES_ERROR,
   ENTRY_IMPORT,
   ENTRIES_SET,
   ENTRIES_SET_BY_DATE,
+  ENTRY_SET,
   ENTRY_POST,
   ENTRY_UPDATE,
   ENTRY_DELETE,
@@ -13,7 +15,6 @@ const {
 
 const defaultState = {
   items: [],
-  itemsByDate: [],
   isPending: false,
   error: null
 }
@@ -34,7 +35,14 @@ export const Entries = (state = defaultState, action) => {
     case ENTRIES_SET:
       return { ...state, items: payload }
     case ENTRIES_SET_BY_DATE:
-      return { ...state, itemsByDate: payload }
+      return { ...state, items: mergeJson(payload, state.items) }
+    case ENTRY_SET:
+      return {
+        ...state,
+        items: state.items
+          .filter(item => item.id != payload.id)
+          .concat([payload])
+      }
     case ENTRY_POST:
       const entryFound = state.items.findIndex(item => item.id === id) !== -1
       if (entryFound)
