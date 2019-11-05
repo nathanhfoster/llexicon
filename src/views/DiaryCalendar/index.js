@@ -100,8 +100,12 @@ class DiaryCalendar extends PureComponent {
               showFixedNumberOfWeeks={true}
               next2Label={null}
               prev2Label={null}
-              nextLabel={<i className="fas fa-chevron-circle-right" />}
-              prevLabel={<i className="fas fa-chevron-circle-left" />}
+              nextLabel={
+                <i className="fas fa-chevron-circle-right CalendarNavigationButton" />
+              }
+              prevLabel={
+                <i className="fas fa-chevron-circle-left CalendarNavigationButton" />
+              }
               onClickDay={null}
             />
           </Col>

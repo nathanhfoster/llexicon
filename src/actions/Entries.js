@@ -167,6 +167,7 @@ const SyncEntries = () => (dispatch, getState) => {
       html,
       tags,
       date_created,
+      date_created_by_author,
       date_updated,
       views,
       shouldDelete,
@@ -180,11 +181,11 @@ const SyncEntries = () => (dispatch, getState) => {
       dispatchDeleteEntries.push(DeleteEntry(id))
       continue
     } else if (shouldPost) {
-      payload = { author: UserId, title, html, tags }
+      payload = { author: UserId, title, html, tags, date_created_by_author }
       dispatchPostEntries.push(PostEntry(payload))
       continue
     } else if (lastUpdated) {
-      payload = { title, html, tags }
+      payload = { title, html, tags, date_created_by_author }
       dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
   }

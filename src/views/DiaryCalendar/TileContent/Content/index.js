@@ -91,7 +91,7 @@ class Content extends PureComponent {
     const { ENTRY_DETAIL } = RouteMap
 
     return view == "month" && !isMobile ? (
-      <div class="TileContent">
+      <div className="TileContent">
         <div
           onClick={() =>
             RouterPush(history, ENTRY_DETAIL.replace(":entryId", `${id}`))
@@ -111,7 +111,7 @@ class Content extends PureComponent {
         </div>
       </div>
     ) : view == "month" && shouldRenderInMobile ? (
-      <div class="hasEventsContainerMobile">
+      <div className="hasEventsContainerMobile">
         <span
           className="eventLabelColor"
           style={{ backgroundColor: "var(--primaryColor)" }}

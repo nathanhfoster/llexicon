@@ -12,6 +12,8 @@ import {
   InputGroupText,
   Button
 } from "reactstrap"
+import ReactDatePicker from "../../components/ReactDatePicker"
+import "react-datepicker/dist/react-datepicker.css"
 import { PostReduxEntry } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
@@ -36,7 +38,7 @@ class Home extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { date_created_by_author: new Date() }
   }
 
   static propTypes = {
@@ -81,12 +83,13 @@ class Home extends PureComponent {
 
   handlePostEntry = () => {
     const { PostReduxEntry, ClearEditorState } = this.props
-    const { editorStateHtml, title, tags } = this.state
+    const { editorStateHtml, title, tags, date_created_by_author } = this.state
 
     const payload = {
       title,
       html: editorStateHtml,
       tags,
+      date_created_by_author,
       shouldPost: true
     }
 
@@ -105,8 +108,17 @@ class Home extends PureComponent {
     SetEditorState({ editorStateHtml })
   }
 
+  handleChangeDateCreatedByAuthor = date_created_by_author =>
+    this.setState({ date_created_by_author })
+
   render() {
-    const { editorStateHtml, clearedOn, title, editorHeight } = this.state
+    const {
+      editorStateHtml,
+      clearedOn,
+      title,
+      editorHeight,
+      date_created_by_author
+    } = this.state
 
     return (
       <Container className="Home Container">
@@ -121,6 +133,14 @@ class Home extends PureComponent {
                 value={title}
                 onChange={this.handleInputChange}
               />
+              <InputGroupAddon addonType="append">
+                <InputGroupText color="primary" className="p-0">
+                  <ReactDatePicker
+                    selected={date_created_by_author}
+                    onChange={this.handleChangeDateCreatedByAuthor}
+                  />
+                </InputGroupText>
+              </InputGroupAddon>
               <InputGroupAddon
                 addonType="append"
                 onClick={this.handlePostEntry}

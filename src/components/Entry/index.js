@@ -5,7 +5,7 @@ import { connect as reduxConnect } from "react-redux"
 import TextEditor from "../../components/TextEditor"
 import Divider from "../../components/Divider"
 import { UpdateReduxEntry } from "../../actions/Entries"
-import Moment from "react-moment"
+import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import "./styles.css"
 
@@ -109,17 +109,20 @@ class Entry extends PureComponent {
             onChange={e => UpdateReduxEntry({ id, title: e.target.value })}
           />
           <InputGroupAddon addonType="append">
-            <InputGroupText color="primary">
-              <Moment fromNow format="MM/DD/YY hh:mm a">
-                {date_created_by_author || lastUpdated}
-              </Moment>
+            <InputGroupText color="primary" className="p-0">
+              <ReactDatePicker
+                selected={new Date(date_created_by_author || lastUpdated)}
+                onChange={date =>
+                  UpdateReduxEntry({
+                    id,
+                    date_created_by_author: date,
+                    lastUpdated: date
+                  })
+                }
+              />
             </InputGroupText>
           </InputGroupAddon>
-          {/* {show, Disabled, Icon, Size, Class, Title} */}
-          <InputGroupAddon
-            addonType="append"
-            // onClick={() => UpdateReduxEntry({ id, shouldDelete: true })}
-          >
+          <InputGroupAddon addonType="append">
             <InputGroupText color="primary" className="p-0">
               <ConfirmAction
                 onClickCallback={() =>

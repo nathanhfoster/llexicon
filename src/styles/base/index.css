@@ -75,9 +75,14 @@ a, a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  /* background: var(--light_grey); */
+  background: rgba(55, 57, 67, 0.075);
   box-shadow: inset var(--primaryBoxShadow);
   border-radius: 6px;
+}
+
+input {
+  min-height: var(--inputButtonHeight);
+  border: inherit;
 }
 
 input[type="file"] {

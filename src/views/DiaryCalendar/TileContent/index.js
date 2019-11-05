@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import Content from "./Content"
 import MomentJS from "moment"
-import { removeAttributeDuplicates } from "../../../helpers"
+import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items } }) => ({
   entries: items
@@ -53,10 +53,14 @@ class TileContent extends PureComponent {
       const eventFound = entryDate.isSame(calendarDay, "day")
       const dayOfTheYear = calendarDay.dayOfYear()
 
+      const uniqueId = id || i
+      console.log(uniqueId)
+
       return (
         eventFound && (
           <Content
-            id={id || i}
+            key={uniqueId}
+            id={uniqueId}
             date_created_by_author={date_created_by_author}
             {...restOfProps}
             activeDate={date}
@@ -71,7 +75,9 @@ class TileContent extends PureComponent {
 
   render() {
     const { entries } = this.state
-    return this.renderContent(entries)
+    return (
+      <div className="TileContentContainer">{this.renderContent(entries)}</div>
+    )
   }
 }
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)

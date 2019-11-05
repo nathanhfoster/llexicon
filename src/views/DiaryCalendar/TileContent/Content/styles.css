@@ -1,9 +1,9 @@
 .TileContent {
     z-index: 4;
-    overflow-y: auto;
-    position: relative;
-    line-height: 76px;
-    max-height: 76px;
+    /* overflow-y: auto; */
+    /* position: relative; */
+    /* line-height: 76px; */
+    /* max-height: 24px; */
     font-size: 13px;
     min-width: 0;
     align-items: center;
@@ -34,7 +34,7 @@
     height: 8px;
     flex-shrink: 0;
     display: inline-block;
-    margin-right: 4px;
+    margin: 0 4px;
     border-radius: 100%;
 }
 
@@ -66,5 +66,5 @@
     line-height: inherit;
     overflow: hidden;
     white-space: nowrap;
-    -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 1px), transparent calc(100% - 1px), transparent);
+    -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 2px), transparent calc(100% - 2px), transparent);
 }

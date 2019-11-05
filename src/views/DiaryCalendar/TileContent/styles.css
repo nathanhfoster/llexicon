@@ -1,0 +1,9 @@
+.TileContentContainer {
+    /* background-color: red; */
+    overflow-y: auto;
+    max-height: calc(100% - 34px);
+    position: absolute;
+    top: 34px;
+    left: 0;
+    right: 0;
+}

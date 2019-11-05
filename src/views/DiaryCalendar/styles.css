@@ -10,6 +10,14 @@
   text-decoration: none !important;
 }
 
+.CalendarNavigationButton {
+  color: var(--grey);
+}
+
+.CalendarNavigationButton:hover {
+  color: black;
+}
+
 .react-calendar__navigation button:nth-child(1) {
   border-left: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -95,8 +103,8 @@
   width: 25px;
   font-weight: 600;
   border-radius: 100%;
-  background-color: var(--secondaryColor);
-  color: var(--tertiarycolor);
+  background-color: var(--grey);
+  color: white;
 }
 
 .react-calendar__tile--active abbr {

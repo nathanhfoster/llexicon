@@ -89,7 +89,7 @@ class EntryList extends PureComponent {
                 />
                 <Moment format="hh:mma">{date_created_by_author}</Moment>
               </span>
-              <span className="eventTitle">{title}</span>
+              <h5 className="eventTitle">{title}</h5>
             </ListGroupItem>
           ) : null}
         </div>

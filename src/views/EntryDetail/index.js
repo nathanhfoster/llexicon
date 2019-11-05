@@ -4,12 +4,13 @@ import { Container, Row, Col } from "reactstrap"
 import Entry from "../../components/Entry"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
-import { GetUserEntry } from "../../actions/Entries"
+import { GetUserEntry, SyncEntries } from "../../actions/Entries"
 import { RouterPush, RouterLinkPush } from "../../helpers/routing"
 import "./styles.css"
 
 const mapStateToProps = (
   {
+    User,
     Entries: { items },
     Window: {
       isMobile,
@@ -22,12 +23,13 @@ const mapStateToProps = (
     }
   }
 ) => ({
+  UserId: User.id,
   entry: items.find(entry => entry.id == entryId),
   entryId,
   entryContainerHeight: availHeight - (isMobile ? 46 : 68) - 48
 })
 
-const mapDispatchToProps = { GetUserEntry }
+const mapDispatchToProps = { GetUserEntry, SyncEntries }
 
 class EntryDetail extends PureComponent {
   constructor(props) {
@@ -36,7 +38,11 @@ class EntryDetail extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = {}
+  static propTypes = {
+    UserId: PropTypes.number,
+    UpdateReduxEntry: PropTypes.func.isRequired,
+    SyncEntries: PropTypes.func.isRequired
+  }
 
   static defaultProps = {}
 
@@ -62,7 +68,13 @@ class EntryDetail extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {}
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    const { UserId, SyncEntries } = this.props
+
+    if (UserId) {
+      SyncEntries()
+    }
+  }
 
   render() {
     const { entry, entryContainerHeight } = this.state
