@@ -9,6 +9,11 @@
   .ConfirmActionModal .modal-content {
     background: var(--primaryGradientBackground);
   }
+
+  .modal-title {
+    font-size: 26px;
+    font-weight: 600;
+  }
   
   .ConfirmActionModal .close {
     display: none;

@@ -58,10 +58,16 @@ class ConfirmAction extends PureComponent {
         <Button disabled={disabled} color="inherit" onClick={this.toggleShow}>
           {icon}
         </Button>
-        <Modal isOpen={show} toggle={this.toggleShow} className="ConfirmActionModal">
-          <ModalHeader toggle={this.toggleShow}>{title}</ModalHeader>
+        <Modal
+          isOpen={show}
+          toggle={this.toggleShow}
+          className="ConfirmActionModal"
+        >
+          <ModalHeader toggle={this.toggleShow} className="Center">
+            {title}
+          </ModalHeader>
           <ModalBody>Are you sure you want to complete this action?</ModalBody>
-          <ModalFooter>
+          <ModalFooter className="Center">
             <Button color="danger" onClick={this.handleConfirm}>
               Confirm
             </Button>{" "}
