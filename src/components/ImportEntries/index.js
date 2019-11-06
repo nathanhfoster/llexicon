@@ -43,6 +43,7 @@ class ImportEntries extends PureComponent {
         //server call for uploading or reading the files one-by-one
         //by using 'reader.result' or 'file'
         const payload = {
+          id: `entryImport-${i}`,
           // title,
           html: result,
           // tags,

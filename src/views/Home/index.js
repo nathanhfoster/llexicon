@@ -37,7 +37,12 @@ const mapStateToProps = ({
   entriesLength: items.length
 })
 
-const mapDispatchToProps = { SetCalendar, PostReduxEntry, SetEditorState, ClearEditorState }
+const mapDispatchToProps = {
+  SetCalendar,
+  PostReduxEntry,
+  SetEditorState,
+  ClearEditorState
+}
 
 class Home extends PureComponent {
   constructor(props) {
@@ -118,7 +123,8 @@ class Home extends PureComponent {
     SetEditorState({ editorStateHtml })
   }
 
-  handleChangeDateCreatedByAuthor = activeDate => this.props.SetCalendar({ activeDate })
+  handleChangeDateCreatedByAuthor = activeDate =>
+    this.props.SetCalendar({ activeDate })
 
   render() {
     const {

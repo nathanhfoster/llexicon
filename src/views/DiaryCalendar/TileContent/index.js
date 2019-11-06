@@ -9,7 +9,7 @@ import MomentJS from "moment"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items } }) => ({
-  entries: items
+  entries: items.filter(item => !item.shouldDelete)
 })
 
 const mapDispatchToProps = { GetUserEntriesByDate }

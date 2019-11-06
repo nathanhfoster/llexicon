@@ -7,7 +7,6 @@ import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
 import Home from "../views/Home"
 import Settings from "../views/Settings"
-import AddEntry from "../views/AddEntry"
 import DiaryCalendar from "../views/DiaryCalendar"
 import EntryDetail from "../views/EntryDetail"
 import Entries from "../views/Entries"
@@ -97,8 +96,7 @@ class ReactRouter extends PureComponent {
     } = RouteMap
 
     return [
-      { path: [ROOT, HOME], component: Home },
-      { path: [HOME, ENTRY_ADD], component: AddEntry },
+      { path: [ROOT, HOME, ENTRY_ADD], component: Home },
       {
         path: [LOGIN],
         component: this.renderRedirectOrComponent(User.token, HOME, Login)

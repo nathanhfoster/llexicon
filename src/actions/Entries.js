@@ -70,10 +70,16 @@ const GetUserEntriesByDate = date => (dispatch, getState) => {
     })
 }
 
-const PostReduxEntry = payload => ({
-  type: ENTRY_IMPORT,
-  payload: { ...payload, shouldPost: true, shouldDelete: false }
-})
+const PostReduxEntry = payload => dispatch => {
+  dispatch({
+    type: ALERTS_SET_MESSAGE,
+    payload: { title: "Cached", message: "Entry" }
+  })
+  dispatch({
+    type: ENTRY_SET,
+    payload: { ...payload, shouldPost: true, shouldDelete: false }
+  })
+}
 
 const ImportReduxEntry = payload => ({
   type: ENTRY_IMPORT,
@@ -86,13 +92,12 @@ const PostEntry = payload => dispatch =>
     .then(res => {
       dispatch({
         type: ALERTS_SET_MESSAGE,
-        payload: { title: "Posted", message: "Entry" }
+        payload: { title: "Saved", message: "Entry" }
       })
       dispatch({
-        id: res.data.id,
+        id: payload.id,
         type: ENTRY_POST,
-        payload: res.data,
-        shouldPost: false
+        payload: res.data
       })
     })
     .catch(e => {
@@ -179,7 +184,14 @@ const SyncEntries = () => (dispatch, getState) => {
       dispatchDeleteEntries.push(DeleteEntry(id))
       continue
     } else if (shouldPost) {
-      payload = { author: UserId, title, html, tags, date_created_by_author }
+      payload = {
+        id,
+        author: UserId,
+        title,
+        html,
+        tags,
+        date_created_by_author
+      }
       dispatchPostEntries.push(PostEntry(payload))
       continue
     } else if (lastUpdated) {

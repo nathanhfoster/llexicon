@@ -103,6 +103,7 @@ const splitStrings = value => {
 }
 
 const mergeJson = (newData, reduxData) => {
+  // console.log(newData, reduxData)
   // Order matters. You want to merge the reduxData into the newData
   const allData = newData.concat(reduxData)
   let mergeMap = {}
@@ -120,8 +121,8 @@ const mergeJson = (newData, reduxData) => {
   }
 
   const mergeMapSorted = objectToArray(mergeMap).sort(
-    (a, b) => new Date(b.date_created_by_author)
-            - new Date(a.date_created_by_author)
+    (a, b) =>
+      new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
   )
 
   return mergeMapSorted

@@ -9,7 +9,7 @@ import { RouterPush } from "../../ReactRouter/Routes"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items } }) => ({
-  entries: items
+  entries: items.filter(item => !item.shouldDelete)
 })
 
 const mapDispatchToProps = {}

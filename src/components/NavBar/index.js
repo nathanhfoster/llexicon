@@ -166,7 +166,6 @@ class NavBar extends PureComponent {
           <i
             className="fas fa-plus NavBarImage NavBarLink"
             onClick={() => {
-              console.log("sjdgfbjksbgkbnk")
               RouterPush(history, HOME)
               this.closeHamburgerMenu()
             }}

@@ -24,7 +24,9 @@ const mapStateToProps = (
   }
 ) => ({
   UserId: User.id,
-  entry: items.find(entry => entry.id == entryId),
+  entry: items
+    .filter(item => !item.shouldDelete)
+    .find(entry => entry.id == entryId),
   entryId,
   entryContainerHeight: availHeight - (isMobile ? 46 : 68) - 48
 })

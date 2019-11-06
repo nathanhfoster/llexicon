@@ -49,22 +49,15 @@ export const Entries = (state = defaultState, action) => {
     case ENTRY_SET:
       return {
         ...state,
-        count,
-        next,
-        previous,
         items: mergeJson([payload], state.items)
       }
     case ENTRY_POST:
-      const entryFound = state.items.findIndex(item => item.id === id) !== -1
-      if (entryFound)
-        return { ...state, isPending: false, error: defaultState.error }
-      else
-        return {
-          ...state,
-          isPending: false,
-          error: defaultState.error,
-          items: [payload].concat(state.items)
-        }
+      return {
+        ...state,
+        isPending: false,
+        error: defaultState.error,
+        items: [payload].concat(state.items.filter(item => item.id !== id))
+      }
     case ENTRY_UPDATE:
       return {
         ...state,
