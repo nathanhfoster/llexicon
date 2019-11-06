@@ -14,6 +14,7 @@ import {
 } from "reactstrap"
 import ReactDatePicker from "../../components/ReactDatePicker"
 import "react-datepicker/dist/react-datepicker.css"
+import { SetCalendar } from "../../actions/Calendar"
 import { PostReduxEntry } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
@@ -36,7 +37,7 @@ const mapStateToProps = ({
   entriesLength: items.length
 })
 
-const mapDispatchToProps = { PostReduxEntry, SetEditorState, ClearEditorState }
+const mapDispatchToProps = { SetCalendar, PostReduxEntry, SetEditorState, ClearEditorState }
 
 class Home extends PureComponent {
   constructor(props) {
@@ -51,6 +52,7 @@ class Home extends PureComponent {
       PropTypes.instanceOf(Date)
     ]),
     editorStateHtml: PropTypes.string,
+    SetCalendar: PropTypes.func.isRequired,
     SetEditorState: PropTypes.func.isRequired,
     ClearEditorState: PropTypes.func.isRequired,
     PostReduxEntry: PropTypes.func.isRequired,
@@ -116,7 +118,7 @@ class Home extends PureComponent {
     SetEditorState({ editorStateHtml })
   }
 
-  handleChangeDateCreatedByAuthor = activeDate => this.setState({ activeDate })
+  handleChangeDateCreatedByAuthor = activeDate => this.props.SetCalendar({ activeDate })
 
   render() {
     const {
