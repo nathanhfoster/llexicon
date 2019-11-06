@@ -103,15 +103,6 @@ const splitStrings = value => {
 }
 
 const mergeJson = (newData, reduxData) => {
-  let reduxDataToPost = []
-  // Filter out shouldPost since they don't have ids
-  reduxData = reduxData.filter(e => {
-    const { shouldPost } = e
-    if (shouldPost) {
-      reduxDataToPost.push(e)
-      return false
-    } else return true
-  })
   // Order matters. You want to merge the reduxData into the newData
   const allData = newData.concat(reduxData)
   let mergeMap = {}
@@ -129,10 +120,11 @@ const mergeJson = (newData, reduxData) => {
   }
 
   const mergeMapSorted = objectToArray(mergeMap).sort(
-    (a, b) => new Date(b.date_created) - new Date(a.date_created)
+    (a, b) => new Date(a.date_created_by_author)
+            - new Date(b.date_created_by_author)
   )
 
-  return reduxDataToPost.concat(mergeMapSorted)
+  return mergeMapSorted
 }
 
 const importTextFileEntries = files => {}
