@@ -36,7 +36,7 @@
 .TileContentPlus {
     position: absolute;
     font-size: 14px;
-    color: rgba(55, 57, 67, 0.025);
+    color: rgba(55, 57, 67, 0.05);
     transition: color 0.2s ease-in-out;
 }
 
