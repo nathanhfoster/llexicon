@@ -36,10 +36,6 @@ const GetUserEntries = pageNumber => (dispatch, getState) => {
     .get(`/entries/${id}/view/?page=${pageNumber}`)
     .then(res => {
       dispatch({
-        type: ALERTS_SET_MESSAGE,
-        payload: { title: "Loaded", message: "Entries" }
-      })
-      dispatch({
         type: ENTRIES_SET,
         payload: res.data
       })
@@ -91,10 +87,6 @@ const PostEntry = payload => dispatch =>
     .post(`entries/`, qs.stringify(payload))
     .then(res => {
       dispatch({
-        type: ALERTS_SET_MESSAGE,
-        payload: { title: "Saved", message: "Entry" }
-      })
-      dispatch({
         id: payload.id,
         type: ENTRY_POST,
         payload: res.data
@@ -117,10 +109,6 @@ const UpdateEntry = (id, payload) => dispatch =>
     .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
     .then(res => {
       dispatch({
-        type: ALERTS_SET_MESSAGE,
-        payload: { title: "Updated", message: "Entry" }
-      })
-      dispatch({
         id,
         type: ENTRY_UPDATE,
         payload: res.data,
@@ -136,10 +124,6 @@ const DeleteEntry = id => dispatch =>
   Axios()
     .delete(`/entries/${id}/`)
     .then(res => {
-      dispatch({
-        type: ALERTS_SET_MESSAGE,
-        payload: { title: "Deleted", message: "Entry" }
-      })
       dispatch({
         id,
         type: ENTRY_DELETE
@@ -203,6 +187,15 @@ const SyncEntries = () => (dispatch, getState) => {
     .concat(dispatchPostEntries)
     .concat(dispatchUpdateEntries)
     .concat(GetUserEntries(1))
+    .concat(
+      () =>
+        new Promise(resolve =>
+          dispatch({
+            type: ALERTS_SET_MESSAGE,
+            payload: { title: "Synced", message: "Entries" }
+          })
+        )
+    )
 
   dispatch(Sync(dispatchActions))
 }
