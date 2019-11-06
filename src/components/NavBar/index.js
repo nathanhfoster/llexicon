@@ -155,6 +155,13 @@ class NavBar extends PureComponent {
     const { HOME } = RouteMap
     return (
       <Navbar light className="NavBar" color="light" fixed="top" expand="md">
+        {isMobile && (
+          <NavbarToggler
+            tag={Hamburger}
+            onClick={() => this.toggleHamburgerMenu()}
+            collapsed={collapsed}
+          />
+        )}
         <NavbarBrand>
           <i
             className="fas fa-plus NavBarImage NavBarLink"
@@ -176,14 +183,6 @@ class NavBar extends PureComponent {
             Today
           </i>
         </NavbarBrand>
-
-        {isMobile && (
-          <NavbarToggler
-            tag={Hamburger}
-            onClick={() => this.toggleHamburgerMenu()}
-            collapsed={collapsed}
-          />
-        )}
         <Collapse isOpen={!collapsed} navbar>
           <Nav className="ml-auto" navbar>
             {this.renderNavLinks()}
