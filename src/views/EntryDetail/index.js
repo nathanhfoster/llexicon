@@ -42,7 +42,6 @@ class EntryDetail extends PureComponent {
 
   static propTypes = {
     UserId: PropTypes.number,
-    UpdateReduxEntry: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired
   }
 

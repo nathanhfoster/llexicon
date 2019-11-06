@@ -23,4 +23,18 @@ const RouterLinkPush = (history, route) => {
   }
 }
 
-export { RouteMap, RouterPush, RouterLinkPush }
+const RouterGoBack = history => {
+  const {
+    location: {
+      hash,
+      key,
+      pathname,
+      search,
+      state: { previousRoute }
+    }
+  } = history
+  if (previousRoute) return history.goBack()
+  else return RouterPush(history, RouteMap.ENTRIES)
+}
+
+export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack }

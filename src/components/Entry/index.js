@@ -2,6 +2,8 @@ import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
+import { withRouter } from "react-router-dom"
+import { RouterGoBack } from "../../ReactRouter/Routes"
 import TextEditor from "../../components/TextEditor"
 import Divider from "../../components/Divider"
 import { UpdateReduxEntry } from "../../actions/Entries"
@@ -82,7 +84,7 @@ class Entry extends PureComponent {
   componentWillUnmount() {}
 
   render() {
-    const { UpdateReduxEntry } = this.props
+    const { UpdateReduxEntry, history } = this.props
     const {
       id,
       author,
@@ -96,7 +98,6 @@ class Entry extends PureComponent {
       textEditorHeight,
       showDivider
     } = this.state
-
     return (
       <Fragment>
         <InputGroup key={id} className="EntryInput">
@@ -125,9 +126,13 @@ class Entry extends PureComponent {
           <InputGroupAddon addonType="append">
             <InputGroupText color="primary" className="p-0">
               <ConfirmAction
-                onClickCallback={() =>
-                  UpdateReduxEntry({ id, shouldDelete: true })
-                }
+                onClickCallback={() => {
+                  RouterGoBack(history)
+                  setTimeout(
+                    () => UpdateReduxEntry({ id, shouldDelete: true }),
+                    200
+                  )
+                }}
                 icon={
                   <i
                     className="fas fa-trash"
@@ -149,4 +154,6 @@ class Entry extends PureComponent {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Entry)
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(Entry)
+)
