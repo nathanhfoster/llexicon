@@ -183,11 +183,16 @@ const SyncEntries = () => (dispatch, getState) => {
       dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
   }
-  const dispatchActions = dispatchDeleteEntries
+  let dispatchActions = dispatchDeleteEntries
     .concat(dispatchPostEntries)
     .concat(dispatchUpdateEntries)
-    .concat(GetUserEntries(1))
-    .concat(
+
+  if (
+    dispatchDeleteEntries.length > 0 ||
+    dispatchPostEntries.length > 0 ||
+    dispatchUpdateEntries.length > 0
+  ) {
+    dispatchActions = dispatchActions.concat(
       () =>
         new Promise(resolve =>
           dispatch({
@@ -196,6 +201,7 @@ const SyncEntries = () => (dispatch, getState) => {
           })
         )
     )
+  }
 
   dispatch(Sync(dispatchActions))
 }
