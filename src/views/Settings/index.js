@@ -11,13 +11,13 @@ import {
   Input,
   Tooltip
 } from "reactstrap"
-
-import "./styles.css"
+import Loading from "../../components/Loading"
 import {
   GetUserSettings,
   PostSettings,
   SetSettings
 } from "../../actions/Settings"
+import "./styles.css"
 
 const mapStateToProps = ({ User }) => ({ User })
 
