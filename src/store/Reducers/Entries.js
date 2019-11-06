@@ -14,6 +14,9 @@ const {
 } = ReduxActions
 
 const defaultState = {
+  count: null,
+  next: null,
+  previous: null,
   items: [],
   isPending: false,
   error: null
@@ -33,12 +36,22 @@ export const Entries = (state = defaultState, action) => {
         error: defaultState.error
       }
     case ENTRIES_SET:
-      return { ...state, items: payload }
+      const { count, next, previous, results } = payload
+      return {
+        ...state,
+        count,
+        next,
+        previous,
+        items: state.items.concat(results)
+      }
     case ENTRIES_SET_BY_DATE:
       return { ...state, items: mergeJson(payload, state.items) }
     case ENTRY_SET:
       return {
         ...state,
+        count,
+        next,
+        previous,
         items: state.items
           .filter(item => item.id != payload.id)
           .concat([payload])

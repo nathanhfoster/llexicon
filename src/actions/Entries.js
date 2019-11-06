@@ -30,10 +30,10 @@ const GetUserEntry = entryId => dispatch =>
       dispatch({ type: ENTRIES_ERROR, payload })
     })
 
-const GetUserEntries = () => (dispatch, getState) => {
+const GetUserEntries = pageNumber => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
-    .get(`/entries/${id}/view/`)
+    .get(`/entries/${id}/view/?page=${pageNumber}`)
     .then(res => {
       dispatch({
         type: ALERTS_SET_MESSAGE,
@@ -190,7 +190,7 @@ const SyncEntries = () => (dispatch, getState) => {
   const dispatchActions = dispatchDeleteEntries
     .concat(dispatchPostEntries)
     .concat(dispatchUpdateEntries)
-    .concat(GetUserEntries())
+    .concat(GetUserEntries(1))
 
   dispatch(Sync(dispatchActions))
 }

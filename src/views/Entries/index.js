@@ -5,22 +5,27 @@ import { Container, Row, Col } from "reactstrap"
 import Entry from "../../components/Entry"
 import Home from "../Home"
 import { FixedSizeList } from "react-window"
-import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
+import {
+  UpdateReduxEntry,
+  SyncEntries,
+  GetUserEntries
+} from "../../actions/Entries"
 import "./styles.css"
 
 const mapStateToProps = ({
   User,
-  Entries: { items },
+  Entries: { items, next },
   Window: {
     screen: { availHeight }
   }
 }) => ({
   UserId: User.id,
   entries: items.filter(item => !item.shouldDelete),
+  nextEntryPage: next,
   viewPortHeight: availHeight
 })
 
-const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
+const mapDispatchToProps = { UpdateReduxEntry, SyncEntries, GetUserEntries }
 
 class Entries extends PureComponent {
   constructor(props) {
@@ -34,7 +39,8 @@ class Entries extends PureComponent {
   static propTypes = {
     UserId: PropTypes.number,
     UpdateReduxEntry: PropTypes.func.isRequired,
-    SyncEntries: PropTypes.func.isRequired
+    SyncEntries: PropTypes.func.isRequired,
+    GetUserEntries: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
@@ -55,7 +61,7 @@ class Entries extends PureComponent {
   }
 
   getState = props => {
-    const { entries, viewPortHeight } = props
+    const { entries, nextEntryPage, viewPortHeight } = props
 
     const inputHeight = 46
 
@@ -65,7 +71,7 @@ class Entries extends PureComponent {
 
     if (listHeight / 2 > listItemHeight) listItemHeight = listHeight / 2
 
-    this.setState({ entries, listHeight, listItemHeight })
+    this.setState({ entries, nextEntryPage, listHeight, listItemHeight })
   }
 
   componentWillUnmount() {
@@ -98,6 +104,28 @@ class Entries extends PureComponent {
     )
   }
 
+  handleItemsRendered = ({
+    overscanStartIndex,
+    overscanStopIndex,
+    visibleStartIndex,
+    visibleStopIndex
+  }) => {
+    const { GetUserEntries } = this.props
+    const { entries, nextEntryPage } = this.state
+    const { length } = entries
+    const bottomOfListIndex = length === 0 ? length : length - 1
+    const reachedBottomOfList =
+      bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
+    // console.log("overscanStopIndex: ", overscanStopIndex)
+    // console.log("visibleStopIndex: ", visibleStopIndex)
+    // console.log("reachedBottomOfList: ", reachedBottomOfList)
+    // console.log("---------------------------------------")
+    if (!nextEntryPage) return
+    const split = nextEntryPage.split("=")
+    const pageNumber = split[split.length - 1]
+    if (reachedBottomOfList) GetUserEntries(pageNumber)
+  }
+
   render() {
     const { entries, listHeight, listItemHeight } = this.state
 
@@ -111,6 +139,7 @@ class Entries extends PureComponent {
             itemData={entries}
             itemCount={entries.length}
             itemSize={listItemHeight}
+            onItemsRendered={this.handleItemsRendered}
           >
             {this.renderEntries}
           </FixedSizeList>

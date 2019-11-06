@@ -54,7 +54,7 @@ class EntryDetail extends PureComponent {
 
   componentDidMount() {
     const { entryId, GetUserEntry } = this.props
-    GetUserEntry(entryId)
+    GetUserEntry(entryId, 1)
   }
 
   componentWillReceiveProps(nextProps) {
