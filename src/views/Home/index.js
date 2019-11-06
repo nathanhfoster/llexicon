@@ -136,7 +136,7 @@ class Home extends PureComponent {
     } = this.state
 
     return (
-      <Container className="Home Container">
+      <Container className="Home Container mt-3">
         <Row>
           <Col xs={12}>
             <InputGroup className="EntryInput">

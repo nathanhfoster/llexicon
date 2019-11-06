@@ -1,8 +1,10 @@
 @media (min-width: 768px) {
   :root {
-    --calendarTileHeight: calc((100vh - 38px - 64px) / 6);
+    --calendarTileHeight: calc((100vh - var(--navBarHeight)  - 24px) / 6);
   }
 }
+
+.DiaryCalendar {}
 
 .react-calendar__month-view__weekdays abbr[title], .react-calendar__month-view__weekdays__weekday abbr[title] {
   border-bottom: none !important;

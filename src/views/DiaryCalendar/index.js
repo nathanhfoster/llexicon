@@ -60,7 +60,6 @@ class DiaryCalendar extends PureComponent {
     SetCalendar({ activeDate })
   }
 
-
   handleActiveDateChange = ({ activeStartDate, view }) => {
     const { GetUserEntriesByDate } = this.props
     GetUserEntriesByDate(activeStartDate)
@@ -70,9 +69,23 @@ class DiaryCalendar extends PureComponent {
     const { history } = this.props
     const { activeDate } = this.state
     return (
-      <Container className="DiaryCalendar Container">
+      <Container fluid className="DiaryCalendar Container">
         <Row>
-          <Col md={9} xs={12} className="p-0">
+          <Col
+            className="EventList"
+            md={{ size: 2, order: 1 }}
+            xs={{ size: 12, order: 2 }}
+          >
+            <h2>
+              <Moment format="MMM D">{activeDate}</Moment>
+            </h2>
+            <EntryList activeDate={activeDate} history={history} />
+          </Col>
+          <Col
+            md={{ size: 10, order: 2 }}
+            xs={{ size: 12, order: 1 }}
+            className="p-0"
+          >
             <Calendar
               //calendarType="ISO 8601"
               onChange={this.handleChange}
@@ -94,12 +107,6 @@ class DiaryCalendar extends PureComponent {
               }
               onClickDay={null}
             />
-          </Col>
-          <Col className="EventList" md={3} xs={12}>
-            <h2>
-              <Moment format="MMM D">{activeDate}</Moment>
-            </h2>
-            <EntryList activeDate={activeDate} history={history} />
           </Col>
         </Row>
       </Container>
