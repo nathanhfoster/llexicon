@@ -15,6 +15,7 @@ import {
   NavItem,
   NavLink
 } from "reactstrap"
+import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
 
 import { UserLogout } from "../../actions/User"
@@ -23,7 +24,7 @@ import Logo from "../../images/Logo.png"
 
 const mapStateToProps = ({ User, Window }) => ({ User, Window })
 
-const mapDispatchToProps = { UserLogout, GetUserEntriesByDate }
+const mapDispatchToProps = { UserLogout, SetCalendar, GetUserEntriesByDate }
 
 class NavBar extends PureComponent {
   constructor(props) {
@@ -37,6 +38,7 @@ class NavBar extends PureComponent {
   static propTypes = {
     User: PropTypes.object,
     UserLogout: PropTypes.func.isRequired,
+    SetCalendar: PropTypes.func.isRequired,
     GetUserEntriesByDate: PropTypes.func.isRequired
   }
 
@@ -136,9 +138,10 @@ class NavBar extends PureComponent {
     isMobile ? this.renderSonderBrand : this.renderExlporeAndUniversities
 
   handleTodayClick = () => {
-    const { GetUserEntriesByDate } = this.props
-    const activeStartDate = new Date()
-    GetUserEntriesByDate(activeStartDate)
+    const { SetCalendar, GetUserEntriesByDate } = this.props
+    const activeDate = new Date()
+    // GetUserEntriesByDate(activeDate)
+    SetCalendar({ activeDate })
   }
 
   render() {
