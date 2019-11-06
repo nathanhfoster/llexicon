@@ -2,10 +2,7 @@
     .TileContentContainer {
         overflow-x: auto;
         overflow-y: hidden;
-        position: relative;
-        max-height: 16x;
         line-height: 0;
-        top: 2px;
     }
 }
 
@@ -15,7 +12,6 @@
         overflow-y: auto;
         max-height: calc(100% - 34px);
         top: 34px;
-       
         position: absolute;
         left: 0;
         right: 0;
