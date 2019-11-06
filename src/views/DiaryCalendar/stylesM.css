@@ -5,14 +5,7 @@
   .EventList {
     min-height: calc(var(--calendarTileHeight) * 6 + 86px);
   }
-  .hasEventsContainerMobile {
-    display: inline-block;
-  }
-  .hasEventsContainerMobile:first-child {
-    /* margin-left: 0.75px; */
-  }
   .eventLabelColor {}
-
   .react-calendar__month-view button {
     height: var(--calendarTileHeight);
     flex: 1 0 0;
@@ -22,11 +15,13 @@
     border: 1px solid var(--dark_border);
   }
   .react-calendar__month-view .react-calendar__tile abbr {
+    flex-grow : 1;
     position: relative;
-    top: 0;
+    top: 2px;
     left: 0;
     float: none;
     margin: 0 auto;
     display: block;
   }
+
 }

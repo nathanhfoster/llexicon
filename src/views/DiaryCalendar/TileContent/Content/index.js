@@ -111,12 +111,10 @@ class Content extends PureComponent {
         </div>
       </div>
     ) : view == "month" && shouldRenderInMobile ? (
-      <div className="hasEventsContainerMobile">
-        <span
-          className="eventLabelColor"
-          style={{ backgroundColor: "var(--primaryColor)" }}
-        />
-      </div>
+      <span
+        className="eventLabelColor"
+        style={{ backgroundColor: "var(--primaryColor)" }}
+      />
     ) : null
   }
 }
