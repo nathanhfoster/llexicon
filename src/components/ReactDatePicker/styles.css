@@ -1,6 +1,15 @@
-.DatePicker {
+.DatePicker {}
 
-}
 .DatePickerPopper {
-    z-index: 9999 !important;
-  }
+  z-index: 9999 !important;
+}
+
+.NavBaDatePickerTodayButton {
+  color: var(--primaryColor);
+  font-size: 16px;
+}
+
+.NavBaDatePickerTodayButton:hover {
+  color: var(--tertiaryColor);
+  cursor: pointer;
+}

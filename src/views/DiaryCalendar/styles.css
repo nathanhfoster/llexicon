@@ -141,14 +141,18 @@ abbr {
   border-radius: 100%;
   background-color: var(--primaryColor) !important;
   color: white;
-  -webkit-transition: background-color 1s ease-out;
-  -moz-transition: background-color 1s ease-out;
-  -o-transition: background-color 1s ease-out;
-  transition: background-color 1s ease-out;
+  -webkit-transition: background-color 0.1s ease-in;
+  -moz-transition: background-color 0.1s ease-in;
+  -o-transition: background-color 0.1s ease-in;
+  transition: background-color 0.1s ease-in;
   text-align: center;
-  transform: scale(1.1);
   will-change: transform;
-  transition: -webkit-transform 0.425s cubic-bezier(0.485, 1.65, 0.545, 1.235);
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  transition: -webkit-transform 0.425s cubic-bezier(0.485, 1.65, 0.545, 0.835);
+  transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.1, 1.1, 1);
+  --webkit-perspective: 1000;
 }
 
 .EventList {

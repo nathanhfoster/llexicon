@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { Button, Form, FormGroup, Label, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
-import { RouterPush, RouterLinkPush } from "../../helpers/routing"
+import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})

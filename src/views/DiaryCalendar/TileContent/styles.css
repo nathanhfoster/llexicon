@@ -3,6 +3,11 @@
         overflow-x: auto;
         overflow-y: hidden;
         line-height: 0;
+        height: 16px;
+    }
+    .TileContentPlus {
+        top: 1px;
+        right: 1px;
     }
 }
 
@@ -17,9 +22,28 @@
         right: 0;
         bottom: 0;
     }
+    .TileContentPlus {
+        top: 4px;
+        right: 4px;
+    }
 }
 
 .TileContentContainer {
     /* background-color: red; */
     /* display: inline-block; */
+}
+
+.TileContentPlus {
+    position: absolute;
+    font-size: 14px;
+    color: rgba(55, 57, 67, 0.025);
+    transition: color 0.2s ease-in-out;
+}
+
+.react-calendar__tile--active .TileContentPlus, .react-calendar__month-view button:hover .TileContentPlus {
+    color: rgba(72, 92, 190, 0.4);
+}
+
+.TileContentPlus:hover {
+    color: var(--tertiaryColor) !important;
 }

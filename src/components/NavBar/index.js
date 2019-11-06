@@ -1,7 +1,8 @@
 import React, { PureComponent } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, NavLink as RouterNavLink } from "react-router-dom"
-import { RouterPush, RouterLinkPush } from "../../helpers/routing"
+import { Button } from "reactstrap"
+import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import { RouteMap } from "../../ReactRouter/Routes"
 import PropTypes from "prop-types"
 import "./styles.css"
@@ -12,9 +13,9 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  Media
+  NavLink
 } from "reactstrap"
+import { GetUserEntriesByDate } from "../../actions/Entries"
 
 import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
@@ -22,7 +23,7 @@ import Logo from "../../images/Logo.png"
 
 const mapStateToProps = ({ User, Window }) => ({ User, Window })
 
-const mapDispatchToProps = { UserLogout }
+const mapDispatchToProps = { UserLogout, GetUserEntriesByDate }
 
 class NavBar extends PureComponent {
   constructor(props) {
@@ -35,7 +36,8 @@ class NavBar extends PureComponent {
 
   static propTypes = {
     User: PropTypes.object,
-    UserLogout: PropTypes.func.isRequired
+    UserLogout: PropTypes.func.isRequired,
+    GetUserEntriesByDate: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
@@ -133,6 +135,12 @@ class NavBar extends PureComponent {
   renderBrandOrExlporeAndUniversities = isMobile =>
     isMobile ? this.renderSonderBrand : this.renderExlporeAndUniversities
 
+  handleTodayClick = () => {
+    const { GetUserEntriesByDate } = this.props
+    const activeStartDate = new Date()
+    GetUserEntriesByDate(activeStartDate)
+  }
+
   render() {
     const { collapsed } = this.state
     const { Window, history } = this.props
@@ -144,15 +152,28 @@ class NavBar extends PureComponent {
     const { HOME } = RouteMap
     return (
       <Navbar light className="NavBar" color="light" fixed="top" expand="md">
-        <NavbarBrand
-          className="Logo"
-          tag={RouterNavLink}
-          to={RouterLinkPush(history, HOME)}
-          onClick={() => this.closeHamburgerMenu()}
-        >
-          <i className="fas fa-plus NavBarImage" />
-          <span className="NavBarLink">Entry</span>
+        <NavbarBrand>
+          <i
+            className="fas fa-plus NavBarImage NavBarLink"
+            onClick={() => {
+              console.log("sjdgfbjksbgkbnk")
+              RouterPush(history, HOME)
+              this.closeHamburgerMenu()
+            }}
+          >
+            {" "}
+            Entry
+          </i>
+
+          <i
+            className="fas fa-calendar-day NavBarImage NavBarLink ml-4"
+            onClick={this.handleTodayClick}
+          >
+            {" "}
+            Today
+          </i>
         </NavbarBrand>
+
         {isMobile && (
           <NavbarToggler
             tag={Hamburger}

@@ -1,6 +1,9 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
+import { RouteMap, RouterPush } from "../../../ReactRouter/Routes"
+import { GetUserEntriesByDate } from "../../../actions/Entries"
+import { withRouter } from "react-router-dom"
 import Content from "./Content"
 import MomentJS from "moment"
 import "./styles.css"
@@ -9,7 +12,7 @@ const mapStateToProps = ({ Entries: { items } }) => ({
   entries: items
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { GetUserEntriesByDate }
 
 class TileContent extends PureComponent {
   constructor(props) {
@@ -18,7 +21,7 @@ class TileContent extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = {}
+  static propTypes = { GetUserEntriesByDate: PropTypes.func.isRequired }
 
   static defaultProps = {}
 
@@ -70,11 +73,27 @@ class TileContent extends PureComponent {
     })
   }
 
+  handleTodayClick = () => {
+    const { history } = this.props
+    const { HOME } = RouteMap
+    setTimeout(() => RouterPush(history, HOME), 150)
+  }
+
   render() {
     const { entries } = this.state
     return (
-      <div className="TileContentContainer">{this.renderContent(entries)}</div>
+      <Fragment>
+        <i
+          className="fas fa-plus TileContentPlus"
+          onClick={this.handleTodayClick}
+        />
+        <div className="TileContentContainer">
+          {this.renderContent(entries)}
+        </div>
+      </Fragment>
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)
+)

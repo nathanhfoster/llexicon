@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { FormGroup, Label, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Link } from "react-router-dom"
-import { RouterLinkPush } from "../../helpers/routing"
+import { RouterLinkPush } from "../../ReactRouter/Routes"
 import { RouteMap } from "../../ReactRouter"
 import "./styles.css"
 

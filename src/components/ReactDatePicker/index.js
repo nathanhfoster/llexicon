@@ -32,7 +32,15 @@ class ReactDatePicker extends PureComponent {
 
   static defaultProps = {
     calendarClassName: "DatePicker",
-    todayButton: "Today",
+    todayButton: (
+      <i
+        className="fas fa-calendar-day NavBaDatePickerTodayButton"
+        onClick={this.handleTodayClick}
+      >
+        {" "}
+        Today
+      </i>
+    ),
     popperClassName: "DatePickerPopper",
     popperPlacement: popperPlacementPositions.AUTO_LEFT,
     // popperModifiers:{{

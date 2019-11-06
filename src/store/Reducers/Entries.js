@@ -32,7 +32,13 @@ export const Entries = (state = defaultState, action) => {
     case ENTRY_IMPORT:
       return {
         ...state,
-        items: state.items.concat(payload),
+        items: state.items
+          .concat(payload)
+          .sort(
+            (a, b) =>
+              new Date(b.date_created_by_author) -
+              new Date(a.date_created_by_author)
+          ),
         error: defaultState.error
       }
     case ENTRIES_SET:
@@ -42,7 +48,13 @@ export const Entries = (state = defaultState, action) => {
         count,
         next,
         previous,
-        items: state.items.concat(results)
+        items: state.items
+          .concat(results)
+          .sort(
+            (a, b) =>
+              new Date(b.date_created_by_author) -
+              new Date(a.date_created_by_author)
+          )
       }
     case ENTRIES_SET_BY_DATE:
       return { ...state, items: mergeJson(payload, state.items) }

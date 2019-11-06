@@ -5,7 +5,7 @@ import { ListGroup, ListGroupItem, Col } from "reactstrap"
 import Moment from "react-moment"
 import MomentJS from "moment"
 import { removeAttributeDuplicates } from "../../helpers"
-import { RouterPush } from "../../helpers/routing"
+import { RouterPush } from "../../ReactRouter/Routes"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items } }) => ({
@@ -82,7 +82,7 @@ class EntryList extends PureComponent {
             <ListGroupItem
               key={id}
               onClick={() => RouterPush(history, `/calendar/${id}`)}
-              className="Clickable listItem"
+              className="listItem"
               header={title}
             >
               <span className="eventDate">
@@ -103,9 +103,9 @@ class EntryList extends PureComponent {
     const { history } = this.props
     const { entries, activeDate } = this.state
     return (
-        <ListGroup className="List">
-          {this.renderItems(activeDate, entries, history)}
-        </ListGroup>
+      <ListGroup className="List">
+        {this.renderItems(activeDate, entries, history)}
+      </ListGroup>
     )
   }
 }

@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
-import { RouterPush, RouterLinkPush } from "../../helpers/routing"
+import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})

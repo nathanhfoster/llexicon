@@ -6,8 +6,7 @@
   text-align: center !important;
 }
 
-.NavBar li,
-.NavBar a {
+.NavBar li, .NavBar a {
   font-size: 18px !important;
 }
 
@@ -16,10 +15,6 @@
 }
 
 .Navlink.active {
-  color: var(--tertiarycolor) !important;
-}
-
-.Navlink:hover {
   color: var(--tertiarycolor) !important;
 }
 
@@ -41,9 +36,16 @@
   padding: 0;
   top: 0;
   border-radius: 50%;
-  font-size: 19px;
+  font-size: 20px;
 }
 
-.NavBar .NavBarLink {
-  font-size: 19px;
+
+.NavBar .NavBarLink:hover {
+  color: var(--tertiarycolor);
+  cursor: pointer;
+}
+
+.Navlink:hover,  .Navlink i:hover{
+  color: var(--tertiarycolor) !important;
+  cursor: pointer;
 }

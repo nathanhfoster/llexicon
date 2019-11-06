@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import { Container, Row, Col, Button, Jumbotron } from "reactstrap"
-import { RouterPush } from "../../../helpers/routing"
+import { RouterPush } from "../../../ReactRouter/Routes"
 import { useHistory } from "react-router-dom"
 
 const NoEntiresMessage = () => {

@@ -1,13 +1,13 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
+import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import Calendar from "react-calendar/dist/entry.nostyle"
 import TileContent from "./TileContent"
 import Moment from "react-moment"
 import EntryList from "../../components/EntryList"
 import { withRouter } from "react-router-dom"
-import { RouterPush, RouterLinkPush } from "../../helpers/routing"
+import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
 import "./styles.css"
@@ -60,11 +60,6 @@ class DiaryCalendar extends PureComponent {
     SetCalendar({ activeDate })
   }
 
-  handleTodayClick = () => {
-    const { GetUserEntriesByDate } = this.props
-    const activeStartDate = new Date()
-    GetUserEntriesByDate(activeStartDate)
-  }
 
   handleActiveDateChange = ({ activeStartDate, view }) => {
     const { GetUserEntriesByDate } = this.props
@@ -76,15 +71,6 @@ class DiaryCalendar extends PureComponent {
     const { activeDate } = this.state
     return (
       <Container className="DiaryCalendar Container">
-        <Row>
-          <Col xs={12} className="p-0">
-            <ButtonGroup>
-              <Button color="primary" onClick={this.handleTodayClick}>
-                Today
-              </Button>
-            </ButtonGroup>
-          </Col>
-        </Row>
         <Row>
           <Col md={9} xs={12} className="p-0">
             <Calendar

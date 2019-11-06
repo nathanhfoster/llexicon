@@ -20,10 +20,10 @@
 
 .FacebookButton:hover,
 .GoogleButton:hover {
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
   transition-property: color, background-color, border-color, box-shadow;
-  transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
+  transition-duration: 0.2s, 0.2s, 0.2s, 0.2s;
   transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
   transition-delay: 0s, 0s, 0s, 0s;
 }

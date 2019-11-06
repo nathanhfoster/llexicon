@@ -19,6 +19,7 @@ import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
+  Calendar: { activeDate },
   TextEditor: { clearedOn, title, editorStateHtml },
   Window: {
     innerHeight,
@@ -26,6 +27,7 @@ const mapStateToProps = ({
   },
   Entries: { items }
 }) => ({
+  activeDate,
   clearedOn,
   title,
   editorStateHtml,
@@ -40,7 +42,7 @@ class Home extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = { date_created_by_author: new Date() }
+    this.state = {}
   }
 
   static propTypes = {
@@ -69,6 +71,7 @@ class Home extends PureComponent {
 
   getState = props => {
     const {
+      activeDate,
       clearedOn,
       title,
       editorStateHtml,
@@ -78,6 +81,7 @@ class Home extends PureComponent {
     } = props
 
     this.setState({
+      activeDate,
       clearedOn,
       title,
       editorStateHtml
@@ -86,14 +90,14 @@ class Home extends PureComponent {
 
   handlePostEntry = () => {
     const { PostReduxEntry, ClearEditorState, entriesLength } = this.props
-    const { editorStateHtml, title, tags, date_created_by_author } = this.state
+    const { editorStateHtml, title, tags, activeDate } = this.state
 
     const payload = {
       id: `shouldPost-${entriesLength}`,
       title,
       html: editorStateHtml,
       tags,
-      date_created_by_author,
+      date_created_by_author: activeDate,
       shouldPost: true
     }
 
@@ -112,8 +116,7 @@ class Home extends PureComponent {
     SetEditorState({ editorStateHtml })
   }
 
-  handleChangeDateCreatedByAuthor = date_created_by_author =>
-    this.setState({ date_created_by_author })
+  handleChangeDateCreatedByAuthor = activeDate => this.setState({ activeDate })
 
   render() {
     const {
@@ -121,7 +124,7 @@ class Home extends PureComponent {
       clearedOn,
       title,
       editorHeight,
-      date_created_by_author
+      activeDate
     } = this.state
 
     return (
@@ -140,7 +143,7 @@ class Home extends PureComponent {
               <InputGroupAddon addonType="append">
                 <InputGroupText color="primary" className="p-0">
                   <ReactDatePicker
-                    selected={date_created_by_author}
+                    selected={new Date(activeDate)}
                     onChange={this.handleChangeDateCreatedByAuthor}
                   />
                 </InputGroupText>

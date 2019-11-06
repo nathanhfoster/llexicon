@@ -15,7 +15,7 @@ import Login from "../views/Login"
 import PrivacyPolicy from "../components/PrivacyPolicy"
 import PageNotFound from "../views/PageNotFound"
 import { GetUserSettings } from "../actions/Settings"
-import { RouterLinkPush } from "../helpers/routing"
+import { RouterLinkPush } from "./Routes"
 import { getRandomInt } from "../helpers"
 import "./styles.css"
 
