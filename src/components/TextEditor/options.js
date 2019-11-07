@@ -111,9 +111,9 @@ export const options = {
   },
   colorPicker: {
     //icon: color,
-    className: undefined,
+    className: "TextEditorModalWrapper",
     component: undefined,
-    popupClassName: undefined,
+    popupClassName: "TextEditorModal",
     colors: [
       "rgb(97,189,109)",
       "rgb(26,188,156)",
@@ -145,10 +145,10 @@ export const options = {
     ]
   },
   link: {
-    inDropdown: false,
-    className: undefined,
+    inDropdown: true,
+    className: "TextEditorModalWrapper",
     component: undefined,
-    popupClassName: undefined,
+    popupClassName: "TextEditorModal",
     dropdownClassName: undefined,
     showOpenOptionOnHover: true,
     defaultTargetOption: "_self",
@@ -158,9 +158,9 @@ export const options = {
   },
   emoji: {
     //icon: emoji,
-    className: undefined,
+    className: "TextEditorModalWrapper",
     component: undefined,
-    popupClassName: undefined,
+    popupClassName: "TextEditorModal",
     emojis: [
       "😀",
       "😁",
@@ -296,9 +296,9 @@ export const options = {
   },
   embedded: {
     //icon: embedded,
-    className: undefined,
+    className: "TextEditorModalWrapper",
     component: undefined,
-    popupClassName: undefined,
+    popupClassName: "TextEditorModal",
     embedCallback: (embeddedLink, height, width) => {
       if (embeddedLink.includes("youtube")) {
         embeddedLink = embeddedLink
@@ -315,9 +315,9 @@ export const options = {
   },
   image: {
     //icon: image,
-    className: undefined,
+    className: "TextEditorModalWrapper",
     component: undefined,
-    popupClassName: undefined,
+    popupClassName: "TextEditorModal",
     urlEnabled: true,
     uploadEnabled: true,
     alignmentEnabled: true,

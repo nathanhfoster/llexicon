@@ -7,18 +7,17 @@ const ButtonContainer = ({ title, children, disabled, onClick }) => {
 
   return (
     <div
-      className={className}
       onClick={() => onClick()}
       title={title}
       style={{
         display: "flex",
         alignItems: "center",
         marginBottom: 6,
-        position: "relative",
+        // position: "relative",
         flexWrap: "wrap"
       }}
     >
-      {children}
+      <div className={className}>{children}</div>
     </div>
   )
 }
