@@ -1,19 +1,25 @@
 import React, { useState, useEffect, Fragment, memo } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { connect as reduxConnect } from "react-redux"
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"
 import { useAddToHomescreenPrompt } from "./prompt"
 import getBrowserIcon from "./getBrowserIcon"
-
 const { NODE_ENV } = process.env
 
-const AddToHomeScreenModal = () => {
-  const dispatch = useDispatch()
-  const {
+const mapStateToProps = ({
+  Window: {
     isInStandalone,
     isOnMobileBrowser,
     navigator: { userAgent }
-  } = useSelector(({ Window }) => Window)
+  }
+}) => ({ isInStandalone, isOnMobileBrowser, userAgent })
 
+const mapDispatchToProps = {}
+
+const AddToHomeScreenModal = ({
+  isInStandalone,
+  isOnMobileBrowser,
+  userAgent
+}) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [isVisible, setVisibleState] = useState(false)
   const [isDisabled, setDisabledState] = useState(true)
@@ -73,4 +79,6 @@ const AddToHomeScreenModal = () => {
   )
 }
 
-export default memo(AddToHomeScreenModal)
+export default memo(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(AddToHomeScreenModal)
+)
