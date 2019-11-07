@@ -21,7 +21,7 @@ import { GetUserEntriesByDate } from "../../actions/Entries"
 import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
 import Logo from "../../images/Logo.png"
-import AddToHomeScreenButton from "../AddToHomeScreen/Button"
+import AddToHomeScreenModal from "../AddToHomeScreen/"
 
 const mapStateToProps = ({
   User: { id },
@@ -122,7 +122,7 @@ class NavBar extends PureComponent {
         <i className="fas fa-sign-out-alt NavBarImage" />,
         UserLogout
       ),
-      <AddToHomeScreenButton
+      <AddToHomeScreenModal
         isInStandalone={isInStandalone}
         isOnMobileBrowser={isOnMobileBrowser}
         browserUserAgent={browserUserAgent}
@@ -144,7 +144,7 @@ class NavBar extends PureComponent {
         "LOGIN",
         <i className="fas fa-sign-in-alt NavBarImage" />
       ),
-      <AddToHomeScreenButton
+      <AddToHomeScreenModal
         isInStandalone={isInStandalone}
         isOnMobileBrowser={isOnMobileBrowser}
         browserUserAgent={browserUserAgent}

@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react"
-import { Button } from "reactstrap"
-import { useAddToHomescreenPrompt } from "../prompt"
-const { NODE_ENV } = process.env
+import React from "react"
 
 const getBrowserIcon = (isOnMobileBrowser, browserUserAgent) => {
   if (!isOnMobileBrowser) {
@@ -36,30 +33,4 @@ const getBrowserIcon = (isOnMobileBrowser, browserUserAgent) => {
   }
 }
 
-const AddToHomeScreenButton = ({
-  isInStandalone,
-  isOnMobileBrowser,
-  browserUserAgent
-}) => {
-  const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const [isDisabled, setDisabledState] = useState(true)
-
-  useEffect(() => {
-    const canInstall = NODE_ENV !== "development" && !isInStandalone
-    if (canInstall || prompt) {
-      setDisabledState(false)
-    }
-  }, [prompt])
-
-  const icon = getBrowserIcon(isOnMobileBrowser, browserUserAgent)
-
-  return (
-    !isDisabled && (
-      <Button color="success" onClick={promptToInstall} disabled={isDisabled}>
-        {icon} Install
-      </Button>
-    )
-  )
-}
-
-export default AddToHomeScreenButton
+export default getBrowserIcon

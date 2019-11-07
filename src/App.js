@@ -120,7 +120,7 @@ export class App extends PureComponent {
       },
       performance
     } = window
-
+    const isMobile = innerWidth < 768
     setWindow({
       innerHeight,
       innerWidth,
@@ -180,13 +180,16 @@ export class App extends PureComponent {
         vendorSub
       },
       performance,
-      isMobile: innerWidth < 768,
+      isMobile,
+      navBarHeight: isMobile ? 46 : 68,
+      footerHeight: isMobile ? 52 : 70,
       isInStandalone: matchMedia("(display-mode: standalone)").matches,
       isOnMobileBrowser: this.isOnMobileBrowser(window.navigator.userAgent)
     })
   }
 
-  isOnMobileBrowser = userAgent => /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
+  isOnMobileBrowser = userAgent =>
+    /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
 
   render() {
     return <noscript />
