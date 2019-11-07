@@ -1,7 +1,7 @@
-import * as React from "react"
+import { useState, useEffect } from "react"
 
 export const useAddToHomescreenPrompt = () => {
-  const [prompt, setState] = React.useState(null)
+  const [prompt, setState] = useState(null)
   const promptToInstall = () => {
     if (prompt) {
       return prompt.prompt()
@@ -12,7 +12,7 @@ export const useAddToHomescreenPrompt = () => {
       )
     )
   }
-  React.useEffect(() => {
+  useEffect(() => {
     const ready = e => {
       e.preventDefault()
       setState(e)

@@ -70,7 +70,7 @@ export class App extends PureComponent {
         availWidth,
         colorDepth,
         height,
-        orientation: { angle, onchange, type },
+        // orientation: { angle, onchange, type },
         pixelDepth,
         width
       },
@@ -81,13 +81,13 @@ export class App extends PureComponent {
         appVersion,
         bluetooth,
         clipboard,
-        connection: {
-          downlink,
-          effectiveType,
-          // onchange,
-          rtt,
-          saveDate
-        },
+        // connection: {
+        //   downlink,
+        //   effectiveType,
+        //   // onchange,
+        //   rtt,
+        //   saveDate
+        // },
         cookieEnabled,
         credentials,
         deviceMemory,
@@ -100,20 +100,20 @@ export class App extends PureComponent {
         locks,
         maxTouchPoints,
         mediaCapabilities,
-        mediaDevices: { ondevicechange },
-        mediaSession: { metadata, playbackState },
+        // mediaDevices: { ondevicechange },
+        // mediaSession: { metadata, playbackState },
         mimeTypes,
         onLine,
         permissions,
         platform,
         plugins,
-        presentation: { defaultRequest, receiver },
+        // presentation: { defaultRequest, receiver },
         product,
         productSub,
-        serviceWorker: { controller, oncontrollerchange, onmessage },
+        // serviceWorker: { controller, oncontrollerchange, onmessage },
         storage,
         usb,
-        userActivation: { hasBeenActive, isActive },
+        // userActivation: { hasBeenActive, isActive },
         userAgent,
         vendor,
         vendorSub
@@ -121,12 +121,9 @@ export class App extends PureComponent {
       performance
     } = window
 
-    const isMobile = innerWidth < 768
-
     setWindow({
       innerHeight,
       innerWidth,
-      isMobile,
       screen: {
         availHeight,
         availLeft,
@@ -134,23 +131,24 @@ export class App extends PureComponent {
         availWidth,
         colorDepth,
         height,
-        orientation: { angle, onchange, type },
+        // orientation: { angle, onchange, type },
         pixelDepth,
         width
       },
+      matchMedia,
       navigator: {
         appCodeName,
         appName,
         appVersion,
         bluetooth,
         clipboard,
-        connection: {
-          downlink,
-          effectiveType,
-          // onchange,
-          rtt,
-          saveDate
-        },
+        // connection: {
+        //   downlink,
+        //   effectiveType,
+        //   // onchange,
+        //   rtt,
+        //   saveDate
+        // },
         cookieEnabled,
         credentials,
         deviceMemory,
@@ -163,28 +161,32 @@ export class App extends PureComponent {
         locks,
         maxTouchPoints,
         mediaCapabilities,
-        mediaDevices: { ondevicechange },
-        mediaSession: { metadata, playbackState },
+        // mediaDevices: { ondevicechange },
+        // mediaSession: { metadata, playbackState },
         mimeTypes,
         onLine,
         permissions,
         platform,
         plugins,
-        presentation: { defaultRequest, receiver },
+        // presentation: { defaultRequest, receiver },
         product,
         productSub,
-        serviceWorker: { controller, oncontrollerchange, onmessage },
+        // serviceWorker: { controller, oncontrollerchange, onmessage },
         storage,
         usb,
-        userActivation: { hasBeenActive, isActive },
+        // userActivation: { hasBeenActive, isActive },
         userAgent,
         vendor,
         vendorSub
       },
       performance,
-      isInStandalone: matchMedia("(display-mode: standalone)").matches
+      isMobile: innerWidth < 768,
+      isInStandalone: matchMedia("(display-mode: standalone)").matches,
+      isOnMobileBrowser: this.isOnMobileBrowser(window.navigator.userAgent)
     })
   }
+
+  isOnMobileBrowser = userAgent => /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
 
   render() {
     return <noscript />

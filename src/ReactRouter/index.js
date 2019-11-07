@@ -4,7 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
 import NavBar from "../components/NavBar"
-import AddToHomeScreen from "../components/AddToHomeScreen"
+import AddToHomeScreen from "../components/AddToHomeScreen/Modal"
 import Footer from "../components/Footer"
 import Home from "../views/Home"
 import Settings from "../views/Settings"
@@ -17,18 +17,17 @@ import PageNotFound from "../views/PageNotFound"
 import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "./Routes"
 import { getRandomInt } from "../helpers"
+import AddToHomeScreenButton from "../components/AddToHomeScreen/Button"
 import "./styles.css"
 
 const mapStateToProps = ({
   User,
   Window: {
-    screen: { availHeight },
-    isInStandalone
+    screen: { availHeight }
   }
 }) => ({
   User,
-  viewPortHeight: availHeight,
-  isInStandalone
+  viewPortHeight: availHeight
 })
 
 const mapDispatchToProps = {}
@@ -59,8 +58,7 @@ class ReactRouter extends PureComponent {
   getState = props => {
     const {
       User: { Settings },
-      viewPortHeight,
-      isInStandalone
+      viewPortHeight
     } = props
 
     const routeItems = this.getRouteItems(props)
@@ -70,8 +68,7 @@ class ReactRouter extends PureComponent {
     this.setState({
       routeItems,
       routeOverlayHeight,
-      Settings,
-      isInStandalone
+      Settings
     })
   }
 
@@ -131,8 +128,7 @@ class ReactRouter extends PureComponent {
     const {
       routeItems,
       Settings: { show_footer },
-      routeOverlayHeight,
-      isInStandalone
+      routeOverlayHeight
     } = this.state
 
     return (
@@ -145,7 +141,6 @@ class ReactRouter extends PureComponent {
         }}
       >
         <NavBar />
-        <AddToHomeScreen isInStandalone={isInStandalone} />
         <Switch>
           {this.renderRouteItems(routeItems)}
           <Route component={PageNotFound} />

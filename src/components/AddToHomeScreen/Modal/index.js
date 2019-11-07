@@ -1,9 +1,9 @@
 import * as React from "react"
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"
-import { useAddToHomescreenPrompt } from "./prompt"
+import { useAddToHomescreenPrompt } from "../prompt"
 const { NODE_ENV } = process.env
 
-const AddToHomeScreen = ({ isInStandalone }) => {
+const AddToHomeScreenModal = ({ isInStandalone }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [isVisible, setVisibleState] = React.useState(false)
 
@@ -51,4 +51,4 @@ const AddToHomeScreen = ({ isInStandalone }) => {
   )
 }
 
-export default AddToHomeScreen
+export default AddToHomeScreenModal
