@@ -1,17 +1,19 @@
 import * as React from "react"
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"
 import { useAddToHomescreenPrompt } from "./prompt"
+const { NODE_ENV } = process.env
 
 const AddToHomeScreen = ({ isInStandalone }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const [isVisible, setVisibleState] = React.useState(!isInStandalone)
+  const [isVisible, setVisibleState] = React.useState(false)
 
   const toggle = () => setVisibleState(!isVisible)
 
   const hide = () => setVisibleState(false)
 
   React.useEffect(() => {
-    if (prompt) {
+    const canInstall = NODE_ENV !== "development" && !isInStandalone
+    if (canInstall || prompt) {
       setVisibleState(true)
     }
   }, [prompt])
