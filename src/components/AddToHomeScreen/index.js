@@ -2,7 +2,7 @@ import * as React from "react"
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"
 import { useAddToHomescreenPrompt } from "./prompt"
 
-const AddToHomeScreen = () => {
+const AddToHomeScreen = ({ isInStandalone }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [isVisible, setVisibleState] = React.useState(false)
 
@@ -19,7 +19,11 @@ const AddToHomeScreen = () => {
   //   }
 
   return (
-    <Modal isOpen={isVisible} toggle={toggle} className="ConfirmActionModal">
+    <Modal
+      isOpen={!isInStandalone || isVisible}
+      toggle={toggle}
+      className="ConfirmActionModal"
+    >
       <ModalHeader toggle={isVisible} className="Center">
         Installation
       </ModalHeader>

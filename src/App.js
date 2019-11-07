@@ -74,6 +74,50 @@ export class App extends PureComponent {
         pixelDepth,
         width
       },
+      matchMedia,
+      navigator: {
+        appCodeName,
+        appName,
+        appVersion,
+        bluetooth,
+        clipboard,
+        connection: {
+          downlink,
+          effectiveType,
+          // onchange,
+          rtt,
+          saveDate
+        },
+        cookieEnabled,
+        credentials,
+        deviceMemory,
+        doNotTrack,
+        geolocation,
+        hardwareConcurrency,
+        keyboard,
+        language,
+        languages,
+        locks,
+        maxTouchPoints,
+        mediaCapabilities,
+        mediaDevices: { ondevicechange },
+        mediaSession: { metadata, playbackState },
+        mimeTypes,
+        onLine,
+        permissions,
+        platform,
+        plugins,
+        presentation: { defaultRequest, receiver },
+        product,
+        productSub,
+        serviceWorker: { controller, oncontrollerchange, onmessage },
+        storage,
+        usb,
+        userActivation: { hasBeenActive, isActive },
+        userAgent,
+        vendor,
+        vendorSub
+      },
       performance
     } = window
 
@@ -94,7 +138,51 @@ export class App extends PureComponent {
         pixelDepth,
         width
       },
-      performance
+      navigator: {
+        appCodeName,
+        appName,
+        appVersion,
+        bluetooth,
+        clipboard,
+        connection: {
+          downlink,
+          effectiveType,
+          // onchange,
+          rtt,
+          saveDate
+        },
+        cookieEnabled,
+        credentials,
+        deviceMemory,
+        doNotTrack,
+        geolocation,
+        hardwareConcurrency,
+        keyboard,
+        language,
+        languages,
+        locks,
+        maxTouchPoints,
+        mediaCapabilities,
+        mediaDevices: { ondevicechange },
+        mediaSession: { metadata, playbackState },
+        mimeTypes,
+        onLine,
+        permissions,
+        platform,
+        plugins,
+        presentation: { defaultRequest, receiver },
+        product,
+        productSub,
+        serviceWorker: { controller, oncontrollerchange, onmessage },
+        storage,
+        usb,
+        userActivation: { hasBeenActive, isActive },
+        userAgent,
+        vendor,
+        vendorSub
+      },
+      performance,
+      isInStandalone: matchMedia("(display-mode: standalone)").matches
     })
   }
 

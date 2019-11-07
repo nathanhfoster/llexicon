@@ -22,11 +22,13 @@ import "./styles.css"
 const mapStateToProps = ({
   User,
   Window: {
-    screen: { availHeight }
+    screen: { availHeight },
+    isInStandalone
   }
 }) => ({
   User,
-  viewPortHeight: availHeight
+  viewPortHeight: availHeight,
+  isInStandalone
 })
 
 const mapDispatchToProps = {}
@@ -57,8 +59,10 @@ class ReactRouter extends PureComponent {
   getState = props => {
     const {
       User: { Settings },
-      viewPortHeight
+      viewPortHeight,
+      isInStandalone
     } = props
+
     const routeItems = this.getRouteItems(props)
 
     const routeOverlayHeight = `calc(${viewPortHeight}px - var(--navBarHeight))`
@@ -66,7 +70,8 @@ class ReactRouter extends PureComponent {
     this.setState({
       routeItems,
       routeOverlayHeight,
-      Settings
+      Settings,
+      isInStandalone
     })
   }
 
@@ -126,7 +131,8 @@ class ReactRouter extends PureComponent {
     const {
       routeItems,
       Settings: { show_footer },
-      routeOverlayHeight
+      routeOverlayHeight,
+      isInStandalone
     } = this.state
 
     return (
@@ -139,7 +145,7 @@ class ReactRouter extends PureComponent {
         }}
       >
         <NavBar />
-        <AddToHomeScreen />
+        <AddToHomeScreen isInStandalone={isInStandalone} />
         <Switch>
           {this.renderRouteItems(routeItems)}
           <Route component={PageNotFound} />
