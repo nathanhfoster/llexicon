@@ -56,7 +56,8 @@ export const Entries = (state = defaultState, action) => {
         ...state,
         isPending: false,
         error: defaultState.error,
-        items: [payload].concat(state.items.filter(item => item.id !== id))
+        items: state.items.map(item => (item.id === id ? payload : item))
+        // [payload].concat(state.items.filter(item => item.id !== id))
       }
     case ENTRY_UPDATE:
       return {

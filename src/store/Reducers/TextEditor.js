@@ -4,11 +4,11 @@ const { TEXT_EDITOR_SET, TEXT_EDITOR_CLEAR, REDUX_RESET } = ReduxActions
 const defaultState = {
   clearedOn: "",
   title: "",
-  editorStateHtml: "<p></p>",
+  editorStateHtml: "<p><br></p>",
   lastUpdated: ""
 }
 
-export const TextEditor = (state = defaultState, action) => {
+const TextEditor = (state = defaultState, action) => {
   const { type, payload } = action
   switch (type) {
     case TEXT_EDITOR_SET:
@@ -21,3 +21,5 @@ export const TextEditor = (state = defaultState, action) => {
       return state
   }
 }
+
+export { TextEditor, defaultState }

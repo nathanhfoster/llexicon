@@ -59,10 +59,12 @@ const selectStyles = props => {
     }),
     control: (base, state) => ({
       ...base,
-      minHeight: "var(--inputButtonHeight)",
+      minHeight: "var(--inputHeight)",
       margin: "0 auto",
       backgroundColor: "white",
-      borderColor: state.isFocused ? "var(--primaryColor)" : "var(--light_grey)",
+      borderColor: state.isFocused
+        ? "var(--primaryColor)"
+        : "var(--light_grey)",
       ":hover": { borderColor: "var(--primaryColor)" }, // border style on hover
       border: "1px solid var(--light_grey)", // default border color
       boxShadow: "var(--primaryColor)" // no box-shadow
@@ -89,21 +91,21 @@ const selectStyles = props => {
     valueContainer: (base, state) => ({
       ...base,
       backgroundColor: "inherit",
-      maxHeight: "var(--inputButtonHeight)",
+      maxHeight: "var(--inputHeight)",
       // flexWrap: "nowrap",
       overflowY: "scroll",
       "::-webkit-scrollbar": { display: "initial", height: 2, width: 2 }
     }),
     multiValue: (base, state) => {
-      const { isFixed } = state.data;
+      const { isFixed } = state.data
       return {
         ...base,
         fontSize: 20,
         backgroundColor: isFixed ? "var(--grey)" : "var(--primaryColor)"
-      };
+      }
     },
     multiValueLabel: (base, state) => {
-      const { isFixed } = state.data;
+      const { isFixed } = state.data
       return isFixed
         ? {
             ...base,
@@ -114,7 +116,7 @@ const selectStyles = props => {
         : {
             ...base,
             color: "var(--tertiarycolor)"
-          };
+          }
     },
     multiValueRemove: (base, state) =>
       state.data.isFixed
@@ -126,8 +128,8 @@ const selectStyles = props => {
               color: "var(--secondaryColor)"
             }
           }
-  };
-};
+  }
+}
 
 const switchRoleColor = role => {
   //console.log(role);
@@ -151,8 +153,8 @@ const switchRoleColor = role => {
     // case "Utility":
     //   return "white";
     default:
-      return "white";
+      return "white"
   }
-};
+}
 
-export { selectStyles };
+export { selectStyles }

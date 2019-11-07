@@ -17,6 +17,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import { SetCalendar } from "../../actions/Calendar"
 import { PostReduxEntry } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
+import { defaultState } from "../../store/Reducers/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -87,11 +88,17 @@ class Home extends PureComponent {
       footerHeight
     } = props
 
+    const editorStateHtmlIsBlank =
+      editorStateHtml === defaultState.editorStateHtml
+
+    const postDisabled = editorStateHtmlIsBlank && !title
+
     this.setState({
       activeDate,
       clearedOn,
       title,
-      editorStateHtml
+      editorStateHtml,
+      postDisabled
     })
   }
 
@@ -132,7 +139,8 @@ class Home extends PureComponent {
       clearedOn,
       title,
       editorHeight,
-      activeDate
+      activeDate,
+      postDisabled
     } = this.state
 
     return (
@@ -164,6 +172,7 @@ class Home extends PureComponent {
                   tag={Button}
                   color="primary"
                   style={{ color: "white" }}
+                  disabled={postDisabled}
                 >
                   <i className="fas fa-feather-alt" style={{ fontSize: 20 }} />
                 </InputGroupText>

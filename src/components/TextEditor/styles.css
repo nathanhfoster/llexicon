@@ -269,11 +269,12 @@
 }
 
 .rdw-colorpicker-modal {
-  position: absolute;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 175px;
   height: 175px;
-  top: 35px;
-  left: calc( -175px + 35px);
   display: flex;
   flex-direction: column;
   border: 1px solid #F1F1F1;
@@ -362,9 +363,10 @@
 }
 
 .rdw-link-modal {
-  position: absolute;
-  top: 35px;
-  left: 5px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   width: 235px;
@@ -452,9 +454,10 @@
 }
 
 .rdw-embedded-modal {
-  position: absolute;
-  top: 35px;
-  left: 5px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   width: 235px;
@@ -576,9 +579,10 @@
 
 .rdw-emoji-modal {
   overflow: auto;
-  position: absolute;
-  top: 35px;
-  left: 5px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-wrap: wrap;
   width: 235px;
@@ -659,10 +663,11 @@
 }
 
 .rdw-image-modal {
-  position: absolute;
+  position: fixed;
   width: 235px;
-  top: 35px;
-  left: calc(-117.5px + 30px);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   border: 1px solid #F1F1F1;

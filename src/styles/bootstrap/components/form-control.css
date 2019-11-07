@@ -1,5 +1,5 @@
 .form-control {
-  min-height: var(--inputButtonHeight);
+  min-height: var(--inputHeight);
 }
 
 .form-control:focus {

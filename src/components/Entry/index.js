@@ -28,7 +28,7 @@ class Entry extends PureComponent {
     showDivider: PropTypes.bool
   }
 
-  static defaultProps = { showDivider: false }
+  static defaultProps = { showDivider: false, shouldRedirectOnDelete: false }
 
   componentWillMount() {
     this.getState(this.props)
@@ -54,7 +54,8 @@ class Entry extends PureComponent {
       views,
       lastUpdated,
       containerHeight,
-      showDivider
+      showDivider,
+      shouldRedirectOnDelete
     } = props
 
     const dividerHeight = showDivider ? 16 : 0
@@ -75,7 +76,8 @@ class Entry extends PureComponent {
       views,
       lastUpdated,
       textEditorHeight,
-      showDivider
+      showDivider,
+      shouldRedirectOnDelete
     })
   }
 
@@ -96,7 +98,8 @@ class Entry extends PureComponent {
       views,
       lastUpdated,
       textEditorHeight,
-      showDivider
+      showDivider,
+      shouldRedirectOnDelete
     } = this.state
     return (
       <Fragment>
@@ -127,7 +130,7 @@ class Entry extends PureComponent {
             <InputGroupText color="primary" className="p-0">
               <ConfirmAction
                 onClickCallback={() => {
-                  RouterGoBack(history)
+                  shouldRedirectOnDelete && RouterGoBack(history)
                   setTimeout(
                     () => UpdateReduxEntry({ id, shouldDelete: true }),
                     200

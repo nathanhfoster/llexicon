@@ -86,24 +86,6 @@ class Entries extends PureComponent {
     DeleteEntry(id)
   }
 
-  renderEntries = ({ data, index, style, isScrolling }) => {
-    const entry = data[index]
-
-    const { id, ...restOfProps } = entry
-    const newId = id || index
-
-    return (
-      <Col key={newId} style={{ ...style /* background: "red" */ }} xs={12}>
-        <Entry
-          id={newId}
-          {...restOfProps}
-          containerHeight={style.height}
-          showDivider
-        />
-      </Col>
-    )
-  }
-
   handleItemsRendered = ({
     overscanStartIndex,
     overscanStopIndex,
@@ -126,11 +108,27 @@ class Entries extends PureComponent {
     if (reachedBottomOfList) GetUserEntries(pageNumber)
   }
 
+  renderEntries = ({ data, index, style, isScrolling }) => {
+    const entry = data[index]
+    const { id, ...restOfProps } = entry
+
+    return (
+      <Col key={id} style={{ ...style /* background: "red" */ }} xs={12}>
+        <Entry
+          id={id}
+          {...restOfProps}
+          containerHeight={style.height}
+          showDivider
+        />
+      </Col>
+    )
+  }
+
   render() {
     const { entries, listHeight, listItemHeight } = this.state
 
     return entries.length > 0 ? (
-      <Container className="Entries Container mt-3">
+      <Container className="Entries Container">
         <Row>
           <FixedSizeList
             ref={this.listRef}

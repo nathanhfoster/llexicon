@@ -1,6 +1,6 @@
 :root {
   --navBarImageHeight: 36px;
-  --inputButtonHeight: 48px;
+  --inputHeight: 48px;
 }
 
 @media (max-width: 767px) {

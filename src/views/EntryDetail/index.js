@@ -83,7 +83,11 @@ class EntryDetail extends PureComponent {
       <Container className="EntryDetail Container">
         <Row>
           <Col xs={12}>
-            <Entry {...entry} containerHeight={entryContainerHeight} />
+            <Entry
+              {...entry}
+              containerHeight={entryContainerHeight}
+              shouldRedirectOnDelete
+            />
           </Col>
         </Row>
       </Container>

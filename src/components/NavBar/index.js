@@ -79,7 +79,7 @@ class NavBar extends PureComponent {
       this.renderNavlink(
         ENTRIES,
         "ENTRIES",
-        <i className="fas fa-feather-alt NavBarImage" />
+        <i className="fas fa-book NavBarImage" />
       ),
       this.renderNavlink(
         SETTINGS,
@@ -102,7 +102,7 @@ class NavBar extends PureComponent {
       this.renderNavlink(
         ENTRIES,
         "ENTRIES",
-        <i className="fas fa-feather-alt NavBarImage" />
+        <i className="fas fa-book NavBarImage" />
       ),
       this.renderNavlink(
         LOGIN,
@@ -164,7 +164,7 @@ class NavBar extends PureComponent {
         )}
         <NavbarBrand>
           <i
-            className="fas fa-plus NavBarImage NavBarLink"
+            className="fas fa-feather-alt NavBarImage NavBarLink"
             onClick={() => {
               RouterPush(history, HOME)
               this.closeHamburgerMenu()

@@ -80,7 +80,7 @@ a, a:hover {
 }
 
 input {
-  min-height: var(--inputButtonHeight);
+  min-height: var(--inputHeight);
   border: inherit;
 }
 

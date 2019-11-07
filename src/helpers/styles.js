@@ -58,7 +58,7 @@ const selectStyles = props => {
     }),
     control: (base, state) => ({
       ...base,
-      minHeight: "var(--inputButtonHeight)",
+      minHeight: "var(--inputHeight)",
       margin: "0 auto",
       backgroundColor: "var(--slate_grey)",
       borderColor: state.isFocused
@@ -72,9 +72,8 @@ const selectStyles = props => {
       ...base,
       borderBottom: "1px solid var(--primaryColor)",
       backgroundColor:
-        // state.isSelected ? "var(--secondaryColor)": 
-        state.isFocused ? "var(--primaryColor)"
-          : switchRoleColor(state.value),
+        // state.isSelected ? "var(--secondaryColor)":
+        state.isFocused ? "var(--primaryColor)" : switchRoleColor(state.value),
       color: "var(--tertiarycolor)",
       ":active": {
         backgroundColor: !state.isSelected
@@ -93,45 +92,45 @@ const selectStyles = props => {
     valueContainer: (base, state) => ({
       ...base,
       backgroundColor: "inherit",
-      maxHeight: "var(--inputButtonHeight)",
+      maxHeight: "var(--inputHeight)",
       // flexWrap: "nowrap",
       overflowY: "scroll",
       "::-webkit-scrollbar": { display: "initial", height: 2, width: 2 }
     }),
     multiValue: (base, state) => {
-      const { isFixed } = state.data;
+      const { isFixed } = state.data
       return {
         ...base,
         fontSize: 20,
         backgroundColor: isFixed ? "var(--grey)" : "var(--primaryColor)"
-      };
+      }
     },
     multiValueLabel: (base, state) => {
-      const { isFixed } = state.data;
+      const { isFixed } = state.data
       return isFixed
         ? {
-          ...base,
-          fontWeight: "bold",
-          color: "var(--tertiarycolor)",
-          paddingRight: 6
-        }
+            ...base,
+            fontWeight: "bold",
+            color: "var(--tertiarycolor)",
+            paddingRight: 6
+          }
         : {
-          ...base,
-          color: "var(--tertiarycolor)"
-        };
+            ...base,
+            color: "var(--tertiarycolor)"
+          }
     },
     multiValueRemove: (base, state) =>
       state.data.isFixed
         ? { ...base, display: "none" }
         : {
-          ...base,
-          ":hover": {
-            backgroundColor: "var(--secondaryColor)",
-            color: "var(--tertiarycolor)"
+            ...base,
+            ":hover": {
+              backgroundColor: "var(--secondaryColor)",
+              color: "var(--tertiarycolor)"
+            }
           }
-        }
-  };
-};
+  }
+}
 
 const switchRoleColor = role => {
   //console.log(role);
@@ -155,8 +154,8 @@ const switchRoleColor = role => {
     // case "Utility":
     //   return "var(--slate_grey)";
     default:
-      return "var(--slate_grey)";
+      return "var(--slate_grey)"
   }
-};
+}
 
-export { selectStyles };
+export { selectStyles }
