@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, NavLink as RouterNavLink } from "react-router-dom"
-import { Button } from "reactstrap"
 import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import { RouteMap } from "../../ReactRouter/Routes"
 import PropTypes from "prop-types"
@@ -17,26 +16,14 @@ import {
 } from "reactstrap"
 import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
-
 import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
 import Logo from "../../images/Logo.png"
 import AddToHomeScreenModal from "../AddToHomeScreen/"
 
-const mapStateToProps = ({
-  User: { id },
-  Window: {
-    isMobile,
-    isInStandalone,
-    isOnMobileBrowser,
-    navigator: { userAgent }
-  }
-}) => ({
+const mapStateToProps = ({ User: { id }, Window: { isMobile } }) => ({
   UserId: id,
-  isMobile,
-  isInStandalone,
-  isOnMobileBrowser,
-  browserUserAgent: userAgent
+  isMobile
 })
 
 const mapDispatchToProps = { UserLogout, SetCalendar, GetUserEntriesByDate }
@@ -70,19 +57,10 @@ class NavBar extends PureComponent {
   }
 
   getState = props => {
-    const {
-      UserId,
-      isMobile,
-      isInStandalone,
-      isOnMobileBrowser,
-      browserUserAgent
-    } = props
+    const { UserId, isMobile } = props
     this.setState({
       UserId,
-      isMobile,
-      isInStandalone,
-      isOnMobileBrowser,
-      browserUserAgent
+      isMobile
     })
   }
 
@@ -92,12 +70,7 @@ class NavBar extends PureComponent {
   closeHamburgerMenu = () => this.setState({ collapsed: true })
 
   renderNavLinks = () => {
-    const {
-      UserId,
-      isInStandalone,
-      isOnMobileBrowser,
-      browserUserAgent
-    } = this.state
+    const { UserId } = this.state
     const { UserLogout } = this.props
     const { CALENDAR, ENTRIES, SETTINGS, LOGIN } = RouteMap
     const LoggedInLinks = [
@@ -122,11 +95,7 @@ class NavBar extends PureComponent {
         <i className="fas fa-sign-out-alt NavBarImage" />,
         UserLogout
       ),
-      <AddToHomeScreenModal
-        isInStandalone={isInStandalone}
-        isOnMobileBrowser={isOnMobileBrowser}
-        browserUserAgent={browserUserAgent}
-      />
+      <AddToHomeScreenModal />
     ]
     const NotLoggedInLinks = [
       this.renderNavlink(
@@ -144,11 +113,7 @@ class NavBar extends PureComponent {
         "LOGIN",
         <i className="fas fa-sign-in-alt NavBarImage" />
       ),
-      <AddToHomeScreenModal
-        isInStandalone={isInStandalone}
-        isOnMobileBrowser={isOnMobileBrowser}
-        browserUserAgent={browserUserAgent}
-      />
+      <AddToHomeScreenModal />
     ]
     return UserId ? LoggedInLinks : NotLoggedInLinks
   }

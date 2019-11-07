@@ -1,11 +1,19 @@
 import React, { useState, useEffect, Fragment, memo } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"
 import { useAddToHomescreenPrompt } from "./prompt"
 import getBrowserIcon from "./getBrowserIcon"
+
 const { NODE_ENV } = process.env
 
-const AddToHomeScreenModal = props => {
-  const { isInStandalone, isOnMobileBrowser, browserUserAgent } = props
+const AddToHomeScreenModal = () => {
+  const dispatch = useDispatch()
+  const {
+    isInStandalone,
+    isOnMobileBrowser,
+    navigator: { userAgent }
+  } = useSelector(({ Window }) => Window)
+
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [isVisible, setVisibleState] = useState(false)
   const [isDisabled, setDisabledState] = useState(true)
@@ -22,12 +30,11 @@ const AddToHomeScreenModal = props => {
 
   useEffect(() => {
     if (canInstall || prompt) {
-      setVisibleState(true)
       setDisabledState(false)
     }
   }, [prompt])
 
-  const icon = getBrowserIcon(isOnMobileBrowser, browserUserAgent)
+  const icon = getBrowserIcon(isOnMobileBrowser, userAgent)
 
   return (
     <Fragment>
