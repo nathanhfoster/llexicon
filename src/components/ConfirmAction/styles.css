@@ -1,9 +1,8 @@
 .ConfirmActionModal {
-    margin-top: 0;
     position: absolute;
-    top: calc(50% - var(--navBarHeight));
-    left: 0;
-    right: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
   }
   
   .ConfirmActionModal .modal-content {

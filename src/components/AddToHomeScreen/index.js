@@ -4,9 +4,11 @@ import { useAddToHomescreenPrompt } from "./prompt"
 
 const AddToHomeScreen = ({ isInStandalone }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const [isVisible, setVisibleState] = React.useState(false)
+  const [isVisible, setVisibleState] = React.useState(!isInStandalone)
 
   const toggle = () => setVisibleState(!isVisible)
+
+  const hide = () => setVisibleState(false)
 
   React.useEffect(() => {
     if (prompt) {
@@ -19,12 +21,8 @@ const AddToHomeScreen = ({ isInStandalone }) => {
   //   }
 
   return (
-    <Modal
-      isOpen={!isInStandalone || isVisible}
-      toggle={toggle}
-      className="ConfirmActionModal"
-    >
-      <ModalHeader toggle={isVisible} className="Center">
+    <Modal isOpen={isVisible} toggle={toggle} className="ConfirmActionModal">
+      <ModalHeader toggle={toggle} className="Center">
         Installation
       </ModalHeader>
       <ModalBody>
@@ -34,10 +32,16 @@ const AddToHomeScreen = ({ isInStandalone }) => {
         <li>Offline Use</li>
       </ModalBody>
       <ModalFooter className="Center">
-        <Button color="success" onClick={promptToInstall}>
+        <Button
+          color="success"
+          onClick={() => {
+            promptToInstall()
+            hide()
+          }}
+        >
           <i className="fab fa-android" /> Install
         </Button>{" "}
-        <Button color="primary" onClick={toggle}>
+        <Button color="primary" onClick={hide}>
           Cancel
         </Button>
       </ModalFooter>
