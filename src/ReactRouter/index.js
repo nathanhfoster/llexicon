@@ -4,6 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
 import NavBar from "../components/NavBar"
+import AddToHomeScreen from "../components/AddToHomeScreen"
 import Footer from "../components/Footer"
 import Home from "../views/Home"
 import Settings from "../views/Settings"
@@ -138,6 +139,7 @@ class ReactRouter extends PureComponent {
         }}
       >
         <NavBar />
+        <AddToHomeScreen />
         <Switch>
           {this.renderRouteItems(routeItems)}
           <Route component={PageNotFound} />
