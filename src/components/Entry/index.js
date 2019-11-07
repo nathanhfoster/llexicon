@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -58,7 +58,7 @@ class Entry extends PureComponent {
       shouldRedirectOnDelete
     } = props
 
-    const dividerHeight = showDivider ? 16 : 0
+    const dividerHeight = showDivider ? 22 : 0
     const inputHeight = 48
     const numberOfInputs = 1
     const inputOffset = inputHeight * numberOfInputs
@@ -102,7 +102,12 @@ class Entry extends PureComponent {
       shouldRedirectOnDelete
     } = this.state
     return (
-      <Fragment>
+      <TextEditor
+        showDivider
+        height={textEditorHeight}
+        html={html}
+        onChangeCallback={html => UpdateReduxEntry({ id, html })}
+      >
         <InputGroup key={id} className="EntryInput">
           <Input
             type="text"
@@ -147,13 +152,7 @@ class Entry extends PureComponent {
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
-        <TextEditor
-          height={textEditorHeight}
-          html={html}
-          onChangeCallback={html => UpdateReduxEntry({ id, html })}
-        />
-        {showDivider && <Divider />}
-      </Fragment>
+      </TextEditor>
     )
   }
 }

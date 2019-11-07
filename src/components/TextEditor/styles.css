@@ -62,7 +62,7 @@
   height: 0px;
   width: 0px;
   position: absolute;
-  top: 35%;
+  /* top: 35%; */
   right: 10%;
   border-top: 6px solid black;
   border-left: 5px solid transparent;
@@ -268,7 +268,7 @@
   position: absolute;
   height: 246px;
   width: 235px;
-  top: 50%;
+  top: calc(50% + var(--textEditorToolBarHeight) + 35px + 4px);
   left: 50%;
   transform: translate(-50%, -50%);
 }

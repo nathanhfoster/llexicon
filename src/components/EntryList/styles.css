@@ -16,7 +16,7 @@
     background-color: white;
     border: 1px solid rgba(55, 57, 67, 0.2);
     border-radius: 0.25rem;
-    padding: 0 4px;
+    padding: 4px;
     margin: 2px 0;
     min-height: 58px;
 }

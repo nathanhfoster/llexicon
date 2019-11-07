@@ -19,7 +19,6 @@ class EntryList extends PureComponent {
     super(props)
 
     this.state = {
-      activeDate: Date,
       entries: []
     }
   }
@@ -28,12 +27,12 @@ class EntryList extends PureComponent {
     activeDate: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.instanceOf(Date)
-    ]),
+    ]).isRequired,
     entries: PropTypes.array
   }
 
   static defaultProps = {
-    activeDate: Date,
+    activeDate: new Date(),
     entries: []
   }
 
@@ -44,6 +43,7 @@ class EntryList extends PureComponent {
   componentWillUpdate() {}
 
   componentDidMount() {}
+
   componentWillReceiveProps(nextProps) {
     this.getState(nextProps)
   }

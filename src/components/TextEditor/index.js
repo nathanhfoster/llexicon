@@ -14,6 +14,7 @@ import { stateFromHTML } from "draft-js-import-html"
 import { options } from "./options"
 import { removeArrayDuplicates } from "../../helpers"
 import { ClearButton } from "./Buttons"
+import Divider from "../Divider"
 import "./styles.css"
 
 class TextEditor extends PureComponent {
@@ -33,6 +34,7 @@ class TextEditor extends PureComponent {
     html: PropTypes.string.isRequired,
     onChangeCallback: PropTypes.func,
     shouldAutoFocus: PropTypes.bool,
+    showDivider: PropTypes.bool,
 
     // import { Editor } from "react-draft-wysiwyg"
     onChange: PropTypes.func,
@@ -89,7 +91,8 @@ class TextEditor extends PureComponent {
     toolbarHidden: false,
     shouldAutoFocus: false,
     height: "100%",
-    width: "100%"
+    width: "100%",
+    showDivider: false
   }
 
   componentWillMount() {
@@ -112,7 +115,8 @@ class TextEditor extends PureComponent {
       toolbarHidden,
       height,
       width,
-      shouldAutoFocus
+      shouldAutoFocus,
+      showDivider
     } = props
     let editorState = this.htmlToEditorState(html)
     editorState = EditorState.moveSelectionToEnd(editorState)
@@ -134,7 +138,8 @@ class TextEditor extends PureComponent {
       toolbarHidden,
       height,
       width,
-      shouldAutoFocus
+      shouldAutoFocus,
+      showDivider
     })
   }
 
@@ -222,6 +227,7 @@ class TextEditor extends PureComponent {
   }
 
   render() {
+    const { children } = this.props
     const {
       clearKey,
       editorState,
@@ -229,52 +235,59 @@ class TextEditor extends PureComponent {
       readOnly,
       toolbarHidden,
       height,
-      width
+      width,
+      showDivider
     } = this.state
 
     // console.log(this.editorRef)
 
     return (
-      <div style={{ height, width }}>
-        <Editor
-          // customBlockRenderFunc={this.renderBlock}
-          editorRef={this.setEditorReference}
-          key={clearKey}
-          readOnly={readOnly}
-          defaultEditorState={editorState}
-          // editorState={editorState}
-          toolbarClassName="Toolbar"
-          wrapperClassName="Wrapper"
-          editorClassName="Editor"
-          onEditorStateChange={editorState =>
-            this.handleEditorStateChange(editorState)
-          }
-          onFocus={e => e.preventDefault()}
-          // onBlur={(e, editorState) => {
-          //   this.props.SetEditorState(
-          //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
-          //   );
-          // }}
-          onTab={e => e.preventDefault()}
-          blurInputOnSelect={false}
-          toolbarHidden={toolbarHidden}
-          toolbar={options}
-          toolbarCustomButtons={[
-            <ClearButton onClickCallback={this.clearState} />
-          ]}
-          mention={{
-            separator: " ",
-            trigger: "@",
-            suggestions
-          }}
-          // toolbarOnFocus
-          // stripPastedStyles="off"
-          // spellCheck="off"
-          // autoCapitalize="off"
-          // autoComplete="off"
-          // autoCorrect="off"
-        />
-      </div>
+      <Fragment>
+        {children}
+        <div style={{ height, width }}>
+          <Editor
+            // customBlockRenderFunc={this.renderBlock}
+            editorRef={this.setEditorReference}
+            key={clearKey}
+            readOnly={readOnly}
+            defaultEditorState={editorState}
+            // editorState={editorState}
+            toolbarClassName="Toolbar"
+            wrapperClassName="Wrapper"
+            editorClassName={`Editor ${
+              toolbarHidden ? "WithNoToolBar" : "WithToolBar"
+            }`}
+            onEditorStateChange={editorState =>
+              this.handleEditorStateChange(editorState)
+            }
+            onFocus={e => e.preventDefault()}
+            // onBlur={(e, editorState) => {
+            //   this.props.SetEditorState(
+            //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
+            //   );
+            // }}
+            onTab={e => e.preventDefault()}
+            blurInputOnSelect={false}
+            toolbarHidden={toolbarHidden}
+            toolbar={options}
+            toolbarCustomButtons={[
+              <ClearButton onClickCallback={this.clearState} />
+            ]}
+            mention={{
+              separator: " ",
+              trigger: "@",
+              suggestions
+            }}
+            // toolbarOnFocus
+            // stripPastedStyles="off"
+            // spellCheck="off"
+            // autoCapitalize="off"
+            // autoComplete="off"
+            // autoCorrect="off"
+          />
+          {showDivider && <Divider />}
+        </div>
+      </Fragment>
     )
   }
 }

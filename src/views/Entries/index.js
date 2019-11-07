@@ -65,11 +65,11 @@ class Entries extends PureComponent {
 
     const inputHeight = 46
 
-    const listHeight = viewPortHeight - inputHeight
+    const listHeight = viewPortHeight
 
     let listItemHeight = 500
 
-    if (listHeight / 2 > listItemHeight) listItemHeight = listHeight / 2
+    if (listHeight / 3 > listItemHeight) listItemHeight = listHeight / 3
 
     this.setState({ entries, nextEntryPage, listHeight, listItemHeight })
   }

@@ -73,7 +73,7 @@ class DiaryCalendar extends PureComponent {
         <Row>
           <Col
             className="EventList"
-            md={{ size: 2, order: 1 }}
+            md={{ size: 3, order: 1 }}
             xs={{ size: 12, order: 2 }}
           >
             <h2>
@@ -82,7 +82,7 @@ class DiaryCalendar extends PureComponent {
             <EntryList activeDate={activeDate} history={history} />
           </Col>
           <Col
-            md={{ size: 10, order: 2 }}
+            md={{ size: 9, order: 2 }}
             xs={{ size: 12, order: 1 }}
             className="p-0"
           >

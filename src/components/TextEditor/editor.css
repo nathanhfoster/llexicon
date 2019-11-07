@@ -3,11 +3,18 @@
   padding: 0 0.5em;
   border-radius: 2px;
   opacity: var(--mainOpacity);
+  letter-spacing: 0.4px;
+}
+
+.WithToolBar {
   /* height: 100%; */
   /* height: calc(100% - var(--inputHeight)); */
   /* height: calc(100% - var(--textEditorToolBarHeight)); */
   height: calc(100% - var(--textEditorToolBarHeight) - var(--textEditorToolBarMarginBottom));
-  letter-spacing: 0.4px;
+}
+
+.WithNoToolBar {
+  height: 100%;
 }
 
 .public-DraftStyleDefault-block {
