@@ -10,7 +10,7 @@
   font-size: 18px !important;
 }
 
-.Navlink {
+.Navlink, .nav-link {
   color: var(--primaryColor) !important;
 }
 

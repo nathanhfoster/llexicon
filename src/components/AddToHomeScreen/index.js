@@ -3,6 +3,7 @@ import { connect as reduxConnect } from "react-redux"
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"
 import { useAddToHomescreenPrompt } from "./prompt"
 import getBrowserIcon from "./getBrowserIcon"
+import "./styles.css"
 const { NODE_ENV } = process.env
 
 const mapStateToProps = ({
@@ -45,7 +46,7 @@ const AddToHomeScreenModal = ({
   return (
     <Fragment>
       {!isInStandalone && (
-        <Button color="success" onClick={toggle}>
+        <Button color="success" className="InstallButton" onClick={toggle}>
           {icon} Install
         </Button>
       )}

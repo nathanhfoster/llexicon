@@ -34,7 +34,7 @@ class FileUpload extends PureComponent {
         <FormText color="white">Upload your Profile Picture</FormText>
         <Label className="FileUpload" for="fileUpload">
           {!value ? (
-            <i className="fas fa-camera-retro fa-4x" />
+            <i className="fas fa-file-import fa-3x" />
           ) : (
             <Media src={value} />
           )}

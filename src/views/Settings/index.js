@@ -11,7 +11,6 @@ import {
   Input,
   Tooltip
 } from "reactstrap"
-import Loading from "../../components/Loading"
 import {
   GetUserSettings,
   PostSettings,
@@ -82,7 +81,6 @@ class Settings extends PureComponent {
   }
 
   render() {
-    const { PostSettings, SetSettings } = this.props
     const { User, ShowFooterTooltip, ShowPushMessagesTooltip } = this.state
     const { Settings } = User
     const { show_footer, push_messages } = Settings

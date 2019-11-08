@@ -112,7 +112,7 @@ class ReactRouter extends PureComponent {
       },
       {
         path: [SETTINGS],
-        component: this.renderRedirectOrComponent(!User.token, HOME, Settings)
+        component: Settings
       },
       { path: [CALENDAR], component: DiaryCalendar },
       { path: [ENTRY_DETAIL], component: EntryDetail },

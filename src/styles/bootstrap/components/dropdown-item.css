@@ -1,4 +1,4 @@
 .dropdown-item.active,
 .dropdown-item:active {
-  background-color: var(--grey) !important;
+  background-color: whitesmoke!important;
 }

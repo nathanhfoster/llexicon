@@ -12,7 +12,11 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap"
 import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
@@ -71,10 +75,35 @@ class NavBar extends PureComponent {
 
   closeHamburgerMenu = () => this.setState({ collapsed: true })
 
+  optionsMenu = () => {
+    const { isMobile } = this.state
+    const { SETTINGS } = RouteMap
+    return (
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle nav caret>
+          <i class="fas fa-ellipsis-v" />
+        </DropdownToggle>
+        <DropdownMenu right>
+          <DropdownItem className="Navlink">
+            {this.renderNavlink(
+              SETTINGS,
+              "SETTINGS",
+              <i className="fas fa-cog NavBarImage" />
+            )}
+          </DropdownItem>
+          <DropdownItem divider />
+          <DropdownItem>
+            <AddToHomeScreenModal />
+          </DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    )
+  }
+
   renderNavLinks = () => {
     const { UserId } = this.state
     const { UserLogout } = this.props
-    const { CALENDAR, ENTRIES, SETTINGS, LOGIN } = RouteMap
+    const { CALENDAR, ENTRIES, LOGIN } = RouteMap
     const LoggedInLinks = [
       this.renderNavlink(
         CALENDAR,
@@ -86,18 +115,14 @@ class NavBar extends PureComponent {
         "ENTRIES",
         <i className="fas fa-book NavBarImage" />
       ),
-      this.renderNavlink(
-        SETTINGS,
-        "SETTINGS",
-        <i className="fas fa-cog NavBarImage" />
-      ),
+
       this.renderNavlink(
         LOGIN,
         "LOG OUT",
         <i className="fas fa-sign-out-alt NavBarImage" />,
         UserLogout
       ),
-      <AddToHomeScreenModal />
+      this.optionsMenu()
     ]
     const NotLoggedInLinks = [
       this.renderNavlink(
@@ -110,12 +135,13 @@ class NavBar extends PureComponent {
         "ENTRIES",
         <i className="fas fa-book NavBarImage" />
       ),
+
       this.renderNavlink(
         LOGIN,
         "LOGIN",
         <i className="fas fa-sign-in-alt NavBarImage" />
       ),
-      <AddToHomeScreenModal />
+      this.optionsMenu()
     ]
     return UserId ? LoggedInLinks : NotLoggedInLinks
   }
