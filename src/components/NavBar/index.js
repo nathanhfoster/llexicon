@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, Fragment } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, NavLink as RouterNavLink } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
@@ -25,9 +25,13 @@ import Hamburger from "./Hamburger"
 import Logo from "../../images/Logo.png"
 import AddToHomeScreenModal from "../AddToHomeScreen/"
 
-const mapStateToProps = ({ User: { id }, Window: { isMobile } }) => ({
+const mapStateToProps = ({
+  User: { id },
+  Window: { isMobile, isInStandalone }
+}) => ({
   UserId: id,
-  isMobile
+  isMobile,
+  isInStandalone
 })
 
 const mapDispatchToProps = { UserLogout, SetCalendar, GetUserEntriesByDate }
@@ -63,10 +67,11 @@ class NavBar extends PureComponent {
   }
 
   getState = props => {
-    const { UserId, isMobile } = props
+    const { UserId, isMobile, isInStandalone } = props
     this.setState({
       UserId,
-      isMobile
+      isMobile,
+      isInStandalone
     })
   }
 
@@ -76,7 +81,7 @@ class NavBar extends PureComponent {
   closeHamburgerMenu = () => this.setState({ collapsed: true })
 
   optionsMenu = () => {
-    const { isMobile } = this.state
+    const { isMobile, isInStandalone } = this.state
     const { SETTINGS } = RouteMap
     return (
       <UncontrolledDropdown nav inNavbar>
@@ -91,10 +96,14 @@ class NavBar extends PureComponent {
               <i className="fas fa-cog NavBarImage" />
             )}
           </DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem>
-            <AddToHomeScreenModal />
-          </DropdownItem>
+          {!isInStandalone && (
+            <Fragment>
+              <DropdownItem divider />
+              <DropdownItem>
+                <AddToHomeScreenModal />
+              </DropdownItem>
+            </Fragment>
+          )}
         </DropdownMenu>
       </UncontrolledDropdown>
     )
