@@ -86,7 +86,7 @@ class NavBar extends PureComponent {
     return (
       <UncontrolledDropdown nav inNavbar>
         <DropdownToggle nav caret>
-          <i class="fas fa-ellipsis-v" />
+          <i className="fas fa-ellipsis-v" />
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem className="Navlink">

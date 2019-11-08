@@ -678,6 +678,7 @@
   z-index: 100;
   background: white;
   box-shadow: 3px 3px 5px #BFBDBD;
+  height: auto;
 }
 
 .rdw-image-modal-header {

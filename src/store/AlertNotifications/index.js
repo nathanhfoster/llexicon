@@ -38,7 +38,8 @@ export class AlertNotifications extends PureComponent {
   getState = props => {
     const { title, message, alertInterval, ClearAlerts } = props
 
-    this.interval = setInterval(() => ClearAlerts(), alertInterval)
+    //this.interval = setInterval(() => ClearAlerts(), alertInterval)
+    setTimeout(() => ClearAlerts(), alertInterval)
 
     const shouldShow = title && message ? true : false
 
