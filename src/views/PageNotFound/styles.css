@@ -116,7 +116,7 @@
   transform: rotate(-3600deg) !important;
 }
 
-html, body {
+.PageNotFound html, .PageNotFound body {
   margin: 0;
   width: 100%;
   height: 100%;
@@ -158,7 +158,7 @@ html, body {
   text-transform: uppercase;
 }
 
-ul {
+.PageNotFound ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -167,12 +167,12 @@ ul {
   align-items: center;
 }
 
-li {
+.PageNotFound li {
   float: left;
   padding: 0px 15px;
 }
 
-li a {
+.PageNotFound li a {
   display: block;
   color: white;
   text-align: center;
@@ -186,7 +186,7 @@ li a {
   transition: all 0.3s ease-in;
 }
 
-li a:hover {
+.PageNotFound li a:hover {
   color: #ffcb39;
 }
 
@@ -258,17 +258,16 @@ li a:hover {
   top: 20%;
   left: 15%;
   z-index: 90;
-  /*    animation: spin-earth 100s infinite linear both;*/
+  animation: spin-earth 100s infinite linear both;
 }
 
 .object_moon {
   position: absolute;
   top: 12%;
   left: 25%;
-  /*
-    transform: rotate(0deg);
-    transition: transform ease-in 99999999999s;
-*/
+  animation: spin-earth 27s infinite linear both;
+  /* transform: rotate(100deg);
+  transition: transform ease-in 2s; */
 }
 
 .earth-moon {}

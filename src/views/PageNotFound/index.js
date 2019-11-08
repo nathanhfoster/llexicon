@@ -38,7 +38,7 @@ class PageNotFound extends PureComponent {
   render() {
     const { title } = this.state
     return (
-      <body className="bg-purple">
+      <body className="PageNotFound bg-purple">
         <div className="stars">
           <div className="custom-navbar">
             <div className="brand-logo">
