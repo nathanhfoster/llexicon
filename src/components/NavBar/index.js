@@ -50,7 +50,9 @@ class NavBar extends PureComponent {
     this.getState(this.props)
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.handleTodayClick()
+  }
 
   componentWillReceiveProps(nextProps) {
     this.getState(nextProps)
