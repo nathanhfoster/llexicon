@@ -262,6 +262,7 @@
 
 .TextEditorModalWrapper {
   position: relative;
+  height: 30px;
 }
 
 .TextEditorModal {
