@@ -50,9 +50,10 @@ class Entries extends PureComponent {
   }
 
   componentDidMount() {
-    const { UserId, SyncEntries } = this.props
+    const { UserId, SyncEntries, GetUserEntries } = this.props
     if (UserId) {
       SyncEntries()
+      GetUserEntries(1)
     }
   }
 
