@@ -6,6 +6,7 @@ import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { GetUserEntry, SyncEntries } from "../../actions/Entries"
 import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
+import PageNotFound from "../PageNotFound"
 import "./styles.css"
 
 const mapStateToProps = (
@@ -79,7 +80,7 @@ class EntryDetail extends PureComponent {
 
   render() {
     const { entry, entryContainerHeight } = this.state
-    return (
+    return entry ? (
       <Container className="EntryDetail Container">
         <Row>
           <Col xs={12}>
@@ -91,6 +92,8 @@ class EntryDetail extends PureComponent {
           </Col>
         </Row>
       </Container>
+    ) : (
+      <PageNotFound title={"Entry Not Found"} />
     )
   }
 }
