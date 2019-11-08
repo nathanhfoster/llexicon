@@ -22,9 +22,11 @@
 }
 
 .rdw-editor-main {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
 }
+
 
 .rdw-editor-main blockquote {
   border-left: 5px solid #f1f1f1;

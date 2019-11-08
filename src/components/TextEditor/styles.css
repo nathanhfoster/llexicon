@@ -1219,14 +1219,16 @@ figure {
 /* END */
 
 .rdw-image-alignment-options-popup {
-  background: var(--slate_grey);
+  background: white;
   width: 120px;
+  border: 0;
 }
 
 .rdw-image-alignment-option {
-  background: var(--primaryColor);
+  background: whitesmoke;
   text-align: center;
   height: 30px;
   width: 30px;
   min-width: 30px;
+  
 }
