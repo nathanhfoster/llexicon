@@ -21,8 +21,7 @@ class FacebookGoogleLogin extends PureComponent {
   }
 
   static propTypes = {
-    SocialAuthentication: PropTypes.func.isRequired,
-    isLogin: PropTypes.bool
+    SocialAuthentication: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
@@ -103,17 +102,12 @@ class FacebookGoogleLogin extends PureComponent {
   }
 
   render() {
-    const { isLogin } = this.props
-    const Header = isLogin ? "Sign In with" : "Sign Up with"
     return (
       <Row className="FacebookGoogleLogin Container">
         <Col xs={12}>
           <div className="Seperator">
             <h1>or</h1>
           </div>
-        </Col>
-        <Col xs={12} className="Header Center">
-          <h3>{Header}</h3>
         </Col>
         <Col xs={{ size: 6 }}>
           <FacebookLogin
