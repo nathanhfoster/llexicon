@@ -783,12 +783,16 @@
   margin: 0 5px;
   width: 75px;
   height: 30px;
-  border: 1px solid #F1F1F1;
+  border: 1px solid whitesmoke;
   border-radius: 2px;
   cursor: pointer;
   background: white;
   text-transform: capitalize;
   box-shadow: var(--primaryBoxShadow);
+}
+
+.rdw-image-modal-btn:hover {
+  background: whitesmoke;
 }
 
 .rdw-image-modal-btn:hover {
@@ -804,7 +808,7 @@
 }
 
 .rdw-image-modal-btn:disabled {
-  background: #ece9e9;
+  /* background: #ece9e9; */
 }
 
 .rdw-image-modal-spinner {
@@ -1219,16 +1223,15 @@ figure {
 /* END */
 
 .rdw-image-alignment-options-popup {
-  background: white;
+  background: white !important;
   width: 120px;
   border: 0;
 }
 
 .rdw-image-alignment-option {
-  background: whitesmoke;
+  background: whitesmoke !important;
   text-align: center;
   height: 30px;
   width: 30px;
   min-width: 30px;
-  
 }
