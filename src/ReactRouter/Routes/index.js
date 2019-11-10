@@ -7,6 +7,7 @@ const RouteMap = {
   ENTRY_ADD: "/entry/add",
   ENTRIES: "/entries",
   LOGIN: "/login",
+  SIGNUP: "/sign-up",
   PRIVACY_POLICY: "/privacy-policy"
 }
 

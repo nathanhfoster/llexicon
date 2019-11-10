@@ -2,4 +2,5 @@
     background-color: whitesmoke;
     box-shadow: var(--primaryBoxShadow);
     margin: auto;
+    padding: 2rem;
 }

@@ -96,6 +96,7 @@ class ReactRouter extends PureComponent {
       ROOT,
       HOME,
       LOGIN,
+      SIGNUP,
       ENTRY_ADD,
       SETTINGS,
       CALENDAR,
@@ -107,7 +108,7 @@ class ReactRouter extends PureComponent {
     return [
       { path: [ROOT, HOME, ENTRY_ADD], component: Home },
       {
-        path: [LOGIN],
+        path: [LOGIN, SIGNUP],
         component: this.renderRedirectOrComponent(User.token, HOME, Login)
       },
       {

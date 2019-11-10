@@ -18,6 +18,7 @@ class BasicForm extends PureComponent {
   }
 
   static propTypes = {
+    title: PropTypes.string,
     inputs: PropTypes.arrayOf(PropTypes.object.isRequired),
     onSubmit: PropTypes.func,
     submitLabel: PropTypes.string
@@ -59,8 +60,8 @@ class BasicForm extends PureComponent {
   }
 
   getState = props => {
-    const { inputs, submitLabel } = props
-    this.setState({ inputs, submitLabel })
+    const { title, inputs, submitLabel } = props
+    this.setState({ title, inputs, submitLabel })
   }
 
   handleSubmit = e => {
@@ -91,9 +92,10 @@ class BasicForm extends PureComponent {
     })
 
   render() {
-    const { inputs, submitLabel } = this.state
+    const { title, inputs, submitLabel } = this.state
     return (
       <Form onSubmit={this.handleSubmit} method="post">
+        {title && <h2 className="Center">{title}</h2>}
         {this.renderInputs(inputs)}
         <div className="Center">
           <Button color="primary" type="submit">
