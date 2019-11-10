@@ -25,7 +25,7 @@ ReactDOM.render(
       <AlertNotifications />
       <App />
       <BrowserRouter>
-        {/* <BackgroundImage /> */}
+        <BackgroundImage />
         <ReactRouter />
       </BrowserRouter>
     </Suspense>

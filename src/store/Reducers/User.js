@@ -14,7 +14,6 @@ const defaultState = {
   last_login: null,
   opt_in: null,
   date_joined: null,
-  profile_uri: null,
   SocialAuthentications: [],
   groups: [],
   user_permissions: [],

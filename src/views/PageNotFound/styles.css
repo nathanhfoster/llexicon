@@ -133,7 +133,11 @@
 }
 
 .bg-purple {
-  background: url(http://salehriaz.com/404Page/img/bg_purple.png);
+  background: radial-gradient(ellipse at top left, 
+  #7ccbf6, #71c1f2, #68b6ee, #60abe9, #5ba0e4, #5999e1, #5893dd, #588cd9, #5888d7, #5884d4, #5880d2, #597ccf,
+  #6172c8, #6868bf, #6f5db6, #785cb3, #805baf, #815baf, #835bae, #845aae, #855aad, #865aac, #885aac, #895aab, #8a5aaa, #8b59aa, #8c59a9,
+  #8d59a8, #915ba9, #955da9, #995faa, #9d61ab, #a264ac, #a767ad, #ac6aae, #b36faf, #ba74b1, #c07ab2
+  );
   background-repeat: repeat-x;
   background-size: cover;
   background-position: left top;

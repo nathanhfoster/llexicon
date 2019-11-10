@@ -54,10 +54,7 @@ class PageNotFound extends PureComponent {
               src="http://salehriaz.com/404Page/img/404.svg"
               width="300px"
             />
-            <a
-              href="/home"
-              className="btn-go-home"
-            >
+            <a href="/home" className="btn-go-home">
               GO BACK HOME
             </a>
           </div>

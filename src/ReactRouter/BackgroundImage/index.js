@@ -96,7 +96,7 @@ class BackgroundImage extends PureComponent {
           }
         }
       >
-        <Media src={bgImage} />
+        {/* <Media src={bgImage} /> */}
       </div>
     )
   }
