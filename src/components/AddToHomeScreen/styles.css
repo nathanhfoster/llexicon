@@ -1,3 +1,7 @@
+.ConfirmActionModal {
+    color: car(--secondaryColor);
+}
+
 .InstallButton {
     width: 100%;
 }
