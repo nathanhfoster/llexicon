@@ -1,5 +1,5 @@
 .ConfirmActionModal {
-    color: car(--secondaryColor);
+    color: var(--secondaryColor);
 }
 
 .InstallButton {
