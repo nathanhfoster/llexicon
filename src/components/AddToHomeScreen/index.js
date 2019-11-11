@@ -19,15 +19,22 @@ const mapDispatchToProps = {}
 const AddToHomeScreenModal = ({
   isInStandalone,
   isOnMobileBrowser,
-  userAgent
+  userAgent,
+  onClickCallback
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [isVisible, setVisibleState] = useState(false)
   const [isDisabled, setDisabledState] = useState(true)
 
-  const toggle = () => setVisibleState(!isVisible)
+  const toggle = () => {
+     if(onClickCallback) onClickCallback()
+     setVisibleState(!isVisible)
+}
 
-  const hide = () => setVisibleState(false)
+  const hide = () => {
+     if(onClickCallback) onClickCallback()
+     setVisibleState(false)
+}
 
   const isInProduction = NODE_ENV !== "development"
   const canInstallOnMobile = !isInStandalone && isOnMobileBrowser
