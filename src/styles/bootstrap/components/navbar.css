@@ -26,3 +26,12 @@
   padding-bottom: 0 !important;
   line-height: var(--navBarImageHeight);
 }
+
+.navbar-nav .dropdown-menu {
+  background: var(--slate_grey);
+  border: 0;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+  background: inherit;
+}

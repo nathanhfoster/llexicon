@@ -1,7 +1,7 @@
 .form-control {
   min-height: var(--inputHeight);
   background: var(--quinaryColor);
-  color: var(--secondaryColor);
+  color: var(--secondaryColor) !important;
 }
 
 .form-control::placeholder {
