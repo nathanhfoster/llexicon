@@ -95,7 +95,7 @@
 }
 
 .react-calendar__month-view button:hover {
-  background-color: var(--slate_grey);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 .react-calendar__month-view button:hover ::-webkit-scrollbar-thumb {
@@ -131,7 +131,7 @@ abbr {
 }
 
 .react-calendar__month-view .react-calendar__tile--now abbr {
-  background-color: rgba(72, 92, 190, 0.5);
+  background-color: var(--accentColor);
   color: var(--secondaryColor);
 }
 

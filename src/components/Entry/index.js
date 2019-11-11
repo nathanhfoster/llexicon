@@ -118,7 +118,7 @@ class Entry extends PureComponent {
             onChange={e => UpdateReduxEntry({ id, title: e.target.value })}
           />
           <InputGroupAddon addonType="append">
-            <InputGroupText color="primary" className="p-0">
+            <InputGroupText className="p-0">
               <ReactDatePicker
                 selected={new Date(date_created_by_author || lastUpdated)}
                 onChange={date =>
@@ -132,7 +132,7 @@ class Entry extends PureComponent {
             </InputGroupText>
           </InputGroupAddon>
           <InputGroupAddon addonType="append">
-            <InputGroupText color="primary" className="p-0">
+            <InputGroupText className="p-0" style={{background: 'var(--quinaryColor)'}}>
               <ConfirmAction
                 onClickCallback={() => {
                   shouldRedirectOnDelete && RouterGoBack(history)

@@ -13,7 +13,7 @@
 }
 
 .listItem {
-    background-color: var(--slate_grey);
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(55, 57, 67, 0.2);
     border-radius: 0.25rem;
     padding: 4px;
@@ -23,7 +23,7 @@
 
 .listItem:hover {
     border-color: var(--primaryColor);
-    background-color: var(--dark_border);
+    background: rgba(0, 0, 0, 0.8);
     cursor: pointer;
 }
 

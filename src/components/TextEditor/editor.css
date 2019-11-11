@@ -5,6 +5,7 @@
   opacity: var(--mainOpacity);
   letter-spacing: 0.4px;
   color: var(--secondaryColor);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .WithToolBar {

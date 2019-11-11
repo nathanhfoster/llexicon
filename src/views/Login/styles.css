@@ -5,3 +5,7 @@
     align-items: center;
     height: 100%;
 }
+
+.LoginFormContainer {
+    /* background: rgba(0, 0, 0, 0.1); */
+}

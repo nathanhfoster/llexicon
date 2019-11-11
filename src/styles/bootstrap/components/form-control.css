@@ -4,6 +4,10 @@
   color: var(--secondaryColor);
 }
 
+.form-control::placeholder {
+  color: var(--light_grey);
+}
+
 .form-control:focus {
   border-color: var(--primaryColor) !important;
   outline: 0;

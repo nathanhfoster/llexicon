@@ -18,12 +18,12 @@
 
 .btn-inherit {
   color: white;
-  background-color: inherit;
+  /* background: inherit; */
   border: 0;
   box-shadow: none !important;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn-inherit:hover {
   background-color: var(--quaternaryColor) !important;
   border-color: var(--quaternaryColor) !important;
 }

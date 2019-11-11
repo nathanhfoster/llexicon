@@ -16,7 +16,7 @@
 }
 
 .Navlink.active {
-  color: white !important;
+  color: var(--accentColor) !important;
 }
 
 .NavBar button.dropdown-item {
@@ -41,11 +41,11 @@
 }
 
 .NavBar .NavBarLink:hover {
-  color: var(--tertiarycolor);
+  color: var(--accentColor);
   cursor: pointer;
 }
 
 .Navlink:hover, .Navlink i:hover {
-  color: var(--tertiarycolor) !important;
+  color: var(--accentColor) !important;
   cursor: pointer;
 }

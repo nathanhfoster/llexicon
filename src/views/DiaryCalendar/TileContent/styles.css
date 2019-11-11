@@ -41,7 +41,7 @@
 }
 
 .react-calendar__tile--active .TileContentPlus, .react-calendar__month-view button:hover .TileContentPlus {
-    color: rgba(72, 92, 190, 0.5);
+    color: var(--accentColor);
 }
 
 .TileContentPlus:hover {

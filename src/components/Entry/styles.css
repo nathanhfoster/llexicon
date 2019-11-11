@@ -2,4 +2,5 @@
   box-shadow: var(--primaryBoxShadow);
   outline: 0px;
   border: 0;
+  background: inherit;
 }
