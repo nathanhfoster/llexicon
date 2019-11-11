@@ -19,7 +19,7 @@
     width: 33px;
     height: 4px;
     position: relative;
-    background: var(--primaryColor);
+    background: var(--secondaryColor);
     border-radius: 3px;
     z-index: 1;
 
