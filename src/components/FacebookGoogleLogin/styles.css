@@ -63,7 +63,7 @@
 }
 .Seperator h1:before,
 .Seperator h1:after {
-  background-color: #333;
+  background-color: var(--secondaryColor);
   content: "";
   display: inline-block;
   height: 1px;

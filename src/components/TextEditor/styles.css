@@ -303,7 +303,9 @@
   padding: 15px;
   border-radius: 2px;
   z-index: 100;
-  background: white;
+  background: var(--slate_grey);
+  box-shadow: var(--primaryBoxShadow);
+  color: white;
   box-shadow: var(--primaryBoxShadow);
 }
 
@@ -321,7 +323,7 @@
 }
 
 .rdw-colorpicker-modal-style-label-active {
-  border-bottom: 2px solid var(--primaryColor);
+  border-bottom: 2px solid var(--secondaryColor);
 }
 
 .rdw-colorpicker-modal-options {
@@ -392,8 +394,9 @@
   padding: 15px;
   border-radius: 2px;
   z-index: 100;
-  background: white;
-  box-shadow: 3px 3px 5px #BFBDBD;
+  background: var(--slate_grey);
+  box-shadow: var(--primaryBoxShadow);
+  color: white;
 }
 
 .rdw-link-modal-label {
@@ -478,9 +481,11 @@
   padding: 15px;
   border-radius: 2px;
   z-index: 100;
-  background: white;
+  background: var(--slate_grey);
+  box-shadow: var(--primaryBoxShadow);
+  color: white;
   justify-content: space-between;
-  box-shadow: 3px 3px 5px #BFBDBD;
+ 
 }
 
 .rdw-embedded-modal-header {
@@ -598,8 +603,9 @@
   padding: 15px;
   border-radius: 2px;
   z-index: 100;
-  background: white;
-  box-shadow: 3px 3px 5px #BFBDBD;
+  background: var(--slate_grey);
+  box-shadow: var(--primaryBoxShadow);
+  color: white;
 }
 
 .rdw-emoji-icon {
@@ -676,8 +682,9 @@
   padding: 15px;
   border-radius: 2px;
   z-index: 100;
-  background: white;
-  box-shadow: 3px 3px 5px #BFBDBD;
+  background: var(--slate_grey);
+  box-shadow: var(--primaryBoxShadow);
+  color: white;
   height: auto;
 }
 

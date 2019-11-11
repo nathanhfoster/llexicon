@@ -102,7 +102,7 @@ class Content extends PureComponent {
         >
           <span
             className="eventLabelColor"
-            style={{ backgroundColor: "var(--primaryColor)" }}
+            style={{ backgroundColor: "var(--secondaryColor)" }}
           />
           <span className="eventDate">
             <Moment format="hh:mma">{date_created_by_author}</Moment>
@@ -113,7 +113,7 @@ class Content extends PureComponent {
     ) : view == "month" && shouldRenderInMobile ? (
       <span
         className="eventLabelColor"
-        style={{ backgroundColor: "var(--primaryColor)" }}
+        style={{ backgroundColor: "var(--secondaryColor)" }}
       />
     ) : null
   }

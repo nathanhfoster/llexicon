@@ -1,7 +1,6 @@
 .App {
   font-family: "Lato", sans-serif;
   /* color: white; */
-  /* background: red; */
 }
 
 .Container {
@@ -83,6 +82,8 @@ a, a:hover {
 input {
   min-height: var(--inputHeight);
   border: inherit;
+  background: var(--quinaryColor) !important;
+  color: var(--secondaryColor);
 }
 
 input[type="file"] {

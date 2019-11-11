@@ -76,7 +76,7 @@ class Login extends PureComponent {
         <Nav tabs>
           <NavItem>
             <NavLink
-              // className={classnames({ active: activeTab === "1" })}
+              className={`${activeTab === LOGIN ? "active" : ""}`}
               onClick={() => RouterPush(history, LOGIN)}
             >
               Login
@@ -84,7 +84,7 @@ class Login extends PureComponent {
           </NavItem>
           <NavItem>
             <NavLink
-              // className={classnames({ active: activeTab === "2" })}
+              className={`${activeTab === SIGNUP ? "active" : ""}`}
               onClick={() => RouterPush(history, SIGNUP)}
             >
               Sign Up

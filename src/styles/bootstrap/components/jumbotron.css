@@ -1,6 +1,7 @@
 .jumbotron {
-    background-color: whitesmoke;
+    background: var(--slate_grey);
     box-shadow: var(--primaryBoxShadow);
     margin: auto;
     padding: 2rem;
+    color: var(--secondaryColor);
 }

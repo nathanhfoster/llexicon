@@ -4,6 +4,7 @@
   z-index: 3;
   box-shadow: var(--primaryBoxShadow);
   text-align: center !important;
+  background: var(--slate_grey);
 }
 
 .NavBar li, .NavBar a {
@@ -11,11 +12,11 @@
 }
 
 .Navlink, .nav-link {
-  color: var(--primaryColor) !important;
+  color: var(--secondaryColor) !important;
 }
 
 .Navlink.active {
-  color: var(--tertiarycolor) !important;
+  color: white !important;
 }
 
 .NavBar button.dropdown-item {
@@ -39,13 +40,12 @@
   font-size: 20px;
 }
 
-
 .NavBar .NavBarLink:hover {
   color: var(--tertiarycolor);
   cursor: pointer;
 }
 
-.Navlink:hover,  .Navlink i:hover{
+.Navlink:hover, .Navlink i:hover {
   color: var(--tertiarycolor) !important;
   cursor: pointer;
 }

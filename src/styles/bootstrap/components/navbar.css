@@ -7,7 +7,7 @@
 }
 
 .navbar-brand {
-  color: var(--primaryColor) !important;
+  color: var(--secondaryColor) !important;
   font-weight: bold;
   font-family: "Varela Round", sans-serif;
 }

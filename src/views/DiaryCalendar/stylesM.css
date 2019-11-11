@@ -5,7 +5,7 @@
   .EventList {
     min-height: calc(var(--calendarTileHeight) * 6 + 86px);
   }
-  .eventLabelColor {}
+  .eventLabelColor {color: white;}
   .react-calendar__month-view button {
     height: var(--calendarTileHeight);
     flex: 1 0 0;

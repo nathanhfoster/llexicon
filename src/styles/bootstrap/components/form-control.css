@@ -1,5 +1,7 @@
 .form-control {
   min-height: var(--inputHeight);
+  background: var(--quinaryColor);
+  color: var(--secondaryColor);
 }
 
 .form-control:focus {

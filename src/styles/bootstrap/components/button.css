@@ -4,7 +4,7 @@
 
 .btn-primary {
   color: white;
-  background-color: var(--primaryColor) !important;
+  background-color: var(--quinaryColor) !important;
   border-color: var(--primaryColor) !important;
   box-shadow: var(--primaryBoxShadow);
 }

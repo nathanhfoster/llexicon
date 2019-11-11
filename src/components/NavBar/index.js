@@ -191,7 +191,7 @@ class NavBar extends PureComponent {
     const { collapsed, isMobile } = this.state
     const { HOME } = RouteMap
     return (
-      <Navbar light className="NavBar" color="light" fixed="top" expand="md">
+      <Navbar className="NavBar" fixed="top" expand="md">
         {isMobile && (
           <NavbarToggler
             tag={Hamburger}

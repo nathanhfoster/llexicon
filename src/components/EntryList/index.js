@@ -88,7 +88,7 @@ class EntryList extends PureComponent {
               <span className="eventDate">
                 <span
                   className="EventColorLabelContainer"
-                  style={{ backgroundColor: "var(--primaryColor)" }}
+                  style={{ backgroundColor: "var(--secondaryColor)" }}
                 />
                 <Moment format="hh:mma">{date_created_by_author}</Moment>
               </span>
