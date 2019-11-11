@@ -100,7 +100,7 @@ class NavBar extends PureComponent {
             <Fragment>
               <DropdownItem divider />
               <DropdownItem>
-                <AddToHomeScreenModal />
+                <AddToHomeScreenModal onClickCallback={this.closeHamburgerMenu} />
               </DropdownItem>
             </Fragment>
           )}
