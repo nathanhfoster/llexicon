@@ -5,8 +5,8 @@ import { getRandomInt } from "../../../helpers"
 import Star from "../Star"
 
 const StarGenerator = ({ length = 101 }) => {
-  let topPositions = new ArrayList({ ofNumbers: true, length })
-  let leftPositions = new ArrayList({ ofNumbers: true, length })
+  let topPositions = new ArrayList({ ofNumbers: true, length: 101 })
+  let leftPositions = new ArrayList({ ofNumbers: true, length: 101 })
   let stars = []
 
   for (let i = 0; i < length; i++) {
