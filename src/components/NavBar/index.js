@@ -84,7 +84,7 @@ class NavBar extends PureComponent {
     const { isMobile, isInStandalone } = this.state
     const { SETTINGS } = RouteMap
     return (
-      <UncontrolledDropdown nav inNavbar>
+      <UncontrolledDropdown key="DropDown" nav inNavbar>
         <DropdownToggle nav caret>
           <i className="fas fa-ellipsis-v" />
         </DropdownToggle>
@@ -100,7 +100,9 @@ class NavBar extends PureComponent {
             <Fragment>
               <DropdownItem divider />
               <DropdownItem>
-                <AddToHomeScreenModal onClickCallback={this.closeHamburgerMenu} />
+                <AddToHomeScreenModal
+                  onClickCallback={this.closeHamburgerMenu}
+                />
               </DropdownItem>
             </Fragment>
           )}

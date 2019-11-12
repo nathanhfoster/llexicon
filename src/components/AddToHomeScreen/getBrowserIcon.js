@@ -31,6 +31,7 @@ const getBrowserIcon = (isOnMobileBrowser, browserUserAgent) => {
       return <i className="fab fa-windows" />
     }
   }
+  return <div>No Browser detected</div>
 }
 
 export default getBrowserIcon

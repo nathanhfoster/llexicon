@@ -1,4 +1,4 @@
 .dropdown-item.active,
 .dropdown-item:active {
-  background-color: whitesmoke!important;
+  background-color: inherit!important;
 }

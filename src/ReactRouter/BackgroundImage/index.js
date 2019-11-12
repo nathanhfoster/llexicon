@@ -4,6 +4,7 @@ import { Media } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { nebulus, nebulus2, nebulus3 } from "../../images/AWS"
+import StarGenerator from "./StarGenerator"
 import "./styles.css"
 
 const mapStateToProps = ({ Window, User: { Settings } }) => ({
@@ -36,13 +37,14 @@ class BackgroundImage extends PureComponent {
 
   getState = props => {
     const { history, location, match, Window, Settings } = props
-
+    const stars = <StarGenerator />
     this.setState({
       history,
       location,
       match,
       Window,
-      Settings
+      Settings,
+      stars
     })
   }
 
@@ -80,7 +82,8 @@ class BackgroundImage extends PureComponent {
       location,
       match,
       Window: { isMobile },
-      Settings: { show_footer }
+      Settings: { show_footer },
+      stars
     } = this.state
     const { pathname } = location
     const bgImage = isMobile
@@ -97,6 +100,7 @@ class BackgroundImage extends PureComponent {
         }
       >
         {/* <Media src={bgImage} /> */}
+        {stars}
       </div>
     )
   }

@@ -1,8 +1,14 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { Media } from "reactstrap"
-import { nebulus } from "../../images/AWS"
+import LogoImage from "../../ReactRouter/BackgroundImage/LogoImage"
+import StarGenerator from "../../ReactRouter/BackgroundImage/StarGenerator"
+import BackgroundObjects from "../../ReactRouter/BackgroundImage/BackgroundObjects"
+import Rocket from "../../ReactRouter/BackgroundImage/Rocket"
+import Earth from "../../ReactRouter/BackgroundImage/Earth"
+import Moon from "../../ReactRouter/BackgroundImage/Moon"
+import Astronaut from "../../ReactRouter/BackgroundImage/Astronaut"
+import FourOFOur from "../../ReactRouter/BackgroundImage/FourOFour"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -32,67 +38,36 @@ class PageNotFound extends PureComponent {
 
   getState = props => {
     const { title } = props
-    this.setState({ title })
+    const stars = <StarGenerator />
+    this.setState({ title, stars })
   }
 
   render() {
-    const { title } = this.state
+    const { title, stars } = this.state
+
     return (
-      <body className="PageNotFound bg-purple">
-        <div className="stars">
-          <div className="custom-navbar">
-            <div className="brand-logo">
-              <img
-                src="https://astraltree.s3.us-east-2.amazonaws.com/media/Logo.png"
-                width="80px"
-              />
-            </div>
-          </div>
-          <div className="central-body">
-            <img
-              className="image-404"
-              src="http://salehriaz.com/404Page/img/404.svg"
-              width="300px"
-            />
-            <a href="/home" className="btn-go-home">
-              GO BACK HOME
-            </a>
-          </div>
-          <div className="objects">
-            <img
-              className="object_rocket"
-              src="http://salehriaz.com/404Page/img/rocket.svg"
-              width="40px"
-            />
-            <div className="earth-moon">
-              <img
-                className="object_earth"
-                src="http://salehriaz.com/404Page/img/earth.svg"
-                width="100px"
-              />
-              <img
-                className="object_moon"
-                src="http://salehriaz.com/404Page/img/moon.svg"
-                width="80px"
-              />
-            </div>
-            <div className="box_astronaut">
-              <img
-                className="object_astronaut"
-                src="http://salehriaz.com/404Page/img/astronaut.svg"
-                width="140px"
-              />
-            </div>
-          </div>
-          <div className="glowing_stars">
-            <div className="star"></div>
-            <div className="star"></div>
-            <div className="star"></div>
-            <div className="star"></div>
-            <div className="star"></div>
+      <div className="PageNotFound bg-purple">
+        <div className="custom-navbar">
+          <div className="brand-logo">
+            <LogoImage />
           </div>
         </div>
-      </body>
+        <div className="central-body">
+          <FourOFOur />
+          <a href="/home" className="btn-go-home">
+            GO BACK HOME
+          </a>
+        </div>
+        <BackgroundObjects>
+          <Rocket />
+          <div className="earth-moon">
+            <Earth />
+            <Moon />
+          </div>
+          <Astronaut />
+        </BackgroundObjects>
+        {stars}
+      </div>
     )
   }
 }

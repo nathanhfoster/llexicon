@@ -27,14 +27,14 @@ const AddToHomeScreenModal = ({
   const [isDisabled, setDisabledState] = useState(true)
 
   const toggle = () => {
-     if(onClickCallback) onClickCallback()
-     setVisibleState(!isVisible)
-}
+    if (onClickCallback) onClickCallback()
+    setVisibleState(!isVisible)
+  }
 
   const hide = () => {
-     if(onClickCallback) onClickCallback()
-     setVisibleState(false)
-}
+    if (onClickCallback) onClickCallback()
+    setVisibleState(false)
+  }
 
   const isInProduction = NODE_ENV !== "development"
   const canInstallOnMobile = !isInStandalone && isOnMobileBrowser
@@ -51,9 +51,14 @@ const AddToHomeScreenModal = ({
   const icon = getBrowserIcon(isOnMobileBrowser, userAgent)
 
   return (
-    <Fragment>
+    <div>
       {!isInStandalone && (
-        <Button color="success" className="InstallButton" onClick={toggle}>
+        <Button
+          tag="div"
+          color="success"
+          className="InstallButton"
+          onClick={toggle}
+        >
           {icon} Install
         </Button>
       )}
@@ -83,7 +88,7 @@ const AddToHomeScreenModal = ({
           </Button>
         </ModalFooter>
       </Modal>
-    </Fragment>
+    </div>
   )
 }
 
