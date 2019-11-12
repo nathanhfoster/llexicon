@@ -66,6 +66,12 @@ class TileContent extends PureComponent {
 
   componentWillUnmount() {}
 
+  handleTodayClick = () => {
+    const { history } = this.props
+    const { HOME } = RouteMap
+    setTimeout(() => RouterPush(history, HOME), 150)
+  }
+
   renderContent = entries => {
     const { calendarDay, date, staticContext, view } = this.state
     return entries.map(entry => {
@@ -90,13 +96,6 @@ class TileContent extends PureComponent {
         )
       )
     })
-  }
-
-  handleTodayClick = e => {
-    console.log(e.target)
-    const { history } = this.props
-    const { HOME } = RouteMap
-    // setTimeout(() => RouterPush(history, HOME), 150)
   }
 
   render() {
