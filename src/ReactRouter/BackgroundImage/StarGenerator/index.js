@@ -1,19 +1,17 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
+import { ArrayList } from "../../../classes"
 import { getRandomInt } from "../../../helpers"
 import Star from "../Star"
 
-const StarGenerator = ({ length = 100 }) => {
-  let topPositions = Array.from(new Array(length).keys())
-  let leftPositions = Array.from(new Array(length).keys())
+const StarGenerator = ({ length = 101 }) => {
+  let topPositions = new ArrayList({ ofNumbers: true, length })
+  let leftPositions = new ArrayList({ ofNumbers: true, length })
   let stars = []
 
   for (let i = 0; i < length; i++) {
-    const randomTop = getRandomInt(0, topPositions.length - 1)
-    topPositions.splice(randomTop, 1)
-
-    const randomLeft = getRandomInt(0, leftPositions.length - 1)
-    leftPositions.splice(randomTop, 1)
+    const randomTop = topPositions.getRandomValue()
+    const randomLeft = leftPositions.getRandomValue()
 
     const fiftyPercentChance = getRandomInt(0, 100) > 50
     const animation = getRandomInt(1, 5)
