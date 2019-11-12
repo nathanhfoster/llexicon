@@ -12,7 +12,7 @@ const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
 
 const mapDispatchToProps = {}
 
-class Content extends PureComponent {
+class EntryPreview extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -119,5 +119,5 @@ class Content extends PureComponent {
   }
 }
 export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(Content)
+  reduxConnect(mapStateToProps, mapDispatchToProps)(EntryPreview)
 )

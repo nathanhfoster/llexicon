@@ -1,10 +1,22 @@
 import React, { memo } from "react"
+import PropTypes from "prop-types"
 import { Logo } from "../../../images/AWS"
 
-const astronautStyles = ({}) => ({
-  width: 80
+const imageStyles = ({ height = 98, width = 84 }) => ({
+  height,
+  width
 })
 
-const LogoImage = props => <img style={astronautStyles(props)} src={Logo} />
+const LogoImage = props => (
+  <div className={props.center ? "Center" : ""}>
+    <img style={imageStyles(props)} src={Logo} />
+  </div>
+)
+
+LogoImage.propTypes = {
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  center: PropTypes.bool
+}
 
 export default memo(LogoImage)

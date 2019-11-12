@@ -17,6 +17,7 @@ import { RouterPush, RouterLinkPush, RouteMap } from "../../ReactRouter/Routes"
 import BasicForm from "../../components/BasicForm"
 import FacebookGoogleLogin from "../../components/FacebookGoogleLogin"
 import { UserLogin, CreateUser } from "../../actions/User"
+import LogoImage from "../../ReactRouter/BackgroundImage/LogoImage"
 import "./styles.css"
 const { LOGIN, SIGNUP } = RouteMap
 
@@ -96,34 +97,12 @@ class Login extends PureComponent {
             <Row>
               <Col xs={12}>
                 <Jumbotron className="LoginFormContainer">
+                  <LogoImage center />
                   <BasicForm
                     title="Login"
                     onSubmit={payload => this.handleLogin(payload)}
                     submitLabel="Login"
-                  />
-                  <FacebookGoogleLogin />
-                </Jumbotron>
-              </Col>
-            </Row>
-          </TabPane>
-        </TabContent>
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId={SIGNUP}>
-            <Row>
-              <Col xs={12}>
-                <Jumbotron className="LoginFormContainer">
-                  <BasicForm
-                    title="Sign Up"
-                    onSubmit={payload => this.handleSignUp(payload)}
-                    submitLabel="Sign Up"
                     inputs={[
-                      {
-                        label: "Email",
-                        type: "email",
-                        name: "email",
-                        id: "email",
-                        placeholder: "Email..."
-                      },
                       {
                         label: "Username",
                         type: "text",
@@ -139,6 +118,23 @@ class Login extends PureComponent {
                         placeholder: "Password..."
                       }
                     ]}
+                  />
+                  <FacebookGoogleLogin />
+                </Jumbotron>
+              </Col>
+            </Row>
+          </TabPane>
+        </TabContent>
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId={SIGNUP}>
+            <Row>
+              <Col xs={12}>
+                <Jumbotron className="LoginFormContainer">
+                  <LogoImage center />
+                  <BasicForm
+                    title="Sign Up"
+                    onSubmit={payload => this.handleSignUp(payload)}
+                    submitLabel="Sign Up"
                   />
                   <FacebookGoogleLogin />
                 </Jumbotron>

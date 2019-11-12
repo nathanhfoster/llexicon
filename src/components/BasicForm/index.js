@@ -26,13 +26,13 @@ class BasicForm extends PureComponent {
 
   static defaultProps = {
     inputs: [
-      // {
-      //   label: "Email",
-      //   type: "email",
-      //   name: "email",
-      //   id: "email",
-      //   placeholder: "Email..."
-      // },
+      {
+        label: "Email",
+        type: "email",
+        name: "email",
+        id: "email",
+        placeholder: "Email..."
+      },
       {
         label: "Username",
         type: "text",

@@ -55,12 +55,14 @@ class DiaryCalendar extends PureComponent {
 
   componentWillUnmount() {}
 
-  handleChange = activeDate => {
+  handleDateChange = activeDate => {
+    console.log("handleDateChange: ", activeDate)
     const { SetCalendar } = this.props
     SetCalendar({ activeDate })
   }
 
   handleActiveDateChange = ({ activeStartDate, view }) => {
+    // console.log(activeStartDate, view)
     const { GetUserEntriesByDate } = this.props
     GetUserEntriesByDate(activeStartDate)
   }
@@ -88,14 +90,11 @@ class DiaryCalendar extends PureComponent {
           >
             <Calendar
               //calendarType="ISO 8601"
-              onChange={this.handleChange}
               value={activeDate}
               ativeStartDate={new Date()} // fallback if value not set
               tileContent={props => <TileContent {...props} />}
               //tileClassName={this.tileHandler}
-              minDetail={"year"}
-              onActiveDateChange={this.handleActiveDateChange}
-              onActiveStartDateChange={this.handleActiveDateChange}
+              // minDetail={"year"}
               showFixedNumberOfWeeks={true}
               next2Label={null}
               prev2Label={null}
@@ -105,7 +104,11 @@ class DiaryCalendar extends PureComponent {
               prevLabel={
                 <i className="fas fa-chevron-circle-left CalendarNavigationButton" />
               }
-              onClickDay={null}
+              onChange={this.handleDateChange}
+              onActiveDateChange={this.handleActiveDateChange}
+              onActiveStartDateChange={this.handleActiveDateChange}
+              // onClickDay={this.handleDateChange}
+              onClickMonth={this.handleDateChange}
             />
           </Col>
         </Row>

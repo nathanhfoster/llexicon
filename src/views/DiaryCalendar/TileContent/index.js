@@ -4,7 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { RouteMap, RouterPush } from "../../../ReactRouter/Routes"
 import { GetUserEntriesByDate } from "../../../actions/Entries"
 import { withRouter } from "react-router-dom"
-import Content from "./Content"
+import EntryPreview from "./EntryPreview"
 import MomentJS from "moment"
 import "./styles.css"
 
@@ -27,7 +27,9 @@ class TileContent extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = { GetUserEntriesByDate: PropTypes.func.isRequired }
+  static propTypes = {
+    GetUserEntriesByDate: PropTypes.func.isRequired
+  }
 
   static defaultProps = {}
 
@@ -48,11 +50,15 @@ class TileContent extends PureComponent {
     const calendarDay = MomentJS(date)
     const activeDay = MomentJS(activeDate)
 
-    const shouldRenderPlusButton = isMobile
-      ? calendarDay.isSame(activeDay, "day")
-      : true
+    const shouldRenderEntryPreview = view === "month"
+
+    const shouldRenderPlusButton =
+      shouldRenderEntryPreview && isMobile
+        ? calendarDay.isSame(activeDay, "day")
+        : true
 
     this.setState({
+      shouldRenderEntryPreview,
       shouldRenderPlusButton,
       calendarDay,
       entries,
@@ -72,7 +78,14 @@ class TileContent extends PureComponent {
     setTimeout(() => RouterPush(history, HOME), 150)
   }
 
-  renderContent = entries => {
+  handleTileClick = () => {
+    const { onTileClick } = this.props
+    const { date } = this.state
+
+    onTileClick(date)
+  }
+
+  renderEntryPreviews = entries => {
     const { calendarDay, date, staticContext, view } = this.state
     return entries.map(entry => {
       const { id, date_created_by_author, ...restOfProps } = entry
@@ -80,10 +93,9 @@ class TileContent extends PureComponent {
       const entryDate = MomentJS(date_created_by_author)
       const eventFound = entryDate.isSame(calendarDay, "day")
       const dayOfTheYear = calendarDay.dayOfYear()
-
       return (
         eventFound && (
-          <Content
+          <EntryPreview
             key={id}
             id={id}
             date_created_by_author={date_created_by_author}
@@ -99,7 +111,11 @@ class TileContent extends PureComponent {
   }
 
   render() {
-    const { shouldRenderPlusButton, entries } = this.state
+    const {
+      shouldRenderEntryPreview,
+      shouldRenderPlusButton,
+      entries
+    } = this.state
     return (
       <Fragment>
         {shouldRenderPlusButton && (
@@ -108,9 +124,11 @@ class TileContent extends PureComponent {
             onClick={this.handleTodayClick}
           />
         )}
-        <div className="TileContentContainer">
-          {this.renderContent(entries)}
-        </div>
+        {shouldRenderEntryPreview && (
+          <div className="TileContentContainer">
+            {this.renderEntryPreviews(entries)}
+          </div>
+        )}
       </Fragment>
     )
   }
