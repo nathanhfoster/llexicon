@@ -10,10 +10,14 @@ import { withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
+import MomentJS from "moment"
 import "./styles.css"
 import "./stylesM.css"
 
-const mapStateToProps = ({ Calendar: { activeDate } }) => ({ activeDate })
+const mapStateToProps = ({ Calendar: { activeDate, view } }) => ({
+  activeDate,
+  view
+})
 
 const mapDispatchToProps = { SetCalendar, GetUserEntriesByDate }
 
@@ -47,24 +51,43 @@ class DiaryCalendar extends PureComponent {
   }
 
   getState = props => {
-    const { activeDate } = props
-    this.setState({ activeDate: new Date(activeDate) })
+    const { activeDate, view } = props
+    this.setState({ activeDate: new Date(activeDate), view })
   }
 
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) {
+    const { activeDate, view } = this.state
+    const activeDateMoment = MomentJS(activeDate)
+    const previousActiveDateMoment = MomentJS(prevState.activeDate)
+
+    const monthChanged =
+      view === "month" &&
+      !activeDateMoment.isSame(previousActiveDateMoment, "month")
+
+    const dayChanged =
+      view === "month" &&
+      !activeDateMoment.isSame(previousActiveDateMoment, "day")
+
+    if (monthChanged) {
+      //this.handleDateChange({ activeStartDate: activeDate, view })
+      this.getUserEntriesByDate(activeDate)
+    } else if (dayChanged) {
+      // this.handleDateChange({ activeStartDate: activeDate, view })
+    }
+  }
 
   componentWillUnmount() {}
 
-  handleDateChange = activeDate => {
-    console.log("handleDateChange: ", activeDate)
+  handleDateChange = ({ activeStartDate, view }) => {
+    // console.log("handleDateChange: ", activeStartDate, view)
     const { SetCalendar } = this.props
-    SetCalendar({ activeDate })
+    SetCalendar({ activeDate: activeStartDate, view })
   }
 
-  handleActiveDateChange = ({ activeStartDate, view }) => {
-    // console.log(activeStartDate, view)
+  getUserEntriesByDate = date => {
+    // console.log("getUserEntriesByDate: ", date)
     const { GetUserEntriesByDate } = this.props
-    GetUserEntriesByDate(activeStartDate)
+    GetUserEntriesByDate(date)
   }
 
   render() {
@@ -104,11 +127,21 @@ class DiaryCalendar extends PureComponent {
               prevLabel={
                 <i className="fas fa-chevron-circle-left CalendarNavigationButton" />
               }
-              onChange={this.handleDateChange}
-              onActiveDateChange={this.handleActiveDateChange}
-              onActiveStartDateChange={this.handleActiveDateChange}
-              // onClickDay={this.handleDateChange}
-              onClickMonth={this.handleDateChange}
+              onChange={null}
+              onActiveDateChange={this.handleDateChange}
+              onClickDay={activeStartDate =>
+                this.handleDateChange({ activeStartDate, view: "month" })
+              }
+              // onClickWeekNumber={props => console.log("Week: ", props)}
+              onClickMonth={activeStartDate =>
+                this.handleDateChange({ activeStartDate, view: "month" })
+              }
+              onClickYear={activeStartDate =>
+                this.handleDateChange({ activeStartDate, view: "year" })
+              }
+              onClickDecade={activeStartDate =>
+                this.handleDateChange({ activeStartDate, view: "decade" })
+              }
             />
           </Col>
         </Row>

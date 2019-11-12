@@ -1,7 +1,7 @@
 import { ReduxActions } from "../../constants.js"
 const { CALENDAR_SET } = ReduxActions
 
-const defaultState = { activeDate: new Date() }
+const defaultState = { activeDate: new Date(), view: "month" }
 
 export const Calendar = (state = defaultState, action) => {
   const { type, payload } = action

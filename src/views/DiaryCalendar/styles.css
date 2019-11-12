@@ -6,7 +6,6 @@
 
 .DiaryCalendar {
   color: white;
-  
   opacity: var(--mainOpacity);
 }
 
@@ -71,7 +70,6 @@
   max-width: 100% !important;
   padding: 0;
   color: white;
-  
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
@@ -98,8 +96,8 @@
   background: var(--quinaryColor);
 }
 
-.react-calendar__month-view button:hover {
-  background-color: var(--slate_grey);
+.react-calendar__century-view__decades__decade:hover, .react-calendar__decade-view__years__year:hover, .react-calendar__year-view__months__month:hover, .react-calendar__month-view button:hover {
+  background: var(--slate_grey);
 }
 
 .react-calendar__month-view button:hover ::-webkit-scrollbar-thumb {
@@ -139,11 +137,9 @@ abbr {
   color: var(--secondaryColor);
 }
 
-.react-calendar__year-view {
+.react-calendar__year-view {}
 
-}
-
-.react-calendar__year-view__months__month {
+.react-calendar__century-view__decades__decade, .react-calendar__decade-view__years__year, .react-calendar__year-view__months__month {
   padding: 20px;
   background: var(--quinaryColor);
   color: var(--secondaryColor);
