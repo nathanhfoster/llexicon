@@ -14,8 +14,8 @@ class ArrayList {
 
   getRandomValue = () => {
     const randomIndex = getRandomInt(0, this.arrayList.length - 1)
-    const randomValue = this.arrayList[randomIndex]
-    this.splice(randomIndex)
+    const randomValue = this.splice(randomIndex)[0]
+
     return randomValue
   }
 }
