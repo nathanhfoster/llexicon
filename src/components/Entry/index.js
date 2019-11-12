@@ -5,7 +5,6 @@ import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouterGoBack } from "../../ReactRouter/Routes"
 import TextEditor from "../../components/TextEditor"
-import Divider from "../../components/Divider"
 import { UpdateReduxEntry } from "../../actions/Entries"
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
@@ -25,10 +24,15 @@ class Entry extends PureComponent {
   static propTypes = {
     containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
       .isRequired,
-    showDivider: PropTypes.bool
+    showDivider: PropTypes.bool,
+    toolbarHidden: PropTypes.bool
   }
 
-  static defaultProps = { showDivider: false, shouldRedirectOnDelete: false }
+  static defaultProps = {
+    showDivider: false,
+    toolbarHidden: true,
+    shouldRedirectOnDelete: false
+  }
 
   componentWillMount() {
     this.getState(this.props)
@@ -55,6 +59,7 @@ class Entry extends PureComponent {
       lastUpdated,
       containerHeight,
       showDivider,
+      toolbarHidden,
       shouldRedirectOnDelete
     } = props
 
@@ -77,6 +82,7 @@ class Entry extends PureComponent {
       lastUpdated,
       textEditorHeight,
       showDivider,
+      toolbarHidden,
       shouldRedirectOnDelete
     })
   }
@@ -99,11 +105,13 @@ class Entry extends PureComponent {
       lastUpdated,
       textEditorHeight,
       showDivider,
+      toolbarHidden,
       shouldRedirectOnDelete
     } = this.state
     return (
       <TextEditor
-        showDivider
+        showDivider={showDivider}
+        toolbarHidden={toolbarHidden}
         height={textEditorHeight}
         html={html}
         onChangeCallback={html => UpdateReduxEntry({ id, html })}
@@ -132,7 +140,10 @@ class Entry extends PureComponent {
             </InputGroupText>
           </InputGroupAddon>
           <InputGroupAddon addonType="append">
-            <InputGroupText className="p-0" style={{background: 'var(--quinaryColor)'}}>
+            <InputGroupText
+              className="p-0"
+              style={{ background: "var(--quinaryColor)" }}
+            >
               <ConfirmAction
                 onClickCallback={() => {
                   shouldRedirectOnDelete && RouterGoBack(history)

@@ -11,7 +11,7 @@
     flex: 1 0 0;
     position: relative;
     opacity: var(--mainOpacity);
-    background-color: transparent;
+    background: var(--quinaryColor);
     border: 1px solid var(--dark_border);
   }
   .react-calendar__month-view .react-calendar__tile abbr {

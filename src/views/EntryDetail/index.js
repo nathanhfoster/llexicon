@@ -88,6 +88,7 @@ class EntryDetail extends PureComponent {
               {...entry}
               containerHeight={entryContainerHeight}
               shouldRedirectOnDelete
+              toolbarHidden={false}
             />
           </Col>
         </Row>

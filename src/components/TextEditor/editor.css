@@ -5,7 +5,14 @@
   opacity: var(--mainOpacity);
   letter-spacing: 0.4px;
   color: var(--secondaryColor);
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--quinaryColor);
+  transition: opacity 0.4s;
+  -webkit-transition: opacity 0.4s;
+  opacity: 0.75;
+}
+
+.Editor:focus-within  {
+ opacity: 1;
 }
 
 .WithToolBar {

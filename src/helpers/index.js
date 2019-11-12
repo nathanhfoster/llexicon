@@ -3,6 +3,9 @@ import { lazy } from "react"
 const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min
 
+const getRandomFloat = (min, max, fix = 3) =>
+  (Math.random() * (min - max) + max).toFixed(fix)
+
 const arrayToObject = (arr, keyField) =>
   Object.assign({}, ...arr.map(item => ({ [item[keyField]]: item })))
 
@@ -159,6 +162,7 @@ const lazyLoadWithTimeOut = (min, max, componentPath) =>
 
 export {
   getRandomInt,
+  getRandomFloat,
   arrayToObject,
   objectToArray,
   DeepClone,

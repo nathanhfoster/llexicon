@@ -13,6 +13,7 @@ import { stateFromHTML } from "draft-js-import-html"
 // import htmlToDraft from "html-to-draftjs"
 import { options } from "./options"
 import { removeArrayDuplicates } from "../../helpers"
+import { Button } from "reactstrap"
 import { ClearButton } from "./Buttons"
 import Divider from "../Divider"
 import "./styles.css"
@@ -21,7 +22,9 @@ class TextEditor extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = { editorRef: null }
+    const { toolbarHidden } = props
+
+    this.state = { editorRef: null, toolbarHidden }
   }
 
   static propTypes = {
@@ -112,7 +115,6 @@ class TextEditor extends PureComponent {
       mentions,
       suggestions,
       readOnly,
-      toolbarHidden,
       height,
       width,
       shouldAutoFocus,
@@ -135,7 +137,6 @@ class TextEditor extends PureComponent {
       mentions,
       suggestions,
       readOnly,
-      toolbarHidden,
       height,
       width,
       shouldAutoFocus,
@@ -226,6 +227,12 @@ class TextEditor extends PureComponent {
     return undefined
   }
 
+  toggleToolbar = () => {
+    this.setState(currentState => ({
+      toolbarHidden: !currentState.toolbarHidden
+    }))
+  }
+
   render() {
     const { children } = this.props
     const {
@@ -244,6 +251,19 @@ class TextEditor extends PureComponent {
     return (
       <Fragment>
         {children}
+
+        <Button
+          onClick={this.toggleToolbar}
+          color="primary"
+          style={{
+            width: "100%",
+            fontSize: 20
+          }}
+        >
+          <i className="fas fa-toolbox" />{" "}
+          <i className={`fas fa-angle-${toolbarHidden ? "down" : "up"}`} />
+        </Button>
+
         <div style={{ height, width }}>
           <Editor
             // customBlockRenderFunc={this.renderBlock}

@@ -2,9 +2,9 @@ import React, { memo } from "react"
 import "./styles.css"
 
 const styles = ({}) => ({
-  position: 'relative',
-  zIndex: 100,
+  position: "relative",
   pointerEvents: "none",
+  zIndex: 3,
   width: 300
 })
 

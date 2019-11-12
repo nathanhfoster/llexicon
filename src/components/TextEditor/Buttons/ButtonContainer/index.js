@@ -1,20 +1,27 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-const ButtonContainer = ({ title, children, disabled, onClick }) => {
+const ButtonContainer = ({
+  title,
+  children,
+  disabled,
+  onClickCallback,
+  styles
+}) => {
   let className = "rdw-option-wrapper"
   if (disabled) className += " rdw-option-disabled"
 
   return (
     <div
-      onClick={() => onClick()}
+      onClick={() => onClickCallback()}
       title={title}
       style={{
         display: "flex",
         alignItems: "center",
         marginBottom: 6,
         // position: "relative",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
+        ...styles
       }}
     >
       <div className={className}>{children}</div>

@@ -1,10 +1,17 @@
 .DatePicker {
   /* background-color: red; */
+
 }
 
 .react-datepicker-wrapper {}
 
-.react-datepicker__input-container {}
+.react-datepicker__input-container {
+
+}
+
+.react-datepicker__input-container input {
+  width: 90px;
+}
 
 .DatePickerPopper {
   z-index: 9999 !important;

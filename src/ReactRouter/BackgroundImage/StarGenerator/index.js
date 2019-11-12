@@ -10,8 +10,8 @@ const StarGenerator = ({ length = 101 }) => {
   let stars = []
 
   for (let i = 0; i < length; i++) {
-    const randomTop = topPositions.getRandomValue()
-    const randomLeft = leftPositions.getRandomValue()
+    const randomTop = topPositions.getRandomUniqueValue()
+    const randomLeft = leftPositions.getRandomUniqueValue()
 
     const fiftyPercentChance = getRandomInt(0, 100) > 50
     const animation = getRandomInt(1, 5)

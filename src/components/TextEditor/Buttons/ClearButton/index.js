@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import ButtonContainer from "../ButtonContainer"
 
 const ClearButton = ({ onClickCallback }) => (
-  <ButtonContainer onClick={onClickCallback} title="Clear">
+  <ButtonContainer onClickCallback={onClickCallback} title="Clear">
     <i className="fas fa-window-close" />
   </ButtonContainer>
 )

@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { getRandomInt, objectToArray } from "../../../helpers"
+import { getRandomInt, getRandomFloat, objectToArray } from "../../../helpers"
 import "./styles.css"
 
 const StarColorGradients = {
@@ -18,11 +18,12 @@ const StarColorGradients = {
 const StarColorGradientsList = objectToArray(StarColorGradients)
 
 const styles = ({
-  top = getRandomInt(0, 100),
-  left = getRandomInt(0, 100),
-  animation = getRandomInt(1, 5),
+  top = getRandomFloat(0, 100),
+  left = getRandomFloat(0, 100),
+  animation = getRandomFloat(3, 10),
   size,
-  color
+  color,
+  opacity = getRandomFloat(0.1, 1)
 }) => {
   const randomSize = getRandomInt(1, 8)
   const randomGradientIndex = getRandomInt(0, StarColorGradientsList.length - 1)
@@ -34,7 +35,6 @@ const styles = ({
       : "none",
     position: "absolute",
     borderRadius: "100%",
-    // backgroundColor: "red",
     backgroundImage: `radial-gradient(circle, ${
       color
         ? StarColorGradients[color]
@@ -42,8 +42,9 @@ const styles = ({
     })`,
     width: size || randomSize,
     height: size || randomSize,
-    opacity: 0.3,
-    willChange: "opacity"
+    willChange: "opacity",
+    opacity,
+    zIndex: 1
   }
 }
 

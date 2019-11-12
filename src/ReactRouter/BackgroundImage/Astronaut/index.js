@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import "./styles.css"
 
 const containerStyles = ({ top = 60, right = 20, move = 50 }) => ({
-  zIndex: 110,
+  zIndex: 2,
   position: "absolute",
   top: `${top}%`,
   right: `${right}%`,

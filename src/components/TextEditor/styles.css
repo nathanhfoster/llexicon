@@ -2,7 +2,8 @@
 @import './toolbar.css';
 @import './wrapper.css';
 .rdw-option-wrapper {
-  border: 1px solid #F1F1F1;
+  border: 1px solid var(--light_grey);
+  border-radius: 2px;
   padding: 5px;
   min-width: 30px;
   height: 30px;
@@ -12,7 +13,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: white;
+  background: var(--light_grey);
   text-transform: capitalize;
   box-shadow: var(--primaryBoxShadow);
 }
@@ -35,10 +36,10 @@
 }
 
 .rdw-dropdown-wrapper {
+  border: 1px solid var(--light_grey);
+  border-radius: 2px;
   height: 40px;
   cursor: pointer;
-  border: 1px solid #F1F1F1;
-  border-radius: 2px;
   margin: 0 3px;
   text-transform: capitalize;
   background: white;
@@ -86,6 +87,7 @@
   height: 100%;
   align-items: center;
   padding: 0 5px;
+  background: var(--light_grey);
 }
 
 .rdw-dropdown-optionwrapper {

@@ -6,6 +6,8 @@
 
 .DiaryCalendar {
   color: white;
+  
+  opacity: var(--mainOpacity);
 }
 
 .react-calendar__month-view__weekdays abbr[title], .react-calendar__month-view__weekdays__weekday abbr[title] {
@@ -23,18 +25,18 @@
 }
 
 .react-calendar__navigation button:nth-child(1) {
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  /* border-left: 1px solid rgba(0, 0, 0, 0.2); */
 }
 
 .react-calendar__navigation button:last-child {
-  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  /* border-right: 1px solid rgba(0, 0, 0, 0.2); */
 }
 
 .react-calendar__navigation button {
   color: var(--secondaryColor);
   border: 0;
   height: 2em;
-  background-color: transparent;
+  background: var(--quinaryColor);
   opacity: var(--mainOpacity);
   border-top: 1px solid rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -69,6 +71,7 @@
   max-width: 100% !important;
   padding: 0;
   color: white;
+  
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
@@ -81,7 +84,7 @@
   border-left: 1px solid var(--dark_border);
   border-right: 1px solid var(--dark_border);
   text-align: center;
-  /* background-color: var(--grey); */
+  background-color: var(--grey);
   opacity: var(--mainOpacity);
 }
 
@@ -90,12 +93,13 @@
   position: relative;
   opacity: var(--mainOpacity);
   height: var(--calendarTileHeight);
-  background-color: transparent;
+  background: var(--quinaryColor);
   border: 1px solid var(--dark_border);
+  background: var(--quinaryColor);
 }
 
 .react-calendar__month-view button:hover {
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: var(--slate_grey);
 }
 
 .react-calendar__month-view button:hover ::-webkit-scrollbar-thumb {
@@ -141,7 +145,7 @@ abbr {
 
 .react-calendar__year-view__months__month {
   padding: 20px;
-  background-color: transparent;
+  background: var(--quinaryColor);
   color: var(--secondaryColor);
 }
 
@@ -150,7 +154,7 @@ abbr {
   width: 25px;
   font-weight: 600;
   border-radius: 100%;
-  background-color: var(--dark_border);
+  background: black !important;
   color: white;
   -webkit-transition: background-color 0.1s ease-in;
   -moz-transition: background-color 0.1s ease-in;
@@ -170,7 +174,7 @@ abbr {
   height: calc(var(--calendarTileHeight) * 6 + 86px);
   /* max-height: 100vh; */
   /* box-shadow: var(--primaryBoxShadow); */
-  background: transparent;
+  background: var(--quinaryColor);
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -183,7 +187,7 @@ abbr {
 .EventList h2 {
   opacity: var(--mainOpacity);
   border: 1px solid rgba(0, 0, 0, 0.2);
-  background: transparent;
+  background: var(--quinaryColor);
   color: var(--secondaryColor);
   height: 64px;
   line-height: 60px;

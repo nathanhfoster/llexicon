@@ -8,8 +8,14 @@ import Content from "./Content"
 import MomentJS from "moment"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { items } }) => ({
-  entries: items.filter(item => !item.shouldDelete)
+const mapStateToProps = ({
+  Calendar: { activeDate },
+  Entries: { items },
+  Window: { isMobile }
+}) => ({
+  activeDate,
+  entries: items.filter(item => !item.shouldDelete),
+  isMobile
 })
 
 const mapDispatchToProps = { GetUserEntriesByDate }
@@ -38,9 +44,22 @@ class TileContent extends PureComponent {
   }
 
   getState = props => {
-    const { entries, date, staticContext, view } = props
+    const { activeDate, entries, date, staticContext, view, isMobile } = props
+    const calendarDay = MomentJS(date)
+    const activeDay = MomentJS(activeDate)
 
-    this.setState({ entries, date, staticContext, view })
+    const shouldRenderPlusButton = isMobile
+      ? calendarDay.isSame(activeDay, "day")
+      : true
+
+    this.setState({
+      shouldRenderPlusButton,
+      calendarDay,
+      entries,
+      date,
+      staticContext,
+      view
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -48,10 +67,10 @@ class TileContent extends PureComponent {
   componentWillUnmount() {}
 
   renderContent = entries => {
-    const { date, staticContext, view } = this.state
+    const { calendarDay, date, staticContext, view } = this.state
     return entries.map(entry => {
       const { id, date_created_by_author, ...restOfProps } = entry
-      const calendarDay = MomentJS(date)
+
       const entryDate = MomentJS(date_created_by_author)
       const eventFound = entryDate.isSame(calendarDay, "day")
       const dayOfTheYear = calendarDay.dayOfYear()
@@ -73,20 +92,23 @@ class TileContent extends PureComponent {
     })
   }
 
-  handleTodayClick = () => {
+  handleTodayClick = e => {
+    console.log(e.target)
     const { history } = this.props
     const { HOME } = RouteMap
-    setTimeout(() => RouterPush(history, HOME), 150)
+    // setTimeout(() => RouterPush(history, HOME), 150)
   }
 
   render() {
-    const { entries } = this.state
+    const { shouldRenderPlusButton, entries } = this.state
     return (
       <Fragment>
-        <i
-          className="fas fa-plus TileContentPlus"
-          onClick={this.handleTodayClick}
-        />
+        {shouldRenderPlusButton && (
+          <i
+            className="fas fa-plus TileContentPlus"
+            onClick={this.handleTodayClick}
+          />
+        )}
         <div className="TileContentContainer">
           {this.renderContent(entries)}
         </div>

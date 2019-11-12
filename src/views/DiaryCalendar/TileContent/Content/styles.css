@@ -26,7 +26,7 @@
 }
 
 .hasEventsContainer:hover {
-    background-color: rgba(55, 57, 67, 0.075);
+    background-color: rgba(0, 0, 0, 1);
 }
 
 @media (min-width: 768px) {
