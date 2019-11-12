@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import LoadingScreen from "./components/LoadingScreen"
 import storeFactory from "./store"
 import { Provider } from "react-redux"
-import { BrowserRouter } from "react-router-dom" 
+import { BrowserRouter } from "react-router-dom"
 import App from "./App"
 import AlertNotifications from "./store/AlertNotifications"
 import BackgroundImage from "./ReactRouter/BackgroundImage"
@@ -36,4 +36,5 @@ if (NODE_ENV === "development") {
   serviceWorker.unregister()
 } else {
   serviceWorker.register()
+  serviceWorker.update()
 }

@@ -20,7 +20,7 @@ const isLocalhost = Boolean(
     )
 )
 
-export function register(config) {
+const register = config => {
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href)
@@ -54,7 +54,7 @@ export function register(config) {
   }
 }
 
-function registerValidSW(swUrl, config) {
+const registerValidSW = (swUrl, config) => {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -125,11 +125,31 @@ function checkValidServiceWorker(swUrl, config) {
       )
     })
 }
+const update = () => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("/sw-test/sw.js", { scope: "sw-test" })
+      .then(registration => {
+        // registration worked
+        registration.update()
+        console.log("Registration succeeded.")
+        // button.onclick = function() {
+        //   registration.update()
+        // }
+      })
+      .catch(error => {
+        // registration failed
+        console.log("Registration failed with " + error)
+      })
+  }
+}
 
-export function unregister() {
+const unregister = () => {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister()
     })
   }
 }
+
+export { register, update, unregister }
