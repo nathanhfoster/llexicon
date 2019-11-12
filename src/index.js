@@ -36,5 +36,4 @@ if (NODE_ENV === "development") {
   serviceWorker.unregister()
 } else {
   serviceWorker.register()
-  serviceWorker.update()
 }

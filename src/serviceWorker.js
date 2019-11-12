@@ -98,7 +98,26 @@ const registerValidSW = (swUrl, config) => {
     })
 }
 
-function checkValidServiceWorker(swUrl, config) {
+const update = swUrl => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register(swUrl)
+      .then(registration => {
+        // registration worked
+        registration.update()
+        console.log("Registration succeeded.")
+        // button.onclick = function() {
+        //   registration.update()
+        // }
+      })
+      .catch(error => {
+        // registration failed
+        console.log("Registration failed with " + error)
+      })
+  }
+}
+
+const checkValidServiceWorker = (swUrl, config) => {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then(response => {
@@ -124,24 +143,6 @@ function checkValidServiceWorker(swUrl, config) {
         "No internet connection found. App is running in offline mode."
       )
     })
-}
-const update = () => {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .register("/sw-test/sw.js", { scope: "sw-test" })
-      .then(registration => {
-        // registration worked
-        registration.update()
-        console.log("Registration succeeded.")
-        // button.onclick = function() {
-        //   registration.update()
-        // }
-      })
-      .catch(error => {
-        // registration failed
-        console.log("Registration failed with " + error)
-      })
-  }
 }
 
 const unregister = () => {
