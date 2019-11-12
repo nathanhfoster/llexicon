@@ -63,12 +63,14 @@ class Entry extends PureComponent {
       shouldRedirectOnDelete
     } = props
 
-    const dividerHeight = showDivider ? 22 : 0
     const inputHeight = 48
     const numberOfInputs = 1
     const inputOffset = inputHeight * numberOfInputs
+    const toolBarToggleButton = 44
+    const dividerHeight = showDivider ? 32 : 0
 
-    const textEditorHeight = containerHeight - inputOffset - dividerHeight
+    const textEditorHeight =
+      containerHeight - inputOffset - toolBarToggleButton - dividerHeight
 
     this.setState({
       id,
