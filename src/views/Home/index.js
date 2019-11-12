@@ -6,6 +6,7 @@ import {
   Container,
   Row,
   Col,
+  Form,
   InputGroup,
   Input,
   InputGroupAddon,
@@ -147,7 +148,12 @@ class Home extends PureComponent {
       <Container className="Home Container mt-3">
         <Row>
           <Col xs={12}>
-            <InputGroup className="EntryInput">
+            <InputGroup
+              tag={Form}
+              className="EntryInput"
+              onSubmit={this.handlePostEntry}
+              method="post"
+            >
               <Input
                 type="text"
                 name="title"
@@ -173,6 +179,7 @@ class Home extends PureComponent {
                   color="primary"
                   style={{ color: "white" }}
                   disabled={postDisabled}
+                  type="submit"
                 >
                   <i className="fas fa-feather-alt" style={{ fontSize: 20 }} />
                 </InputGroupText>
