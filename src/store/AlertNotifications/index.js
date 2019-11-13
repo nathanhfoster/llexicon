@@ -67,14 +67,7 @@ export class AlertNotifications extends PureComponent {
           timeout: 400
         }}
       >
-        <ToastHeader
-          icon={
-            <i
-              className="fas fa-feather-alt"
-              style={{ fontSize: 18, color: "var(--primaryColor)" }}
-            />
-          }
-        >
+        <ToastHeader icon={<i className="fas fa-feather-alt" />}>
           {title}
         </ToastHeader>
         <ToastBody>{message}</ToastBody>
@@ -83,6 +76,7 @@ export class AlertNotifications extends PureComponent {
   }
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(
-  AlertNotifications
-)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AlertNotifications)
