@@ -9,6 +9,7 @@ import Earth from "../../ReactRouter/BackgroundImage/Earth"
 import Moon from "../../ReactRouter/BackgroundImage/Moon"
 import Astronaut from "../../ReactRouter/BackgroundImage/Astronaut"
 import FourOFOur from "../../ReactRouter/BackgroundImage/FourOFour"
+import MoonWithUfo from "../../ReactRouter/BackgroundImage/MoonWIthUfo"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -67,6 +68,7 @@ class PageNotFound extends PureComponent {
           <Astronaut />
         </BackgroundObjects>
         {stars}
+        <MoonWithUfo />
       </div>
     )
   }

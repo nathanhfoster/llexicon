@@ -2,13 +2,17 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Logo } from "../../../images/AWS"
 
+const containerStyles = ({ zIndex = 102 }) => ({
+  zIndex
+})
+
 const imageStyles = ({ height = 98, width = 84 }) => ({
   height,
   width
 })
 
 const LogoImage = props => (
-  <div className={props.center ? "Center" : ""}>
+  <div style={containerStyles(props)} className={props.center ? "Center" : ""}>
     <img style={imageStyles(props)} src={Logo} />
   </div>
 )

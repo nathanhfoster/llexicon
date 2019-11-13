@@ -13,13 +13,13 @@ const StarGenerator = ({ length = 101 }) => {
     const randomTop = topPositions.getRandomUniqueValue()
     const randomLeft = leftPositions.getRandomUniqueValue()
 
-    const fiftyPercentChance = getRandomInt(0, 100) > 50
+    const percentChance = getRandomInt(0, 100) <= 25
     const animation = getRandomInt(1, 5)
-
+    // console.log(randomTop)
     const props = {
       top: randomTop,
       left: randomLeft,
-      animation: fiftyPercentChance ? animation : false
+      animation: percentChance ? animation : false
     }
 
     stars.push(<Star key={i} {...props} />)

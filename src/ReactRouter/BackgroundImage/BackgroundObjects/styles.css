@@ -1,4 +1,4 @@
 .objects img {
-    z-index: 90;
+    z-index: 99;
     pointer-events: none;
   }

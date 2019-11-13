@@ -10,7 +10,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     border-radius: 2px;
-    z-index: 1;
+    z-index: 102;
     background-color: white;
     position: absolute !important;
 }

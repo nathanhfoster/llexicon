@@ -4,7 +4,7 @@ import "./styles.css"
 const styles = ({}) => ({
   position: "relative",
   pointerEvents: "none",
-  zIndex: 3,
+  zIndex: 102,
   width: 300
 })
 

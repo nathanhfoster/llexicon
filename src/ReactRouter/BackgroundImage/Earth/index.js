@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types"
 import "./styles.css"
 
 const styles = ({ top = 20, left = 15, spin = 100 }) => ({
@@ -7,7 +7,7 @@ const styles = ({ top = 20, left = 15, spin = 100 }) => ({
   position: "absolute",
   top: `${top}%`,
   left: `${left}%`,
-  zIndex: 2,
+  zIndex: 101,
   animation: `spin-earth ${spin}s infinite linear both`
 })
 

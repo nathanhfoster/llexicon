@@ -1,10 +1,14 @@
-import { getRandomInt } from "../helpers"
+import { getRandomInt, getRandomFloat } from "../helpers"
 
 class ArrayList {
-  constructor({ ofNumbers, length }) {
+  constructor({ ofNumbers, ofFloats, length }) {
     this.arrayList = new Array()
     if (ofNumbers) {
       this.arrayList = Array.from(new Array(length).keys())
+    } else if (ofFloats) {
+      for (let i = 0.001; i < length; i += 0.001) {
+        this.arrayList.push(i)
+      }
     }
   }
 
@@ -25,7 +29,7 @@ class ArrayList {
 
   getRandomUniqueValue = () => {
     const randomIndex = this.getRandomIndex()
-    const randomValue = this.splice(randomIndex)[0]
+    const randomValue = this.splice(randomIndex)[0].toFixed(3)
 
     return randomValue
   }

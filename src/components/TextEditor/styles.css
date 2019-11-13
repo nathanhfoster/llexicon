@@ -91,7 +91,7 @@
 }
 
 .rdw-dropdown-optionwrapper {
-  z-index: 100;
+  z-index: 102;
   position: relative;
   border: 1px solid #F1F1F1;
   width: 98%;
@@ -304,7 +304,7 @@
   border: 1px solid #F1F1F1;
   padding: 15px;
   border-radius: 2px;
-  z-index: 100;
+  z-index: 102;
   background: var(--slate_grey);
   box-shadow: var(--primaryBoxShadow);
   color: white;
@@ -395,7 +395,7 @@
   border: 1px solid #F1F1F1;
   padding: 15px;
   border-radius: 2px;
-  z-index: 100;
+  z-index: 102;
   background: var(--slate_grey);
   box-shadow: var(--primaryBoxShadow);
   color: white;
@@ -482,7 +482,7 @@
   border: 1px solid #F1F1F1;
   padding: 15px;
   border-radius: 2px;
-  z-index: 100;
+  z-index: 102;
   background: var(--slate_grey);
   box-shadow: var(--primaryBoxShadow);
   color: white;
@@ -604,7 +604,7 @@
   border: 1px solid #F1F1F1;
   padding: 15px;
   border-radius: 2px;
-  z-index: 100;
+  z-index: 102;
   background: var(--slate_grey);
   box-shadow: var(--primaryBoxShadow);
   color: white;
@@ -683,7 +683,7 @@
   border: 1px solid #F1F1F1;
   padding: 15px;
   border-radius: 2px;
-  z-index: 100;
+  z-index: 102;
   background: var(--slate_grey);
   box-shadow: var(--primaryBoxShadow);
   color: white;
@@ -929,7 +929,7 @@
   max-height: 150px;
   overflow: auto;
   background: white;
-  z-index: 100;
+  z-index: 102;
 }
 
 .rdw-suggestion-option {
@@ -958,7 +958,7 @@
   border: 1px solid #F1F1F1;
   width: 105px;
   cursor: pointer;
-  z-index: 100;
+  z-index: 102;
 }
 
 .rdw-alignment-option-left {

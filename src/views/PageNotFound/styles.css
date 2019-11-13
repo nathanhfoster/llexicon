@@ -91,7 +91,7 @@
 
 .btn-go-home {
   position: relative;
-  z-index: 200;
+  z-index: 102;
   margin: 15px auto;
   width: 100px;
   padding: 10px 15px;
@@ -122,6 +122,7 @@
   /*    width: 100%;*/
   padding: 17% 5% 10% 5%;
   text-align: center;
+  z-index: 102;
 }
 
 .earth-moon {}

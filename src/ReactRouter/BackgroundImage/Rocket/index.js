@@ -4,7 +4,7 @@ import "./styles.css"
 
 const styles = ({ top = 75, move = 200 }) => ({
   width: 40,
-  zIndex: 2,
+  zIndex: 101,
   position: "absolute",
   transform: `translateX(-50px)`,
   top: `${top}%`,

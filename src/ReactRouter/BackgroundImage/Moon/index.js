@@ -7,7 +7,7 @@ const styles = ({ top = 12, left = 25, spin = 27 }) => ({
   position: "absolute",
   top: `${top}%`,
   left: `${left}%`,
-  zIndex: 2,
+  zIndex: 101,
   animation: `spin-earth ${spin}s infinite linear both`
 })
 

@@ -23,10 +23,12 @@ const styles = ({
   animation = getRandomFloat(3, 10),
   size,
   color,
-  opacity = getRandomFloat(0.1, 1)
+  opacity = getRandomFloat(0.1, 1),
+  zIndex
 }) => {
   const randomSize = getRandomInt(1, 8)
   const randomGradientIndex = getRandomInt(0, StarColorGradientsList.length - 1)
+  const randomZIndex = getRandomInt(0, 100)
   return {
     top: `${top}%`,
     left: `${left}%`,
@@ -44,7 +46,7 @@ const styles = ({
     height: size || randomSize,
     willChange: "opacity",
     opacity,
-    zIndex: 1
+    zIndex: zIndex || randomZIndex
   }
 }
 
