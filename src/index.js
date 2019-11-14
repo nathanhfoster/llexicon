@@ -8,13 +8,13 @@ import App from "./App"
 import AlertNotifications from "./store/AlertNotifications"
 import BackgroundImage from "./ReactRouter/BackgroundImage"
 import Persister from "./store/Persister"
-import { getState } from "./store/Persister/persist"
+import { getReduxState } from "./store/Persister/persist"
 import * as serviceWorker from "./serviceWorker"
 const ReactRouter = lazy(() => import("./ReactRouter"))
 
 const { NODE_ENV } = process.env
 
-const initialState = getState()
+const initialState = getReduxState()
 const ReduxStore = storeFactory(initialState)
 
 ReactDOM.render(

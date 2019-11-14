@@ -4,9 +4,9 @@ import { ArrayList } from "../../../classes"
 import { getRandomInt } from "../../../helpers"
 import Star from "../Star"
 
-const StarGenerator = ({ length = 101 }) => {
-  let topPositions = new ArrayList({ ofNumbers: true, length: 101 })
-  let leftPositions = new ArrayList({ ofNumbers: true, length: 101 })
+const StarGenerator = ({ length = 251 }) => {
+  let topPositions = new ArrayList({ ofFloats: true, length: 101 })
+  let leftPositions = new ArrayList({ ofFloats: true, length: 101 })
   let stars = []
 
   for (let i = 0; i < length; i++) {
@@ -15,7 +15,7 @@ const StarGenerator = ({ length = 101 }) => {
 
     const percentChance = getRandomInt(0, 100) <= 25
     const animation = getRandomInt(1, 5)
-    // console.log(randomTop)
+
     const props = {
       top: randomTop,
       left: randomLeft,

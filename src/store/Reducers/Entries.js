@@ -1,5 +1,6 @@
 import { ReduxActions } from "../../constants.js"
 import { mergeJson } from "../../helpers"
+import { getFilesState, removeFileFromState } from "../Persister/persist"
 const {
   ENTRIES_PENDING,
   ENTRIES_ERROR,
@@ -9,6 +10,7 @@ const {
   ENTRY_SET,
   ENTRY_POST,
   ENTRY_UPDATE,
+  ENTRY_UPDATE_IMAGE,
   ENTRY_DELETE,
   REDUX_RESET
 } = ReduxActions
@@ -23,7 +25,7 @@ const defaultState = {
 }
 
 export const Entries = (state = defaultState, action) => {
-  const { id, shouldDelete, type, payload } = action
+  const { id, replaceKey, shouldDelete, type, payload } = action
   switch (type) {
     case ENTRIES_PENDING:
       return { ...state, isPending: true }
@@ -64,8 +66,8 @@ export const Entries = (state = defaultState, action) => {
         ...state,
         isPending: false,
         error: defaultState.error,
-        items: state.items.map((item, i) =>
-          i === id || item.id === id
+        items: state.items.map(item =>
+          item.id === id
             ? {
                 ...item,
                 ...payload,
@@ -75,6 +77,26 @@ export const Entries = (state = defaultState, action) => {
             : item
         )
       }
+
+    case ENTRY_UPDATE_IMAGE:
+      console.log(replaceKey)
+      return {
+        ...state,
+        items: state.items.map(item => {
+          const { html } = item
+          const hasImage = html.includes(replaceKey)
+          console.log(html)
+          if (hasImage) {
+            removeFileFromState(replaceKey)
+            return {
+              ...item,
+              html: html.replace(replaceKey, payload),
+              lastUpdated: new Date()
+            }
+          } else return item
+        })
+      }
+
     case ENTRY_DELETE:
       return { ...state, items: state.items.filter(item => item.id !== id) }
     case REDUX_RESET:

@@ -11,6 +11,9 @@ const arrayToObject = (arr, keyField) =>
 
 const objectToArray = obj => Object.keys(obj).map(key => obj[key])
 
+const removeKeyFromObject = (obj, keyToRemove) =>
+  Object.keys(obj).filter(key => key !== keyToRemove)
+
 const DeepClone = arrayOrObj => JSON.parse(JSON.stringify(arrayOrObj))
 
 const isEquivalent = (obj1, obj2) =>
@@ -62,6 +65,9 @@ const getImageBase64 = image =>
     reader.onload = () => resolve(reader.result)
     reader.onerror = error => reject(error)
   })
+
+const getImageBlob = image =>
+  new Promise((resolve, reject) => resolve(window.URL.createObjectURL(image)))
 
 const getImageBase64ToFile = async (dataurl, filename) => {
   if (!dataurl.includes("data")) return dataurl
@@ -165,6 +171,7 @@ export {
   getRandomFloat,
   arrayToObject,
   objectToArray,
+  removeKeyFromObject,
   DeepClone,
   isEquivalent,
   isOnline,
@@ -175,6 +182,7 @@ export {
   isSubset,
   TopKFrequentStrings,
   getImageBase64,
+  getImageBlob,
   getImageBase64ToFile,
   joinStrings,
   splitStrings,

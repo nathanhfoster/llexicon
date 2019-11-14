@@ -1,40 +1,18 @@
-import { AxiosForm } from "../../actions"
-import { getImageBase64 } from "../../helpers"
-import { getState } from "../../store/Persister/persist"
-import FormData from "form-data"
+import { getImageBlob } from "../../helpers"
+import { appendFileToState } from "../../store/Persister/persist"
 
 const imageUploadCallback = async image =>
-  await getImageBase64(image).then(
-    imageBase64 =>
+  await getImageBlob(image).then(
+    imageBlob =>
       new Promise((resolve, reject) => {
+        appendFileToState(imageBlob, image)
         resolve({
           data: {
-            link: imageBase64
+            link: imageBlob
           }
         })
       })
   )
-
-const imageAwsUpload = async image => {
-  const { id } = getState().User
-  let payload = new FormData()
-  payload.append("author", id)
-  payload.append("media_type", "Image")
-  payload.append("url", image)
-  return await AxiosForm(payload)
-    .post(`/files/`, payload)
-    .then(
-      res =>
-        new Promise((resolve, reject) => {
-          resolve({
-            data: {
-              link: res.data.url
-            }
-          })
-        })
-    )
-    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
-}
 
 export const options = {
   options: [
@@ -345,7 +323,7 @@ export const options = {
     urlEnabled: true,
     uploadEnabled: true,
     alignmentEnabled: true,
-    uploadCallback: imageAwsUpload,
+    uploadCallback: imageUploadCallback,
     previewImage: true,
     inputAccept: "image/gif,image/jpeg,image/jpg,image/png,image/svg",
     alt: { present: false, mandatory: false },

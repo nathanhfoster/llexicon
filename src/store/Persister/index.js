@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { saveState } from "./persist"
+import { saveReduxState } from "./persist"
 
 const mapStateToProps = ({ Persister: { lastUpdated } }) => ({ lastUpdated })
 
-const mapDispatchToProps = { saveState }
+const mapDispatchToProps = { saveReduxState }
 
 export class Persister extends PureComponent {
   constructor(props) {
@@ -46,13 +46,12 @@ export class Persister extends PureComponent {
 
   componentWillUnmount() {
     clearInterval(this.interval)
-    const { saveState } = this.props
-    saveState()
+    this.persistReduxStore()
   }
 
   persistReduxStore = () => {
-    const { saveState } = this.props
-    saveState()
+    const { saveReduxState } = this.props
+    saveReduxState()
   }
 
   render() {

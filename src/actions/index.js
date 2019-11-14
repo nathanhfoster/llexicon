@@ -1,5 +1,5 @@
 import axios from "axios"
-import { getState } from "../store/Persister/persist"
+import { getReduxState } from "../store/Persister/persist"
 
 const { REACT_APP_API_URL } = process.env
 
@@ -20,7 +20,7 @@ const baseFormHeaders = payload => ({
 })
 
 const Axios = pagination => {
-  const { token } = getState().User
+  const { token } = getReduxState().User
   return axios.create({
     withCredentials: token ? true : false,
     baseURL: pagination ? pagination : REACT_APP_API_URL,
@@ -36,7 +36,7 @@ const Axios = pagination => {
 }
 
 const AxiosForm = payload => {
-  const { token } = getState().User
+  const { token } = getReduxState().User
   return axios.create({
     baseURL: REACT_APP_API_URL,
     timeout: 25000,

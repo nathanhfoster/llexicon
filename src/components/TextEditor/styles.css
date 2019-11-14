@@ -487,7 +487,6 @@
   box-shadow: var(--primaryBoxShadow);
   color: white;
   justify-content: space-between;
- 
 }
 
 .rdw-embedded-modal-header {
@@ -1238,7 +1237,7 @@ figure {
 }
 
 .rdw-image-alignment-option {
-  background: whitesmoke !important;
+  background: var(--slate_grey) !important;
   text-align: center;
   height: 30px;
   width: 30px;

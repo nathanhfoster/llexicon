@@ -53,8 +53,8 @@ const styles = ({
 const Star = props => <div style={styles(props)} />
 
 Star.propTypes = {
-  top: PropTypes.number,
-  left: PropTypes.number,
+  top: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  left: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   animation: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
   size: PropTypes.number,
   color: PropTypes.string
