@@ -221,7 +221,7 @@ class TextEditor extends PureComponent {
   setEditorReference = editorRef => {
     if (!editorRef) return
     const { shouldAutoFocus } = this.state
-    if (shouldAutoFocus) editorRef.focus()
+    // if (shouldAutoFocus) editorRef.focus()
     this.setState({ editorRef })
   }
 
@@ -295,12 +295,12 @@ class TextEditor extends PureComponent {
               this.handleEditorStateChange(editorState)
             }
             onFocus={e => e.preventDefault()}
-            // onBlur={e => {
-            //   const editorState = this.htmlToEditorState(e.target.outerHTML)
-            //   this.handleEditorStateChange(editorState)
-            // }}
+            onBlur={e => {
+              e.preventDefault()
+              // const editorState = this.htmlToEditorState(e.target.outerHTML)
+              // this.handleEditorStateChange(editorState)
+            }}
             onTab={e => e.preventDefault()}
-            blurInputOnSelect={false}
             toolbarHidden={toolbarHidden}
             toolbar={options}
             toolbarCustomButtons={[
