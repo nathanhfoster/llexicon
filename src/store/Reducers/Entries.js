@@ -1,6 +1,5 @@
 import { ReduxActions } from "../../constants.js"
 import { mergeJson } from "../../helpers"
-import { getFilesState, removeFileFromState } from "../Persister/persist"
 const {
   ENTRIES_PENDING,
   ENTRIES_ERROR,
@@ -86,7 +85,6 @@ export const Entries = (state = defaultState, action) => {
           const hasImage = html.includes(replaceKey)
 
           if (hasImage) {
-            removeFileFromState(replaceKey)
             return {
               ...item,
               html: html.replace(replaceKey, payload),
