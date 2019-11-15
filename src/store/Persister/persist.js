@@ -11,6 +11,7 @@ const saveState = (localStorageKey, value, dispatch) => {
     if (dispatch) dispatch()
   } catch (e) {
     if (isQuotaExceeded(e)) {
+      clearLocalStorage()
       // Do something
     }
   }
