@@ -305,11 +305,11 @@ class TextEditor extends PureComponent {
             editorClassName={`Editor ${
               toolbarHidden ? "WithNoToolBar" : "WithToolBar"
             }`}
-            onChange={RawDraftContentState => {
-              const contentState = convertFromRaw(RawDraftContentState)
-              console.log(contentState)
-              //this.setState({ contentState })
-            }}
+            // onChange={RawDraftContentState => {
+            //   const contentState = convertFromRaw(RawDraftContentState)
+            //   console.log(contentState)
+            //   //this.setState({ contentState })
+            // }}
             onEditorStateChange={editorState =>
               this.handleEditorStateChange(editorState)
             }

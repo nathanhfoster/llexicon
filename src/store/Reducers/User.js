@@ -1,6 +1,6 @@
 import { ReduxActions } from "../../constants.js"
 
-const defaultState = {
+const DEFAULT_STATE_USER = {
   token: null,
   id: null,
   picture: null,
@@ -20,7 +20,7 @@ const defaultState = {
   Settings: { show_footer: false, push_messages: false }
 }
 
-export const User = (state = defaultState, action) => {
+const User = (state = DEFAULT_STATE_USER, action) => {
   const { type, payload } = action
   switch (type) {
     case ReduxActions.USER_SET:
@@ -59,8 +59,10 @@ export const User = (state = defaultState, action) => {
         Settings: { ...state.Settings, ...payload }
       }
     case ReduxActions.REDUX_RESET:
-      return defaultState
+      return DEFAULT_STATE_USER
     default:
       return state
   }
 }
+
+export { DEFAULT_STATE_USER, User }

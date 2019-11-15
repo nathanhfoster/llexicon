@@ -11,15 +11,15 @@ const {
   REDUX_RESET
 } = ReduxActions
 
-const defaultState = { title: "", message: "" }
+const DEFAULT_STATE_ALERTS = { title: "", message: "" }
 
-export const Alerts = (state = defaultState, action) => {
+const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
   const { type, payload } = action
   switch (type) {
     case ALERTS_SET_MESSAGE:
       return { ...state, ...payload }
     case ALERTS_CLEAR:
-      return defaultState
+      return DEFAULT_STATE_ALERTS
     // case USER_SET_SETTINGS:
     //   return { ...state, title: "Updated", message: "Settings" }
     // case ENTRY_IMPORT:
@@ -31,8 +31,10 @@ export const Alerts = (state = defaultState, action) => {
     // case ENTRY_DELETE:
     //   return { ...state, title: "Deleted", message: "Entry" }
     case REDUX_RESET:
-      return defaultState
+      return DEFAULT_STATE_ALERTS
     default:
       return state
   }
 }
+
+export { DEFAULT_STATE_ALERTS, Alerts }

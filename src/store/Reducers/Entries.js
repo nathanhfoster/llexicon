@@ -14,7 +14,7 @@ const {
   REDUX_RESET
 } = ReduxActions
 
-const defaultState = {
+const DEFAULT_STATE_ENTRIES = {
   count: null,
   next: null,
   previous: null,
@@ -23,7 +23,7 @@ const defaultState = {
   error: null
 }
 
-export const Entries = (state = defaultState, action) => {
+const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   const { id, replaceKey, shouldDelete, type, payload } = action
   switch (type) {
     case ENTRIES_PENDING:
@@ -34,7 +34,7 @@ export const Entries = (state = defaultState, action) => {
       return {
         ...state,
         items: mergeJson(payload, state.items),
-        error: defaultState.error
+        error: DEFAULT_STATE_ENTRIES.error
       }
     case ENTRIES_SET:
       const { count, next, previous, results } = payload
@@ -56,7 +56,7 @@ export const Entries = (state = defaultState, action) => {
       return {
         ...state,
         isPending: false,
-        error: defaultState.error,
+        error: DEFAULT_STATE_ENTRIES.error,
         items: state.items.map(item => (item.id === id ? payload : item))
         // [payload].concat(state.items.filter(item => item.id !== id))
       }
@@ -64,7 +64,7 @@ export const Entries = (state = defaultState, action) => {
       return {
         ...state,
         isPending: false,
-        error: defaultState.error,
+        error: DEFAULT_STATE_ENTRIES.error,
         items: state.items.map(item =>
           item.id === id
             ? {
@@ -98,8 +98,10 @@ export const Entries = (state = defaultState, action) => {
     case ENTRY_DELETE:
       return { ...state, items: state.items.filter(item => item.id !== id) }
     case REDUX_RESET:
-      return defaultState
+      return DEFAULT_STATE_ENTRIES
     default:
       return state
   }
 }
+
+export { DEFAULT_STATE_ENTRIES, Entries }

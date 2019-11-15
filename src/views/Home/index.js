@@ -18,7 +18,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import { SetCalendar } from "../../actions/Calendar"
 import { PostReduxEntry } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
-import { defaultState } from "../../store/Reducers/TextEditor"
+import { DEFAULT_STATE_TEXT_EDITOR } from "../../store/Reducers/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -90,7 +90,7 @@ class Home extends PureComponent {
     } = props
 
     const editorStateHtmlIsBlank =
-      editorStateHtml === defaultState.editorStateHtml
+      editorStateHtml === DEFAULT_STATE_TEXT_EDITOR.editorStateHtml
 
     const postDisabled = editorStateHtmlIsBlank && !title
 

@@ -1,5 +1,14 @@
 import { ReduxActions } from "../../constants"
 import { getObjectLength, removeKeyOrValueFromObject } from "../../helpers"
+import {
+  DEFAULT_STATE_ALERTS,
+  DEFAULT_STATE_CALENDAR,
+  DEFAULT_STATE_USER,
+  DEFAULT_STATE_TEXT_EDITOR,
+  DEFAULT_STATE_ENTRIES,
+  DEFAULT_STATE_WINDOW,
+  DEFAULT_STATE_PERSISTER
+} from "../Reducers"
 
 const LocalStorageReduxKey = "ReduxStore"
 const LocalStorageFilesKey = "Files"
@@ -20,9 +29,19 @@ const saveState = (localStorageKey, value, dispatch) => {
     if (dispatch) dispatch()
   } catch (e) {
     if (isQuotaExceeded(e)) {
-      let reduxStore = getReduxState()
-      // clearLocalStorage()
-      reduxStore.Entries.items = cleanHtml(reduxStore.Entries.items)
+      const { User, Window } = getReduxState()
+      clearLocalStorage()
+
+      const reduxStore = {
+        Alerts: DEFAULT_STATE_ALERTS,
+        Calendar: DEFAULT_STATE_CALENDAR,
+        User,
+        TextEditor: DEFAULT_STATE_TEXT_EDITOR,
+        Entries: DEFAULT_STATE_ENTRIES,
+        Window,
+        Persister: DEFAULT_STATE_PERSISTER
+      }
+
       saveState(LocalStorageReduxKey, reduxStore, dispatch)
     }
   }

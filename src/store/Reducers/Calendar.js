@@ -1,9 +1,9 @@
 import { ReduxActions } from "../../constants.js"
 const { CALENDAR_SET } = ReduxActions
 
-const defaultState = { activeDate: new Date(), view: "month" }
+const DEFAULT_STATE_CALENDAR = { activeDate: new Date(), view: "month" }
 
-export const Calendar = (state = defaultState, action) => {
+const Calendar = (state = DEFAULT_STATE_CALENDAR, action) => {
   const { type, payload } = action
   switch (type) {
     // Don't update component
@@ -14,3 +14,5 @@ export const Calendar = (state = defaultState, action) => {
       return state
   }
 }
+
+export { DEFAULT_STATE_CALENDAR, Calendar }

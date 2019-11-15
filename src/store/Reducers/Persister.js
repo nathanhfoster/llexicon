@@ -1,9 +1,9 @@
 import { ReduxActions } from "../../constants.js"
 const { REDUX_PERSIST } = ReduxActions
 
-const defaultState = { lastUpdated: "" }
+const DEFAULT_STATE_PERSISTER = { lastUpdated: "" }
 
-export const Persister = (state = defaultState, action) => {
+const Persister = (state = DEFAULT_STATE_PERSISTER, action) => {
   const { type, payload } = action
   switch (type) {
     // Don't update component
@@ -14,3 +14,5 @@ export const Persister = (state = defaultState, action) => {
       return { ...state, lastUpdated: new Date() }
   }
 }
+
+export { DEFAULT_STATE_PERSISTER, Persister }
