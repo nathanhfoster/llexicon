@@ -1,5 +1,5 @@
 import { ReduxActions } from "../../constants"
-import { removeKeyFromObject } from "../../helpers"
+import { getObjectLength, removeKeyOrValueFromObject } from "../../helpers"
 
 const LocalStorageReduxKey = "ReduxStore"
 const LocalStorageFilesKey = "Files"
@@ -32,10 +32,10 @@ const getState = localStorageKey => {
 
 const clearLocalStorage = () => localStorage.clear()
 
-const removeState = (localStorageKey, keyToRemove) => {
-  if (keyToRemove) {
+const removeState = (localStorageKey, keyOrValueToRemove) => {
+  if (keyOrValueToRemove) {
     const state = getState(localStorageKey)
-    const newState = removeKeyFromObject(state, keyToRemove)
+    const newState = removeKeyOrValueFromObject(state, keyOrValueToRemove)
     saveState(localStorageKey, newState)
   } else {
     localStorage.removeItem(localStorageKey)
@@ -55,27 +55,14 @@ const getFile = key => {
 
 const getFilesState = () => getState(LocalStorageFilesKey)
 
+const getFilesStateLength = () => getObjectLength(getFilesState())
+
 const saveFileState = files => saveState(LocalStorageFilesKey, files)
 
-const appendFileToState = (key, file) => {
+const appendFileToState = (key, imageBase64) => {
   let state = getState(LocalStorageFilesKey)
-  const {
-    lastModified,
-    lastModifiedDate,
-    name,
-    size,
-    type,
-    webkitRelativePath
-  } = file
 
-  state[key] = {
-    lastModified,
-    lastModifiedDate,
-    name,
-    size,
-    type,
-    webkitRelativePath
-  }
+  state[key] = imageBase64
 
   saveState(LocalStorageFilesKey, state)
 }
@@ -124,6 +111,7 @@ export {
   clearLocalStorage,
   getFile,
   getFilesState,
+  getFilesStateLength,
   getReduxState,
   saveFileState,
   appendFileToState,

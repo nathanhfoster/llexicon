@@ -1,5 +1,9 @@
 import { lazy } from "react"
 
+const DeepClone = arrayOrObj => JSON.parse(JSON.stringify(arrayOrObj))
+
+const getObjectLength = obj => Object.keys(obj).length
+
 const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -11,10 +15,25 @@ const arrayToObject = (arr, keyField) =>
 
 const objectToArray = obj => Object.keys(obj).map(key => obj[key])
 
-const removeKeyFromObject = (obj, keyToRemove) =>
-  Object.keys(obj).filter(key => key !== keyToRemove)
+const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
+  // console.log("removeKeyOrValueFromObject: ", keyOrValueToRemove)
+  let newObj = DeepClone(obj)
+  const keyFound = newObj[keyOrValueToRemove] ? true : false
+  const isValue = !keyFound
+  if (keyFound) {
+    delete newObj[keyOrValueToRemove]
+    // console.log("keyFound: ", newObj)
+  } else if (isValue) {
+    newObj = {}
 
-const DeepClone = arrayOrObj => JSON.parse(JSON.stringify(arrayOrObj))
+    Object.keys(newObj).forEach(key => {
+      if (newObj[key] !== keyOrValueToRemove) newObj[key] = newObj[key]
+    })
+
+    // console.log("ELSE: ", newObj)
+  }
+  return newObj
+}
 
 const isEquivalent = (obj1, obj2) =>
   JSON.stringify(obj1) === JSON.stringify(obj2)
@@ -57,6 +76,30 @@ const TopKFrequentStrings = (arrayOfObjs, prop, k) => {
   else return newArray
 }
 
+const getUrlImageBase64 = url =>
+  fetch(url)
+    .then(response => response.blob())
+    .then(
+      blob =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onloadend = () => resolve(reader.result)
+          reader.onerror = reject
+          reader.readAsDataURL(blob)
+        })
+    )
+
+const getCanvasImageBase64 = (img, outputFormat = "image/jpeg", quality = 1) =>
+  new Promise((resolve, reject) => {
+    var canvas = document.createElement("canvas")
+    canvas.width = img.width
+    canvas.height = img.height
+    var ctx = canvas.getContext("2d")
+    ctx.drawImage(img, 0, 0)
+    var dataURL = canvas.toDataURL(outputFormat, quality)
+    resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""))
+  })
+
 const getImageBase64 = image =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -66,10 +109,22 @@ const getImageBase64 = image =>
     reader.onerror = error => reject(error)
   })
 
+const htmlToArrayOfBase64 = html => {
+  const [first, ...data] = html.split("data:")
+  const arrayOfBase64 = data.map(e => `data:${e.split('"')[0]}`)
+  return arrayOfBase64
+}
+
+const htmlToArrayOfFiles = (html, filename) =>
+  htmlToArrayOfBase64(html).map(base64 => {
+    const file = getFileFromBase64(base64, filename)
+    return file
+  })
+
 const getImageBlob = image =>
   new Promise((resolve, reject) => resolve(window.URL.createObjectURL(image)))
 
-const getImageBase64ToFile = async (dataurl, filename) => {
+const getFileFromBase64 = (dataurl, filename) => {
   if (!dataurl.includes("data")) return dataurl
   var arr = dataurl.split(","),
     mime = arr[0].match(/:(.*?);/)[1],
@@ -79,7 +134,7 @@ const getImageBase64ToFile = async (dataurl, filename) => {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n)
   }
-  return await new File([u8arr], filename, { type: mime })
+  return new File([u8arr], filename, { type: mime })
 }
 
 const joinStrings = objectArray => {
@@ -167,12 +222,13 @@ const lazyLoadWithTimeOut = (min, max, componentPath) =>
   })
 
 export {
+  DeepClone,
+  getObjectLength,
   getRandomInt,
   getRandomFloat,
   arrayToObject,
   objectToArray,
-  removeKeyFromObject,
-  DeepClone,
+  removeKeyOrValueFromObject,
   isEquivalent,
   isOnline,
   findMaxInt,
@@ -181,12 +237,17 @@ export {
   removeAttributeDuplicates,
   isSubset,
   TopKFrequentStrings,
+  getUrlImageBase64,
+  getCanvasImageBase64,
   getImageBase64,
+  htmlToArrayOfBase64,
+  htmlToArrayOfFiles,
   getImageBlob,
-  getImageBase64ToFile,
+  getFileFromBase64,
   joinStrings,
   splitStrings,
   mergeJson,
   importTextFileEntries,
+  readmultifiles,
   lazyLoadWithTimeOut
 }

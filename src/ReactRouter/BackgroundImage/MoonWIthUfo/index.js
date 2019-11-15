@@ -13,8 +13,8 @@ const containerStyles = ({ top = 10, right = 10, spin = 27 }) => ({
 
 const MoonWithUfo = props => (
   <div style={containerStyles(props)}>
-    <div class="moon behind"></div>
-    <div class="moon"></div>
+    <div className="moon behind"></div>
+    <div className="moon"></div>
   </div>
 )
 

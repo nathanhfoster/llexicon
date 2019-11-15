@@ -1,18 +1,21 @@
-import { getImageBlob } from "../../helpers"
-import { appendFileToState } from "../../store/Persister/persist"
+import { getImageBlob, getImageBase64 } from "../../helpers"
+import {
+  getFilesStateLength,
+  appendFileToState
+} from "../../store/Persister/persist"
 
 const imageUploadCallback = async image =>
-  await getImageBlob(image).then(
-    imageBlob =>
-      new Promise((resolve, reject) => {
-        appendFileToState(imageBlob, image)
-        resolve({
-          data: {
-            link: imageBlob
-          }
-        })
+  await getImageBase64(image).then(imageBase64 => {
+    return new Promise((resolve, reject) => {
+      const key = getFilesStateLength()
+      appendFileToState(key, imageBase64)
+      resolve({
+        data: {
+          link: imageBase64
+        }
       })
-  )
+    })
+  })
 
 export const options = {
   options: [

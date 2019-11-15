@@ -1,6 +1,7 @@
 import { ReduxActions } from "../constants"
 import { Axios, AxiosForm, Sync } from "."
 import { getFile } from "../store/Persister/persist"
+import { getFileFromBase64, htmlToArrayOfBase64 } from "../helpers"
 import FormData from "form-data"
 import qs from "qs"
 
@@ -19,36 +20,41 @@ const {
   ENTRY_UPDATE_IMAGE
 } = ReduxActions
 
-const ParseBlobs = (entry_id, media_type, html) => {
-  let dispatchAwsUploads = []
-  const [split, ...urls] = html.split("blob:")
-
-  for (let i = 0; i < urls.length; i++) {
-    const blob = `blob:${urls[i].split('"')[0]}`
-    const fileProps = getFile(blob)
-    if (fileProps) {
-      const file = new File([blob], fileProps.name, { ...fileProps })
-      dispatchAwsUploads.push(AwsUpload(entry_id, media_type, file, blob))
-    }
+const ParseBlobs = (entry_id, media_type, html) => dispatch => {
+  const base64s = htmlToArrayOfBase64(html)
+  if (base64s.length === 0) return dispatch(UpdateEntry(entry_id, { html }))
+  for (let i = 0; i < base64s.length; i++) {
+    const base64 = base64s[i]
+    const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
+    dispatch(AwsUpload(entry_id, media_type, file, base64))
   }
-  return dispatchAwsUploads
+  return new Promise(resolve =>
+    dispatch({
+      type: ALERTS_SET_MESSAGE,
+      payload: { title: "Synced", message: "Files" }
+    })
+  )
 }
 
-const AwsUpload = (entry_id, media_type, file, blob) => dispatch => {
+const AwsUpload = (entry_id, media_type, file, base64) => dispatch => {
   let payload = new FormData()
-  payload.append("entry_id", 24)
+  payload.append("entry_id", entry_id)
   payload.append("media_type", media_type)
   payload.append("url", file)
+
+  // console.log("AwsUpload: ", entry_id, media_type, file)
 
   return AxiosForm(payload)
     .post(`/files/`, payload)
     .then(res => {
+      const { data } = res
       dispatch({
         type: ENTRY_UPDATE_IMAGE,
         id: entry_id,
-        replaceKey: blob,
-        payload: res.data.url
+        replaceKey: base64,
+        payload: data.url
       })
+      return data
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -58,10 +64,12 @@ const GetUserEntry = entryId => (dispatch, getState) => {
   return Axios()
     .get(`/entries/${entryId}/?pk=${pk}`)
     .then(res => {
+      const { data } = res
       dispatch({
         type: ENTRY_SET,
-        payload: res.data
+        payload: data
       })
+      return data
     })
     .catch(e => {
       const payload = JSON.parse(JSON.stringify(e.response))
@@ -74,10 +82,12 @@ const GetUserEntries = pageNumber => (dispatch, getState) => {
   return Axios()
     .get(`/entries/${id}/view/?page=${pageNumber}&pk=${id}`)
     .then(res => {
+      const { data } = res
       dispatch({
         type: ENTRIES_SET,
-        payload: res.data
+        payload: data
       })
+      return data
     })
     .catch(e => {
       const payload = JSON.parse(JSON.stringify(e.response))
@@ -90,14 +100,16 @@ const GetUserEntriesByDate = date => (dispatch, getState) => {
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify({ date }))
     .then(res => {
+      const { data } = res
       dispatch({
         type: CALENDAR_SET,
         payload: { activeDate: date }
       })
       dispatch({
         type: ENTRIES_SET_BY_DATE,
-        payload: res.data
+        payload: data
       })
+      return data
     })
     .catch(e => {
       const payload = JSON.parse(JSON.stringify(e.response))
@@ -125,11 +137,13 @@ const PostEntry = payload => dispatch =>
   Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(res => {
+      const { data } = res
       dispatch({
         id: payload.id,
         type: ENTRY_POST,
-        payload: res.data
+        payload: data
       })
+      return data
     })
     .catch(e => {
       const payload = JSON.parse(JSON.stringify(e.response))
@@ -148,12 +162,15 @@ const UpdateEntry = (id, payload) => (dispatch, getState) => {
   return Axios()
     .patch(`/entries/${id}/update_with_tags/?pk=${pk}`, qs.stringify(payload))
     .then(res => {
+      const { data } = res
+      // console.log("UpdateEntry html: ", data.html)
       dispatch({
         type: ENTRY_UPDATE,
         id,
-        payload: res.data,
+        payload: data,
         lastUpdated: false
       })
+      return data
     })
     .catch(e => {
       const payload = JSON.parse(JSON.stringify(e.response))
@@ -167,6 +184,7 @@ const DeleteEntry = id => (dispatch, getState) => {
     .delete(`/entries/${id}/?pk=${pk}`)
     .then(res => {
       dispatch({ type: ENTRY_DELETE, id })
+      return res
     })
     .catch(e => {
       const error = JSON.parse(JSON.stringify(e))
@@ -219,18 +237,25 @@ const SyncEntries = () => (dispatch, getState) => {
         tags,
         date_created_by_author
       }
-      const dispatchAwsUploads = ParseBlobs(id, "Image", html)
-      for (let i = 0; i < dispatchAwsUploads.length; i++) {
-        dispatchPostEntries.push(dispatchAwsUploads[i])
-      }
-      dispatchPostEntries.push(PostEntry(payload))
+      dispatch(PostEntry(payload)).then(entry => {
+        const {
+          EntryFiles,
+          author,
+          date_created,
+          date_created_by_author,
+          date_updated,
+          html,
+          id,
+          tags,
+          title,
+          views
+        } = entry
+        dispatch(ParseBlobs(id, "Image", html))
+      })
       continue
     } else if (lastUpdated) {
-      const dispatchAwsUploads = ParseBlobs(id, "Image", html)
-      for (let i = 0; i < dispatchAwsUploads.length; i++) {
-        dispatchUpdateEntries.push(dispatchAwsUploads[i])
-      }
-      payload = { title, html, tags, date_created_by_author }
+      dispatchUpdateEntries.push(ParseBlobs(id, "Image", html))
+      payload = { title, tags, date_created_by_author }
       dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
   }
@@ -253,6 +278,8 @@ const SyncEntries = () => (dispatch, getState) => {
         )
     )
   }
+
+  // console.log("dispatchActions: ", dispatchActions)
 
   dispatch(Sync(dispatchActions))
 }

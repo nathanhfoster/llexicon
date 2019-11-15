@@ -79,18 +79,18 @@ export const Entries = (state = defaultState, action) => {
       }
 
     case ENTRY_UPDATE_IMAGE:
-      console.log(replaceKey)
       return {
         ...state,
         items: state.items.map(item => {
           const { html } = item
           const hasImage = html.includes(replaceKey)
-          console.log(html)
+
           if (hasImage) {
             removeFileFromState(replaceKey)
             return {
               ...item,
               html: html.replace(replaceKey, payload),
+              shouldPost: false,
               lastUpdated: new Date()
             }
           } else return item

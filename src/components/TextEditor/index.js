@@ -10,6 +10,7 @@ import { Editor } from "react-draft-wysiwyg"
 // } from "utils/draft-js-helpers"
 import { stateToHTML } from "draft-js-export-html"
 import { stateFromHTML } from "draft-js-import-html"
+// import draftToHtml from "draftjs-to-html"
 // import htmlToDraft from "html-to-draftjs"
 import { options } from "./options"
 import { removeArrayDuplicates } from "../../helpers"
@@ -150,13 +151,25 @@ class TextEditor extends PureComponent {
     // const blocksFromHtml = htmlToDraft(html)
     // const { contentBlocks, entityMap } = blocksFromHtml
     // const contentState = ContentState.createFromBlockArray(blocksFromHtml)
-    const contentState = stateFromHTML(html)
 
-    return EditorState.createWithContent(contentState)
+    // console.log("html: ", html)
+    // html = html.replace("<figure>L</figure>", "")
+    // html = html.replace("<figure>C</figure>", "")
+    // html = html.replace("<figure>R</figure>", "")
+    const contentState = stateFromHTML(html)
+    // console.log("contentState: ", contentState)
+
+    const editorState = EditorState.createWithContent(contentState)
+
+    // console.log("editorState: ", editorState)
+
+    return editorState
   }
 
   editorStateToHtml = editorState => {
     const EditorState = editorState ? editorState.getCurrentContent() : null
+
+    // const html = draftToHtml(convertToRaw(EditorState))
     const html = stateToHTML(EditorState)
 
     return html
@@ -166,6 +179,7 @@ class TextEditor extends PureComponent {
     const { onChangeCallback } = this.props
     const html = this.editorStateToHtml(editorState)
     onChangeCallback(html)
+    // this.setState({ editorState })
   }
 
   getMentions = EditorState => {
@@ -281,10 +295,9 @@ class TextEditor extends PureComponent {
               this.handleEditorStateChange(editorState)
             }
             onFocus={e => e.preventDefault()}
-            // onBlur={(e, editorState) => {
-            //   this.props.SetEditorState(
-            //     draftToHtml(convertToRaw(editorState.getCurrentContent()))
-            //   );
+            // onBlur={e => {
+            //   const editorState = this.htmlToEditorState(e.target.outerHTML)
+            //   this.handleEditorStateChange(editorState)
             // }}
             onTab={e => e.preventDefault()}
             blurInputOnSelect={false}
