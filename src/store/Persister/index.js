@@ -7,7 +7,7 @@ const mapStateToProps = ({ Persister: { lastUpdated } }) => ({ lastUpdated })
 
 const mapDispatchToProps = { saveReduxState }
 
-export class Persister extends PureComponent {
+class Persister extends PureComponent {
   constructor(props) {
     super(props)
     this.interval = null
