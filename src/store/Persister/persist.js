@@ -4,6 +4,15 @@ import { getObjectLength, removeKeyOrValueFromObject } from "../../helpers"
 const LocalStorageReduxKey = "ReduxStore"
 const LocalStorageFilesKey = "Files"
 
+const cleanHtml = array =>
+  array.map(
+    item =>
+      (item = {
+        ...item,
+        html: "<p></p>"
+      })
+  )
+
 const saveState = (localStorageKey, value, dispatch) => {
   const stateValue = JSON.stringify(value)
   try {
@@ -11,8 +20,10 @@ const saveState = (localStorageKey, value, dispatch) => {
     if (dispatch) dispatch()
   } catch (e) {
     if (isQuotaExceeded(e)) {
-      clearLocalStorage()
-      // Do something
+      let reduxStore = getReduxState()
+      // clearLocalStorage()
+      reduxStore.Entries.items = cleanHtml(reduxStore.Entries.items)
+      saveState(LocalStorageReduxKey, reduxStore, dispatch)
     }
   }
 }
