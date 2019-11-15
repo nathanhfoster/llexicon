@@ -1,21 +1,25 @@
 import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 
-import { EditorState, convertToRaw, ContentState } from "draft-js"
+import {
+  EditorState,
+  convertFromHTML,
+  convertFromRaw,
+  convertToRaw,
+  ContentState
+} from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
 // import {
 //   entityMapperToComponent,
 //   customChunkRenderer,
 //   entityMapper
 // } from "utils/draft-js-helpers"
-import { stateToHTML } from "draft-js-export-html"
-import { stateFromHTML } from "draft-js-import-html"
-// import draftToHtml from "draftjs-to-html"
-// import htmlToDraft from "html-to-draftjs"
+import draftToHtml from "draftjs-to-html"
+import htmlToDraft from "html-to-draftjs"
 import { options } from "./options"
 import { removeArrayDuplicates } from "../../helpers"
 import { Button } from "reactstrap"
-import { ClearButton } from "./Buttons"
+import { ClearButton, HtmlButton } from "./Buttons"
 import Divider from "../Divider"
 import "./styles.css"
 
@@ -25,7 +29,7 @@ class TextEditor extends PureComponent {
 
     const { toolbarHidden } = props
 
-    this.state = { editorRef: null, toolbarHidden }
+    this.state = { editorRef: null, toolbarHidden, showHtml: false }
   }
 
   static propTypes = {
@@ -96,7 +100,8 @@ class TextEditor extends PureComponent {
     shouldAutoFocus: false,
     height: "100%",
     width: "100%",
-    showDivider: false
+    showDivider: false,
+    toolbarOnFocus: false
   }
 
   componentWillMount() {
@@ -119,7 +124,8 @@ class TextEditor extends PureComponent {
       height,
       width,
       shouldAutoFocus,
-      showDivider
+      showDivider,
+      toolbarOnFocus
     } = props
     let editorState = this.htmlToEditorState(html)
     editorState = EditorState.moveSelectionToEnd(editorState)
@@ -141,36 +147,30 @@ class TextEditor extends PureComponent {
       height,
       width,
       shouldAutoFocus,
-      showDivider
+      showDivider,
+      toolbarOnFocus
     })
   }
 
   componentWillUnmount() {}
 
   htmlToEditorState = html => {
-    // const blocksFromHtml = htmlToDraft(html)
-    // const { contentBlocks, entityMap } = blocksFromHtml
-    // const contentState = ContentState.createFromBlockArray(blocksFromHtml)
-
-    // console.log("html: ", html)
-    // html = html.replace("<figure>L</figure>", "")
-    // html = html.replace("<figure>C</figure>", "")
-    // html = html.replace("<figure>R</figure>", "")
-    const contentState = stateFromHTML(html)
-    // console.log("contentState: ", contentState)
-
+    const blocksFromHtml = htmlToDraft(html)
+    const { contentBlocks, entityMap } = blocksFromHtml
+    const contentState = ContentState.createFromBlockArray(
+      contentBlocks,
+      entityMap
+    )
     const editorState = EditorState.createWithContent(contentState)
-
-    // console.log("editorState: ", editorState)
-
     return editorState
   }
 
   editorStateToHtml = editorState => {
     const EditorState = editorState ? editorState.getCurrentContent() : null
 
-    // const html = draftToHtml(convertToRaw(EditorState))
-    const html = stateToHTML(EditorState)
+    const raw = convertToRaw(EditorState)
+
+    const html = draftToHtml(raw)
 
     return html
   }
@@ -199,8 +199,6 @@ class TextEditor extends PureComponent {
     )
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value })
-
   orderOptions = values =>
     values.filter(v => v.isFixed).concat(values.filter(v => !v.isFixed))
 
@@ -213,10 +211,6 @@ class TextEditor extends PureComponent {
       editorState: EditorState.createEmpty()
     })
   }
-
-  EditorClass = props => ({
-    maxHeigh: 100
-  })
 
   setEditorReference = editorRef => {
     if (!editorRef) return
@@ -247,6 +241,12 @@ class TextEditor extends PureComponent {
     }))
   }
 
+  toggleHtml = () => {
+    this.setState(currentState => ({
+      showHtml: !currentState.showHtml
+    }))
+  }
+
   render() {
     const { children } = this.props
     const {
@@ -257,7 +257,10 @@ class TextEditor extends PureComponent {
       toolbarHidden,
       height,
       width,
-      showDivider
+      showDivider,
+      toolbarOnFocus,
+      contentState,
+      showHtml
     } = this.state
 
     // console.log(this.editorRef)
@@ -265,7 +268,6 @@ class TextEditor extends PureComponent {
     return (
       <Fragment>
         {children}
-
         <Button
           onClick={this.toggleToolbar}
           color="primary"
@@ -277,7 +279,18 @@ class TextEditor extends PureComponent {
           <i className="fas fa-toolbox" />{" "}
           <i className={`fas fa-angle-${toolbarHidden ? "down" : "up"}`} />
         </Button>
-
+        {showHtml && (
+          <textarea
+            style={{
+              background: "var(--slate_grey)",
+              color: "white",
+              height: 250,
+              width: "100%"
+            }}
+            disabled
+            value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+          />
+        )}
         <div style={{ height, width }}>
           <Editor
             // customBlockRenderFunc={this.renderBlock}
@@ -285,12 +298,18 @@ class TextEditor extends PureComponent {
             key={clearKey}
             readOnly={readOnly}
             defaultEditorState={editorState}
+            contentState={contentState}
             // editorState={editorState}
             toolbarClassName="Toolbar"
             wrapperClassName="Wrapper"
             editorClassName={`Editor ${
               toolbarHidden ? "WithNoToolBar" : "WithToolBar"
             }`}
+            onChange={RawDraftContentState => {
+              const contentState = convertFromRaw(RawDraftContentState)
+              console.log(contentState)
+              //this.setState({ contentState })
+            }}
             onEditorStateChange={editorState =>
               this.handleEditorStateChange(editorState)
             }
@@ -304,14 +323,16 @@ class TextEditor extends PureComponent {
             toolbarHidden={toolbarHidden}
             toolbar={options}
             toolbarCustomButtons={[
-              <ClearButton onClickCallback={this.clearState} />
+              <ClearButton onClickCallback={this.clearState} />,
+              <HtmlButton onClickCallback={this.toggleHtml} />
             ]}
             mention={{
               separator: " ",
               trigger: "@",
               suggestions
             }}
-            // toolbarOnFocus
+            // handlePastedText={clipboard => console.log(clipboard)}
+            toolbarOnFocus={toolbarOnFocus}
             // stripPastedStyles="off"
             // spellCheck="off"
             // autoCapitalize="off"

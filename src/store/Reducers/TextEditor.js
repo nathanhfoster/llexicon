@@ -4,7 +4,7 @@ const { TEXT_EDITOR_SET, TEXT_EDITOR_CLEAR, REDUX_RESET } = ReduxActions
 const defaultState = {
   clearedOn: "",
   title: "",
-  editorStateHtml: "<p><br></p>",
+  editorStateHtml: "<p></p>",
   lastUpdated: ""
 }
 
