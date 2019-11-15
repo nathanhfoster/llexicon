@@ -12,7 +12,7 @@
   background: var(--quinaryColor);
   transition: opacity 0.4s;
   -webkit-transition: opacity 0.4s;
-  opacity: 0.75;
+  opacity: var(--mainOpacity);
 }
 
 .Editor:focus-within {
