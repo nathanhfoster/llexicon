@@ -16,7 +16,7 @@ import { Editor } from "react-draft-wysiwyg"
 // } from "utils/draft-js-helpers"
 import draftToHtml from "draftjs-to-html"
 import htmlToDraft from "html-to-draftjs"
-import { options } from "./options"
+import { toolbar } from "./toolbar"
 import { removeArrayDuplicates } from "../../helpers"
 import { Button } from "reactstrap"
 import { ClearButton, HtmlButton } from "./Buttons"
@@ -101,7 +101,9 @@ class TextEditor extends PureComponent {
     height: "100%",
     width: "100%",
     showDivider: false,
-    toolbarOnFocus: false
+    toolbarOnFocus: false,
+    spellCheck: false,
+    stripPastedStyles: false
   }
 
   componentWillMount() {
@@ -125,7 +127,9 @@ class TextEditor extends PureComponent {
       width,
       shouldAutoFocus,
       showDivider,
-      toolbarOnFocus
+      toolbarOnFocus,
+      spellCheck,
+      stripPastedStyles
     } = props
     let editorState = this.htmlToEditorState(html)
     editorState = EditorState.moveSelectionToEnd(editorState)
@@ -148,7 +152,9 @@ class TextEditor extends PureComponent {
       width,
       shouldAutoFocus,
       showDivider,
-      toolbarOnFocus
+      toolbarOnFocus,
+      spellCheck,
+      stripPastedStyles
     })
   }
 
@@ -247,6 +253,8 @@ class TextEditor extends PureComponent {
     }))
   }
 
+  preventDefault = e => e.preventDefault()
+
   render() {
     const { children } = this.props
     const {
@@ -259,7 +267,9 @@ class TextEditor extends PureComponent {
       width,
       showDivider,
       toolbarOnFocus,
-      showHtml
+      showHtml,
+      spellCheck,
+      stripPastedStyles
     } = this.state
 
     // console.log(this.editorRef)
@@ -312,28 +322,29 @@ class TextEditor extends PureComponent {
             onEditorStateChange={editorState =>
               this.handleEditorStateChange(editorState)
             }
-            // onFocus={e => e.preventDefault()}
-            // onBlur={e => {
-            //   e.preventDefault()
-            //   // const editorState = this.htmlToEditorState(e.target.outerHTML)
-            //   // this.handleEditorStateChange(editorState)
-            // }}
-            // onTab={e => e.preventDefault()}
+            onFocus={this.preventDefault}
+            onBlur={e => {
+              this.preventDefault(e)
+              // const editorState = this.htmlToEditorState(e.target.outerHTML)
+              // this.handleEditorStateChange(editorState)
+            }}
+            onTab={this.preventDefault}
             toolbarHidden={toolbarHidden}
-            toolbar={options}
+            toolbar={toolbar()}
             toolbarCustomButtons={[
               <ClearButton onClickCallback={this.clearState} />,
               <HtmlButton onClickCallback={this.toggleHtml} />
             ]}
+            // hashtag={{}}
             mention={{
               separator: " ",
               trigger: "@",
               suggestions
             }}
-            // handlePastedText={clipboard => console.log(clipboard)}
             toolbarOnFocus={toolbarOnFocus}
-            // stripPastedStyles="off"
-            // spellCheck="off"
+            spellCheck={spellCheck}
+            stripPastedStyles={stripPastedStyles}
+            // handlePastedText={clipboard => console.log(clipboard)}
             // autoCapitalize="off"
             // autoComplete="off"
             // autoCorrect="off"

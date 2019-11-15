@@ -11,7 +11,7 @@ const imageUploadCallback = async image =>
     })
   })
 
-export const options = {
+export const toolbar = () => ({
   options: [
     "inline",
     "blockType",
@@ -339,4 +339,4 @@ export const options = {
     // undo: { icon: undo, className: undefined },
     // redo: { icon: redo, className: undefined }
   }
-}
+})
