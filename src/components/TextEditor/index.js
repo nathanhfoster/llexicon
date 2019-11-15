@@ -215,7 +215,7 @@ class TextEditor extends PureComponent {
   setEditorReference = editorRef => {
     if (!editorRef) return
     const { shouldAutoFocus } = this.state
-    // if (shouldAutoFocus) editorRef.focus()
+    if (shouldAutoFocus) editorRef.focus()
     this.setState({ editorRef })
   }
 
@@ -259,7 +259,6 @@ class TextEditor extends PureComponent {
       width,
       showDivider,
       toolbarOnFocus,
-      contentState,
       showHtml
     } = this.state
 
@@ -294,11 +293,11 @@ class TextEditor extends PureComponent {
         <div style={{ height, width }}>
           <Editor
             // customBlockRenderFunc={this.renderBlock}
-            editorRef={this.setEditorReference}
+            // editorRef={this.setEditorReference}
             key={clearKey}
             readOnly={readOnly}
             defaultEditorState={editorState}
-            contentState={contentState}
+            // contentState={contentState}
             // editorState={editorState}
             toolbarClassName="Toolbar"
             wrapperClassName="Wrapper"
@@ -313,13 +312,13 @@ class TextEditor extends PureComponent {
             onEditorStateChange={editorState =>
               this.handleEditorStateChange(editorState)
             }
-            onFocus={e => e.preventDefault()}
-            onBlur={e => {
-              e.preventDefault()
-              // const editorState = this.htmlToEditorState(e.target.outerHTML)
-              // this.handleEditorStateChange(editorState)
-            }}
-            onTab={e => e.preventDefault()}
+            // onFocus={e => e.preventDefault()}
+            // onBlur={e => {
+            //   e.preventDefault()
+            //   // const editorState = this.htmlToEditorState(e.target.outerHTML)
+            //   // this.handleEditorStateChange(editorState)
+            // }}
+            // onTab={e => e.preventDefault()}
             toolbarHidden={toolbarHidden}
             toolbar={options}
             toolbarCustomButtons={[
