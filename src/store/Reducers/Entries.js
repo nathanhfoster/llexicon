@@ -24,7 +24,7 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const { id, replaceKey, shouldDelete, type, payload } = action
+  const { id, replaceKey, shouldDelete, lastUpdated, type, payload } = action
   switch (type) {
     case ENTRIES_PENDING:
       return { ...state, isPending: true }
@@ -70,7 +70,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
             ? {
                 ...item,
                 ...payload,
-                lastUpdated: new Date(),
+                lastUpdated,
                 shouldDelete
               }
             : item

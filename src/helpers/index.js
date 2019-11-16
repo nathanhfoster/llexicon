@@ -177,7 +177,7 @@ const getMostRecent = (reduxData, newData) => {
   // console.log(newDataLastUpdated - 0 > reduxDataLastUpdated - 0)
 
   if (newDataLastUpdated > reduxDataLastUpdated) {
-    // delete reduxData.lastUpdated
+    delete reduxData.lastUpdated
     return { ...reduxData, ...newData }
   } else {
     return { ...newData, ...reduxData }

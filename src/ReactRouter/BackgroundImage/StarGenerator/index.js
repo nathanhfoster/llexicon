@@ -4,7 +4,7 @@ import { ArrayList } from "../../../classes"
 import { getRandomInt } from "../../../helpers"
 import Star from "../Star"
 
-const StarGenerator = ({ length = 251 }) => {
+const StarGenerator = ({ length = 101 }) => {
   let topPositions = new ArrayList({ ofFloats: true, length: 101 })
   let leftPositions = new ArrayList({ ofFloats: true, length: 101 })
   let stars = []

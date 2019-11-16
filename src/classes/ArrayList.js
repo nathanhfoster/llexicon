@@ -6,7 +6,7 @@ class ArrayList {
     if (ofNumbers) {
       this.arrayList = Array.from(new Array(length).keys())
     } else if (ofFloats) {
-      for (let i = 0.001; i < length; i += 0.001) {
+      for (let i = 0.01; i < length; i += 0.01) {
         this.arrayList.push(i)
       }
     }

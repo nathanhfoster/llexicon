@@ -20,7 +20,7 @@ const {
   ENTRY_UPDATE_IMAGE
 } = ReduxActions
 
-const ParseBlobs = (entry_id, media_type, html) => dispatch => {
+const ParseBase64 = (entry_id, media_type, html) => dispatch => {
   const base64s = htmlToArrayOfBase64(html)
   if (base64s.length === 0) return dispatch(UpdateEntry(entry_id, { html }))
   for (let i = 0; i < base64s.length; i++) {
@@ -156,7 +156,8 @@ const UpdateReduxEntry = ({ shouldDelete = false, ...payload }) => ({
   type: ENTRY_UPDATE,
   id: payload.id,
   payload,
-  shouldDelete
+  shouldDelete,
+  lastUpdated: new Date()
 })
 
 const UpdateEntry = (id, payload) => (dispatch, getState) => {
@@ -251,11 +252,11 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
           title,
           views
         } = entry
-        dispatch(ParseBlobs(id, "Image", html))
+        dispatch(ParseBase64(id, "Image", html))
       })
       continue
     } else if (lastUpdated) {
-      dispatchUpdateEntries.push(ParseBlobs(id, "Image", html))
+      dispatchUpdateEntries.push(ParseBase64(id, "Image", html))
       payload = { title, tags, date_created_by_author }
       dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
@@ -286,7 +287,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
     )
   }
 
-  // console.log("dispatchActions: ", dispatchActions)
+  console.log("dispatchActions: ", dispatchActions)
 
   dispatch(Sync(dispatchActions))
 }

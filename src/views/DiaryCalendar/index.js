@@ -9,7 +9,7 @@ import EntryList from "../../components/EntryList"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
-import { GetUserEntriesByDate } from "../../actions/Entries"
+import { SyncEntries, GetUserEntriesByDate } from "../../actions/Entries"
 import MomentJS from "moment"
 import "./styles.css"
 import "./stylesM.css"
@@ -19,7 +19,7 @@ const mapStateToProps = ({ Calendar: { activeDate, view } }) => ({
   view
 })
 
-const mapDispatchToProps = { SetCalendar, GetUserEntriesByDate }
+const mapDispatchToProps = { SetCalendar, SyncEntries, GetUserEntriesByDate }
 
 class DiaryCalendar extends PureComponent {
   constructor(props) {
@@ -30,6 +30,7 @@ class DiaryCalendar extends PureComponent {
 
   static propTypes = {
     SetCalendar: PropTypes.func.isRequired,
+    SyncEntries: PropTypes.func.isRequired,
     GetUserEntriesByDate: PropTypes.func.isRequired
   }
 
@@ -42,8 +43,10 @@ class DiaryCalendar extends PureComponent {
   componentWillUpdate(nextProps, nextState) {}
 
   componentDidMount() {
-    const { activeDate, GetUserEntriesByDate } = this.props
-    GetUserEntriesByDate(activeDate)
+    const { activeDate, SyncEntries, GetUserEntriesByDate } = this.props
+    SyncEntries(
+      () => new Promise(resolve => resolve(GetUserEntriesByDate(activeDate)))
+    )
   }
 
   componentWillReceiveProps(nextProps) {

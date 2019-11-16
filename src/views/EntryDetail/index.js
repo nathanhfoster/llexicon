@@ -57,7 +57,7 @@ class EntryDetail extends PureComponent {
 
   componentDidMount() {
     const { entryId, SyncEntries, GetUserEntry } = this.props
-    SyncEntries(() => new Promise(resolve => GetUserEntry(entryId, 1)))
+    SyncEntries(() => new Promise(resolve => resolve(GetUserEntry(entryId, 1))))
   }
 
   componentWillReceiveProps(nextProps) {

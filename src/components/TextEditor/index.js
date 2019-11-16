@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"
+import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 
 import {
@@ -21,16 +21,18 @@ import { removeArrayDuplicates } from "../../helpers"
 import { Button } from "reactstrap"
 import { ClearButton, HtmlButton } from "./Buttons"
 import Divider from "../Divider"
-import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-class TextEditor extends Component {
+class TextEditor extends PureComponent {
   constructor(props) {
     super(props)
 
     const { toolbarHidden } = props
 
-    this.state = { editorRef: null, toolbarHidden, showHtml: false }
+    this.state = {
+      editorRef: null,
+      toolbarHidden
+    }
   }
 
   static propTypes = {
@@ -111,13 +113,6 @@ class TextEditor extends Component {
     this.getState(this.props)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const propsChanged = !deepEquals(this.props, nextProps)
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return propsChanged || stateChanged
-  }
-
   componentDidMount() {}
 
   componentWillReceiveProps(nextProps) {
@@ -140,7 +135,7 @@ class TextEditor extends Component {
       stripPastedStyles
     } = props
     let editorState = this.htmlToEditorState(html)
-    editorState = EditorState.moveSelectionToEnd(editorState)
+    // editorState = EditorState.moveSelectionToEnd(editorState)
 
     // const suggestions = Users.map(
     //   user =>
@@ -191,8 +186,10 @@ class TextEditor extends Component {
 
   handleEditorStateChange = editorState => {
     const { onChangeCallback } = this.props
+
     const html = this.editorStateToHtml(editorState)
     onChangeCallback(html)
+
     // this.setState({ editorState })
   }
 
