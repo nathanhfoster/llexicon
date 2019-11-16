@@ -10,7 +10,7 @@
 }
 
 .react-datepicker__input-container input {
-  width: 90px;
+  min-width: 90px;
 }
 
 .DatePickerPopper {
