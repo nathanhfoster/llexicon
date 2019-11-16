@@ -66,6 +66,7 @@ class EntryDetail extends PureComponent {
 
   getState = props => {
     const { entry, entryContainerHeight } = props
+
     this.setState({ entry, entryContainerHeight })
   }
 

@@ -287,7 +287,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
     )
   }
 
-  console.log("dispatchActions: ", dispatchActions)
+  // console.log("dispatchActions: ", dispatchActions)
 
   dispatch(Sync(dispatchActions))
 }
