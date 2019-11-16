@@ -22,7 +22,7 @@
   ],
   "background_color": "#29303b",
   "theme_color": "#29303b",
-  "start_url": "/entries",
+  "start_url": "/calendar",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait"
