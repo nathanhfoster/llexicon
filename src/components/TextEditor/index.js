@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from "react"
+import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 
 import {
@@ -21,9 +21,10 @@ import { removeArrayDuplicates } from "../../helpers"
 import { Button } from "reactstrap"
 import { ClearButton, HtmlButton } from "./Buttons"
 import Divider from "../Divider"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-class TextEditor extends PureComponent {
+class TextEditor extends Component {
   constructor(props) {
     super(props)
 
@@ -108,6 +109,13 @@ class TextEditor extends PureComponent {
 
   componentWillMount() {
     this.getState(this.props)
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const propsChanged = !deepEquals(this.props, nextProps)
+    const stateChanged = !deepEquals(this.state, nextState)
+
+    return propsChanged || stateChanged
   }
 
   componentDidMount() {}

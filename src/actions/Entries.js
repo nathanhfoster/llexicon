@@ -90,8 +90,9 @@ const GetUserEntries = pageNumber => (dispatch, getState) => {
       return data
     })
     .catch(e => {
-      const payload = JSON.parse(JSON.stringify(e.response))
-      dispatch({ type: ENTRIES_ERROR, payload })
+      console.log(e)
+      // const payload = JSON.parse(JSON.stringify(e.response))
+      // dispatch({ type: ENTRIES_ERROR, payload })
     })
 }
 
@@ -112,8 +113,9 @@ const GetUserEntriesByDate = date => (dispatch, getState) => {
       return data
     })
     .catch(e => {
-      const payload = JSON.parse(JSON.stringify(e.response))
-      dispatch({ type: ENTRIES_ERROR, payload })
+      console.log(e)
+      // const payload = JSON.parse(JSON.stringify(e))
+      // dispatch({ type: ENTRIES_ERROR, payload })
     })
 }
 
@@ -163,7 +165,6 @@ const UpdateEntry = (id, payload) => (dispatch, getState) => {
     .patch(`/entries/${id}/update_with_tags/?pk=${pk}`, qs.stringify(payload))
     .then(res => {
       const { data } = res
-      // console.log("UpdateEntry html: ", data.html)
       dispatch({
         type: ENTRY_UPDATE,
         id,
@@ -194,7 +195,7 @@ const DeleteEntry = id => (dispatch, getState) => {
     })
 }
 
-const SyncEntries = () => (dispatch, getState) => {
+const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User,
     Entries: { items }
@@ -259,7 +260,13 @@ const SyncEntries = () => (dispatch, getState) => {
       dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
   }
-  let dispatchActions = dispatchDeleteEntries
+
+  let dispatchActions = []
+
+  if (getEntryMethod) dispatchActions.push(getEntryMethod)
+
+  dispatchActions = dispatchActions
+    .concat(dispatchDeleteEntries)
     .concat(dispatchPostEntries)
     .concat(dispatchUpdateEntries)
 

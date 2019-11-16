@@ -33,7 +33,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case ENTRY_IMPORT:
       return {
         ...state,
-        items: mergeJson(payload, state.items),
+        items: mergeJson(state.items, payload),
         error: DEFAULT_STATE_ENTRIES.error
       }
     case ENTRIES_SET:
@@ -43,14 +43,14 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         count,
         next,
         previous,
-        items: mergeJson(results, state.items)
+        items: mergeJson(state.items, results)
       }
     case ENTRIES_SET_BY_DATE:
-      return { ...state, items: mergeJson(payload, state.items) }
+      return { ...state, items: mergeJson(state.items, payload) }
     case ENTRY_SET:
       return {
         ...state,
-        items: mergeJson([payload], state.items)
+        items: mergeJson(state.items, [payload])
       }
     case ENTRY_POST:
       return {

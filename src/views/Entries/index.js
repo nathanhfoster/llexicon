@@ -1,15 +1,12 @@
-import React, { PureComponent, createRef } from "react"
+import React, { Component, createRef } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import Entry from "../../components/Entry"
 import Home from "../Home"
 import { FixedSizeList } from "react-window"
-import {
-  UpdateReduxEntry,
-  SyncEntries,
-  GetUserEntries
-} from "../../actions/Entries"
+import { SyncEntries, GetUserEntries } from "../../actions/Entries"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -25,9 +22,9 @@ const mapStateToProps = ({
   viewPortHeight: availHeight
 })
 
-const mapDispatchToProps = { UpdateReduxEntry, SyncEntries, GetUserEntries }
+const mapDispatchToProps = { SyncEntries, GetUserEntries }
 
-class Entries extends PureComponent {
+class Entries extends Component {
   constructor(props) {
     super(props)
 
@@ -38,7 +35,6 @@ class Entries extends PureComponent {
 
   static propTypes = {
     UserId: PropTypes.number,
-    UpdateReduxEntry: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired,
     GetUserEntries: PropTypes.func.isRequired
   }
@@ -49,11 +45,17 @@ class Entries extends PureComponent {
     this.getState(this.props)
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const propsChanged = !deepEquals(this.props, nextProps)
+    const stateChanged = !deepEquals(this.state, nextState)
+
+    return propsChanged || stateChanged
+  }
+
   componentDidMount() {
     const { UserId, SyncEntries, GetUserEntries } = this.props
     if (UserId) {
-      SyncEntries()
-      GetUserEntries(1)
+      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
     }
   }
 
@@ -75,12 +77,7 @@ class Entries extends PureComponent {
     this.setState({ entries, nextEntryPage, listHeight, listItemHeight })
   }
 
-  componentWillUnmount() {
-    const { UserId, SyncEntries } = this.props
-    if (UserId) {
-      SyncEntries()
-    }
-  }
+  componentWillUnmount() {}
 
   handleDeleteEntry = id => {
     const { DeleteEntry } = this.props
@@ -93,7 +90,7 @@ class Entries extends PureComponent {
     visibleStartIndex,
     visibleStopIndex
   }) => {
-    const { GetUserEntries } = this.props
+    const { SyncEntries, GetUserEntries } = this.props
     const { entries, nextEntryPage } = this.state
     const { length } = entries
     const bottomOfListIndex = length === 0 ? length : length - 1
@@ -103,10 +100,15 @@ class Entries extends PureComponent {
     // console.log("visibleStopIndex: ", visibleStopIndex)
     // console.log("reachedBottomOfList: ", reachedBottomOfList)
     // console.log("---------------------------------------")
+
     if (!nextEntryPage) return
     const split = nextEntryPage.split("=")
     const pageNumber = split[split.length - 1]
-    if (reachedBottomOfList) GetUserEntries(pageNumber)
+    if (reachedBottomOfList) {
+      SyncEntries(
+        () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
+      )
+    }
   }
 
   renderEntries = ({ data, index, style, isScrolling }) => {

@@ -25,7 +25,8 @@ class Entry extends PureComponent {
     containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
       .isRequired,
     showDivider: PropTypes.bool,
-    toolbarHidden: PropTypes.bool
+    toolbarHidden: PropTypes.bool,
+    UpdateReduxEntry: PropTypes.func.isRequired
   }
 
   static defaultProps = {

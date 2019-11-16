@@ -167,21 +167,38 @@ const splitStrings = value => {
   }
 }
 
-const mergeJson = (newData, reduxData) => {
+const getMostRecent = (reduxData, newData) => {
+  const reduxDataLastUpdated = new Date(
+    reduxData.lastUpdated || reduxData.date_updated
+  )
+  const newDataLastUpdated = new Date(newData.date_updated)
+
+  // console.log(newDataLastUpdated - reduxDataLastUpdated)
+  // console.log(newDataLastUpdated - 0 > reduxDataLastUpdated - 0)
+
+  if (newDataLastUpdated > reduxDataLastUpdated) {
+    // delete reduxData.lastUpdated
+    return { ...reduxData, ...newData }
+  } else {
+    return { ...newData, ...reduxData }
+  }
+}
+
+const mergeJson = (reduxData, newData) => {
   // console.log(newData, reduxData)
   // Order matters. You want to merge the reduxData into the newData
-  const allData = newData.concat(reduxData)
+  const allData = reduxData.concat(newData)
   let mergeMap = {}
 
   for (let i = 0; i < allData.length; i++) {
     const item = allData[i]
     const { id } = item
 
-    if (mergeMap[id]) {
+    if (!mergeMap[id]) {
       mergeMap[id] = item
     } else {
       // Merge
-      mergeMap[id] = { ...mergeMap[id], ...item }
+      mergeMap[id] = getMostRecent(mergeMap[id], item)
     }
   }
 

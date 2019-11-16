@@ -43,6 +43,7 @@ class EntryDetail extends PureComponent {
 
   static propTypes = {
     UserId: PropTypes.number,
+    GetUserEntry: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired
   }
 
@@ -55,8 +56,8 @@ class EntryDetail extends PureComponent {
   componentWillUpdate(nextProps, nextState) {}
 
   componentDidMount() {
-    const { entryId, GetUserEntry } = this.props
-    GetUserEntry(entryId, 1)
+    const { entryId, SyncEntries, GetUserEntry } = this.props
+    SyncEntries(() => new Promise(resolve => GetUserEntry(entryId, 1)))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -70,13 +71,7 @@ class EntryDetail extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {}
 
-  componentWillUnmount() {
-    const { UserId, SyncEntries } = this.props
-
-    if (UserId) {
-      SyncEntries()
-    }
-  }
+  componentWillUnmount() {}
 
   render() {
     const { entry, entryContainerHeight } = this.state
