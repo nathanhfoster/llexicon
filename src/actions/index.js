@@ -79,7 +79,7 @@ const Sync = dispatchActions => async dispatch => {
 
   await dispatch(firstAction).then(
     async () => await dispatch(Sync(restOfActions))
-  )
+  ).catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
 export { Axios, AxiosForm, AxiosData, Sync }
