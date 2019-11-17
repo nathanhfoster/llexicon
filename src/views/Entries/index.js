@@ -102,6 +102,7 @@ class Entries extends Component {
     return (
       <Col key={id} style={{ ...style /* background: "red" */ }} xs={12}>
         <Entry
+          key={id}
           id={id}
           {...restOfProps}
           containerHeight={style.height}

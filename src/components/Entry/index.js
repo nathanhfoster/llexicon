@@ -45,7 +45,7 @@ class Entry extends PureComponent {
     const dividerHeight = showDivider ? 32 : 0
 
     const textEditorHeight = containerHeight - inputOffset - dividerHeight
-    
+
     return {
       id,
       author,
@@ -102,6 +102,7 @@ class Entry extends PureComponent {
     } = this.state
     return (
       <Editor
+        toolbarId={id}
         showDivider={showDivider}
         toolbarHidden={toolbarHidden}
         height={textEditorHeight}

@@ -11,6 +11,23 @@ import "react-quill/dist/quill.core.css"
 // import "quill-mention/dist/quill.mention.min.css"
 import "./styles.css"
 
+// const Size = Quill.import("formats/size")
+// Size.whitelist = ["extra-small", "small", "medium", "large"]
+// Quill.register(Size, true)
+
+const Font = Quill.import("formats/font")
+Font.whitelist = [
+  "roboto",
+  "arial",
+  "comic-sans",
+  "courier-new",
+  "georgia",
+  "helvetica",
+  "lucida"
+]
+
+Quill.register(Font, true)
+
 Quill.register("modules/imageResize", ImageResize)
 
 const THEMES = {
@@ -22,6 +39,8 @@ const THEMES = {
 class Editor extends PureComponent {
   constructor(props) {
     super(props)
+
+    this.toolbarId = `toolbar-${props.toolbarId}`
 
     this.editorRef = createRef()
 
@@ -40,7 +59,8 @@ class Editor extends PureComponent {
     html: PropTypes.string.isRequired,
     onChangeCallback: PropTypes.func,
     showDivider: PropTypes.bool,
-
+    toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
     // Quill
     id: PropTypes.string,
     className: PropTypes.string,
@@ -68,53 +88,76 @@ class Editor extends PureComponent {
 
   static defaultProps = {
     theme: THEMES.SNOW,
-    modules: {
+
+    height: "100%",
+    width: "100%",
+    showDivider: false,
+
+    toolbarId: 1
+  }
+
+  componentDidMount() {
+    // console.log(this.editorRef)
+    // console.log(this.editorRef.current.editor.history)
+  }
+
+  componentDidUpdate(prevProps, prevState) {}
+
+  componentWillUnmount() {}
+
+  handleEditorStateChange = html => {
+    const { onChangeCallback } = this.props
+
+    onChangeCallback(html)
+  }
+
+  getModules = ({ toolbarId, editorRef }) => {
+    return {
       history: {
         delay: 2000,
         maxStack: 500,
         userOnly: false
       },
-      // toolbar: "#toolbar",
-      toolbar: {
-        container: [
-          ["bold", "italic", "underline", "strike"], // toggled buttons
-          ["blockquote", "code-block"],
+      toolbar: `#${toolbarId}`,
+      // toolbar: {
+      //   container: [
+      //     ["bold", "italic", "underline", "strike"], // toggled buttons
+      //     ["blockquote", "code-block"],
 
-          // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-          // [{ header: 1 }, { header: 2 }], // custom button values
-          [{ header: [1, 2, 3, 4, 5, false] }],
+      //     // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+      //     // [{ header: 1 }, { header: 2 }], // custom button values
+      //     [{ header: [1, 2, 3, 4, 5, false] }],
 
-          [{ list: "ordered" }, { list: "bullet" }],
-          [{ script: "sub" }, { script: "super" }], // superscript/subscript
-          [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-          [{ direction: "rtl" }], // text direction
+      //     [{ list: "ordered" }, { list: "bullet" }],
+      //     [{ script: "sub" }, { script: "super" }], // superscript/subscript
+      //     [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+      //     [{ direction: "rtl" }], // text direction
 
-          [{ color: [] }, { background: [] }],
-          [{ align: [] }],
-          ["link", "image", "video"],
-          ["clean"],
-          ["undo", "redo"]
-        ],
+      //     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
 
-        // https://github.com/zenoamaro/react-quill/issues/436
-        handlers: {
-          undo: () => {
-            console.log("CLICKed: ", this.editorRef)
+      //     [{ align: [] }, { font: [] }],
+      //     ["link", "image", "video"],
+      //     ["clean"],
+      //     ["undo", "redo"]
+      //   ],
 
-            this.editorRef.current.editor.history.undo()
-          },
-          redo: () => {
-            this.editorRef.current.editor.history.undo()
-          }
-          // image: () => {
-          //   this.showImageUploadModal();
-          // },
-          // video: () => {
-          //   this.showVideoUploadModal()
-          // },
-          // insertImage: this.insertImage,
-        }
-      },
+      //   // https://github.com/zenoamaro/react-quill/issues/436
+      //   handlers: {
+      //     undo: () => {
+      //       editorRef.current.editor.history.undo()
+      //     },
+      //     redo: () => {
+      //       editorRef.current.editor.history.undo()
+      //     }
+      //     // image: () => {
+      //     //   this.showImageUploadModal();
+      //     // },
+      //     // video: () => {
+      //     //   this.showVideoUploadModal()
+      //     // },
+      //     // insertImage: this.insertImage,
+      //   }
+      // },
       clipboard: {
         // toggle to add extra line breaks when pasting HTML:
         matchVisual: false
@@ -124,9 +167,11 @@ class Editor extends PureComponent {
         // See optional "config" below
       }
       // imageDrop: {}
-    },
+    }
+  }
 
-    formats: [
+  getFormats = ({}) => {
+    return [
       "header",
       "bold",
       "italic",
@@ -153,49 +198,26 @@ class Editor extends PureComponent {
       "width",
       "style",
       "size"
-    ],
-    height: "100%",
-    width: "100%",
-    showDivider: false
-  }
-
-  componentDidMount() {
-    // console.log(this.editorRef)
-    // console.log(this.editorRef.current.editor.history)
-  }
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
-  handleEditorStateChange = html => {
-    const { onChangeCallback } = this.props
-
-    onChangeCallback(html)
+    ]
   }
 
   render() {
+    const { toolbarId, editorRef } = this
     const { children } = this.props
-    const {
-      html,
-      theme,
-      modules,
-      formats,
-      height,
-      width,
-      showDivider
-    } = this.state
+    const { html, theme, height, width, showDivider } = this.state
+
     return (
       <Fragment>
         {children}
         <div className="text-editor" style={{ height, width }}>
+          <Toolbar toolbarId={toolbarId} editorRef={editorRef} />
           <ReactQuill
-            bounds={".app"}
-            ref={this.editorRef}
+            bounds={"app"}
+            ref={editorRef}
             className="Editor"
             theme={theme}
-            modules={modules}
-            formats={formats}
+            modules={this.getModules(this)}
+            formats={this.getFormats(this)}
             value={html}
             onChange={this.handleEditorStateChange}
           />

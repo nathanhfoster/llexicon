@@ -1,5 +1,13 @@
-#Toolbar {
+[id*='toolbar-'] {
     box-shadow: var(--primaryBoxShadow);
-    background: var(--slate_grey);
-    color: var(--secondaryColor);
+    background: var(--quinaryColor);
+    color: #444444;
+}
+
+[id*='toolbar-'] i {
+    color: #444444;
+}
+
+[id*='toolbar-'] i:hover {
+    color: #06c;
 }

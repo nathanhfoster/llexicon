@@ -259,6 +259,11 @@ const addDynamicScript = (scriptId, url, callback = null) => {
   if (existingScript && callback) callback()
 }
 
+const capitalize = string => {
+  if (typeof string === "string" || string instanceof String)
+    return `${string.charAt(0).toUpperCase()}${string.slice(1)}`
+}
+
 export {
   DeepClone,
   getObjectLength,
@@ -288,5 +293,6 @@ export {
   importTextFileEntries,
   readmultifiles,
   lazyLoadWithTimeOut,
-  addDynamicScript
+  addDynamicScript,
+  capitalize
 }

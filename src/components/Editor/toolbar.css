@@ -10,29 +10,29 @@
 
 @media (max-width: 383px) {
     :root {
-        --textEditorToolBarHeight: 198px;
+        --textEditorToolBarHeight: 119px;
     }
 }
 
-@media (min-width: 384px) and (max-width: 423px) {
+@media (min-width: 414px) and (max-width: 533px) {
     :root {
-        --textEditorToolBarHeight: 162px;
+        --textEditorToolBarHeight: 94px;
     }
 }
 
-@media (min-width: 424px) and (max-width: 469px) {
+@media (min-width: 534px) and (max-width: 1199px) {
     :root {
-        --textEditorToolBarHeight: 172px;
+        --textEditorToolBarHeight: 68px;
     }
 }
 
-@media (min-width: 470px) and (max-width: 767px) {
+@media (min-width: 1200px) {
     :root {
-        --textEditorToolBarHeight: 136px;
+        --textEditorToolBarHeight: 42px;
     }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+/* @media (min-width: 768px) and (max-width: 991px) {
     :root {
         --textEditorToolBarHeight: 126px;
     }
@@ -42,4 +42,4 @@
     :root {
         --textEditorToolBarHeight: 90px;
     }
-}
+} */

@@ -1,61 +1,45 @@
-import React, { PureComponent, Fragment } from "react"
+import React from "react"
 import PropTypes from "prop-types"
+import Group from "./Group"
+import Headers from "./QuillSelect/Headers"
+import QuillButtons from "./QuillButtons"
+import Backgrounds from "./QuillSelect/Backgrounds"
+import Colors from "./QuillSelect/Colors"
+import Align from "./QuillSelect/Align"
+import Fonts from "./QuillSelect/Fonts"
 import "./styles.css"
 
-class Toolbar extends PureComponent {
-  constructor(props) {
-    super(props)
+const undo = editorRef => editorRef.current.editor.history.undo()
+const redo = editorRef => editorRef.current.editor.history.redo()
 
-    this.state = {}
-  }
+const Toolbar = ({ toolbarId, editorRef }) => {
+  return (
+    <div id={toolbarId}>
+      <Group>
+        <Align />
+        <Fonts />
+        <Headers />
+        <Colors />
+        <Backgrounds />
+      </Group>
 
-  static getDerivedStateFromProps(props, state) {
-    return props
-  }
+      <QuillButtons />
 
-  static propTypes = {}
-
-  static defaultProps = {}
-
-
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
-  render() {
-    return (
-      <Fragment>
-        <div id="toolbar" className="Editor">
-          <select
-            className="ql-header"
-            defaultValue={""}
-            onChange={e => e.persist()}
-          >
-            <option value="1" />
-            <option value="2" />
-            <option selected />
-          </select>
-          <button className="ql-bold" />
-          <button className="ql-italic" />
-          <button className="ql-underline" />
-          <select className="ql-color">
-            <option value="red" />
-            <option value="green" />
-            <option value="blue" />
-            <option value="orange" />
-            <option value="violet" />
-            <option value="#d0d1d2" />
-            <option selected />
-          </select>
-          {/* <button className="ql-insertStar">
-        <CustomButton />
-      </button> */}
-        </div>
-        <div id="editor"></div>
-      </Fragment>
-    )
-  }
+      <Group>
+        <button className="ql-undo" onClick={() => undo(editorRef)}>
+          <i className="fas fa-undo-alt"></i>
+        </button>
+        <button className="ql-undo" onClick={() => redo(editorRef)}>
+          <i className="fas fa-redo-alt"></i>
+        </button>
+      </Group>
+    </div>
+  )
 }
+
+Toolbar.propTypes = {
+  toolbarId: PropTypes.PropTypes.string.isRequired,
+  editorRef: PropTypes.object
+}
+
 export default Toolbar

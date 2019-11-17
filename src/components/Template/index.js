@@ -25,15 +25,7 @@ class Template extends PureComponent {
 
   static defaultProps = {}
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return true
-  }
-
   componentDidMount() {}
-
-  getState = props => {
-    this.setState({})
-  }
 
   componentDidUpdate(prevProps, prevState) {}
 

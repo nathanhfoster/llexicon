@@ -10,7 +10,7 @@
     transition: opacity 0.4s;
     -webkit-transition: opacity 0.4s;
     opacity: var(--mainOpacity);
-    height: 100%;
+    height: calc(100% - var(--textEditorToolBarHeight));
 }
 
 .Editor:focus-within {
