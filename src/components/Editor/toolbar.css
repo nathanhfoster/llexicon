@@ -1,0 +1,45 @@
+.ql-toolbar.ql-snow {
+    border: 0;
+}
+
+.ql-toolbar.ql-snow .ql-picker-options {
+    box-shadow: var(--primaryBoxShadow);
+    background: var(--slate_grey);
+    color: var(--secondaryColor);
+}
+
+@media (max-width: 383px) {
+    :root {
+        --textEditorToolBarHeight: 198px;
+    }
+}
+
+@media (min-width: 384px) and (max-width: 423px) {
+    :root {
+        --textEditorToolBarHeight: 162px;
+    }
+}
+
+@media (min-width: 424px) and (max-width: 469px) {
+    :root {
+        --textEditorToolBarHeight: 172px;
+    }
+}
+
+@media (min-width: 470px) and (max-width: 767px) {
+    :root {
+        --textEditorToolBarHeight: 136px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    :root {
+        --textEditorToolBarHeight: 126px;
+    }
+}
+
+@media (min-width: 992px) {
+    :root {
+        --textEditorToolBarHeight: 90px;
+    }
+}

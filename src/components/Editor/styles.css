@@ -1,0 +1,22 @@
+@import "./editor.css";
+@import "./toolbar.css";
+.Editor {
+    box-shadow: var(--primaryBoxShadow);
+    border-radius: 2px;
+    opacity: var(--mainOpacity);
+    letter-spacing: 0.4px;
+    color: var(--secondaryColor);
+    background: var(--quinaryColor);
+    transition: opacity 0.4s;
+    -webkit-transition: opacity 0.4s;
+    opacity: var(--mainOpacity);
+    height: 100%;
+}
+
+.Editor:focus-within {
+    opacity: 1;
+}
+
+.ql-container.ql-snow {
+    border: 0;
+}

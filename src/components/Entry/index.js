@@ -4,7 +4,7 @@ import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouterGoBack } from "../../ReactRouter/Routes"
-import TextEditor from "../../components/TextEditor"
+import Editor from "../../components/Editor"
 import { UpdateReduxEntry } from "../../actions/Entries"
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
@@ -71,7 +71,7 @@ class Entry extends PureComponent {
     const dividerHeight = showDivider ? 32 : 0
 
     const textEditorHeight =
-      containerHeight - inputOffset - toolBarToggleButton - dividerHeight
+      containerHeight - inputOffset - dividerHeight
 
     this.setState({
       id,
@@ -112,7 +112,7 @@ class Entry extends PureComponent {
       shouldRedirectOnDelete
     } = this.state
     return (
-      <TextEditor
+      <Editor
         showDivider={showDivider}
         toolbarHidden={toolbarHidden}
         height={textEditorHeight}
@@ -166,7 +166,7 @@ class Entry extends PureComponent {
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
-      </TextEditor>
+      </Editor>
     )
   }
 }

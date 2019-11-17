@@ -1,0 +1,16 @@
+.ql-editor {
+
+}
+
+.ql-snow .ql-tooltip {
+    background-color: var(--slate_grey);
+    left: 0 !important;
+    right: 0 !important;
+    color: var(--secondaryColor);
+    border: 0;
+    box-shadow: var(--primaryBoxShadow);
+}
+
+.ql-snow .ql-tooltip a {
+
+}

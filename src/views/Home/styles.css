@@ -5,3 +5,7 @@
 .EditorContainer {
   height: calc(100% - var(--navBarHeight) - var(--inputHeight) + 32px);
 }
+
+.ql-toolbar {
+
+}

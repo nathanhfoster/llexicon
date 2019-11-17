@@ -239,6 +239,26 @@ const lazyLoadWithTimeOut = (min, max, componentPath) =>
     )
   })
 
+const addDynamicScript = (scriptId, url, callback = null) => {
+  const head = document.getElementsByTagName("head")[0]
+  const existingScript = document.getElementById(scriptId)
+
+  if (!existingScript) {
+    const script = document.createElement("script")
+    script.type = "text/javascript"
+    script.src = url // URL for the third-party library being loaded.
+    script.id = scriptId // e.g. googleMaps, parlay
+    head.appendChild(script)
+
+    // Use if you need to run code after script is loaded
+    script.onload = () => {
+      if (callback) callback()
+    }
+  }
+
+  if (existingScript && callback) callback()
+}
+
 export {
   DeepClone,
   getObjectLength,
@@ -267,5 +287,6 @@ export {
   mergeJson,
   importTextFileEntries,
   readmultifiles,
-  lazyLoadWithTimeOut
+  lazyLoadWithTimeOut,
+  addDynamicScript
 }

@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import TextEditor from "../../components/TextEditor"
+import Editor from "../../components/Editor"
 import {
   Container,
   Row,
@@ -189,9 +189,7 @@ class Home extends PureComponent {
         </Row>
         <Row className="EditorContainer">
           <Col xs={12}>
-            <TextEditor
-              shouldAutoFocus
-              clearKey={clearedOn}
+            <Editor
               html={editorStateHtml}
               onChangeCallback={html => this.handleTextEditorChange(html)}
             />
