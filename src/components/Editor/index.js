@@ -212,6 +212,7 @@ class Editor extends PureComponent {
         <div className="text-editor" style={{ height, width }}>
           <Toolbar toolbarId={toolbarId} editorRef={editorRef} />
           <ReactQuill
+            id={this.props.toolbarId}
             bounds={"app"}
             ref={editorRef}
             className="Editor"
