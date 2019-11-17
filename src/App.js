@@ -20,6 +20,10 @@ export class App extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return props
+  }
+
   static propTypes = {
     UserId: PropTypes.number,
     setWindow: PropTypes.func.isRequired,
@@ -31,10 +35,6 @@ export class App extends PureComponent {
     GetUserSettings
   }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
   componentDidMount() {
     const { GetUserSettings, UserId } = this.props
 
@@ -44,14 +44,6 @@ export class App extends PureComponent {
     if (UserId) {
       GetUserSettings()
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    this.setState({})
   }
 
   componentWillUnmount() {

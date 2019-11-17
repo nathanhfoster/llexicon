@@ -6,7 +6,6 @@ import Entry from "../../components/Entry"
 import Home from "../Home"
 import { FixedSizeList } from "react-window"
 import { SyncEntries, GetUserEntries } from "../../actions/Entries"
-import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -33,37 +32,7 @@ class Entries extends Component {
     this.state = {}
   }
 
-  static propTypes = {
-    UserId: PropTypes.number,
-    SyncEntries: PropTypes.func.isRequired,
-    GetUserEntries: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {}
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const propsChanged = !deepEquals(this.props, nextProps)
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return propsChanged || stateChanged
-  }
-
-  componentDidMount() {
-    const { UserId, SyncEntries, GetUserEntries } = this.props
-    if (UserId) {
-      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
+  static getDerivedStateFromProps(props, state) {
     const { entries, nextEntryPage, viewPortHeight } = props
 
     const inputHeight = 46
@@ -74,7 +43,22 @@ class Entries extends Component {
 
     if (listHeight / 3 > listItemHeight) listItemHeight = listHeight / 3
 
-    this.setState({ entries, nextEntryPage, listHeight, listItemHeight })
+    return { entries, nextEntryPage, listHeight, listItemHeight }
+  }
+
+  static propTypes = {
+    UserId: PropTypes.number,
+    SyncEntries: PropTypes.func.isRequired,
+    GetUserEntries: PropTypes.func.isRequired
+  }
+
+  static defaultProps = {}
+
+  componentDidMount() {
+    const { UserId, SyncEntries, GetUserEntries } = this.props
+    if (UserId) {
+      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
+    }
   }
 
   componentWillUnmount() {}

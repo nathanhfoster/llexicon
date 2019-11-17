@@ -13,6 +13,7 @@ const styles = ({ top = 20, left = 15, spin = 100 }) => ({
 
 const Earth = props => (
   <img
+    alt="Earth"
     style={styles(props)}
     // className="spinEarthOnHover"
     src="http://salehriaz.com/404Page/img/earth.svg"

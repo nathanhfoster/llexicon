@@ -45,6 +45,10 @@ class NavBar extends PureComponent {
     }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return props
+  }
+
   static propTypes = {
     UserId: PropTypes.number,
     UserLogout: PropTypes.func.isRequired,
@@ -54,25 +58,8 @@ class NavBar extends PureComponent {
 
   static defaultProps = {}
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
   componentDidMount() {
     this.handleTodayClick()
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const { UserId, isMobile, isInStandalone } = props
-    this.setState({
-      UserId,
-      isMobile,
-      isInStandalone
-    })
   }
 
   toggleHamburgerMenu = () =>

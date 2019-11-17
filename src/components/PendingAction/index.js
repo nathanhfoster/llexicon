@@ -15,19 +15,7 @@ class PendingAction extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = {}
-
-  static defaultProps = { ShouldShow: true, Disabled: false }
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
+  static getDerivedStateFromProps(props, state) {
     const {
       ShouldShow,
       Disabled,
@@ -44,15 +32,19 @@ class PendingAction extends PureComponent {
 
     if (shouldRedirect) Redirect()
 
-    this.setState({
+    return {
       ShouldShow,
       Disabled,
       Click,
       ActionName,
       Pending,
       Completed
-    })
+    }
   }
+
+  static propTypes = {}
+
+  static defaultProps = { ShouldShow: true, Disabled: false }
 
   switchActionIcon = ActionName => {
     return null

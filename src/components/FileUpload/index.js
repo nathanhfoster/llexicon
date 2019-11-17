@@ -12,20 +12,13 @@ class FileUpload extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return props
+  }
+
   static propTypes = {}
 
   static defaultProps = {}
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    this.setState({})
-  }
 
   render() {
     const { value, onChangeCallback } = this.props

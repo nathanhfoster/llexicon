@@ -2,6 +2,7 @@ import React, { PureComponent, Fragment, createRef } from "react"
 import PropTypes from "prop-types"
 import ReactQuill, { Quill } from "react-quill"
 import ImageResize from "quill-image-resize-module-react"
+import Toolbar from "./Toolbar"
 import Divider from "../Divider"
 import "react-quill/dist/quill.snow.css"
 import "react-quill/dist/quill.bubble.css"
@@ -11,8 +12,6 @@ import "react-quill/dist/quill.core.css"
 import "./styles.css"
 
 Quill.register("modules/imageResize", ImageResize)
-
-const ATTRIBUTES = ["alt", "height", "width", "style"]
 
 const THEMES = {
   CORE: "core",
@@ -27,6 +26,12 @@ class Editor extends PureComponent {
     this.editorRef = createRef()
 
     this.state = {}
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    // console.log("props: ", props)
+    // console.log("state: ", state)
+    return props
   }
 
   static propTypes = {
@@ -58,12 +63,18 @@ class Editor extends PureComponent {
     theme: PropTypes.string,
     modules: PropTypes.object,
     formats: PropTypes.array,
-    children: PropTypes.array
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
   }
 
   static defaultProps = {
     theme: THEMES.SNOW,
     modules: {
+      history: {
+        delay: 2000,
+        maxStack: 500,
+        userOnly: false
+      },
+      // toolbar: "#toolbar",
       toolbar: {
         container: [
           ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -81,19 +92,28 @@ class Editor extends PureComponent {
           [{ color: [] }, { background: [] }],
           [{ align: [] }],
           ["link", "image", "video"],
-          ["clean"]
-        ]
+          ["clean"],
+          ["undo", "redo"]
+        ],
 
         // https://github.com/zenoamaro/react-quill/issues/436
-        // handlers: {
-        //   image: () => {
-        //     this.showImageUploadModal();
-        //   },
-        //   video: () => {
-        //     this.showVideoUploadModal()
-        //   },
-        //   // insertImage: this.insertImage,
-        // }
+        handlers: {
+          undo: () => {
+            console.log("CLICKed: ", this.editorRef)
+
+            this.editorRef.current.editor.history.undo()
+          },
+          redo: () => {
+            this.editorRef.current.editor.history.undo()
+          }
+          // image: () => {
+          //   this.showImageUploadModal();
+          // },
+          // video: () => {
+          //   this.showVideoUploadModal()
+          // },
+          // insertImage: this.insertImage,
+        }
       },
       clipboard: {
         // toggle to add extra line breaks when pasting HTML:
@@ -139,21 +159,9 @@ class Editor extends PureComponent {
     showDivider: false
   }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillUpdate(nextProps, nextState) {}
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const { html, theme, modules, formats, height, width, showDivider } = props
-    this.setState({ html, theme, modules, formats, height, width, showDivider })
+  componentDidMount() {
+    // console.log(this.editorRef)
+    // console.log(this.editorRef.current.editor.history)
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -180,7 +188,7 @@ class Editor extends PureComponent {
     return (
       <Fragment>
         {children}
-        <div style={{ height, width }}>
+        <div className="text-editor" style={{ height, width }}>
           <ReactQuill
             bounds={".app"}
             ref={this.editorRef}

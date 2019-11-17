@@ -21,33 +21,7 @@ class Entry extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = {
-    containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      .isRequired,
-    showDivider: PropTypes.bool,
-    toolbarHidden: PropTypes.bool,
-    UpdateReduxEntry: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    showDivider: false,
-    toolbarHidden: true,
-    shouldRedirectOnDelete: false
-  }
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillUpdate(nextProps, nextState) {}
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
+  static getDerivedStateFromProps(props, state) {
     const {
       id,
       author,
@@ -70,10 +44,9 @@ class Entry extends PureComponent {
     const toolBarToggleButton = 44
     const dividerHeight = showDivider ? 32 : 0
 
-    const textEditorHeight =
-      containerHeight - inputOffset - dividerHeight
-
-    this.setState({
+    const textEditorHeight = containerHeight - inputOffset - dividerHeight
+    
+    return {
       id,
       author,
       title,
@@ -87,8 +60,24 @@ class Entry extends PureComponent {
       showDivider,
       toolbarHidden,
       shouldRedirectOnDelete
-    })
+    }
   }
+
+  static propTypes = {
+    containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
+    showDivider: PropTypes.bool,
+    toolbarHidden: PropTypes.bool,
+    UpdateReduxEntry: PropTypes.func.isRequired
+  }
+
+  static defaultProps = {
+    showDivider: false,
+    toolbarHidden: true,
+    shouldRedirectOnDelete: false
+  }
+
+  componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState) {}
 

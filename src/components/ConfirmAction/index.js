@@ -7,7 +7,7 @@ class ConfirmAction extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = { show: false }
+    this.state = { show: false, ...props }
   }
 
   static propTypes = {
@@ -18,26 +18,7 @@ class ConfirmAction extends PureComponent {
 
   static defaultProps = { show: false, disabled: false }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
   componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    const { CloseOnReceiveProps } = nextProps
-    if (CloseOnReceiveProps) this.setState({ show: false })
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const { disabled, icon, title } = props
-    this.setState({
-      disabled,
-      icon,
-      title
-    })
-  }
 
   componentWillUnmount() {
     this.setState({ show: false })
@@ -48,8 +29,9 @@ class ConfirmAction extends PureComponent {
     onClickCallback()
   }
 
-  toggleShow = () =>
+  toggleShow = () => {
     this.setState(currentState => ({ show: !currentState.show }))
+  }
 
   render() {
     const { show, disabled, icon, title } = this.state

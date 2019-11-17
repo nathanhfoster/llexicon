@@ -20,28 +20,18 @@ class PageNotFound extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { stars: <StarGenerator /> }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    return props
   }
 
   static propTypes = {}
 
   static defaultProps = { title: "Page Not Found" }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
   componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const { title } = props
-    const stars = <StarGenerator />
-    this.setState({ title, stars })
-  }
 
   render() {
     const { title, stars } = this.state

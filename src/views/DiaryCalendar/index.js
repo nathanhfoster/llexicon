@@ -28,6 +28,12 @@ class DiaryCalendar extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { activeDate, view } = props
+
+    return { activeDate: new Date(activeDate), view }
+  }
+
   static propTypes = {
     SetCalendar: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired,
@@ -36,26 +42,11 @@ class DiaryCalendar extends PureComponent {
 
   static defaultProps = { activeDate: new Date() }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillUpdate(nextProps, nextState) {}
-
   componentDidMount() {
     const { activeDate, SyncEntries, GetUserEntriesByDate } = this.props
     SyncEntries(
       () => new Promise(resolve => resolve(GetUserEntriesByDate(activeDate)))
     )
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const { activeDate, view } = props
-    this.setState({ activeDate: new Date(activeDate), view })
   }
 
   componentDidUpdate(prevProps, prevState) {

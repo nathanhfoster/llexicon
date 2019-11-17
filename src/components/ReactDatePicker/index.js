@@ -28,6 +28,10 @@ class ReactDatePicker extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return props
+  }
+
   static propTypes = {}
 
   static defaultProps = {
@@ -63,46 +67,7 @@ class ReactDatePicker extends PureComponent {
     timeCaption: "time"
   }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillUpdate(nextProps, nextState) {}
-
   componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const {
-      calendarClassName,
-      todayButton,
-      popperClassName,
-      popperPlacement,
-      showPopperArrow,
-      selected,
-      onChange,
-      showTimeSelect,
-      timeFormat,
-      timeIntervals,
-      timeCaption
-    } = props
-    this.setState({
-      calendarClassName,
-      todayButton,
-      popperClassName,
-      popperPlacement,
-      showPopperArrow,
-      selected,
-      onChange,
-      showTimeSelect,
-      timeFormat,
-      timeIntervals,
-      timeCaption
-    })
-  }
 
   componentDidUpdate(prevProps, prevState) {}
 

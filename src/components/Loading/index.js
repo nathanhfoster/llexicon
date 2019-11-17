@@ -17,6 +17,15 @@ class Loading extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { currentIndex, dataLength } = props
+    const percentage = (currentIndex / dataLength) * 100
+    const percentageDone = new Number(percentage)
+    const progressColor = this.getColor(percentageDone)
+
+    return { percentageDone, progressColor }
+  }
+
   static propTypes = {
     currentIndex: PropTypes.number.isRequired,
     dataLength: PropTypes.number.isRequired
@@ -24,26 +33,7 @@ class Loading extends PureComponent {
 
   static defaultProps = { currentIndex: 77, dataLength: 100 }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillUpdate(nextProps, nextState) {}
-
   componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const { currentIndex, dataLength } = props
-    const percentage = (currentIndex / dataLength) * 100
-    const percentageDone = new Number(percentage)
-    const progressColor = this.getColor(percentageDone)
-
-    this.setState({ percentageDone, progressColor })
-  }
 
   componentDidUpdate(prevProps, prevState) {}
 

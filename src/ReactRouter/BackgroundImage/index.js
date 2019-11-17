@@ -21,32 +21,25 @@ class BackgroundImage extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = {}
-
-  static defaultProps = {}
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
+  static getDerivedStateFromProps(props, state) {
     const { history, location, match, Window, Settings } = props
     const stars = <StarGenerator />
-    this.setState({
+
+    return {
       history,
       location,
       match,
       Window,
       Settings,
       stars
-    })
+    }
   }
+
+  static propTypes = {}
+
+  static defaultProps = {}
+
+  componentDidMount() {}
 
   componentDidUpdate() {}
 

@@ -20,23 +20,15 @@ class FacebookGoogleLogin extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return props
+  }
+
   static propTypes = {
     SocialAuthentication: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    this.setState({})
-  }
 
   responseFacebook = response => {
     const { SocialAuthentication } = this.props
@@ -144,6 +136,7 @@ class FacebookGoogleLogin extends PureComponent {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(
-  FacebookGoogleLogin
-)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FacebookGoogleLogin)

@@ -18,6 +18,49 @@ import { RouterLinkPush } from "./Routes"
 import { getRandomInt } from "../helpers"
 import "./styles.css"
 
+const getRouteItems = props => {
+  const { User, history } = props
+  const { state } = history.location
+  const {
+    ROOT,
+    HOME,
+    LOGIN,
+    SIGNUP,
+    ENTRY_ADD,
+    SETTINGS,
+    CALENDAR,
+    ENTRY_DETAIL,
+    ENTRIES,
+    PRIVACY_POLICY
+  } = RouteMap
+
+  return [
+    { path: [ROOT, HOME, ENTRY_ADD], component: Home },
+    {
+      path: [LOGIN, SIGNUP],
+      component: renderRedirectOrComponent(props, User.token, HOME, Login)
+    },
+    {
+      path: [SETTINGS],
+      component: Settings
+    },
+    { path: [CALENDAR], component: DiaryCalendar },
+    { path: [ENTRY_DETAIL], component: EntryDetail },
+    {
+      path: [ENTRIES, HOME],
+      component: Entries
+    },
+    { path: [PRIVACY_POLICY], component: PrivacyPolicy }
+  ]
+}
+
+const renderRedirectOrComponent = (props, shouldRedirect, route, Component) => {
+  const { history } = props
+  return shouldRedirect
+    ? () => <Redirect push to={RouterLinkPush(history, route)} />
+    : Component
+}
+
 const mapStateToProps = ({
   User,
   Window: {
@@ -41,23 +84,7 @@ class ReactRouter extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = { User: PropTypes.objectOf(PropTypes.any) }
-
-  static defaultProps = {}
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillUpdate(nextProps, nextState) {}
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
+  static getDerivedStateFromProps(props, state) {
     const {
       User: { Settings },
       viewPortHeight,
@@ -65,65 +92,28 @@ class ReactRouter extends PureComponent {
       footerHeight
     } = props
 
-    const routeItems = this.getRouteItems(props)
+    const routeItems = getRouteItems(props)
 
     const routeOverlayHeight = viewPortHeight - navBarHeight
 
-    this.setState({
+    return {
       routeItems,
       routeOverlayHeight,
       navBarHeight,
       footerHeight,
       Settings
-    })
+    }
   }
+
+  static propTypes = { User: PropTypes.objectOf(PropTypes.any) }
+
+  static defaultProps = {}
+
+  componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState) {}
 
   componentWillUnmount() {}
-
-  renderRedirectOrComponent = (shouldRedirect, route, Component) => {
-    const { history } = this.props
-    return shouldRedirect
-      ? () => <Redirect push to={RouterLinkPush(history, route)} />
-      : Component
-  }
-
-  getRouteItems = props => {
-    const { User, history } = props
-    const { state } = history.location
-    const {
-      ROOT,
-      HOME,
-      LOGIN,
-      SIGNUP,
-      ENTRY_ADD,
-      SETTINGS,
-      CALENDAR,
-      ENTRY_DETAIL,
-      ENTRIES,
-      PRIVACY_POLICY
-    } = RouteMap
-
-    return [
-      { path: [ROOT, HOME, ENTRY_ADD], component: Home },
-      {
-        path: [LOGIN, SIGNUP],
-        component: this.renderRedirectOrComponent(User.token, HOME, Login)
-      },
-      {
-        path: [SETTINGS],
-        component: Settings
-      },
-      { path: [CALENDAR], component: DiaryCalendar },
-      { path: [ENTRY_DETAIL], component: EntryDetail },
-      {
-        path: [ENTRIES, HOME],
-        component: Entries
-      },
-      { path: [PRIVACY_POLICY], component: PrivacyPolicy }
-    ]
-  }
 
   renderRouteItems = routeItems =>
     routeItems.map((k, i) => {

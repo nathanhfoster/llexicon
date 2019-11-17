@@ -10,24 +10,16 @@ class PostUpdateDelete extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return props
+  }
+
   static propTypes = {
     postCallback: PropTypes.func,
     updateCallback: PropTypes.func
   }
 
   static defaultProps = {}
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    this.setState({})
-  }
 
   componentDidUpdate(prevProps, prevState) {}
 

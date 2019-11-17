@@ -19,53 +19,15 @@ class EntryPreview extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return props
+  }
+
   static propTypes = {}
 
   static defaultProps = {}
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillUpdate(nextProps, nextState) {}
-
   componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const {
-      activeDate,
-      view,
-      id,
-      author,
-      tags,
-      title,
-      html,
-      date_created,
-      date_created_by_author,
-      date_updated,
-      views,
-      isMobile,
-      shouldRenderInMobile
-    } = props
-    this.setState({
-      view,
-      id,
-      author,
-      tags,
-      title,
-      html,
-      date_created,
-      date_created_by_author,
-      date_updated,
-      views,
-      isMobile,
-      shouldRenderInMobile
-    })
-  }
 
   componentDidUpdate(prevProps, prevState) {}
 

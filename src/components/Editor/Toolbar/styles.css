@@ -1,0 +1,5 @@
+#Toolbar {
+    box-shadow: var(--primaryBoxShadow);
+    background: var(--slate_grey);
+    color: var(--secondaryColor);
+}

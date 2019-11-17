@@ -12,7 +12,11 @@ const styles = ({ top = 12, left = 25, spin = 27 }) => ({
 })
 
 const Moon = props => (
-  <img style={styles(props)} src="http://salehriaz.com/404Page/img/moon.svg" />
+  <img
+    alt="Moon"
+    style={styles(props)}
+    src="http://salehriaz.com/404Page/img/moon.svg"
+  />
 )
 
 Moon.propTypes = {

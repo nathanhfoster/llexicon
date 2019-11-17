@@ -32,28 +32,19 @@ class Login extends PureComponent {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const {
+      location: { pathname }
+    } = props
+    return { activeTab: pathname }
+  }
+
   static propTypes = {
     UserLogin: PropTypes.func.isRequired,
     CreateUser: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const {
-      location: { pathname }
-    } = props
-
-    this.setState({ activeTab: pathname })
-  }
 
   componentDidUpdate(prevProps, prevState) {}
 

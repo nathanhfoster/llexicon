@@ -53,32 +53,7 @@ class Home extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = {
-    clearedOn: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.instanceOf(Date)
-    ]),
-    editorStateHtml: PropTypes.string,
-    SetCalendar: PropTypes.func.isRequired,
-    SetEditorState: PropTypes.func.isRequired,
-    ClearEditorState: PropTypes.func.isRequired,
-    PostReduxEntry: PropTypes.func.isRequired,
-    entriesLength: PropTypes.number.isRequired
-  }
-
-  static defaultProps = {}
-
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
+  static getDerivedStateFromProps(props, state) {
     const {
       activeDate,
       clearedOn,
@@ -94,14 +69,31 @@ class Home extends PureComponent {
 
     const postDisabled = editorStateHtmlIsBlank && !title
 
-    this.setState({
+    return {
       activeDate,
       clearedOn,
       title,
       editorStateHtml,
       postDisabled
-    })
+    }
   }
+
+  static propTypes = {
+    clearedOn: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]),
+    editorStateHtml: PropTypes.string,
+    SetCalendar: PropTypes.func.isRequired,
+    SetEditorState: PropTypes.func.isRequired,
+    ClearEditorState: PropTypes.func.isRequired,
+    PostReduxEntry: PropTypes.func.isRequired,
+    entriesLength: PropTypes.number.isRequired
+  }
+
+  static defaultProps = {}
+
+  componentDidMount() {}
 
   handlePostEntry = () => {
     const { PostReduxEntry, ClearEditorState, entriesLength } = this.props

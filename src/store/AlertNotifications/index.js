@@ -18,6 +18,17 @@ export class AlertNotifications extends PureComponent {
     this.state = { message }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { title, message, alertInterval, ClearAlerts } = props
+
+    //this.interval = setInterval(() => ClearAlerts(), alertInterval)
+    setTimeout(() => ClearAlerts(), alertInterval)
+
+    const shouldShow = title && message ? true : false
+
+    return { shouldShow, title, message }
+  }
+
   static propTypes = {
     title: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
@@ -26,24 +37,8 @@ export class AlertNotifications extends PureComponent {
 
   static defaultProps = { alertInterval: 2500 }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps, prevState) {
     clearInterval(this.interval)
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const { title, message, alertInterval, ClearAlerts } = props
-
-    //this.interval = setInterval(() => ClearAlerts(), alertInterval)
-    setTimeout(() => ClearAlerts(), alertInterval)
-
-    const shouldShow = title && message ? true : false
-
-    this.setState({ shouldShow, title, message })
   }
 
   componentWillUnmount() {

@@ -1,56 +1,46 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { connect as reduxConnect } from "react-redux";
-import { Collapse } from "reactstrap";
-import { withRouter, Link } from "react-router-dom";
-import "./styles.css";
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
+import { Collapse } from "reactstrap"
+import { withRouter, Link } from "react-router-dom"
+import "./styles.css"
 
 const mapStateToProps = ({ User, Window }) => ({
   User,
   Window
-});
+})
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {}
 
 class Footer extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       shouldShow: false,
       status: "Closed"
-    };
+    }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    return props
   }
 
   static propTypes = {
     shouldShow: PropTypes.bool,
     Settings: PropTypes.object
-  };
-
-  static defaultProps = {};
-
-  componentWillMount() {
-    this.getState(this.props);
   }
 
-  componentDidMount() {}
+  static defaultProps = {}
 
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps);
-  }
-
-  getState = props => {
-    this.setState({});
-  };
-
-  setStatus = status => this.setState({ status });
+  setStatus = status => this.setState({ status })
 
   render() {
-    const { User, history, location, match, isMobile } = this.props;
-    const { Settings } = User;
-    const { show_footer } = Settings;
-    const { pathname } = location;
-    const { status } = this.state;
+    const { User, history, location, match, isMobile } = this.props
+    const { Settings } = User
+    const { show_footer } = Settings
+    const { pathname } = location
+    const { status } = this.state
     return (
       show_footer && (
         <Collapse
@@ -76,9 +66,9 @@ class Footer extends PureComponent {
           </footer>
         </Collapse>
       )
-    );
+    )
   }
 }
 export default withRouter(
   reduxConnect(mapStateToProps, mapDispatchToProps)(Footer)
-);
+)

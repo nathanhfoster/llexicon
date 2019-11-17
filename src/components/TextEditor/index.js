@@ -35,6 +35,48 @@ class TextEditor extends PureComponent {
     }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const {
+      clearKey,
+      html,
+      mentions,
+      suggestions,
+      readOnly,
+      height,
+      width,
+      shouldAutoFocus,
+      showDivider,
+      toolbarOnFocus,
+      spellCheck,
+      stripPastedStyles
+    } = props
+    let editorState = this.htmlToEditorState(html)
+    // editorState = EditorState.moveSelectionToEnd(editorState)
+
+    // const suggestions = Users.map(
+    //   user =>
+    //     (user = {
+    //       text: user.username,
+    //       value: user.username,
+    //       url: `/profile/${user.id}`
+    //     })
+    // );
+    return {
+      clearKey,
+      editorState,
+      mentions,
+      suggestions,
+      readOnly,
+      height,
+      width,
+      shouldAutoFocus,
+      showDivider,
+      toolbarOnFocus,
+      spellCheck,
+      stripPastedStyles
+    }
+  }
+
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -109,57 +151,7 @@ class TextEditor extends PureComponent {
     stripPastedStyles: false
   }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
-
   componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const {
-      clearKey,
-      html,
-      mentions,
-      suggestions,
-      readOnly,
-      height,
-      width,
-      shouldAutoFocus,
-      showDivider,
-      toolbarOnFocus,
-      spellCheck,
-      stripPastedStyles
-    } = props
-    let editorState = this.htmlToEditorState(html)
-    // editorState = EditorState.moveSelectionToEnd(editorState)
-
-    // const suggestions = Users.map(
-    //   user =>
-    //     (user = {
-    //       text: user.username,
-    //       value: user.username,
-    //       url: `/profile/${user.id}`
-    //     })
-    // );
-    this.setState({
-      clearKey,
-      editorState,
-      mentions,
-      suggestions,
-      readOnly,
-      height,
-      width,
-      shouldAutoFocus,
-      showDivider,
-      toolbarOnFocus,
-      spellCheck,
-      stripPastedStyles
-    })
-  }
 
   componentWillUnmount() {}
 
