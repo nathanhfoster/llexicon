@@ -37,7 +37,9 @@ class Template extends PureComponent {
 
   componentDidMount() {}
 
-  getSnapshotBeforeUpdate(prevProps, prevState) {}
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    return null
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
