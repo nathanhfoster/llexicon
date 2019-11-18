@@ -63,8 +63,7 @@ const deepEquals = (a, b) => {
   return a !== a && b !== b
 }
 
-
-function deepEqual(previous, current) {
+const deepEqual = (previous, current) => {
   if (previous === current) return true
   if (!previous && current) return false
   if (previous && !current) return false
@@ -83,8 +82,8 @@ function deepEqual(previous, current) {
     return true
   }
 
-  if (typeof current === 'object') {
-    if (typeof previous !== 'object') return false
+  if (typeof current === "object") {
+    if (typeof previous !== "object") return false
     const prevKeys = Object.keys(previous)
     const currKeys = Object.keys(current)
 
@@ -104,6 +103,5 @@ function deepEqual(previous, current) {
 
   return false
 }
-
 
 export default deepEquals
