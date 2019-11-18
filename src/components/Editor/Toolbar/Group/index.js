@@ -7,15 +7,15 @@ class Group extends Component {
     this.state = { children: [] }
   }
 
+  static propTypes = {}
+
+  static defaultProps = {}
+
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.children.length !== prevState.children.length) {
       return { children: nextProps.children }
     } else return null
   }
-
-  static propTypes = {}
-
-  static defaultProps = {}
 
   shouldComponentUpdate(nextProps, nextState) {
     const childrenChanged =

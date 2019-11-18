@@ -23,10 +23,6 @@ class EntryList extends PureComponent {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {
     activeDate: PropTypes.oneOfType([
       PropTypes.string,
@@ -38,6 +34,10 @@ class EntryList extends PureComponent {
   static defaultProps = {
     activeDate: new Date(),
     entries: []
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
   }
 
   componentDidMount() {}

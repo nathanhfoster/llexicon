@@ -20,6 +20,14 @@ class Toolbar extends Component {
     this.state = { ...props }
   }
 
+  static propTypes = {
+    toolbarId: PropTypes.PropTypes.string.isRequired,
+    editorRef: PropTypes.object,
+    onChangeCallback: PropTypes.func.isRequired
+  }
+
+  static defaultProps = {}
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const editorRefChanged = !deepEquals(
       nextProps.editorRef,
@@ -30,14 +38,6 @@ class Toolbar extends Component {
       return { editorRef: nextProps.editorRef }
     } else return null
   }
-
-  static propTypes = {
-    toolbarId: PropTypes.PropTypes.string.isRequired,
-    editorRef: PropTypes.object,
-    onChangeCallback: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {}
 
   shouldComponentUpdate(nextProps, nextState) {
     const editorRefChanged = !deepEquals(

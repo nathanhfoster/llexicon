@@ -53,6 +53,21 @@ class Home extends PureComponent {
     this.state = {}
   }
 
+  static propTypes = {
+    clearedOn: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]),
+    editorStateHtml: PropTypes.string,
+    SetCalendar: PropTypes.func.isRequired,
+    SetEditorState: PropTypes.func.isRequired,
+    ClearEditorState: PropTypes.func.isRequired,
+    PostReduxEntry: PropTypes.func.isRequired,
+    entriesLength: PropTypes.number.isRequired
+  }
+
+  static defaultProps = {}
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       activeDate,
@@ -77,21 +92,6 @@ class Home extends PureComponent {
       postDisabled
     }
   }
-
-  static propTypes = {
-    clearedOn: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.instanceOf(Date)
-    ]),
-    editorStateHtml: PropTypes.string,
-    SetCalendar: PropTypes.func.isRequired,
-    SetEditorState: PropTypes.func.isRequired,
-    ClearEditorState: PropTypes.func.isRequired,
-    PostReduxEntry: PropTypes.func.isRequired,
-    entriesLength: PropTypes.number.isRequired
-  }
-
-  static defaultProps = {}
 
   componentDidMount() {}
 

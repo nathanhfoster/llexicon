@@ -21,6 +21,10 @@ class BackgroundImage extends PureComponent {
     this.state = {}
   }
 
+  static propTypes = {}
+
+  static defaultProps = {}
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const { history, location, match, Window, Settings } = nextProps
     const stars = <StarGenerator />
@@ -34,10 +38,6 @@ class BackgroundImage extends PureComponent {
       stars
     }
   }
-
-  static propTypes = {}
-
-  static defaultProps = {}
 
   componentDidMount() {}
 

@@ -28,12 +28,6 @@ class ReactDatePicker extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { selected, ...resOfProps } = nextProps
-
-    return { selected: new Date(selected), ...resOfProps }
-  }
-
   static propTypes = {
     adjustDateOnChange: PropTypes.bool,
     allowSameDay: PropTypes.bool,
@@ -207,6 +201,12 @@ class ReactDatePicker extends PureComponent {
     timeFormat: "hh:mm a",
     timeIntervals: 15,
     timeCaption: "time"
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { selected, ...resOfProps } = nextProps
+
+    return { selected: new Date(selected), ...resOfProps }
   }
 
   handleTodayClick = prop => console.log("handleTodayClick: ", prop)

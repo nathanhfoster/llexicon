@@ -23,13 +23,13 @@ class PageNotFound extends PureComponent {
     this.state = { stars: <StarGenerator /> }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {}
 
   static defaultProps = { title: "Page Not Found" }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
+  }
 
   componentDidMount() {}
 

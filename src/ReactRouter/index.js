@@ -84,6 +84,10 @@ class ReactRouter extends PureComponent {
     this.state = {}
   }
 
+  static propTypes = { User: PropTypes.objectOf(PropTypes.any) }
+
+  static defaultProps = {}
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       User: { Settings },
@@ -104,10 +108,6 @@ class ReactRouter extends PureComponent {
       Settings
     }
   }
-
-  static propTypes = { User: PropTypes.objectOf(PropTypes.any) }
-
-  static defaultProps = {}
 
   componentDidMount() {}
 

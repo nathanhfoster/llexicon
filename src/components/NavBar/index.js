@@ -45,10 +45,6 @@ class NavBar extends PureComponent {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {
     UserId: PropTypes.number,
     UserLogout: PropTypes.func.isRequired,
@@ -57,6 +53,10 @@ class NavBar extends PureComponent {
   }
 
   static defaultProps = {}
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
+  }
 
   componentDidMount() {
     this.handleTodayClick()

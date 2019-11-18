@@ -18,13 +18,13 @@ class RememberMeForgotPassword extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {}
 
   static defaultProps = {}
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
+  }
 
   render() {
     const { history, isLogin, onChange } = this.props

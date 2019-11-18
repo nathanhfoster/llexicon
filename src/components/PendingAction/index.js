@@ -15,6 +15,10 @@ class PendingAction extends PureComponent {
     this.state = {}
   }
 
+  static propTypes = {}
+
+  static defaultProps = { ShouldShow: true, Disabled: false }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       ShouldShow,
@@ -41,10 +45,6 @@ class PendingAction extends PureComponent {
       Completed
     }
   }
-
-  static propTypes = {}
-
-  static defaultProps = { ShouldShow: true, Disabled: false }
 
   switchActionIcon = ActionName => {
     return null

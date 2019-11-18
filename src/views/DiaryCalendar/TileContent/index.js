@@ -27,8 +27,21 @@ class TileContent extends PureComponent {
     this.state = {}
   }
 
+  static propTypes = {
+    GetUserEntriesByDate: PropTypes.func.isRequired
+  }
+
+  static defaultProps = {}
+
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { activeDate, entries, date, staticContext, view, isMobile } = nextProps
+    const {
+      activeDate,
+      entries,
+      date,
+      staticContext,
+      view,
+      isMobile
+    } = nextProps
     const calendarDay = MomentJS(date)
     const activeDay = MomentJS(activeDate)
 
@@ -49,12 +62,6 @@ class TileContent extends PureComponent {
       view
     }
   }
-
-  static propTypes = {
-    GetUserEntriesByDate: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {}
 
   componentDidMount() {}
 

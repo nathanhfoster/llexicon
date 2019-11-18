@@ -17,6 +17,13 @@ class Loading extends PureComponent {
     this.state = {}
   }
 
+  static propTypes = {
+    currentIndex: PropTypes.number.isRequired,
+    dataLength: PropTypes.number.isRequired
+  }
+
+  static defaultProps = { currentIndex: 77, dataLength: 100 }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const { currentIndex, dataLength } = props
     const percentage = (currentIndex / dataLength) * 100
@@ -25,13 +32,6 @@ class Loading extends PureComponent {
 
     return { percentageDone, progressColor }
   }
-
-  static propTypes = {
-    currentIndex: PropTypes.number.isRequired,
-    dataLength: PropTypes.number.isRequired
-  }
-
-  static defaultProps = { currentIndex: 77, dataLength: 100 }
 
   componentDidMount() {}
 

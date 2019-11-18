@@ -16,14 +16,6 @@ class Persister extends PureComponent {
     this.state = { lastUpdated }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { saveReduxState, persistInterval } = nextProps
-    //this.interval = setInterval(() => this.persistReduxStore(), persistInterval)
-
-    saveReduxState()
-    return nextProps
-  }
-
   static propTypes = {
     lastUpdated: PropTypes.oneOfType([
       PropTypes.string,
@@ -32,6 +24,14 @@ class Persister extends PureComponent {
   }
 
   static defaultProps = { lastUpdated: new Date(), persistInterval: 1000 }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { saveReduxState, persistInterval } = nextProps
+    //this.interval = setInterval(() => this.persistReduxStore(), persistInterval)
+
+    saveReduxState()
+    return nextProps
+  }
 
   componentDidUpdate(prevProps, prevState) {
     clearInterval(this.interval)

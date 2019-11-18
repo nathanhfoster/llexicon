@@ -15,13 +15,13 @@ class PrivacyPolicy extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {}
 
   static defaultProps = {}
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
+  }
 
   componentDidMount() {}
 

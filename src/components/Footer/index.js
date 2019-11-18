@@ -22,16 +22,16 @@ class Footer extends PureComponent {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {
     shouldShow: PropTypes.bool,
     Settings: PropTypes.object
   }
 
   static defaultProps = {}
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
+  }
 
   setStatus = status => this.setState({ status })
 

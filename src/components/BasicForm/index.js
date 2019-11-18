@@ -17,10 +17,6 @@ class BasicForm extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {
     title: PropTypes.string,
     inputs: PropTypes.arrayOf(PropTypes.object.isRequired),
@@ -53,6 +49,10 @@ class BasicForm extends PureComponent {
       }
     ],
     submitLabel: "Submit"
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
   }
 
   handleSubmit = e => {

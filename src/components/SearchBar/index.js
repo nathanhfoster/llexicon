@@ -23,13 +23,13 @@ class SearchBar extends Component {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {}
 
   static defaultProps = {}
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
+  }
 
   componentDidMount() {}
 

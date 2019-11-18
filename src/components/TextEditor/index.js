@@ -35,48 +35,6 @@ class TextEditor extends PureComponent {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      clearKey,
-      html,
-      mentions,
-      suggestions,
-      readOnly,
-      height,
-      width,
-      shouldAutoFocus,
-      showDivider,
-      toolbarOnFocus,
-      spellCheck,
-      stripPastedStyles
-    } = props
-    let editorState = this.htmlToEditorState(html)
-    // editorState = EditorState.moveSelectionToEnd(editorState)
-
-    // const suggestions = Users.map(
-    //   user =>
-    //     (user = {
-    //       text: user.username,
-    //       value: user.username,
-    //       url: `/profile/${user.id}`
-    //     })
-    // );
-    return {
-      clearKey,
-      editorState,
-      mentions,
-      suggestions,
-      readOnly,
-      height,
-      width,
-      shouldAutoFocus,
-      showDivider,
-      toolbarOnFocus,
-      spellCheck,
-      stripPastedStyles
-    }
-  }
-
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -149,6 +107,48 @@ class TextEditor extends PureComponent {
     toolbarOnFocus: false,
     spellCheck: false,
     stripPastedStyles: false
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {
+      clearKey,
+      html,
+      mentions,
+      suggestions,
+      readOnly,
+      height,
+      width,
+      shouldAutoFocus,
+      showDivider,
+      toolbarOnFocus,
+      spellCheck,
+      stripPastedStyles
+    } = props
+    let editorState = this.htmlToEditorState(html)
+    // editorState = EditorState.moveSelectionToEnd(editorState)
+
+    // const suggestions = Users.map(
+    //   user =>
+    //     (user = {
+    //       text: user.username,
+    //       value: user.username,
+    //       url: `/profile/${user.id}`
+    //     })
+    // );
+    return {
+      clearKey,
+      editorState,
+      mentions,
+      suggestions,
+      readOnly,
+      height,
+      width,
+      shouldAutoFocus,
+      showDivider,
+      toolbarOnFocus,
+      spellCheck,
+      stripPastedStyles
+    }
   }
 
   componentDidMount() {}

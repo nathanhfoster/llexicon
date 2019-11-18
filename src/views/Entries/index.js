@@ -32,6 +32,14 @@ class Entries extends Component {
     this.state = {}
   }
 
+  static propTypes = {
+    UserId: PropTypes.number,
+    SyncEntries: PropTypes.func.isRequired,
+    GetUserEntries: PropTypes.func.isRequired
+  }
+
+  static defaultProps = {}
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const { entries, nextEntryPage, viewPortHeight } = nextProps
 
@@ -45,14 +53,6 @@ class Entries extends Component {
 
     return { entries, nextEntryPage, listHeight, listItemHeight }
   }
-
-  static propTypes = {
-    UserId: PropTypes.number,
-    SyncEntries: PropTypes.func.isRequired,
-    GetUserEntries: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {}
 
   componentDidMount() {
     const { UserId, SyncEntries, GetUserEntries } = this.props

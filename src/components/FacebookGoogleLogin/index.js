@@ -20,15 +20,15 @@ class FacebookGoogleLogin extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {
     SocialAuthentication: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
+  }
 
   responseFacebook = response => {
     const { SocialAuthentication } = this.props

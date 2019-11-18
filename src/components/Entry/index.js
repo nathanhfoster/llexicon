@@ -21,6 +21,20 @@ class Entry extends PureComponent {
     this.state = {}
   }
 
+  static propTypes = {
+    containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
+    showDivider: PropTypes.bool,
+    toolbarHidden: PropTypes.bool,
+    UpdateReduxEntry: PropTypes.func.isRequired
+  }
+
+  static defaultProps = {
+    showDivider: false,
+    toolbarHidden: true,
+    shouldRedirectOnDelete: false
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       id,
@@ -61,20 +75,6 @@ class Entry extends PureComponent {
       toolbarHidden,
       shouldRedirectOnDelete
     }
-  }
-
-  static propTypes = {
-    containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      .isRequired,
-    showDivider: PropTypes.bool,
-    toolbarHidden: PropTypes.bool,
-    UpdateReduxEntry: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    showDivider: false,
-    toolbarHidden: true,
-    shouldRedirectOnDelete: false
   }
 
   componentDidMount() {}

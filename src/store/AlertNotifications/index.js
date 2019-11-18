@@ -18,6 +18,14 @@ export class AlertNotifications extends PureComponent {
     this.state = { message }
   }
 
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
+    ClearAlerts: PropTypes.func.isRequired
+  }
+
+  static defaultProps = { alertInterval: 2500 }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const { title, message, alertInterval, ClearAlerts } = nextProps
 
@@ -28,14 +36,6 @@ export class AlertNotifications extends PureComponent {
 
     return { shouldShow, title, message }
   }
-
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    message: PropTypes.string.isRequired,
-    ClearAlerts: PropTypes.func.isRequired
-  }
-
-  static defaultProps = { alertInterval: 2500 }
 
   componentDidUpdate(prevProps, prevState) {
     clearInterval(this.interval)

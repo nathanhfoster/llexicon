@@ -29,10 +29,6 @@ class Settings extends PureComponent {
     this.state = { ShowFooterTooltip: false, ShowPushMessagesTooltip: false }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   static propTypes = {
     Settings: PropTypes.object,
     ShowFooterTooltip: PropTypes.bool,
@@ -43,6 +39,10 @@ class Settings extends PureComponent {
   }
 
   static defaultProps = {}
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
+  }
 
   componentDidMount() {
     const { User, GetUserSettings } = this.props

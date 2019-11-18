@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment, createRef } from "react"
+import React, { Component, Fragment, createRef } from "react"
 import PropTypes from "prop-types"
 import ReactQuill, { Quill } from "react-quill"
 import ImageResize from "quill-image-resize-module-react"
@@ -40,11 +40,11 @@ const THEMES = {
   BUBBLE: "bubble"
 }
 
-class Editor extends PureComponent {
+class Editor extends Component {
   constructor(props) {
     super(props)
 
-    const { toolbarId, html, theme, height, width, showDivider } = props
+    const { toolbarId, html, theme, showDivider } = props
 
     this.toolbarId = `toolbar-${toolbarId}`
 
@@ -54,21 +54,8 @@ class Editor extends PureComponent {
       quillId: toolbarId.toString(),
       html,
       theme,
-      height,
-      width,
       showDivider
     }
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const previousHtml = prevState.html
-    const { html } = nextProps
-
-    const htmlChanged = previousHtml !== html
-
-    if (htmlChanged) return { html }
-
-    return null
   }
 
   static propTypes = {
@@ -112,6 +99,26 @@ class Editor extends PureComponent {
     showDivider: false,
 
     toolbarId: 1
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const previousHtml = prevState.html
+    const { html } = nextProps
+
+    const htmlChanged = previousHtml !== html
+
+    if (htmlChanged) return { html }
+
+    return null
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { html } = this.state
+    const nextHtml = nextState.html
+
+    const htmlChanged = html !== nextHtml
+
+    return htmlChanged
   }
 
   componentDidMount() {
@@ -228,8 +235,8 @@ class Editor extends PureComponent {
 
   render() {
     const { toolbarId, editorRef } = this
-    const { children, onChangeCallback } = this.props
-    const { html, theme, height, width, showDivider, quillId } = this.state
+    const { children, onChangeCallback, height, width } = this.props
+    const { html, theme, showDivider, quillId } = this.state
 
     return (
       <Fragment>
