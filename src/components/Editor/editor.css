@@ -1,5 +1,7 @@
-.ql-editor {
+.ql-editor {}
 
+.ql-editor.ql-blank::before {
+    color: var(--secondaryColor);
 }
 
 .ql-snow .ql-tooltip {
@@ -11,18 +13,16 @@
     box-shadow: var(--primaryBoxShadow);
 }
 
-.ql-snow .ql-tooltip a {
+.ql-snow .ql-tooltip a {}
 
-}
-
-.ql-editor ul > li.ql-indent-1::before {
+.ql-editor ul>li.ql-indent-1::before {
     content: '\25E6';
 }
 
-.ql-editor ul > li.ql-indent-2::before {
+.ql-editor ul>li.ql-indent-2::before {
     content: '\25A0';
 }
 
-.ql-editor ul > li.ql-indent-3::before {
+.ql-editor ul>li.ql-indent-3::before {
     content: '\25A1';
 }

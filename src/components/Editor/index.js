@@ -4,6 +4,7 @@ import ReactQuill, { Quill } from "react-quill"
 import ImageResize from "quill-image-resize-module-react"
 import Toolbar from "./Toolbar"
 import Divider from "../Divider"
+import deepEquals from "../../helpers/deepEquals"
 import "react-quill/dist/quill.snow.css"
 import "react-quill/dist/quill.bubble.css"
 import "react-quill/dist/quill.core.css"
@@ -97,8 +98,8 @@ class Editor extends Component {
     height: "100%",
     width: "100%",
     showDivider: false,
-
-    toolbarId: 1
+    toolbarId: 1,
+    placeholder: "Today I have..."
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -113,12 +114,17 @@ class Editor extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    const { children } = this.props
+    const nextChildren = nextProps.children
+
+    const childrenChanged = !deepEquals(children, nextChildren)
+
     const { html } = this.state
     const nextHtml = nextState.html
 
     const htmlChanged = html !== nextHtml
 
-    return htmlChanged
+    return childrenChanged || htmlChanged
   }
 
   componentDidMount() {
@@ -235,7 +241,13 @@ class Editor extends Component {
 
   render() {
     const { toolbarId, editorRef } = this
-    const { children, onChangeCallback, height, width } = this.props
+    const {
+      children,
+      onChangeCallback,
+      height,
+      width,
+      placeholder
+    } = this.props
     const { html, theme, showDivider, quillId } = this.state
 
     return (
@@ -257,6 +269,7 @@ class Editor extends Component {
             formats={this.getFormats(this)}
             value={html}
             onChange={this.handleEditorStateChange}
+            placeholder={placeholder}
           />
         </div>
         {showDivider && <Divider />}
