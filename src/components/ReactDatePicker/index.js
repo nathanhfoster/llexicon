@@ -41,13 +41,13 @@ class ReactDatePicker extends PureComponent {
     autoFocus: PropTypes.bool,
     calendarClassName: PropTypes.string,
     calendarContainer: PropTypes.oneOfType([
-      PropTypes.instanceOf(React.ReactNode),
-      PropTypes.arrayOf(PropTypes.instanceOf(React.ReactNode))
+      PropTypes.object,
+      PropTypes.arrayOf(PropTypes.object)
     ]),
-    children: PropTypes.instanceOf(React.ReactNode),
+    children: PropTypes.object,
     className: PropTypes.string,
     clearButtonTitle: PropTypes.string,
-    customInput: PropTypes.instanceOf(React.ReactNode),
+    customInput: PropTypes.object,
     customInputRef: PropTypes.string,
     dateFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     dateFormatCalendar: PropTypes.string,
@@ -81,9 +81,9 @@ class ReactDatePicker extends PureComponent {
     inline: PropTypes.bool,
     isClearable: PropTypes.bool,
     locale: PropTypes.string,
-    maxDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), null]),
+    maxDate: PropTypes.oneOfType([PropTypes.instanceOf(Date)]),
     maxTime: PropTypes.instanceOf(Date),
-    minDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), null]),
+    minDate: PropTypes.oneOfType([PropTypes.instanceOf(Date)]),
     minTime: PropTypes.instanceOf(Date),
     monthsShown: PropTypes.number,
     name: PropTypes.string,
@@ -107,8 +107,8 @@ class ReactDatePicker extends PureComponent {
     placeholderText: PropTypes.string,
     popperClassName: PropTypes.string,
     popperContainer: PropTypes.oneOfType([
-      PropTypes.instanceOf(React.ReactNode),
-      PropTypes.arrayOf(PropTypes.instanceOf(React.ReactNode))
+      PropTypes.object,
+      PropTypes.arrayOf(PropTypes.object)
     ]),
     // popperModifiers?: Popper.Modifiers;
     popperPlacement: PropTypes.string,
@@ -127,17 +127,20 @@ class ReactDatePicker extends PureComponent {
         prevMonthButtonDisabled: PropTypes.bool,
         nextMonthButtonDisabled: PropTypes.bool
       }),
-      PropTypes.instanceOf(React.ReactNode)
+      PropTypes.object
     ]),
     renderDayContents: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.instanceOf(Date),
-      PropTypes.instanceOf(React.ReactNode)
+      PropTypes.object
     ]),
     required: PropTypes.bool,
     scrollableMonthYearDropdown: PropTypes.bool,
     scrollableYearDropdown: PropTypes.bool,
-    selected: PropTypes.oneOfType([PropTypes.instanceOf(Date), null]),
+    selected: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]),
     selectsEnd: PropTypes.bool,
     selectsStart: PropTypes.bool,
     shouldCloseOnSelect: PropTypes.bool,
@@ -150,7 +153,7 @@ class ReactDatePicker extends PureComponent {
     showTimeSelectOnly: PropTypes.bool,
     showWeekNumbers: PropTypes.bool,
     showYearDropdown: PropTypes.bool,
-    startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date), null]),
+    startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date)]),
     startOpen: PropTypes.bool,
     strictParsing: PropTypes.bool,
     tabIndex: PropTypes.number,
@@ -158,7 +161,7 @@ class ReactDatePicker extends PureComponent {
     timeFormat: PropTypes.string,
     timeIntervals: PropTypes.number,
     title: PropTypes.string,
-    todayButton: PropTypes.instanceOf(React.ReactNode),
+    todayButton: PropTypes.object,
     useShortMonthInDropdown: PropTypes.bool,
     useWeekdaysShort: PropTypes.bool,
     value: PropTypes.string,
@@ -178,7 +181,7 @@ class ReactDatePicker extends PureComponent {
     todayButton: (
       <i
         className="fas fa-calendar-day NavBaDatePickerTodayButton"
-        onClick={this.handleTodayClick}
+        // onChange={this.handleTodayClick}
       >
         {" "}
         Today
@@ -228,6 +231,7 @@ class ReactDatePicker extends PureComponent {
       timeIntervals,
       timeCaption
     } = this.state
+
     return (
       <DatePicker
         calendarClassName={calendarClassName}
