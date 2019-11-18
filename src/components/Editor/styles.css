@@ -21,6 +21,6 @@
     border: 0;
 }
 
-.Editor div {
-    background: var(--quinaryColor);
+.Editor *, ql-container.ql-snow *{
+    background: var(--quinaryColor) !important;
 }
