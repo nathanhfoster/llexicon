@@ -30,6 +30,8 @@ Quill.register(Font, true)
 
 Quill.register("modules/imageResize", ImageResize)
 
+// Quill.setAttribute('spellcheck', true)
+
 const THEMES = {
   CORE: "core",
   SNOW: "snow",

@@ -20,3 +20,7 @@
 .ql-container.ql-snow {
     border: 0;
 }
+
+.Editor div {
+    background: var(--quinaryColor);
+}
