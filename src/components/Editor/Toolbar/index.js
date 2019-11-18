@@ -7,12 +7,16 @@ import Backgrounds from "./QuillSelect/Backgrounds"
 import Colors from "./QuillSelect/Colors"
 import Align from "./QuillSelect/Align"
 import Fonts from "./QuillSelect/Fonts"
+import { DEFAULT_STATE_TEXT_EDITOR } from "../../../store/Reducers/TextEditor"
 import "./styles.css"
+
+const { editorStateHtml } = DEFAULT_STATE_TEXT_EDITOR
 
 const undo = editorRef => editorRef.current.editor.history.undo()
 const redo = editorRef => editorRef.current.editor.history.redo()
+// const clear = editorRef => editorRef.current.editor.history.clear()
 
-const Toolbar = ({ toolbarId, editorRef }) => {
+const Toolbar = ({ toolbarId, editorRef, onChangeCallback }) => {
   return (
     <div id={toolbarId}>
       <Group>
@@ -27,10 +31,16 @@ const Toolbar = ({ toolbarId, editorRef }) => {
 
       <Group>
         <button className="ql-undo" onClick={() => undo(editorRef)}>
-          <i className="fas fa-undo-alt"></i>
+          <i className="fas fa-undo-alt" />
         </button>
         <button className="ql-undo" onClick={() => redo(editorRef)}>
-          <i className="fas fa-redo-alt"></i>
+          <i className="fas fa-redo-alt" />
+        </button>
+        <button
+          className="ql-clear"
+          onClick={() => onChangeCallback(editorStateHtml)}
+        >
+          <i className="fas fa-times-circle" />
         </button>
       </Group>
     </div>
@@ -39,7 +49,8 @@ const Toolbar = ({ toolbarId, editorRef }) => {
 
 Toolbar.propTypes = {
   toolbarId: PropTypes.PropTypes.string.isRequired,
-  editorRef: PropTypes.object
+  editorRef: PropTypes.object,
+  onChangeCallback: PropTypes.func.isRequired
 }
 
 export default Toolbar

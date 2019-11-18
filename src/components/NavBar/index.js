@@ -200,6 +200,8 @@ class NavBar extends PureComponent {
             Entry
           </i>
 
+          {/* <i className="fab fa-wpexplorer NavBarImage NavBarLink" /> */}
+
           <i
             className="fas fa-calendar-day NavBarImage NavBarLink ml-4"
             onClick={this.handleTodayClick}

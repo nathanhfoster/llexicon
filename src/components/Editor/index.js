@@ -40,11 +40,13 @@ class Editor extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.toolbarId = `toolbar-${props.toolbarId}`
+    const { toolbarId } = props
+
+    this.toolbarId = `toolbar-${toolbarId}`
 
     this.editorRef = createRef()
 
-    this.state = {}
+    this.state = { quillId: toolbarId.toString() }
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -203,16 +205,20 @@ class Editor extends PureComponent {
 
   render() {
     const { toolbarId, editorRef } = this
-    const { children } = this.props
-    const { html, theme, height, width, showDivider } = this.state
+    const { children, onChangeCallback } = this.props
+    const { html, theme, height, width, showDivider, quillId } = this.state
 
     return (
       <Fragment>
         {children}
         <div className="text-editor" style={{ height, width }}>
-          <Toolbar toolbarId={toolbarId} editorRef={editorRef} />
+          <Toolbar
+            toolbarId={toolbarId}
+            editorRef={editorRef}
+            onChangeCallback={onChangeCallback}
+          />
           <ReactQuill
-            id={this.props.toolbarId}
+            id={quillId}
             bounds={"app"}
             ref={editorRef}
             className="Editor"

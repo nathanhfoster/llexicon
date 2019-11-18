@@ -157,7 +157,7 @@ class Home extends PureComponent {
               <InputGroupAddon addonType="append">
                 <InputGroupText color="primary" className="p-0">
                   <ReactDatePicker
-                    selected={new Date(activeDate)}
+                    selected={activeDate}
                     onChange={this.handleChangeDateCreatedByAuthor}
                   />
                 </InputGroupText>

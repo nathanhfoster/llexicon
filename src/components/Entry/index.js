@@ -121,7 +121,7 @@ class Entry extends PureComponent {
           <InputGroupAddon addonType="append">
             <InputGroupText className="p-0">
               <ReactDatePicker
-                selected={new Date(date_created_by_author || lastUpdated)}
+                selected={lastUpdated || date_created_by_author}
                 onChange={date =>
                   UpdateReduxEntry({
                     id,

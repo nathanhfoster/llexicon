@@ -26,3 +26,9 @@
   color: var(--tertiaryColor);
   cursor: pointer;
 }
+
+
+.react-datepicker__time-container--with-today-button {
+  right: 0;
+  left: -72px;
+}
