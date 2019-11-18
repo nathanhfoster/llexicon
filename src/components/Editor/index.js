@@ -19,6 +19,8 @@ const Font = Quill.import("formats/font")
 Font.whitelist = [
   "roboto",
   "arial",
+  "serif",
+  "monospace",
   "comic-sans",
   "courier-new",
   "georgia",

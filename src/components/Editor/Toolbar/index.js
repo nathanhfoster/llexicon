@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Group from "./Group"
 import Headers from "./QuillSelect/Headers"
+import Sizes from "./QuillSelect/Sizes"
 import QuillButtons from "./QuillButtons"
 import Backgrounds from "./QuillSelect/Backgrounds"
 import Colors from "./QuillSelect/Colors"
@@ -23,6 +24,7 @@ const Toolbar = ({ toolbarId, editorRef, onChangeCallback }) => {
         <Align />
         <Fonts />
         <Headers />
+        <Sizes />
         <Colors />
         <Backgrounds />
       </Group>

@@ -14,3 +14,15 @@
 .ql-snow .ql-tooltip a {
 
 }
+
+.ql-editor ul > li.ql-indent-1::before {
+    content: '\25E6';
+}
+
+.ql-editor ul > li.ql-indent-2::before {
+    content: '\25A0';
+}
+
+.ql-editor ul > li.ql-indent-3::before {
+    content: '\25A1';
+}
