@@ -53,7 +53,7 @@ class Home extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const {
       activeDate,
       clearedOn,
@@ -62,7 +62,7 @@ class Home extends PureComponent {
       innerHeight,
       viewPortHeight,
       footerHeight
-    } = props
+    } = nextProps
 
     const editorStateHtmlIsBlank =
       editorStateHtml === DEFAULT_STATE_TEXT_EDITOR.editorStateHtml

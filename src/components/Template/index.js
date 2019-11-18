@@ -17,17 +17,23 @@ class Template extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
   }
 
   static propTypes = {}
 
   static defaultProps = {}
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return true
+  }
+
   componentDidMount() {}
 
-  componentDidUpdate(prevProps, prevState) {}
+  getSnapshotBeforeUpdate(prevProps, prevState) {}
+
+  componentDidUpdate(prevProps, prevState, snapshot) {}
 
   componentWillUnmount() {}
 

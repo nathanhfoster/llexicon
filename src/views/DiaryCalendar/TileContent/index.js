@@ -27,8 +27,8 @@ class TileContent extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { activeDate, entries, date, staticContext, view, isMobile } = props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { activeDate, entries, date, staticContext, view, isMobile } = nextProps
     const calendarDay = MomentJS(date)
     const activeDay = MomentJS(activeDate)
 

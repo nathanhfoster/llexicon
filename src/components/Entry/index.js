@@ -21,7 +21,7 @@ class Entry extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const {
       id,
       author,
@@ -36,7 +36,7 @@ class Entry extends PureComponent {
       showDivider,
       toolbarHidden,
       shouldRedirectOnDelete
-    } = props
+    } = nextProps
 
     const inputHeight = 48
     const numberOfInputs = 1

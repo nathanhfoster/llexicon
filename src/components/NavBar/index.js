@@ -45,8 +45,8 @@ class NavBar extends PureComponent {
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
   }
 
   static propTypes = {

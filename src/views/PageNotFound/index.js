@@ -23,8 +23,8 @@ class PageNotFound extends PureComponent {
     this.state = { stars: <StarGenerator /> }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
   }
 
   static propTypes = {}

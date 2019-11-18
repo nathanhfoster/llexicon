@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo }  from "react"
 import QuillSelect from ".."
 import "./styles.css"
 
@@ -20,4 +20,4 @@ const Fonts = ({}) => (
   />
 )
 
-export default Fonts
+export default memo(Fonts)

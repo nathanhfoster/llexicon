@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import Group from "./Group"
 import Headers from "./QuillSelect/Headers"
@@ -9,50 +9,80 @@ import Colors from "./QuillSelect/Colors"
 import Align from "./QuillSelect/Align"
 import Fonts from "./QuillSelect/Fonts"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../../store/Reducers/TextEditor"
+import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
 const { editorStateHtml } = DEFAULT_STATE_TEXT_EDITOR
 
-const undo = editorRef => editorRef.current.editor.history.undo()
-const redo = editorRef => editorRef.current.editor.history.redo()
-// const clear = editorRef => editorRef.current.editor.history.clear()
+class Toolbar extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { ...props }
+  }
 
-const Toolbar = ({ toolbarId, editorRef, onChangeCallback }) => {
-  return (
-    <div id={toolbarId}>
-      <Group>
-        <Align />
-        <Fonts />
-        <Headers />
-        <Sizes />
-        <Colors />
-        <Backgrounds />
-      </Group>
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const editorRefChanged = !deepEquals(
+      nextProps.editorRef,
+      prevState.editorRef
+    )
 
-      <QuillButtons />
+    if (editorRefChanged) {
+      return { editorRef: nextProps.editorRef }
+    } else return null
+  }
 
-      <Group>
-        <button className="ql-undo" onClick={() => undo(editorRef)}>
-          <i className="fas fa-undo-alt" />
-        </button>
-        <button className="ql-undo" onClick={() => redo(editorRef)}>
-          <i className="fas fa-redo-alt" />
-        </button>
-        <button
-          className="ql-clear"
-          onClick={() => onChangeCallback(editorStateHtml)}
-        >
-          <i className="fas fa-times-circle" />
-        </button>
-      </Group>
-    </div>
-  )
-}
+  static propTypes = {
+    toolbarId: PropTypes.PropTypes.string.isRequired,
+    editorRef: PropTypes.object,
+    onChangeCallback: PropTypes.func.isRequired
+  }
 
-Toolbar.propTypes = {
-  toolbarId: PropTypes.PropTypes.string.isRequired,
-  editorRef: PropTypes.object,
-  onChangeCallback: PropTypes.func.isRequired
+  static defaultProps = {}
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const editorRefChanged = !deepEquals(
+      nextProps.editorRef,
+      nextState.editorRef
+    )
+    return editorRefChanged
+  }
+
+  undo = editorRef => editorRef.current.editor.history.undo()
+  redo = editorRef => editorRef.current.editor.history.redo()
+  // clear = editorRef => editorRef.current.editor.history.clear()
+
+  render() {
+    const { toolbarId, editorRef, onChangeCallback } = this.state
+    return (
+      <div id={toolbarId}>
+        <Group>
+          <Align />
+          <Fonts />
+          <Headers />
+          <Sizes />
+          <Colors />
+          <Backgrounds />
+        </Group>
+
+        <QuillButtons />
+
+        <Group>
+          <button className="ql-undo" onClick={() => this.undo(editorRef)}>
+            <i className="fas fa-undo-alt" />
+          </button>
+          <button className="ql-undo" onClick={() => this.redo(editorRef)}>
+            <i className="fas fa-redo-alt" />
+          </button>
+          <button
+            className="ql-clear"
+            onClick={() => onChangeCallback(editorStateHtml)}
+          >
+            <i className="fas fa-times-circle" />
+          </button>
+        </Group>
+      </div>
+    )
+  }
 }
 
 export default Toolbar

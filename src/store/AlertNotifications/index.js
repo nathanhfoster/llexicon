@@ -18,8 +18,8 @@ export class AlertNotifications extends PureComponent {
     this.state = { message }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { title, message, alertInterval, ClearAlerts } = props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { title, message, alertInterval, ClearAlerts } = nextProps
 
     //this.interval = setInterval(() => ClearAlerts(), alertInterval)
     setTimeout(() => ClearAlerts(), alertInterval)

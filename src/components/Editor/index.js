@@ -44,19 +44,31 @@ class Editor extends PureComponent {
   constructor(props) {
     super(props)
 
-    const { toolbarId } = props
+    const { toolbarId, html, theme, height, width, showDivider } = props
 
     this.toolbarId = `toolbar-${toolbarId}`
 
     this.editorRef = createRef()
 
-    this.state = { quillId: toolbarId.toString() }
+    this.state = {
+      quillId: toolbarId.toString(),
+      html,
+      theme,
+      height,
+      width,
+      showDivider
+    }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    // console.log("props: ", props)
-    // console.log("state: ", state)
-    return props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const previousHtml = prevState.html
+    const { html } = nextProps
+
+    const htmlChanged = previousHtml !== html
+
+    if (htmlChanged) return { html }
+
+    return null
   }
 
   static propTypes = {
@@ -107,7 +119,14 @@ class Editor extends PureComponent {
     // console.log(this.editorRef.current.editor.history)
   }
 
-  componentDidUpdate(prevProps, prevState) {}
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    // console.log("getSnapshotBeforeUpdate: ", prevProps)
+    // return "SNAP"
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // console.log("componentDidUpdate: ", snapshot)
+  }
 
   componentWillUnmount() {}
 

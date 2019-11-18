@@ -29,8 +29,8 @@ class Settings extends PureComponent {
     this.state = { ShowFooterTooltip: false, ShowPushMessagesTooltip: false }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
   }
 
   static propTypes = {

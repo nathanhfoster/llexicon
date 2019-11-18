@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo }  from "react"
 import QuillSelect from ".."
 
 const Colors = ({
@@ -48,4 +48,4 @@ const Colors = ({
   />
 )
 
-export default Colors
+export default memo(Colors)

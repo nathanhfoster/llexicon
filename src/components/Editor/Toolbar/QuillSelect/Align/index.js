@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo }  from "react"
 import QuillSelect from ".."
 
 const Align = () => (
@@ -9,4 +9,4 @@ const Align = () => (
   />
 )
 
-export default Align
+export default memo(Align)

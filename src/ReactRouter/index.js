@@ -84,15 +84,15 @@ class ReactRouter extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const {
       User: { Settings },
       viewPortHeight,
       navBarHeight,
       footerHeight
-    } = props
+    } = nextProps
 
-    const routeItems = getRouteItems(props)
+    const routeItems = getRouteItems(nextProps)
 
     const routeOverlayHeight = viewPortHeight - navBarHeight
 

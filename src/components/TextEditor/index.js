@@ -35,7 +35,7 @@ class TextEditor extends PureComponent {
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const {
       clearKey,
       html,

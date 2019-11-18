@@ -16,12 +16,12 @@ class Persister extends PureComponent {
     this.state = { lastUpdated }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { saveReduxState, persistInterval } = props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { saveReduxState, persistInterval } = nextProps
     //this.interval = setInterval(() => this.persistReduxStore(), persistInterval)
 
     saveReduxState()
-    return props
+    return nextProps
   }
 
   static propTypes = {

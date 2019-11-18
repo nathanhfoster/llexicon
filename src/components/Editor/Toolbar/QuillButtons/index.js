@@ -1,4 +1,4 @@
-import React  from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import Group from "../Group"
 
@@ -46,4 +46,4 @@ const QuillButtons = ({
   return renderButtons(buttons)
 }
 
-export default QuillButtons
+export default memo(QuillButtons)

@@ -28,8 +28,8 @@ class ReactDatePicker extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { selected, ...resOfProps } = props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { selected, ...resOfProps } = nextProps
 
     return { selected: new Date(selected), ...resOfProps }
   }

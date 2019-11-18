@@ -32,10 +32,10 @@ class Login extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const {
       location: { pathname }
-    } = props
+    } = nextProps
     return { activeTab: pathname }
   }
 

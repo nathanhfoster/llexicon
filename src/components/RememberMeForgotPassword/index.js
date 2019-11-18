@@ -18,8 +18,8 @@ class RememberMeForgotPassword extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return nextProps
   }
 
   static propTypes = {}

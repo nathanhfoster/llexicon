@@ -32,8 +32,8 @@ class Entries extends Component {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { entries, nextEntryPage, viewPortHeight } = props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { entries, nextEntryPage, viewPortHeight } = nextProps
 
     const inputHeight = 46
 

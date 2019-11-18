@@ -28,8 +28,8 @@ class DiaryCalendar extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { activeDate, view } = props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { activeDate, view } = nextProps
 
     return { activeDate: new Date(activeDate), view }
   }

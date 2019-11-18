@@ -1,6 +1,6 @@
-import React from "react"
+import React, { memo }  from "react"
 import Color from ".."
 
 const Backgrounds = () => <Color className="background" />
 
-export default Backgrounds
+export default memo(Backgrounds)

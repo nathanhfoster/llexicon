@@ -17,7 +17,7 @@ class Loading extends PureComponent {
     this.state = {}
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { currentIndex, dataLength } = props
     const percentage = (currentIndex / dataLength) * 100
     const percentageDone = new Number(percentage)

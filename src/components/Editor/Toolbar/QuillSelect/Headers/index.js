@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo }  from "react"
 import QuillSelect from ".."
 
 const Headers = () => (
@@ -8,4 +8,4 @@ const Headers = () => (
   />
 )
 
-export default Headers
+export default memo(Headers)
