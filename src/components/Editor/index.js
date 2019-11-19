@@ -2,7 +2,6 @@ import React, { Component, Fragment, createRef } from "react"
 import PropTypes from "prop-types"
 import ReactQuill, { Quill } from "react-quill"
 import ImageResize from "quill-image-resize-module-react"
-import Toolbar from "./Toolbar"
 import Divider from "../Divider"
 import deepEquals from "../../helpers/deepEquals"
 import "react-quill/dist/quill.snow.css"
@@ -11,6 +10,7 @@ import "react-quill/dist/quill.core.css"
 // import "quill-emoji/dist/quill-emoji.css"
 // import "quill-mention/dist/quill.mention.min.css"
 import "./styles.css"
+import Toolbar from "./Toolbar"
 
 // const Size = Quill.import("formats/size")
 // Size.whitelist = ["extra-small", "small", "medium", "large"]

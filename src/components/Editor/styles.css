@@ -1,5 +1,4 @@
 @import "./editor.css";
-@import "./toolbar.css";
 .Editor {
     box-shadow: var(--primaryBoxShadow);
     border-radius: 2px;
