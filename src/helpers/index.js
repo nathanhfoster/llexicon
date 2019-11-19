@@ -204,7 +204,7 @@ const mergeJson = (reduxData, newData) => {
 
   const mergeMapSorted = objectToArray(mergeMap).sort(
     (a, b) =>
-      new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
+      new Date(a.date_created_by_author) - new Date(b.date_created_by_author)
   )
 
   return mergeMapSorted
