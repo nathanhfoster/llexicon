@@ -202,9 +202,7 @@ const mergeJson = (reduxData, newData) => {
     }
   }
 
-  const mergeMap = objectToArray(mergeMap)
-
-  return mergeMap
+  return objectToArray(mergeMap)
 }
 
 const importTextFileEntries = files => {}

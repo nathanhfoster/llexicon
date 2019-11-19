@@ -38,28 +38,18 @@ class ImportEntries extends PureComponent {
 
         // console.log("result: ", result)
         // console.log("-------------------------------------------")
-        const split = result.split(/ï»¿(.*,*,*)/)
-        const date_created_by_author = new Date(split[1])
-        const nextSplit = split[2].split(/[\r\n]+/g)
-        const [emptyString, title, ...restOfString] = nextSplit
-        // console.log("title: ", title)
-        // console.log("restOfString: ", restOfString)
-        const html = restOfString
-          .filter(
-            s =>
-              !(
-                s.includes("Rating") ||
-                s.includes("Tags") ||
-                s.includes("Weather") ||
-                s.includes("Location")
-              )
-          )
-          .join("")
-        // console.log("html: ", html)
+        const [empty, dateCreated, ...restOfString] = result.split(
+          /ï»¿(.*,*,*)/
+        )
+        const date_created_by_author = new Date(dateCreated)
+
+        const nextSplit = restOfString[0].split(/[\r\n]+/g)
+        const [emptyString, title, ...html] = nextSplit
+
         const payload = {
           id: `entryImport-${i}`,
           title,
-          html,
+          html: html.join(""),
           date_created_by_author,
           // tags,
           shouldPost: true
