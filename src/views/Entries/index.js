@@ -16,10 +16,7 @@ const mapStateToProps = ({
   }
 }) => ({
   UserId: User.id,
-  entries: items.filter(item => !item.shouldDelete).sort(
-    (a, b) =>
-      new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
-  ),
+  entries: items.filter(item => !item.shouldDelete),
   nextEntryPage: next,
   viewPortHeight: availHeight
 })
