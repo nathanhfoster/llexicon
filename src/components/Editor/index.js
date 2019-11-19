@@ -67,6 +67,7 @@ class Editor extends Component {
     showDivider: PropTypes.bool,
     toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
+
     // Quill
     id: PropTypes.string,
     className: PropTypes.string,

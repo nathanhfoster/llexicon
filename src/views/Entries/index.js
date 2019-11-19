@@ -86,8 +86,8 @@ class Entries extends Component {
     // console.log("---------------------------------------")
 
     if (!nextEntryPage) return
-    const split = nextEntryPage.split("=")
-    const pageNumber = split[split.length - 1]
+    const split = nextEntryPage.split(/\?page=(.*)&/)
+    const pageNumber = split[1]
     if (reachedBottomOfList) {
       SyncEntries(
         () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))

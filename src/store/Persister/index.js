@@ -23,14 +23,18 @@ class Persister extends PureComponent {
     ]).isRequired
   }
 
-  static defaultProps = { lastUpdated: new Date(), persistInterval: 1000 }
+  static defaultProps = { persistInterval: 1000 }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { saveReduxState, persistInterval } = nextProps
+    const { saveReduxState, persistInterval, lastUpdated } = nextProps
     //this.interval = setInterval(() => this.persistReduxStore(), persistInterval)
 
+    const previousLastUpdated = prevState.lastUpdated
+
     saveReduxState()
-    return nextProps
+
+    if (lastUpdated !== previousLastUpdated) return { lastUpdated }
+    else return null
   }
 
   componentDidUpdate(prevProps, prevState) {
