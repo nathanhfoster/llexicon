@@ -1,5 +1,6 @@
 import { ReduxActions } from "../../constants.js"
 import { mergeJson } from "../../helpers"
+import deepEquals from "../../helpers/deepEquals"
 const {
   ENTRIES_PENDING,
   ENTRIES_ERROR,
@@ -11,7 +12,9 @@ const {
   ENTRY_UPDATE,
   ENTRY_UPDATE_IMAGE,
   ENTRY_DELETE,
-  REDUX_RESET
+  REDUX_RESET,
+  ENTRIES_SEARCH_FOCUS,
+  ENTRIES_SEARCH_FILTER
 } = ReduxActions
 
 const DEFAULT_STATE_ENTRIES = {
@@ -19,6 +22,7 @@ const DEFAULT_STATE_ENTRIES = {
   next: null,
   previous: null,
   items: [],
+  originalItems: [],
   isPending: false,
   error: null
 }
@@ -26,6 +30,25 @@ const DEFAULT_STATE_ENTRIES = {
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   const { id, replaceKey, shouldDelete, lastUpdated, type, payload } = action
   switch (type) {
+    case ENTRIES_SEARCH_FOCUS:
+      const { originalItems, items } = state
+      if (
+        originalItems.length < items ||
+        (originalItems.length === items && !deepEquals(originalItems, items))
+      )
+        return { ...state, originalItems: items }
+    case ENTRIES_SEARCH_FILTER:
+      return {
+        ...state,
+        items: state.items.filter(item => {
+          const { title, html, tags } = item
+          return (
+            title.toLowerCase().includes(payload.toLowerCase()) ||
+            html.toLowerCase().includes(payload.toLowerCase()) ||
+            tags.toLowerCase().includes(payload.toLowerCase())
+          )
+        })
+      }
     case ENTRIES_PENDING:
       return { ...state, isPending: true }
     case ENTRIES_ERROR:

@@ -67,7 +67,7 @@ class EntryDetail extends PureComponent {
     return entry ? (
       <Container className="EntryDetail Container">
         <Row>
-          <Col xs={12}>
+          <Col xs={12} className="p-0">
             <Entry
               {...entry}
               containerHeight={entryContainerHeight}

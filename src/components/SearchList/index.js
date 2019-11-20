@@ -1,6 +1,7 @@
 import React, { Component, createRef } from "react"
 import PropTypes from "prop-types"
 import { FixedSizeList } from "react-window"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK = 200
@@ -10,14 +11,9 @@ class SearchList extends Component {
     super(props)
     this.listRef = createRef()
     this.searchListRef = createRef()
-    const {
-      listItemIdProp,
-      listItemValueProp,
-      defaultIdValue,
-      showDefaultListValues
-    } = props
-    const list = this.getList(props.list)
+    const { listItemIdProp, listItemValueProp, defaultIdValue, height } = props
 
+    const list = this.getList(props.list)
     const defaultValueIndex = list.findIndex(
       e => e[listItemIdProp] === defaultIdValue
     )
@@ -25,15 +21,16 @@ class SearchList extends Component {
     let searchValue
 
     if (defaultValueIndex !== -1)
-      searchValue = list[defaultValueIndex][listItemValueProp]
-    else if (!showDefaultListValues) searchValue = ""
+      searchValue = list[defaultValueIndex][listItemValueProp] || ""
     else searchValue = "None"
 
     this.state = {
       showList: false,
       showDropDownIcon: true,
       searchValue,
-      orginalList: list
+      orginalList: list,
+      list,
+      height
     }
   }
 
@@ -45,6 +42,7 @@ class SearchList extends Component {
     onListItemClickCallback: PropTypes.func,
     placeholder: PropTypes.string,
     helperText: PropTypes.string,
+    maxHeight: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     itemSize: PropTypes.number.isRequired
   }
@@ -53,81 +51,38 @@ class SearchList extends Component {
     placeholder: "Search..",
     listItemIdProp: "id",
     listItemValueProp: "name",
-    showDefaultListValues: false,
+    maxHeight: 250,
     height: 250,
-    itemSize: 50
+    itemSize: 50,
+    list: []
   }
 
-  componentWillMount() {
-    this.getState(this.props)
-  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { itemSize, maxHeight } = nextProps
+    const nextList = nextProps.list
+    let { list, searchValue } = prevState
 
-  componentWillUpdate(nextProps, nextState) {
-    const list = this.getList(nextProps.list)
-    const {
-      listItemIdProp,
-      defaultIdValue,
-      listItemValueProp,
-      showDefaultListValues
-    } = nextProps
-    const currentDefaultIdValue = this.props.defaultIdValue
-    const { searchValue } = nextState
+    const newListLoaded = searchValue === "None" && list.length === 0
 
-    if (currentDefaultIdValue !== defaultIdValue) {
-      if (searchValue !== "All") {
-        const defaultValueIndex = list.findIndex(
-          e => e[listItemIdProp] === defaultIdValue
-        )
-        let searchValue
-
-        if (defaultValueIndex !== -1)
-          searchValue = list[defaultValueIndex][listItemValueProp]
-        else if (showDefaultListValues) searchValue = "None"
-
-        this.setState({ searchValue })
-      }
+    if (newListLoaded) {
+      list = nextList
     }
-  }
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    this.getState(nextProps)
-  }
-
-  getState = props => {
-    const {
-      listItemIdProp,
-      listItemValueProp,
-      showDefaultListValues,
-      itemSize
-    } = props
-    let { height } = props
-    let propsList = this.getList(props.list)
-
-    const defaultListValues = [
-      {
-        [listItemIdProp]: "None",
-        [listItemValueProp]: "None",
-        subscriptionService: false
-      },
-      {
-        [listItemIdProp]: "All",
-        [listItemValueProp]: "All",
-        subscriptionService: false
-      }
-    ]
-
-    const list = showDefaultListValues
-      ? [...defaultListValues, ...props.list]
-      : propsList
 
     const listHeight = list.length * itemSize
 
-    if (listHeight < height) height = listHeight
+    const height = listHeight > maxHeight ? maxHeight : listHeight
 
-    this.setState({ list, height, itemSize })
+    return { orginalList: nextList, list, height }
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const propsChanged = !deepEquals(this.props, nextProps)
+    const stateChanged = !deepEquals(this.state, nextState)
+
+    return propsChanged || stateChanged
+  }
+
+  componentDidMount() {}
 
   getList = list => {
     const { listItemIdProp, listItemValueProp } = this.props
@@ -138,9 +93,13 @@ class SearchList extends Component {
       )
   }
 
+  // getSnapshotBeforeUpdate(prevProps, prevState) {
+  //   console.log('prevProps: ', prevProps)
+  //   console.log('prevState: ', prevState)
+  //   return null
+  // }
+
   componentDidUpdate(prevProps, prevState) {
-    const previousList = prevState.orginalList
-    const currentList = this.state.list
     const currentSearchValue = this.state.searchValue
     const { offsetWidth } = this.searchListRef.current
     const currentSearchValueWidth = this.getTextWidth(
@@ -150,14 +109,12 @@ class SearchList extends Component {
     const listSearchDropDownIconOffset = 16
     const listSearchInputMaxWidth = offsetWidth - listSearchDropDownIconOffset
 
-    const largerList = previousList.length < currentList.length
     const currentSearchValueOverflowed =
       currentSearchValueWidth > listSearchInputMaxWidth
 
-    const orginalList = largerList ? currentList : previousList
     const showDropDownIcon = !currentSearchValueOverflowed
 
-    this.setState({ orginalList, showDropDownIcon })
+    this.setState({ showDropDownIcon })
   }
 
   getTextWidth = (text, font) => {
@@ -183,6 +140,7 @@ class SearchList extends Component {
   filterList = (value, id) => {
     const { listItemIdProp, listItemValueProp } = this.props
     const { orginalList } = this.state
+
     return !value || value === "All" || value === "None"
       ? orginalList
       : orginalList.filter(item =>
@@ -195,9 +153,15 @@ class SearchList extends Component {
   }
 
   toggleList = () =>
-    this.setState(prevState => ({
-      showList: !prevState.showList
-    }))
+    this.setState(prevState => {
+      const { searchValue, showList } = prevState
+      if (searchValue === "None" && !showList)
+        return {
+          showList: !showList,
+          searchValue: ""
+        }
+      else return { showList: !showList }
+    })
 
   clearSearchValue = () => this.setState({ searchValue: "" })
 
@@ -227,15 +191,8 @@ class SearchList extends Component {
   }
 
   render() {
-    const { placeholder, helperText } = this.props
-    const {
-      showList,
-      showDropDownIcon,
-      list,
-      searchValue,
-      height,
-      itemSize
-    } = this.state
+    const { placeholder, helperText, itemSize } = this.props
+    const { showList, showDropDownIcon, list, searchValue, height } = this.state
 
     return (
       <div className="listSearchContainer">

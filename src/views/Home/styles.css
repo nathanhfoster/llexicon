@@ -1,11 +1,9 @@
 .Home {
-  height: calc(100% - 16px);
+  height: 100%
 }
 
 .EditorContainer {
   height: calc(100% - var(--navBarHeight));
 }
 
-.ql-toolbar {
-
-}
+.ql-toolbar {}

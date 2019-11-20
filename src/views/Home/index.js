@@ -137,9 +137,9 @@ class Home extends PureComponent {
     } = this.state
 
     return (
-      <Container className="Home Container mt-3">
+      <Container className="Home Container">
         <Row>
-          <Col xs={12}>
+          <Col xs={12} className="p-0">
             <InputGroup
               tag={Form}
               className="EntryInput"
@@ -180,7 +180,7 @@ class Home extends PureComponent {
           </Col>
         </Row>
         <Row className="EditorContainer">
-          <Col xs={12}>
+          <Col xs={12} className="p-0">
             <Editor
               html={editorStateHtml}
               onChangeCallback={html => this.handleTextEditorChange(html)}

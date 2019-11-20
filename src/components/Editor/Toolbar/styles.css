@@ -22,7 +22,7 @@
     color: var(--secondaryColor);
 }
 
-@media (max-width: 383px) {
+@media (max-width: 413px) {
     :root {
         --textEditorToolBarHeight: 141px;
     }

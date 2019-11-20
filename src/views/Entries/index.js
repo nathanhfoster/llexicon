@@ -106,7 +106,12 @@ class Entries extends Component {
     const { id, ...restOfProps } = entry
 
     return (
-      <Col key={id} style={{ ...style /* background: "red" */ }} xs={12}>
+      <Col
+        key={id}
+        style={{ ...style /* background: "red" */ }}
+        xs={12}
+        className="p-0"
+      >
         <Entry
           key={id}
           id={id}
