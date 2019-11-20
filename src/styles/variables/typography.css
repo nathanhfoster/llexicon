@@ -5,7 +5,7 @@
 
 @media (max-width: 767px) {
   :root {
-    --navBarHeight: 46px;
+    --navBarHeight: 64px;
     --footerHeight: 52px
   }
 }

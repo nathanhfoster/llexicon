@@ -173,7 +173,7 @@ class Home extends PureComponent {
                   disabled={postDisabled}
                   type="submit"
                 >
-                  <i className="fas fa-feather-alt" style={{ fontSize: 20 }} />
+                  <i className="fas fa-cloud-upload-alt" style={{ fontSize: 20 }} />
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>

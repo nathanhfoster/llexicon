@@ -173,7 +173,7 @@ export class App extends PureComponent {
       },
       performance,
       isMobile,
-      navBarHeight: isMobile ? 46 : 68,
+      navBarHeight: isMobile ? 64 : 68,
       footerHeight: isMobile ? 52 : 70,
       isInStandalone: matchMedia("(display-mode: standalone)").matches,
       isOnMobileBrowser: this.isOnMobileBrowser(window.navigator.userAgent)

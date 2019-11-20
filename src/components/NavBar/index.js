@@ -9,14 +9,18 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
+  Button,
   Nav,
   NavItem,
   NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText
 } from "reactstrap"
 import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
@@ -116,7 +120,7 @@ class NavBar extends PureComponent {
 
       this.renderNavlink(
         LOGIN,
-        "LOG OUT",
+        "LOGIN",
         <i className="fas fa-sign-out-alt NavBarImage" />,
         UserLogout
       ),
@@ -188,28 +192,42 @@ class NavBar extends PureComponent {
             collapsed={collapsed}
           />
         )}
-        <NavbarBrand>
-          <i
-            className="fas fa-feather-alt NavBarImage NavBarLink"
-            onClick={() => {
-              RouterPush(history, HOME)
-              this.closeHamburgerMenu()
-            }}
-          >
-            {" "}
-            Entry
-          </i>
+        <InputGroup
+          className="EntryInput pl-2"
+          style={{ maxWidth: isMobile ? "calc(100% - 42px)" : 550 }}
+        >
+          <Input placeholder="Search the stars..." />
+          <InputGroupAddon addonType="append">
+            <InputGroupText
+              tag={Button}
+              color="primary"
+              style={{ color: "white", padding: "0 8px" }}
+            >
+              <i
+                className="fas fa-feather-alt NavBarImage NavBarLink"
+                onClick={() => {
+                  RouterPush(history, HOME)
+                  this.closeHamburgerMenu()
+                }}
+              ></i>
+            </InputGroupText>
+          </InputGroupAddon>
+          <InputGroupAddon addonType="append">
+            <InputGroupText
+              tag={Button}
+              color="primary"
+              style={{ color: "white", padding: "0 8px" }}
+            >
+              <i
+                className="fas fa-calendar-day NavBarImage NavBarLink"
+                onClick={this.handleTodayClick}
+              ></i>
+            </InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
 
-          {/* <i className="fab fa-wpexplorer NavBarImage NavBarLink" /> */}
+        {/* <i className="fab fa-wpexplorer NavBarImage NavBarLink" /> */}
 
-          <i
-            className="fas fa-calendar-day NavBarImage NavBarLink ml-4"
-            onClick={this.handleTodayClick}
-          >
-            {" "}
-            Today
-          </i>
-        </NavbarBrand>
         <Collapse isOpen={!collapsed} navbar>
           <Nav className="ml-auto" navbar>
             {this.renderNavLinks()}

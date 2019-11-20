@@ -7,10 +7,6 @@
   background: var(--slate_grey);
 }
 
-.NavBar li, .NavBar a {
-  font-size: 18px !important;
-}
-
 .Navlink, .nav-link {
   color: var(--secondaryColor) !important;
 }
@@ -27,7 +23,7 @@
   .NavBar li {
     margin-top: auto;
     margin-bottom: auto;
-    margin-right: 40px;
+    margin-right: 16px;
   }
 }
 
