@@ -104,9 +104,14 @@ class NavBar extends PureComponent {
 
   renderNavLinks = () => {
     const { UserId } = this.state
-    const { UserLogout } = this.props
-    const { CALENDAR, ENTRIES, LOGIN } = RouteMap
+    const { UserLogout, history } = this.props
+    const { HOME, CALENDAR, ENTRIES, LOGIN } = RouteMap
     const LoggedInLinks = [
+      this.renderNavlink(
+        HOME,
+        "New Entry",
+        <i className="fas fa-feather-alt NavBarImage NavBarLink" />
+      ),
       this.renderNavlink(
         CALENDAR,
         "CALENDAR",
@@ -127,6 +132,11 @@ class NavBar extends PureComponent {
       this.optionsMenu()
     ]
     const NotLoggedInLinks = [
+      this.renderNavlink(
+        HOME,
+        "New Entry",
+        <i className="fas fa-feather-alt NavBarImage NavBarLink" />
+      ),
       this.renderNavlink(
         CALENDAR,
         "CALENDAR",
@@ -180,9 +190,7 @@ class NavBar extends PureComponent {
   }
 
   render() {
-    const { history } = this.props
     const { collapsed, isMobile } = this.state
-    const { HOME } = RouteMap
     return (
       <Navbar className="NavBar" fixed="top" expand="md">
         {isMobile && (
@@ -194,36 +202,9 @@ class NavBar extends PureComponent {
         )}
         <InputGroup
           className="EntryInput pl-2"
-          style={{ maxWidth: isMobile ? "calc(100% - 42px)" : 550 }}
+          style={{ maxWidth: isMobile ? "calc(100% - 42px)" : 450 }}
         >
           <Input placeholder="Search the stars..." />
-          <InputGroupAddon addonType="append">
-            <InputGroupText
-              tag={Button}
-              color="primary"
-              style={{ color: "white", padding: "0 8px" }}
-            >
-              <i
-                className="fas fa-feather-alt NavBarImage NavBarLink"
-                onClick={() => {
-                  RouterPush(history, HOME)
-                  this.closeHamburgerMenu()
-                }}
-              ></i>
-            </InputGroupText>
-          </InputGroupAddon>
-          <InputGroupAddon addonType="append">
-            <InputGroupText
-              tag={Button}
-              color="primary"
-              style={{ color: "white", padding: "0 8px" }}
-            >
-              <i
-                className="fas fa-calendar-day NavBarImage NavBarLink"
-                onClick={this.handleTodayClick}
-              ></i>
-            </InputGroupText>
-          </InputGroupAddon>
         </InputGroup>
 
         {/* <i className="fab fa-wpexplorer NavBarImage NavBarLink" /> */}

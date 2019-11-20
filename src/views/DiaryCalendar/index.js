@@ -84,6 +84,12 @@ class DiaryCalendar extends PureComponent {
     GetUserEntriesByDate(date)
   }
 
+  handleTodayClick = () => {
+    const { SetCalendar } = this.props
+    const activeDate = new Date()
+    SetCalendar({ activeDate })
+  }
+
   render() {
     const { history } = this.props
     const { activeDate } = this.state
@@ -96,6 +102,13 @@ class DiaryCalendar extends PureComponent {
             xs={{ size: 12, order: 2 }}
           >
             <h2>
+              <Button
+                color="inherit"
+                className="TodayButton"
+                onClick={this.handleTodayClick}
+              >
+                <i className="fas fa-calendar-day NavBarImage NavBarLink" />
+              </Button>
               <Moment format="MMM D">{activeDate}</Moment>
             </h2>
             <EntryList activeDate={activeDate} history={history} />

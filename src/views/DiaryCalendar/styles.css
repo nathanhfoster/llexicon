@@ -188,6 +188,17 @@ abbr {
   height: 64px;
   line-height: 60px;
   text-align: center;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.EventList .TodayButton {
+  color: var(--accentColor);
+  font-size: 1.5rem;
+  padding: 0 8px;
+}
+
+.EventList .TodayButton:hover {
+  color: var(--secondaryColor);
 }
