@@ -120,7 +120,7 @@ class NavBar extends PureComponent {
 
       this.renderNavlink(
         LOGIN,
-        "LOGIN",
+        "Logout",
         <i className="fas fa-sign-out-alt NavBarImage" />,
         UserLogout
       ),
