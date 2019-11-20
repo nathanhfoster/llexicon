@@ -20,8 +20,8 @@ const mapStateToProps = ({
     .filter(item => !item.shouldDelete)
     .sort(
       (a, b) =>
-        new Date(b.lastUpdated || b.date_created_by_author) -
-        new Date(a.lastUpdated || a.date_created_by_author)
+        new Date(b.date_created_by_author) -
+        new Date(a.date_created_by_author)
     ),
   nextEntryPage: next,
   viewPortHeight: availHeight
