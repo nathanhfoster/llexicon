@@ -28,6 +28,7 @@ class RememberMeForgotPassword extends PureComponent {
 
   render() {
     const { history, isLogin, onChange } = this.props
+    const {PASSWORD_RESET} = RouteMap
     return (
       <FormGroup check>
         <Label check>
@@ -36,7 +37,7 @@ class RememberMeForgotPassword extends PureComponent {
         </Label>
 
         <Link
-          to={RouterLinkPush(history, RouteMap.PASSWORD_RESET)}
+          to={RouterLinkPush(history, PASSWORD_RESET)}
           className="float-right"
         >
           Forgot password?

@@ -34,8 +34,9 @@ const RouterGoBack = history => {
       state: { previousRoute }
     }
   } = history
+  const { CALENDAR } = RouteMap
   if (previousRoute) return history.goBack()
-  else return RouterPush(history, RouteMap.ENTRIES)
+  else return RouterPush(history, CALENDAR)
 }
 
 export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack }

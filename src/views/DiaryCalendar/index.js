@@ -7,7 +7,7 @@ import TileContent from "./TileContent"
 import Moment from "react-moment"
 import EntryList from "../../components/EntryList"
 import { withRouter } from "react-router-dom"
-import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
+import { RouterPush, RouterLinkPush, RouteMap } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
 import { SyncEntries, GetUserEntriesByDate } from "../../actions/Entries"
 import MomentJS from "moment"
@@ -92,6 +92,7 @@ class DiaryCalendar extends PureComponent {
 
   render() {
     const { history } = this.props
+    const { HOME } = RouteMap
     const { activeDate } = this.state
     return (
       <Container fluid className="DiaryCalendar Container">
@@ -101,15 +102,22 @@ class DiaryCalendar extends PureComponent {
             md={{ size: 3, order: 1 }}
             xs={{ size: 12, order: 2 }}
           >
-            <h2>
+            <h2 className="Center">
               <Button
                 color="inherit"
-                className="TodayButton"
+                className="TodayButton mr-1"
                 onClick={this.handleTodayClick}
               >
                 <i className="fas fa-calendar-day NavBarImage NavBarLink" />
               </Button>
               <Moment format="MMM D">{activeDate}</Moment>
+              <Button
+                color="inherit"
+                className="TodayButton ml-1"
+                onClick={() => RouterPush(history, HOME)}
+              >
+                <i className="fas fa-feather-alt NavBarImage NavBarLink" />
+              </Button>
             </h2>
             <EntryList activeDate={activeDate} history={history} />
           </Col>

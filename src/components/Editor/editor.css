@@ -1,7 +1,11 @@
-.ql-editor {}
+.ql-editor {
+    box-shadow: var(--primaryBoxShadow);
+    box-shadow: 0 -2px rgba(0, 0, 0, 0.1);
+}
 
 .ql-editor.ql-blank::before {
     color: var(--secondaryColor);
+    font-style: normal;
 }
 
 .ql-snow .ql-tooltip {

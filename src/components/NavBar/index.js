@@ -9,19 +9,15 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  Button,
   Nav,
   NavItem,
   NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
-  InputGroup,
-  Input,
-  InputGroupAddon,
-  InputGroupText
+  DropdownItem
 } from "reactstrap"
+import StarSearch from "../StarSearch"
 import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
 import { UserLogout } from "../../actions/User"
@@ -109,7 +105,7 @@ class NavBar extends PureComponent {
     const LoggedInLinks = [
       this.renderNavlink(
         HOME,
-        "New Entry",
+        "NEW ENTRY",
         <i className="fas fa-feather-alt NavBarImage NavBarLink" />
       ),
       this.renderNavlink(
@@ -134,7 +130,7 @@ class NavBar extends PureComponent {
     const NotLoggedInLinks = [
       this.renderNavlink(
         HOME,
-        "New Entry",
+        "NEW ENTRY",
         <i className="fas fa-feather-alt NavBarImage NavBarLink" />
       ),
       this.renderNavlink(
@@ -200,14 +196,8 @@ class NavBar extends PureComponent {
             collapsed={collapsed}
           />
         )}
-        <InputGroup
-          className="EntryInput pl-2"
-          style={{ maxWidth: isMobile ? "calc(100% - 42px)" : 450 }}
-        >
-          <Input placeholder="Search the stars..." />
-        </InputGroup>
 
-        {/* <i className="fab fa-wpexplorer NavBarImage NavBarLink" /> */}
+        <StarSearch />
 
         <Collapse isOpen={!collapsed} navbar>
           <Nav className="ml-auto" navbar>

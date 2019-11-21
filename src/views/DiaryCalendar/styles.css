@@ -187,10 +187,6 @@ abbr {
   color: var(--secondaryColor);
   height: 64px;
   line-height: 60px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-weight: bold;
 }
 

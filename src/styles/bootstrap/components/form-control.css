@@ -9,7 +9,6 @@
 }
 
 .form-control:focus {
-  border-color: var(--primaryColor) !important;
+  border-color: transparent !important;
   outline: 0;
-  box-shadow: 0 0 0 0.1rem rgba(var(--primaryColorRGB), 0.15) !important;
 }

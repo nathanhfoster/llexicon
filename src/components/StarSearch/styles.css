@@ -1,0 +1,28 @@
+.StarSearch input, .StarSearch .input-group-text {
+    border: 0;
+}
+
+.StarSearch input::placeholder {
+    /* padding-left: 24px; */
+    color: var(--secondaryColor);
+}
+
+.StarSearch input:-ms-input-placeholder {
+    color: var(--secondaryColor);
+}
+
+.StarSearch input::-ms-input-placeholder {
+    color: var(--secondaryColor);
+}
+
+.TelescopeIconContainer {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    background: var(--quinaryColor);
+}
+
+.TelescopeIcon {
+    color: var(--secondaryColor);
+    font-size: 32px;
+}
+
