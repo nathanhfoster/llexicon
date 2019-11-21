@@ -102,7 +102,7 @@ class NavBar extends PureComponent {
     const { UserId } = this.state
     const { UserLogout, history } = this.props
     const { HOME, CALENDAR, ENTRIES, LOGIN } = RouteMap
-    const LoggedInLinks = [
+    const Links = [
       this.renderNavlink(
         HOME,
         "NEW ENTRY",
@@ -118,40 +118,21 @@ class NavBar extends PureComponent {
         "ENTRIES",
         <i className="fas fa-book NavBarImage" />
       ),
-
-      this.renderNavlink(
+      UserId ? this.renderNavlink(
         LOGIN,
-        "Logout",
+        "LOGOUT",
         <i className="fas fa-sign-out-alt NavBarImage" />,
         UserLogout
-      ),
-      this.optionsMenu()
-    ]
-    const NotLoggedInLinks = [
-      this.renderNavlink(
-        HOME,
-        "NEW ENTRY",
-        <i className="fas fa-feather-alt NavBarImage NavBarLink" />
-      ),
-      this.renderNavlink(
-        CALENDAR,
-        "CALENDAR",
-        <i className="fas fa-calendar-alt NavBarImage"></i>
-      ),
-      this.renderNavlink(
-        ENTRIES,
-        "ENTRIES",
-        <i className="fas fa-book NavBarImage" />
-      ),
-
-      this.renderNavlink(
+      )
+      : this.renderNavlink(
         LOGIN,
         "LOGIN",
         <i className="fas fa-sign-in-alt NavBarImage" />
       ),
       this.optionsMenu()
     ]
-    return UserId ? LoggedInLinks : NotLoggedInLinks
+    
+    return Links
   }
 
   renderNavlink = (route, title, icon, onClick) => {
