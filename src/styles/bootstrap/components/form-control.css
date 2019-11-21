@@ -11,4 +11,5 @@
 .form-control:focus {
   border-color: transparent !important;
   outline: 0;
+  box-shadow: none;
 }
