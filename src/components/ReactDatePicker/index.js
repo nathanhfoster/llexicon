@@ -173,13 +173,7 @@ class ReactDatePicker extends PureComponent {
   static defaultProps = {
     calendarClassName: "DatePicker",
     todayButton: (
-      <i
-        className="fas fa-calendar-day NavBaDatePickerTodayButton"
-        // onChange={this.handleTodayClick}
-      >
-        {" "}
-        Today
-      </i>
+      <i className="fas fa-calendar-day NavBaDatePickerTodayButton"> Today</i>
     ),
     popperClassName: "DatePickerPopper",
     popperPlacement: popperPlacementPositions.AUTO_LEFT,
@@ -208,8 +202,6 @@ class ReactDatePicker extends PureComponent {
 
     return { selected: new Date(selected), ...resOfProps }
   }
-
-  handleTodayClick = prop => console.log("handleTodayClick: ", prop)
 
   componentDidMount() {}
 

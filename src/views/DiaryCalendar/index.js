@@ -73,9 +73,16 @@ class DiaryCalendar extends PureComponent {
   componentWillUnmount() {}
 
   handleDateChange = ({ activeStartDate, view }) => {
-    // console.log("handleDateChange: ", activeStartDate, view)
     const { SetCalendar } = this.props
-    SetCalendar({ activeDate: activeStartDate, view })
+
+    const now = new Date()
+    const activeDate = new Date(activeStartDate)
+    activeDate.setHours(now.getHours())
+    activeDate.setMinutes(now.getMinutes())
+    activeDate.setSeconds(now.getSeconds())
+    activeDate.setMilliseconds(now.getMilliseconds())
+
+    SetCalendar({ activeDate, view })
   }
 
   getUserEntriesByDate = date => {

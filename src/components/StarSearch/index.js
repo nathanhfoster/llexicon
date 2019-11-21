@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import {
   Container,
@@ -19,7 +19,7 @@ const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
 
 const mapDispatchToProps = {}
 
-class StarSearch extends PureComponent {
+class StarSearch extends Component {
   constructor(props) {
     super(props)
 
@@ -53,8 +53,6 @@ class StarSearch extends PureComponent {
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
   componentWillUnmount() {}
-
-  //{/*  */}
 
   render() {
     const { isMobile } = this.state
