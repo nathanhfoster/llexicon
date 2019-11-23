@@ -43,9 +43,10 @@ class DiaryCalendar extends PureComponent {
   }
 
   componentDidMount() {
-    const { activeDate, SyncEntries, GetUserEntriesByDate } = this.props
+    const { activeDate, SyncEntries } = this.props
     SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntriesByDate(activeDate)))
+      () =>
+        new Promise(resolve => resolve(this.getUserEntriesByDate(activeDate)))
     )
   }
 

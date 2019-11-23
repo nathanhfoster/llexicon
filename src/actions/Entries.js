@@ -103,10 +103,6 @@ const GetUserEntriesByDate = date => (dispatch, getState) => {
     .then(res => {
       const { data } = res
       dispatch({
-        type: CALENDAR_SET,
-        payload: { activeDate: date }
-      })
-      dispatch({
         type: ENTRIES_SET_BY_DATE,
         payload: data
       })
