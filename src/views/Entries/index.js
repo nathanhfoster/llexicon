@@ -153,7 +153,6 @@ class Entries extends Component {
         key={id}
         style={{ ...style /* background: "red" */ }}
         xs={12}
-        className="p-0"
       >
         <Entry
           key={id}
