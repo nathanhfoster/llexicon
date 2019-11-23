@@ -180,7 +180,7 @@ abbr {
   display: block;
 }
 
-.EventList h2 {
+.EventListHeader {
   opacity: var(--mainOpacity);
   border: 1px solid rgba(0, 0, 0, 0.2);
   background: var(--quinaryColor);
@@ -188,6 +188,10 @@ abbr {
   height: 64px;
   line-height: 60px;
   font-weight: bold;
+}
+
+.EventListHeader time {
+  font-size: 2em;
 }
 
 .EventList .TodayButton {

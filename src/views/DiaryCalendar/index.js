@@ -110,7 +110,7 @@ class DiaryCalendar extends PureComponent {
             md={{ size: 3, order: 1 }}
             xs={{ size: 12, order: 2 }}
           >
-            <h2 className="Center">
+            <div className="EventListHeader Center">
               <Button
                 color="inherit"
                 className="TodayButton mr-1"
@@ -126,7 +126,7 @@ class DiaryCalendar extends PureComponent {
               >
                 <i className="fas fa-feather-alt NavBarImage NavBarLink" />
               </Button>
-            </h2>
+            </div>
             <EntryList activeDate={activeDate} history={history} />
           </Col>
           <Col
