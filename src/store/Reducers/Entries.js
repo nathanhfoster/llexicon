@@ -1,6 +1,5 @@
 import { ReduxActions } from "../../constants.js"
-import { mergeJson } from "../../helpers"
-import deepEquals from "../../helpers/deepEquals"
+import { mergeJson, removeAttributeDuplicates } from "../../helpers"
 const {
   ENTRIES_PENDING,
   ENTRIES_ERROR,
@@ -13,7 +12,6 @@ const {
   ENTRY_UPDATE_IMAGE,
   ENTRY_DELETE,
   REDUX_RESET,
-  ENTRIES_SEARCH_FOCUS,
   ENTRIES_SEARCH_FILTER
 } = ReduxActions
 
@@ -22,7 +20,7 @@ const DEFAULT_STATE_ENTRIES = {
   next: null,
   previous: null,
   items: [],
-  originalItems: [],
+  filteredItems: [],
   isPending: false,
   error: null
 }
@@ -38,24 +36,32 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     search
   } = action
   switch (type) {
-    case ENTRIES_SEARCH_FOCUS:
-      const { originalItems, items } = state
-      if (
-        originalItems.length < items ||
-        (originalItems.length === items && !deepEquals(originalItems, items))
-      )
-        return { ...state, originalItems: items }
     case ENTRIES_SEARCH_FILTER:
+      let { filteredItems } = state
+
+      const filteredEntries = mergeJson(
+        state.items.concat(filteredItems),
+        payload
+      ).filter(item => {
+        const { title, html, tags } = item
+        if (
+          title.toLowerCase().includes(search.toLowerCase()) ||
+          html.toLowerCase().includes(search.toLowerCase()) ||
+          tags.map(tag => tag.toLowerCase()).includes(search.toLowerCase())
+        ) {
+          return true
+        } else {
+          filteredItems.push(item)
+          return false
+        }
+      })
+
       return {
         ...state,
-        items: mergeJson(state.items, payload).filter(item => {
-          const { title, html, tags } = item
-          return (
-            title.toLowerCase().includes(search.toLowerCase()) ||
-            html.toLowerCase().includes(search.toLowerCase()) ||
-            tags.map(tag => tag.toLowerCase()).includes(search.toLowerCase())
-          )
-        })
+        filteredItems: filteredItems.filter(
+          item => !filteredEntries.includes(entry => entry.id === item.id)
+        ),
+        items: filteredEntries
       }
     case ENTRIES_PENDING:
       return { ...state, isPending: true }

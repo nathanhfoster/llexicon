@@ -49,7 +49,7 @@ const sortedMap = map =>
 
 const removeArrayDuplicates = array => [...new Set(array)]
 
-const removeAttributeDuplicates = (array, objAttr) => {
+const removeAttributeDuplicates = (array, objAttr = "id") => {
   let map = new Map()
 
   for (let i = 0; i < array.length; i++) {

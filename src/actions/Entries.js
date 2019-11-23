@@ -202,8 +202,8 @@ const SearchUserEntries = search => async (dispatch, getState) => {
     })
     .catch(async e => {
       await dispatch({ type: ENTRIES_SEARCH_FILTER, payload: [], search })
-      const error = JSON.parse(JSON.stringify(e))
-      console.log(error)
+      // const error = JSON.parse(JSON.stringify(e))
+      // console.log(error)
     })
 }
 
