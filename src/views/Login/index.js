@@ -13,11 +13,11 @@ import {
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
-import { RouterPush, RouterLinkPush, RouteMap } from "../../ReactRouter/Routes"
+import { RouterPush, RouteMap } from "../../ReactRouter/Routes"
 import BasicForm from "../../components/BasicForm"
 import FacebookGoogleLogin from "../../components/FacebookGoogleLogin"
 import { UserLogin, CreateUser } from "../../actions/User"
-import LogoImage from "../../ReactRouter/BackgroundImage/LogoImage"
+import LogoImage from "../../components/BackgroundImage/LogoImage"
 import "./styles.css"
 const { LOGIN, SIGNUP } = RouteMap
 
