@@ -19,13 +19,14 @@ const baseFormHeaders = payload => ({
   "Content-Type": `multipart/form-data; boundary=${payload._boundary}`
 })
 
-const Axios = pagination => {
+const Axios = (responseType = "json") => {
   const { token } = getReduxState().User
   return axios.create({
     withCredentials: token ? true : false,
-    baseURL: pagination ? pagination : REACT_APP_API_URL,
-    timeout: 25000,
+    baseURL: REACT_APP_API_URL,
+    //timeout: 25000,
     crossDomain: true,
+    responseType,
     headers: token
       ? {
           Authorization: `Token ${token}`,
@@ -39,7 +40,7 @@ const AxiosForm = payload => {
   const { token } = getReduxState().User
   return axios.create({
     baseURL: REACT_APP_API_URL,
-    timeout: 25000,
+    // timeout: 25000,
     headers: token
       ? {
           Authorization: `Token ${token}`,

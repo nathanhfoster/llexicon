@@ -10,6 +10,7 @@ const {
   CALENDAR_SET,
   ENTRIES_PENDING,
   ENTRIES_ERROR,
+  ENTRIES_SEARCH_FILTER,
   ENTRIES_SET,
   ENTRIES_SET_BY_DATE,
   ENTRY_DELETE,
@@ -192,6 +193,20 @@ const DeleteEntry = id => (dispatch, getState) => {
     })
 }
 
+const SearchUserEntries = search => async (dispatch, getState) => {
+  const { id } = getState().User
+  await Axios()
+    .post(`entries/${id}/search/`, qs.stringify({ search }))
+    .then(async res => {
+      await dispatch({ type: ENTRIES_SEARCH_FILTER, payload: res.data, search })
+    })
+    .catch(async e => {
+      await dispatch({ type: ENTRIES_SEARCH_FILTER, payload: [], search })
+      const error = JSON.parse(JSON.stringify(e))
+      console.log(error)
+    })
+}
+
 const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User,
@@ -298,5 +313,6 @@ export {
   UpdateReduxEntry,
   UpdateEntry,
   DeleteEntry,
+  SearchUserEntries,
   SyncEntries
 }

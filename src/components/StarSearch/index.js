@@ -13,11 +13,12 @@ import {
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
+import { SearchUserEntries } from "../../actions/Entries"
 import "./styles.css"
 
 const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { SearchUserEntries }
 
 class StarSearch extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class StarSearch extends Component {
     this.state = {}
   }
 
-  static propTypes = {}
+  static propTypes = { SearchUserEntries: PropTypes.func.isRequired }
 
   static defaultProps = {}
 
@@ -54,6 +55,12 @@ class StarSearch extends Component {
 
   componentWillUnmount() {}
 
+  handleSearch = e => {
+    const { value } = e.target
+    const { SearchUserEntries } = this.props
+    SearchUserEntries(value)
+  }
+
   render() {
     const { isMobile } = this.state
     return (
@@ -70,7 +77,11 @@ class StarSearch extends Component {
           </InputGroupText>
         </InputGroupAddon>
 
-        <Input placeholder="Search the stars..." className="p-0" />
+        <Input
+          placeholder="Search the stars..."
+          className="p-0"
+          onChange={this.handleSearch}
+        />
       </InputGroup>
     )
   }

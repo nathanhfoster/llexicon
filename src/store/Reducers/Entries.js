@@ -28,7 +28,15 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const { id, replaceKey, shouldDelete, lastUpdated, type, payload } = action
+  const {
+    id,
+    replaceKey,
+    shouldDelete,
+    lastUpdated,
+    type,
+    payload,
+    search
+  } = action
   switch (type) {
     case ENTRIES_SEARCH_FOCUS:
       const { originalItems, items } = state
@@ -40,12 +48,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case ENTRIES_SEARCH_FILTER:
       return {
         ...state,
-        items: state.items.filter(item => {
+        items: mergeJson(state.items, payload).filter(item => {
           const { title, html, tags } = item
           return (
-            title.toLowerCase().includes(payload.toLowerCase()) ||
-            html.toLowerCase().includes(payload.toLowerCase()) ||
-            tags.toLowerCase().includes(payload.toLowerCase())
+            title.toLowerCase().includes(search.toLowerCase()) ||
+            html.toLowerCase().includes(search.toLowerCase()) ||
+            tags.map(tag => tag.toLowerCase()).includes(search.toLowerCase())
           )
         })
       }
