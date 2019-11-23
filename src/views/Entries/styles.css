@@ -1,3 +1,13 @@
 .Entries {
  
 }
+
+.MinimalEntryListToggle {
+    background: var(--quinaryColor);
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.MinimalEntryListToggle:hover {
+    background: var(--slate_grey);
+}

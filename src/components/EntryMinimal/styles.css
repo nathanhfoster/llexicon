@@ -1,0 +1,22 @@
+.EntryMinimal {
+    color: var(--secondaryColor);
+    background: var(--quinaryColor);
+    width: 100%;
+}
+
+.EntryMinimal:hover {
+    background: var(--slate_grey);
+    cursor: pointer;
+}
+
+.EntryMinimal span:not(:last-child) {
+    margin-right: 4px;
+}
+
+.EntryMinimal span:last-child {
+    font-size: 1em;
+    font-weight: 900;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

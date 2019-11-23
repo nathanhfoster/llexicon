@@ -105,6 +105,7 @@ class Home extends PureComponent {
       html: editorStateHtml,
       tags,
       date_created_by_author: activeDate,
+      EntryFiles: [],
       shouldPost: true
     }
 
@@ -173,7 +174,10 @@ class Home extends PureComponent {
                   disabled={postDisabled}
                   type="submit"
                 >
-                  <i className="fas fa-cloud-upload-alt" style={{ fontSize: 20 }} />
+                  <i
+                    className="fas fa-cloud-upload-alt"
+                    style={{ fontSize: 20 }}
+                  />
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>

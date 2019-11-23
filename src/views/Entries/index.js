@@ -1,11 +1,21 @@
 import React, { Component, createRef } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import { Container, Row, Col } from "reactstrap"
+import {
+  Container,
+  Row,
+  Col,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane
+} from "reactstrap"
 import Entry from "../../components/Entry"
 import Home from "../Home"
 import { FixedSizeList } from "react-window"
 import { SyncEntries, GetUserEntries } from "../../actions/Entries"
+import EntryMinimal from "../../components/EntryMinimal"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -20,8 +30,7 @@ const mapStateToProps = ({
     .filter(item => !item.shouldDelete)
     .sort(
       (a, b) =>
-        new Date(b.date_created_by_author) -
-        new Date(a.date_created_by_author)
+        new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
     ),
   nextEntryPage: next,
   viewPortHeight: availHeight
@@ -35,7 +44,14 @@ class Entries extends Component {
 
     this.listRef = createRef()
 
-    this.state = {}
+    this.state = {
+      activeTab: 1,
+      listView: false,
+      minXs: 6,
+      minMd: 4,
+      minLg: 3,
+      minXl: 2
+    }
   }
 
   static propTypes = {
@@ -48,6 +64,7 @@ class Entries extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { entries, nextEntryPage, viewPortHeight } = nextProps
+    const { activeTab, listView, minXs, minMd, minLg, minXl } = prevState
 
     const inputHeight = 46
 
@@ -57,7 +74,18 @@ class Entries extends Component {
 
     if (listHeight / 3 > listItemHeight) listItemHeight = listHeight / 3
 
-    return { entries, nextEntryPage, listHeight, listItemHeight }
+    return {
+      entries,
+      nextEntryPage,
+      listHeight,
+      listItemHeight,
+      activeTab,
+      listView,
+      minXs,
+      minMd,
+      minLg,
+      minXl
+    }
   }
 
   componentDidMount() {
@@ -101,7 +129,22 @@ class Entries extends Component {
     }
   }
 
-  renderEntries = ({ data, index, style, isScrolling }) => {
+  renderMinimalEntries = entries => {
+    const { listView, minXs, minMd, minLg, minXl } = this.state
+    return entries.map(entry => {
+      return listView ? (
+        <Col key={entry.id} xs={12}>
+          <EntryMinimal {...entry} />
+        </Col>
+      ) : (
+        <Col key={entry.id} xs={minXs} md={minMd} lg={minLg} xl={minXl}>
+          <EntryMinimal {...entry} />
+        </Col>
+      )
+    })
+  }
+
+  renderDetailedEntries = ({ data, index, style, isScrolling }) => {
     const entry = data[index]
     const { id, ...restOfProps } = entry
 
@@ -123,24 +166,67 @@ class Entries extends Component {
     )
   }
 
+  handleListLayoutClick = () => {
+    this.setState(currentState => ({ listView: !currentState.listView }))
+  }
+
   render() {
-    const { entries, listHeight, listItemHeight } = this.state
+    const {
+      entries,
+      listHeight,
+      listItemHeight,
+      activeTab,
+      listView
+    } = this.state
 
     return entries.length > 0 ? (
-      <Container className="Entries Container">
-        <Row>
-          <FixedSizeList
-            ref={this.listRef}
-            height={listHeight}
-            width="100%"
-            itemData={entries}
-            itemCount={entries.length}
-            itemSize={listItemHeight}
-            onItemsRendered={this.handleItemsRendered}
-          >
-            {this.renderEntries}
-          </FixedSizeList>
-        </Row>
+      <Container fluid className="Entries Container p-0">
+        <Nav tabs>
+          <NavItem>
+            <NavLink
+              className={`${activeTab === 1 ? "active" : ""}`}
+              onClick={() => this.setState({ activeTab: 1 })}
+            >
+              <i
+                className={`MinimalEntryListToggle fas ${
+                  listView ? "fa-columns" : "fa-list-ul"
+                }`}
+                onClick={this.handleListLayoutClick}
+              />{" "}
+              Minimal
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={`${activeTab === 2 ? "active" : ""}`}
+              onClick={() => this.setState({ activeTab: 2 })}
+            >
+              Detailed
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId={1}>
+            <Row>{this.renderMinimalEntries(entries)}</Row>
+          </TabPane>
+        </TabContent>
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId={2}>
+            <Row>
+              <FixedSizeList
+                ref={this.listRef}
+                height={listHeight}
+                width="100%"
+                itemData={entries}
+                itemCount={entries.length}
+                itemSize={listItemHeight}
+                onItemsRendered={this.handleItemsRendered}
+              >
+                {this.renderDetailedEntries}
+              </FixedSizeList>
+            </Row>
+          </TabPane>
+        </TabContent>
       </Container>
     ) : (
       <Home />

@@ -65,7 +65,7 @@ class Login extends PureComponent {
     const { activeTab } = this.state
     return (
       <Container fluid className="Login">
-        <Nav tabs>
+        <Nav fill tabs>
           <NavItem>
             <NavLink
               className={`${activeTab === LOGIN ? "active" : ""}`}

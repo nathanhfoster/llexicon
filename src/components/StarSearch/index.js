@@ -66,7 +66,7 @@ class StarSearch extends Component {
     return (
       <InputGroup
         className="StarSearch"
-        style={{ maxWidth: isMobile ? "calc(100% - 42px)" : 450 }}
+        style={{ maxWidth: isMobile ? "calc(100% - 42px)" : 300 }}
       >
         <InputGroupAddon
           addonType="prepend"

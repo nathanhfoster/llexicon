@@ -50,13 +50,14 @@ class EntryPreview extends PureComponent {
       views
     } = this.state
 
-    const { ENTRY_DETAIL } = RouteMap
-
     return view == "month" && !isMobile ? (
       <div className="TileContent">
         <div
           onClick={() =>
-            RouterPush(history, ENTRY_DETAIL.replace(":entryId", `${id}`))
+            RouterPush(
+              history,
+              RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
+            )
           }
           className="hasEventsContainer"
           data-for={`${id}`}

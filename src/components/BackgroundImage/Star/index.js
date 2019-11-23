@@ -18,6 +18,7 @@ const StarColorGradients = {
 const StarColorGradientsList = objectToArray(StarColorGradients)
 
 const styles = ({
+  inherit,
   top = getRandomFloat(0, 100),
   left = getRandomFloat(0, 100),
   animation = getRandomFloat(3, 10),
@@ -35,7 +36,8 @@ const styles = ({
     animation: animation
       ? `glow-star 2s infinite ease-in-out alternate ${animation}s`
       : "none",
-    position: "absolute",
+    position: inherit ? "inherit" : "absolute",
+    display: "inline-block",
     borderRadius: "100%",
     backgroundImage: `radial-gradient(circle, ${
       color
@@ -53,6 +55,7 @@ const styles = ({
 const Star = props => <div style={styles(props)} />
 
 Star.propTypes = {
+  inherit: PropTypes.bool,
   top: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   left: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   animation: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
