@@ -133,11 +133,11 @@ class Entries extends Component {
     const { listView, minXs, minMd, minLg, minXl } = this.state
     return entries.map(entry => {
       return listView ? (
-        <Col key={entry.id} xs={12} className="p-0" >
+        <Col key={entry.id} xs={12} >
           <EntryMinimal {...entry} />
         </Col>
       ) : (
-        <Col key={entry.id} xs={minXs} md={minMd} lg={minLg} xl={minXl} className="p-0" >
+        <Col key={entry.id} xs={minXs} md={minMd} lg={minLg} xl={minXl} >
           <EntryMinimal {...entry} />
         </Col>
       )
@@ -153,7 +153,6 @@ class Entries extends Component {
         key={id}
         style={{ ...style /* background: "red" */ }}
         xs={12}
-        className="p-0"
       >
         <Entry
           key={id}
@@ -180,7 +179,7 @@ class Entries extends Component {
     } = this.state
 
     return entries.length > 0 ? (
-      <Container className="Entries Container p-0">
+      <Container className="Entries Container">
         <Nav tabs>
           <NavItem>
             <NavLink
