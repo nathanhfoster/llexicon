@@ -11,7 +11,6 @@ const UserLogin = (payload, rememberMe) => dispatch =>
     .then(res => {
       const { id, token } = res.data
       dispatch(RefreshPatchUser(token, id))
-      dispatch(GetUserSettings())
       dispatch({
         type: ReduxActions.USER_SET,
         payload: res.data
