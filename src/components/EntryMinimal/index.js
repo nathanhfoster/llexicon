@@ -33,7 +33,7 @@ const EntryMinimal = ({
         <Moment format="D MMM">{date_created_by_author}</Moment>
 
         {EntryFiles.length > 0 && (
-          <span>
+          <span style={{ marginLeft: 4 }} >
             <i className="far fa-file-image" />
           </span>
         )}
