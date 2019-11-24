@@ -12,7 +12,6 @@ import {
   TabPane
 } from "reactstrap"
 import Entry from "../../components/Entry"
-import Home from "../Home"
 import { FixedSizeList } from "react-window"
 import { SyncEntries, GetUserEntries } from "../../actions/Entries"
 import EntryMinimal from "../../components/EntryMinimal"
@@ -186,7 +185,7 @@ class Entries extends Component {
       listView
     } = this.state
 
-    return entries.length > 0 ? (
+    return (
       <Container className="Entries Container">
         <Row>
           <Nav tabs>
@@ -238,8 +237,6 @@ class Entries extends Component {
           </TabPane>
         </TabContent>
       </Container>
-    ) : (
-      <Home />
     )
   }
 }
