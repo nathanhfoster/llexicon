@@ -30,7 +30,7 @@ const EntryMinimal = ({
         <span>
           <Star inherit size={16} />{" "}
         </span>
-        <Moment format="D ddd">{date_created_by_author}</Moment>
+        <Moment format="d mmm">{date_created_by_author}</Moment>
 
         {EntryFiles.length > 0 && (
           <span>
