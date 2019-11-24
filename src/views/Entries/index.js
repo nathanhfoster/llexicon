@@ -9,7 +9,8 @@ import {
   NavItem,
   NavLink,
   TabContent,
-  TabPane
+  TabPane,
+  Button
 } from "reactstrap"
 import Entry from "../../components/Entry"
 import { FixedSizeList } from "react-window"
@@ -107,8 +108,7 @@ class Entries extends Component {
     visibleStartIndex,
     visibleStopIndex
   }) => {
-    const { SyncEntries, GetUserEntries } = this.props
-    const { entries, nextEntryPage } = this.state
+    const { entries } = this.state
     const { length } = entries
     const bottomOfListIndex = length === 0 ? length : length - 1
     const reachedBottomOfList =
@@ -118,14 +118,23 @@ class Entries extends Component {
     // console.log("reachedBottomOfList: ", reachedBottomOfList)
     // console.log("---------------------------------------")
 
+    if (reachedBottomOfList) {
+      this.GetEntries()
+    }
+  }
+
+  GetEntries = () => {
+    const { SyncEntries, GetUserEntries } = this.props
+    const { nextEntryPage } = this.state
+
     if (!nextEntryPage) return
+
     const split = nextEntryPage.split(/\?page=(.*)&/)
     const pageNumber = split[1]
-    if (reachedBottomOfList) {
-      SyncEntries(
-        () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
-      )
-    }
+
+    SyncEntries(
+      () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
+    )
   }
 
   renderMinimalEntries = entries => {
@@ -182,7 +191,8 @@ class Entries extends Component {
       listHeight,
       listItemHeight,
       activeTab,
-      listView
+      listView,
+      nextEntryPage
     } = this.state
 
     return (
@@ -217,6 +227,13 @@ class Entries extends Component {
         <TabContent activeTab={activeTab}>
           <TabPane tabId={1}>
             <Row>{this.renderMinimalEntries(entries)}</Row>
+            {nextEntryPage && (
+              <Row className="Center">
+                <Button color="accent" onClick={this.GetEntries}>
+                  <i className="fas fa-cloud-download-alt" /> Load More
+                </Button>
+              </Row>
+            )}
           </TabPane>
         </TabContent>
         <TabContent activeTab={activeTab}>

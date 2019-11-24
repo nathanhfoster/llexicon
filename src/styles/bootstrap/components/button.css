@@ -1,31 +1,39 @@
-.btn-primary.focus, .btn-primary:focus, .btn-outline-primary.focus, .btn-outline-primary:focus {
-  box-shadow: 0 0 0 0.075rem var(--primaryColor) !important;
+.btn, .btn-primary.focus, .btn-primary:focus, .btn-outline-primary.focus, .btn-outline-primary:focus {
+  box-shadow: 0 0 0 0.075rem var(--slate_grey) !important;
+}
+
+.btn-accent {
+  color: var(--secondaryColor);
+  background-color: var(--accentColor) !important;
+  border-color: var(--accentColor) !important;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .btn-primary {
-  color: white;
+  color: var(--secondaryColor);
   background-color: var(--quinaryColor) !important;
   border-color: var(--primaryColor) !important;
   box-shadow: var(--primaryBoxShadow);
 }
 
 .btn-danger {
-  color: white;
+  color: var(--secondaryColor);
   background-color: var(--danger) !important;
   border-color: var(--danger) !important;
   box-shadow: var(--primaryBoxShadow);
 }
 
 .btn-inherit {
-  color: white;
+  color: var(--secondaryColor);
   /* background: inherit; */
   border: 0;
   box-shadow: none !important;
 }
 
-.btn-primary:hover, .btn-inherit:hover {
+.btn-accent:hover, .btn-primary:hover, .btn-inherit:hover {
   background-color: var(--quaternaryColor) !important;
   border-color: var(--quaternaryColor) !important;
+  color: var(--secondaryColor);
 }
 
 .btn-outline-primary {
