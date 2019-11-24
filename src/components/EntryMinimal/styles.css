@@ -20,3 +20,8 @@
     white-space: nowrap;
     overflow: hidden;
 }
+
+.EntryMinimal time {
+    font-size: 1.25em;
+    font-weight: 200;
+}

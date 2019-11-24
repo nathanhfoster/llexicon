@@ -4,11 +4,19 @@ import { Badge } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
+import Moment from "react-moment"
 import Star from "../BackgroundImage/Star"
 
 import "./styles.css"
 
-const EntryMinimal = ({ id, title, html, EntryFiles, ...restOfProps }) => {
+const EntryMinimal = ({
+  id,
+  title,
+  html,
+  date_created_by_author,
+  EntryFiles,
+  ...restOfProps
+}) => {
   const history = useHistory()
 
   return (
@@ -20,15 +28,16 @@ const EntryMinimal = ({ id, title, html, EntryFiles, ...restOfProps }) => {
     >
       <div className="Center" style={{ justifyContent: "flex-start" }}>
         <span>
-          <Star inherit size={16} />
+          <Star inherit size={16} />{" "}
         </span>
+        <Moment format="ddd D">{date_created_by_author}</Moment>
 
         {EntryFiles.length > 0 && (
           <span>
             <i className="far fa-file-image" />
           </span>
         )}
-        <span>{title}</span>
+        <span style={{ marginLeft: 4 }}>{title}</span>
       </div>
     </Badge>
   )
@@ -36,7 +45,10 @@ const EntryMinimal = ({ id, title, html, EntryFiles, ...restOfProps }) => {
 
 EntryMinimal.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  title: PropTypes.string
+  title: PropTypes.string,
+  html: PropTypes.string,
+  date_created_by_author: PropTypes.string,
+  EntryFiles: PropTypes.arrayOf(PropTypes.object)
 }
 
 export default memo(EntryMinimal)

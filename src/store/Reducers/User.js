@@ -17,7 +17,8 @@ const DEFAULT_STATE_USER = {
   SocialAuthentications: [],
   groups: [],
   user_permissions: [],
-  Settings: { show_footer: false, push_messages: false }
+  Settings: { show_footer: false, push_messages: false },
+  location: {}
 }
 
 const User = (state = DEFAULT_STATE_USER, action) => {
@@ -53,6 +54,8 @@ const User = (state = DEFAULT_STATE_USER, action) => {
         updated: false,
         error: null
       }
+    case ReduxActions.SET_USER_LOCATION:
+      return { ...state, location: { ...state.location, ...payload } }
     case ReduxActions.USER_SET_SETTINGS:
       return {
         ...state,

@@ -76,7 +76,7 @@ class EntryList extends PureComponent {
                   className="EventColorLabelContainer"
                   style={{ backgroundColor: "var(--secondaryColor)" }}
                 />
-                <Moment format="hh:mma">{date_created_by_author}</Moment>
+                <Moment format="h:mma">{date_created_by_author}</Moment>
               </span>
               <h5 className="eventTitle">{title}</h5>
             </ListGroupItem>

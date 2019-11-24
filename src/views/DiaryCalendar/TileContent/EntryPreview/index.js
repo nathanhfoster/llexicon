@@ -68,7 +68,7 @@ class EntryPreview extends PureComponent {
             style={{ backgroundColor: "var(--secondaryColor)" }}
           />
           <span className="eventDate">
-            <Moment format="hh:mma">{date_created_by_author}</Moment>
+            <Moment format="h:mma">{date_created_by_author}</Moment>
           </span>
           <span className="eventTitle">{title}</span>
         </div>

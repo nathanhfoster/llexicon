@@ -1,7 +1,8 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { setWindow } from "./actions/App"
+import { SetWindow } from "./actions/App"
+import { WatchUserLocation } from "./actions/User"
 import { GetUserSettings } from "./actions/Settings"
 import "./styles/index.css"
 
@@ -10,24 +11,27 @@ const mapStateToProps = ({ User: { id } }) => ({
 })
 
 const mapDispatchToProps = {
-  setWindow,
+  SetWindow,
+  WatchUserLocation,
   GetUserSettings
 }
 
 export class App extends PureComponent {
   constructor(props) {
     super(props)
+    this.watchId = null
     this.state = {}
   }
 
   static propTypes = {
     UserId: PropTypes.number,
-    setWindow: PropTypes.func.isRequired,
+    SetWindow: PropTypes.func.isRequired,
+    WatchUserLocation: PropTypes.func.isRequired,
     GetUserSettings: PropTypes.func.isRequired
   }
 
   static defaultProps = {
-    setWindow,
+    SetWindow,
     GetUserSettings
   }
 
@@ -36,7 +40,9 @@ export class App extends PureComponent {
   }
 
   componentDidMount() {
-    const { GetUserSettings, UserId } = this.props
+    const { WatchUserLocation, GetUserSettings, UserId } = this.props
+
+    // this.watchId = WatchUserLocation()
 
     window.addEventListener("resize", this.updateWindowDimensions)
     this.updateWindowDimensions()
@@ -47,11 +53,15 @@ export class App extends PureComponent {
   }
 
   componentWillUnmount() {
+    const { WatchUserLocation } = this.props
+
+    // WatchUserLocation(this.watchId)
+
     window.removeEventListener("resize", this.updateWindowDimensions)
   }
 
   updateWindowDimensions = () => {
-    const { setWindow } = this.props
+    const { SetWindow } = this.props
     const {
       innerHeight,
       innerWidth,
@@ -113,7 +123,7 @@ export class App extends PureComponent {
       performance
     } = window
     const isMobile = innerWidth < 768
-    setWindow({
+    SetWindow({
       innerHeight,
       innerWidth,
       screen: {

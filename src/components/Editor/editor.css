@@ -9,7 +9,7 @@
 }
 
 .ql-snow .ql-tooltip {
-    background-color: var(--slate_grey);
+    background-color: var(--primaryColor) !important;
     left: 0 !important;
     right: 0 !important;
     color: var(--secondaryColor);
@@ -17,7 +17,9 @@
     box-shadow: var(--primaryBoxShadow);
 }
 
-.ql-snow .ql-tooltip a {}
+.ql-snow .ql-tooltip a {
+    background-color: inherit !important;
+}
 
 .ql-editor ul>li.ql-indent-1::before {
     content: '\25E6';

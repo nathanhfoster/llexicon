@@ -2,7 +2,7 @@ import { ReduxActions } from "../constants"
 import { Axios } from "."
 import qs from "qs"
 
-const setWindow = payload => ({
+const SetWindow = payload => ({
   type: ReduxActions.SET_WINDOW,
   payload
 })
@@ -33,7 +33,7 @@ const setHtmlDocument = Document => ({
 const clearHtmlDocument = () => ({ type: ReduxActions.CLEAR_HTML_DOCUMENT })
 
 export {
-  setWindow,
+  SetWindow,
   ResetRedux,
   setApiResponse,
   clearApiResponse,
