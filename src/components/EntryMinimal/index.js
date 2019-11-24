@@ -18,9 +18,9 @@ const EntryMinimal = ({ id, title, html, EntryFiles, ...restOfProps }) => {
         RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
       }
     >
-      <div style={{ display: "flex" }}>
+      <div className="Center" style={{ justifyContent: "flex-start" }}>
         <span>
-          <Star inherit size={12} />
+          <Star inherit size={16} />
         </span>
 
         {EntryFiles.length > 0 && (

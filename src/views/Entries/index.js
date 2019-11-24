@@ -133,11 +133,18 @@ class Entries extends Component {
     const { listView, minXs, minMd, minLg, minXl } = this.state
     return entries.map(entry => {
       return listView ? (
-        <Col key={entry.id} xs={12} >
+        <Col key={entry.id} xs={12} style={{ padding: 4 }}>
           <EntryMinimal {...entry} />
         </Col>
       ) : (
-        <Col key={entry.id} xs={minXs} md={minMd} lg={minLg} xl={minXl} >
+        <Col
+          key={entry.id}
+          xs={minXs}
+          md={minMd}
+          lg={minLg}
+          xl={minXl}
+          style={{ padding: 4 }}
+        >
           <EntryMinimal {...entry} />
         </Col>
       )
@@ -153,6 +160,7 @@ class Entries extends Component {
         key={id}
         style={{ ...style /* background: "red" */ }}
         xs={12}
+        className="p-0"
       >
         <Entry
           key={id}
@@ -180,30 +188,33 @@ class Entries extends Component {
 
     return entries.length > 0 ? (
       <Container className="Entries Container">
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={`${activeTab === 1 ? "active" : ""}`}
-              onClick={() => this.setState({ activeTab: 1 })}
-            >
-              <i
-                className={`MinimalEntryListToggle fas ${
-                  listView ? "fa-columns" : "fa-list-ul"
-                }`}
-                onClick={this.handleListLayoutClick}
-              />{" "}
-              Minimal
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={`${activeTab === 2 ? "active" : ""}`}
-              onClick={() => this.setState({ activeTab: 2 })}
-            >
-              Detailed
-            </NavLink>
-          </NavItem>
-        </Nav>
+        <Row>
+          <Nav tabs>
+            <NavItem>
+              <NavLink
+                className={`${activeTab === 1 ? "active" : ""}`}
+                onClick={() => this.setState({ activeTab: 1 })}
+              >
+                <i
+                  className={`MinimalEntryListToggle fas ${
+                    listView ? "fa-columns" : "fa-list-ul"
+                  }`}
+                  onClick={this.handleListLayoutClick}
+                />{" "}
+                Minimal
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={`${activeTab === 2 ? "active" : ""}`}
+                onClick={() => this.setState({ activeTab: 2 })}
+              >
+                Detailed
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Row>
+
         <TabContent activeTab={activeTab}>
           <TabPane tabId={1}>
             <Row>{this.renderMinimalEntries(entries)}</Row>
