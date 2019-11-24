@@ -16,7 +16,7 @@ import {
 import ReactDatePicker from "../../components/ReactDatePicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { SetCalendar } from "../../actions/Calendar"
-import { PostReduxEntry } from "../../actions/Entries"
+import { PostReduxEntry, SyncEntries } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../store/Reducers/TextEditor"
 import "./styles.css"
@@ -42,6 +42,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   SetCalendar,
   PostReduxEntry,
+  SyncEntries,
   SetEditorState,
   ClearEditorState
 }
@@ -63,6 +64,7 @@ class Home extends PureComponent {
     SetEditorState: PropTypes.func.isRequired,
     ClearEditorState: PropTypes.func.isRequired,
     PostReduxEntry: PropTypes.func.isRequired,
+    SyncEntries: PropTypes.func.isRequired,
     entriesLength: PropTypes.number.isRequired
   }
 
@@ -95,8 +97,13 @@ class Home extends PureComponent {
 
   componentDidMount() {}
 
-  handlePostEntry = () => {
-    const { PostReduxEntry, ClearEditorState, entriesLength } = this.props
+  handlePostEntry = async () => {
+    const {
+      PostReduxEntry,
+      SyncEntries,
+      ClearEditorState,
+      entriesLength
+    } = this.props
     const { editorStateHtml, title, tags, activeDate } = this.state
 
     const payload = {
@@ -109,7 +116,8 @@ class Home extends PureComponent {
       shouldPost: true
     }
 
-    PostReduxEntry(payload)
+    await PostReduxEntry(payload)
+    SyncEntries()
     ClearEditorState()
   }
 
