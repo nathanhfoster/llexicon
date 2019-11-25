@@ -30,9 +30,9 @@ class StarSearch extends PureComponent {
     let { search } = nextProps
     const currentSearch = prevState.search
 
-    if (currentSearch) search = currentSearch
+    // if (currentSearch) search = currentSearch
 
-    return { search }
+    return { search: currentSearch }
   }
 
   componentDidMount() {
