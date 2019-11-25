@@ -116,10 +116,10 @@ const GetUserEntriesByDate = date => (dispatch, getState) => {
 }
 
 const PostReduxEntry = payload => dispatch => {
-  dispatch({
+  /* dispatch({
     type: ALERTS_SET_MESSAGE,
     payload: { title: "Cached", message: "Entry" }
-  })
+  }) */
   dispatch({
     type: ENTRY_SET,
     payload: { ...payload, shouldPost: true, shouldDelete: false }
