@@ -19,22 +19,19 @@ class Persister extends PureComponent {
 
   static defaultProps = {}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { lastUpdated } = nextProps
-
-    return { lastUpdated }
-  }
-
   componentWillUnmount() {
     const { saveReduxState } = this.props
     saveReduxState()
   }
 
   render() {
-    const { saveReduxState } = this.props
-    const { lastUpdated } = this.state
+    const { saveReduxState, lastUpdated } = this.props
     return (
-      <UseDebounce callback={value => saveReduxState()} value={lastUpdated} />
+      <UseDebounce
+        callback={value => saveReduxState()}
+        value={lastUpdated}
+        delay={1500}
+      />
     )
   }
 }
