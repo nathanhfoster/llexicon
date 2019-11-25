@@ -60,10 +60,9 @@ const AwsUpload = (entry_id, media_type, file, base64) => dispatch => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetUserEntry = entryId => (dispatch, getState) => {
-  const pk = getState().User.id
+const GetUserEntry = entryId => dispatch => {
   return Axios()
-    .get(`/entries/${entryId}/?pk=${pk}`)
+    .get(`/entries/${entryId}/`)
     .then(res => {
       const { data } = res
       dispatch({
@@ -81,7 +80,7 @@ const GetUserEntry = entryId => (dispatch, getState) => {
 const GetUserEntries = pageNumber => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
-    .get(`/entries/${id}/view/?page=${pageNumber}&pk=${id}`)
+    .get(`/entries/${id}/view/?page=${pageNumber}`)
     .then(res => {
       const { data } = res
       dispatch({
@@ -157,10 +156,9 @@ const UpdateReduxEntry = ({ shouldDelete = false, ...payload }) => ({
   lastUpdated: new Date()
 })
 
-const UpdateEntry = (id, payload) => (dispatch, getState) => {
-  const pk = getState().User.id
+const UpdateEntry = (id, payload) => dispatch => {
   return Axios()
-    .patch(`/entries/${id}/update_with_tags/?pk=${pk}`, qs.stringify(payload))
+    .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
     .then(res => {
       const { data } = res
       dispatch({
@@ -177,10 +175,9 @@ const UpdateEntry = (id, payload) => (dispatch, getState) => {
     })
 }
 
-const DeleteEntry = id => (dispatch, getState) => {
-  const pk = getState().User.id
+const DeleteEntry = id => dispatch => {
   return Axios()
-    .delete(`/entries/${id}/?pk=${pk}`)
+    .delete(`/entries/${id}/`)
     .then(res => {
       dispatch({ type: ENTRY_DELETE, id })
       return res

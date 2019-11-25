@@ -1,20 +1,25 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouterGoBack } from "../../ReactRouter/Routes"
 import Editor from "../../components/Editor"
-import { UpdateReduxEntry } from "../../actions/Entries"
+import {
+  UpdateReduxEntry,
+  UpdateEntry,
+  SyncEntries
+} from "../../actions/Entries"
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
 
-const mapDispatchToProps = { UpdateReduxEntry }
+const mapDispatchToProps = { UpdateReduxEntry, UpdateEntry, SyncEntries }
 
-class Entry extends PureComponent {
+class Entry extends Component {
   constructor(props) {
     super(props)
 
@@ -26,7 +31,9 @@ class Entry extends PureComponent {
       .isRequired,
     showDivider: PropTypes.bool,
     toolbarHidden: PropTypes.bool,
-    UpdateReduxEntry: PropTypes.func.isRequired
+    UpdateReduxEntry: PropTypes.func.isRequired,
+    UpdateEntry: PropTypes.func.isRequired,
+    SyncEntries: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -66,7 +73,7 @@ class Entry extends PureComponent {
       title,
       html,
       date_created,
-      date_created_by_author,
+      date_created_by_author: new Date(date_created_by_author),
       date_updated,
       views,
       lastUpdated,
@@ -77,6 +84,23 @@ class Entry extends PureComponent {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const { title, date_created_by_author, html } = nextState
+
+    const currentTitle = this.state.title
+    const currentDateCreatedByAuthor = this.state.date_created_by_author
+    const currentHtml = this.state.html
+
+    const titleChanged = !deepEquals(currentTitle, title)
+    const dateChanged = !deepEquals(
+      currentDateCreatedByAuthor,
+      date_created_by_author
+    )
+    const htmlChanged = !deepEquals(currentHtml, html)
+
+    return titleChanged || dateChanged || htmlChanged
+  }
+
   componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState) {}
@@ -84,7 +108,7 @@ class Entry extends PureComponent {
   componentWillUnmount() {}
 
   render() {
-    const { UpdateReduxEntry, history } = this.props
+    const { UpdateReduxEntry, UpdateEntry, SyncEntries, history } = this.props
     const {
       id,
       author,
@@ -100,6 +124,7 @@ class Entry extends PureComponent {
       toolbarHidden,
       shouldRedirectOnDelete
     } = this.state
+
     return (
       <Editor
         toolbarId={id}
@@ -116,19 +141,25 @@ class Entry extends PureComponent {
             id="title"
             placeholder="Dear Diary.."
             value={title}
-            onChange={e => UpdateReduxEntry({ id, title: e.target.value })}
+            onChange={async e => {
+              const title = e.target.value
+              await UpdateReduxEntry({ id, title })
+              UpdateEntry(id, { title })
+            }}
           />
           <InputGroupAddon addonType="append">
             <InputGroupText className="p-0">
               <ReactDatePicker
                 selected={date_created_by_author || lastUpdated}
-                onChange={date =>
-                  UpdateReduxEntry({
+                onChange={async date => {
+                  const date_created_by_author = date
+                  await UpdateReduxEntry({
                     id,
-                    date_created_by_author: date,
+                    date_created_by_author,
                     lastUpdated: date
                   })
-                }
+                  UpdateEntry(id, { date_created_by_author })
+                }}
               />
             </InputGroupText>
           </InputGroupAddon>
@@ -140,10 +171,10 @@ class Entry extends PureComponent {
               <ConfirmAction
                 onClickCallback={() => {
                   shouldRedirectOnDelete && RouterGoBack(history)
-                  setTimeout(
-                    () => UpdateReduxEntry({ id, shouldDelete: true }),
-                    200
-                  )
+                  setTimeout(async () => {
+                    await UpdateReduxEntry({ id, shouldDelete: true })
+                    SyncEntries()
+                  }, 200)
                 }}
                 icon={
                   <i

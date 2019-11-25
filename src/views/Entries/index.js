@@ -129,7 +129,7 @@ class Entries extends Component {
 
     if (!nextEntryPage) return
 
-    const split = nextEntryPage.split(/\?page=(.*)&/)
+    const split = nextEntryPage.split(/\?page=(.*)/)
     const pageNumber = split[1]
 
     SyncEntries(
