@@ -216,8 +216,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
   let dispatchPostEntries = []
   let dispatchUpdateEntries = []
 
-  for (let i = 0; i < items.length; i++) {
-    const entry = items[i]
+  for (const entry of items) {
     const {
       id,
       title,
