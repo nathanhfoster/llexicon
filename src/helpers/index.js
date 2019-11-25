@@ -190,8 +190,7 @@ const mergeJson = (reduxData, newData) => {
   const allData = reduxData.concat(newData)
   let mergeMap = {}
 
-  for (let i = 0; i < allData.length; i++) {
-    const item = allData[i]
+  for (const item of allData) {
     const { id } = item
 
     if (!mergeMap[id]) {
