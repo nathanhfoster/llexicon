@@ -135,7 +135,7 @@ class Editor extends Component {
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
     // console.log("getSnapshotBeforeUpdate: ", prevProps)
-    // return "SNAP"
+    return null
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

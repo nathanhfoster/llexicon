@@ -4,6 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { SetWindow } from "./actions/App"
 import { WatchUserLocation } from "./actions/User"
 import { GetUserSettings } from "./actions/Settings"
+import { debounce } from "./helpers"
 import "./styles/index.css"
 
 const mapStateToProps = ({ User: { id } }) => ({
@@ -44,7 +45,8 @@ export class App extends PureComponent {
 
     // this.watchId = WatchUserLocation()
 
-    window.addEventListener("resize", this.updateWindowDimensions)
+    window.addEventListener("resize", debounce(this.updateWindowDimensions))
+
     this.updateWindowDimensions()
 
     if (UserId) {
@@ -194,7 +196,7 @@ export class App extends PureComponent {
     /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
 
   render() {
-    return <noscript />
+    return null
   }
 }
 

@@ -259,6 +259,26 @@ const capitalize = string => {
     return `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 }
 
+const debounce = (func, delay = 400) => {
+  let debounceTimer
+  return function(...args) {
+    const context = this
+    clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => func.apply(context, args), delay)
+  }
+}
+
+const throttled = (func, delay = 1000) => {
+  let lastCall = 0
+  return function(...args) {
+    const now = new Date().getTime()
+    if (now - lastCall < delay) {
+      return
+    }
+    lastCall = now
+    return func(...args)
+  }
+}
 export {
   DeepClone,
   getObjectLength,
@@ -289,5 +309,7 @@ export {
   readmultifiles,
   lazyLoadWithTimeOut,
   addDynamicScript,
-  capitalize
+  capitalize,
+  debounce,
+  throttled
 }

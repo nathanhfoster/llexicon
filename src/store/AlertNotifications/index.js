@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Toast, ToastHeader, ToastBody } from "reactstrap"
 import { ClearAlerts } from "../../actions/Alerts"
+import UseDebounce from "../../components/UseDebounce"
 import "./styles.css"
 
 const mapStateToProps = ({ Alerts: { title, message } }) => ({ title, message })
@@ -24,12 +25,11 @@ export class AlertNotifications extends PureComponent {
     ClearAlerts: PropTypes.func.isRequired
   }
 
-  static defaultProps = { alertInterval: 2500 }
+  static defaultProps = { alertInterval: 3000 }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { title, message, alertInterval, ClearAlerts } = nextProps
 
-    //this.interval = setInterval(() => ClearAlerts(), alertInterval)
     setTimeout(() => ClearAlerts(), alertInterval)
 
     const shouldShow = title && message ? true : false
@@ -37,18 +37,15 @@ export class AlertNotifications extends PureComponent {
     return { shouldShow, title, message }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    clearInterval(this.interval)
-  }
-
   componentWillUnmount() {
-    clearInterval(this.interval)
     const { ClearAlerts } = this.props
     ClearAlerts()
   }
 
   render() {
+    const { ClearAlerts } = this.props
     const { shouldShow, title, message } = this.state
+
     return (
       <Toast
         className="Alert"
@@ -59,9 +56,10 @@ export class AlertNotifications extends PureComponent {
         transition={{
           mountOnEnter: true,
           unmountOnExit: true,
-          timeout: 400
+          timeout: 600
         }}
       >
+        <UseDebounce callback={() => ClearAlerts()} />
         <ToastHeader icon={<i className="fas fa-feather-alt" />}>
           {title}
         </ToastHeader>

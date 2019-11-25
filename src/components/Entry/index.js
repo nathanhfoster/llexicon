@@ -13,6 +13,7 @@ import {
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import deepEquals from "../../helpers/deepEquals"
+import UseDebounce from "../UseDebounce"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -101,12 +102,6 @@ class Entry extends Component {
     return titleChanged || dateChanged || htmlChanged
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   render() {
     const { UpdateReduxEntry, UpdateEntry, SyncEntries, history } = this.props
     const {
@@ -134,6 +129,7 @@ class Entry extends Component {
         html={html}
         onChangeCallback={html => UpdateReduxEntry({ id, html })}
       >
+        <UseDebounce callback={() => SyncEntries()} />
         <InputGroup key={id} className="EntryInput">
           <Input
             type="text"
