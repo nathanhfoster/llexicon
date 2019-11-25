@@ -193,7 +193,7 @@ class ReactDatePicker extends PureComponent {
     onChange: date => console.log(date),
     showTimeSelect: true,
     timeFormat: "hh:mm a",
-    timeIntervals: 15,
+    timeIntervals: 1,
     timeCaption: "time"
   }
 
