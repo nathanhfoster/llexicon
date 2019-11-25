@@ -17,8 +17,8 @@ class UseDebounce extends PureComponent {
     return null
   }
 
-  componentDidUpdate(prevProps) {
-    const { callback, value, delay } = prevProps
+  componentDidUpdate() {
+    const { callback, value, delay } = this.props
 
     this.debounce = setTimeout(() => callback(value), delay)
   }

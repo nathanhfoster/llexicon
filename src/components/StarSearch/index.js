@@ -1,30 +1,24 @@
-import React, { Component } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import {
-  Container,
-  Row,
-  Col,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Button,
-  Input
-} from "reactstrap"
+import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import { SearchUserEntries } from "../../actions/Entries"
+import UseDebounce from "../UseDebounce"
 import "./styles.css"
 
-const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
+const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
+  isMobile,
+  search
+})
 
 const mapDispatchToProps = { SearchUserEntries }
 
-class StarSearch extends Component {
+class StarSearch extends PureComponent {
   constructor(props) {
     super(props)
 
-    // Identify props that can change from outsite and within the component and map them to state
     this.state = {}
   }
 
@@ -33,23 +27,15 @@ class StarSearch extends Component {
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    // Identify which properties have changed and compare them to the previous state
-    // If there was a change return a new state object
-    // Otherwise return null which means there was no state change
-    return nextProps
-  }
+    let { search } = nextProps
+    const currentSearch = prevState.search
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // If you are NOT using a PureComponent compare the nextState (derived from getDerivedStateFromProps) with this.state
-    // and determine what condition(s) your component should re render
-    return true
+    if (currentSearch) search = currentSearch
+
+    return { search }
   }
 
   componentDidMount() {}
-
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    return null
-  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
@@ -57,12 +43,14 @@ class StarSearch extends Component {
 
   handleSearch = e => {
     const { value } = e.target
-    const { SearchUserEntries } = this.props
-    SearchUserEntries(value)
+    this.setState({ search: value })
   }
 
   render() {
-    const { isMobile } = this.state
+    const { SearchUserEntries, isMobile } = this.props
+
+    const { search } = this.state
+
     return (
       <InputGroup
         className="StarSearch"
@@ -78,9 +66,16 @@ class StarSearch extends Component {
         </InputGroupAddon>
 
         <Input
+          value={search}
           placeholder="Search the stars..."
           className="p-0"
           onChange={this.handleSearch}
+        />
+
+        <UseDebounce
+          callback={value => SearchUserEntries(value)}
+          value={search}
+          delay={1500}
         />
       </InputGroup>
     )

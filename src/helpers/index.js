@@ -279,6 +279,7 @@ const throttled = (func, delay = 1000) => {
     return func(...args)
   }
 }
+
 export {
   DeepClone,
   getObjectLength,

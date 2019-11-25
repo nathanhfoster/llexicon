@@ -22,7 +22,8 @@ const DEFAULT_STATE_ENTRIES = {
   items: [],
   filteredItems: [],
   isPending: false,
-  error: null
+  error: null,
+  search: ""
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
@@ -61,7 +62,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         filteredItems: filteredItems.filter(
           item => !filteredEntries.includes(entry => entry.id === item.id)
         ),
-        items: filteredEntries
+        items: filteredEntries,
+        search
       }
     case ENTRIES_PENDING:
       return { ...state, isPending: true }
