@@ -19,7 +19,7 @@ class StarSearch extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { search: "" }
   }
 
   static propTypes = { SearchUserEntries: PropTypes.func.isRequired }
