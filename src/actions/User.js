@@ -1,8 +1,7 @@
 import { ReduxActions } from "../constants"
 import { Axios, AxiosForm } from "."
 import qs from "qs"
-import { CookieMap } from "../constants"
-import { GetUserSettings } from "./Settings"
+
 const ChangeUser = payload => ({ type: ReduxActions.USER_SET, payload })
 
 const UserLogin = (payload, rememberMe) => dispatch =>

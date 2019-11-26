@@ -20,7 +20,29 @@ const baseFormHeaders = payload => ({
 })
 
 const Axios = (responseType = "json") => {
+  const {
+    token,
+    Settings: { offline_mode }
+  } = getReduxState().User
+  if (offline_mode) return axios.create({ baseURL: "http://offline" })
+  return axios.create({
+    withCredentials: token ? true : false,
+    baseURL: REACT_APP_API_URL,
+    //timeout: 25000,
+    crossDomain: true,
+    responseType,
+    headers: token
+      ? {
+          Authorization: `Token ${token}`,
+          ...baseHeaders
+        }
+      : baseHeaders
+  })
+}
+
+const AxiosOffline = (responseType = "json") => {
   const { token } = getReduxState().User
+
   return axios.create({
     withCredentials: token ? true : false,
     baseURL: REACT_APP_API_URL,
@@ -86,4 +108,4 @@ const Sync = dispatchActions => async dispatch => {
     })
 }
 
-export { Axios, AxiosForm, AxiosData, Sync }
+export { Axios, AxiosOffline, AxiosForm, AxiosData, Sync }

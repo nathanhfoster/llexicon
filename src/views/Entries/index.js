@@ -46,7 +46,7 @@ class Entries extends Component {
 
     this.state = {
       activeTab: 1,
-      listView: false,
+      listView: true,
       minXs: 6,
       minMd: 4,
       minLg: 3,

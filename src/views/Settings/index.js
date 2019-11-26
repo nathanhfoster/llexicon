@@ -26,13 +26,18 @@ class Settings extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = { ShowFooterTooltip: false, ShowPushMessagesTooltip: false }
+    this.state = {
+      ShowFooterTooltip: false,
+      ShowPushMessagesTooltip: false,
+      ShowOfflineModeTooltip: false
+    }
   }
 
   static propTypes = {
     Settings: PropTypes.object,
     ShowFooterTooltip: PropTypes.bool,
     ShowPushMessagesTooltip: PropTypes.bool,
+    ShowOfflineModeTooltip: PropTypes.bool,
     GetUserSettings: PropTypes.func.isRequired,
     PostSettings: PropTypes.func.isRequired,
     SetSettings: PropTypes.func.isRequired
@@ -72,9 +77,14 @@ class Settings extends PureComponent {
   }
 
   render() {
-    const { User, ShowFooterTooltip, ShowPushMessagesTooltip } = this.state
+    const {
+      User,
+      ShowFooterTooltip,
+      ShowPushMessagesTooltip,
+      ShowOfflineModeTooltip
+    } = this.state
     const { Settings } = User
-    const { show_footer, push_messages } = Settings
+    const { show_footer, push_messages, offline_mode } = Settings
 
     return (
       <Container className="Settings Container">
@@ -89,9 +99,7 @@ class Settings extends PureComponent {
           </Col>
         </Row>
         <Row>
-          <Col xs={12}>
-            <h2 className="headerBanner">Appearance</h2>
-          </Col>
+          <h2 className="headerBanner">Appearance</h2>
         </Row>
         <Row className="checkBoxTable">
           <Col xs={12}>
@@ -121,6 +129,32 @@ class Settings extends PureComponent {
         </Row>
         <Row>
           <h2 className="headerBanner">Features</h2>
+        </Row>
+        <Row className="checkBoxTable">
+          <Col xs={12}>
+            <FormGroup check>
+              <Label check>
+                <Input
+                  readOnly
+                  type="radio"
+                  disabled={!User.id}
+                  checked={offline_mode}
+                  onClick={() => this.handleOnClick("offline_mode")}
+                />
+                <span className="checkBoxText" id="ShowOfflineModeTooltip">
+                  Offline mode
+                </span>
+                <Tooltip
+                  placement="right"
+                  isOpen={ShowOfflineModeTooltip}
+                  target="ShowOfflineModeTooltip"
+                  toggle={this.toggleTooltip}
+                >
+                  Toggles frequent fetches of messages
+                </Tooltip>
+              </Label>
+            </FormGroup>
+          </Col>
         </Row>
         <Row className="checkBoxTable">
           <Col xs={12}>

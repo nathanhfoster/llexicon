@@ -1,12 +1,12 @@
 import { ReduxActions } from "../constants"
-import { Axios } from "."
+import { Axios, AxiosOffline } from "."
 import qs from "qs"
 
 const { ALERTS_SET_MESSAGE, USER_SET_SETTINGS } = ReduxActions
 
 const GetUserSettings = () => (dispatch, getState) => {
   const { id } = getState().User
-  return Axios()
+  return AxiosOffline()
     .get(`user/settings/${id}/view/`)
     .then(res => {
       dispatch({
@@ -18,7 +18,7 @@ const GetUserSettings = () => (dispatch, getState) => {
 }
 
 const PostSettings = payload => dispatch =>
-  Axios()
+  AxiosOffline()
     .post(`user/settings/`, qs.stringify(payload))
     .then(res => {
       dispatch({
@@ -30,7 +30,7 @@ const PostSettings = payload => dispatch =>
 
 const SetSettings = payload => (dispatch, getState) => {
   const { id } = getState().User.Settings
-  return Axios()
+  return AxiosOffline()
     .patch(`user/settings/${id}/`, qs.stringify(payload))
     .then(res => {
       dispatch({

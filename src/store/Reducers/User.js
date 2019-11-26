@@ -17,7 +17,7 @@ const DEFAULT_STATE_USER = {
   SocialAuthentications: [],
   groups: [],
   user_permissions: [],
-  Settings: { show_footer: false, push_messages: false },
+  Settings: { show_footer: false, push_messages: false, offline_mode: false },
   location: {}
 }
 
