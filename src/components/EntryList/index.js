@@ -6,6 +6,7 @@ import Moment from "react-moment"
 import MomentJS from "moment"
 import { removeAttributeDuplicates } from "../../helpers"
 import { RouterPush } from "../../ReactRouter/Routes"
+import Star from "../BackgroundImage/Star"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items } }) => ({
@@ -72,13 +73,17 @@ class EntryList extends PureComponent {
               header={title}
             >
               <span className="eventDate">
-                <span
-                  className="EventColorLabelContainer"
-                  style={{ backgroundColor: "var(--secondaryColor)" }}
+                <Star
+                  inherit
+                  size={8}
+                  marginRight={2}
+                  color="White"
+                  animation={false}
+                  opacity={1}
                 />
                 <Moment format="h:mma">{date_created_by_author}</Moment>
               </span>
-              <h5 className="eventTitle">{title}</h5>
+              <h5 className="eventTitle">{title || "No title"}</h5>
             </ListGroupItem>
           ) : null}
         </div>

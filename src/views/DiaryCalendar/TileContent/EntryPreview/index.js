@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush } from "../../../../ReactRouter/Routes"
 import { RouteMap } from "../../../../ReactRouter/Routes"
 import Moment from "react-moment"
+import Star from "../../../../components/BackgroundImage/Star"
 import "./styles.css"
 
 const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
@@ -63,20 +64,28 @@ class EntryPreview extends PureComponent {
           data-for={`${id}`}
           data-tip={id}
         >
-          <span
-            className="eventLabelColor"
-            style={{ backgroundColor: "var(--secondaryColor)" }}
+          <Star
+            inherit
+            size={8}
+            marginRight={2}
+            color="White"
+            animation={false}
+            opacity={1}
           />
           <span className="eventDate">
             <Moment format="h:mma">{date_created_by_author}</Moment>
           </span>
-          <span className="eventTitle">{title}</span>
+          <span className="eventTitle">{title || "No title"}</span>
         </div>
       </div>
     ) : view == "month" && shouldRenderInMobile ? (
-      <span
-        className="eventLabelColor"
-        style={{ backgroundColor: "var(--secondaryColor)" }}
+      <Star
+        inherit
+        size={8}
+        marginRight={2}
+        color="White"
+        animation={false}
+        opacity={1}
       />
     ) : null
   }

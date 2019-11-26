@@ -25,7 +25,9 @@ const styles = ({
   size,
   color,
   opacity = getRandomFloat(0.1, 1),
-  zIndex
+  zIndex,
+  marginLeft,
+  marginRight
 }) => {
   const randomSize = getRandomInt(1, 8)
   const randomGradientIndex = getRandomInt(0, StarColorGradientsList.length - 1)
@@ -48,7 +50,9 @@ const styles = ({
     height: size || randomSize,
     willChange: "opacity",
     opacity,
-    zIndex: zIndex || randomZIndex
+    zIndex: zIndex || randomZIndex,
+    marginLeft,
+    marginRight
   }
 }
 
@@ -60,7 +64,10 @@ Star.propTypes = {
   left: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   animation: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
   size: PropTypes.number,
-  color: PropTypes.string
+  color: PropTypes.oneOf(Object.keys(StarColorGradients)),
+  opacity: PropTypes.number,
+  marginLeft: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  marginRight: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
 
 export default memo(Star)

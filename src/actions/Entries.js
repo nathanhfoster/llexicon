@@ -144,8 +144,9 @@ const PostEntry = payload => dispatch =>
       return data
     })
     .catch(e => {
-      const payload = JSON.parse(JSON.stringify(e.response))
-      dispatch({ type: ENTRIES_ERROR, payload })
+      const error = JSON.parse(JSON.stringify(e))
+      console.log(error)
+      dispatch({ type: ENTRIES_ERROR, payload: error })
     })
 
 const UpdateReduxEntry = ({ shouldDelete = false, ...payload }) => ({
@@ -192,6 +193,7 @@ const DeleteEntry = id => dispatch => {
 
 const SearchUserEntries = search => async (dispatch, getState) => {
   const { id } = getState().User
+  console.log(search)
   await Axios()
     .post(`entries/${id}/search/`, qs.stringify({ search }))
     .then(async res => {
@@ -199,8 +201,8 @@ const SearchUserEntries = search => async (dispatch, getState) => {
     })
     .catch(async e => {
       await dispatch({ type: ENTRIES_SEARCH_FILTER, payload: [], search })
-      // const error = JSON.parse(JSON.stringify(e))
-      // console.log(error)
+      const error = JSON.parse(JSON.stringify(e))
+      console.log(error)
     })
 }
 

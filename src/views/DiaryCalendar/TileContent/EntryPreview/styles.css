@@ -29,20 +29,6 @@
     background-color: rgba(0, 0, 0, 1);
 }
 
-@media (min-width: 768px) {
-    .eventLabelColor {
-        margin: 0 4px;
-    }
-}
-
-.eventLabelColor {
-    width: 8px;
-    height: 8px;
-    flex-shrink: 0;
-    display: inline-block;
-    border-radius: 100%;
-}
-
 .ListItemContainer {
     display: inline-block;
 }

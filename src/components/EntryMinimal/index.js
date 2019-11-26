@@ -28,7 +28,7 @@ const EntryMinimal = ({
     >
       <div className="Center" style={{ justifyContent: "flex-start" }}>
         <span>
-          <Star inherit size={16} />{" "}
+          <Star inherit size={16} animation={false} opacity={1} />{" "}
         </span>
         <Moment format="D MMM">{date_created_by_author}</Moment>
 

@@ -35,10 +35,7 @@ class StarSearch extends PureComponent {
     return { search: currentSearch }
   }
 
-  componentDidMount() {
-    const { SearchUserEntries } = this.props
-    SearchUserEntries("")
-  }
+  componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
