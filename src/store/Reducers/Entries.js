@@ -44,6 +44,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         state.items.concat(filteredItems),
         payload
       ).filter(item => {
+        if (!search) return state
         const { title, html, tags } = item
         if (
           title.toLowerCase().includes(search.toLowerCase()) ||

@@ -12,7 +12,7 @@ import "./styles.css"
 const mapStateToProps = (
   {
     User,
-    Entries: { items },
+    Entries: { items, filteredItems },
     Window: {
       isMobile,
       screen: { availHeight }
@@ -26,6 +26,7 @@ const mapStateToProps = (
 ) => ({
   UserId: User.id,
   entry: items
+    .concat(filteredItems)
     .filter(item => !item.shouldDelete)
     .find(entry => entry.id == entryId),
   entryId,
