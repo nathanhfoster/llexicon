@@ -20,7 +20,9 @@
     left: 0;
     float: none;
     margin: 0 auto 4px auto;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
 }

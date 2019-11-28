@@ -105,6 +105,11 @@
   left: 8px;
   top: 8px;
   font-size: 1em;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 abbr {
