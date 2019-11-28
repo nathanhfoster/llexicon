@@ -78,8 +78,6 @@ class EntryPreview extends PureComponent {
       </div>
     ) : view == "month" ? (
       <Star
-        position="absolute"
-        left={"calc(50% - 4px)"}
         bottom="8px"
         size={8}
         color="White"
