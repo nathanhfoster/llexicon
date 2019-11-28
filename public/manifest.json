@@ -3,6 +3,14 @@
   "short_name": "Astral Tree",
   "description": "Journal the essence of your life.",
   "author": "Nathan Foster",
+  "keywords": [
+    "react",
+    "redux",
+    "journal",
+    "diary", 
+    "astral", 
+    "tree" 
+  ],
   "icons": [
     {
       "src": "/android-chrome-144x144.png",
