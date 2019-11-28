@@ -9,6 +9,7 @@
     transition: opacity 0.4s;
     -webkit-transition: opacity 0.4s;
     opacity: var(--mainOpacity);
+    min-height: 120px;
     height: calc(100% - var(--textEditorToolBarHeight) - var(--bottomToolbarHeight));
     /* height: calc(100% - var(--textEditorToolBarHeight)); */
 }
