@@ -100,7 +100,6 @@ class TileContent extends PureComponent {
             activeDate={date}
             staticContext={staticContext}
             view={view}
-            shouldRenderInMobile={true}
           />
         )
       )

@@ -3,5 +3,5 @@
 }
 
 .EditorContainer {
-  height: calc(100% - var(--inputHeight));
+  height: calc(100vh - var(--navBarHeight) - var(--inputHeight));
 }

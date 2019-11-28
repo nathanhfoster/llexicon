@@ -51,36 +51,6 @@ a, a:hover {
   text-align: center;
 }
 
-@media (min-width: 768px) {
-  ::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
-  }
-}
-
-::-webkit-scrollbar {
-  display: none;
-  background-color: transparent;
-  transition: 200ms linear;
-}
-
-::-webkit-scrollbar-track-piece {
-  background-color: transparent;
-  border-radius: 6px;
-}
-
-::-webkit-scrollbar-track {
-  /* box-shadow: inset 0 0 5px var(--grey);
-  background: white; */
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(55, 57, 67, 0.2);
-  box-shadow: inset var(--primaryBoxShadow);
-  border-radius: 6px;
-}
-
 input {
   min-height: var(--inputHeight);
   border: inherit;
@@ -88,16 +58,20 @@ input {
   color: var(--secondaryColor);
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: var(--light_grey);
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
   color: var(--light_grey);
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
+::-ms-input-placeholder {
+  /* Microsoft Edge */
   color: var(--light_grey);
 }
 

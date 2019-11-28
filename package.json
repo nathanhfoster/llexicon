@@ -8,6 +8,8 @@
     "form-data": "^3.0.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
+    "overlayscrollbars": "^1.10.0",
+    "overlayscrollbars-react": "^0.2.0",
     "prop-types": "^15.7.2",
     "quill-image-resize-module-react": "^3.0.0",
     "react": "^16.10.2",

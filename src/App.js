@@ -1,11 +1,10 @@
-import React, { PureComponent } from "react"
+import { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { SetWindow } from "./actions/App"
 import { WatchUserLocation } from "./actions/User"
 import { GetUserSettings } from "./actions/Settings"
 import { debounce } from "./helpers"
-import "./styles/index.css"
 
 const mapStateToProps = ({ User: { id } }) => ({
   UserId: id

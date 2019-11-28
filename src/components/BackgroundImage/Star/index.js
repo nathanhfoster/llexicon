@@ -18,9 +18,12 @@ const StarColorGradients = {
 const StarColorGradientsList = objectToArray(StarColorGradients)
 
 const styles = ({
-  inherit,
-  top = getRandomFloat(0, 100),
-  left = getRandomFloat(0, 100),
+  position = "inherit",
+  display = "inline-block",
+  top,
+  bottom,
+  left,
+  right,
   animation = getRandomFloat(3, 10),
   size,
   color,
@@ -32,14 +35,18 @@ const styles = ({
   const randomSize = getRandomInt(1, 8)
   const randomGradientIndex = getRandomInt(0, StarColorGradientsList.length - 1)
   const randomZIndex = getRandomInt(0, 100)
+  if (typeof top === "string" && !top.includes("px")) top = `${top}%`
+  if (typeof left === "string" && !left.includes("px")) left = `${left}%`
   return {
-    top: `${top}%`,
-    left: `${left}%`,
+    top,
+    bottom,
+    left,
+    right,
     animation: animation
       ? `glow-star 2s infinite ease-in-out alternate ${animation}s`
       : "none",
-    position: inherit ? "inherit" : "absolute",
-    display: "inline-block",
+    position,
+    display,
     borderRadius: "100%",
     backgroundImage: `radial-gradient(circle, ${
       color
@@ -59,9 +66,12 @@ const styles = ({
 const Star = props => <div style={styles(props)} />
 
 Star.propTypes = {
-  inherit: PropTypes.bool,
+  position: PropTypes.string,
+  display: PropTypes.string,
   top: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  bottom: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   left: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  right: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   animation: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
   size: PropTypes.number,
   color: PropTypes.oneOf(Object.keys(StarColorGradients)),

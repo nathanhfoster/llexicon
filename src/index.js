@@ -1,3 +1,5 @@
+import "overlayscrollbars/css/OverlayScrollbars.css"
+import "./styles/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import LoadingScreen from "./components/LoadingScreen"

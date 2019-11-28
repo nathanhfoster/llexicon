@@ -74,7 +74,6 @@ class EntryList extends PureComponent {
             >
               <span className="eventDate">
                 <Star
-                  inherit
                   size={8}
                   marginRight={2}
                   color="White"

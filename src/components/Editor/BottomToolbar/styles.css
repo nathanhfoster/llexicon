@@ -1,0 +1,34 @@
+:root {
+    --bottomToolbarHeight: 220px;
+    --bottomToolbarFilesHeight: 80px;
+    --bootmToolBarTagsHeight: 24px;
+}
+
+.BottomToolBar {
+    height: var(--bottomToolbarHeight);
+    opacity: var(--mainOpacity);
+}
+
+.BottomToolBar i {
+    color: var(--secondaryColor);
+}
+
+.BottomToolBar .row {
+
+}
+
+.BottomToolBar:focus-within, .BottomToolBar:hover {
+    opacity: 1;
+}
+
+.BottomToolBarTags {
+    height: var(--bootmToolBarTagsHeight);
+}
+
+.BottomToolBarFiles {
+    height: var(--bottomToolbarFilesHeight);
+}
+
+.BottomToolButtonRow {
+    height: calc((100% - var(--bottomToolbarFilesHeight) - var(--bootmToolBarTagsHeight)) / 2);
+}

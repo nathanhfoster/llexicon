@@ -38,7 +38,6 @@ class EntryPreview extends PureComponent {
     const { history, location, match } = this.props
     const {
       isMobile,
-      shouldRenderInMobile,
       view,
       id,
       author,
@@ -65,7 +64,6 @@ class EntryPreview extends PureComponent {
           data-tip={id}
         >
           <Star
-            inherit
             size={8}
             marginRight={2}
             color="White"
@@ -78,11 +76,12 @@ class EntryPreview extends PureComponent {
           <span className="eventTitle">{title || "No title"}</span>
         </div>
       </div>
-    ) : view == "month" && shouldRenderInMobile ? (
+    ) : view == "month" ? (
       <Star
-        inherit
+        position="absolute"
+        left={"calc(50% - 4px)"}
+        bottom="8px"
         size={8}
-        marginRight={2}
         color="White"
         animation={false}
         opacity={1}

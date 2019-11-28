@@ -11,6 +11,7 @@ import "react-quill/dist/quill.core.css"
 // import "quill-mention/dist/quill.mention.min.css"
 import "./styles.css"
 import Toolbar from "./Toolbar"
+import BottomToolbar from "./BottomToolbar"
 
 // const Size = Quill.import("formats/size")
 // Size.whitelist = ["extra-small", "small", "medium", "large"]
@@ -272,6 +273,7 @@ class Editor extends Component {
             onChange={this.handleEditorStateChange}
             placeholder={placeholder}
           />
+          <BottomToolbar toolbarId={toolbarId} editorRef={editorRef} />
         </div>
         {showDivider && <Divider />}
       </Fragment>

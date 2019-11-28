@@ -10,10 +10,6 @@
     text-align: left;
 }
 
-.TileContent::-webkit-scrollbar {
-    display: block;
-}
-
 .hasEventsContainer {
     cursor: pointer;
     line-height: 24px;

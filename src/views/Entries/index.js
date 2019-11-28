@@ -68,9 +68,11 @@ class Entries extends Component {
 
     const inputHeight = 46
 
-    const listHeight = viewPortHeight
+    const bottomToolbarHeight = 220
 
-    let listItemHeight = 500
+    const listHeight = viewPortHeight - inputHeight - 54
+
+    let listItemHeight = listHeight / 2
 
     if (listHeight / 3 > listItemHeight) listItemHeight = listHeight / 3
 

@@ -66,12 +66,12 @@ class EntryDetail extends PureComponent {
   render() {
     const { entry, entryContainerHeight } = this.state
     return entry ? (
-      <Container className="EntryDetail Container">
+      <Container className="Container">
         <Row>
-          <Col xs={12} className="p-0">
+          <Col xs={12} className="EntryDetail p-0">
             <Entry
               {...entry}
-              containerHeight={entryContainerHeight}
+              // containerHeight={entryContainerHeight}
               shouldRedirectOnDelete
               toolbarHidden={false}
             />

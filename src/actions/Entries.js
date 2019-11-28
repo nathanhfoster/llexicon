@@ -193,7 +193,6 @@ const DeleteEntry = id => dispatch => {
 
 const SearchUserEntries = search => async (dispatch, getState) => {
   const { id } = getState().User
-  console.log(search)
   await Axios()
     .post(`entries/${id}/search/`, qs.stringify({ search }))
     .then(async res => {

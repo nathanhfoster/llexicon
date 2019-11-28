@@ -100,19 +100,6 @@
   background: var(--slate_grey);
 }
 
-.react-calendar__month-view button:hover ::-webkit-scrollbar-thumb {
-  /* background: var(--slate_grey); */
-}
-
-.react-calendar__month-view button ::-webkit-scrollbar {
-  display: block;
-}
-
-.react-calendar__month-view .react-calendar__tile {
-  /* display: flex;
-  flex-flow: column; */
-}
-
 .react-calendar__month-view .react-calendar__tile abbr {
   position: absolute;
   left: 8px;
@@ -174,10 +161,6 @@ abbr {
   margin: 0;
   padding: 0;
   overflow: hidden;
-}
-
-.EventList::-webkit-scrollbar {
-  display: block;
 }
 
 .EventListHeader {

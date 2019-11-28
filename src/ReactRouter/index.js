@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
 import Home from "../views/Home"
@@ -133,20 +134,21 @@ class ReactRouter extends PureComponent {
     return (
       <Fragment>
         <NavBar />
-        <div
-          className="App routeOverlay"
+        <OverlayScrollbarsComponent
+          className="App routeOverlay os-theme-dark"
           style={{
             top: navBarHeight,
             bottom: show_footer ? footerHeight : 0
             // background: "red"
           }}
+          options={{ scrollbars: { autoHide: "scroll" } }}
         >
           <Switch>
             {this.renderRouteItems(routeItems)}
             <Route component={PageNotFound} />
           </Switch>
           <Footer />
-        </div>
+        </OverlayScrollbarsComponent>
       </Fragment>
     )
   }

@@ -28,8 +28,7 @@ class Entry extends Component {
   }
 
   static propTypes = {
-    containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      .isRequired,
+    containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     showDivider: PropTypes.bool,
     toolbarHidden: PropTypes.bool,
     UpdateReduxEntry: PropTypes.func.isRequired,
@@ -125,7 +124,7 @@ class Entry extends Component {
         toolbarId={id}
         showDivider={showDivider}
         toolbarHidden={toolbarHidden}
-        height={textEditorHeight}
+        // height={textEditorHeight}
         html={html}
         onChangeCallback={html => UpdateReduxEntry({ id, html })}
       >

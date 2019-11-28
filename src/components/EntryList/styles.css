@@ -7,10 +7,6 @@
     position: relative;
 }
 
-.List::-webkit-scrollbar {
-    display: block;
-    width: 4px;
-}
 
 .listItem {
     background: rgba(0, 0, 0, 0.7);
@@ -27,10 +23,6 @@
     cursor: pointer;
 }
 
-/* .List .list-group-item:first-child,
-  .List .list-group-item:last-child {
-    border-radius: 0 !important;
-  } */
 
 a.list-group-item .list-group-item-heading, button.list-group-item .list-group-item-heading, .list-group-item-text {
     color: var(--tertiarycolor);
