@@ -273,7 +273,7 @@ class Editor extends Component {
             onChange={this.handleEditorStateChange}
             placeholder={placeholder}
           />
-          <BottomToolbar toolbarId={toolbarId} editorRef={editorRef} />
+          {/* <BottomToolbar toolbarId={toolbarId} editorRef={editorRef} /> */}
         </div>
         {showDivider && <Divider />}
       </Fragment>
