@@ -9,7 +9,11 @@ import EntryList from "../../components/EntryList"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouterLinkPush, RouteMap } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
-import { SyncEntries, GetUserEntriesByDate } from "../../actions/Entries"
+import {
+  GetEntryTags,
+  SyncEntries,
+  GetUserEntriesByDate
+} from "../../actions/Entries"
 import MomentJS from "moment"
 import "./styles.css"
 import "./stylesM.css"
@@ -19,7 +23,12 @@ const mapStateToProps = ({ Calendar: { activeDate, view } }) => ({
   view
 })
 
-const mapDispatchToProps = { SetCalendar, SyncEntries, GetUserEntriesByDate }
+const mapDispatchToProps = {
+  SetCalendar,
+  GetEntryTags,
+  SyncEntries,
+  GetUserEntriesByDate
+}
 
 class DiaryCalendar extends PureComponent {
   constructor(props) {
@@ -30,6 +39,7 @@ class DiaryCalendar extends PureComponent {
 
   static propTypes = {
     SetCalendar: PropTypes.func.isRequired,
+    GetEntryTags: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired,
     GetUserEntriesByDate: PropTypes.func.isRequired
   }
@@ -43,7 +53,8 @@ class DiaryCalendar extends PureComponent {
   }
 
   componentDidMount() {
-    const { activeDate, SyncEntries } = this.props
+    const { activeDate, GetEntryTags, SyncEntries } = this.props
+    GetEntryTags()
     SyncEntries(
       () =>
         new Promise(resolve => resolve(this.getUserEntriesByDate(activeDate)))

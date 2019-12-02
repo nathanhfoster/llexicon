@@ -23,7 +23,7 @@ import "./styles.css"
 
 const mapStateToProps = ({
   Calendar: { activeDate },
-  TextEditor: { clearedOn, title, editorStateHtml },
+  TextEditor: { clearedOn, title, html, EntryFiles, latitude, longitude, tags },
   Window: {
     innerHeight,
     screen: { availHeight }
@@ -33,7 +33,11 @@ const mapStateToProps = ({
   activeDate,
   clearedOn,
   title,
-  editorStateHtml,
+  html,
+  EntryFiles,
+  latitude,
+  longitude,
+  tags,
   innerHeight,
   viewPortHeight: availHeight,
   entriesLength: items.length
@@ -59,7 +63,7 @@ class Home extends PureComponent {
       PropTypes.string,
       PropTypes.instanceOf(Date)
     ]),
-    editorStateHtml: PropTypes.string,
+    html: PropTypes.string,
     SetCalendar: PropTypes.func.isRequired,
     SetEditorState: PropTypes.func.isRequired,
     ClearEditorState: PropTypes.func.isRequired,
@@ -75,14 +79,17 @@ class Home extends PureComponent {
       activeDate,
       clearedOn,
       title,
-      editorStateHtml,
+      html,
+      EntryFiles,
+      latitude,
+      longitude,
+      tags,
       innerHeight,
       viewPortHeight,
       footerHeight
     } = nextProps
 
-    const editorStateHtmlIsBlank =
-      editorStateHtml === DEFAULT_STATE_TEXT_EDITOR.editorStateHtml
+    const editorStateHtmlIsBlank = html === DEFAULT_STATE_TEXT_EDITOR.html
 
     const postDisabled = editorStateHtmlIsBlank && !title
 
@@ -90,7 +97,11 @@ class Home extends PureComponent {
       activeDate,
       clearedOn,
       title,
-      editorStateHtml,
+      html,
+      EntryFiles,
+      latitude,
+      longitude,
+      tags,
       postDisabled
     }
   }
@@ -104,12 +115,12 @@ class Home extends PureComponent {
       ClearEditorState,
       entriesLength
     } = this.props
-    const { editorStateHtml, title, tags, activeDate } = this.state
+    const { html, title, tags, activeDate } = this.state
 
     const payload = {
       id: `shouldPost-${entriesLength}`,
       title,
-      html: editorStateHtml,
+      html: html,
       tags,
       date_created_by_author: activeDate,
       EntryFiles: [],
@@ -127,9 +138,9 @@ class Home extends PureComponent {
     SetEditorState({ [id]: value })
   }
 
-  handleTextEditorChange = editorStateHtml => {
+  handleTextEditorChange = html => {
     const { SetEditorState } = this.props
-    SetEditorState({ editorStateHtml })
+    SetEditorState({ html })
   }
 
   handleChangeDateCreatedByAuthor = activeDate =>
@@ -137,7 +148,11 @@ class Home extends PureComponent {
 
   render() {
     const {
-      editorStateHtml,
+      html,
+      EntryFiles,
+      latitude,
+      longitude,
+      tags,
       clearedOn,
       title,
       editorHeight,
@@ -194,7 +209,7 @@ class Home extends PureComponent {
         <Row className="EditorContainer">
           <Col xs={12} className="p-0">
             <Editor
-              html={editorStateHtml}
+              html={html}
               onChangeCallback={html => this.handleTextEditorChange(html)}
             />
           </Col>

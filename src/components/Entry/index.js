@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -14,6 +14,7 @@ import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import deepEquals from "../../helpers/deepEquals"
 import UseDebounce from "../UseDebounce"
+import BottomToolbar from "../BottomToolbar"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -48,6 +49,10 @@ class Entry extends Component {
       author,
       title,
       html,
+      EntryFiles,
+      latitude,
+      longitude,
+      tags,
       date_created,
       date_created_by_author,
       date_updated,
@@ -72,6 +77,10 @@ class Entry extends Component {
       author,
       title,
       html,
+      EntryFiles,
+      latitude,
+      longitude,
+      tags,
       date_created,
       date_created_by_author: new Date(date_created_by_author),
       date_updated,
@@ -108,6 +117,10 @@ class Entry extends Component {
       author,
       title,
       html,
+      EntryFiles,
+      latitude,
+      longitude,
+      tags,
       date_created,
       date_created_by_author,
       date_updated,
@@ -120,69 +133,81 @@ class Entry extends Component {
     } = this.state
 
     return (
-      <Editor
-        toolbarId={id}
-        showDivider={showDivider}
-        toolbarHidden={toolbarHidden}
-        // height={textEditorHeight}
-        html={html}
-        onChangeCallback={html => UpdateReduxEntry({ id, html })}
-      >
-        <UseDebounce callback={() => SyncEntries()} />
-        <InputGroup key={id} className="EntryInput">
-          <Input
-            type="text"
-            name="title"
-            id="title"
-            placeholder="Dear Diary.."
-            value={title}
-            onChange={async e => {
-              const title = e.target.value
-              await UpdateReduxEntry({ id, title })
-              UpdateEntry(id, { title })
-            }}
-          />
-          <InputGroupAddon addonType="append">
-            <InputGroupText className="p-0">
-              <ReactDatePicker
-                selected={date_created_by_author || lastUpdated}
-                onChange={async date => {
-                  const date_created_by_author = date
-                  await UpdateReduxEntry({
-                    id,
-                    date_created_by_author,
-                    lastUpdated: date
-                  })
-                  UpdateEntry(id, { date_created_by_author })
-                }}
-              />
-            </InputGroupText>
-          </InputGroupAddon>
-          <InputGroupAddon addonType="append">
-            <InputGroupText
-              className="p-0"
-              style={{ background: "var(--quinaryColor)" }}
-            >
-              <ConfirmAction
-                onClickCallback={() => {
-                  shouldRedirectOnDelete && RouterGoBack(history)
-                  setTimeout(async () => {
-                    await UpdateReduxEntry({ id, shouldDelete: true })
-                    SyncEntries()
-                  }, 200)
-                }}
-                icon={
-                  <i
-                    className="fas fa-trash"
-                    style={{ color: "var(--danger)", fontSize: 22 }}
-                  />
-                }
-                title={"Delete Entry"}
-              />
-            </InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-      </Editor>
+      <Fragment>
+        <Editor
+          toolbarId={id}
+          showDivider={showDivider}
+          toolbarHidden={toolbarHidden}
+          html={html}
+          onChangeCallback={({ ...payload }) =>
+            UpdateReduxEntry({ id, ...payload })
+          }
+        >
+          <UseDebounce callback={() => SyncEntries()} />
+          <InputGroup key={id} className="EntryInput">
+            <Input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Dear Diary.."
+              value={title}
+              onChange={async e => {
+                const title = e.target.value
+                await UpdateReduxEntry({ id, title })
+                UpdateEntry(id, { title })
+              }}
+            />
+            <InputGroupAddon addonType="append">
+              <InputGroupText className="p-0">
+                <ReactDatePicker
+                  selected={date_created_by_author || lastUpdated}
+                  onChange={async date => {
+                    const date_created_by_author = date
+                    await UpdateReduxEntry({
+                      id,
+                      date_created_by_author,
+                      lastUpdated: date
+                    })
+                    UpdateEntry(id, { date_created_by_author })
+                  }}
+                />
+              </InputGroupText>
+            </InputGroupAddon>
+            <InputGroupAddon addonType="append">
+              <InputGroupText
+                className="p-0"
+                style={{ background: "var(--quinaryColor)" }}
+              >
+                <ConfirmAction
+                  onClickCallback={() => {
+                    shouldRedirectOnDelete && RouterGoBack(history)
+                    setTimeout(async () => {
+                      await UpdateReduxEntry({ id, shouldDelete: true })
+                      SyncEntries()
+                    }, 200)
+                  }}
+                  icon={
+                    <i
+                      className="fas fa-trash"
+                      style={{ color: "var(--danger)", fontSize: 22 }}
+                    />
+                  }
+                  title={"Delete Entry"}
+                />
+              </InputGroupText>
+            </InputGroupAddon>
+          </InputGroup>
+        </Editor>
+        {/* <BottomToolbar
+          onChangeCallback={({ ...payload }) =>
+            UpdateReduxEntry({ id, ...payload })
+          }
+          EntryFiles={EntryFiles}
+          latitude={latitude}
+          longitude={longitude}
+          tags={tags}
+        /> */}
+      </Fragment>
     )
   }
 }

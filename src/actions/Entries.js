@@ -8,6 +8,7 @@ import qs from "qs"
 const {
   ALERTS_SET_MESSAGE,
   CALENDAR_SET,
+  ENTRIES_SET_TAGS,
   ENTRIES_PENDING,
   ENTRIES_ERROR,
   ENTRIES_SEARCH_FILTER,
@@ -20,6 +21,17 @@ const {
   ENTRY_UPDATE,
   ENTRY_UPDATE_IMAGE
 } = ReduxActions
+
+const GetEntryTags = () => (dispatch, getState) => {
+  const { id } = getState().User
+  return Axios()
+    .get(`tags/${id}/view/`)
+    .then(res => {
+      const { data } = res
+      dispatch({ type: ENTRIES_SET_TAGS, payload: data })
+    })
+    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+}
 
 const ParseBase64 = (entry_id, media_type, html) => dispatch => {
   const base64s = htmlToArrayOfBase64(html)
@@ -301,6 +313,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 }
 
 export {
+  GetEntryTags,
   GetUserEntry,
   GetUserEntries,
   GetUserEntriesByDate,

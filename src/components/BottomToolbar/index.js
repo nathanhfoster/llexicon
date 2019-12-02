@@ -1,17 +1,17 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
-import { DEFAULT_STATE_TEXT_EDITOR } from "../../../store/Reducers/TextEditor"
-import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
-const { editorStateHtml } = DEFAULT_STATE_TEXT_EDITOR
+const mapStateToProps = ({ Entries: { EntryTags } }) => ({ EntryTags })
+
+const mapDispatchToProps = {}
 
 class BottomToolbar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      ...props,
       buttons: [
         [
           {
@@ -52,35 +52,16 @@ class BottomToolbar extends Component {
   }
 
   static propTypes = {
-    toolbarId: PropTypes.PropTypes.string.isRequired,
-    editorRef: PropTypes.object,
     onChangeCallback: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const editorRefChanged = !deepEquals(
-      nextProps.editorRef,
-      prevState.editorRef
-    )
+    const { EntryFiles, latitude, longitude, tags, EntryTags } = nextProps
 
-    if (editorRefChanged) {
-      return { editorRef: nextProps.editorRef }
-    } else return null
+    return { EntryFiles, latitude, longitude, tags, EntryTags }
   }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const editorRefChanged = !deepEquals(
-      nextProps.editorRef,
-      nextState.editorRef
-    )
-    return editorRefChanged
-  }
-
-  undo = editorRef => editorRef.current.editor.history.undo()
-  redo = editorRef => editorRef.current.editor.history.redo()
-  // clear = editorRef => editorRef.current.editor.history.clear()
 
   renderButtonColumns = columns => {
     const { length } = columns
@@ -110,9 +91,20 @@ class BottomToolbar extends Component {
     ))
 
   render() {
-    const { toolbarId, editorRef, onChangeCallback, buttons } = this.state
+    const { onChangeCallback } = this.props
+    const {
+      buttons,
+      EntryFiles,
+      latitude,
+      longitude,
+      tags,
+      EntryTags
+    } = this.state
+
+    console.log(EntryTags, tags)
+
     return (
-      <Container fluid id={toolbarId} className="BottomToolBar">
+      <Container fluid className="BottomToolBar">
         <Row className="BottomToolBarTags">
           <Col xs={12} className="p-0 ml-1">
             Tags
@@ -135,4 +127,4 @@ class BottomToolbar extends Component {
   }
 }
 
-export default BottomToolbar
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(BottomToolbar)

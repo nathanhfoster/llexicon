@@ -12,7 +12,7 @@ import { DEFAULT_STATE_TEXT_EDITOR } from "../../../store/Reducers/TextEditor"
 import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
-const { editorStateHtml } = DEFAULT_STATE_TEXT_EDITOR
+const { html } = DEFAULT_STATE_TEXT_EDITOR
 
 class Toolbar extends Component {
   constructor(props) {
@@ -75,7 +75,7 @@ class Toolbar extends Component {
           </button>
           <button
             className="ql-clear"
-            onClick={() => onChangeCallback(editorStateHtml)}
+            onClick={() => onChangeCallback({ html })}
           >
             <i className="fas fa-times-circle" />
           </button>

@@ -1,6 +1,7 @@
 import { ReduxActions } from "../../constants.js"
 import { mergeJson, removeAttributeDuplicates } from "../../helpers"
 const {
+  ENTRIES_SET_TAGS,
   ENTRIES_PENDING,
   ENTRIES_ERROR,
   ENTRY_IMPORT,
@@ -23,7 +24,8 @@ const DEFAULT_STATE_ENTRIES = {
   filteredItems: [],
   isPending: false,
   error: null,
-  search: ""
+  search: "",
+  EntryTags: []
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
@@ -37,6 +39,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     search
   } = action
   switch (type) {
+    case ENTRIES_SET_TAGS:
+      return { ...state, EntryTags: payload }
+
     case ENTRIES_SEARCH_FILTER:
       let { filteredItems } = state
 

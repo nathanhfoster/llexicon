@@ -1,10 +1,9 @@
 import { ReduxActions } from "../constants"
 
 const SetEditorState = payload => (dispatch, getState) => {
-  const { title, editorStateHtml } = getState().TextEditor
+  const { title, html } = getState().TextEditor
   if (payload.title === undefined) payload.title = title
-  if (!payload.editorStateHtml === undefined)
-    payload.editorStateHtml = editorStateHtml
+  if (!payload.html === undefined) payload.html = html
   dispatch({
     type: ReduxActions.TEXT_EDITOR_SET,
     payload
