@@ -15,13 +15,13 @@ const EntryMinimal = ({
   html,
   date_created_by_author,
   lastUpdated,
-  EntryFiles,
+  EntryFiles = [],
   author,
   date_create,
   date_updated,
   latitude,
   longitude,
-  tags,
+  tags = [],
   views
 }) => {
   const history = useHistory()
