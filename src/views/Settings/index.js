@@ -9,16 +9,22 @@ import {
   FormGroup,
   Label,
   Input,
-  Tooltip
+  Tooltip,
+  Button
 } from "reactstrap"
 import {
   GetUserSettings,
   PostSettings,
   SetSettings
 } from "../../actions/Settings"
+import { copyStringToClipboard } from "../../helpers"
+import MomentJs from "moment"
 import "./styles.css"
 
-const mapStateToProps = ({ User }) => ({ User })
+const mapStateToProps = ({ User, Entries }) => ({
+  User,
+  entries: Entries.items
+})
 
 const mapDispatchToProps = { GetUserSettings, PostSettings, SetSettings }
 
@@ -76,6 +82,46 @@ class Settings extends PureComponent {
         })
   }
 
+  handleExportEntries = () => {
+    const { entries } = this.state
+    const formattedEntries = entries.map(entry => {
+      const {
+        id,
+        author,
+        tags,
+        title,
+        html,
+        date_created,
+        date_created_by_author,
+        date_updated,
+        views,
+        latitude,
+        longitude
+      } = entry
+      const dateFormat = "YYYY-MM-DD hh:mm:ss"
+      return {
+        id,
+        author,
+        tags: tags.reduce(
+          (entryString, entry) => (entryString += `${entry.title},`),
+          ""
+        ),
+        title,
+        html,
+        date_created: MomentJs(date_created).format(dateFormat),
+        date_created_by_author: MomentJs(date_created_by_author).format(
+          dateFormat
+        ),
+        date_updated: MomentJs(date_updated).format(dateFormat),
+        views,
+        latitude,
+        longitude
+      }
+    })
+    copyStringToClipboard(JSON.stringify(formattedEntries))
+    alert("Entries copied to clipboard.")
+  }
+
   render() {
     const {
       User,
@@ -94,8 +140,13 @@ class Settings extends PureComponent {
           </Col>
         </Row>
         <Row>
-          <Col xs={12}>
+          <Col xs={6}>
             <ImportEntries />
+          </Col>
+          <Col xs={6}>
+            <Button color="primary" onClick={this.handleExportEntries}>
+              <i className="fas fa-clipboard" /> Export Entries
+            </Button>
           </Col>
         </Row>
         <Row>
