@@ -138,9 +138,9 @@ class Home extends PureComponent {
     SetEditorState({ [id]: value })
   }
 
-  handleTextEditorChange = html => {
+  handleTextEditorChange = payload => {
     const { SetEditorState } = this.props
-    SetEditorState({ html })
+    SetEditorState({ ...payload })
   }
 
   handleChangeDateCreatedByAuthor = activeDate =>
@@ -210,7 +210,9 @@ class Home extends PureComponent {
           <Col xs={12} className="p-0">
             <Editor
               html={html}
-              onChangeCallback={html => this.handleTextEditorChange(html)}
+              onChangeCallback={({ ...payload }) =>
+                this.handleTextEditorChange(payload)
+              }
             />
           </Col>
         </Row>

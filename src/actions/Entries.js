@@ -89,10 +89,29 @@ const GetUserEntry = entryId => dispatch => {
     })
 }
 
+const GetAllUserEntries = () => (dispatch, getState) => {
+  const { id } = getState().User
+  return Axios()
+    .get(`/entries/${id}/view/`)
+    .then(res => {
+      const { data } = res
+      dispatch({
+        type: ENTRY_IMPORT,
+        payload: data
+      })
+      return data
+    })
+    .catch(e => {
+      console.log(e)
+      // const payload = JSON.parse(JSON.stringify(e.response))
+      // dispatch({ type: ENTRIES_ERROR, payload })
+    })
+}
+
 const GetUserEntries = pageNumber => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
-    .get(`/entries/${id}/view/?page=${pageNumber}`)
+    .get(`/entries/${id}/page/?page=${pageNumber}`)
     .then(res => {
       const { data } = res
       dispatch({
@@ -315,6 +334,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 export {
   GetEntryTags,
   GetUserEntry,
+  GetAllUserEntries,
   GetUserEntries,
   GetUserEntriesByDate,
   PostReduxEntry,
