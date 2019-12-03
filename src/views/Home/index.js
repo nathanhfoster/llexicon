@@ -15,7 +15,6 @@ import {
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
-import AddToHomeScreen from "../../components/AddToHomeScreen"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 
 import "./styles.css"
@@ -220,11 +219,6 @@ class Home extends PureComponent {
           </Col>
         </Row>
         <Row>{this.renderFeatures(features)}</Row>
-        <Row>
-          <Col xs={12}>
-            <AddToHomeScreen />
-          </Col>
-        </Row>
       </Container>
     )
   }
