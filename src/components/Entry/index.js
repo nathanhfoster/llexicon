@@ -5,11 +5,7 @@ import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouterGoBack } from "../../ReactRouter/Routes"
 import Editor from "../../components/Editor"
-import {
-  UpdateReduxEntry,
-  UpdateEntry,
-  SyncEntries
-} from "../../actions/Entries"
+import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import deepEquals from "../../helpers/deepEquals"
@@ -19,7 +15,7 @@ import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
 
-const mapDispatchToProps = { UpdateReduxEntry, UpdateEntry, SyncEntries }
+const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 
 class Entry extends Component {
   constructor(props) {
@@ -33,7 +29,6 @@ class Entry extends Component {
     showDivider: PropTypes.bool,
     toolbarHidden: PropTypes.bool,
     UpdateReduxEntry: PropTypes.func.isRequired,
-    UpdateEntry: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired
   }
 
@@ -111,7 +106,7 @@ class Entry extends Component {
   }
 
   render() {
-    const { UpdateReduxEntry, UpdateEntry, SyncEntries, history } = this.props
+    const { UpdateReduxEntry, SyncEntries, history } = this.props
     const {
       id,
       author,
@@ -151,24 +146,22 @@ class Entry extends Component {
               id="title"
               placeholder="Dear Diary.."
               value={title}
-              onChange={async e => {
+              onChange={e => {
                 const title = e.target.value
-                await UpdateReduxEntry({ id, title })
-                UpdateEntry(id, { title })
+                UpdateReduxEntry({ id, title })
               }}
             />
             <InputGroupAddon addonType="append">
               <InputGroupText className="p-0">
                 <ReactDatePicker
                   selected={date_created_by_author || lastUpdated}
-                  onChange={async date => {
+                  onChange={date => {
                     const date_created_by_author = date
-                    await UpdateReduxEntry({
+                    UpdateReduxEntry({
                       id,
                       date_created_by_author,
                       lastUpdated: date
                     })
-                    UpdateEntry(id, { date_created_by_author })
                   }}
                 />
               </InputGroupText>
