@@ -1,7 +1,28 @@
 .Home {
-  height: 100%
+    position: absolute;
+    color: var(--secondaryColor);
+    background: rgba(0, 0, 0, 0.4);
 }
 
-.EditorContainer {
-  height: calc(100vh - var(--navBarHeight) - var(--inputHeight));
+
+.HomeFeatureCard {
+    background: var(--primaryColor);
+    border: 0;
+    margin: 8px 0;
+    height: 350px;
+}
+
+.HomeFeatureContainer {
+    text-align: center;
+    background: var(--midNight);
+}
+
+.HomeFeatureIcon {
+    font-size: 8em;
+}
+
+.HomeFeatureImage {
+    width: auto;
+    height: 128px;
+
 }

@@ -1,0 +1,7 @@
+.NewEntry {
+  height: 100%
+}
+
+.EditorContainer {
+  height: calc(100vh - var(--navBarHeight) - var(--inputHeight));
+}

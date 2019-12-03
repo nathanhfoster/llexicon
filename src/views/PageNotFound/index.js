@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
+import { RouteMap, RouterLinkPush } from "../../ReactRouter/Routes"
+import { withRouter, Link } from "react-router-dom"
 import { connect as reduxConnect } from "react-redux"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import StarGenerator from "../../components/BackgroundImage/StarGenerator"
@@ -9,7 +11,7 @@ import Earth from "../../components/BackgroundImage/Earth"
 import Moon from "../../components/BackgroundImage/Moon"
 import Astronaut from "../../components/BackgroundImage/Astronaut"
 import FourOFOur from "../../components/BackgroundImage/FourOFour"
-import MoonWithUfo from "../../components/BackgroundImage/MoonWIthUfo"
+import MoonWithUfo from "../../components/BackgroundImage/MoonWithUfo"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -20,7 +22,7 @@ class PageNotFound extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = { stars: <StarGenerator /> }
+    this.state = {}
   }
 
   static propTypes = {}
@@ -34,7 +36,8 @@ class PageNotFound extends PureComponent {
   componentDidMount() {}
 
   render() {
-    const { title, stars } = this.state
+    const { history } = this.props
+    const { title } = this.state
 
     return (
       <div className="PageNotFound bg-purple">
@@ -45,9 +48,12 @@ class PageNotFound extends PureComponent {
         </div>
         <div className="central-body">
           <FourOFOur />
-          <a href="/home" className="btn-go-home">
+          <Link
+            to={RouterLinkPush(history, RouteMap.HOME)}
+            className="btn-go-home"
+          >
             GO BACK HOME
-          </a>
+          </Link>
         </div>
         <BackgroundObjects>
           <Rocket />
@@ -57,10 +63,12 @@ class PageNotFound extends PureComponent {
           </div>
           <Astronaut />
         </BackgroundObjects>
-        {stars}
+        <StarGenerator position="absolute" />
         <MoonWithUfo />
       </div>
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(PageNotFound)
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(PageNotFound)
+)

@@ -47,7 +47,7 @@ class StarSearch extends PureComponent {
   }
 
   render() {
-    const { SearchUserEntries, isMobile } = this.props
+    const { history, SearchUserEntries, isMobile } = this.props
 
     const { search } = this.state
 
@@ -60,7 +60,7 @@ class StarSearch extends PureComponent {
           addonType="prepend"
           className="TelescopeIconContainer Center"
         >
-          <InputGroupText>
+          <InputGroupText onClick={e => RouterPush(history, RouteMap.HOME)}>
             <i className="fab fa-wpexplorer TelescopeIcon" />
           </InputGroupText>
         </InputGroupAddon>

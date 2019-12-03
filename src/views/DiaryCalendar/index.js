@@ -111,7 +111,7 @@ class DiaryCalendar extends PureComponent {
 
   render() {
     const { history } = this.props
-    const { HOME } = RouteMap
+    const { NEW_ENTRY } = RouteMap
     const { activeDate } = this.state
     return (
       <Container fluid className="DiaryCalendar Container">
@@ -133,7 +133,7 @@ class DiaryCalendar extends PureComponent {
               <Button
                 color="inherit"
                 className="TodayButton ml-1"
-                onClick={() => RouterPush(history, HOME)}
+                onClick={() => RouterPush(history, NEW_ENTRY)}
               >
                 <i className="fas fa-feather-alt NavBarImage NavBarLink" />
               </Button>

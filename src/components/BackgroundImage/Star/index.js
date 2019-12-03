@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { getRandomInt, getRandomFloat, objectToArray } from "../../../helpers"
 import "./styles.css"
 
-const StarColorGradients = {
+export const StarColorGradients = {
   Blue: `#2980b9, #3498db`,
   DeepBlueWhite: `#2980b9, #ffffff`,
   BlueWhite: `#3498db, #ffffff`,

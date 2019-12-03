@@ -71,8 +71,8 @@ class TileContent extends PureComponent {
 
   handleTodayClick = () => {
     const { history } = this.props
-    const { HOME } = RouteMap
-    setTimeout(() => RouterPush(history, HOME), 150)
+    const { NEW_ENTRY } = RouteMap
+    setTimeout(() => RouterPush(history, NEW_ENTRY), 150)
   }
 
   handleTileClick = () => {

@@ -23,7 +23,7 @@ import { GetUserEntriesByDate } from "../../actions/Entries"
 import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
 import Logo from "../../images/Logo.png"
-import AddToHomeScreenModal from "../AddToHomeScreen/"
+import AddToHomeScreen from "../AddToHomeScreen/"
 
 const mapStateToProps = ({
   User: { id },
@@ -87,7 +87,7 @@ class NavBar extends PureComponent {
             <Fragment>
               <DropdownItem divider />
               <DropdownItem>
-                <AddToHomeScreenModal
+                <AddToHomeScreen
                   onClickCallback={this.closeHamburgerMenu}
                 />
               </DropdownItem>
@@ -101,10 +101,10 @@ class NavBar extends PureComponent {
   renderNavLinks = () => {
     const { UserId } = this.state
     const { UserLogout, history } = this.props
-    const { HOME, CALENDAR, ENTRIES, LOGIN } = RouteMap
+    const { NEW_ENTRY, CALENDAR, ENTRIES, LOGIN } = RouteMap
     const Links = [
       this.renderNavlink(
-        HOME,
+        NEW_ENTRY,
         "NEW ENTRY",
         <i className="fas fa-feather-alt NavBarImage NavBarLink" />
       ),
@@ -118,20 +118,21 @@ class NavBar extends PureComponent {
         "ENTRIES",
         <i className="fas fa-book NavBarImage" />
       ),
-      UserId ? this.renderNavlink(
-        LOGIN,
-        "LOGOUT",
-        <i className="fas fa-sign-out-alt NavBarImage" />,
-        UserLogout
-      )
-      : this.renderNavlink(
-        LOGIN,
-        "LOGIN",
-        <i className="fas fa-sign-in-alt NavBarImage" />
-      ),
+      UserId
+        ? this.renderNavlink(
+            LOGIN,
+            "LOGOUT",
+            <i className="fas fa-sign-out-alt NavBarImage" />,
+            UserLogout
+          )
+        : this.renderNavlink(
+            LOGIN,
+            "LOGIN",
+            <i className="fas fa-sign-in-alt NavBarImage" />
+          ),
       this.optionsMenu()
     ]
-    
+
     return Links
   }
 

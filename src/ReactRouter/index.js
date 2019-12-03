@@ -7,6 +7,7 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
 import Home from "../views/Home"
+import NewEntry from "../views/NewEntry"
 import Settings from "../views/Settings"
 import DiaryCalendar from "../views/DiaryCalendar"
 import EntryDetail from "../views/EntryDetail"
@@ -23,8 +24,9 @@ const getRouteItems = props => {
   const { User, history } = props
   const { state } = history.location
   const {
-    ROOT,
     HOME,
+    ROOT,
+    NEW_ENTRY,
     LOGIN,
     SIGNUP,
     ENTRY_ADD,
@@ -36,10 +38,11 @@ const getRouteItems = props => {
   } = RouteMap
 
   return [
-    { path: [ROOT, HOME, ENTRY_ADD], component: Home },
+    {path: [HOME], component: Home},
+    { path: [ROOT, NEW_ENTRY, ENTRY_ADD], component: NewEntry },
     {
       path: [LOGIN, SIGNUP],
-      component: renderRedirectOrComponent(props, User.token, HOME, Login)
+      component: renderRedirectOrComponent(props, User.token, NEW_ENTRY, Login)
     },
     {
       path: [SETTINGS],
@@ -48,7 +51,7 @@ const getRouteItems = props => {
     { path: [CALENDAR], component: DiaryCalendar },
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {
-      path: [ENTRIES, HOME],
+      path: [ENTRIES, NEW_ENTRY],
       component: Entries
     },
     { path: [PRIVACY_POLICY], component: PrivacyPolicy }
