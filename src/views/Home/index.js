@@ -187,8 +187,10 @@ class Home extends PureComponent {
               )}
             </CardHeader>
             <CardBody>
-              <CardTitle className="Center">{title}</CardTitle>
-              <CardText className="Center">{text}</CardText>
+              <CardTitle tag="h4" className="HomeFeatureTitle Center">
+                {title}
+              </CardTitle>
+              <CardText className="HomeFeatureText Center">{text}</CardText>
               <div className="Center">
                 <Button color="primary">Learn More</Button>
               </div>

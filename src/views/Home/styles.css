@@ -26,3 +26,11 @@
     height: 128px;
 
 }
+
+.HomeFeatureTitle {
+    font-weight: 900;
+}
+
+.HomeFeatureText {
+    height: 48px;
+}
