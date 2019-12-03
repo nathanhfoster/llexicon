@@ -11,17 +11,17 @@ const containerStyles = ({ top = 10, right = 10, spin = 27 }) => ({
   animation: `spin-earth ${spin}s infinite linear both`
 })
 
-const MoonWithUfo = props => (
+const MoonUfo = props => (
   <div style={containerStyles(props)}>
     <div className="moon behind"></div>
     <div className="moon"></div>
   </div>
 )
 
-MoonWithUfo.propTypes = {
+MoonUfo.propTypes = {
   top: PropTypes.number,
   left: PropTypes.number,
   spin: PropTypes.number
 }
 
-export default memo(MoonWithUfo)
+export default memo(MoonUfo)

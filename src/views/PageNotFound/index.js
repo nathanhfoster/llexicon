@@ -11,7 +11,7 @@ import Earth from "../../components/BackgroundImage/Earth"
 import Moon from "../../components/BackgroundImage/Moon"
 import Astronaut from "../../components/BackgroundImage/Astronaut"
 import FourOFOur from "../../components/BackgroundImage/FourOFour"
-import MoonWithUfo from "../../components/BackgroundImage/MoonWithUfo"
+import MoonUfo from "../../components/BackgroundImage/MoonUfo"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -64,7 +64,7 @@ class PageNotFound extends PureComponent {
           <Astronaut />
         </BackgroundObjects>
         <StarGenerator position="absolute" />
-        <MoonWithUfo />
+        <MoonUfo />
       </div>
     )
   }
