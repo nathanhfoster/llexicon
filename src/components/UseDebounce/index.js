@@ -23,6 +23,12 @@ class UseDebounce extends PureComponent {
     this.debounce = setTimeout(() => callback(value), delay)
   }
 
+  componentWillMount() {
+    const { callback, value } = this.props
+    clearTimeout(this.debounce)
+    callback(value)
+  }
+
   render() {
     return null
   }
