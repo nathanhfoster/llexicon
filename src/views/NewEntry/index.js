@@ -198,7 +198,7 @@ class NewEntry extends PureComponent {
                   type="submit"
                 >
                   <i
-                    className="fas fa-cloud-upload-alt"
+                    className="fas fa-save"
                     style={{ fontSize: 20 }}
                   />
                 </InputGroupText>

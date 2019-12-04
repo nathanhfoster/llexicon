@@ -30,8 +30,8 @@ class Home extends PureComponent {
     this.state = {
       features: [
         {
-          title: "Push Notifications",
-          text: "Text",
+          title: "Notifications",
+          text: "Daily motivation to journal your life.",
           Component: () => (
             <svg
               aria-hidden="true"
@@ -54,7 +54,7 @@ class Home extends PureComponent {
         },
         {
           title: "Offline",
-          text: "Text",
+          text: "Doesn't require an internet connections.",
           Component: () => (
             <svg
               aria-hidden="true"
@@ -77,7 +77,7 @@ class Home extends PureComponent {
         },
         {
           title: "Linkable",
-          text: "Share any public view you want with your friends / family.",
+          text: "Share any public view you want with your friends and family.",
           faIcon: "fas fa-link"
         },
         {
@@ -88,7 +88,7 @@ class Home extends PureComponent {
         },
         {
           title: "Responsive",
-          text: "UI fits any device screen dimensions.",
+          text: "UI fits the screen dimensions of any device.",
           Component: () => (
             <svg
               aria-hidden="true"
@@ -185,13 +185,13 @@ class Home extends PureComponent {
                 <Component />
               )}
             </CardHeader>
-            <CardBody>
+            <CardBody className="HomeFeatureBodyContainer">
               <CardTitle tag="h4" className="HomeFeatureTitle Center">
                 {title}
               </CardTitle>
               <CardText className="HomeFeatureText Center">{text}</CardText>
               <div className="Center">
-                <Button color="primary">Learn More</Button>
+                <Button color="accent">Learn More</Button>
               </div>
             </CardBody>
           </Card>
@@ -208,14 +208,12 @@ class Home extends PureComponent {
             <LogoImage height={256} width={256} />
           </Col>
         </Row>
-        <Row>
-          <Col xs={12} className="Center">
+        <Row className="Center">
+          <Col xs={12}>
             <h1>Astral Tree</h1>
           </Col>
-        </Row>
-        <Row>
-          <Col xs={12} className="Center">
-            <h3>The first progressive web app journal that features.</h3>
+          <Col xs={12}>
+            <h3>The first progressive web app journal</h3>
           </Col>
         </Row>
         <Row>{this.renderFeatures(features)}</Row>
