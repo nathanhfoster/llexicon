@@ -202,7 +202,7 @@ class Home extends PureComponent {
   render() {
     const { features } = this.state
     return (
-      <Container fluid className="Home Container">
+      <Container className="Home Container">
         <Row>
           <Col xs={12} className="Center">
             <LogoImage height={256} width={256} />
