@@ -25,7 +25,6 @@ class Entry extends Component {
 
   static propTypes = {
     containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    showDivider: PropTypes.bool,
     topToolbarHidden: PropTypes.bool,
     bottomToolbarHidden: PropTypes.bool,
     UpdateReduxEntry: PropTypes.func.isRequired,
@@ -33,7 +32,6 @@ class Entry extends Component {
   }
 
   static defaultProps = {
-    showDivider: false,
     topToolbarHidden: false,
     bottomToolbarHidden: false,
     shouldRedirectOnDelete: false
@@ -54,7 +52,6 @@ class Entry extends Component {
       views,
       lastUpdated,
       containerHeight,
-      showDivider,
       topToolbarHidden,
       bottomToolbarHidden,
       shouldRedirectOnDelete
@@ -64,9 +61,8 @@ class Entry extends Component {
     const numberOfInputs = 1
     const inputOffset = inputHeight * numberOfInputs
     const toolBarToggleButton = 44
-    const dividerHeight = showDivider ? 32 : 0
 
-    const textEditorHeight = containerHeight - inputOffset - dividerHeight
+    const textEditorHeight = containerHeight - inputOffset 
 
     return {
       id,
@@ -82,7 +78,6 @@ class Entry extends Component {
       views,
       lastUpdated,
       textEditorHeight,
-      showDivider,
       topToolbarHidden,
       bottomToolbarHidden,
       shouldRedirectOnDelete
@@ -111,7 +106,6 @@ class Entry extends Component {
       views,
       lastUpdated,
       textEditorHeight,
-      showDivider,
       topToolbarHidden,
       bottomToolbarHidden,
       shouldRedirectOnDelete
@@ -121,7 +115,6 @@ class Entry extends Component {
       <Fragment>
         <Editor
           toolbarId={id}
-          showDivider={showDivider}
           topToolbarHidden={topToolbarHidden}
           bottomToolbarHidden={bottomToolbarHidden}
           html={html}

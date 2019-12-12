@@ -46,7 +46,7 @@ class Editor extends Component {
   constructor(props) {
     super(props)
 
-    const { toolbarId, html, theme, showDivider } = props
+    const { toolbarId, html, theme } = props
 
     this.toolbarId = `toolbar-${toolbarId}`
 
@@ -55,8 +55,7 @@ class Editor extends Component {
     this.state = {
       quillId: toolbarId.toString(),
       html,
-      theme,
-      showDivider
+      theme
     }
   }
 
@@ -65,7 +64,6 @@ class Editor extends Component {
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     html: PropTypes.string.isRequired,
     onChangeCallback: PropTypes.func,
-    showDivider: PropTypes.bool,
     toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
     topToolbarHidden: PropTypes.bool,
@@ -101,7 +99,6 @@ class Editor extends Component {
 
     height: "100%",
     width: "100%",
-    showDivider: false,
     toolbarId: 1,
     placeholder: "Today I have...",
     topToolbarHidden: false,
@@ -275,7 +272,6 @@ class Editor extends Component {
       longitude,
       tags,
       theme,
-      showDivider,
       quillId,
       topToolbarHidden,
       editorHeight,
@@ -317,7 +313,6 @@ class Editor extends Component {
             />
           )}
         </div>
-        {showDivider && <Divider />}
       </Fragment>
     )
   }

@@ -27,7 +27,8 @@ const mapStateToProps = ({
   User,
   Entries: { items, next, search },
   Window: {
-    screen: { availHeight }
+    screen: { availHeight },
+    navBarHeight
   }
 }) => ({
   UserId: User.id,
@@ -39,7 +40,7 @@ const mapStateToProps = ({
     ),
   nextEntryPage: next,
   entriesSearch: search,
-  viewPortHeight: availHeight
+  viewPortHeight: availHeight - navBarHeight
 })
 
 const mapDispatchToProps = { SyncEntries, GetAllUserEntries, GetUserEntries }
@@ -48,15 +49,11 @@ class Entries extends Component {
   constructor(props) {
     super(props)
 
-    this.listRef = createRef()
+    this.minimalEntriesListRef = createRef()
+    this.detailedEntriesListRef = createRef()
 
     this.state = {
-      activeTab: 1,
-      listView: true,
-      minXs: 6,
-      minMd: 4,
-      minLg: 4,
-      minXl: 3
+      activeTab: 1
     }
   }
 
@@ -71,27 +68,26 @@ class Entries extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { entries, nextEntryPage, viewPortHeight } = nextProps
-    const { activeTab, listView, minXs, minMd, minLg, minXl } = prevState
+    const { activeTab } = prevState
 
     const inputHeight = 46
 
-    const listHeight = viewPortHeight - inputHeight - 54
+    const minimalEntriesListHeight = viewPortHeight - 54 - 38 - 22
 
-    let listItemHeight = listHeight / 2
+    const detailedEntriesListHeight = viewPortHeight - 54 - 22
 
-    if (listHeight / 3 > listItemHeight) listItemHeight = listHeight / 3
+    let listItemHeight = detailedEntriesListHeight / 2
+
+    if (detailedEntriesListHeight / 3 > listItemHeight)
+      listItemHeight = detailedEntriesListHeight / 3
 
     return {
       entries,
       nextEntryPage,
-      listHeight,
+      minimalEntriesListHeight,
+      detailedEntriesListHeight,
       listItemHeight,
-      activeTab,
-      listView,
-      minXs,
-      minMd,
-      minLg,
-      minXl
+      activeTab
     }
   }
 
@@ -152,26 +148,14 @@ class Entries extends Component {
     SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
   }
 
-  renderMinimalEntries = entries => {
-    const { listView, minXs, minMd, minLg, minXl } = this.state
-    return entries.map(entry => {
-      return listView ? (
-        <Col key={entry.id} xs={12} style={{ padding: 4 }}>
-          <EntryMinimal {...entry} />
-        </Col>
-      ) : (
-        <Col
-          key={entry.id}
-          xs={minXs}
-          md={minMd}
-          lg={minLg}
-          xl={minXl}
-          style={{ padding: 4 }}
-        >
-          <EntryMinimal {...entry} />
-        </Col>
-      )
-    })
+  renderMinimalEntries = ({ data, index, style, isScrolling }) => {
+    const entry = data[index]
+
+    return (
+      <Col key={entry.id} xs={12} style={{ ...style, padding: 4 }}>
+        <EntryMinimal {...entry} />
+      </Col>
+    )
   }
 
   renderDetailedEntries = ({ data, index, style, isScrolling }) => {
@@ -190,24 +174,19 @@ class Entries extends Component {
           id={id}
           {...restOfProps}
           containerHeight={style.height}
-          showDivider
           bottomToolbarHidden
         />
       </Col>
     )
   }
 
-  handleListLayoutClick = () => {
-    this.setState(currentState => ({ listView: !currentState.listView }))
-  }
-
   render() {
     const {
       entries,
-      listHeight,
+      minimalEntriesListHeight,
+      detailedEntriesListHeight,
       listItemHeight,
       activeTab,
-      listView,
       nextEntryPage
     } = this.state
 
@@ -220,12 +199,6 @@ class Entries extends Component {
                 className={`${activeTab === 1 ? "active" : ""}`}
                 onClick={() => this.setState({ activeTab: 1 })}
               >
-                <i
-                  className={`MinimalEntryListToggle fas ${
-                    listView ? "fa-columns" : "fa-list-ul"
-                  }`}
-                  onClick={this.handleListLayoutClick}
-                />{" "}
                 Minimal
               </NavLink>
             </NavItem>
@@ -242,8 +215,20 @@ class Entries extends Component {
 
         <TabContent activeTab={activeTab}>
           <TabPane tabId={1}>
-            <Row>{this.renderMinimalEntries(entries)}</Row>
-
+            <Row>
+              <FixedSizeList
+                ref={this.minimalEntriesListRef}
+                height={minimalEntriesListHeight}
+                width="100%"
+                itemData={entries}
+                itemCount={entries.length}
+                itemSize={48}
+                onItemsRendered={this.handleItemsRendered}
+              >
+                {this.renderMinimalEntries}
+              </FixedSizeList>
+              {/* {this.renderMinimalEntries(entries)} */}
+            </Row>
             <Row className="Center" tag={ButtonGroup}>
               {nextEntryPage && (
                 <Button color="accent" onClick={this.GetEntries}>
@@ -251,7 +236,11 @@ class Entries extends Component {
                 </Button>
               )}
 
-              <Button color="accent" onClick={this.GetAllEntries}>
+              <Button
+                color="accent"
+                onClick={this.GetAllEntries}
+                disabled={!nextEntryPage}
+              >
                 <i className="fas fa-cloud-download-alt" /> Load All
               </Button>
             </Row>
@@ -261,8 +250,8 @@ class Entries extends Component {
           <TabPane tabId={2}>
             <Row>
               <FixedSizeList
-                ref={this.listRef}
-                height={listHeight}
+                ref={this.detailedEntriesListRef}
+                height={detailedEntriesListHeight}
                 width="100%"
                 itemData={entries}
                 itemCount={entries.length}
