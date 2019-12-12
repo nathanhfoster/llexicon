@@ -104,8 +104,8 @@ const AwsUpload = (entry_id, media_type, file, base64) => dispatch => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetEntry = url => dispatch => {
-  return Axios()
+const GetEntry = url => dispatch =>
+  Axios()
     .get(url)
     .then(res => {
       const { data } = res
@@ -119,7 +119,6 @@ const GetEntry = url => dispatch => {
       const payload = JSON.parse(JSON.stringify(e.response))
       dispatch({ type: ENTRIES_ERROR, payload })
     })
-}
 
 const GetUserEntry = entryId => dispatch =>
   dispatch(GetEntry(`/entries/${entryId}/`))
