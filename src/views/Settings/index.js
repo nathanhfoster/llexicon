@@ -84,7 +84,8 @@ class Settings extends PureComponent {
 
   handleExportEntries = () => {
     const { entries } = this.state
-    const formattedEntries = entries.map(entry => {
+
+    const formattedEntries = entries.map((entry, i) => {
       const {
         id,
         author,
@@ -99,6 +100,7 @@ class Settings extends PureComponent {
         longitude
       } = entry
       const dateFormat = "YYYY-MM-DD hh:mm:ss"
+      console.log(i, tags)
       return {
         id,
         author,

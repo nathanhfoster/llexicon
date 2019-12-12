@@ -7,25 +7,67 @@ const RouteMap = {
   ENTRY_DETAIL: "/calendar/:entryId",
   ENTRY_ADD: "/entry/add",
   ENTRIES: "/entries",
+  ENTRIES_MINIMAL: "/entries/minimal",
+  ENTRIES_DETAILED: "/entries/detailed",
   LOGIN: "/login",
   SIGNUP: "/sign-up",
   PRIVACY_POLICY: "/privacy-policy"
 }
 
+const getHistoryState = (state, pathname, route) => {
+  if (!state) {
+    state = {
+      previousRoute: pathname,
+      pathHistory: [pathname]
+    }
+  } else {
+    state = {
+      previousRoute: pathname,
+      pathHistory: state.pathHistory.concat(pathname)
+    }
+  }
+
+  return state
+}
+
+const ValidateHistroy = history => {
+  if (!history || !history.location) {
+    return false
+  }
+  return true
+}
+
 const RouterPush = (history, route) => {
-  const { pathname } = history.location
-  history.push(route, { previousRoute: pathname })
+  if (!ValidateHistroy(history)) return {}
+  let {
+    location: { pathname, search, state }
+  } = history
+
+  const newState = getHistoryState(state, pathname, route)
+
+  // console.log("RouterPush: ", route, newState)
+
+  history.push(route, newState)
 }
 
 const RouterLinkPush = (history, route) => {
-  const { pathname } = history.location
-  return {
+  if (!ValidateHistroy(history)) return {}
+  let {
+    location: { pathname, search, state }
+  } = history
+
+  const newState = {
     pathname: route,
-    state: { previousRoute: pathname }
+    state: getHistoryState(state, pathname, route)
   }
+
+  // console.log("RouterLinkPush: ", route, newState)
+
+  return newState
 }
 
 const RouterGoBack = history => {
+  if (!ValidateHistroy(history)) return {}
   const {
     location: {
       hash,

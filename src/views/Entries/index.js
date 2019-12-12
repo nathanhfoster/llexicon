@@ -1,18 +1,9 @@
-import React, { Component, createRef } from "react"
+import React, { Component, createRef, Fragment } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import {
-  Container,
-  Row,
-  Col,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  Button,
-  ButtonGroup
-} from "reactstrap"
+import { Row, Col, Button, ButtonGroup } from "reactstrap"
+import { withRouter } from "react-router-dom"
+import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import Entry from "../../components/Entry"
 import { FixedSizeList } from "react-window"
 import {
@@ -21,6 +12,7 @@ import {
   GetUserEntries
 } from "../../actions/Entries"
 import EntryMinimal from "../../components/EntryMinimal"
+import BasicTabs from "../../components/BasicTabs"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -52,9 +44,7 @@ class Entries extends Component {
     this.minimalEntriesListRef = createRef()
     this.detailedEntriesListRef = createRef()
 
-    this.state = {
-      activeTab: 1
-    }
+    this.state = {}
   }
 
   static propTypes = {
@@ -67,14 +57,21 @@ class Entries extends Component {
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { entries, nextEntryPage, viewPortHeight } = nextProps
-    const { activeTab } = prevState
+    const {
+      entries,
+      nextEntryPage,
+      viewPortHeight,
+      history,
+      location: { pathname }
+    } = nextProps
 
-    const inputHeight = 46
+    if (pathname === RouteMap.ENTRIES) {
+      RouterPush(history, RouteMap.ENTRIES_MINIMAL)
+    }
 
     const minimalEntriesListHeight = viewPortHeight - 54 - 38
 
-    const detailedEntriesListHeight = viewPortHeight - 54 
+    const detailedEntriesListHeight = viewPortHeight - 54
 
     let listItemHeight = detailedEntriesListHeight / 2
 
@@ -87,7 +84,7 @@ class Entries extends Component {
       minimalEntriesListHeight,
       detailedEntriesListHeight,
       listItemHeight,
-      activeTab
+      activeTab: pathname
     }
   }
 
@@ -181,6 +178,7 @@ class Entries extends Component {
   }
 
   render() {
+    const { history } = this.props
     const {
       entries,
       minimalEntriesListHeight,
@@ -190,31 +188,12 @@ class Entries extends Component {
       nextEntryPage
     } = this.state
 
-    return (
-      <Container className="Entries Container">
-        <Row>
-          <Nav tabs>
-            <NavItem>
-              <NavLink
-                className={`${activeTab === 1 ? "active" : ""}`}
-                onClick={() => this.setState({ activeTab: 1 })}
-              >
-                Minimal
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                className={`${activeTab === 2 ? "active" : ""}`}
-                onClick={() => this.setState({ activeTab: 2 })}
-              >
-                Detailed
-              </NavLink>
-            </NavItem>
-          </Nav>
-        </Row>
-
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId={1}>
+    const tabs = [
+      {
+        tabId: RouteMap.ENTRIES_MINIMAL,
+        title: "Minimal",
+        Component: () => (
+          <Fragment>
             <Row>
               <FixedSizeList
                 ref={this.minimalEntriesListRef}
@@ -227,7 +206,6 @@ class Entries extends Component {
               >
                 {this.renderMinimalEntries}
               </FixedSizeList>
-              {/* {this.renderMinimalEntries(entries)} */}
             </Row>
             <Row className="Center" tag={ButtonGroup}>
               {nextEntryPage && (
@@ -244,27 +222,33 @@ class Entries extends Component {
                 <i className="fas fa-cloud-download-alt" /> Load All
               </Button>
             </Row>
-          </TabPane>
-        </TabContent>
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId={2}>
-            <Row>
-              <FixedSizeList
-                ref={this.detailedEntriesListRef}
-                height={detailedEntriesListHeight}
-                width="100%"
-                itemData={entries}
-                itemCount={entries.length}
-                itemSize={listItemHeight}
-                onItemsRendered={this.handleItemsRendered}
-              >
-                {this.renderDetailedEntries}
-              </FixedSizeList>
-            </Row>
-          </TabPane>
-        </TabContent>
-      </Container>
-    )
+          </Fragment>
+        ),
+        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MINIMAL)
+      },
+      {
+        tabId: RouteMap.ENTRIES_DETAILED,
+        title: "Detailed",
+        Component: () => (
+          <FixedSizeList
+            ref={this.detailedEntriesListRef}
+            height={detailedEntriesListHeight}
+            width="100%"
+            itemData={entries}
+            itemCount={entries.length}
+            itemSize={listItemHeight}
+            onItemsRendered={this.handleItemsRendered}
+          >
+            {this.renderDetailedEntries}
+          </FixedSizeList>
+        ),
+        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
+      }
+    ]
+
+    return <BasicTabs activeTab={activeTab} tabs={tabs} />
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Entries)
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(Entries)
+)
