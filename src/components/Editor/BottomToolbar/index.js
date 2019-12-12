@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
 import { TagsButtonModal } from "./ToolbarButtonModals"
-import TagsContainer from "./TagsContainer"
+import TagsContainer from "../../TagsContainer"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -89,11 +89,10 @@ class BottomToolbar extends PureComponent {
     const { onChangeCallback } = this.props
     const { buttons, latitude, longitude, tags, EntryTags } = this.state
 
-
     return (
       <Container fluid className="BottomToolBar">
         <Row className="BottomToolBarTags">
-          <TagsContainer tags={tags} />
+          <TagsContainer tags={tags} hoverable={false} />
         </Row>
         <Row className="BottomToolBarFiles">
           <Col tag={Button} className="p-0" color="inherit" xs={4}>

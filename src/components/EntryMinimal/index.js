@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import Moment from "react-moment"
 import Star from "../BackgroundImage/Star"
+import TagsContainer from "../TagsContainer"
 
 import "./styles.css"
 
@@ -37,14 +38,22 @@ const EntryMinimal = ({
         <span>
           <Star size={16} animation={false} opacity={1} />{" "}
         </span>
-        <Moment format="D MMM">{date_created_by_author}</Moment>
+        <span>
+          <Moment format="D MMM">{date_created_by_author}</Moment>
+        </span>
 
         {EntryFiles.length > 0 && (
           <span style={{ marginLeft: 4 }}>
             <i className="far fa-file-image" />
           </span>
         )}
-        <span style={{ marginLeft: 4 }}>{title}</span>
+
+        <span className="EntryMinimalTitle" style={{ marginLeft: 4 }}>
+          {title}
+        </span>
+        <span>
+          <TagsContainer tags={tags} minimalView={false} hoverable={false} />
+        </span>
       </div>
     </Badge>
   )

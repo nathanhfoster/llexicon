@@ -12,7 +12,7 @@
     height: 20px;
 }
 
-.TagContainer:hover {
+.TagContainerHover:hover {
     background: var(--dark_border);
     cursor: pointer;
 }

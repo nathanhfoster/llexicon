@@ -14,7 +14,7 @@
     margin-right: 6px;
 }
 
-.EntryMinimal span:last-child {
+.EntryMinimalTitle {
     font-size: 1.5em;
     font-weight: 900;
     text-overflow: ellipsis;

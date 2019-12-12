@@ -15,41 +15,28 @@ class TagsContainer extends PureComponent {
     tags: PropTypes.array,
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     flexWrap: PropTypes.oneOf(["wrap", "nowrap"]),
-    onClickCallback: PropTypes.func
+    onClickCallback: PropTypes.func,
+    minimalView: PropTypes.bool,
+    hoverable: PropTypes.bool
   }
 
   static defaultProps = {
     height: 24,
     flexWrap: "nowrap",
-    alignItems: "center"
+    alignItems: "center",
+    minimalView: false,
+    hoverable: true
   }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    // Identify which properties have changed and compare them to the previous state
-    // If there was a change return a new state object
-    // Otherwise return null which means there was no state change
-    return nextProps
-  }
-
-  componentDidMount() {}
-
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    return null
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
-  componentWillUnmount() {}
 
   renderTags = tags => {
-    const { onClickCallback } = this.props
+    const { onClickCallback, hoverable } = this.props
 
     return tags.map(tag => {
       const { title } = tag
       return (
         <Badge
           key={title}
-          className="TagContainer"
+          className={`TagContainer ${hoverable ? "TagContainerHover" : ""}`}
           onClick={onClickCallback ? () => onClickCallback(title) : null}
         >
           <i className="fas fa-tags" /> {title}
@@ -58,15 +45,32 @@ class TagsContainer extends PureComponent {
     })
   }
 
+  renderMinimalTags = tags => {
+    const initialString = "| "
+    const mininmalString = tags.reduce(
+      (mininmalString, tag) => mininmalString + `${tag.title} | `,
+      initialString
+    )
+    if (mininmalString === initialString) return null
+    else return <span>{mininmalString}</span>
+  }
+
   render() {
-    const { tags, height, flexWrap, alignItems, renderLinks } = this.state
+    const {
+      tags,
+      height,
+      flexWrap,
+      alignItems,
+      renderLinks,
+      minimalView
+    } = this.props
     return (
       <Col
         className="TagsContainer p-0"
         xs={12}
         style={{ height, flexWrap, alignItems }}
       >
-        {this.renderTags(tags)}
+        {minimalView ? this.renderMinimalTags(tags) : this.renderTags(tags)}
       </Col>
     )
   }

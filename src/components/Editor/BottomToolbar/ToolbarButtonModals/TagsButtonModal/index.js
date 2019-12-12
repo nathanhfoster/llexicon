@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { Container, Row, Col, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../ToolbarModal"
-import TagsContainer from "../../TagsContainer"
+import TagsContainer from "../../../../TagsContainer"
 import { GetEntryTags } from "../../../../../actions/Entries"
 import "./styles.css"
 

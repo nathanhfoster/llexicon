@@ -55,8 +55,8 @@ class Entries extends Component {
       listView: true,
       minXs: 6,
       minMd: 4,
-      minLg: 3,
-      minXl: 2
+      minLg: 4,
+      minXl: 3
     }
   }
 
