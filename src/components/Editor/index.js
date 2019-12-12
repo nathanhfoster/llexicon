@@ -118,12 +118,17 @@ class Editor extends Component {
       bottomToolbarHidden
     } = nextProps
 
+    const editorHeight = bottomToolbarHidden
+      ? "calc(100% - var(--textEditorToolBarHeight))"
+      : "calc(100% - var(--textEditorToolBarHeight) - var(--bottomToolbarHeight))"
+
     return {
       html,
       latitude,
       longitude,
       tags,
       topToolbarHidden,
+      editorHeight,
       bottomToolbarHidden
     }
   }
@@ -273,6 +278,7 @@ class Editor extends Component {
       showDivider,
       quillId,
       topToolbarHidden,
+      editorHeight,
       bottomToolbarHidden
     } = this.state
 
@@ -292,6 +298,7 @@ class Editor extends Component {
             bounds={"app"}
             ref={editorRef}
             className="Editor"
+            style={{ height: editorHeight }}
             theme={theme}
             modules={this.getModules(this)}
             formats={this.getFormats(this)}

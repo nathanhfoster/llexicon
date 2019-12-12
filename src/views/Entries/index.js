@@ -191,6 +191,7 @@ class Entries extends Component {
           {...restOfProps}
           containerHeight={style.height}
           showDivider
+          bottomToolbarHidden
         />
       </Col>
     )
