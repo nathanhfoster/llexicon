@@ -7,6 +7,8 @@
 .BottomToolBar {
     height: var(--bottomToolbarHeight);
     opacity: var(--mainOpacity);
+    color: var(--secondaryColor);
+    background: var(--slate_grey)
 }
 
 .BottomToolBar i {

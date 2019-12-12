@@ -190,9 +190,9 @@ class Home extends PureComponent {
                 {title}
               </CardTitle>
               <CardText className="HomeFeatureText Center">{text}</CardText>
-              <div className="Center">
+              {/* <div className="Center">
                 <Button color="accent">Learn More</Button>
-              </div>
+              </div> */}
             </CardBody>
           </Card>
         </Col>

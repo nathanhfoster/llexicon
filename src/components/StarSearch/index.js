@@ -73,9 +73,9 @@ class StarSearch extends PureComponent {
         />
 
         <UseDebounce
-          callback={value => SearchUserEntries(value)}
+          onChangeCallback={value => SearchUserEntries(value)}
           value={search}
-          delay={1500}
+          delay={800}
         />
       </InputGroup>
     )

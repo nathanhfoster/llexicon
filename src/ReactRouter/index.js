@@ -38,8 +38,8 @@ const getRouteItems = props => {
   } = RouteMap
 
   return [
-    {path: [HOME], component: Home},
-    { path: [ROOT, NEW_ENTRY, ENTRY_ADD], component: NewEntry },
+    { path: [ROOT, HOME], component: Home },
+    { path: [NEW_ENTRY, ENTRY_ADD], component: NewEntry },
     {
       path: [LOGIN, SIGNUP],
       component: renderRedirectOrComponent(props, User.token, NEW_ENTRY, Login)

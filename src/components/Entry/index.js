@@ -10,7 +10,6 @@ import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import deepEquals from "../../helpers/deepEquals"
 import UseDebounce from "../UseDebounce"
-import BottomToolbar from "../BottomToolbar"
 import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
@@ -27,14 +26,16 @@ class Entry extends Component {
   static propTypes = {
     containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     showDivider: PropTypes.bool,
-    toolbarHidden: PropTypes.bool,
+    topToolbarHidden: PropTypes.bool,
+    bottomToolbarHidden: PropTypes.bool,
     UpdateReduxEntry: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired
   }
 
   static defaultProps = {
     showDivider: false,
-    toolbarHidden: true,
+    topToolbarHidden: false,
+    bottomToolbarHidden: false,
     shouldRedirectOnDelete: false
   }
 
@@ -44,7 +45,6 @@ class Entry extends Component {
       author,
       title,
       html,
-      EntryFiles,
       latitude,
       longitude,
       tags,
@@ -55,7 +55,8 @@ class Entry extends Component {
       lastUpdated,
       containerHeight,
       showDivider,
-      toolbarHidden,
+      topToolbarHidden,
+      bottomToolbarHidden,
       shouldRedirectOnDelete
     } = nextProps
 
@@ -72,7 +73,6 @@ class Entry extends Component {
       author,
       title,
       html,
-      EntryFiles,
       latitude,
       longitude,
       tags,
@@ -83,26 +83,16 @@ class Entry extends Component {
       lastUpdated,
       textEditorHeight,
       showDivider,
-      toolbarHidden,
+      topToolbarHidden,
+      bottomToolbarHidden,
       shouldRedirectOnDelete
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { title, date_created_by_author, html } = nextState
+    const stateChanged = !deepEquals(this.state, nextState)
 
-    const currentTitle = this.state.title
-    const currentDateCreatedByAuthor = this.state.date_created_by_author
-    const currentHtml = this.state.html
-
-    const titleChanged = !deepEquals(currentTitle, title)
-    const dateChanged = !deepEquals(
-      currentDateCreatedByAuthor,
-      date_created_by_author
-    )
-    const htmlChanged = !deepEquals(currentHtml, html)
-
-    return titleChanged || dateChanged || htmlChanged
+    return stateChanged
   }
 
   render() {
@@ -112,7 +102,6 @@ class Entry extends Component {
       author,
       title,
       html,
-      EntryFiles,
       latitude,
       longitude,
       tags,
@@ -123,7 +112,8 @@ class Entry extends Component {
       lastUpdated,
       textEditorHeight,
       showDivider,
-      toolbarHidden,
+      topToolbarHidden,
+      bottomToolbarHidden,
       shouldRedirectOnDelete
     } = this.state
 
@@ -132,13 +122,18 @@ class Entry extends Component {
         <Editor
           toolbarId={id}
           showDivider={showDivider}
-          toolbarHidden={toolbarHidden}
+          topToolbarHidden={topToolbarHidden}
+          bottomToolbarHidden={bottomToolbarHidden}
           html={html}
-          onChangeCallback={({ ...payload }) =>
+          tags={tags}
+          latitude={latitude}
+          longitude={longitude}
+          onChangeCallback={({ ...payload }) => {
+            console.log("onChangeCallback: ", payload)
             UpdateReduxEntry({ id, ...payload })
-          }
+          }}
         >
-          <UseDebounce callback={() => SyncEntries()} />
+          <UseDebounce onChangeCallback={() => SyncEntries()} />
           <InputGroup key={id} className="EntryInput">
             <Input
               type="text"
@@ -191,15 +186,6 @@ class Entry extends Component {
             </InputGroupAddon>
           </InputGroup>
         </Editor>
-        {/* <BottomToolbar
-          onChangeCallback={({ ...payload }) =>
-            UpdateReduxEntry({ id, ...payload })
-          }
-          EntryFiles={EntryFiles}
-          latitude={latitude}
-          longitude={longitude}
-          tags={tags}
-        /> */}
       </Fragment>
     )
   }

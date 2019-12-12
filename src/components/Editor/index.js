@@ -10,7 +10,8 @@ import "react-quill/dist/quill.core.css"
 // import "quill-emoji/dist/quill-emoji.css"
 // import "quill-mention/dist/quill.mention.min.css"
 import "./styles.css"
-import Toolbar from "./Toolbar"
+import TopToolbar from "./TopToolbar"
+import BottomToolbar from "./BottomToolbar"
 
 // const Size = Quill.import("formats/size")
 // Size.whitelist = ["extra-small", "small", "medium", "large"]
@@ -67,6 +68,8 @@ class Editor extends Component {
     showDivider: PropTypes.bool,
     toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
+    topToolbarHidden: PropTypes.bool,
+    bottomToolbarHidden: PropTypes.bool,
 
     // Quill
     id: PropTypes.string,
@@ -100,13 +103,29 @@ class Editor extends Component {
     width: "100%",
     showDivider: false,
     toolbarId: 1,
-    placeholder: "Today I have..."
+    placeholder: "Today I have...",
+    topToolbarHidden: false,
+    bottomToolbarHidden: false
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { html } = nextProps
+    const {
+      html,
+      latitude,
+      longitude,
+      tags,
+      topToolbarHidden,
+      bottomToolbarHidden
+    } = nextProps
 
-    return { html }
+    return {
+      html,
+      latitude,
+      longitude,
+      tags,
+      topToolbarHidden,
+      bottomToolbarHidden
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -114,13 +133,9 @@ class Editor extends Component {
     const nextChildren = nextProps.children
 
     const childrenChanged = !deepEquals(children, nextChildren)
+    const stateChanged = !deepEquals(this.state, nextState)
 
-    const { html } = this.state
-    const nextHtml = nextState.html
-
-    const htmlChanged = html !== nextHtml
-
-    return childrenChanged || htmlChanged
+    return stateChanged || childrenChanged
   }
 
   componentDidMount() {
@@ -145,14 +160,19 @@ class Editor extends Component {
     onChangeCallback({ html })
   }
 
-  getModules = ({ toolbarId, editorRef }) => {
+  getModules = ({
+    toolbarId,
+    editorRef,
+    props: {},
+    state: { topToolbarHidden }
+  }) => {
     return {
       history: {
         delay: 2000,
         maxStack: 500,
         userOnly: false
       },
-      toolbar: `#${toolbarId}`,
+      toolbar: topToolbarHidden ? null : `#${toolbarId}`,
       // toolbar: {
       //   container: [
       //     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -244,17 +264,29 @@ class Editor extends Component {
       width,
       placeholder
     } = this.props
-    const { html, theme, showDivider, quillId } = this.state
+    const {
+      html,
+      latitude,
+      longitude,
+      tags,
+      theme,
+      showDivider,
+      quillId,
+      topToolbarHidden,
+      bottomToolbarHidden
+    } = this.state
 
     return (
       <Fragment>
         {children}
         <div className="text-editor" style={{ height, width }}>
-          <Toolbar
-            toolbarId={toolbarId}
-            editorRef={editorRef}
-            onChangeCallback={onChangeCallback}
-          />
+          {!topToolbarHidden && (
+            <TopToolbar
+              toolbarId={toolbarId}
+              editorRef={editorRef}
+              onChangeCallback={onChangeCallback}
+            />
+          )}
           <ReactQuill
             id={quillId}
             bounds={"app"}
@@ -267,6 +299,16 @@ class Editor extends Component {
             onChange={this.handleEditorStateChange}
             placeholder={placeholder}
           />
+          {!bottomToolbarHidden && (
+            <BottomToolbar
+              onChangeCallback={({ ...payload }) =>
+                onChangeCallback({ id: this.props.toolbarId, ...payload })
+              }
+              latitude={latitude}
+              longitude={longitude}
+              tags={tags}
+            />
+          )}
         </div>
         {showDivider && <Divider />}
       </Fragment>

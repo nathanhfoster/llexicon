@@ -1,9 +1,14 @@
-import { PureComponent } from "react"
-import PropTypes from "prop-types"
+import { Component } from 'react'
+import PropTypes from 'prop-types'
 
-class UseDebounce extends PureComponent {
+class UseDebounce extends Component {
+  constructor(props) {
+    super(props)
+    this.debounce = null
+  }
+
   static propTypes = {
-    callback: PropTypes.func.isRequired,
+    onChangeCallback: PropTypes.func,
     value: PropTypes.any,
     delay: PropTypes.number
   }
@@ -12,21 +17,24 @@ class UseDebounce extends PureComponent {
     delay: 3000
   }
 
+  shouldComponentUpdate(nextProps) {
+    const previousValue = this.props.value
+    const nextValue = nextProps.value
+    const valueChanged = previousValue !== nextValue
+    return valueChanged
+  }
+
   getSnapshotBeforeUpdate() {
     clearTimeout(this.debounce)
     return null
   }
 
   componentDidUpdate() {
-    const { callback, value, delay } = this.props
+    const { onChangeCallback, value, delay } = this.props
 
-    this.debounce = setTimeout(() => callback(value), delay)
-  }
-
-  componentWillUnmount() {
-    const { callback, value } = this.props
-    clearTimeout(this.debounce)
-    callback(value)
+    if (onChangeCallback) {
+      this.debounce = setTimeout(() => onChangeCallback(value), delay)
+    }
   }
 
   render() {

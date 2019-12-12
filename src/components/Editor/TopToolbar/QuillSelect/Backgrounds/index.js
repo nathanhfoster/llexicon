@@ -1,5 +1,5 @@
 import React, { memo }  from "react"
-import Color from ".."
+import Color from "../../QuillSelect"
 
 const Backgrounds = () => <Color className="background" />
 

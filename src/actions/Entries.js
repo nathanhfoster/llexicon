@@ -33,9 +33,41 @@ const GetEntryTags = () => (dispatch, getState) => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const ParseBase64 = (entry_id, media_type, html) => dispatch => {
-  const base64s = htmlToArrayOfBase64(html)
-  if (base64s.length === 0) return dispatch(UpdateEntry(entry_id, { html }))
+const AddEntryTagAuthor = tagTitle => (dispatch, getState) => {
+  const { Entries } = getState()
+  return Axios()
+    .patch(`tags/${tagTitle}/add_author/`)
+    .then(res => {
+      const { data } = res
+      dispatch({
+        type: ENTRIES_SET_TAGS,
+        payload: Entries.map(entry =>
+          entry.title === data.title ? data : entry
+        )
+      })
+    })
+    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+}
+
+const CreateEntryTag = payload => (dispatch, getState) => {
+  const {
+    User: { id },
+    Entries
+  } = getState()
+  const newPayload = { ...payload, authors: id }
+  return Axios()
+    .post(`tags/`, qs.stringify(newPayload))
+    .then(res => {
+      const { data } = res
+      dispatch({ type: ENTRIES_SET_TAGS, payload: Entries.concat(data) })
+    })
+    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+}
+
+const ParseBase64 = (entry_id, media_type, updateEntryPayload) => dispatch => {
+  const base64s = htmlToArrayOfBase64(updateEntryPayload.html)
+  if (base64s.length === 0)
+    return dispatch(UpdateEntry(entry_id, updateEntryPayload))
   for (let i = 0; i < base64s.length; i++) {
     const base64 = base64s[i]
     const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
@@ -263,22 +295,19 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       lastUpdated
     } = entry
 
-    let payload
-
     if (shouldDelete) {
       if (shouldPost) dispatch({ type: ENTRY_DELETE, id })
       else dispatchDeleteEntries.push(DeleteEntry(id))
       continue
     } else if (shouldPost) {
-      payload = {
+      const postPayload = {
         id,
         author: UserId,
         title,
         html,
-        tags,
         date_created_by_author
       }
-      dispatch(PostEntry(payload)).then(entry => {
+      dispatch(PostEntry(postPayload)).then(entry => {
         const {
           EntryFiles,
           author,
@@ -287,17 +316,23 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
           date_updated,
           html,
           id,
-          tags,
           title,
           views
         } = entry
-        dispatch(ParseBase64(id, "Image", html))
+        const updateEntryPayload = { html, tags: JSON.stringify(tags) }
+        dispatch(ParseBase64(id, "Image", updateEntryPayload))
       })
       continue
     } else if (lastUpdated) {
-      dispatchUpdateEntries.push(ParseBase64(id, "Image", html))
-      payload = { title, tags, date_created_by_author }
-      dispatchUpdateEntries.push(UpdateEntry(id, payload))
+      const updateEntryPayload = {
+        title,
+        date_created_by_author,
+        html,
+        tags: JSON.stringify(tags)
+      }
+      dispatchUpdateEntries.push(ParseBase64(id, "Image", updateEntryPayload))
+      // payload = {title, date_created_by_author}
+      // dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
   }
 
@@ -332,6 +367,8 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 }
 
 export {
+  AddEntryTagAuthor,
+  CreateEntryTag,
   GetEntryTags,
   GetUserEntry,
   GetAllUserEntries,

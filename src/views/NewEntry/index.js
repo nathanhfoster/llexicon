@@ -197,10 +197,7 @@ class NewEntry extends PureComponent {
                   disabled={postDisabled}
                   type="submit"
                 >
-                  <i
-                    className="fas fa-save"
-                    style={{ fontSize: 20 }}
-                  />
+                  <i className="fas fa-save" style={{ fontSize: 20 }} />
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>
@@ -210,6 +207,9 @@ class NewEntry extends PureComponent {
           <Col xs={12} className="p-0">
             <Editor
               html={html}
+              latitude={latitude}
+              longitude={longitude}
+              tags={tags}
               onChangeCallback={({ ...payload }) =>
                 this.handleTextEditorChange(payload)
               }

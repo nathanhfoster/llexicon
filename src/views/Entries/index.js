@@ -25,7 +25,7 @@ import "./styles.css"
 
 const mapStateToProps = ({
   User,
-  Entries: { items, next },
+  Entries: { items, next, search },
   Window: {
     screen: { availHeight }
   }
@@ -38,6 +38,7 @@ const mapStateToProps = ({
         new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
     ),
   nextEntryPage: next,
+  entriesSearch: search,
   viewPortHeight: availHeight
 })
 
@@ -130,10 +131,12 @@ class Entries extends Component {
   }
 
   GetEntries = () => {
-    const { SyncEntries, GetUserEntries } = this.props
+    const { SyncEntries, GetUserEntries, entriesSearch } = this.props
     const { nextEntryPage } = this.state
 
-    if (!nextEntryPage) return
+    if (entriesSearch || !nextEntryPage) {
+      return
+    }
 
     const split = nextEntryPage.split(/\?page=(.*)/)
     const pageNumber = split[1]

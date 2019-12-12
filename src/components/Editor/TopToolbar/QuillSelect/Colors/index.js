@@ -1,5 +1,5 @@
 import React, { memo }  from "react"
-import QuillSelect from ".."
+import QuillSelect from "../../QuillSelect"
 
 const Colors = ({
   className = "color",

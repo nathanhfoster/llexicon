@@ -5,7 +5,6 @@ const DEFAULT_STATE_TEXT_EDITOR = {
   clearedOn: "",
   title: "",
   html: "<p><br></p>",
-  EntryFiles: [],
   latitude: null,
   longitude: null,
   tags: [],

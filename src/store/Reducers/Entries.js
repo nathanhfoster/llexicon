@@ -54,7 +54,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         if (
           title.toLowerCase().includes(search.toLowerCase()) ||
           html.toLowerCase().includes(search.toLowerCase()) ||
-          tags.map(tag => tag.toLowerCase()).includes(search.toLowerCase())
+          tags
+            .map(tag => tag.title.toLowerCase())
+            .includes(search.toLowerCase())
         ) {
           return true
         } else {

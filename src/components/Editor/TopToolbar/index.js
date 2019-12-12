@@ -14,7 +14,7 @@ import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR
 
-class Toolbar extends Component {
+class TopToolbar extends Component {
   constructor(props) {
     super(props)
     this.state = { ...props }
@@ -85,4 +85,4 @@ class Toolbar extends Component {
   }
 }
 
-export default Toolbar
+export default TopToolbar
