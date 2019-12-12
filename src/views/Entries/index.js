@@ -72,9 +72,9 @@ class Entries extends Component {
 
     const inputHeight = 46
 
-    const minimalEntriesListHeight = viewPortHeight - 54 - 38 - 22
+    const minimalEntriesListHeight = viewPortHeight - 54 - 38
 
-    const detailedEntriesListHeight = viewPortHeight - 54 - 22
+    const detailedEntriesListHeight = viewPortHeight - 54 
 
     let listItemHeight = detailedEntriesListHeight / 2
 
