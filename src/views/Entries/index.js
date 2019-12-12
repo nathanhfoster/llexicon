@@ -19,6 +19,7 @@ const mapStateToProps = ({
   User,
   Entries: { items, next, search },
   Window: {
+    innerHeight,
     screen: { availHeight },
     navBarHeight
   }
@@ -32,7 +33,7 @@ const mapStateToProps = ({
     ),
   nextEntryPage: next,
   entriesSearch: search,
-  viewPortHeight: availHeight - navBarHeight
+  viewPortHeight: innerHeight - navBarHeight
 })
 
 const mapDispatchToProps = { SyncEntries, GetAllUserEntries, GetUserEntries }
@@ -69,9 +70,14 @@ class Entries extends Component {
       RouterPush(history, RouteMap.ENTRIES_MINIMAL)
     }
 
-    const minimalEntriesListHeight = viewPortHeight - 54 - 38
+    const tabContainerHeight = 54
 
-    const detailedEntriesListHeight = viewPortHeight - 54
+    const loadButtonContainerHeight = 38
+
+    const minimalEntriesListHeight =
+      viewPortHeight - tabContainerHeight - loadButtonContainerHeight
+
+    const detailedEntriesListHeight = viewPortHeight - tabContainerHeight
 
     let listItemHeight = detailedEntriesListHeight / 2
 
@@ -230,17 +236,19 @@ class Entries extends Component {
         tabId: RouteMap.ENTRIES_DETAILED,
         title: "Detailed",
         Component: () => (
-          <FixedSizeList
-            ref={this.detailedEntriesListRef}
-            height={detailedEntriesListHeight}
-            width="100%"
-            itemData={entries}
-            itemCount={entries.length}
-            itemSize={listItemHeight}
-            onItemsRendered={this.handleItemsRendered}
-          >
-            {this.renderDetailedEntries}
-          </FixedSizeList>
+          <Row>
+            <FixedSizeList
+              ref={this.detailedEntriesListRef}
+              height={detailedEntriesListHeight}
+              width="100%"
+              itemData={entries}
+              itemCount={entries.length}
+              itemSize={listItemHeight}
+              onItemsRendered={this.handleItemsRendered}
+            >
+              {this.renderDetailedEntries}
+            </FixedSizeList>
+          </Row>
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
       }
