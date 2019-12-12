@@ -104,9 +104,9 @@ const AwsUpload = (entry_id, media_type, file, base64) => dispatch => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetUserEntry = entryId => dispatch => {
+const GetEntry = url => dispatch => {
   return Axios()
-    .get(`/entries/${entryId}/`)
+    .get(url)
     .then(res => {
       const { data } = res
       dispatch({
@@ -120,6 +120,12 @@ const GetUserEntry = entryId => dispatch => {
       dispatch({ type: ENTRIES_ERROR, payload })
     })
 }
+
+const GetUserEntry = entryId => dispatch =>
+  dispatch(GetEntry(`/entries/${entryId}/`))
+
+const GetUserEntryDetails = entryId => dispatch =>
+  dispatch(GetEntry(`/entries/${entryId}/details/`))
 
 const GetAllUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -371,6 +377,7 @@ export {
   CreateEntryTag,
   GetEntryTags,
   GetUserEntry,
+  GetUserEntryDetails,
   GetAllUserEntries,
   GetUserEntries,
   GetUserEntriesByDate,

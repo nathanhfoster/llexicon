@@ -4,7 +4,7 @@ import { Container, Row, Col } from "reactstrap"
 import Entry from "../../components/Entry"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
-import { GetUserEntry, SyncEntries } from "../../actions/Entries"
+import { GetUserEntryDetails, SyncEntries } from "../../actions/Entries"
 import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import PageNotFound from "../PageNotFound"
 import "./styles.css"
@@ -33,7 +33,7 @@ const mapStateToProps = (
   entryContainerHeight: availHeight - (isMobile ? 46 : 68) - 48
 })
 
-const mapDispatchToProps = { GetUserEntry, SyncEntries }
+const mapDispatchToProps = { GetUserEntryDetails, SyncEntries }
 
 class EntryDetail extends PureComponent {
   constructor(props) {
@@ -44,7 +44,7 @@ class EntryDetail extends PureComponent {
 
   static propTypes = {
     UserId: PropTypes.number,
-    GetUserEntry: PropTypes.func.isRequired,
+    GetUserEntryDetails: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired
   }
 
@@ -55,8 +55,10 @@ class EntryDetail extends PureComponent {
   }
 
   componentDidMount() {
-    const { entryId, SyncEntries, GetUserEntry } = this.props
-    SyncEntries(() => new Promise(resolve => resolve(GetUserEntry(entryId, 1))))
+    const { entryId, SyncEntries, GetUserEntryDetails } = this.props
+    SyncEntries(
+      () => new Promise(resolve => resolve(GetUserEntryDetails(entryId)))
+    )
   }
 
   componentDidUpdate(prevProps, prevState) {}
