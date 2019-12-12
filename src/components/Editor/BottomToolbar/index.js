@@ -65,6 +65,7 @@ class BottomToolbar extends PureComponent {
 
     const buttons = [
       [{ Component: TagsButtonModal, props: { tags, onChangeCallback } }]
+      // [{ Component: TagsButtonModal, props: { tags, onChangeCallback } }]
     ]
 
     return { latitude, longitude, tags, EntryTags, buttons }

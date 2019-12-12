@@ -119,8 +119,8 @@ class Editor extends Component {
     } = nextProps
 
     const editorHeight = bottomToolbarHidden
-      ? "calc(100% - var(--textEditorToolBarHeight))"
-      : "calc(100% - var(--textEditorToolBarHeight) - var(--bottomToolbarHeight))"
+      ? "calc(100% - var(--topToolbarHeight))"
+      : "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight))"
 
     return {
       html,
