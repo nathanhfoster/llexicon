@@ -99,7 +99,7 @@ class NavBar extends PureComponent {
   renderNavLinks = () => {
     const { UserId } = this.state
     const { UserLogout, history } = this.props
-    const { NEW_ENTRY, CALENDAR, ENTRIES, LOGIN } = RouteMap
+    const { NEW_ENTRY, CALENDAR, ENTRIES_MINIMAL, LOGIN } = RouteMap
     const Links = [
       this.renderNavlink(
         NEW_ENTRY,
@@ -112,7 +112,7 @@ class NavBar extends PureComponent {
         <i className="fas fa-calendar-alt NavBarImage"></i>
       ),
       this.renderNavlink(
-        ENTRIES,
+        ENTRIES_MINIMAL,
         "ENTRIES",
         <i className="fas fa-book NavBarImage" />
       ),
