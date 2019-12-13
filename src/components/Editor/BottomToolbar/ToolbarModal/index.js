@@ -7,10 +7,15 @@ import "./styles.css"
 const ToolbarModal = ({
   modalTitle,
   onClickCallback,
+  onSaveCallback,
+  onCancelCallback,
   buttonIcon,
   buttonTitle,
   xs,
-  children
+  children,
+  className,
+  disabled = false,
+  saveDisabled = false
 }) => {
   const [modal, setModal] = useState(false)
 
@@ -20,22 +25,33 @@ const ToolbarModal = ({
     <Fragment>
       <ToolbarButton
         xs={xs}
-        onClickCallback={toggle}
+        onClickCallback={() => {
+          if (onClickCallback) onClickCallback()
+          toggle()
+        }}
         buttonIcon={buttonIcon}
         title={buttonTitle}
+        disabled={disabled}
       />
-      <Modal isOpen={modal} toggle={toggle} className="ToolbarModal" centered>
+      <Modal
+        isOpen={modal}
+        toggle={toggle}
+        className="ToolbarModal"
+        centered
+        onClosed={onCancelCallback}
+      >
         <ModalHeader toggle={toggle} className="Center">
           {modalTitle}
         </ModalHeader>
-        <ModalBody>{children}</ModalBody>
+        <ModalBody className={className}>{children}</ModalBody>
         <ModalFooter className="Center">
           <Button
             color="primary"
             onClick={() => {
-              onClickCallback()
+              onSaveCallback()
               toggle()
             }}
+            disabled={saveDisabled}
           >
             Save
           </Button>{" "}
@@ -51,9 +67,14 @@ const ToolbarModal = ({
 ToolbarModal.propTypes = {
   modalTitle: PropTypes.string,
   onClickCallback: PropTypes.func,
+  onSaveCallback: PropTypes.func,
+  onCancelCallback: PropTypes.func,
   buttonIcon: PropTypes.string,
   buttonTitle: PropTypes.string,
-  xs: PropTypes.number
+  xs: PropTypes.number,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  saveDisabled: PropTypes.bool
 }
 
 export default memo(ToolbarModal)

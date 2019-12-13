@@ -1,8 +1,8 @@
-import React, { PureComponent, cloneElement } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
-import { TagsButtonModal } from "./ToolbarButtonModals"
+import { LocationButtonModal, TagsButtonModal } from "./ToolbarButtonModals"
 import TagsContainer from "../../TagsContainer"
 import "./styles.css"
 
@@ -64,8 +64,13 @@ class BottomToolbar extends PureComponent {
     const { latitude, longitude, tags, EntryTags, onChangeCallback } = nextProps
 
     const buttons = [
+      [
+        {
+          Component: LocationButtonModal,
+          props: { latitude, longitude, onChangeCallback }
+        }
+      ],
       [{ Component: TagsButtonModal, props: { tags, onChangeCallback } }]
-      // [{ Component: TagsButtonModal, props: { tags, onChangeCallback } }]
     ]
 
     return { latitude, longitude, tags, EntryTags, buttons }

@@ -62,7 +62,7 @@ class Entry extends Component {
     const inputOffset = inputHeight * numberOfInputs
     const toolBarToggleButton = 44
 
-    const textEditorHeight = containerHeight - inputOffset 
+    const textEditorHeight = containerHeight - inputOffset
 
     return {
       id,
@@ -121,10 +121,9 @@ class Entry extends Component {
           tags={tags}
           latitude={latitude}
           longitude={longitude}
-          onChangeCallback={({ ...payload }) => {
-            console.log("onChangeCallback: ", payload)
+          onChangeCallback={({ ...payload }) =>
             UpdateReduxEntry({ id, ...payload })
-          }}
+          }
         >
           <UseDebounce onChangeCallback={() => SyncEntries()} />
           <InputGroup key={id} className="EntryInput">

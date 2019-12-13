@@ -1,0 +1,47 @@
+/* Styles for auto complete elements */
+
+.mapBoxSearchBoxContainer {
+    font-size: 1rem;
+    margin-top: 7px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    left: 40px;
+}
+
+.mapBoxSearchBoxContainer input:focus {
+    outline: #2196f3 solid 10px;
+}
+
+.mapBoxSearchBoxInput {
+    font-size: 1rem;
+    padding: 12px;
+    min-width: 400px;
+}
+
+.pac-container {
+    z-index: 9999 !important;
+}
+
+.pac-container:after {
+    /* Remove Google Branding */
+    content: none !important;
+}
+
+.pac-item {
+    padding: 8px;
+}
+
+.pac-item:hover {
+    background-color: whitesmoke;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    transition: -webkit-transform 0.425s cubic-bezier(0.485, 1.65, 0.545, 0.835);
+    transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.02, 1.02, 1);
+}
+
+.pac-item .pac-icon {}

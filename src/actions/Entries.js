@@ -297,7 +297,9 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       views,
       shouldDelete,
       shouldPost,
-      lastUpdated
+      lastUpdated,
+      latitude,
+      longitude
     } = entry
 
     if (shouldDelete) {
@@ -310,7 +312,9 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         author: UserId,
         title,
         html,
-        date_created_by_author
+        date_created_by_author,
+        latitude,
+        longitude
       }
       dispatch(PostEntry(postPayload)).then(entry => {
         const {
@@ -333,7 +337,9 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         title,
         date_created_by_author,
         html,
-        tags: JSON.stringify(tags)
+        tags: JSON.stringify(tags),
+        latitude,
+        longitude
       }
       dispatchUpdateEntries.push(ParseBase64(id, "Image", updateEntryPayload))
       // payload = {title, date_created_by_author}

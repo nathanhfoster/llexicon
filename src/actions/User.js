@@ -104,25 +104,21 @@ const GetUserLocation = () => dispatch => {
       //console.log("GetUserLocation:", position)
       dispatch(SetUserLocation(position))
     },
-    error =>
-      console.log("GetUserLocation ERROR: ", JSON.parse(JSON.stringify(error))),
+    error => console.log("GetUserLocation ERROR: ", error),
     { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 }
   )
 }
 
 const WatchUserLocation = watchId => dispatch => {
+  dispatch(GetUserLocation())
   const { geolocation } = navigator
   if (watchId) return geolocation.clearWatch(watchId)
   geolocation.watchPosition(
     position => {
-      // console.log("WatchUserLocation:", position);
+      // console.log("WatchUserLocation:", position)
       dispatch(SetUserLocation(position))
     },
-    error =>
-      console.log(
-        "WatchUserLocation ERROR: ",
-        JSON.parse(JSON.stringify(error))
-      ),
+    error => console.log("WatchUserLocation ERROR: ", error),
     { enableHighAccuracy: true, timeout: 3000, maximumAge: 10000 }
   )
 }

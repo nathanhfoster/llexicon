@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
-import ToolbarModal from "../ToolbarModal"
+import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetEntryTags } from "../../../../../actions/Entries"
 import "./styles.css"
@@ -101,7 +101,7 @@ class TagsButtonModal extends PureComponent {
     return (
       <ToolbarModal
         modalTitle="Add Tags"
-        onClickCallback={this.handleTagsSave}
+        onSaveCallback={this.handleTagsSave}
         buttonIcon="fas fa-tags"
         buttonTitle="Tags"
         xs={xs}
