@@ -149,8 +149,8 @@ class ReactRouter extends PureComponent {
           options={{
             scrollbars: {
               autoHide: "scroll",
-              autoHideDelay: 50,
-              dragScrolling: false
+              // autoHideDelay: 50,
+              // dragScrolling: false
             },
             // callbacks: {
             //   onScrollStart: () => console.log("Scrolling")
