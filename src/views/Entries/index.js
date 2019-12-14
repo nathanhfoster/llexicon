@@ -1,17 +1,17 @@
-import React, { Component, createRef, Fragment } from "react"
+import React, { Component, Fragment } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import { Row, Col, Button, ButtonGroup } from "reactstrap"
+import { Row, Button, ButtonGroup } from "reactstrap"
 import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
-import Entry from "../../components/Entry"
-import { FixedSizeList } from "react-window"
+
 import {
   SyncEntries,
   GetAllUserEntries,
   GetUserEntries
 } from "../../actions/Entries"
-import EntryMinimal from "../../components/EntryMinimal"
+import EntriesMinimal from "../../components/EntriesMinimal"
+import EntriesDetailed from "../../components/EntriesDetailed"
 import BasicTabs from "../../components/BasicTabs"
 import "./styles.css"
 
@@ -41,9 +41,6 @@ const mapDispatchToProps = { SyncEntries, GetAllUserEntries, GetUserEntries }
 class Entries extends Component {
   constructor(props) {
     super(props)
-
-    this.minimalEntriesListRef = createRef()
-    this.detailedEntriesListRef = createRef()
 
     this.state = {}
   }
@@ -151,38 +148,6 @@ class Entries extends Component {
     SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
   }
 
-  renderMinimalEntries = ({ data, index, style, isScrolling }) => {
-    const entry = data[index]
-
-    return (
-      <Col key={entry.id} xs={12} style={{ ...style, padding: 4 }}>
-        <EntryMinimal {...entry} />
-      </Col>
-    )
-  }
-
-  renderDetailedEntries = ({ data, index, style, isScrolling }) => {
-    const entry = data[index]
-    const { id, ...restOfProps } = entry
-
-    return (
-      <Col
-        key={id}
-        style={{ ...style /* background: "red" */ }}
-        xs={12}
-        className="p-0"
-      >
-        <Entry
-          key={id}
-          id={id}
-          {...restOfProps}
-          containerHeight={style.height}
-          bottomToolbarHidden
-        />
-      </Col>
-    )
-  }
-
   render() {
     const { history } = this.props
     const {
@@ -201,17 +166,11 @@ class Entries extends Component {
         Component: () => (
           <Fragment>
             <Row>
-              <FixedSizeList
-                ref={this.minimalEntriesListRef}
+              <EntriesMinimal
                 height={minimalEntriesListHeight}
-                width="100%"
-                itemData={entries}
-                itemCount={entries.length}
-                itemSize={60}
+                entries={entries}
                 onItemsRendered={this.handleItemsRendered}
-              >
-                {this.renderMinimalEntries}
-              </FixedSizeList>
+              />
             </Row>
             <Row className="Center" tag={ButtonGroup}>
               {nextEntryPage && (
@@ -237,17 +196,12 @@ class Entries extends Component {
         title: "Detailed",
         Component: () => (
           <Row>
-            <FixedSizeList
-              ref={this.detailedEntriesListRef}
+            <EntriesDetailed
               height={detailedEntriesListHeight}
-              width="100%"
-              itemData={entries}
-              itemCount={entries.length}
+              entries={entries}
               itemSize={listItemHeight}
               onItemsRendered={this.handleItemsRendered}
-            >
-              {this.renderDetailedEntries}
-            </FixedSizeList>
+            />
           </Row>
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)

@@ -4,7 +4,7 @@
     white-space: nowrap;
     height: calc(100% - 64px);
     padding: 2px;
-    position: relative;
+   
 }
 
 
@@ -15,6 +15,7 @@
     padding: 6px;
     margin: 2px 0;
     min-height: 68px;
+    display: flex;
 }
 
 .listItem:hover {

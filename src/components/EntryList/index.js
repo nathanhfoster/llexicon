@@ -1,12 +1,13 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { ListGroup, ListGroupItem, Col } from "reactstrap"
+import { ListGroup, ListGroupItem, Container, Row, Col } from "reactstrap"
 import Moment from "react-moment"
 import MomentJS from "moment"
 import { removeAttributeDuplicates } from "../../helpers"
 import { RouterPush } from "../../ReactRouter/Routes"
 import Star from "../BackgroundImage/Star"
+import TagsContainer from "../TagsContainer"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items } }) => ({
@@ -58,32 +59,46 @@ class EntryList extends PureComponent {
         date_created,
         date_created_by_author,
         date_updated,
-        views
+        views,
+        EntryFiles
       } = e
       const activeDate = MomentJS(date)
       const startDate = MomentJS(date_created_by_author)
       const sameDayEvent = startDate.isSame(activeDate, "day")
+      const showImageIcon = EntryFiles.length > 0
       return (
         <div key={i} className="ListItemContainer">
           {sameDayEvent ? (
-            <ListGroupItem
+            <Row
+              tag={ListGroupItem}
               key={id}
               onClick={() => RouterPush(history, `/calendar/${id}`)}
               className="listItem"
               header={title}
             >
-              <span className="eventDate">
+              <Col className="p-0" xs={10}>
                 <Star
                   size={8}
-                  marginRight={2}
                   color="White"
                   animation={false}
                   opacity={1}
                 />
+                <span className="eventTitle">{title || "No title"}</span>
+              </Col>
+
+              <Col className="eventDate p-0" xs={2}>
+                {showImageIcon && <i className="fas fa-image mr-1" />}
                 <Moment format="h:mma">{date_created_by_author}</Moment>
-              </span>
-              <h5 className="eventTitle">{title || "No title"}</h5>
-            </ListGroupItem>
+              </Col>
+
+              <Col className="p-0" style={{ marginLeft: -4 }} xs={12}>
+                <TagsContainer
+                  tags={tags}
+                  minimalView={false}
+                  hoverable={false}
+                />
+              </Col>
+            </Row>
           ) : null}
         </div>
       )
@@ -93,9 +108,9 @@ class EntryList extends PureComponent {
     const { history } = this.props
     const { entries, activeDate } = this.state
     return (
-      <ListGroup className="List">
+      <Container fluid tag={ListGroup} className="List">
         {this.renderItems(activeDate, entries, history)}
-      </ListGroup>
+      </Container>
     )
   }
 }

@@ -36,14 +36,12 @@
     line-height: 24px;
     height: 24px;
     min-width: 0;
-    display: flex;
-    align-items: center;
-    text-align: left;
-    margin-right: 4px;
+    text-align: right;
 }
 
 .eventTitle {
     flex: 1 0 0;
+    margin-left: 0.25rem;
     font-family: "proxima_novasemibold", Arial, sans-serif;
     user-select: none;
     font-weight: 500;
