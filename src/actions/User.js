@@ -110,9 +110,9 @@ const GetUserLocation = () => dispatch => {
 }
 
 const WatchUserLocation = watchId => dispatch => {
-  dispatch(GetUserLocation())
   const { geolocation } = navigator
   if (watchId) return geolocation.clearWatch(watchId)
+  dispatch(GetUserLocation())
   geolocation.watchPosition(
     position => {
       // console.log("WatchUserLocation:", position)

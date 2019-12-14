@@ -51,9 +51,7 @@ class LocationButtonModal extends PureComponent {
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
   componentWillUnmount() {
-    const { WatchUserLocation } = this.props
-
-    WatchUserLocation(this.watchId)
+    this.handleCancel()
   }
 
   handleClick = () => {
@@ -63,7 +61,7 @@ class LocationButtonModal extends PureComponent {
 
   handleCancel = () => {
     const { WatchUserLocation } = this.props
-    this.watchId = WatchUserLocation(this.watchId)
+    if (this.watchId) WatchUserLocation(this.watchId)
   }
 
   handleSave = () => {

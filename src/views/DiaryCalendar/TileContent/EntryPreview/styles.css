@@ -42,7 +42,6 @@
 .eventTitle {
     flex: 1 0 0;
     margin-left: 0.25rem;
-    font-family: "proxima_novasemibold", Arial, sans-serif;
     user-select: none;
     font-weight: 500;
     overflow: hidden;
@@ -51,5 +50,5 @@
     line-height: inherit;
     overflow: hidden;
     white-space: nowrap;
-    -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 2px), transparent calc(100% - 2px), transparent);
+    /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 2px), transparent calc(100% - 2px), transparent); */
 }

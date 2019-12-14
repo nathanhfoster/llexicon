@@ -146,7 +146,16 @@ class ReactRouter extends PureComponent {
             bottom: show_footer ? footerHeight : 0
             // background: "red"
           }}
-          options={{ scrollbars: { autoHide: "scroll" } }}
+          options={{
+            scrollbars: {
+              autoHide: "scroll",
+              autoHideDelay: 50,
+              dragScrolling: false
+            },
+            // callbacks: {
+            //   onScrollStart: () => console.log("Scrolling")
+            // }
+          }}
         >
           <Switch>
             {this.renderRouteItems(routeItems)}
