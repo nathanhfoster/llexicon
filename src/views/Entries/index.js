@@ -207,7 +207,7 @@ class Entries extends Component {
                 width="100%"
                 itemData={entries}
                 itemCount={entries.length}
-                itemSize={48}
+                itemSize={60}
                 onItemsRendered={this.handleItemsRendered}
               >
                 {this.renderMinimalEntries}

@@ -7,7 +7,12 @@ import cloneDeep from 'lodash/cloneDeep'
 import { formatBoundaries } from '../../../services/map'
 import { fetchDrawnSite } from '../../../../actions/MetaActions'
 import deepEquals from '../../../helpers/deepEquals'
-import { DEFAULT_STROKE, SELECTED_COLOR } from '../PolygonSystem/getOptions'
+import {
+  DEFAULT_STROKE,
+  SELECTED_COLOR,
+  NOT_ATTACHED_OR_SELECTED_COLOR
+} from '../PolygonSystem/getOptions'
+import { Geometry } from '../classes'
 
 const mapDispatchToProps = { fetchDrawnSite }
 
@@ -16,20 +21,16 @@ class DrawingManager extends Component {
     super(props)
 
     const { mousePos, options, shouldRenderPolygons } = props
-    const { lat, lng } = mousePos
+    const polygon = this.getInitialPolygon(mousePos)
 
     this.state = {
       mousePos,
       options,
       drawingPolyline: false,
-      drawingPolylineIndex: 0,
       shouldCompletePolygon: false,
+      drawnPolylineIsIntersecting: false,
       shouldRenderPolygons,
-      polygon: {
-        lat,
-        lng,
-        boundary: [{ lat, lng }]
-      }
+      polygon
     }
   }
 
@@ -50,7 +51,7 @@ class DrawingManager extends Component {
     toggleDrawingMode: PropTypes.func.isRequired,
     shouldRenderPolygons: PropTypes.bool.isRequired,
     fetchDrawnSite: PropTypes.func.isRequired,
-    mapApi: PropTypes.func.isRequired
+    mapApi: PropTypes.object.isRequired
   }
 
   static defaultProps = {
@@ -76,8 +77,7 @@ class DrawingManager extends Component {
       options,
       shouldCompletePolygon,
       shouldRenderPolygons,
-      drawingPolyline,
-      drawingPolylineIndex
+      drawingPolyline
     } = prevState
 
     if ($geoService) {
@@ -96,8 +96,7 @@ class DrawingManager extends Component {
       polygon,
       options,
       shouldCompletePolygon,
-      drawingPolyline,
-      drawingPolylineIndex
+      drawingPolyline
     }
   }
 
@@ -108,34 +107,58 @@ class DrawingManager extends Component {
     return propsChanged || stateChanged
   }
 
-  // getSnapshotBeforeUpdate(prevProps, prevState) {
-  //   return null
-  // }
+  getInitialPolygon = ({ lat, lng }) => {
+    const polygon = {
+      lat,
+      lng,
+      boundary: [{ lat, lng }]
+    }
 
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   // const { mousePos } = prevState
-  //   // this.setState({ mousePos })
-  // }
-
-  handlePolygonStart = (polygon, drawingPolylineIndex) => {
-    this.setState({
-      drawingPolyline: true,
-      polygon,
-      drawingPolylineIndex: drawingPolylineIndex + 1
-    })
+    return polygon
   }
 
-  handlePolygonComplete = polygon => {
-    const { toggleDrawingMode, fetchDrawnSite, mapApi } = this.props
+  getInitialStartingPolygon = () => {
     const {
       mousePos: { lat, lng }
     } = this.state
-    const Polygon = GooglePolygon({ paths: polygon.boundary })
-    const paths = Polygon.getPath()
 
+    const polyline = { lat, lng }
+
+    const mousePosPolyline = polyline
+
+    const polygon = {
+      lat,
+      lng,
+      boundary: [polyline, mousePosPolyline]
+    }
+
+    return polygon
+  }
+
+  handlePolygonStart = () => {
+    const polygon = this.getInitialStartingPolygon()
+
+    this.setState({
+      drawingPolyline: true,
+      polygon
+    })
+  }
+
+  handlePolygonComplete = () => {
+    const { toggleDrawingMode, fetchDrawnSite, mapApi } = this.props
+    const { polygon } = this.state
+
+    let newPolygon = cloneDeep(polygon)
+
+    const firstPolyline = newPolygon.boundary[0]
+    const lastPolylineIndex = newPolygon.boundary.length - 1
+    newPolygon.boundary[lastPolylineIndex] = firstPolyline
+
+    const googlePolygon = GooglePolygon({ paths: newPolygon.boundary })
+    const paths = googlePolygon.getPath()
+    const boundaries = formatBoundaries(paths.getArray())
     const acres = mapApi.geometry.spherical.computeArea(paths) * 0.000247105
 
-    const boundaries = formatBoundaries(paths.getArray())
     const newSite = {
       siteType: 'USER_DEFINED',
       acreage: acres,
@@ -143,20 +166,41 @@ class DrawingManager extends Component {
     }
 
     fetchDrawnSite(newSite)
+
+    const initialPolygon = this.getInitialStartingPolygon()
+
     this.setState({
-      polygon: {
-        lat,
-        lng,
-        boundary: [{ lat, lng }]
-      },
+      polygon: initialPolygon,
       shouldCompletePolygon: false,
-      drawingPolyline: false,
-      drawingPolylineIndex: 0
+      drawnPolylineIsIntersecting: false,
+      drawingPolyline: false
     })
+
     return toggleDrawingMode()
   }
 
-  shouldCompletePolygon = (point, centerOfCircle) => {
+  handleAddingNewPolyline = () => {
+    const {
+      polygon,
+      mousePos: { lat, lng },
+      drawnPolylineIsIntersecting
+    } = this.state
+
+    if (drawnPolylineIsIntersecting) return
+
+    let newPolygon = cloneDeep(polygon)
+
+    const newPolyline = {
+      lat,
+      lng
+    }
+
+    newPolygon.boundary.push(newPolyline)
+
+    this.setState({ polygon: newPolygon })
+  }
+
+  handleShouldCompletePolygon = (point, centerOfCircle) => {
     const radius = Math.pow(0.00005, 2)
     const distance =
       Math.pow(point.lat - centerOfCircle.lat, 2) + Math.pow(point.lng - centerOfCircle.lng, 2)
@@ -167,55 +211,63 @@ class DrawingManager extends Component {
     return false
   }
 
-  handleClick = (polygon, drawingPolyline, { lat, lng }) => {
-    const { shouldCompletePolygon, drawingPolylineIndex } = this.state
-    let newPolygon = cloneDeep(polygon)
+  handleClick = () => {
+    const { drawingPolyline, shouldCompletePolygon } = this.state
 
     if (!drawingPolyline) {
-      newPolygon = {
-        lat,
-        lng,
-        boundary: [{ lat, lng }]
-      }
-      this.handlePolygonStart(newPolygon, drawingPolylineIndex)
+      this.handlePolygonStart()
     } else if (shouldCompletePolygon) {
-      const firstPolyline = newPolygon.boundary[0]
-      const lastPolylineIndex = newPolygon.boundary.length - 1
-      newPolygon.boundary[lastPolylineIndex] = firstPolyline
-      this.handlePolygonComplete(newPolygon)
+      this.handlePolygonComplete()
     } else {
-      this.setState({ drawingPolylineIndex: drawingPolylineIndex + 1 })
+      this.handleAddingNewPolyline()
     }
   }
 
-  handleMouseMove = (polygon, drawingPolyline, mousePos, options) => {
-    const completedOpacity = 0.8
+  handleMouseMove = () => {
+    const { polygon, drawingPolyline, mousePos, options } = this.state
+    const intersectingOpacity = 0.9
+    const completedOpacity = 0.9
     const regularOpacity = 0.4
 
     if (!drawingPolyline) return
 
-    const { drawingPolylineIndex } = this.state
     let newPolygon = cloneDeep(polygon)
-    newPolygon.boundary[drawingPolylineIndex] = { lat: mousePos.lat, lng: mousePos.lng }
+    const lastPolylineIndex = newPolygon.boundary.length - 1
 
-    const fillOpacity = this.shouldCompletePolygon(mousePos, newPolygon)
-      ? completedOpacity
-      : regularOpacity
-    const newOptions = { ...options, fillOpacity }
+    newPolygon.boundary[lastPolylineIndex] = { lat: mousePos.lat, lng: mousePos.lng }
+
+    const geometry = new Geometry({ points: newPolygon.boundary })
+
+    const drawnPolylineIsIntersecting = geometry.intersects()
+
+    const fill = drawnPolylineIsIntersecting ? NOT_ATTACHED_OR_SELECTED_COLOR : SELECTED_COLOR
+
+    const shouldCompletePolygon =
+      this.handleShouldCompletePolygon(mousePos, newPolygon) && !drawnPolylineIsIntersecting
+
+    const fillOpacity = drawnPolylineIsIntersecting
+      ? intersectingOpacity
+      : shouldCompletePolygon
+        ? completedOpacity
+        : regularOpacity
+
+    const newOptions = { ...options, fillOpacity, fill }
 
     this.setState({
       polygon: newPolygon,
       options: newOptions,
-      shouldCompletePolygon: fillOpacity === completedOpacity
+      shouldCompletePolygon,
+      drawnPolylineIsIntersecting
     })
   }
 
-  renderPolygon = polygon => {
-    const { bounds, options, shouldRenderPolygons, height, width, zoom } = this.state
+  renderPolygon = () => {
+    const { polygon, bounds, options, shouldRenderPolygons, height, width, zoom } = this.state
 
     if (!shouldRenderPolygons) return null
     else {
       const { lat, lng, boundary } = polygon
+
       return (
         <PolygonSystem
           key="userDefinedPolygon"
@@ -235,14 +287,9 @@ class DrawingManager extends Component {
   }
 
   render() {
-    const { polygon, drawingPolyline, mousePos, options } = this.state
-
     return (
-      <div
-        onClick={() => this.handleClick(polygon, drawingPolyline, mousePos)}
-        onMouseMove={() => this.handleMouseMove(polygon, drawingPolyline, mousePos, options)}
-      >
-        {this.renderPolygon(polygon)}
+      <div onClick={this.handleClick} onMouseMove={this.handleMouseMove}>
+        {this.renderPolygon()}
       </div>
     )
   }

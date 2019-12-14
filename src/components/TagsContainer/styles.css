@@ -1,15 +1,18 @@
 .TagsContainer {
     display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: auto;
     width: 100%;
 }
 
 .TagContainer {
     background: var(--accentColor);
-    padding: 4px;
-    margin-right: 4px;
     height: 20px;
+    padding: .25rem;
+    margin: 0.25rem;
+}
+
+.TagContainer i {
+    vertical-align: middle;
 }
 
 .TagContainerHover:hover {

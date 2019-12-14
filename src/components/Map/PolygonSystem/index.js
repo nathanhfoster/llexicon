@@ -152,6 +152,8 @@ class PolygonSystem extends PureComponent {
           coords={coords}
           ptCorner={ptCorner}
           zoom={zoom}
+          heading={heading}
+          tilt={tilt}
           options={options}
         />
       )

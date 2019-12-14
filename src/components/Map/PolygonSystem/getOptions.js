@@ -58,7 +58,7 @@ const getOptions = ({
     newOptions.fillOpacity = 0.9
   }
 
-  if (zoom < 16) newOptions.fillOpacity = 1
+  if (zoom < 15) newOptions.fillOpacity = 1
 
   return newOptions
 

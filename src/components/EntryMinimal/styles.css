@@ -1,17 +1,13 @@
 .EntryMinimal {
     color: var(--secondaryColor);
     background: var(--quinaryColor);
+    height: 100%;
     width: 100%;
-    padding: 8px 2px 8px 8px;
 }
 
 .EntryMinimal:hover {
     background: var(--slate_grey);
     cursor: pointer;
-}
-
-.EntryMinimal span:not(:last-child) {
-    margin-right: 6px;
 }
 
 .EntryMinimalTitle {
@@ -20,9 +16,15 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    text-align: left;
 }
 
-.EntryMinimal time {
+.EntryMinimalTime, .EntryMinimalTime time {
     font-size: 1.25em;
     font-weight: 200;
+    text-align: right;
+}
+
+.EntryMinimalTags {
+    margin-left: -4px;
 }

@@ -2,11 +2,11 @@ import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 import toPoints from '../functions/toPoints'
 
-const Polyline = ({ coords, options, ptCorner, zoom }) => {
+const Polyline = ({ coords, options, ptCorner, zoom, heading, tilt }) => {
   // console.log('Polyline: ', coords)
   const points = coords
     .map(coord => {
-      const ptScreen = toPoints(coord.lat, coord.lng, zoom)
+      const ptScreen = toPoints(coord.lat, coord.lng, zoom, heading, tilt)
       // console.log('ptCorner: ', ptCorner)
       // console.log('ptScreen: ', ptScreen)
       const x = ptScreen.x - ptCorner.x

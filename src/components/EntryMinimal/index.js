@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { Badge } from "reactstrap"
+import { Badge, Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
@@ -27,35 +27,32 @@ const EntryMinimal = ({
 }) => {
   const history = useHistory()
 
+  const showFileIcon = EntryFiles.length > 0
+
   return (
-    <Badge
+    <Container
+      fluid
+      tag={Badge}
       className="EntryMinimal"
       onClick={() =>
         RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
       }
     >
-      <div className="Center" style={{ justifyContent: "flex-start" }}>
-        <span>
-          <Star size={16} animation={false} opacity={1} />{" "}
-        </span>
-        <span>
-          <Moment format="D MMM">{date_created_by_author}</Moment>
-        </span>
+      <Row>
+        <Col xs={8} md={9} lg={10} xl={11} className="EntryMinimalTitle">
+          <Star size={14} animation={false} opacity={1} />
+          <span className="ml-1">{title}</span>
+        </Col>
+        <Col xs={4} md={3} lg={2} xl={1} className="EntryMinimalTime">
+          {!showFileIcon && <i className="far fa-file-image mr-1" />}
+          <Moment format="D MMM YY">{date_created_by_author}</Moment>
+        </Col>
 
-        {EntryFiles.length > 0 && (
-          <span style={{ marginLeft: 4 }}>
-            <i className="far fa-file-image" />
-          </span>
-        )}
-
-        <span className="EntryMinimalTitle" style={{ marginLeft: 4 }}>
-          {title}
-        </span>
-        <span>
+        <Col xs={12} className="EntryMinimalTags">
           <TagsContainer tags={tags} minimalView={false} hoverable={false} />
-        </span>
-      </div>
-    </Badge>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

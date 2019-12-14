@@ -3,7 +3,7 @@ import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
-import GoogleMapReact from "google-map-react"
+import BasicMap from "../../../../BasicMap"
 import Marker from "../../../../Map/Marker"
 import { WatchUserLocation } from "../../../../../actions/User"
 import "./styles.css"
@@ -94,23 +94,7 @@ class LocationButtonModal extends PureComponent {
         saveDisabled={!UserLocation.latitude || !UserLocation.longitude}
       >
         <Container fluid className="LocationButtonModal p-0">
-          <div style={{ height: 500, width: "100%" }}>
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: REACT_APP_GOOGLE_LOCATION_API }}
-              center={{
-                lat: UserLocation.latitude,
-                lng: UserLocation.longitude
-              }}
-              defaultCenter={center}
-              defaultZoom={zoom}
-            >
-              <Marker
-                lat={UserLocation.latitude}
-                lng={UserLocation.longitude}
-                text="My Marker"
-              />
-            </GoogleMapReact>
-          </div>
+          <BasicMap renderUserLocation />
         </Container>
       </ToolbarModal>
     )

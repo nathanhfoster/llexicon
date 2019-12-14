@@ -68,7 +68,13 @@ class TagsContainer extends PureComponent {
       <Col
         className="TagsContainer p-0"
         xs={12}
-        style={{ height, flexWrap, alignItems }}
+        style={{
+          height,
+          flexWrap,
+          alignItems,
+          alignContent: "flex-start",
+          flexStart: "space-around"
+        }}
       >
         {minimalView ? this.renderMinimalTags(tags) : this.renderTags(tags)}
       </Col>
