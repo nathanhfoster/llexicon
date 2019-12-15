@@ -15,7 +15,8 @@ const ToolbarModal = ({
   children,
   className,
   disabled = false,
-  saveDisabled = false
+  saveDisabled = false,
+  Component
 }) => {
   const [modal, setModal] = useState(false)
 
@@ -32,7 +33,10 @@ const ToolbarModal = ({
         buttonIcon={buttonIcon}
         title={buttonTitle}
         disabled={disabled}
-      />
+      >
+        {Component && <Component />}
+      </ToolbarButton>
+
       <Modal
         isOpen={modal}
         toggle={toggle}

@@ -7,7 +7,8 @@ const ToolbarButton = ({
   onClickCallback,
   buttonIcon,
   title,
-  disabled
+  disabled,
+  children
 }) => {
   return (
     <Col

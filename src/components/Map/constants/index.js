@@ -49,9 +49,9 @@ const DEFAULT_MAP_OPTIONS = {
   // scrollwheel: true, // gestureHandling handles this
   minZoom: 0,
   maxZoom: 22,
-  disableDefaultUI: false,
-  mapTypeControl: true,
-  mapTypeId: GOOGLE_MAP_TYPE_ID.SATELLITE,
+  disableDefaultUI: true,
+  // mapTypeControl: true,
+  mapTypeId: GOOGLE_MAP_TYPE_ID.ROADMAP,
 
   mapTypeControlOptions: {
     style: GOOGLE_MAP_TYPE_CONTROL_STYLE.HORIZONTAL_BAR,
@@ -74,12 +74,12 @@ const DEFAULT_MAP_OPTIONS = {
       ]
     }
   ],
-  scaleControl: true,
-  streetViewControl: true,
+  // scaleControl: true,
+  // streetViewControl: true,
   // tilt and rotateControl doesn't work for custom polygons right now
   tilt: 0,
   rotateControl: false,
-  fullscreenControl: true,
+  // fullscreenControl: true,
   // zoomControl: true,
   zoomControlOptions: {
     position: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM

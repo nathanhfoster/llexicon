@@ -4,11 +4,8 @@ import PropTypes from "prop-types"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import BasicMap from "../../../../BasicMap"
-import Marker from "../../../../Map/Marker"
 import { WatchUserLocation } from "../../../../../actions/User"
 import "./styles.css"
-
-const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
 const mapStateToProps = ({ User: { location } }) => ({ UserLocation: location })
 
@@ -92,7 +89,11 @@ class LocationButtonModal extends PureComponent {
         saveDisabled={!UserLocation.latitude || !UserLocation.longitude}
       >
         <Container fluid className="LocationButtonModal p-0">
-          <BasicMap renderUserLocation />
+          <BasicMap
+            renderUserLocation
+            latitude={latitude}
+            longitude={longitude}
+          />
         </Container>
       </ToolbarModal>
     )

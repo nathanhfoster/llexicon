@@ -4,6 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import GoogleMapReact from "google-map-react"
 import Marker from "../Map/Marker"
 import { WatchUserLocation } from "../../actions/User"
+import { DEFAULT_MAP_OPTIONS } from "../Map/constants"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
@@ -20,7 +21,9 @@ class BasicMap extends PureComponent {
 
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    latitude: PropTypes.number,
+    longitude: PropTypes.number
   }
 
   static defaultProps = {
@@ -36,26 +39,68 @@ class BasicMap extends PureComponent {
       lng: -98.5556199
     },
     defaultZoom: 3,
-    zoom: 3
+    zoom: 3,
+    options: DEFAULT_MAP_OPTIONS
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let { renderUserLocation, UserLocation, center, zoom } = nextProps
+    let {
+      renderUserLocation,
+      UserLocation,
+      center,
+      zoom,
+      latitude,
+      longitude
+    } = nextProps
 
-    if (renderUserLocation) {
+    if (latitude && longitude) {
+      center = {
+        lat: latitude,
+        lng: longitude
+      }
+      zoom = 11
+    } else if (renderUserLocation) {
       center = {
         lat: UserLocation.latitude,
         lng: UserLocation.longitude
       }
       zoom = 11
+      latitude = UserLocation.latitude
+      longitude = UserLocation.longitude
     }
 
-    return { renderUserLocation, UserLocation, center, zoom }
+    return {
+      renderUserLocation,
+      UserLocation,
+      center,
+      zoom,
+      latitude,
+      longitude
+    }
+  }
+
+  renderMarker = () => {
+    const { latitude, longitude } = this.state
+
+    const shouldRenderMarker = latitude && longitude
+
+    return (
+      shouldRenderMarker && (
+        <Marker lat={latitude} lng={longitude} text="My Location" />
+      )
+    )
   }
 
   render() {
-    const { height, width, defaultCenter, defaultZoom, children } = this.props
-    const { renderUserLocation, UserLocation, center, zoom } = this.state
+    const {
+      height,
+      width,
+      defaultCenter,
+      defaultZoom,
+      options,
+      children
+    } = this.props
+    const { center, zoom } = this.state
     return (
       <div style={{ height, width }}>
         <GoogleMapReact
@@ -64,14 +109,9 @@ class BasicMap extends PureComponent {
           defaultZoom={defaultZoom}
           center={center}
           zoom={zoom}
+          options={options}
         >
-          {renderUserLocation && (
-            <Marker
-              lat={UserLocation.latitude}
-              lng={UserLocation.longitude}
-              text="My Marker"
-            />
-          )}
+          {this.renderMarker()}
           {children}
         </GoogleMapReact>
       </div>
