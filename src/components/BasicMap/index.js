@@ -53,6 +53,10 @@ class BasicMap extends PureComponent {
       longitude
     } = nextProps
 
+    // Remove possible trailing zeroes
+    latitude = parseFloat(latitude.toString())
+    longitude = parseFloat(longitude.toString())
+
     if (latitude && longitude) {
       center = {
         lat: latitude,

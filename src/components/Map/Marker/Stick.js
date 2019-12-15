@@ -28,7 +28,8 @@ const zoomClick = ({ center, setMapCenterBoundsZoom }) =>
   setMapCenterBoundsZoom({ center, zoom: DEFAULT_POLYGON_MIN_ZOOM })
 
 const clientNameCharacterStyle = {
-  fontFamily: "Arial Bold"
+
+  fontSize: 'inherit'
 }
 
 const infoStyle = {
