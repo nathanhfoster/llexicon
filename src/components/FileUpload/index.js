@@ -23,11 +23,11 @@ class FileUpload extends PureComponent {
   render() {
     const { value, onChangeCallback } = this.props
     return (
-      <FormGroup className="FileUploadContainer Center">
+      <FormGroup className="FileUploadContainer">
         <FormText color="white">Import Entries</FormText>
         <Label className="FileUpload" for="fileUpload">
           {!value ? (
-            <i className="fas fa-file-import fa-3x" />
+            <i className="fas fa-file-import fa-2x" />
           ) : (
             <Media src={value} />
           )}

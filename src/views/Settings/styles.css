@@ -1,3 +1,13 @@
 .Settings {
     color: var(--secondaryColor);
 }
+
+.checkBoxTable {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.checkBoxText {
+    font-size: 1.25rem;
+}

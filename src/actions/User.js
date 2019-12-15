@@ -2,7 +2,15 @@ import { ReduxActions } from "../constants"
 import { Axios, AxiosForm } from "."
 import qs from "qs"
 
-const ChangeUser = payload => ({ type: ReduxActions.USER_SET, payload })
+const {
+  USER_SET,
+  USER_SET_SETTINGS,
+  USER_SET_LOCATION,
+  REDUX_RESET,
+  ALERTS_SET_MESSAGE
+} = ReduxActions
+
+const ChangeUser = payload => ({ type: USER_SET, payload })
 
 const UserLogin = (payload, rememberMe) => dispatch =>
   Axios()
@@ -11,7 +19,7 @@ const UserLogin = (payload, rememberMe) => dispatch =>
       const { id, token } = res.data
       dispatch(RefreshPatchUser(token, id))
       dispatch({
-        type: ReduxActions.USER_SET,
+        type: USER_SET,
         payload: res.data
       })
     })
@@ -22,20 +30,20 @@ const RefreshPatchUser = (token, id) => (dispatch, getState) =>
     .get(`users/${id}/refresh/`)
     .then(res => {
       dispatch({
-        type: ReduxActions.USER_SET,
+        type: USER_SET,
         payload: res.data
       })
     })
     .catch(e =>
       e.response && e.response.status == 401
         ? dispatch({
-            type: ReduxActions.REDUX_RESET,
+            type: REDUX_RESET,
             payload: null
           })
         : console.log(e)
     )
 
-const UserLogout = () => ({ type: ReduxActions.REDUX_RESET })
+const UserLogout = () => ({ type: REDUX_RESET })
 
 const CreateUser = (payload, rememberMe) => async dispatch =>
   await Axios()
@@ -43,33 +51,35 @@ const CreateUser = (payload, rememberMe) => async dispatch =>
     .then(async res => await dispatch(UserLogin(payload, rememberMe)))
     .catch(e => console.log("CreateUser: ", e.response))
 
-const UpdateUser = payload => async (dispatch, getState) => {
+const UpdateUser = payload => (dispatch, getState) => {
   const { id } = getState().User
-  return await Axios()
+  return Axios()
     .patch(`users/${id}/`, qs.stringify(payload))
-    .then(async res =>
-      dispatch({ type: ReduxActions.USER_UPDATE_SUCCESS, payload: res.data })
-    )
-    .catch(e => console.log("UpdateUser: ", e.response))
+    .then(res => {
+      console.log("UpdateUser: ", res.data)
+
+      dispatch({ type: USER_SET, payload: res.data })
+      dispatch({
+        type: ALERTS_SET_MESSAGE,
+        payload: { title: "Updated", message: "Profile" }
+      })
+    })
+    .catch(e => console.log("UpdateUser ERROR: ", e))
 }
 
 const UpdateProfile = payload => async (dispatch, getState) => {
   const { id } = getState().User
-  await dispatch({ type: ReduxActions.USER_UPDATE_LOADING })
+  // await dispatch({ type: USER_UPDATE_LOADING })
   return await AxiosForm(payload)
     .patch(`users/${id}/`, payload)
     .then(res => {
       dispatch({
-        type: ReduxActions.USER_UPDATE_SUCCESS,
+        type: USER_SET,
         payload: res.data
       })
     })
     .catch(e => console.log("UpdateProfile: ", e.response))
 }
-
-const ClearUserApi = () => ({
-  type: ReduxActions.CLEAR_USER_API
-})
 
 const SetUserLocation = position => dispatch => {
   let { coords, timestamp } = position
@@ -83,7 +93,7 @@ const SetUserLocation = position => dispatch => {
     speed
   } = coords
   dispatch({
-    type: ReduxActions.SET_USER_LOCATION,
+    type: USER_SET_LOCATION,
     payload: {
       accuracy,
       altitude,
@@ -131,7 +141,6 @@ export {
   CreateUser,
   UpdateUser,
   UpdateProfile,
-  ClearUserApi,
   SetUserLocation,
   GetUserLocation,
   WatchUserLocation

@@ -64,8 +64,14 @@ class BasicForm extends PureComponent {
     let payload = {}
 
     for (let i = 0; i < length; i++) {
-      const { id, value } = e.target[i]
-      payload[id] = value
+      console.log(e.target[i])
+      const { id, value, type, checked } = e.target[i]
+      if (value) {
+        payload[id] = value
+      } else if (type === "radio") {
+        console.log("RADIO: ", checked)
+        payload[id] = checked
+      }
     }
 
     onSubmit(payload)
@@ -73,11 +79,19 @@ class BasicForm extends PureComponent {
 
   renderInputs = inputs =>
     inputs.map(input => {
-      const { id, label, type, name, placeholder } = input
+      const { id, defaultValue, label, type, name, placeholder, check } = input
       return (
-        <FormGroup key={id}>
-          <Label for={id}>{label}</Label>
-          <Input type={type} name={name} id={id} placeholder={placeholder} />
+        <FormGroup check={check} key={id}>
+          <Label check={check} for={id}>
+            {label}
+          </Label>
+          <Input
+            defaultValue={defaultValue}
+            type={type}
+            name={name}
+            id={id}
+            placeholder={placeholder}
+          />
         </FormGroup>
       )
     })

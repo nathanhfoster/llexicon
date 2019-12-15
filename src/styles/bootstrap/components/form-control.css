@@ -2,6 +2,7 @@
   min-height: var(--inputHeight);
   background: var(--quinaryColor);
   color: var(--secondaryColor) !important;
+  border-color: transparent !important;
 }
 
 .form-control::placeholder {
@@ -9,7 +10,7 @@
 }
 
 .form-control:focus {
-  border-color: transparent !important;
+  border-color: inherit !important;
   outline: 0;
   box-shadow: none;
 }

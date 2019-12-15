@@ -12,6 +12,7 @@ import {
   Tooltip,
   Button
 } from "reactstrap"
+import { UpdateUser } from "../../actions/User"
 import {
   GetUserSettings,
   PostSettings,
@@ -19,6 +20,7 @@ import {
 } from "../../actions/Settings"
 import { copyStringToClipboard } from "../../helpers"
 import MomentJs from "moment"
+import BasicForm from "../../components/BasicForm"
 import "./styles.css"
 
 const mapStateToProps = ({ User, Entries }) => ({
@@ -26,7 +28,12 @@ const mapStateToProps = ({ User, Entries }) => ({
   entries: Entries.items
 })
 
-const mapDispatchToProps = { GetUserSettings, PostSettings, SetSettings }
+const mapDispatchToProps = {
+  UpdateUser,
+  GetUserSettings,
+  PostSettings,
+  SetSettings
+}
 
 class Settings extends PureComponent {
   constructor(props) {
@@ -44,6 +51,7 @@ class Settings extends PureComponent {
     ShowFooterTooltip: PropTypes.bool,
     ShowPushMessagesTooltip: PropTypes.bool,
     ShowOfflineModeTooltip: PropTypes.bool,
+    UpdateUser: PropTypes.func.isRequired,
     GetUserSettings: PropTypes.func.isRequired,
     PostSettings: PropTypes.func.isRequired,
     SetSettings: PropTypes.func.isRequired
@@ -100,7 +108,7 @@ class Settings extends PureComponent {
         longitude
       } = entry
       const dateFormat = "YYYY-MM-DD hh:mm:ss"
-      console.log(i, tags)
+
       return {
         id,
         author,
@@ -122,6 +130,14 @@ class Settings extends PureComponent {
     })
     copyStringToClipboard(JSON.stringify(formattedEntries))
     alert("Entries copied to clipboard.")
+  }
+
+  handleChangeUser = payload => {
+    const { UpdateUser } = this.props
+
+    console.log(payload)
+
+    // UpdateUser(payload)
   }
 
   render() {
@@ -152,87 +168,133 @@ class Settings extends PureComponent {
           </Col>
         </Row>
         <Row>
+          <Col xs={12}>
+            <BasicForm
+              title="Update Profile"
+              onSubmit={payload => this.handleChangeUser(payload)}
+              submitLabel="Update"
+              inputs={[
+                {
+                  label: "Username",
+                  type: "text",
+                  name: "username",
+                  id: "username",
+                  placeholder: "Username...",
+                  defaultValue: User.username
+                },
+                {
+                  label: "email",
+                  type: "email",
+                  name: "email",
+                  id: "email",
+                  placeholder: "Email...",
+                  defaultValue: User.email
+                },
+                {
+                  label: "First name",
+                  type: "text",
+                  name: "first_name",
+                  id: "first_name",
+                  placeholder: "First Name...",
+                  defaultValue: User.first_name
+                },
+                {
+                  label: "Last name",
+                  type: "text",
+                  name: "last_name",
+                  id: "last_name",
+                  placeholder: "Last name...",
+                  defaultValue: User.last_name
+                },
+                {
+                  label: "Password",
+                  type: "password",
+                  name: "password",
+                  id: "password",
+                  placeholder: "Password..."
+                }
+                // {
+                //   label: "Opt in",
+                //   type: "radio",
+                //   name: "opt_in",
+                //   id: "opt_in",
+                //   placeholder: "Opt in?"
+                // }
+              ]}
+            />
+          </Col>
+        </Row>
+
+        <Row>
           <h2 className="headerBanner">Appearance</h2>
         </Row>
-        <Row className="checkBoxTable">
-          <Col xs={12}>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  readOnly
-                  type="radio"
-                  disabled={!User.id}
-                  checked={show_footer}
-                  onClick={() => this.handleOnClick("show_footer")}
-                />
-                <span className="checkBoxText" id="ShowFooterTooltip">
-                  Show footer
-                </span>
-                <Tooltip
-                  placement="right"
-                  isOpen={ShowFooterTooltip}
-                  target="ShowFooterTooltip"
-                  toggle={this.toggleTooltip}
-                >
-                  Toggles the view of the footer
-                </Tooltip>
-              </Label>
-            </FormGroup>
+        <Row tag={FormGroup} check className="checkBoxTable">
+          <Col tag={Label} check xs={12}>
+            <Input
+              readOnly
+              type="radio"
+              disabled={!User.id}
+              checked={show_footer}
+              onClick={() => this.handleOnClick("show_footer")}
+            />
+            <span className="checkBoxText" id="ShowFooterTooltip">
+              Show footer
+            </span>
+            <Tooltip
+              placement="right"
+              isOpen={ShowFooterTooltip}
+              target="ShowFooterTooltip"
+              toggle={this.toggleTooltip}
+            >
+              Toggles the view of the footer
+            </Tooltip>
           </Col>
         </Row>
         <Row>
           <h2 className="headerBanner">Features</h2>
         </Row>
-        <Row className="checkBoxTable">
-          <Col xs={12}>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  readOnly
-                  type="radio"
-                  disabled={!User.id}
-                  checked={offline_mode}
-                  onClick={() => this.handleOnClick("offline_mode")}
-                />
-                <span className="checkBoxText" id="ShowOfflineModeTooltip">
-                  Offline mode
-                </span>
-                <Tooltip
-                  placement="right"
-                  isOpen={ShowOfflineModeTooltip}
-                  target="ShowOfflineModeTooltip"
-                  toggle={this.toggleTooltip}
-                >
-                  Toggles frequent fetches of messages
-                </Tooltip>
-              </Label>
-            </FormGroup>
+        <Row tag={FormGroup} check className="checkBoxTable">
+          <Col tag={Label} check xs={12}>
+            <Input
+              readOnly
+              type="radio"
+              disabled={!User.id}
+              checked={offline_mode}
+              onClick={() => this.handleOnClick("offline_mode")}
+            />
+            <span className="checkBoxText" id="ShowOfflineModeTooltip">
+              Offline mode
+            </span>
+            <Tooltip
+              placement="right"
+              isOpen={ShowOfflineModeTooltip}
+              target="ShowOfflineModeTooltip"
+              toggle={this.toggleTooltip}
+            >
+              Toggles frequent fetches of messages
+            </Tooltip>
           </Col>
         </Row>
-        <Row className="checkBoxTable">
-          <Col xs={12}>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  readOnly
-                  type="radio"
-                  disabled={!User.id}
-                  checked={push_messages}
-                  onClick={() => this.handleOnClick("push_messages")}
-                />
-                <span className="checkBoxText" id="ShowPushMessagesTooltip">
-                  Push messages
-                </span>
-                <Tooltip
-                  placement="right"
-                  isOpen={ShowPushMessagesTooltip}
-                  target="ShowPushMessagesTooltip"
-                  toggle={this.toggleTooltip}
-                >
-                  Toggles frequent fetches of messages
-                </Tooltip>
-              </Label>
-            </FormGroup>
+        <Row tag={FormGroup} check className="checkBoxTable">
+          <Col ta={Label} check xs={12}>
+            <Input
+              readOnly
+              type="radio"
+              disabled={!User.id}
+              checked={push_messages}
+              onClick={() => this.handleOnClick("push_messages")}
+            />
+            <span className="checkBoxText" id="ShowPushMessagesTooltip">
+              Push messages
+            </span>
+            <Tooltip
+              placement="right"
+              isOpen={ShowPushMessagesTooltip}
+              target="ShowPushMessagesTooltip"
+              toggle={this.toggleTooltip}
+            >
+              Toggles frequent fetches of messages
+            </Tooltip>
           </Col>
         </Row>
       </Container>
