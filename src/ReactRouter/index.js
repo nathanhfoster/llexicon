@@ -140,7 +140,7 @@ class ReactRouter extends PureComponent {
       <Fragment>
         <NavBar />
         <OverlayScrollbarsComponent
-          className="App routeOverlay os-theme-dark"
+          className="App routeOverlay os-theme-light"
           style={{
             top: navBarHeight,
             bottom: show_footer ? footerHeight : 0
