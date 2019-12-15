@@ -62,9 +62,7 @@ const getRouteItems = props => {
 
 const renderRedirectOrComponent = (props, shouldRedirect, route, Component) => {
   const { history } = props
-  return shouldRedirect
-    ? () => <Redirect push to={RouterLinkPush(history, route)} />
-    : Component
+  return shouldRedirect ? () => <Redirect push to={RouterLinkPush(history, route)} /> : Component
 }
 
 const mapStateToProps = ({
@@ -147,11 +145,16 @@ class ReactRouter extends PureComponent {
             // background: "red"
           }}
           options={{
-            scrollbars: {
-              autoHide: "scroll",
-              // autoHideDelay: 50,
-              // dragScrolling: false
+            overflowBehavior: {
+              x: "visible-hidden",
+              y: "visible-hidden"
             },
+            scrollbars: {
+              visibility: "auto",
+              autoHide: "scroll",
+              autoHideDelay: 33,
+              dragScrolling: false
+            }
             // callbacks: {
             //   onScrollStart: () => console.log("Scrolling")
             // }
@@ -167,6 +170,4 @@ class ReactRouter extends PureComponent {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter))
