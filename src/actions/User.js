@@ -45,10 +45,10 @@ const RefreshPatchUser = (token, id) => (dispatch, getState) =>
 
 const UserLogout = () => ({ type: REDUX_RESET })
 
-const CreateUser = (payload, rememberMe) => async dispatch =>
-  await Axios()
+const CreateUser = (payload, rememberMe) => dispatch =>
+  Axios()
     .post("users/", qs.stringify(payload))
-    .then(async res => await dispatch(UserLogin(payload, rememberMe)))
+    .then(res => dispatch(UserLogin(payload, rememberMe)))
     .catch(e => console.log("CreateUser: ", e.response))
 
 const UpdateUser = payload => (dispatch, getState) => {
@@ -56,8 +56,6 @@ const UpdateUser = payload => (dispatch, getState) => {
   return Axios()
     .patch(`users/${id}/`, qs.stringify(payload))
     .then(res => {
-      console.log("UpdateUser: ", res.data)
-
       dispatch({ type: USER_SET, payload: res.data })
       dispatch({
         type: ALERTS_SET_MESSAGE,
@@ -67,10 +65,10 @@ const UpdateUser = payload => (dispatch, getState) => {
     .catch(e => console.log("UpdateUser ERROR: ", e))
 }
 
-const UpdateProfile = payload => async (dispatch, getState) => {
+const UpdateProfile = payload => (dispatch, getState) => {
   const { id } = getState().User
   // await dispatch({ type: USER_UPDATE_LOADING })
-  return await AxiosForm(payload)
+  return AxiosForm(payload)
     .patch(`users/${id}/`, payload)
     .then(res => {
       dispatch({
