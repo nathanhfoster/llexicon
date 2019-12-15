@@ -145,10 +145,10 @@ class ReactRouter extends PureComponent {
             // background: "red"
           }}
           options={{
-            overflowBehavior: {
+            /* overflowBehavior: {
               x: "visible-hidden",
               y: "visible-hidden"
-            },
+            }, */
             scrollbars: {
               visibility: "auto",
               autoHide: "scroll",
