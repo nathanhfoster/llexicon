@@ -326,8 +326,11 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
           html,
           id,
           title,
-          views
+          views,
+          latitude,
+          longitude
         } = entry
+
         const updateEntryPayload = { html, tags: JSON.stringify(tags) }
         dispatch(ParseBase64(id, "Image", updateEntryPayload))
       })

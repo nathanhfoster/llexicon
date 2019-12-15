@@ -115,13 +115,15 @@ class NewEntry extends PureComponent {
       ClearEditorState,
       entriesLength
     } = this.props
-    const { html, title, tags, activeDate } = this.state
+    const { html, title, tags, latitude, longitude, activeDate } = this.state
 
     const payload = {
       id: `shouldPost-${entriesLength}`,
       title,
       html: html,
       tags,
+      latitude,
+      longitude,
       date_created_by_author: activeDate,
       EntryFiles: [],
       shouldPost: true
