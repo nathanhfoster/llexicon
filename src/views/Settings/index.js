@@ -135,9 +135,7 @@ class Settings extends PureComponent {
   handleChangeUser = payload => {
     const { UpdateUser } = this.props
 
-    console.log(payload)
-
-    // UpdateUser(payload)
+    UpdateUser(payload)
   }
 
   render() {

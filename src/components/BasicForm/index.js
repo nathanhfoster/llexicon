@@ -64,7 +64,6 @@ class BasicForm extends PureComponent {
     let payload = {}
 
     for (let i = 0; i < length; i++) {
-      console.log(e.target[i])
       const { id, value, type, checked } = e.target[i]
       if (value) {
         payload[id] = value

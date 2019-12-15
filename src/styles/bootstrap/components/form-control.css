@@ -2,7 +2,7 @@
   min-height: var(--inputHeight);
   background: var(--quinaryColor);
   color: var(--secondaryColor) !important;
-  border-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .form-control::placeholder {
