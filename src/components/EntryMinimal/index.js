@@ -44,7 +44,7 @@ const EntryMinimal = ({
           <span className="ml-1">{title}</span>
         </Col>
         <Col xs={4} md={3} lg={2} xl={1} className="EntryMinimalTime">
-          {!showFileIcon && <i className="far fa-file-image mr-1" />}
+          {showFileIcon && <i className="far fa-file-image mr-1" />}
           <Moment format="D MMM YY">{date_created_by_author}</Moment>
         </Col>
 
