@@ -64,14 +64,14 @@ const CreateEntryTag = payload => (dispatch, getState) => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const ParseBase64 = (entry_id, media_type, updateEntryPayload) => dispatch => {
+const ParseBase64 = (entry_id, updateEntryPayload) => dispatch => {
   const base64s = htmlToArrayOfBase64(updateEntryPayload.html)
   if (base64s.length === 0)
     return dispatch(UpdateEntry(entry_id, updateEntryPayload))
   for (let i = 0; i < base64s.length; i++) {
     const base64 = base64s[i]
     const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
-    dispatch(AwsUpload(entry_id, media_type, file, base64))
+    dispatch(AwsUpload(entry_id, file, base64))
   }
   return new Promise(resolve =>
     dispatch({
@@ -81,13 +81,17 @@ const ParseBase64 = (entry_id, media_type, updateEntryPayload) => dispatch => {
   )
 }
 
-const AwsUpload = (entry_id, media_type, file, base64) => dispatch => {
+const AwsUpload = (entry_id, file, base64) => dispatch => {
+  const { lastModified, lastModifiedDate, name, size, type } = file
   let payload = new FormData()
   payload.append("entry_id", entry_id)
-  payload.append("media_type", media_type)
+  payload.append("file_type", type)
+  payload.append("name", name)
+  payload.append("size", size)
+  payload.append("date_modified", lastModifiedDate.toJSON())
   payload.append("url", file)
 
-  // console.log("AwsUpload: ", entry_id, media_type, file)
+  // console.log("AwsUpload: ", entry_id, file, lastModifiedDate.toJSON())
 
   return AxiosForm(payload)
     .post(`/files/`, payload)
@@ -332,7 +336,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         } = entry
 
         const updateEntryPayload = { html, tags: JSON.stringify(tags) }
-        dispatch(ParseBase64(id, "Image", updateEntryPayload))
+        dispatch(ParseBase64(id, updateEntryPayload))
       })
       continue
     } else if (lastUpdated) {
@@ -344,7 +348,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         latitude,
         longitude
       }
-      dispatchUpdateEntries.push(ParseBase64(id, "Image", updateEntryPayload))
+      dispatchUpdateEntries.push(ParseBase64(id, updateEntryPayload))
       // payload = {title, date_created_by_author}
       // dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }

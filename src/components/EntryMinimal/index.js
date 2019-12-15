@@ -39,11 +39,11 @@ const EntryMinimal = ({
       }
     >
       <Row>
-        <Col xs={8} md={9} lg={10} xl={11} className="EntryMinimalTitle">
+        <Col xs={8} md={9} lg={10} className="EntryMinimalTitle">
           <Star size={14} animation={false} opacity={1} />
           <span className="ml-1">{title}</span>
         </Col>
-        <Col xs={4} md={3} lg={2} xl={1} className="EntryMinimalTime">
+        <Col xs={4} md={3} lg={2} className="EntryMinimalTime">
           {showFileIcon && <i className="far fa-file-image mr-1" />}
           <Moment format="D MMM YY">{date_created_by_author}</Moment>
         </Col>
