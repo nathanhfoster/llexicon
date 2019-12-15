@@ -1,5 +1,6 @@
 .Settings {
     color: var(--secondaryColor);
+    overflow-y: auto;
 }
 
 .checkBoxTable {
