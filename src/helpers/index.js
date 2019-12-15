@@ -296,6 +296,15 @@ const copyStringToClipboard = str => {
   document.body.removeChild(el)
 }
 
+const cleanObject = obj => {
+  for (const key in obj) {
+    if (!obj[key]) {
+      delete obj[key]
+    }
+  }
+  return obj
+}
+
 export {
   DeepClone,
   getObjectLength,
@@ -329,5 +338,6 @@ export {
   capitalize,
   debounce,
   throttled,
-  copyStringToClipboard
+  copyStringToClipboard,
+  cleanObject
 }

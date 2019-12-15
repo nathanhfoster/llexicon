@@ -1,7 +1,7 @@
 import { ReduxActions } from "../constants"
 import { Axios, AxiosForm, Sync } from "."
 import { getFile } from "../store/Persister/persist"
-import { getFileFromBase64, htmlToArrayOfBase64 } from "../helpers"
+import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from "../helpers"
 import FormData from "form-data"
 import qs from "qs"
 
@@ -65,13 +65,16 @@ const CreateEntryTag = payload => (dispatch, getState) => {
 }
 
 const ParseBase64 = (entry_id, updateEntryPayload) => dispatch => {
-  const base64s = htmlToArrayOfBase64(updateEntryPayload.html)
-  if (base64s.length === 0)
+  const { html } = updateEntryPayload
+  const base64s = htmlToArrayOfBase64(html)
+  if (base64s.length === 0) {
+    // console.log("base64s.length === 0: ", base64s, updateEntryPayload)
     return dispatch(UpdateEntry(entry_id, updateEntryPayload))
+  }
   for (let i = 0; i < base64s.length; i++) {
     const base64 = base64s[i]
     const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
-    dispatch(AwsUpload(entry_id, file, base64))
+    dispatch(AwsUpload(entry_id, file, base64, html))
   }
   return new Promise(resolve =>
     dispatch({
@@ -81,7 +84,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => dispatch => {
   )
 }
 
-const AwsUpload = (entry_id, file, base64) => dispatch => {
+const AwsUpload = (entry_id, file, base64, html) => dispatch => {
   const { lastModified, lastModifiedDate, name, size, type } = file
   let payload = new FormData()
   payload.append("entry_id", entry_id)
@@ -97,12 +100,17 @@ const AwsUpload = (entry_id, file, base64) => dispatch => {
     .post(`/files/`, payload)
     .then(res => {
       const { data } = res
-      dispatch({
-        type: ENTRY_UPDATE_IMAGE,
-        id: entry_id,
-        replaceKey: base64,
-        payload: data.url
-      })
+      const updateEntryPayload = {
+        html: html.replace(base64, data.url)
+      }
+      // console.log("updateEntryPayload: ", updateEntryPayload)
+      dispatch(UpdateEntry(entry_id, updateEntryPayload))
+      // dispatch({
+      //   type: ENTRY_UPDATE_IMAGE,
+      //   id: entry_id,
+      //   replaceKey: base64,
+      //   payload: data.url
+      // })
       return data
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
@@ -336,7 +344,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         } = entry
 
         const updateEntryPayload = { html, tags: JSON.stringify(tags) }
-        dispatch(ParseBase64(id, updateEntryPayload))
+        dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })
       continue
     } else if (lastUpdated) {
@@ -348,7 +356,9 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         latitude,
         longitude
       }
-      dispatchUpdateEntries.push(ParseBase64(id, updateEntryPayload))
+      dispatchUpdateEntries.push(
+        ParseBase64(id, cleanObject(updateEntryPayload))
+      )
       // payload = {title, date_created_by_author}
       // dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
