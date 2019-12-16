@@ -22,7 +22,8 @@ export class AlertNotifications extends PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
-    ClearAlerts: PropTypes.func.isRequired
+    ClearAlerts: PropTypes.func.isRequired,
+    alertInterval: PropTypes.number.isRequired
   }
 
   static defaultProps = { alertInterval: 3000 }
@@ -43,7 +44,7 @@ export class AlertNotifications extends PureComponent {
   }
 
   render() {
-    const { ClearAlerts } = this.props
+    const { ClearAlerts, alertInterval } = this.props
     const { shouldShow, title, message } = this.state
 
     return (

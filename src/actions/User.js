@@ -131,6 +131,24 @@ const WatchUserLocation = watchId => dispatch => {
   )
 }
 
+const PasswordReset = payload => dispatch =>
+  Axios()
+    .post("rest-auth/password/reset/", qs.stringify(payload))
+    .then(res => {
+      const { detail } = res.data
+      dispatch({
+        type: ALERTS_SET_MESSAGE,
+        payload: { title: "Password Reset", message: detail }
+      })
+    })
+    .catch(e => {
+      console.log(JSON.parse(JSON.stringify(e)))
+      dispatch({
+        type: ALERTS_SET_MESSAGE,
+        payload: { title: "Password Reset", message: "ERROR" }
+      })
+    })
+
 export {
   ChangeUser,
   UserLogin,
@@ -141,5 +159,6 @@ export {
   UpdateProfile,
   SetUserLocation,
   GetUserLocation,
-  WatchUserLocation
+  WatchUserLocation,
+  PasswordReset
 }

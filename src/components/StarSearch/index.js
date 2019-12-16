@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -15,7 +15,7 @@ const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
 
 const mapDispatchToProps = { SearchUserEntries }
 
-class StarSearch extends PureComponent {
+class StarSearch extends Component {
   constructor(props) {
     super(props)
 
@@ -33,6 +33,13 @@ class StarSearch extends PureComponent {
     // if (currentSearch) search = currentSearch
 
     return { search: currentSearch }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const prevSearch = this.state.search
+    const { search } = nextState
+    const searchChanged = prevSearch !== search
+    return searchChanged
   }
 
   componentDidMount() {}

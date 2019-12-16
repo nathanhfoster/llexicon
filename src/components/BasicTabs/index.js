@@ -25,6 +25,7 @@ class BasicTabs extends PureComponent {
   }
 
   static propTypes = {
+    containerClassname: PropTypes.string,
     defaultTab: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     tabs: PropTypes.arrayOf(
       PropTypes.shape({
@@ -84,21 +85,27 @@ class BasicTabs extends PureComponent {
 
   renderTabs = (activeTab, tabs) =>
     tabs.map(tab => {
-      const { tabId, Component } = tab
+      const { tabId, Component, className } = tab
       return (
-        <TabContent key={tabId} activeTab={activeTab}>
+        <Row
+          tag={TabContent}
+          key={tabId}
+          activeTab={activeTab}
+          className={className}
+        >
           <TabPane tabId={tabId}>
             <Component />
           </TabPane>
-        </TabContent>
+        </Row>
       )
     })
 
   render() {
+    const { containerClassname } = this.props
     const { activeTab, tabs } = this.state
 
     return (
-      <Container className="BasicTabs Container">
+      <Container className={`BasicTabs Container ${containerClassname}`}>
         <Row>
           <Nav tabs>{this.renderNavItems(activeTab, tabs)}</Nav>
         </Row>

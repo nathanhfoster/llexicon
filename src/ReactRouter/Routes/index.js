@@ -11,6 +11,7 @@ const RouteMap = {
   ENTRIES_DETAILED: "/entries/detailed",
   LOGIN: "/login",
   SIGNUP: "/sign-up",
+  PASSWORD_RESET: "/password-reset",
   PRIVACY_POLICY: "/privacy-policy"
 }
 

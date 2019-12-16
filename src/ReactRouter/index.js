@@ -29,6 +29,7 @@ const getRouteItems = props => {
     NEW_ENTRY,
     LOGIN,
     SIGNUP,
+    PASSWORD_RESET,
     ENTRY_ADD,
     SETTINGS,
     CALENDAR,
@@ -43,7 +44,7 @@ const getRouteItems = props => {
     { path: [ROOT, HOME], component: Home },
     { path: [NEW_ENTRY, ENTRY_ADD], component: NewEntry },
     {
-      path: [LOGIN, SIGNUP],
+      path: [LOGIN, SIGNUP, PASSWORD_RESET],
       component: renderRedirectOrComponent(props, User.token, NEW_ENTRY, Login)
     },
     {
@@ -62,7 +63,9 @@ const getRouteItems = props => {
 
 const renderRedirectOrComponent = (props, shouldRedirect, route, Component) => {
   const { history } = props
-  return shouldRedirect ? () => <Redirect push to={RouterLinkPush(history, route)} /> : Component
+  return shouldRedirect
+    ? () => <Redirect push to={RouterLinkPush(history, route)} />
+    : Component
 }
 
 const mapStateToProps = ({
@@ -170,4 +173,6 @@ class ReactRouter extends PureComponent {
     )
   }
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter))
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter)
+)
