@@ -87,16 +87,11 @@ class BasicTabs extends PureComponent {
     tabs.map(tab => {
       const { tabId, Component, className } = tab
       return (
-        <Row
-          tag={TabContent}
-          key={tabId}
-          activeTab={activeTab}
-          className={className}
-        >
+        <TabContent key={tabId} activeTab={activeTab} className={className}>
           <TabPane tabId={tabId}>
             <Component />
           </TabPane>
-        </Row>
+        </TabContent>
       )
     })
 
