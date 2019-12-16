@@ -154,7 +154,7 @@ class ReactRouter extends PureComponent {
             }, */
             scrollbars: {
              // visibility: "auto",
-              autoHide: "scroll",
+             // autoHide: "scroll",
               // autoHideDelay: 33,
              // dragScrolling: false
             }
