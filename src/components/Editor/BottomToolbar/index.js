@@ -1,12 +1,23 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { Container, Row, Col, Button } from "reactstrap"
+import { Container, Row, Col } from "reactstrap"
 import { LocationButtonModal, TagsButtonModal } from "./ToolbarButtonModals"
 import TagsContainer from "../../TagsContainer"
+import EntryFilesCarousel from "../../EntryFilesCarousel"
 import "./styles.css"
 
-const mapStateToProps = ({}) => ({})
+const mapStateToProps = ({ Entries: { items } }, { id }) => ({
+  AllEntryFiles: items
+    .reduce(
+      (allEntryFiles, entry) =>
+        entry.id !== id
+          ? allEntryFiles.concat(entry.EntryFiles)
+          : allEntryFiles,
+      []
+    )
+    .flat(1)
+})
 
 const mapDispatchToProps = {}
 
@@ -55,13 +66,29 @@ class BottomToolbar extends PureComponent {
   }
 
   static propTypes = {
+    id: PropTypes.any,
+    html: PropTypes.string.isRequired,
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+    tags: PropTypes.arrayOf(PropTypes.object),
+    EntryFiles: PropTypes.arrayOf(PropTypes.object),
+    EntryTags: PropTypes.arrayOf(PropTypes.object),
     onChangeCallback: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { latitude, longitude, tags, EntryTags, onChangeCallback } = nextProps
+    const {
+      html,
+      latitude,
+      longitude,
+      tags,
+      AllEntryFiles,
+      EntryFiles,
+      EntryTags,
+      onChangeCallback
+    } = nextProps
 
     const buttons = [
       [
@@ -73,7 +100,16 @@ class BottomToolbar extends PureComponent {
       [{ Component: TagsButtonModal, props: { tags, onChangeCallback } }]
     ]
 
-    return { latitude, longitude, tags, EntryTags, buttons }
+    return {
+      html,
+      latitude,
+      longitude,
+      tags,
+      AllEntryFiles,
+      EntryFiles,
+      EntryTags,
+      buttons
+    }
   }
 
   renderButtonColumns = columns => {
@@ -93,7 +129,16 @@ class BottomToolbar extends PureComponent {
 
   render() {
     const { onChangeCallback } = this.props
-    const { buttons, latitude, longitude, tags, EntryTags } = this.state
+    const {
+      buttons,
+      html,
+      latitude,
+      longitude,
+      tags,
+      AllEntryFiles,
+      EntryFiles,
+      EntryTags
+    } = this.state
 
     return (
       <Container fluid className="BottomToolBar">
@@ -101,14 +146,19 @@ class BottomToolbar extends PureComponent {
           <TagsContainer tags={tags} hoverable={false} />
         </Row>
         <Row className="BottomToolBarFiles">
-          <Col tag={Button} className="p-0" color="inherit" xs={4}>
-            File
+          <Col xs={6} className="pl-1 pr-0">
+            <EntryFilesCarousel
+              html={html}
+              files={EntryFiles}
+              onChangeCallback={onChangeCallback}
+            />
           </Col>
-          <Col tag={Button} className="p-0" color="inherit" xs={4}>
-            File
-          </Col>
-          <Col tag={Button} className="p-0" color="inherit" xs={4}>
-            File
+          <Col xs={6} className="pl-1 pr-1">
+            <EntryFilesCarousel
+              html={html}
+              files={AllEntryFiles}
+              onChangeCallback={onChangeCallback}
+            />
           </Col>
         </Row>
         {this.renderButtonRows(buttons)}

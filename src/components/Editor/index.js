@@ -110,6 +110,7 @@ class Editor extends Component {
       latitude,
       longitude,
       tags,
+      EntryFiles,
       topToolbarHidden,
       bottomToolbarHidden
     } = nextProps
@@ -123,6 +124,7 @@ class Editor extends Component {
       latitude,
       longitude,
       tags,
+      EntryFiles,
       topToolbarHidden,
       editorHeight,
       bottomToolbarHidden
@@ -270,6 +272,7 @@ class Editor extends Component {
       latitude,
       longitude,
       tags,
+      EntryFiles,
       theme,
       quillId,
       topToolbarHidden,
@@ -306,9 +309,12 @@ class Editor extends Component {
               onChangeCallback={({ ...payload }) =>
                 onChangeCallback({ id: this.props.toolbarId, ...payload })
               }
+              id={this.props.toolbarId}
+              html={html}
               latitude={latitude}
               longitude={longitude}
               tags={tags}
+              EntryFiles={EntryFiles}
             />
           )}
         </div>

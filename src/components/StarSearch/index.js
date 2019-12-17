@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import { SearchUserEntries } from "../../actions/Entries"
 import UseDebounce from "../UseDebounce"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
@@ -36,10 +37,13 @@ class StarSearch extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    const propsChanges = !deepEquals(this.props, nextProps)
+
     const prevSearch = this.state.search
     const { search } = nextState
     const searchChanged = prevSearch !== search
-    return searchChanged
+
+    return propsChanges || searchChanged
   }
 
   componentDidMount() {}

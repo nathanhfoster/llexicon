@@ -83,3 +83,26 @@ input[type="file"] {
   transition: color 0.4s ease;
   transition: background-color 0.4s ease;
 } */
+
+::-webkit-scrollbar {
+  display: none;
+  background-color: transparent;
+  -webkit-border-radius: 100px;
+  transition: 200ms linear;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 5px var(--grey);
+  background: var(--grey; */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--grey);
+  border-radius: 6px;
+}

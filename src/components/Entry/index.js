@@ -46,6 +46,7 @@ class Entry extends Component {
       latitude,
       longitude,
       tags,
+      EntryFiles,
       date_created,
       date_created_by_author,
       date_updated,
@@ -72,6 +73,7 @@ class Entry extends Component {
       latitude,
       longitude,
       tags,
+      EntryFiles,
       date_created,
       date_created_by_author: new Date(date_created_by_author),
       date_updated,
@@ -100,6 +102,7 @@ class Entry extends Component {
       latitude,
       longitude,
       tags,
+      EntryFiles,
       date_created,
       date_created_by_author,
       date_updated,
@@ -119,6 +122,7 @@ class Entry extends Component {
           bottomToolbarHidden={bottomToolbarHidden}
           html={html}
           tags={tags}
+          EntryFiles={EntryFiles}
           latitude={latitude}
           longitude={longitude}
           onChangeCallback={({ ...payload }) =>
