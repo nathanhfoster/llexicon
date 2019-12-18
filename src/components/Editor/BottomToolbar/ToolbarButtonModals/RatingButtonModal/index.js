@@ -95,7 +95,7 @@ class RatingButtonModal extends PureComponent {
         onCancelCallback={this.handleCancel}
         onSaveCallback={this.handleSave}
         buttonIcon="fas fa-star"
-        buttonTitle="Rating"
+        buttonTitle="Add Rating"
         xs={xs}
       >
         <Container fluid className="RatingButtonModal p-0">

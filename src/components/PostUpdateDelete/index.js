@@ -21,10 +21,6 @@ class PostUpdateDelete extends PureComponent {
     return nextProps
   }
 
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   render() {
     const { postCallback, updateCallback } = this.props
     return (

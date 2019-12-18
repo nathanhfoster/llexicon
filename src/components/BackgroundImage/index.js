@@ -61,12 +61,6 @@ class BackgroundImage extends PureComponent {
     }
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate() {}
-
-  componentWillUnmount() {}
-
   render() {
     const {
       Window: { isMobile },

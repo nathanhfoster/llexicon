@@ -63,12 +63,6 @@ class TileContent extends PureComponent {
     }
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   handleTodayClick = () => {
     const { history } = this.props
     const { NEW_ENTRY } = RouteMap

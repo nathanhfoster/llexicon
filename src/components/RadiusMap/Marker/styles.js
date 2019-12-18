@@ -23,8 +23,8 @@ const locationCircleStyle = {
   borderRadius: K_CIRCLE_SIZE,
   color: `${ATTACHED_COLOR}`,
   backgroundColor: 'white',
-  boxShadow:
-    '0px 1px 5px 0px 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
+  // boxShadow:
+  //   '0px 1px 5px 0px 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
   cursor: 'pointer',
   fontSize: K_CIRCLE_SIZE,
   fontWeight: 900,
@@ -35,7 +35,7 @@ const locationCircleStyle = {
   justifyContent: 'center',
   verticalAlign: 'middle',
   flexWrap: 'wrap',
-  flexFlow: 'wrap'
+  zIndex: 999
 }
 
 const locationCircleStyleHover = {
@@ -53,24 +53,15 @@ const locationCircleStyleHover = {
     '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)'
 }
 
-const locationStickStyleShadow = {
-  position: 'absolute',
-  left: K_CIRCLE_SIZE / 2 - K_STICK_WIDTH / 2 + K_BORDER_WIDTH,
-  top: K_CIRCLE_SIZE + 2,
-  width: K_STICK_WIDTH,
-  height: K_STICK_SIZE,
-  backgroundColor: `${ATTACHED_COLOR}`,
-  boxShadow:
-    '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)'
-}
-
 const locationStickStyle = {
   position: 'absolute',
-  left: K_CIRCLE_SIZE / 2 - K_STICK_WIDTH / 2 + K_BORDER_WIDTH,
-  top: K_CIRCLE_SIZE + K_BORDER_WIDTH,
-  width: K_STICK_WIDTH,
-  height: K_STICK_SIZE,
-  backgroundColor: `${ATTACHED_COLOR}`
+  left: K_CIRCLE_SIZE / 2 - 12,
+  top: K_CIRCLE_SIZE - 2,
+  width: 0,
+  height: 0,
+  border: '14px solid transparent',
+  borderTop: `18px solid ${ATTACHED_COLOR}`,
+  zIndex: 998
 }
 
 const locationStickStyleHover = {
@@ -85,7 +76,6 @@ export {
   locationCircleStyleHover,
   locationStickStyle,
   locationStickStyleHover,
-  locationStickStyleShadow,
   K_CIRCLE_SIZE,
   K_STICK_SIZE
 }

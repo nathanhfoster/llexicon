@@ -33,12 +33,6 @@ class Loading extends PureComponent {
     return { percentageDone, progressColor }
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   getColor = percentageDone => {
     if (percentageDone === 100) return "success"
     if (percentageDone >= 75) return "info"

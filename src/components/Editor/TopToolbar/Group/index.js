@@ -25,11 +25,6 @@ class Group extends Component {
     return childrenChanged
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
-  componentWillUnmount() {}
 
   render() {
     const { children } = this.state

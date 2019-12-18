@@ -28,12 +28,6 @@ class EntryPreview extends PureComponent {
     return nextProps
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   render() {
     const { history, location, match } = this.props
     const {
@@ -77,13 +71,7 @@ class EntryPreview extends PureComponent {
         </div>
       </div>
     ) : view == "month" ? (
-      <Star
-        bottom="8px"
-        size={8}
-        color="White"
-        animation={false}
-        opacity={1}
-      />
+      <Star bottom="8px" size={8} color="White" animation={false} opacity={1} />
     ) : null
   }
 }

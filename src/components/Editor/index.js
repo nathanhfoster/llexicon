@@ -143,22 +143,6 @@ class Editor extends Component {
     return stateChanged || childrenChanged
   }
 
-  componentDidMount() {
-    // console.log(this.editorRef)
-    // console.log(this.editorRef.current.editor.history)
-  }
-
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    // console.log("getSnapshotBeforeUpdate: ", prevProps)
-    return null
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    // console.log("componentDidUpdate: ", snapshot)
-  }
-
-  componentWillUnmount() {}
-
   handleEditorStateChange = html => {
     const { onChangeCallback } = this.props
 

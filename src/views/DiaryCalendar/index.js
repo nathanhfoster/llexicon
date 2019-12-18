@@ -82,8 +82,6 @@ class DiaryCalendar extends PureComponent {
     }
   }
 
-  componentWillUnmount() {}
-
   handleDateChange = ({ activeStartDate, view }) => {
     const { SetCalendar } = this.props
 

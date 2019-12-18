@@ -34,7 +34,6 @@ class MapControl extends Component {
       locationsList,
       map,
       mapApi,
-      markerClusterRadius,
       options,
       resetProject,
       resetProjects,

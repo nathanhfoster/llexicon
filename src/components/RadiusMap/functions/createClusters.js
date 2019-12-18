@@ -6,13 +6,13 @@ const getMarkerClusters = ({
   zoom,
   bounds,
   showMarkersMinZoom,
-  showMarkersMaxZoom,
-  markerClusterRadius
+  showMarkersMaxZoom
 }) => {
+  const radius = 70 - zoom * 3
   const markerClusters = SuperCluster(markers, {
     minZoom: showMarkersMinZoom,
     maxZoom: showMarkersMaxZoom,
-    radius: markerClusterRadius
+    radius
   })
 
   return markerClusters({ center, zoom, bounds })

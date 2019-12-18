@@ -1,29 +1,29 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import GoogleMap from "google-map-react"
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect as reduxConnect } from 'react-redux'
+import GoogleMap from 'google-map-react'
 
-import Marker from "./Marker"
-import MarkerCluster from "./MarkerCluster"
+import Marker from './Marker'
+import MarkerCluster from './MarkerCluster'
 
-import PolygonSystem from "./PolygonSystem"
-import DrawingManager from "./DrawingManager"
-import MapControl from "./MapControl"
-import LocationList from "../../components/LocationList"
-import fitCoordsToBounds from "./functions/fitCoordsToBounds"
+import PolygonSystem from './PolygonSystem'
+import DrawingManager from './DrawingManager'
+import MapControl from './MapControl'
+import LocationList from '../../components/LocationList'
+import fitCoordsToBounds from './functions/fitCoordsToBounds'
 import {
   resetProject,
   resetProjects,
   setProjectsSearchProps,
   fetchProjectIfNeeded
-} from "../../../actions/ProjectActions"
+} from '../../../actions/ProjectActions'
 import {
   setMapCenterBoundsZoom,
   fetchParlaySite,
   setMapSites,
   selectSite,
   resetMap
-} from "../../../actions/MetaActions"
+} from '../../../actions/MetaActions'
 import {
   GOOGLE_MAP_CONTROL_POSITIONS,
   GOOGLE_MAP_TYPE_CONTROL_STYLE,
@@ -32,20 +32,19 @@ import {
   DEFAULT_ZOOM,
   DEFAULT_MARKER_MIN_ZOOM,
   DEFAULT_MARKER_MAX_ZOOM,
-  DEFAULT_MARKER_CLUSTER_RADIUS,
   DEFAULT_POLYGON_MIN_ZOOM,
   DEFAULT_POLYGON_MAX_ZOOM,
   DEFAULT_PARLAY_MIN_ZOOM,
   DEFAULT_PARLAY_MAX_ZOOM,
   DEFAULT_MAP_OPTIONS
-} from "./constants"
-import { K_CIRCLE_SIZE, K_STICK_SIZE } from "./Marker/styles"
-import styles from "./styles"
-import deepEquals from "../../helpers/deepEquals"
-import createClusters from "./functions/createClusters"
-import formatLocations from "./functions/formatLocations"
-import zoomWithinRange from "./functions/zoomWithinRange"
-import "./styles.css"
+} from './constants'
+import { K_CIRCLE_SIZE, K_STICK_SIZE } from './Marker/styles'
+import styles from './styles'
+import deepEquals from '../../helpers/deepEquals'
+import createClusters from './functions/createClusters'
+import formatLocations from './functions/formatLocations'
+import zoomWithinRange from './functions/zoomWithinRange'
+import './styles.css'
 
 const mapStateToProps = ({
   projects: {
@@ -63,9 +62,7 @@ const mapStateToProps = ({
   zoom,
   center,
   bounds,
-  sites: sites.filter(
-    site => !(site._attached === false && site._selected === false)
-  ),
+  sites: sites.filter(site => !(site._attached === false && site._selected === false)),
   siteDescription
 })
 
@@ -82,7 +79,7 @@ const mapDispatchToProps = {
   resetMap
 }
 
-class Map extends Component {
+class RadiusMap extends Component {
   mapRef = null
   mousePosRef = { x: null, y: null, lat: null, lng: null } // Used so we don't have to update state and rerender
   constructor(props) {
@@ -107,7 +104,7 @@ class Map extends Component {
     }
 
     this.state = {
-      hoveredChildKey: "",
+      hoveredChildKey: '',
       showingInfoWindow: false,
       zooming: false,
       shouldRenderPolygons: true,
@@ -123,7 +120,7 @@ class Map extends Component {
   }
 
   static propTypes = {
-    // Map
+    // RadiusMap
     toggleKey: PropTypes.string,
     initialCenter: PropTypes.object,
     locations: PropTypes.arrayOf(PropTypes.any),
@@ -131,7 +128,6 @@ class Map extends Component {
     locationsList: PropTypes.arrayOf(PropTypes.any),
     showMarkersMinZoom: PropTypes.number,
     showMarkersMaxZoom: PropTypes.number,
-    markerClusterRadius: PropTypes.number,
     showPolygonsMinZoom: PropTypes.number,
     showPolygonsMaxZoom: PropTypes.number,
     controls: PropTypes.arrayOf(PropTypes.object.isRequired),
@@ -197,9 +193,9 @@ class Map extends Component {
   }
 
   static defaultProps = {
-    toggleKey: "", // Refreshes map instance if this changes
-    height: "100%",
-    width: "100%",
+    toggleKey: '', // Refreshes map instance if this changes
+    height: '100%',
+    width: '100%',
     center: CENTER_OF_US,
     defaultCenter: CENTER_OF_US,
     bounds: {
@@ -215,7 +211,6 @@ class Map extends Component {
     locationsList: [],
     showMarkersMinZoom: DEFAULT_MARKER_MIN_ZOOM,
     showMarkersMaxZoom: DEFAULT_MARKER_MAX_ZOOM,
-    markerClusterRadius: DEFAULT_MARKER_CLUSTER_RADIUS,
     showPolygonsMinZoom: DEFAULT_POLYGON_MIN_ZOOM,
     showPolygonsMaxZoom: DEFAULT_POLYGON_MAX_ZOOM,
     showParlayMinZoom: DEFAULT_PARLAY_MIN_ZOOM,
@@ -255,13 +250,7 @@ class Map extends Component {
       shouldRenderLocationList
     } = nextProps
 
-    const {
-      zooming,
-      mapApiLoaded,
-      mapInstance,
-      mapApi,
-      shouldFitCoordsToBounds
-    } = prevState
+    const { zooming, mapApiLoaded, mapInstance, mapApi, shouldFitCoordsToBounds } = prevState
     const stateHoverChildKey = prevState.hoveredChildKey
 
     let { locations } = nextProps
@@ -276,19 +265,13 @@ class Map extends Component {
     //   )
     // }
 
-    const markers = formatLocations(locations, center)
+    const markers = formatLocations(locations)
     const markerClusters = createClusters(markers, { ...nextProps })
 
-    const sitePolygons = formatLocations(sites, center)
-    const polygonClusters = createClusters(sitePolygons, {
-      ...nextProps
-    }).concat(markerClusters)
+    const sitePolygons = formatLocations(sites)
+    const polygonClusters = createClusters(sitePolygons, { ...nextProps }).concat(markerClusters)
 
-    const shouldRenderMarkers = zoomWithinRange(
-      showMarkersMinZoom,
-      showMarkersMaxZoom,
-      zoom
-    )
+    const shouldRenderMarkers = zoomWithinRange(showMarkersMinZoom, showMarkersMaxZoom, zoom)
 
     const shouldRenderPolygons = zooming
       ? false
@@ -314,9 +297,7 @@ class Map extends Component {
       shouldRenderMarkers,
       shouldRenderPolygons,
       shouldRenderLocationList,
-      hoveredChildKey: setHoveredChildKey
-        ? hoveredChildKey
-        : stateHoverChildKey,
+      hoveredChildKey: setHoveredChildKey ? hoveredChildKey : stateHoverChildKey,
       mapApiLoaded,
       mapInstance,
       mapApi,
@@ -353,12 +334,7 @@ class Map extends Component {
 
   componentDidUpdate(prevProps, prevState, newCoords) {
     if (newCoords) {
-      const {
-        shouldFitCoordsToBounds,
-        mapInstance,
-        mapApi,
-        bounds
-      } = this.state
+      const { shouldFitCoordsToBounds, mapInstance, mapApi, bounds } = this.state
       if (shouldFitCoordsToBounds && mapInstance && mapApi) {
         fitCoordsToBounds(mapInstance, mapApi, newCoords)
         this.setState({ shouldFitCoordsToBounds: false })
@@ -418,7 +394,7 @@ class Map extends Component {
   onChildMouseLeave = key => {
     // console.log('onChildMouseLeave: ', key)
     const { setHoveredChildKey } = this.props
-    if (setHoveredChildKey) setHoveredChildKey("")
+    if (setHoveredChildKey) setHoveredChildKey('')
   }
   onZoomAnimationStart = () => {
     // console.log('onZoomAnimationStart')
@@ -467,10 +443,7 @@ class Map extends Component {
 
     const distanceToMouse =
       distanceKoef *
-      Math.sqrt(
-        (markerX - mouseX) * (markerX - mouseX) +
-          (markerY - mouseY) * (markerY - mouseY)
-      )
+      Math.sqrt((markerX - mouseX) * (markerX - mouseX) + (markerY - mouseY) * (markerY - mouseY))
 
     // console.log('distanceToMouse: ', distanceToMouse)
     this.mousePosRef = mousePos
@@ -479,11 +452,7 @@ class Map extends Component {
   }
 
   onGoogleApiLoaded = ({ map, maps }) => {
-    const {
-      shouldFitCoordsToBounds,
-      shouldShowParlay,
-      polygonClusters
-    } = this.state
+    const { shouldFitCoordsToBounds, shouldShowParlay, polygonClusters } = this.state
 
     this.setState({
       mapApiLoaded: true,
@@ -652,7 +621,7 @@ class Map extends Component {
         style={{
           height,
           width,
-          display: "flex"
+          display: 'flex'
         }}
       >
         {shouldRenderLocationList && (
@@ -672,7 +641,7 @@ class Map extends Component {
         )}
         <div
           style={styles(shouldRenderLocationList).GoogleMapWrapper}
-          className={drawingMode ? "CursorStyle" : ""}
+          className={drawingMode ? 'CursorStyle' : ''}
         >
           <GoogleMap
             ref={ref => (this.mapRef = ref)}
@@ -712,4 +681,4 @@ class Map extends Component {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Map)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(RadiusMap)

@@ -52,16 +52,6 @@ class BasicTabs extends PureComponent {
     return { tabs, activeTab: activeTab || prevState.activeTab }
   }
 
-  componentDidMount() {}
-
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    return null
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
-  componentWillUnmount() {}
-
   handleTabChanged = activeTab => this.setState({ activeTab })
 
   renderNavItems = (activeTab, tabs) =>

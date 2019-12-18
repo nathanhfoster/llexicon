@@ -98,8 +98,6 @@ class Entries extends Component {
     }
   }
 
-  componentWillUnmount() {}
-
   handleDeleteEntry = id => {
     const { DeleteEntry } = this.props
     DeleteEntry(id)

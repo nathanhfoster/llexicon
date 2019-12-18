@@ -49,14 +49,6 @@ class TagsButtonModal extends PureComponent {
     GetEntryTags()
   }
 
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    return null
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
-  componentWillUnmount() {}
-
   renderTags = tags =>
     tags.map(tag => {
       const { title } = tag
@@ -103,7 +95,7 @@ class TagsButtonModal extends PureComponent {
         modalTitle="Add Tags"
         onSaveCallback={this.handleTagsSave}
         buttonIcon="fas fa-tags"
-        buttonTitle="Tags"
+        buttonTitle="Add Tags"
         xs={xs}
       >
         <Container className="TagsButtonModal Container">

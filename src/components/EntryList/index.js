@@ -42,12 +42,6 @@ class EntryList extends PureComponent {
     return nextProps
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate() {}
-
-  componentWillUnmount() {}
-
   renderItems = (date, entries, history) =>
     entries.map((e, i) => {
       const {
@@ -77,12 +71,7 @@ class EntryList extends PureComponent {
               header={title}
             >
               <Col className="p-0" xs={10}>
-                <Star
-                  size={8}
-                  color="White"
-                  animation={false}
-                  opacity={1}
-                />
+                <Star size={8} color="White" animation={false} opacity={1} />
                 <span className="eventTitle">{title || "No title"}</span>
               </Col>
 

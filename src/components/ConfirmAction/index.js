@@ -18,8 +18,6 @@ class ConfirmAction extends PureComponent {
 
   static defaultProps = { show: false, disabled: false }
 
-  componentDidMount() {}
-
   componentWillUnmount() {
     this.setState({ show: false })
   }

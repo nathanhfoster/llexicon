@@ -31,12 +31,6 @@ class SearchBar extends Component {
     return nextProps
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   render() {
     return (
       <Form className="SearchBar">

@@ -38,7 +38,6 @@ const DEFAULT_ZOOM = 4
 
 const DEFAULT_MARKER_MIN_ZOOM = 0
 const DEFAULT_MARKER_MAX_ZOOM = 14
-const DEFAULT_MARKER_CLUSTER_RADIUS = 60
 const DEFAULT_POLYGON_MIN_ZOOM = 15
 const DEFAULT_POLYGON_MAX_ZOOM = 22
 const DEFAULT_PARLAY_MIN_ZOOM = 15
@@ -49,9 +48,9 @@ const DEFAULT_MAP_OPTIONS = {
   // scrollwheel: true, // gestureHandling handles this
   minZoom: 0,
   maxZoom: 22,
-  disableDefaultUI: true,
-  // mapTypeControl: true,
-  mapTypeId: GOOGLE_MAP_TYPE_ID.ROADMAP,
+  disableDefaultUI: false,
+  mapTypeControl: true,
+  mapTypeId: GOOGLE_MAP_TYPE_ID.HYBRID,
 
   mapTypeControlOptions: {
     style: GOOGLE_MAP_TYPE_CONTROL_STYLE.HORIZONTAL_BAR,
@@ -74,12 +73,12 @@ const DEFAULT_MAP_OPTIONS = {
       ]
     }
   ],
-  // scaleControl: true,
-  // streetViewControl: true,
+  scaleControl: true,
+  streetViewControl: true,
   // tilt and rotateControl doesn't work for custom polygons right now
   tilt: 0,
   rotateControl: false,
-  // fullscreenControl: true,
+  fullscreenControl: true,
   // zoomControl: true,
   zoomControlOptions: {
     position: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM
@@ -95,7 +94,6 @@ export {
   DEFAULT_ZOOM,
   DEFAULT_MARKER_MIN_ZOOM,
   DEFAULT_MARKER_MAX_ZOOM,
-  DEFAULT_MARKER_CLUSTER_RADIUS,
   DEFAULT_POLYGON_MIN_ZOOM,
   DEFAULT_POLYGON_MAX_ZOOM,
   DEFAULT_PARLAY_MIN_ZOOM,

@@ -50,7 +50,7 @@ class MarkerCluster extends Component {
   }
 
   renderMarkers = (markers, hoveredChildKey) => {
-    const { selectSite, setMapCenterBoundsZoom } = this.props
+    const { selectSite, setMapCenterBoundsZoom, $onMouseAllow } = this.props
     const { zoom } = this.state
     return markers.map(marker => {
       const { id, ...props } = marker
@@ -59,6 +59,7 @@ class MarkerCluster extends Component {
           {...props}
           $dimensionKey={id}
           $hover={hoveredChildKey === id}
+          $onMouseAllow={$onMouseAllow}
           selectSite={selectSite}
           setMapCenterBoundsZoom={setMapCenterBoundsZoom}
           zoom={zoom}

@@ -20,7 +20,11 @@ class Marker extends Component {
     $hover: PropTypes.bool,
     $prerender: PropTypes.bool,
     hoveredChildKey: PropTypes.string,
-    boundaries: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.objectOf(PropTypes.number))),
+    boundaries: PropTypes.arrayOf(
+      PropTypes.arrayOf(
+        PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }).isRequired
+      )
+    ),
     clientId: PropTypes.string,
     clientName: PropTypes.string,
     engagingContacts: PropTypes.array,
@@ -34,7 +38,9 @@ class Marker extends Component {
     zipcode: PropTypes.string,
     score: PropTypes.string,
     acreage: PropTypes.number,
-    boundary: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+    boundary: PropTypes.arrayOf(
+      PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }).isRequired
+    ),
     locations: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
     marketValue: PropTypes.number,
     parcelNumbers: PropTypes.array,

@@ -39,14 +39,6 @@ class LocationButtonModal extends PureComponent {
     return { UserLocation, latitude, longitude }
   }
 
-  componentDidMount() {}
-
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    return null
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
   componentWillUnmount() {
     this.handleCancel()
   }
@@ -84,7 +76,7 @@ class LocationButtonModal extends PureComponent {
         onCancelCallback={this.handleCancel}
         onSaveCallback={this.handleSave}
         buttonIcon="fas fa-map-marker-alt"
-        buttonTitle="Location"
+        buttonTitle="Add Location"
         xs={xs}
         saveDisabled={!UserLocation.latitude || !UserLocation.longitude}
       >

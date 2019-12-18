@@ -38,10 +38,6 @@ class Login extends PureComponent {
     return { activeTab: pathname }
   }
 
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   handleLogin = payload => {
     const { UserLogin } = this.props
     UserLogin(payload)

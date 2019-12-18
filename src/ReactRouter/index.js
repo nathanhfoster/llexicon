@@ -116,12 +116,6 @@ class ReactRouter extends PureComponent {
     }
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   renderRouteItems = routeItems =>
     routeItems.map((k, i) => {
       const { path, component } = k
@@ -153,10 +147,10 @@ class ReactRouter extends PureComponent {
               y: "visible-hidden"
             }, */
             scrollbars: {
-             // visibility: "auto",
-             autoHide: "scroll",
-              autoHideDelay: 200,
-             // dragScrolling: false
+              // visibility: "auto",
+              autoHide: "scroll",
+              autoHideDelay: 200
+              // dragScrolling: false
             }
             // callbacks: {
             //   onScrollStart: () => console.log("Scrolling")

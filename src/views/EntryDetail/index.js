@@ -61,10 +61,6 @@ class EntryDetail extends PureComponent {
     )
   }
 
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   render() {
     const { entry, entryContainerHeight } = this.state
     return entry ? (

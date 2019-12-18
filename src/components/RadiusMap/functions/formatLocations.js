@@ -1,4 +1,6 @@
-const formatLocations = (locations, mapZoom) => {
+import getPolygonCenter from './getPolygonCenter'
+
+const formatLocations = locations => {
   let markers = []
   markers = locations.reduce((result, item) => {
     const { location, boundaries, boundary, center, ...props } = item
@@ -19,7 +21,7 @@ const formatLocations = (locations, mapZoom) => {
         )
       })
     } else if (isActiveProjectItem) {
-      const [lat, lng] = mapZoom
+      const [lat, lng] = getPolygonCenter(boundary)
       return result.concat({
         ...props,
         lat,

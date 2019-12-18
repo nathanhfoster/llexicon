@@ -46,12 +46,6 @@ class StarSearch extends Component {
     return propsChanges || searchChanged
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
-  componentWillUnmount() {}
-
   handleSearch = e => {
     const { value } = e.target
     this.setState({ search: value })

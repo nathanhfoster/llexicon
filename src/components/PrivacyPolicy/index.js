@@ -23,12 +23,6 @@ class PrivacyPolicy extends PureComponent {
     return nextProps
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate() {}
-
-  componentWillUnmount() {}
-
   render() {
     return (
       <Container className="PrivacyPolicy Container">

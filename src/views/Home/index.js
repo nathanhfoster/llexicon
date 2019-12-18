@@ -161,16 +161,6 @@ class Home extends PureComponent {
     return nextProps
   }
 
-  componentDidMount() {}
-
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    return null
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
-  componentWillUnmount() {}
-
   renderFeatures = features =>
     features.map(feature => {
       const { title, text, faIcon, Component } = feature
