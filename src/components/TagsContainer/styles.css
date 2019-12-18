@@ -1,6 +1,5 @@
 .TagsContainer {
     display: flex;
-    overflow: auto;
     width: 100%;
 }
 

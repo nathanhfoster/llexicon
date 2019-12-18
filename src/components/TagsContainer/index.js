@@ -7,7 +7,6 @@ class TagsContainer extends PureComponent {
   constructor(props) {
     super(props)
 
-    // Identify props that can change from outsite and within the component and map them to state
     this.state = {}
   }
 
@@ -15,6 +14,8 @@ class TagsContainer extends PureComponent {
     tags: PropTypes.array,
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     flexWrap: PropTypes.oneOf(["wrap", "nowrap"]),
+    overflowX: PropTypes.string,
+    overflowY: PropTypes.string,
     onClickCallback: PropTypes.func,
     minimalView: PropTypes.bool,
     hoverable: PropTypes.bool
@@ -24,8 +25,31 @@ class TagsContainer extends PureComponent {
     height: 24,
     flexWrap: "nowrap",
     alignItems: "center",
+    overflowX: "hidden",
+    overflowY: "hidden",
     minimalView: false,
     hoverable: true
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let { tags, height, flexWrap, alignItems, overflowX, overflowY, minimalView } = nextProps
+
+    if (flexWrap === "wrap") {
+      overflowX = "auto"
+      overflowY = "auto"
+    }
+
+    const styles = {
+      height,
+      flexWrap,
+      alignItems,
+      alignContent: "flex-start",
+      flexStart: "space-around",
+      overflowX,
+      overflowY
+    }
+
+    return { tags, styles, minimalView }
   }
 
   renderTags = tags => {
@@ -56,26 +80,9 @@ class TagsContainer extends PureComponent {
   }
 
   render() {
-    const {
-      tags,
-      height,
-      flexWrap,
-      alignItems,
-      renderLinks,
-      minimalView
-    } = this.props
+    const { tags, styles, minimalView } = this.state
     return (
-      <Col
-        className="TagsContainer p-0"
-        xs={12}
-        style={{
-          height,
-          flexWrap,
-          alignItems,
-          alignContent: "flex-start",
-          flexStart: "space-around"
-        }}
-      >
+      <Col className="TagsContainer p-0" xs={12} style={styles}>
         {minimalView ? this.renderMinimalTags(tags) : this.renderTags(tags)}
       </Col>
     )
