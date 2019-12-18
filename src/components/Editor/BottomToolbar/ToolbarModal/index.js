@@ -43,6 +43,7 @@ const ToolbarModal = ({
         className="ToolbarModal"
         centered
         onClosed={onCancelCallback}
+        
       >
         <ModalHeader toggle={toggle} className="Center">
           {modalTitle}

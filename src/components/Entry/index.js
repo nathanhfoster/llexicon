@@ -46,6 +46,7 @@ class Entry extends Component {
       latitude,
       longitude,
       tags,
+      rating,
       EntryFiles,
       date_created,
       date_created_by_author,
@@ -73,6 +74,7 @@ class Entry extends Component {
       latitude,
       longitude,
       tags,
+      rating,
       EntryFiles,
       date_created,
       date_created_by_author: new Date(date_created_by_author),
@@ -102,6 +104,7 @@ class Entry extends Component {
       latitude,
       longitude,
       tags,
+      rating,
       EntryFiles,
       date_created,
       date_created_by_author,
@@ -122,6 +125,7 @@ class Entry extends Component {
           bottomToolbarHidden={bottomToolbarHidden}
           html={html}
           tags={tags}
+          rating={rating}
           EntryFiles={EntryFiles}
           latitude={latitude}
           longitude={longitude}

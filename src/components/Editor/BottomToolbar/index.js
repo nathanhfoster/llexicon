@@ -2,7 +2,11 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
-import { LocationButtonModal, TagsButtonModal } from "./ToolbarButtonModals"
+import {
+  LocationButtonModal,
+  TagsButtonModal,
+  RatingButtonModal
+} from "./ToolbarButtonModals"
 import TagsContainer from "../../TagsContainer"
 import EntryFilesCarousel from "../../EntryFilesCarousel"
 import "./styles.css"
@@ -72,6 +76,7 @@ class BottomToolbar extends PureComponent {
     latitude: PropTypes.number,
     longitude: PropTypes.number,
     tags: PropTypes.arrayOf(PropTypes.object),
+    rating: PropTypes.number,
     EntryFiles: PropTypes.arrayOf(PropTypes.object),
     EntryTags: PropTypes.arrayOf(PropTypes.object),
     onChangeCallback: PropTypes.func.isRequired
@@ -85,6 +90,7 @@ class BottomToolbar extends PureComponent {
       latitude,
       longitude,
       tags,
+      rating,
       AllEntryFiles,
       EntryFiles,
       EntryTags,
@@ -96,6 +102,10 @@ class BottomToolbar extends PureComponent {
         {
           Component: LocationButtonModal,
           props: { latitude, longitude, onChangeCallback }
+        },
+        {
+          Component: RatingButtonModal,
+          props: { rating, onChangeCallback }
         }
       ],
       [{ Component: TagsButtonModal, props: { tags, onChangeCallback } }]
@@ -106,6 +116,7 @@ class BottomToolbar extends PureComponent {
       latitude,
       longitude,
       tags,
+      rating,
       AllEntryFiles,
       EntryFiles,
       EntryTags,
@@ -136,6 +147,7 @@ class BottomToolbar extends PureComponent {
       latitude,
       longitude,
       tags,
+      rating,
       AllEntryFiles,
       EntryFiles,
       EntryTags

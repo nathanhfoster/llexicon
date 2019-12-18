@@ -8,6 +8,7 @@ const DEFAULT_STATE_TEXT_EDITOR = {
   latitude: null,
   longitude: null,
   tags: [],
+  rating: 0,
   lastUpdated: ""
 }
 

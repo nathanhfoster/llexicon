@@ -110,6 +110,7 @@ class Editor extends Component {
       latitude,
       longitude,
       tags,
+      rating,
       EntryFiles,
       topToolbarHidden,
       bottomToolbarHidden
@@ -124,6 +125,7 @@ class Editor extends Component {
       latitude,
       longitude,
       tags,
+      rating,
       EntryFiles,
       topToolbarHidden,
       editorHeight,
@@ -272,6 +274,7 @@ class Editor extends Component {
       latitude,
       longitude,
       tags,
+      rating,
       EntryFiles,
       theme,
       quillId,
@@ -314,6 +317,7 @@ class Editor extends Component {
               latitude={latitude}
               longitude={longitude}
               tags={tags}
+              rating={rating}
               EntryFiles={EntryFiles}
             />
           )}

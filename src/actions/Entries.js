@@ -303,6 +303,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       title,
       html,
       tags,
+      rating,
       date_created,
       date_created_by_author,
       date_updated,
@@ -323,11 +324,12 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         id,
         author: UserId,
         title,
-        html,
+        rating,
         date_created_by_author,
         latitude,
         longitude
       }
+
       dispatch(PostEntry(postPayload)).then(entry => {
         const {
           EntryFiles,
@@ -335,7 +337,6 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
           date_created,
           date_created_by_author,
           date_updated,
-          html,
           id,
           title,
           views,
@@ -353,6 +354,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         date_created_by_author,
         html,
         tags: JSON.stringify(tags),
+        rating,
         latitude,
         longitude
       }

@@ -23,7 +23,16 @@ import "./styles.css"
 
 const mapStateToProps = ({
   Calendar: { activeDate },
-  TextEditor: { clearedOn, title, html, EntryFiles, latitude, longitude, tags },
+  TextEditor: {
+    clearedOn,
+    title,
+    html,
+    EntryFiles,
+    latitude,
+    longitude,
+    tags,
+    rating
+  },
   Window: {
     innerHeight,
     screen: { availHeight }
@@ -38,6 +47,7 @@ const mapStateToProps = ({
   latitude,
   longitude,
   tags,
+  rating,
   innerHeight,
   viewPortHeight: availHeight,
   entriesLength: items.length
@@ -84,6 +94,7 @@ class NewEntry extends PureComponent {
       latitude,
       longitude,
       tags,
+      rating,
       innerHeight,
       viewPortHeight,
       footerHeight
@@ -102,6 +113,7 @@ class NewEntry extends PureComponent {
       latitude,
       longitude,
       tags,
+      rating,
       postDisabled
     }
   }
@@ -115,13 +127,22 @@ class NewEntry extends PureComponent {
       ClearEditorState,
       entriesLength
     } = this.props
-    const { html, title, tags, latitude, longitude, activeDate } = this.state
+    const {
+      html,
+      title,
+      tags,
+      rating,
+      latitude,
+      longitude,
+      activeDate
+    } = this.state
 
     const payload = {
       id: `shouldPost-${entriesLength}`,
       title,
       html: html,
       tags,
+      rating,
       latitude,
       longitude,
       date_created_by_author: activeDate,
@@ -155,6 +176,7 @@ class NewEntry extends PureComponent {
       latitude,
       longitude,
       tags,
+      rating,
       clearedOn,
       title,
       editorHeight,
@@ -212,6 +234,7 @@ class NewEntry extends PureComponent {
               latitude={latitude}
               longitude={longitude}
               tags={tags}
+              rating={rating}
               onChangeCallback={({ ...payload }) =>
                 this.handleTextEditorChange(payload)
               }

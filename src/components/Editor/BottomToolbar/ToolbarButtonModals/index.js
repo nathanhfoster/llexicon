@@ -1,4 +1,5 @@
 import TagsButtonModal from "./TagsButtonModal"
 import LocationButtonModal from "./LocationButtonModal"
+import RatingButtonModal from "./RatingButtonModal"
 
-export { LocationButtonModal, TagsButtonModal }
+export { LocationButtonModal, TagsButtonModal, RatingButtonModal }
