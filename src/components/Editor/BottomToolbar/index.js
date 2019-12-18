@@ -17,6 +17,7 @@ const mapStateToProps = ({ Entries: { items } }, { id }) => ({
       []
     )
     .flat(1)
+    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
 })
 
 const mapDispatchToProps = {}
