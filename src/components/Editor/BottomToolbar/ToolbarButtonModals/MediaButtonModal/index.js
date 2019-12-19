@@ -45,7 +45,7 @@ class MediaButtonModal extends PureComponent {
 
     const addUrlDisabled = false
 
-    AllEntryFiles = [
+   /* AllEntryFiles = [
       {
         id: 152,
         entry_id: 2198,
@@ -182,7 +182,7 @@ class MediaButtonModal extends PureComponent {
         date_updated: "2019-12-17 21:50:51",
         date_modified: "2019-12-17 21:50:50"
       }
-    ]
+    ] */
     return { html, AllEntryFiles, url, addUrlDisabled }
   }
 
