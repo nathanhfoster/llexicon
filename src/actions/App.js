@@ -53,7 +53,7 @@ const SetAppVersion = () => (dispatch, getState) => {
             message
           }
         })
-        setTimeout(() => window.location.reload(), 3500)
+        setTimeout(() => window.location.reload(true), 3500)
       }
     })
     .catch(e => console.log(e))
