@@ -33,14 +33,14 @@ const setHtmlDocument = Document => ({
 const clearHtmlDocument = () => ({ type: ReduxActions.CLEAR_HTML_DOCUMENT })
 
 const SetAppVersion = () => (dispatch, getState) => {
-  let { version } = getState().Window
+  const { version } = getState().Window
 
   return Axios()
     .get("versions/view/")
     .then(res => {
       const { date_created, date_updated } = res.data
       const latestAppVersion = new Date(date_created)
-      const clientVersion = new Date(version || 0)
+      const clientVersion = new Date(version)
       const clientNeedsUpdate = clientVersion - latestAppVersion < 0
       if (clientNeedsUpdate) {
         const message = "There is a new version of the app!"

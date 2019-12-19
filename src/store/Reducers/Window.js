@@ -2,7 +2,7 @@ import { ReduxActions } from "../../constants.js"
 const { SET_WINDOW ,SET_APP_VERSION} = ReduxActions
 
 const DEFAULT_STATE_WINDOW = {
-  version: null,
+  version: 0,
   innerHeight: null,
   innerWidth: null,
   isMobile: null,
