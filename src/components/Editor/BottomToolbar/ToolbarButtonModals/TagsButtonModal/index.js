@@ -102,7 +102,7 @@ class TagsButtonModal extends PureComponent {
           <Row>
             <TagsContainer
               tags={EntryTags}
-              height={60}
+              height={90}
               flexWrap="wrap"
               onClickCallback={this.handleTagClick}
             />
