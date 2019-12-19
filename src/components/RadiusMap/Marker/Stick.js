@@ -1,20 +1,24 @@
-import React, { Fragment, memo } from 'react'
-import PropTypes from 'prop-types'
-import { history } from 'store'
-import { SvgIcon } from '@material-ui/core'
-import { ZoomIn } from '@material-ui/icons'
+import React, { Fragment, memo } from "react"
+import PropTypes from "prop-types"
 import {
   K_CIRCLE_SIZE,
   K_BORDER_WIDTH,
   locationCircleStyle,
   locationCircleStyleHover,
   locationStickStyle,
-  locationStickStyleHover
-} from './styles'
+  locationStickStyleHover,
+  locationStickStyleShadow
+} from "./styles"
 
-import { DEFAULT_POLYGON_MIN_ZOOM } from '../constants'
+import { DEFAULT_POLYGON_MIN_ZOOM } from "../constants"
 
-const infoClick = ({ $dimensionKey, center, selectSite, setMapCenterBoundsZoom }) => {
+const infoClick = ({
+  $dimensionKey,
+  center,
+  selectSite,
+  setMapCenterBoundsZoom,
+  history
+}) => {
   selectSite($dimensionKey)
   setMapCenterBoundsZoom({ center })
   history.push(`/v2/projects/${$dimensionKey}`)
@@ -23,25 +27,23 @@ const infoClick = ({ $dimensionKey, center, selectSite, setMapCenterBoundsZoom }
 const zoomClick = ({ center, setMapCenterBoundsZoom }) =>
   setMapCenterBoundsZoom({ center, zoom: DEFAULT_POLYGON_MIN_ZOOM })
 
-const clientNameCharacterStyle = {
-  fontFamily: 'Arial Bold'
-}
-
 const infoStyle = {
-  fontFamily: 'Comic Sans MS'
+  fontFamily: "Comic Sans MS"
 }
 
 const zoomStyle = {
   fontSize: 14
 }
 
-const ClientNameCharacter = clientName => {
+const ClientNameCharacter = renderUserLocation => {
+  const className = renderUserLocation ? "fas fa-user-circle" : "fas fa-circle"
   return (
-    <span style={clientNameCharacterStyle}>
-      <SvgIcon>
-        <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
-      </SvgIcon>
-    </span>
+    <i
+      className={className}
+      style={{
+        fontSize: renderUserLocation ? "inherit" : K_CIRCLE_SIZE / 2
+      }}
+    />
   )
   // if (!clientName) clientName = 'P'
   // return <span style={clientNameCharacterStyle}>{clientName.charAt(0).toUpperCase()}</span>
@@ -55,13 +57,19 @@ const Info = props => (
 
 const Zoom = props => (
   <span style={zoomStyle} onClick={() => zoomClick(props)}>
-    <ZoomIn />
+    <i className="fas fa-search-location" />
   </span>
 )
 
 const Stick = props => {
-  const { clientName, shouldShowPreview, inGroup, zoom } = props
-  let text = ClientNameCharacter(clientName)
+  const {
+    clientName,
+    shouldShowPreview,
+    inGroup,
+    zoom,
+    renderUserLocation
+  } = props
+  let text = ClientNameCharacter(renderUserLocation)
   let circleStyle = locationCircleStyle
   let stickStyle = locationStickStyle
 
@@ -89,7 +97,8 @@ Stick.propTypes = {
   inGroup: PropTypes.bool,
   center: PropTypes.arrayOf(PropTypes.number.isRequired),
   selectSite: PropTypes.func.isRequired,
-  setMapCenterBoundsZoom: PropTypes.func.isRequired
+  setMapCenterBoundsZoom: PropTypes.func.isRequired,
+  renderUserLocation: PropTypes.bool
 }
 
 export default memo(Stick)

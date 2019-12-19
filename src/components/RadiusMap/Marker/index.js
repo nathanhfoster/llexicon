@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 
-import { markerStyle } from './styles'
+import { markerStyle } from "./styles"
 
-import PreviewBox from './PreviewBox'
-import Stick from './Stick'
+import PreviewBox from "./PreviewBox"
+import Stick from "./Stick"
 
 class Marker extends Component {
   constructor(props) {
@@ -21,9 +21,7 @@ class Marker extends Component {
     $prerender: PropTypes.bool,
     hoveredChildKey: PropTypes.string,
     boundaries: PropTypes.arrayOf(
-      PropTypes.arrayOf(
-        PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }).isRequired
-      )
+      PropTypes.arrayOf(PropTypes.objectOf(PropTypes.number))
     ),
     clientId: PropTypes.string,
     clientName: PropTypes.string,
@@ -38,16 +36,15 @@ class Marker extends Component {
     zipcode: PropTypes.string,
     score: PropTypes.string,
     acreage: PropTypes.number,
-    boundary: PropTypes.arrayOf(
-      PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }).isRequired
-    ),
+    boundary: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     locations: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
     marketValue: PropTypes.number,
     parcelNumbers: PropTypes.array,
     siteType: PropTypes.string,
     inGroup: PropTypes.bool,
     selectSite: PropTypes.func.isRequired,
-    setMapCenterBoundsZoom: PropTypes.func.isRequired
+    setMapCenterBoundsZoom: PropTypes.func.isRequired,
+    renderUserLocation: PropTypes.bool
   }
 
   static defaultProps = { inGroup: false, zIndex: 1 }
@@ -81,7 +78,8 @@ class Marker extends Component {
       parcelNumbers,
       siteType,
       zoom,
-      inGroup
+      inGroup,
+      renderUserLocation
     } = nextProps
 
     const shouldShowPreview = $hover || hoveredChildKey === $dimensionKey
@@ -113,7 +111,8 @@ class Marker extends Component {
       siteType,
       inGroup,
       shouldShowPreview,
-      zoom
+      zoom,
+      renderUserLocation
     }
   }
 
@@ -126,7 +125,8 @@ class Marker extends Component {
 
     const mouseHovered = currentDimensionKey == hoveredChildKey || $hover
 
-    const mouseLeft = currentHoveredChildKey != hoveredChildKey || currentHover != $hover
+    const mouseLeft =
+      currentHoveredChildKey != hoveredChildKey || currentHover != $hover
 
     const zoomChanged = currentZoom !== zoom
 
@@ -163,7 +163,8 @@ class Marker extends Component {
       siteType,
       inGroup,
       shouldShowPreview,
-      zoom
+      zoom,
+      renderUserLocation
     } = this.state
 
     const style = {
@@ -182,7 +183,8 @@ class Marker extends Component {
       center: [lat, lng],
       selectSite,
       setMapCenterBoundsZoom,
-      zoom
+      zoom,
+      renderUserLocation
     }
 
     return (

@@ -3,7 +3,7 @@ import { ATTACHED_COLOR } from '../PolygonSystem/getOptions'
 const K_CIRCLE_SIZE = 34
 const K_STICK_SIZE = 10
 const K_STICK_WIDTH = 3
-const K_BORDER_WIDTH = 2
+const K_BORDER_WIDTH = 4
 
 const markerStyle = {
   position: 'absolute',
@@ -55,8 +55,8 @@ const locationCircleStyleHover = {
 
 const locationStickStyle = {
   position: 'absolute',
-  left: K_CIRCLE_SIZE / 2 - 12,
-  top: K_CIRCLE_SIZE - 2,
+  left: K_CIRCLE_SIZE / 2 - 14,
+  top: K_CIRCLE_SIZE - 8,
   width: 0,
   height: 0,
   border: '14px solid transparent',

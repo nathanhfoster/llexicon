@@ -1,10 +1,10 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import GoogleMapReact from "google-map-react"
-import Marker from "../Map/Marker"
+import Marker from "../RadiusMap/Marker"
 import { WatchUserLocation } from "../../actions/User"
-import { DEFAULT_MAP_OPTIONS } from "../Map/constants"
+import { DEFAULT_MAP_OPTIONS } from "../RadiusMap/constants"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
@@ -53,24 +53,23 @@ class BasicMap extends PureComponent {
       longitude
     } = nextProps
 
-    
     if (latitude && longitude) {
-      center = {
-        lat: latitude,
-        lng: longitude
-      }
       zoom = 11
       // Remove possible trailing zeroes
       latitude = parseFloat(latitude.toString())
       longitude = parseFloat(longitude.toString())
+      center = {
+        lat: latitude,
+        lng: longitude
+      }
     } else if (renderUserLocation) {
+      zoom = 11
+      latitude = UserLocation.latitude
+      longitude = UserLocation.longitude
       center = {
         lat: UserLocation.latitude,
         lng: UserLocation.longitude
       }
-      zoom = 11
-      latitude = UserLocation.latitude
-      longitude = UserLocation.longitude
     }
 
     return {
@@ -84,14 +83,27 @@ class BasicMap extends PureComponent {
   }
 
   renderMarker = () => {
-    const { latitude, longitude } = this.state
+    const { latitude, longitude, renderUserLocation, UserLocation } = this.state
 
     const shouldRenderMarker = latitude && longitude
 
     return (
-      shouldRenderMarker && (
-        <Marker lat={latitude} lng={longitude} text="My Location" />
-      )
+      shouldRenderMarker && [
+        <Marker
+          key={1}
+          lat={latitude}
+          lng={longitude}
+          text="My Location"
+          renderUserLocation={false}
+        />,
+        <Marker
+          key={2}
+          lat={UserLocation.latitude}
+          lng={UserLocation.longitude}
+          text="My Location"
+          renderUserLocation={renderUserLocation}
+        />
+      ]
     )
   }
 

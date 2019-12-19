@@ -44,7 +44,7 @@ const DEFAULT_PARLAY_MIN_ZOOM = 15
 const DEFAULT_PARLAY_MAX_ZOOM = 22
 
 const DEFAULT_MAP_OPTIONS = {
-  gestureHandling: 'cooperative',
+  gestureHandling: 'greedy',
   // scrollwheel: true, // gestureHandling handles this
   minZoom: 0,
   maxZoom: 22,
