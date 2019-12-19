@@ -1,7 +1,7 @@
 .NavBar {
   font-weight: bold;
   width: 100%;
-  z-index: 9999;
+  z-index: 103;
   box-shadow: var(--primaryBoxShadow);
   text-align: center !important;
   background: var(--slate_grey);
