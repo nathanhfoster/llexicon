@@ -9,7 +9,7 @@ const ToolbarModal = ({
   onClickCallback,
   onSaveCallback,
   onCancelCallback,
-  buttonIcon,
+  ButtonIcon,
   buttonTitle,
   xs,
   children,
@@ -30,7 +30,7 @@ const ToolbarModal = ({
           if (onClickCallback) onClickCallback()
           toggle()
         }}
-        buttonIcon={buttonIcon}
+        ButtonIcon={ButtonIcon}
         title={buttonTitle}
         disabled={disabled}
       >
@@ -74,7 +74,7 @@ ToolbarModal.propTypes = {
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
-  buttonIcon: PropTypes.string,
+  ButtonIcon: PropTypes.string,
   buttonTitle: PropTypes.string,
   xs: PropTypes.number,
   className: PropTypes.string,

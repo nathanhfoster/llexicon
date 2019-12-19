@@ -5,6 +5,10 @@
     transform-origin: (-50%, -50%); */
 }
 
+.ToolbarModal .modal-title {
+    font-size: 2em;
+}
+
 .ToolbarModal .modal-header .close {
     display: none;
 }

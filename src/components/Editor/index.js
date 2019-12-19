@@ -12,9 +12,51 @@ import "./styles.css"
 import TopToolbar from "./TopToolbar"
 import BottomToolbar from "./BottomToolbar"
 
+const BlockEmbed = Quill.import("blots/block/embed")
+
 // const Size = Quill.import("formats/size")
 // Size.whitelist = ["extra-small", "small", "medium", "large"]
 // Quill.register(Size, true)
+
+class Video extends BlockEmbed {
+  static create(value) {
+    let node = super.create(value)
+    let iframe = document.createElement("iframe")
+    iframe.setAttribute("frameborder", "0")
+    iframe.setAttribute("allowfullscreen", true)
+    // iframe.setAttribute("width", "100%")
+    // iframe.setAttribute("height", "auto")
+    // iframe.setAttribute("width", 320)
+    // iframe.setAttribute("height", 180)
+ 
+
+    if (value.includes("watch?v=")) {
+      value = value.replace("watch?v=", "embed/")
+    }
+
+    if (value.includes("/watch/")) {
+      value = value.replace("/watch/", "/embed/")
+    }
+
+    if (value.includes("youtu.be/")) {
+      value = value.replace("youtu.be/", "youtube.com/embed/")
+    }
+
+    iframe.setAttribute("src", value)
+    node.appendChild(iframe)
+    return node
+  }
+
+  static value(domNode) {
+    if (domNode.firstChild) {
+      return domNode.firstChild.getAttribute("src")
+    }
+  }
+}
+
+Video.blotName = "video"
+Video.className = "ql-video"
+Video.tagName = "div"
 
 const Font = Quill.import("formats/font")
 Font.whitelist = [
@@ -32,6 +74,8 @@ Font.whitelist = [
 Quill.register(Font, true)
 
 Quill.register("modules/imageResize", ImageResize)
+
+Quill.register("formats/video", Video)
 
 // Quill.setAttribute('spellcheck', true)
 
@@ -113,7 +157,8 @@ class Editor extends Component {
       rating,
       EntryFiles,
       topToolbarHidden,
-      bottomToolbarHidden
+      bottomToolbarHidden,
+      onChangeCallback
     } = nextProps
 
     const editorHeight = bottomToolbarHidden
@@ -297,6 +342,7 @@ class Editor extends Component {
                 onChangeCallback({ id: this.props.toolbarId, ...payload })
               }
               id={this.props.toolbarId}
+              editorRef={editorRef}
               html={html}
               latitude={latitude}
               longitude={longitude}

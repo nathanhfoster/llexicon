@@ -5,24 +5,14 @@ import { Container, Row, Col } from "reactstrap"
 import {
   LocationButtonModal,
   TagsButtonModal,
-  RatingButtonModal
+  RatingButtonModal,
+  MediaButtonModal
 } from "./ToolbarButtonModals"
 import TagsContainer from "../../TagsContainer"
 import EntryFilesCarousel from "../../EntryFilesCarousel"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { items } }, { id }) => ({
-  AllEntryFiles: items
-    .reduce(
-      (allEntryFiles, entry) =>
-        entry.id !== id
-          ? allEntryFiles.concat(entry.EntryFiles)
-          : allEntryFiles,
-      []
-    )
-    .flat(1)
-    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
-})
+const mapStateToProps = ({}) => ({})
 
 const mapDispatchToProps = {}
 
@@ -72,6 +62,7 @@ class BottomToolbar extends PureComponent {
 
   static propTypes = {
     id: PropTypes.any,
+    editorRef: PropTypes.object,
     html: PropTypes.string.isRequired,
     latitude: PropTypes.number,
     longitude: PropTypes.number,
@@ -91,14 +82,18 @@ class BottomToolbar extends PureComponent {
       longitude,
       tags,
       rating,
-      AllEntryFiles,
       EntryFiles,
       EntryTags,
-      onChangeCallback
+      onChangeCallback,
+      editorRef
     } = nextProps
 
     const buttons = [
       [
+        {
+          Component: MediaButtonModal,
+          props: { html, onChangeCallback, editorRef }
+        },
         { Component: TagsButtonModal, props: { tags, onChangeCallback } },
         {
           Component: RatingButtonModal,
@@ -119,7 +114,6 @@ class BottomToolbar extends PureComponent {
       longitude,
       tags,
       rating,
-      AllEntryFiles,
       EntryFiles,
       EntryTags,
       buttons
@@ -142,7 +136,7 @@ class BottomToolbar extends PureComponent {
     ))
 
   render() {
-    const { onChangeCallback } = this.props
+    const { onChangeCallback, editorRef } = this.props
     const {
       buttons,
       html,
@@ -150,7 +144,6 @@ class BottomToolbar extends PureComponent {
       longitude,
       tags,
       rating,
-      AllEntryFiles,
       EntryFiles,
       EntryTags
     } = this.state
@@ -161,18 +154,12 @@ class BottomToolbar extends PureComponent {
           <TagsContainer tags={tags} hoverable={false} />
         </Row>
         <Row className="BottomToolBarFiles">
-          <Col xs={6} className="pl-1 pr-0">
+          <Col xs={12} className="p-1">
             <EntryFilesCarousel
               html={html}
               files={EntryFiles}
               onChangeCallback={onChangeCallback}
-            />
-          </Col>
-          <Col xs={6} className="pl-1 pr-1">
-            <EntryFilesCarousel
-              html={html}
-              files={AllEntryFiles}
-              onChangeCallback={onChangeCallback}
+              editorRef={editorRef}
             />
           </Col>
         </Row>

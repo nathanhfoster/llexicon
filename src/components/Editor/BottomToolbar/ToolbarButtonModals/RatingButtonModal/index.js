@@ -94,7 +94,7 @@ class RatingButtonModal extends PureComponent {
         onClickCallback={this.handleClick}
         onCancelCallback={this.handleCancel}
         onSaveCallback={this.handleSave}
-        buttonIcon="fas fa-star"
+        ButtonIcon="fas fa-star"
         buttonTitle="Add Rating"
         xs={xs}
       >

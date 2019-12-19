@@ -94,7 +94,7 @@ class TagsButtonModal extends PureComponent {
       <ToolbarModal
         modalTitle="Add Tags"
         onSaveCallback={this.handleTagsSave}
-        buttonIcon="fas fa-tags"
+        ButtonIcon="fas fa-tags"
         buttonTitle="Add Tags"
         xs={xs}
       >
@@ -115,7 +115,7 @@ class TagsButtonModal extends PureComponent {
               id="tagTitle"
               name="tagTitle"
               value={tagsAsString}
-              placeholder="Tag name..."
+              placeholder="Family Friends Health Vacation"
               xs={12}
             ></Col>
           </Row>

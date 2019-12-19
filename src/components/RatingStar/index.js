@@ -63,7 +63,7 @@ class RatingStar extends PureComponent {
       <i
         className={`${
           filled ? "fas" : "far"
-        } fa-star pt-3 pb-3 pl-1 pr-1 RatingStar`}
+        } fa-star fa-2x pt-3 pb-3 pl-1 pr-1 RatingStar`}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         onClick={this.handleOnClick}

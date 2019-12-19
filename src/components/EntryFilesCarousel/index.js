@@ -13,10 +13,15 @@ class EntryFilesCarousel extends PureComponent {
   static propTypes = {
     html: PropTypes.string.isRequired,
     files: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onChangeCallback: PropTypes.func.isRequired
+    onChangeCallback: PropTypes.func.isRequired,
+    editorRef: PropTypes.object.isRequired
   }
 
-  static defaultProps = {}
+  static defaultProps = {
+    overflowX: "auto",
+    overflowY: "hidden",
+    whiteSpace: "nowrap"
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { html, files } = nextProps
@@ -45,35 +50,62 @@ class EntryFilesCarousel extends PureComponent {
     return { html, imageFiles }
   }
 
-  handleImageClick = url => {
-    const { onChangeCallback } = this.props
-    const { html } = this.state
-    const newHtml = `${html} <img src=${url} >`
-    onChangeCallback({ html: newHtml })
+  handleImageClick = (url, file_type) => {
+    const { onChangeCallback, editorRef } = this.props
+    let cursorIndex = 0
+
+    if (editorRef.current) {
+      const selection = editorRef.current.getEditorSelection()
+      if (selection) {
+        const { index, length } = selection
+        cursorIndex = index
+      }
+    }
+
+    // editorRef.current.editor.insertText(
+    //   cursorIndex,
+    //   `<img src=${url} >`,
+    //   "bold",
+    //   true
+    // )
+
+    const type = file_type.split("/")[0]
+
+    editorRef.current.editor.insertEmbed(cursorIndex, type, url)
+
+    // const { html } = this.state
+
+    // const newHtml = `${html} <img src=${url} >`
+    // onChangeCallback({ html: newHtml })
   }
 
   renderImageFiles = imageFiles => {
     return imageFiles.map((image, i) => {
-      const { url, name } = image
+      const { url, name, file_type } = image
       return (
         <Media
           key={i}
           src={url}
           className="EntryFilesCarouselImage"
           alt={name}
-          onClick={() => this.handleImageClick(url)}
+          onClick={() => this.handleImageClick(url, file_type)}
         />
       )
     })
   }
 
   render() {
+    const { editorRef, overflowX, overflowY, whiteSpace } = this.props
     const { imageFiles } = this.state
 
     return (
       <Container className="EntryFilesCarousel Container">
         <Row>
-          <Col xs={12} className="EntryFilesCarouselImageContainer p-0">
+          <Col
+            xs={12}
+            className="EntryFilesCarouselImageContainer p-0"
+            style={{ overflowX, overflowY, whiteSpace }}
+          >
             {this.renderImageFiles(imageFiles)}
           </Col>
         </Row>

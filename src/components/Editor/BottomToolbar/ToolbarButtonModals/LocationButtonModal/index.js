@@ -75,7 +75,7 @@ class LocationButtonModal extends PureComponent {
         onClickCallback={this.handleClick}
         onCancelCallback={this.handleCancel}
         onSaveCallback={this.handleSave}
-        buttonIcon="fas fa-map-marker-alt"
+        ButtonIcon="fas fa-map-marker-alt"
         buttonTitle="Add Location"
         xs={xs}
         saveDisabled={!UserLocation.latitude || !UserLocation.longitude}
