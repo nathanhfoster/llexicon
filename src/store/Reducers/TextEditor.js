@@ -9,7 +9,8 @@ const DEFAULT_STATE_TEXT_EDITOR = {
   longitude: null,
   tags: [],
   rating: 0,
-  lastUpdated: ""
+  lastUpdated: "",
+  EntryFiles: []
 }
 
 const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {

@@ -1,7 +1,7 @@
 import { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { SetWindow } from "./actions/App"
+import { SetWindow, SetAppVersion } from "./actions/App"
 import { WatchUserLocation } from "./actions/User"
 import { GetUserSettings } from "./actions/Settings"
 import { debounce } from "./helpers"
@@ -13,10 +13,11 @@ const mapStateToProps = ({ User: { id } }) => ({
 const mapDispatchToProps = {
   SetWindow,
   WatchUserLocation,
-  GetUserSettings
+  GetUserSettings,
+  SetAppVersion
 }
 
-export class App extends PureComponent {
+class App extends PureComponent {
   constructor(props) {
     super(props)
     this.watchId = null
@@ -40,7 +41,14 @@ export class App extends PureComponent {
   }
 
   componentDidMount() {
-    const { WatchUserLocation, GetUserSettings, UserId } = this.props
+    const {
+      WatchUserLocation,
+      GetUserSettings,
+      UserId,
+      SetAppVersion
+    } = this.props
+
+    SetAppVersion()
 
     // this.watchId = WatchUserLocation()
 

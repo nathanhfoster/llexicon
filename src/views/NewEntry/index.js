@@ -114,6 +114,7 @@ class NewEntry extends PureComponent {
       longitude,
       tags,
       rating,
+      EntryFiles,
       postDisabled
     }
   }
@@ -134,6 +135,7 @@ class NewEntry extends PureComponent {
       rating,
       latitude,
       longitude,
+      EntryFiles,
       activeDate
     } = this.state
 
@@ -146,7 +148,7 @@ class NewEntry extends PureComponent {
       latitude,
       longitude,
       date_created_by_author: activeDate,
-      EntryFiles: [],
+      EntryFiles,
       shouldPost: true
     }
 
@@ -234,6 +236,7 @@ class NewEntry extends PureComponent {
               latitude={latitude}
               longitude={longitude}
               tags={tags}
+              EntryFiles={EntryFiles}
               rating={rating}
               onChangeCallback={({ ...payload }) =>
                 this.handleTextEditorChange(payload)

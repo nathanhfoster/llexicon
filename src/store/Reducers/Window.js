@@ -1,7 +1,8 @@
 import { ReduxActions } from "../../constants.js"
-const { SET_WINDOW } = ReduxActions
+const { SET_WINDOW ,SET_APP_VERSION} = ReduxActions
 
 const DEFAULT_STATE_WINDOW = {
+  version: null,
   innerHeight: null,
   innerWidth: null,
   isMobile: null,
@@ -48,7 +49,9 @@ const Window = (state = DEFAULT_STATE_WINDOW, action) => {
   const { type, payload } = action
   switch (type) {
     case SET_WINDOW:
-      return payload
+      return {...state, ...payload}
+    case SET_APP_VERSION:
+      return { ...state, version: payload }
     default:
       return state
   }
