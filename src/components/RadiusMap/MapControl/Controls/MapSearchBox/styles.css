@@ -23,8 +23,6 @@
 .mapBoxSearchBoxInput {
     font-size: 1rem;
     padding: 12px;
-    background-color: whitesmoke !important;
-    color: black !important;
     border-radius: 4px;
     width: 100%;
 }
