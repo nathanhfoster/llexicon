@@ -38,8 +38,8 @@ class BasicMap extends PureComponent {
       lat: 39.8097343,
       lng: -98.5556199
     },
-    defaultZoom: 3,
-    zoom: 3,
+    defaultZoom: 18,
+    zoom: 18,
     options: DEFAULT_MAP_OPTIONS
   }
 
@@ -54,7 +54,7 @@ class BasicMap extends PureComponent {
     } = nextProps
 
     if (latitude && longitude) {
-      zoom = 11
+      zoom = 16
       // Remove possible trailing zeroes
       latitude = parseFloat(latitude.toString())
       longitude = parseFloat(longitude.toString())
@@ -63,7 +63,7 @@ class BasicMap extends PureComponent {
         lng: longitude
       }
     } else if (renderUserLocation) {
-      zoom = 11
+      zoom = 16
       latitude = UserLocation.latitude
       longitude = UserLocation.longitude
       center = {
@@ -117,6 +117,7 @@ class BasicMap extends PureComponent {
       children
     } = this.props
     const { center, zoom } = this.state
+  
     return (
       <div style={{ height, width }}>
         <GoogleMapReact
