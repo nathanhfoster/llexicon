@@ -1,16 +1,19 @@
-import React, { Component, cloneElement } from 'react'
-import PropTypes from 'prop-types'
-import { render } from 'react-dom'
-import deepEquals from '../../../helpers/deepEquals'
-import './styles.css'
+import React, { Component, cloneElement } from "react"
+import PropTypes from "prop-types"
+import { render } from "react-dom"
+import deepEquals from "../../../helpers/deepEquals"
+import "./styles.css"
 
 class MapControl extends Component {
   static propTypes = {
     map: PropTypes.object.isRequired,
     controlPosition: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
-    children: PropTypes.any.isRequired
+    children: PropTypes.any.isRequired,
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   }
+
+  static defaultProps = { width: "100%" }
 
   shouldComponentUpdate(nextProps, nextState) {
     const {
@@ -97,25 +100,29 @@ class MapControl extends Component {
       : cloneElement(children, { ...props })
 
   _render() {
-    const { children, controlPosition, ...props } = this.props
+    const { children, controlPosition, width, ...props } = this.props
+
     if (!props.map || !controlPosition) return
     render(
       <div
         className="mapControl"
+        style={{ width }}
         ref={el => {
           if (!this.renderedOnce) {
             this.el = el
             props.map.controls[controlPosition].push(el)
           } else if (el && this.el && el !== this.el) {
-            this.el.innerHTML = ''
-            ;[].slice.call(el.childNodes).forEach(child => this.el.appendChild(child))
+            this.el.innerHTML = ""
+            ;[].slice
+              .call(el.childNodes)
+              .forEach(child => this.el.appendChild(child))
           }
           this.renderedOnce = true
         }}
       >
         {this.renderChildren(children, { ...props })}
       </div>,
-      document.createElement('div')
+      document.createElement("div")
     )
   }
 

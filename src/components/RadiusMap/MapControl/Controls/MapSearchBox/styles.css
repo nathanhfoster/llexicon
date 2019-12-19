@@ -2,13 +2,18 @@
 
 .mapBoxSearchBoxContainer {
     font-size: 1rem;
-    margin-top: 7px;
     position: relative;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     overflow: auto;
-    left: 40px;
+    margin: 0.5rem;
+    width: 170px;
+}
+
+.mapBoxSearchBoxContainer:focus-within {
+    width: calc(100% - 1rem);
+    transition: width 0.4s ease-in;
 }
 
 .mapBoxSearchBoxContainer input:focus {
@@ -18,7 +23,10 @@
 .mapBoxSearchBoxInput {
     font-size: 1rem;
     padding: 12px;
-    min-width: 400px;
+    background-color: whitesmoke !important;
+    color: black !important;
+    border-radius: 4px;
+    width: 100%;
 }
 
 .pac-container {

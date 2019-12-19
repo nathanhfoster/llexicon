@@ -27,10 +27,10 @@ const GOOGLE_MAP_TYPE_CONTROL_STYLE = {
 }
 
 const GOOGLE_MAP_TYPE_ID = {
-  HYBRID: 'hybrid',
-  ROADMAP: 'roadmap',
-  SATELLITE: 'satellite',
-  TERRAIN: 'terrain'
+  HYBRID: "hybrid",
+  ROADMAP: "roadmap",
+  SATELLITE: "satellite",
+  TERRAIN: "terrain"
 }
 
 const CENTER_OF_US = [39.8097343, -98.5556199]
@@ -44,13 +44,13 @@ const DEFAULT_PARLAY_MIN_ZOOM = 15
 const DEFAULT_PARLAY_MAX_ZOOM = 22
 
 const DEFAULT_MAP_OPTIONS = {
-  gestureHandling: 'greedy',
+  gestureHandling: "greedy",
   // scrollwheel: true, // gestureHandling handles this
   minZoom: 0,
   maxZoom: 22,
   disableDefaultUI: false,
   mapTypeControl: true,
-  mapTypeId: GOOGLE_MAP_TYPE_ID.HYBRID,
+  mapTypeId: GOOGLE_MAP_TYPE_ID.ROADMAP,
 
   mapTypeControlOptions: {
     style: GOOGLE_MAP_TYPE_CONTROL_STYLE.HORIZONTAL_BAR,
@@ -62,13 +62,16 @@ const DEFAULT_MAP_OPTIONS = {
       GOOGLE_MAP_TYPE_ID.TERRAIN
     ]
   },
+  mapTypeControlOptions: {
+    position: GOOGLE_MAP_CONTROL_POSITIONS.LEFT_BOTTOM
+  },
   styles: [
     {
-      featureType: 'poi.business',
-      elementType: 'labels',
+      featureType: "poi.business",
+      elementType: "labels",
       stylers: [
         {
-          visibility: 'off'
+          visibility: "off"
         }
       ]
     }

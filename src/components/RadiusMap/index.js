@@ -572,6 +572,83 @@ class RadiusMap extends Component {
     )
   }
 
+  getMapControls = () => {
+    const {
+      activeProject: {
+        item: { id }
+      },
+      sites
+    } = this.props
+
+    const hasUserDefinedSite = sites.find(
+      site => site.siteType === 'USER_DEFINED' && site._attached
+    )
+    const shouldRenderParlayMapButton = id && !hasUserDefinedSite
+    const shouldShowDrawingModeButton =
+      shouldRenderParlayMapButton && sites.filter(site => site._attached).length === 0
+
+    const TIME_TO_WAIT_FOR_DRAWING_MANAGER_TO_MOUNT = 1000
+
+    const mapControls = [
+      {
+        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_CENTER,
+        items: [
+          {
+            Component: MapSearchBox
+          }
+        ]
+      },
+      {
+        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.BOTTOM_LEFT,
+        items: [
+          {
+            Component: ParlayMapButton,
+            onClick: this.toggleParlayMapRender,
+            disabled: !shouldRenderParlayMapButton
+          },
+          {
+            Component: DrawButton,
+            onClick: () => {
+              this.toggleParlayMapRender()
+              setTimeout(() => this.toggleDrawingMode(), TIME_TO_WAIT_FOR_DRAWING_MANAGER_TO_MOUNT)
+            },
+            disabled: !shouldShowDrawingModeButton
+          }
+        ]
+      },
+      {
+        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
+        items: [
+          {
+            Component: RecenterZoomButton
+          }
+        ]
+      }
+    ]
+
+    const parlayMapControls = [
+      {
+        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.BOTTOM_LEFT,
+        items: [
+          {
+            Component: DrawButton,
+            onClick: this.toggleDrawingMode,
+            disabled: !shouldShowDrawingModeButton
+          }
+        ]
+      },
+      {
+        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_RIGHT,
+        items: [{ Component: CloseButton, onClick: this.toggleParlayMapRender }]
+      }
+    ]
+
+    return {
+      mapControls,
+      parlayMapControls
+    }
+  }
+
   renderControls = controls => {
     const { mapInstance, mapApi } = this.state
     if (!mapInstance) return null

@@ -25,12 +25,30 @@
 
 .btn-inherit {
   color: var(--secondaryColor);
-  /* background: inherit; */
+  background: inherit;
   border: 0;
-  box-shadow: none !important;
+  box-shadow: inherit !important;
 }
 
-.btn-accent:hover, .btn-primary:hover, .btn-inherit:hover {
+.btn-inherit:hover {
+  background: inherit !important;
+  background-color: inherit !important;
+  border-color: inherit !important;
+  color: inherit;
+}
+
+.btn-white {
+  background: white !important;
+  border: 1px solid white !important;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px !important;
+  color: rgba(0, 0, 0,0.65);
+}
+
+.btn-white:hover {
+  color: rgba(0, 0, 0, 1) !important;
+}
+
+.btn-accent:hover, .btn-primary:hover {
   background-color: var(--quaternaryColor) !important;
   border-color: var(--quaternaryColor) !important;
   color: var(--secondaryColor);

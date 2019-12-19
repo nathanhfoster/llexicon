@@ -4,7 +4,14 @@ import { connect as reduxConnect } from "react-redux"
 import GoogleMapReact from "google-map-react"
 import Marker from "../RadiusMap/Marker"
 import { WatchUserLocation } from "../../actions/User"
-import { DEFAULT_MAP_OPTIONS } from "../RadiusMap/constants"
+import {
+  DEFAULT_MAP_OPTIONS,
+  GOOGLE_MAP_CONTROL_POSITIONS
+} from "../RadiusMap/constants"
+import MapControl from "../RadiusMap/MapControl"
+import fitCoordsToBounds from "../RadiusMap/functions/fitCoordsToBounds"
+import MapSearchBox from "../RadiusMap/MapControl/Controls/MapSearchBox"
+import RecenterZoomButton from "../RadiusMap/MapControl/Controls/Buttons/RecenterZoomButton"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
@@ -16,14 +23,18 @@ class BasicMap extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    const { defaultCenter } = props
+
+    this.state = { center: defaultCenter, mapApiLoaded: false }
   }
 
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     latitude: PropTypes.number,
-    longitude: PropTypes.number
+    longitude: PropTypes.number,
+    WatchUserLocation: PropTypes.func.isRequired,
+    onChangeCallback: PropTypes.func
   }
 
   static defaultProps = {
@@ -47,29 +58,22 @@ class BasicMap extends PureComponent {
     let {
       renderUserLocation,
       UserLocation,
-      center,
       zoom,
       latitude,
       longitude
     } = nextProps
+
+    const { center } = prevState
 
     if (latitude && longitude) {
       zoom = 16
       // Remove possible trailing zeroes
       latitude = parseFloat(latitude.toString())
       longitude = parseFloat(longitude.toString())
-      center = {
-        lat: latitude,
-        lng: longitude
-      }
     } else if (renderUserLocation) {
       zoom = 16
       latitude = UserLocation.latitude
       longitude = UserLocation.longitude
-      center = {
-        lat: UserLocation.latitude,
-        lng: UserLocation.longitude
-      }
     }
 
     return {
@@ -80,6 +84,87 @@ class BasicMap extends PureComponent {
       latitude,
       longitude
     }
+  }
+
+  onGoogleApiLoaded = ({ map, maps }) => {
+    const { UserLocation, latitude, longitude } = this.state
+
+    this.setState({
+      mapApiLoaded: true,
+      mapInstance: map,
+      mapApi: maps
+    })
+
+    const coords = [
+      { lat: latitude, lng: longitude },
+      { lat: UserLocation.latitude, lng: UserLocation.longitude }
+    ]
+    fitCoordsToBounds(map, maps, coords)
+  }
+
+  handleChange = ({ bounds, center, marginBounds, size, zoom }) => {
+    // const centerToArray = Object.values(center)
+    // console.log('handleChange bounds: ', centerToArray)
+    this.panTo({ center, zoom, bounds })
+  }
+
+  panTo = ({
+    center = this.state.center,
+    zoom = this.state.zoom,
+    bounds = this.state.bounds
+  }) => {
+    this.setState({ center, zoom, bounds })
+  }
+
+  getMapControls = () => {
+    const mapControls = [
+      {
+        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
+        props: { width: "calc(100% - 48px)" },
+        items: [
+          {
+            Component: MapSearchBox
+          }
+        ]
+      },
+      {
+        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
+        props: { width: "auto" },
+        items: [
+          {
+            Component: RecenterZoomButton
+          }
+        ]
+      }
+    ]
+
+    return mapControls
+  }
+
+  renderControls = controls => {
+    const { mapInstance, mapApi } = this.state
+    if (!mapInstance) return null
+    return controls.map((control, i) => {
+      const { controlPosition, items, props } = control
+      return (
+        <MapControl
+          key={i}
+          map={mapInstance}
+          mapApi={mapApi}
+          controlPosition={controlPosition}
+          panTo={({ center, zoom, bounds }) =>
+            this.panTo({ center, zoom, bounds })
+          }
+          {...this.props}
+          {...props}
+        >
+          {items.map((control, j) => {
+            const { Component, ...props } = control
+            return <Component {...props} key={j} />
+          })}
+        </MapControl>
+      )
+    })
   }
 
   renderMarker = () => {
@@ -117,7 +202,8 @@ class BasicMap extends PureComponent {
       children
     } = this.props
     const { center, zoom } = this.state
-  
+    const mapControls = this.getMapControls()
+
     return (
       <div style={{ height, width }}>
         <GoogleMapReact
@@ -126,9 +212,13 @@ class BasicMap extends PureComponent {
           defaultZoom={defaultZoom}
           center={center}
           zoom={zoom}
+          onChange={this.handleChange}
           options={options}
+          onGoogleApiLoaded={this.onGoogleApiLoaded}
+          yesIWantToUseGoogleMapApiInternals={true}
         >
           {this.renderMarker()}
+          {this.renderControls(mapControls)}
           {children}
         </GoogleMapReact>
       </div>

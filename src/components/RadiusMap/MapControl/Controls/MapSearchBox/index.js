@@ -1,38 +1,25 @@
-import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import deepEquals from '../../../../../helpers/deepEquals'
-import './styles.css'
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import deepEquals from "../../../../../helpers/deepEquals"
+import fitCoordsToBounds from "../../../functions/fitCoordsToBounds"
+import "./styles.css"
 
 class MapSearchBox extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = { shouldFetchParlaySite: false }
+    this.state = {}
   }
 
   static propTypes = {}
 
   static defaultProps = {}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      siteDescription,
-      item: { id, client },
-      search: { clientId },
-      activeClient
-    } = nextProps
-    let shouldFetchParlaySite = false
-
-    if (activeClient.id || client.id || clientId !== 'None') shouldFetchParlaySite = true
-
-    return { shouldFetchParlaySite, siteDescription }
-  }
-
   componentDidMount() {
     const { map, mapApi } = this.props
     this.searchBox = new mapApi.places.SearchBox(this.searchInput)
-    this.searchBox.addListener('places_changed', this.handlePlacesChange)
-    this.searchBox.bindTo('bounds', map)
+    this.searchBox.addListener("places_changed", this.handlePlacesChange)
+    this.searchBox.bindTo("bounds", map)
   }
 
   componentWillUnmount() {
@@ -45,13 +32,9 @@ class MapSearchBox extends PureComponent {
       map,
       mapApi,
       setMapCenterBoundsZoom,
-      fetchParlaySite,
-      resetProject,
-      resetProjects,
-      setMapSites
+      onChangeCallback,
+      UserLocation
     } = this.props
-
-    const { shouldFetchParlaySite } = this.state
 
     const selected = this.searchBox.getPlaces()
     const { 0: place } = selected
@@ -78,26 +61,19 @@ class MapSearchBox extends PureComponent {
     const { location, viewport } = geometry
     const { lat, lng } = location
 
-    // resetProject()
-    // resetProjects()
-
-    if (shouldFetchParlaySite) fetchParlaySite(lat(), lng(), formatted_address)
-    else setMapSites([])
-    // this.setProjectsSearchProps('None')
-
     let { zoom } = this.props
-    const bounds = new google.maps.LatLngBounds()
+    const bounds = new mapApi.LatLngBounds()
 
-    if (types.includes('country')) {
+    if (types.includes("country")) {
       zoom = 4
     } else if (
-      types.includes('administrative_area_level_1') ||
-      types.includes('administrative_area_level_2') ||
-      types.includes('administrative_area_level_3') ||
-      types.includes('locality') ||
-      types.includes('sublocality') ||
-      types.includes('political') ||
-      types.includes('postal_code')
+      types.includes("administrative_area_level_1") ||
+      types.includes("administrative_area_level_2") ||
+      types.includes("administrative_area_level_3") ||
+      types.includes("locality") ||
+      types.includes("sublocality") ||
+      types.includes("political") ||
+      types.includes("postal_code")
     ) {
       zoom = 13
     } else {
@@ -110,23 +86,34 @@ class MapSearchBox extends PureComponent {
       bounds.extend(location)
     }
 
+    map.fitBounds(bounds)
+
+    const newPosition = { lat: lat(), lng: lng() }
+    const userLocation = {
+      lat: UserLocation.latitude,
+      lng: UserLocation.longitude
+    }
+
+    onChangeCallback({ latitude: newPosition.lat, longitude: newPosition.lng })
+
     // const center = [lat(), lng()]
     //setMapCenterBoundsZoom({ center, zoom })
-    map.fitBounds(bounds)
+
+    // fitCoordsToBounds(map, mapApi, [newPosition, userLocation])
     this.searchInput.blur()
   }
 
   setProjectsSearchProps = id => {
     const { setProjectsSearchProps } = this.props
     const searchProjectsPayload = {
-      clientId: id !== 'All' ? id : null,
+      clientId: id !== "All" ? id : null,
       pageNumber: 1
     }
     setProjectsSearchProps(searchProjectsPayload)
   }
 
   clearSearchBox = () => {
-    this.searchInput.value = ''
+    this.searchInput.value = ""
   }
 
   selectSearchBox = e => {

@@ -65,7 +65,7 @@ class LocationButtonModal extends PureComponent {
   }
 
   render() {
-    const { xs, center, zoom } = this.props
+    const { xs, center, zoom, onChangeCallback } = this.props
     const { UserLocation, latitude, longitude } = this.state
 
     return (
@@ -85,6 +85,7 @@ class LocationButtonModal extends PureComponent {
             renderUserLocation
             latitude={latitude}
             longitude={longitude}
+            onChangeCallback={onChangeCallback}
           />
         </Container>
       </ToolbarModal>
