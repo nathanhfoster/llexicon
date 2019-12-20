@@ -12,7 +12,11 @@ class Body extends PureComponent {
   static propTypes = {
     columns: PropTypes.arrayOf(
       PropTypes.shape({
-        title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        title: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.func
+        ]),
         dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -37,21 +41,24 @@ class Body extends PureComponent {
     return data.map((item, i) => {
       const [firstColumn, ...restOfColumns] = columns
       const { title, dataIndex, key, width = "auto", render } = firstColumn
-      const firstItemValue = item[key]
+      const firstItemIndexOrKeyValue = item[dataIndex || key]
+      const firstItemKeyValue = item[key]
       const firstItemRender = render
       const firstItemWidth = width
 
       return (
         <tr
           key={i}
-          onClick={onRowClick ? () => onRowClick(firstItemValue) : null}
+          onClick={onRowClick ? () => onRowClick(firstItemKeyValue) : null}
         >
           <th scope="row">
-            {firstItemRender ? firstItemRender(firstItemValue) : firstItemValue}
+            {firstItemRender
+              ? firstItemRender(firstItemIndexOrKeyValue)
+              : firstItemIndexOrKeyValue}
           </th>
           {restOfColumns.map((c, j) => {
             const { title, dataIndex, key, width = "auto", render } = c
-            const itemValue = item[key]
+            const itemValue = item[dataIndex || key]
             const itemRender = render
             return (
               <td key={j}>{itemRender ? itemRender(itemValue) : itemValue}</td>

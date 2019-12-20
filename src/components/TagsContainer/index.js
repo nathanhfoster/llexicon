@@ -13,6 +13,7 @@ class TagsContainer extends PureComponent {
   static propTypes = {
     tags: PropTypes.array,
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     flexWrap: PropTypes.oneOf(["wrap", "nowrap"]),
     overflowX: PropTypes.string,
     overflowY: PropTypes.string,
@@ -22,7 +23,8 @@ class TagsContainer extends PureComponent {
   }
 
   static defaultProps = {
-    height: 24,
+    height: "auto",
+    fontSize: "inherit",
     flexWrap: "nowrap",
     alignItems: "center",
     overflowX: "hidden",
@@ -32,7 +34,17 @@ class TagsContainer extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let { tags, height, flexWrap, alignItems, overflowX, overflowY, minimalView } = nextProps
+    let {
+      tags,
+      height,
+      fontSize,
+      flexWrap,
+      alignItems,
+      overflowX,
+      overflowY,
+
+      minimalView
+    } = nextProps
 
     if (flexWrap === "wrap") {
       overflowX = "auto"
@@ -46,7 +58,8 @@ class TagsContainer extends PureComponent {
       alignContent: "flex-start",
       flexStart: "space-around",
       overflowX,
-      overflowY
+      overflowY,
+      fontSize
     }
 
     return { tags, styles, minimalView }
@@ -63,7 +76,8 @@ class TagsContainer extends PureComponent {
           className={`TagContainer ${hoverable ? "TagContainerHover" : ""}`}
           onClick={onClickCallback ? () => onClickCallback(title) : null}
         >
-          <i className="fas fa-tags" /> {title}
+          <i className="fas fa-tags" />{" "}
+          <span className="TagTitle">{title}</span>
         </Badge>
       )
     })

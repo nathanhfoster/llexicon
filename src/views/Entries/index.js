@@ -4,6 +4,8 @@ import PropTypes from "prop-types"
 import { Row, Button, ButtonGroup } from "reactstrap"
 import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
+import TagsContainer from "../../components/TagsContainer"
+import Star from "../../components/BackgroundImage/Star"
 
 import {
   SyncEntries,
@@ -214,10 +216,23 @@ class Entries extends Component {
             <BasicTable
               columns={[
                 {
-                  title: "#",
-                  dataIndex: "id",
+                  title: value => (
+                    <div>
+                      <Star size={12} animation={false} opacity={1} />
+                      <span className="ml-1">{value}</span>
+                    </div>
+                  ),
+                  dataIndex: "tags",
                   key: "id",
-                  width: 60,
+                  width: 100,
+                  render: tags => (
+                    <TagsContainer
+                      tags={tags}
+                      minimalView={false}
+                      hoverable={false}
+                      overflowX="auto"
+                    />
+                  ),
                   onRowClick: id =>
                     RouterPush(
                       history,
@@ -228,12 +243,12 @@ class Entries extends Component {
                   title: "Title",
                   dataIndex: "title",
                   key: "title",
-                  width: '25%'
+                  width: "25%"
                 },
                 {
                   title: "Body",
                   dataIndex: "html",
-                  key: "html",
+                  key: "html"
                   // width: '25%'
                 },
                 {

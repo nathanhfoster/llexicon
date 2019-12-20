@@ -15,7 +15,11 @@ class BasicTable extends PureComponent {
   static propTypes = {
     columns: PropTypes.arrayOf(
       PropTypes.shape({
-        title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        title: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.func
+        ]),
         dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -71,7 +75,7 @@ class BasicTable extends PureComponent {
         title: "Username",
         dataIndex: "user_name",
         key: "user_name",
-        render: () => <a href="#">Delete</a>
+        render: key => <a href="#">Delete</a>
       }
     ],
     data: new Array(25).fill().map(

@@ -11,7 +11,11 @@ class Header extends PureComponent {
   static propTypes = {
     columns: PropTypes.arrayOf(
       PropTypes.shape({
-        title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        title: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.func
+        ]),
         dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -30,10 +34,11 @@ class Header extends PureComponent {
 
   renderColumnHeaders = columns =>
     columns.map((c, i) => {
-      const { title, dataIndex, key, width } = c
+      const { title, dataIndex, key, width, render } = c
+      const titleFunction = typeof title === "function"
       return (
         <th key={i} style={{ width }}>
-          {title}
+          {titleFunction ? title(key) : title}
         </th>
       )
     })
