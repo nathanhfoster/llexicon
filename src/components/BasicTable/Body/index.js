@@ -51,7 +51,7 @@ class Body extends PureComponent {
           key={i}
           onClick={onRowClick ? () => onRowClick(firstItemKeyValue) : null}
         >
-          <th scope="row">
+          <th scope="row" style={{ fontWeight: "normal" }}>
             {firstItemRender
               ? firstItemRender(firstItemIndexOrKeyValue)
               : firstItemIndexOrKeyValue}

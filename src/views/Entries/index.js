@@ -5,7 +5,6 @@ import { Row, Button, ButtonGroup } from "reactstrap"
 import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import TagsContainer from "../../components/TagsContainer"
-import Star from "../../components/BackgroundImage/Star"
 
 import {
   SyncEntries,
@@ -218,8 +217,8 @@ class Entries extends Component {
                 {
                   title: value => (
                     <div>
-                      <Star size={12} animation={false} opacity={1} />
-                      <span className="ml-1">{value}</span>
+                      <i className="fas fa-tags mr-1" />
+                      Tags
                     </div>
                   ),
                   dataIndex: "tags",
@@ -228,8 +227,6 @@ class Entries extends Component {
                   render: tags => (
                     <TagsContainer
                       tags={tags}
-                      minimalView={false}
-                      hoverable={false}
                       overflowX="auto"
                     />
                   ),

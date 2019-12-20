@@ -30,7 +30,7 @@ class TagsContainer extends PureComponent {
     overflowX: "hidden",
     overflowY: "hidden",
     minimalView: false,
-    hoverable: true
+    hoverable: false
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

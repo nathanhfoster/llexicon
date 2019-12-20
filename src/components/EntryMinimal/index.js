@@ -49,7 +49,7 @@ const EntryMinimal = ({
         </Col>
 
         <Col xs={12} className="EntryMinimalTags">
-          <TagsContainer tags={tags} minimalView={false} hoverable={false} />
+          <TagsContainer tags={tags} />
         </Col>
       </Row>
     </Container>

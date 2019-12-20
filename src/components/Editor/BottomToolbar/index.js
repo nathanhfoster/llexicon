@@ -151,7 +151,7 @@ class BottomToolbar extends PureComponent {
     return (
       <Container fluid className="BottomToolBar">
         <Row className="BottomToolBarTags">
-          <TagsContainer tags={tags} hoverable={false} />
+          <TagsContainer tags={tags} />
         </Row>
         <Row className="BottomToolBarFiles">
           <Col xs={12} className="p-1">

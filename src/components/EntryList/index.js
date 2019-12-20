@@ -81,11 +81,7 @@ class EntryList extends PureComponent {
               </Col>
 
               <Col className="p-0" style={{ marginLeft: -4 }} xs={12}>
-                <TagsContainer
-                  tags={tags}
-                  minimalView={false}
-                  hoverable={false}
-                />
+                <TagsContainer tags={tags} />
               </Col>
             </Row>
           ) : null}
