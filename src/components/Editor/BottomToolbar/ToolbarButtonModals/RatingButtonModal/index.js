@@ -29,7 +29,10 @@ class RatingButtonModal extends PureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { rating, savedRating } = prevState
 
-    return { rating, savedRating }
+    const ButtonIcon = () =>
+      new Array(rating).fill(<i className="fas fa-star" />)
+
+    return { rating, savedRating, ButtonIcon }
   }
 
   handleClick = () => {}
@@ -85,7 +88,7 @@ class RatingButtonModal extends PureComponent {
 
   render() {
     const { xs } = this.props
-    const { rating } = this.state
+    const { rating, ButtonIcon } = this.state
 
     return (
       <ToolbarModal
@@ -94,7 +97,7 @@ class RatingButtonModal extends PureComponent {
         onClickCallback={this.handleClick}
         onCancelCallback={this.handleCancel}
         onSaveCallback={this.handleSave}
-        ButtonIcon="fas fa-star"
+        ButtonIcon={ButtonIcon}
         buttonTitle="Add Rating"
         xs={xs}
       >
