@@ -1,14 +1,16 @@
-import React, { PureComponent, createRef } from "react"
+import React, { Component, createRef } from "react"
 import PropTypes from "prop-types"
 import { Col } from "reactstrap"
-import { FixedSizeList } from "react-window"
+import { FixedSizeList, shouldComponentUpdate } from "react-window"
 import Entry from "../../components/Entry"
 
-class EntriesDetailed extends PureComponent {
+class EntriesDetailed extends Component {
   constructor(props) {
     super(props)
 
     this.detailedEntriesListRef = createRef()
+
+    this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
 
     this.state = {}
   }

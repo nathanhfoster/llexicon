@@ -237,7 +237,7 @@ class MediaButtonModal extends PureComponent {
         xs={xs}
       >
         <Container fluid className="MediaButtonModal p-0">
-          <Row>
+          <Row className="p-2">
             <Col xs={12}>
               <InputGroup
                 // tag={Form}

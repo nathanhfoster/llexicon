@@ -86,7 +86,7 @@ class EntryFilesCarousel extends PureComponent {
         <Media
           key={i}
           src={url}
-          className="EntryFilesCarouselImage"
+          className="EntryFilesCarouselImage p-1"
           alt={name}
           onClick={() => this.handleImageClick(url, file_type)}
         />

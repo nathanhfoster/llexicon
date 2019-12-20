@@ -1,14 +1,16 @@
-import React, { PureComponent, createRef } from "react"
+import React, { Component, createRef } from "react"
 import PropTypes from "prop-types"
 import { Col } from "reactstrap"
-import { FixedSizeList } from "react-window"
+import { FixedSizeList, shouldComponentUpdate } from "react-window"
 import EntryMinimal from "../EntryMinimal"
 
-class EntriesMinimal extends PureComponent {
+class EntriesMinimal extends Component {
   constructor(props) {
     super(props)
 
     this.minimalEntriesListRef = createRef()
+
+    this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
 
     this.state = {}
   }
