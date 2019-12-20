@@ -1,4 +1,0 @@
-.BasicTableWithRowHover tr:hover {
-    background-color: var(--dark_border);
-    cursor: pointer;
-}

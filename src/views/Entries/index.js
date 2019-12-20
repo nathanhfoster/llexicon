@@ -217,7 +217,7 @@ class Entries extends Component {
                   title: "#",
                   dataIndex: "id",
                   key: "id",
-                  width: 25,
+                  width: 60,
                   onRowClick: id =>
                     RouterPush(
                       history,
@@ -228,18 +228,19 @@ class Entries extends Component {
                   title: "Title",
                   dataIndex: "title",
                   key: "title",
-                  width: 100
+                  width: '25%'
                 },
                 {
                   title: "Body",
                   dataIndex: "html",
                   key: "html",
-                  width: 200
+                  // width: '25%'
                 },
                 {
                   title: "Date",
                   dataIndex: "date_created_by_author",
                   key: "date_created_by_author",
+                  width: 100,
                   render: date_created_by_author => (
                     <Moment format="D MMM YY">{date_created_by_author}</Moment>
                   )

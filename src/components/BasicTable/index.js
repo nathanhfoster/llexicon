@@ -12,9 +12,42 @@ class BasicTable extends PureComponent {
     this.state = {}
   }
 
-  static propTypes = {}
+  static propTypes = {
+    columns: PropTypes.arrayOf(
+      PropTypes.shape({
+        title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        render: PropTypes.func,
+        onRowClick: PropTypes.func
+      })
+    ),
+    data: PropTypes.arrayOf(PropTypes.object.isRequired),
+    // reactstrap Table
+    tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    size: PropTypes.string,
+    bordered: PropTypes.bool,
+    borderless: PropTypes.bool,
+    striped: PropTypes.bool,
+    dark: PropTypes.bool,
+    hover: PropTypes.bool,
+    responsive: PropTypes.bool,
+    // Custom ref handler that will be assigned to the "ref" of the inner <table> element
+    innerRef: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string,
+      PropTypes.object
+    ])
+  }
 
   static defaultProps = {
+    bordered: false,
+    borderless: true,
+    striped: false,
+    dark: true,
+    hover: false,
+    responsive: true,
     columns: [
       {
         title: "#",
@@ -54,7 +87,18 @@ class BasicTable extends PureComponent {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { columns, data } = nextProps
-    return { columns, data }
+
+    let onRowClick = null
+
+    const firstRowClickFound = columns.find(column => column.onRowClick)
+
+    if (firstRowClickFound) {
+      onRowClick = firstRowClickFound.onRowClick
+    }
+
+    const hover = onRowClick ? true : false
+
+    return { columns, data, hover, onRowClick }
   }
 
   componentDidMount() {}
@@ -68,12 +112,21 @@ class BasicTable extends PureComponent {
   componentWillUnmount() {}
 
   render() {
-    const { columns, data } = this.state
+    const { bordered, borderless, striped, dark, responsive } = this.props
+    const { columns, data, hover, onRowClick } = this.state
 
     return (
-      <Table dark responsive className="BasicTable">
+      <Table
+        bordered={bordered}
+        borderless={borderless}
+        striped={striped}
+        dark={dark}
+        hover={hover}
+        responsive={responsive}
+        className="BasicTable"
+      >
         <Header columns={columns} />
-        <Body columns={columns} data={data} />
+        <Body onRowClick={onRowClick} columns={columns} data={data} />
       </Table>
     )
   }

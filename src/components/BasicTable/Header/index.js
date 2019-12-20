@@ -14,7 +14,9 @@ class Header extends PureComponent {
         title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        render: PropTypes.func,
+        onRowClick: PropTypes.func
       })
     )
   }
@@ -29,7 +31,11 @@ class Header extends PureComponent {
   renderColumnHeaders = columns =>
     columns.map((c, i) => {
       const { title, dataIndex, key, width } = c
-      return <th key={i}>{title}</th>
+      return (
+        <th key={i} style={{ width }}>
+          {title}
+        </th>
+      )
     })
 
   render() {

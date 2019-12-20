@@ -16,7 +16,8 @@ class Body extends PureComponent {
         dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        render: PropTypes.func
+        render: PropTypes.func,
+        onRowClick: PropTypes.func
       })
     ),
     data: PropTypes.arrayOf(PropTypes.object.isRequired)
@@ -25,19 +26,9 @@ class Body extends PureComponent {
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { columns, data } = nextProps
+    const { columns, data, onRowClick } = nextProps
 
-    let onRowClick = null
-
-    const firstRowClickFound = columns.find(column => column.onRowClick)
-
-    if (firstRowClickFound) {
-      onRowClick = firstRowClickFound.onRowClick
-    }
-
-    const TableBodyClassName = onRowClick ? "BasicTableWithRowHover" : ""
-
-    return { columns, data, onRowClick, TableBodyClassName }
+    return { columns, data, onRowClick }
   }
 
   renderColumnData = (columns, data, onRowClick) => {
@@ -55,7 +46,7 @@ class Body extends PureComponent {
           key={i}
           onClick={onRowClick ? () => onRowClick(firstItemValue) : null}
         >
-          <th scope="row" style={{ width: firstItemWidth }}>
+          <th scope="row">
             {firstItemRender ? firstItemRender(firstItemValue) : firstItemValue}
           </th>
           {restOfColumns.map((c, j) => {
@@ -63,9 +54,7 @@ class Body extends PureComponent {
             const itemValue = item[key]
             const itemRender = render
             return (
-              <td key={j} style={{ width }}>
-                {itemRender ? itemRender(itemValue) : itemValue}
-              </td>
+              <td key={j}>{itemRender ? itemRender(itemValue) : itemValue}</td>
             )
           })}
         </tr>
@@ -74,13 +63,9 @@ class Body extends PureComponent {
   }
 
   render() {
-    const { columns, data, onRowClick, TableBodyClassName } = this.state
+    const { columns, data, onRowClick } = this.state
 
-    return (
-      <tbody className={TableBodyClassName}>
-        {this.renderColumnData(columns, data, onRowClick)}
-      </tbody>
-    )
+    return <tbody>{this.renderColumnData(columns, data, onRowClick)}</tbody>
   }
 }
 export default Body
