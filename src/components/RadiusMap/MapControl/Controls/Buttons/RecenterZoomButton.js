@@ -8,7 +8,6 @@ const onClick = ({
   UserLocation: { latitude, longitude },
   WatchUserLocation
 }) => {
-  WatchUserLocation()
   if (latitude && longitude) {
     panTo({
       center: { lat: latitude, lng: longitude },
