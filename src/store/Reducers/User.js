@@ -18,13 +18,23 @@ const DEFAULT_STATE_USER = {
   groups: [],
   user_permissions: [],
   Settings: { show_footer: false, push_messages: false, offline_mode: false },
-  location: {}
+  location: {
+    accuracy: null,
+    altitude: null,
+    altitudeAccuracy: null,
+    heading: null,
+    latitude: null,
+    longitude: null,
+    speed: null,
+    timestamp: null
+  }
 }
 
 const {
   USER_SET,
   USER_SET_SETTINGS,
   USER_SET_LOCATION,
+  USER_RESET_LOCATION,
   REDUX_RESET
 } = ReduxActions
 
@@ -41,6 +51,8 @@ const User = (state = DEFAULT_STATE_USER, action) => {
       }
     case USER_SET_LOCATION:
       return { ...state, location: { ...state.location, ...payload } }
+    case USER_RESET_LOCATION:
+      return { ...state, location: DEFAULT_STATE_USER.location }
     case USER_SET_SETTINGS:
       return {
         ...state,

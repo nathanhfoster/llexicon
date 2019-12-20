@@ -64,8 +64,6 @@ const GetAppVersion = () => (dispatch, getState) => {
 
   if (!version) version = new Date()
 
-  console.log("SetAppVersion: ", version)
-
   return Axios()
     .post("versions/latest/", qs.stringify({ version }))
     .then(res => {

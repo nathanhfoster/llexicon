@@ -44,7 +44,8 @@ class Marker extends Component {
     inGroup: PropTypes.bool,
     selectSite: PropTypes.func.isRequired,
     setMapCenterBoundsZoom: PropTypes.func.isRequired,
-    renderUserLocation: PropTypes.bool
+    renderUserLocation: PropTypes.bool,
+    onChangeCallback: PropTypes.func.isRequired
   }
 
   static defaultProps = { inGroup: false, zIndex: 1 }
@@ -134,7 +135,7 @@ class Marker extends Component {
   }
 
   render() {
-    const { selectSite, setMapCenterBoundsZoom } = this.props
+    const { selectSite, setMapCenterBoundsZoom, onChangeCallback } = this.props
     const {
       $dimensionKey,
       $getDimensions,
@@ -174,15 +175,10 @@ class Marker extends Component {
 
     const ComponentProps = {
       $dimensionKey,
-      clientName,
-      siteDescription,
-      score,
-      lastActivity,
       shouldShowPreview,
       inGroup,
       center: [lat, lng],
-      selectSite,
-      setMapCenterBoundsZoom,
+      onChangeCallback,
       zoom,
       renderUserLocation
     }

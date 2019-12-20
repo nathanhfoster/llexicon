@@ -4,12 +4,12 @@ import PropTypes from "prop-types"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import BasicMap from "../../../../BasicMap"
-import { WatchUserLocation } from "../../../../../actions/User"
+import { WatchUserLocation, SetUserLocation } from "../../../../../actions/User"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { location } }) => ({ UserLocation: location })
 
-const mapDispatchToProps = { WatchUserLocation }
+const mapDispatchToProps = { WatchUserLocation, SetUserLocation }
 
 class LocationButtonModal extends PureComponent {
   constructor(props) {
@@ -22,7 +22,8 @@ class LocationButtonModal extends PureComponent {
     latitude: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     longitude: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChangeCallback: PropTypes.func.isRequired,
-    WatchUserLocation: PropTypes.func.isRequired
+    WatchUserLocation: PropTypes.func.isRequired,
+    SetUserLocation: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -45,29 +46,27 @@ class LocationButtonModal extends PureComponent {
 
   handleClick = () => {
     const { WatchUserLocation } = this.props
+
     this.watchId = WatchUserLocation()
   }
 
   handleCancel = () => {
-    const { WatchUserLocation } = this.props
+    const { WatchUserLocation, SetUserLocation } = this.props
+
     if (this.watchId) WatchUserLocation(this.watchId)
+    SetUserLocation(null)
   }
 
   handleSave = () => {
     const { onChangeCallback } = this.props
-    const {
-      UserLocation,
-      latitude,
-      longitude
-    } = this.state
+    const { UserLocation, latitude, longitude } = this.state
 
-    if (latitude && longitude) {
+    if (UserLocation.latitude && UserLocation.longitude) {
+      const { latitude, longitude } = UserLocation
       onChangeCallback({ latitude, longitude })
-    } else if(UserLocation.latitude
-             && UserLocation.longitude) {
-      const {latitude, longitude} = UserLocation
+    } else if (latitude && longitude) {
       onChangeCallback({ latitude, longitude })
-    } 
+    }
   }
 
   render() {

@@ -70,11 +70,12 @@ class BasicMap extends PureComponent {
       // Remove possible trailing zeroes
       latitude = parseFloat(latitude.toString())
       longitude = parseFloat(longitude.toString())
-    } else if (renderUserLocation) {
-      zoom = 16
-      latitude = UserLocation.latitude
-      longitude = UserLocation.longitude
     }
+
+    const shouldRenderEntryLocation = latitude && longitude
+
+    const shouldRenderUserLocation =
+      renderUserLocation && UserLocation.latitude && UserLocation.longitude
 
     return {
       renderUserLocation,
@@ -82,7 +83,9 @@ class BasicMap extends PureComponent {
       center,
       zoom,
       latitude,
-      longitude
+      longitude,
+      shouldRenderEntryLocation,
+      shouldRenderUserLocation
     }
   }
 
@@ -95,10 +98,16 @@ class BasicMap extends PureComponent {
       mapApi: maps
     })
 
-    const coords = [
-      { lat: latitude, lng: longitude },
-      { lat: UserLocation.latitude, lng: UserLocation.longitude }
-    ]
+    let coords = []
+
+    if (latitude && longitude) {
+      coords.push({ lat: latitude, lng: longitude })
+    }
+
+    if (UserLocation.latitude && UserLocation.longitude) {
+      coords.push({ lat: UserLocation.latitude, lng: UserLocation.longitude })
+    }
+
     fitCoordsToBounds(map, maps, coords)
   }
 
@@ -167,31 +176,6 @@ class BasicMap extends PureComponent {
     })
   }
 
-  renderMarker = () => {
-    const { latitude, longitude, renderUserLocation, UserLocation } = this.state
-
-    const shouldRenderMarker = latitude && longitude
-
-    return (
-      shouldRenderMarker && [
-        <Marker
-          key={1}
-          lat={latitude}
-          lng={longitude}
-          text="My Location"
-          renderUserLocation={false}
-        />,
-        <Marker
-          key={2}
-          lat={UserLocation.latitude}
-          lng={UserLocation.longitude}
-          text="My Location"
-          renderUserLocation={renderUserLocation}
-        />
-      ]
-    )
-  }
-
   render() {
     const {
       height,
@@ -199,9 +183,19 @@ class BasicMap extends PureComponent {
       defaultCenter,
       defaultZoom,
       options,
-      children
+      children,
+      onChangeCallback
     } = this.props
-    const { center, zoom } = this.state
+    const {
+      center,
+      zoom,
+      latitude,
+      longitude,
+      renderUserLocation,
+      UserLocation,
+      shouldRenderEntryLocation,
+      shouldRenderUserLocation
+    } = this.state
     const mapControls = this.getMapControls()
 
     return (
@@ -217,7 +211,26 @@ class BasicMap extends PureComponent {
           onGoogleApiLoaded={this.onGoogleApiLoaded}
           yesIWantToUseGoogleMapApiInternals={true}
         >
-          {this.renderMarker()}
+          {shouldRenderEntryLocation && (
+            <Marker
+              key={1}
+              lat={latitude}
+              lng={longitude}
+              text="My Location"
+              renderUserLocation={false}
+              onChangeCallback={onChangeCallback}
+            />
+          )}
+          {shouldRenderUserLocation && (
+            <Marker
+              key={2}
+              lat={UserLocation.latitude}
+              lng={UserLocation.longitude}
+              text="My Location"
+              renderUserLocation={renderUserLocation}
+              onChangeCallback={onChangeCallback}
+            />
+          )}
           {this.renderControls(mapControls)}
           {children}
         </GoogleMapReact>

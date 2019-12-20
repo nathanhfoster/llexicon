@@ -3,11 +3,18 @@ import { Button } from "reactstrap"
 import defaultStyles from "./defaultStyles"
 import { CENTER_OF_US, DEFAULT_ZOOM } from "../../../constants"
 
-const onClick = ({ panTo, UserLocation: { latitude, longitude } }) => {
-  panTo({
-    center: { lat: latitude, lng: longitude },
-    zoom: 16
-  })
+const onClick = ({
+  panTo,
+  UserLocation: { latitude, longitude },
+  WatchUserLocation
+}) => {
+  WatchUserLocation()
+  if (latitude && longitude) {
+    panTo({
+      center: { lat: latitude, lng: longitude },
+      zoom: 16
+    })
+  }
 }
 
 const RecenterZoomButton = props => {

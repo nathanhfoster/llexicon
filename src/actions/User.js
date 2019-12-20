@@ -6,6 +6,7 @@ const {
   USER_SET,
   USER_SET_SETTINGS,
   USER_SET_LOCATION,
+  USER_RESET_LOCATION,
   REDUX_RESET,
   ALERTS_SET_MESSAGE
 } = ReduxActions
@@ -80,6 +81,9 @@ const UpdateProfile = payload => (dispatch, getState) => {
 }
 
 const SetUserLocation = position => dispatch => {
+  if (!position) {
+    return dispatch({ type: USER_RESET_LOCATION })
+  }
   let { coords, timestamp } = position
   const {
     accuracy,
@@ -119,7 +123,9 @@ const GetUserLocation = () => dispatch => {
 
 const WatchUserLocation = watchId => dispatch => {
   const { geolocation } = navigator
-  if (watchId) return geolocation.clearWatch(watchId)
+  if (watchId) {
+    return geolocation.clearWatch(watchId)
+  }
   dispatch(GetUserLocation())
   geolocation.watchPosition(
     position => {

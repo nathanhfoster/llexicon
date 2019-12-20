@@ -10,7 +10,7 @@ const fitCoordsToBounds = (map, maps, coords) => {
 
   const extendCoordsBounds = coords =>
     coords.forEach(coord => {
-      if (coord.hasOwnProperty('lat') && coord.hasOwnProperty('lng')) {
+      if (coord.hasOwnProperty("lat") && coord.hasOwnProperty("lng")) {
         extendBounds(coord.lat, coord.lng)
       } else if (Array.isArray(coord)) {
         extendCoordsBounds(coord)
@@ -30,7 +30,9 @@ const fitCoordsToBounds = (map, maps, coords) => {
 
   const zoom = map.getZoom()
 
-  map.setZoom(zoom - 1)
+  if (zoom > 17) {
+    map.setZoom(16)
+  }
 
   return { bounds: formatedBounds, center, zoom }
 }

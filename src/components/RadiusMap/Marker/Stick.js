@@ -12,24 +12,13 @@ import {
 
 import { DEFAULT_POLYGON_MIN_ZOOM } from "../constants"
 
-const infoClick = ({
-  $dimensionKey,
-  center,
-  selectSite,
-  setMapCenterBoundsZoom,
-  history
-}) => {
-  selectSite($dimensionKey)
-  setMapCenterBoundsZoom({ center })
-  history.push(`/v2/projects/${$dimensionKey}`)
+const infoClick = ({ center, onChangeCallback }) => {
+  const [latitude, longitude] = center
+  onChangeCallback({ latitude, longitude })
 }
 
 const zoomClick = ({ center, setMapCenterBoundsZoom }) =>
   setMapCenterBoundsZoom({ center, zoom: DEFAULT_POLYGON_MIN_ZOOM })
-
-const infoStyle = {
-  fontFamily: "Comic Sans MS"
-}
 
 const zoomStyle = {
   fontSize: 14
@@ -37,22 +26,20 @@ const zoomStyle = {
 
 const ClientNameCharacter = renderUserLocation => {
   const className = renderUserLocation ? "fas fa-user-circle" : "fas fa-circle"
-  return (
-    <i
-      className={className}
-      style={{
-        fontSize: renderUserLocation ? "inherit" : K_CIRCLE_SIZE / 2
-      }}
-    />
-  )
+  const style = {
+    fontSize: renderUserLocation ? "inherit" : K_CIRCLE_SIZE / 2
+  }
+  return <i className={className} style={style} />
   // if (!clientName) clientName = 'P'
   // return <span style={clientNameCharacterStyle}>{clientName.charAt(0).toUpperCase()}</span>
 }
 
 const Info = props => (
-  <span style={infoStyle} onClick={() => infoClick(props)}>
-    i
-  </span>
+  <i
+    style={{ fontSize: K_CIRCLE_SIZE / 2 }}
+    className="fas fa-map-marked-alt"
+    onClick={() => infoClick(props)}
+  />
 )
 
 const Zoom = props => (
