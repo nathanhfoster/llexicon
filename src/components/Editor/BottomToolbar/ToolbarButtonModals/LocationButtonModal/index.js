@@ -56,12 +56,18 @@ class LocationButtonModal extends PureComponent {
   handleSave = () => {
     const { onChangeCallback } = this.props
     const {
-      UserLocation: { latitude, longitude }
+      UserLocation,
+      latitude,
+      longitude
     } = this.state
 
     if (latitude && longitude) {
       onChangeCallback({ latitude, longitude })
-    }
+    } else if(UserLocation.latitude
+             && UserLocation.longitude) {
+      const {latitude, longitude} = UserLocation
+      onChangeCallback({ latitude, longitude })
+    } 
   }
 
   render() {
