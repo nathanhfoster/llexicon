@@ -37,6 +37,7 @@ const getRouteItems = props => {
     ENTRIES,
     ENTRIES_MINIMAL,
     ENTRIES_DETAILED,
+    ENTRIES_TABLE,
     PRIVACY_POLICY
   } = RouteMap
 
@@ -54,7 +55,13 @@ const getRouteItems = props => {
     { path: [CALENDAR], component: DiaryCalendar },
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {
-      path: [ENTRIES, ENTRIES_MINIMAL, ENTRIES_DETAILED, NEW_ENTRY],
+      path: [
+        ENTRIES,
+        ENTRIES_MINIMAL,
+        ENTRIES_DETAILED,
+        ENTRIES_TABLE,
+        NEW_ENTRY
+      ],
       component: Entries
     },
     { path: [PRIVACY_POLICY], component: PrivacyPolicy }

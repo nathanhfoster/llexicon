@@ -13,6 +13,8 @@ import {
 import EntriesMinimal from "../../components/EntriesMinimal"
 import EntriesDetailed from "../../components/EntriesDetailed"
 import BasicTabs from "../../components/BasicTabs"
+import BasicTable from "../../components/BasicTable"
+import Moment from "react-moment"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -203,6 +205,51 @@ class Entries extends Component {
           </Row>
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
+      },
+      {
+        tabId: RouteMap.ENTRIES_TABLE,
+        title: "Table",
+        Component: () => (
+          <Row>
+            <BasicTable
+              columns={[
+                {
+                  title: "#",
+                  dataIndex: "id",
+                  key: "id",
+                  width: 25,
+                  onRowClick: id =>
+                    RouterPush(
+                      history,
+                      RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
+                    )
+                },
+                {
+                  title: "Title",
+                  dataIndex: "title",
+                  key: "title",
+                  width: 100
+                },
+                {
+                  title: "Body",
+                  dataIndex: "html",
+                  key: "html",
+                  width: 200
+                },
+                {
+                  title: "Date",
+                  dataIndex: "date_created_by_author",
+                  key: "date_created_by_author",
+                  render: date_created_by_author => (
+                    <Moment format="D MMM YY">{date_created_by_author}</Moment>
+                  )
+                }
+              ]}
+              data={entries}
+            />
+          </Row>
+        ),
+        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_TABLE)
       }
     ]
 

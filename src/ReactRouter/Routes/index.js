@@ -9,6 +9,7 @@ const RouteMap = {
   ENTRIES: "/entries",
   ENTRIES_MINIMAL: "/entries/minimal",
   ENTRIES_DETAILED: "/entries/detailed",
+  ENTRIES_TABLE: "/entries/table",
   LOGIN: "/login",
   SIGNUP: "/sign-up",
   PASSWORD_RESET: "/password-reset",
