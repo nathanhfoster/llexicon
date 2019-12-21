@@ -57,15 +57,9 @@ class BasicTabs extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const previousActiveTab = this.state.activeTab
-    const previousTabs = this.state.tabs
+    const stateChanged = !deepEquals(this.state, nextState)
 
-    const { activeTab, tabs } = nextState
-
-    const activeTabChanged = previousActiveTab !== activeTab
-    // const tabsChanged = !deepEquals(previousActiveTab, tabs)
-
-    return activeTabChanged
+    return stateChanged
   }
 
   handleTabChanged = activeTab => this.setState({ activeTab })

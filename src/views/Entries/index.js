@@ -219,10 +219,10 @@ class Entries extends Component {
                   title: () => <i className="fas fa-star" />,
                   key: "rating",
                   width: 20,
-                  onRowClick: id =>
+                  onRowClick: item =>
                     RouterPush(
                       history,
-                      RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
+                      RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
                     )
                 },
                 {

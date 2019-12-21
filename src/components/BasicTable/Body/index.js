@@ -42,13 +42,9 @@ class Body extends PureComponent {
       const [firstColumn, ...restOfColumns] = columns
       const { title, dataIndex, key, width = "auto", render } = firstColumn
       const firstItemIndexOrKeyValue = item[dataIndex || key]
-      const firstItemKeyValue = item[key]
 
       return (
-        <tr
-          key={i}
-          onClick={onRowClick ? () => onRowClick(firstItemKeyValue) : null}
-        >
+        <tr key={i} onClick={onRowClick ? () => onRowClick(item) : null}>
           <th scope="row" style={{ fontWeight: "normal" }}>
             {render ? render(item) : firstItemIndexOrKeyValue}
           </th>
