@@ -1,5 +1,6 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
+import { GetAddress } from "../../../actions/Google"
 import {
   K_CIRCLE_SIZE,
   K_BORDER_WIDTH,
@@ -14,7 +15,10 @@ import { DEFAULT_POLYGON_MIN_ZOOM } from "../constants"
 
 const infoClick = ({ center, onChangeCallback }) => {
   const [latitude, longitude] = center
-  onChangeCallback({ latitude, longitude })
+
+  GetAddress(latitude, longitude)
+    .then(address => onChangeCallback({ latitude, longitude, address }))
+    .catch(e => onChangeCallback({ latitude, longitude }))
 }
 
 const zoomClick = ({ center, setMapCenterBoundsZoom }) =>

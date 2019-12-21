@@ -5,6 +5,7 @@ import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import BasicMap from "../../../../BasicMap"
 import { WatchUserLocation, SetUserLocation } from "../../../../../actions/User"
+import { GetAddress } from "../../../../../actions/Google"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { location } }) => ({ UserLocation: location })
@@ -35,7 +36,12 @@ class LocationButtonModal extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { UserLocation, latitude, longitude } = nextProps
+    let { UserLocation, latitude, longitude } = nextProps
+
+    if (!(latitude || longitude)) {
+      latitude = UserLocation.latitude
+      longitude = UserLocation.longitude
+    }
 
     return { UserLocation, latitude, longitude }
   }
@@ -56,19 +62,20 @@ class LocationButtonModal extends PureComponent {
     if (this.watchId) {
       WatchUserLocation(this.watchId)
     }
+
     SetUserLocation(null)
   }
 
   handleSave = () => {
     const { onChangeCallback } = this.props
-    const { UserLocation, latitude, longitude } = this.state
+    const { latitude, longitude } = this.state
 
-    if (UserLocation.latitude && UserLocation.longitude) {
-      const { latitude, longitude } = UserLocation
-      onChangeCallback({ latitude, longitude })
-    } else if (latitude && longitude) {
-      onChangeCallback({ latitude, longitude })
+    if (latitude && longitude) {
+      GetAddress(latitude, longitude)
+        .then(address => onChangeCallback({ latitude, longitude, address }))
+        .catch(e => onChangeCallback({ latitude, longitude }))
     }
+    this.handleCancel()
   }
 
   render() {

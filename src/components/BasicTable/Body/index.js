@@ -43,8 +43,6 @@ class Body extends PureComponent {
       const { title, dataIndex, key, width = "auto", render } = firstColumn
       const firstItemIndexOrKeyValue = item[dataIndex || key]
       const firstItemKeyValue = item[key]
-      const firstItemRender = render
-      const firstItemWidth = width
 
       return (
         <tr
@@ -52,17 +50,12 @@ class Body extends PureComponent {
           onClick={onRowClick ? () => onRowClick(firstItemKeyValue) : null}
         >
           <th scope="row" style={{ fontWeight: "normal" }}>
-            {firstItemRender
-              ? firstItemRender(firstItemIndexOrKeyValue)
-              : firstItemIndexOrKeyValue}
+            {render ? render(item) : firstItemIndexOrKeyValue}
           </th>
           {restOfColumns.map((c, j) => {
             const { title, dataIndex, key, width = "auto", render } = c
             const itemValue = item[dataIndex || key]
-            const itemRender = render
-            return (
-              <td key={j}>{itemRender ? itemRender(itemValue) : itemValue}</td>
-            )
+            return <td key={j}>{render ? render(item) : itemValue}</td>
           })}
         </tr>
       )

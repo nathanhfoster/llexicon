@@ -30,7 +30,9 @@ class RatingButtonModal extends PureComponent {
     const { rating, savedRating } = prevState
 
     const ButtonIcon = () =>
-      new Array(rating === 0 ? 1 : rating).fill(<i className="fas fa-star" />)
+      rating === 0
+        ? new Array(1).fill(<i className="far fa-star" />)
+        : new Array(rating).fill(<i className="fas fa-star" />)
 
     return { rating, savedRating, ButtonIcon }
   }

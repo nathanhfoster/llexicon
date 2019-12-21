@@ -224,11 +224,8 @@ class Entries extends Component {
                   dataIndex: "tags",
                   key: "id",
                   width: 100,
-                  render: tags => (
-                    <TagsContainer
-                      tags={tags}
-                      overflowX="auto"
-                    />
+                  render: item => (
+                    <TagsContainer tags={item.tags} overflowX="auto" />
                   ),
                   onRowClick: id =>
                     RouterPush(
@@ -249,12 +246,19 @@ class Entries extends Component {
                   // width: '25%'
                 },
                 {
+                  title: "Location",
+                  key: "location"
+                  // width: '25%'
+                },
+                {
                   title: "Date",
                   dataIndex: "date_created_by_author",
                   key: "date_created_by_author",
                   width: 100,
-                  render: date_created_by_author => (
-                    <Moment format="D MMM YY">{date_created_by_author}</Moment>
+                  render: item => (
+                    <Moment format="D MMM YY">
+                      {item.date_created_by_author}
+                    </Moment>
                   )
                 }
               ]}

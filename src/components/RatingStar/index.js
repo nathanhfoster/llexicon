@@ -44,7 +44,7 @@ class RatingStar extends PureComponent {
     if (onMouseLeaveCallback) {
       onMouseLeaveCallback(value)
     } else {
-      this.setState({ filled: this.props.fiiled })
+      this.setState({ filled: false })
     }
   }
 
@@ -60,14 +60,16 @@ class RatingStar extends PureComponent {
     const { onClickCallback } = this.props
     const { value, filled } = this.state
     return (
-      <i
-        className={`${
-          filled ? "fas" : "far"
-        } fa-star fa-2x pt-3 pb-3 pl-1 pr-1 RatingStar`}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
-        onClick={this.handleOnClick}
-      />
+      <span>
+        <i
+          className={`${
+            filled ? "fas" : "far"
+          } fa-star fa-2x pt-3 pb-3 pl-1 pr-1 RatingStar`}
+          onMouseEnter={this.handleMouseEnter}
+          onMouseLeave={this.handleMouseLeave}
+          onClick={this.handleOnClick}
+        />
+      </span>
     )
   }
 }

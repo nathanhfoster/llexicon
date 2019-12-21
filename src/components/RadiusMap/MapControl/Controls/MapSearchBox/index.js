@@ -94,7 +94,13 @@ class MapSearchBox extends PureComponent {
       lng: UserLocation.longitude
     }
 
-    onChangeCallback({ latitude: newPosition.lat, longitude: newPosition.lng })
+    // console.log(formatted_address)
+
+    onChangeCallback({
+      latitude: newPosition.lat,
+      longitude: newPosition.lng,
+      address: formatted_address
+    })
 
     // const center = [lat(), lng()]
     //setMapCenterBoundsZoom({ center, zoom })

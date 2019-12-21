@@ -311,6 +311,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       shouldDelete,
       shouldPost,
       lastUpdated,
+      address,
       latitude,
       longitude
     } = entry
@@ -326,6 +327,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         title,
         rating,
         date_created_by_author,
+        address,
         latitude,
         longitude
       }
@@ -340,6 +342,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
           id,
           title,
           views,
+          address,
           latitude,
           longitude
         } = entry
@@ -355,6 +358,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         html,
         tags: JSON.stringify(tags),
         rating,
+        address,
         latitude,
         longitude
       }
