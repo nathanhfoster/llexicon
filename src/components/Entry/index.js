@@ -34,7 +34,8 @@ class Entry extends Component {
   static defaultProps = {
     topToolbarHidden: false,
     bottomToolbarHidden: false,
-    shouldRedirectOnDelete: false
+    shouldRedirectOnDelete: false,
+    theme: "snow"
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -95,7 +96,7 @@ class Entry extends Component {
   }
 
   render() {
-    const { UpdateReduxEntry, SyncEntries, history } = this.props
+    const { UpdateReduxEntry, SyncEntries, history, theme } = this.props
     const {
       id,
       author,
@@ -129,12 +130,13 @@ class Entry extends Component {
           EntryFiles={EntryFiles}
           latitude={latitude}
           longitude={longitude}
+          theme={theme}
           onChangeCallback={({ ...payload }) =>
             UpdateReduxEntry({ id, ...payload })
           }
         >
           <UseDebounce onChangeCallback={() => SyncEntries()} />
-          <InputGroup key={id} className="EntryInput">
+          <InputGroup key={`EntryTitle-${id}`} className="EntryInput">
             <Input
               type="text"
               name="title"

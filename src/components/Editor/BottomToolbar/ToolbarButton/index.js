@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Col, Button } from "reactstrap"
-import './styles.css'
+import "./styles.css"
 
 const ToolbarButton = ({
   xs,
@@ -23,7 +23,7 @@ const ToolbarButton = ({
       {typeof ButtonIcon === "string" ? (
         <i className={ButtonIcon} />
       ) : (
-        <ButtonIcon />
+        <ButtonIcon key={title} />
       )}
       <div>{title}</div>
     </Col>
@@ -33,7 +33,7 @@ const ToolbarButton = ({
 ToolbarButton.propTypes = {
   xs: PropTypes.number,
   onClickCallback: PropTypes.func,
-  ButtonIcon: PropTypes.string,
+  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   title: PropTypes.string,
   disabled: PropTypes.bool
 }

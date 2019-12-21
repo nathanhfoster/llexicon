@@ -10,7 +10,7 @@ class EntriesDetailed extends Component {
 
     this.detailedEntriesListRef = createRef()
 
-    this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
+    // this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
 
     this.state = {}
   }
@@ -50,6 +50,7 @@ class EntriesDetailed extends Component {
           {...restOfProps}
           containerHeight={style.height}
           bottomToolbarHidden
+          theme="snow"
         />
       </Col>
     )

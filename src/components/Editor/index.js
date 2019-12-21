@@ -131,7 +131,6 @@ class Editor extends Component {
     onKeyPress: PropTypes.func,
     onKeyDown: PropTypes.func,
     onKeyUp: PropTypes.func,
-    theme: PropTypes.string,
     modules: PropTypes.object,
     formats: PropTypes.array,
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
@@ -206,7 +205,7 @@ class Editor extends Component {
         maxStack: 500,
         userOnly: false
       },
-      toolbar: topToolbarHidden ? null : `#${toolbarId}`,
+      toolbar: topToolbarHidden ? '' : `#${toolbarId}`,
       // toolbar: {
       //   container: [
       //     ["bold", "italic", "underline", "strike"], // toggled buttons

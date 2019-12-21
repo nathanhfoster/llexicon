@@ -31,8 +31,12 @@ class RatingButtonModal extends PureComponent {
 
     const ButtonIcon = () =>
       rating === 0
-        ? new Array(1).fill(<i className="far fa-star" />)
-        : new Array(rating).fill(<i className="fas fa-star" />)
+        ? new Array(1)
+            .fill()
+            .map((item, i) => <i key={i} className="far fa-star" />)
+        : new Array(rating)
+            .fill()
+            .map((item, i) => <i key={i} className="fas fa-star" />)
 
     return { rating, savedRating, ButtonIcon }
   }
