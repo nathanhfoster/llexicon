@@ -6,15 +6,12 @@ import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import TagsContainer from "../../components/TagsContainer"
 
-import {
-  SyncEntries,
-  GetAllUserEntries,
-  GetUserEntries
-} from "../../actions/Entries"
+import { SyncEntries, GetAllUserEntries, GetUserEntries } from "../../actions/Entries"
 import EntriesMinimal from "../../components/EntriesMinimal"
 import EntriesDetailed from "../../components/EntriesDetailed"
 import BasicTabs from "../../components/BasicTabs"
 import BasicTable from "../../components/BasicTable"
+import BasicMap from "../../components/BasicMap"
 import Moment from "react-moment"
 import "./styles.css"
 
@@ -30,10 +27,7 @@ const mapStateToProps = ({
   UserId: User.id,
   entries: items
     .filter(item => !item.shouldDelete)
-    .sort(
-      (a, b) =>
-        new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
-    ),
+    .sort((a, b) => new Date(b.date_created_by_author) - new Date(a.date_created_by_author)),
   nextEntryPage: next,
   entriesSearch: search,
   viewPortHeight: innerHeight - navBarHeight
@@ -74,15 +68,13 @@ class Entries extends Component {
 
     const loadButtonContainerHeight = 38
 
-    const minimalEntriesListHeight =
-      viewPortHeight - tabContainerHeight - loadButtonContainerHeight
+    const minimalEntriesListHeight = viewPortHeight - tabContainerHeight - loadButtonContainerHeight
 
     const detailedEntriesListHeight = viewPortHeight - tabContainerHeight
 
     let listItemHeight = detailedEntriesListHeight / 2
 
-    if (detailedEntriesListHeight / 3 > listItemHeight)
-      listItemHeight = detailedEntriesListHeight / 3
+    if (detailedEntriesListHeight / 3 > listItemHeight) listItemHeight = detailedEntriesListHeight / 3
 
     return {
       entries,
@@ -107,17 +99,11 @@ class Entries extends Component {
     DeleteEntry(id)
   }
 
-  handleItemsRendered = ({
-    overscanStartIndex,
-    overscanStopIndex,
-    visibleStartIndex,
-    visibleStopIndex
-  }) => {
+  handleItemsRendered = ({ overscanStartIndex, overscanStopIndex, visibleStartIndex, visibleStopIndex }) => {
     const { entries } = this.state
     const { length } = entries
     const bottomOfListIndex = length === 0 ? length : length - 1
-    const reachedBottomOfList =
-      bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
+    const reachedBottomOfList = bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
     // console.log("overscanStopIndex: ", overscanStopIndex)
     // console.log("visibleStopIndex: ", visibleStopIndex)
     // console.log("reachedBottomOfList: ", reachedBottomOfList)
@@ -139,9 +125,7 @@ class Entries extends Component {
     const split = nextEntryPage.split(/\?page=(.*)/)
     const pageNumber = split[1]
 
-    SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
-    )
+    SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(pageNumber))))
   }
 
   GetAllEntries = () => {
@@ -164,7 +148,11 @@ class Entries extends Component {
     const tabs = [
       {
         tabId: RouteMap.ENTRIES_MINIMAL,
-        title: () => <i className="fas fa-th-list" />,
+        title: () => (
+          <span>
+            <i className="fas fa-th-list" /> Timeline
+          </span>
+        ),
         render: () => (
           <Fragment>
             <Row>
@@ -181,11 +169,7 @@ class Entries extends Component {
                 </Button>
               )}
 
-              <Button
-                color="accent"
-                onClick={this.GetAllEntries}
-                disabled={!nextEntryPage}
-              >
+              <Button color="accent" onClick={this.GetAllEntries} disabled={!nextEntryPage}>
                 <i className="fas fa-cloud-download-alt" /> Load All
               </Button>
             </Row>
@@ -195,7 +179,11 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_DETAILED,
-        title: () => <i className="fas fa-feather-alt" />,
+        title: () => (
+          <span>
+            <i className="fas fa-feather-alt" /> Entries
+          </span>
+        ),
         render: () => (
           <Row>
             <EntriesDetailed
@@ -210,7 +198,11 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_TABLE,
-        title: () => <i className="fas fa-table" />,
+        title: () => (
+          <span>
+            <i className="fas fa-table" /> Table
+          </span>
+        ),
         render: () => (
           <Row>
             <BasicTable
@@ -220,19 +212,14 @@ class Entries extends Component {
                   key: "rating",
                   width: 20,
                   onRowClick: item =>
-                    RouterPush(
-                      history,
-                      RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
-                    )
+                    RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`))
                 },
                 {
                   title: "Tags",
                   dataIndex: "tags",
                   key: "id",
                   width: 100,
-                  render: item => (
-                    <TagsContainer tags={item.tags} overflowX="auto" />
-                  )
+                  render: item => <TagsContainer tags={item.tags} overflowX="auto" />
                 },
 
                 {
@@ -263,11 +250,7 @@ class Entries extends Component {
                   dataIndex: "date_created_by_author",
                   key: "date_created_by_author",
                   width: 100,
-                  render: item => (
-                    <Moment format="D MMM YY">
-                      {item.date_created_by_author}
-                    </Moment>
-                  )
+                  render: item => <Moment format="D MMM YY">{item.date_created_by_author}</Moment>
                 }
               ]}
               data={entries}
@@ -275,12 +258,24 @@ class Entries extends Component {
           </Row>
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_TABLE)
+      },
+      {
+        tabId: RouteMap.ENTRIES_MAP,
+        title: () => (
+          <span>
+            <i className="fas fa-map-marked-alt" /> Map
+          </span>
+        ),
+        render: () => (
+          <Row>
+            <BasicMap renderUserLocation />
+          </Row>
+        ),
+        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MAP)
       }
     ]
 
     return <BasicTabs activeTab={activeTab} tabs={tabs} />
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(Entries)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(Entries))

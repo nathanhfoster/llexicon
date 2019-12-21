@@ -38,6 +38,7 @@ const getRouteItems = props => {
     ENTRIES_MINIMAL,
     ENTRIES_DETAILED,
     ENTRIES_TABLE,
+    ENTRIES_MAP,
     PRIVACY_POLICY
   } = RouteMap
 
@@ -55,13 +56,7 @@ const getRouteItems = props => {
     { path: [CALENDAR], component: DiaryCalendar },
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {
-      path: [
-        ENTRIES,
-        ENTRIES_MINIMAL,
-        ENTRIES_DETAILED,
-        ENTRIES_TABLE,
-        NEW_ENTRY
-      ],
+      path: [ENTRIES, ENTRIES_MINIMAL, ENTRIES_DETAILED, ENTRIES_TABLE, ENTRIES_MAP, NEW_ENTRY],
       component: Entries
     },
     { path: [PRIVACY_POLICY], component: PrivacyPolicy }
@@ -70,9 +65,7 @@ const getRouteItems = props => {
 
 const renderRedirectOrComponent = (props, shouldRedirect, route, Component) => {
   const { history } = props
-  return shouldRedirect
-    ? () => <Redirect push to={RouterLinkPush(history, route)} />
-    : Component
+  return shouldRedirect ? () => <Redirect push to={RouterLinkPush(history, route)} /> : Component
 }
 
 const mapStateToProps = ({
@@ -174,6 +167,4 @@ class ReactRouter extends PureComponent {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter))
