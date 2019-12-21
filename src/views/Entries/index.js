@@ -96,7 +96,8 @@ class Entries extends Component {
 
   componentDidMount() {
     const { UserId, SyncEntries, GetUserEntries } = this.props
-    if (UserId) {
+    const { entries } = this.state
+    if (UserId && entries.length === 0) {
       SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
     }
   }
@@ -192,21 +193,21 @@ class Entries extends Component {
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MINIMAL)
       },
-      {
-        tabId: RouteMap.ENTRIES_DETAILED,
-        title: "Detailed",
-        Component: () => (
-          <Row>
-            <EntriesDetailed
-              height={detailedEntriesListHeight}
-              entries={entries}
-              itemSize={listItemHeight}
-              onItemsRendered={this.handleItemsRendered}
-            />
-          </Row>
-        ),
-        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
-      },
+      // {
+      //   tabId: RouteMap.ENTRIES_DETAILED,
+      //   title: "Detailed",
+      //   Component: () => (
+      //     <Row>
+      //       <EntriesDetailed
+      //         height={detailedEntriesListHeight}
+      //         entries={entries}
+      //         itemSize={listItemHeight}
+      //         onItemsRendered={this.handleItemsRendered}
+      //       />
+      //     </Row>
+      //   ),
+      //   onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
+      // },
       {
         tabId: RouteMap.ENTRIES_TABLE,
         title: "Table",
