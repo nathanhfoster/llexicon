@@ -62,8 +62,6 @@ class LocationButtonModal extends PureComponent {
     if (this.watchId) {
       WatchUserLocation(this.watchId)
     }
-
-    SetUserLocation(null)
   }
 
   handleSave = () => {

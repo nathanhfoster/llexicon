@@ -127,7 +127,7 @@ const WatchUserLocation = watchId => dispatch => {
     dispatch(SetUserLocation(null))
     return geolocation.clearWatch(watchId)
   }
-  dispatch(GetUserLocation())
+
   return geolocation.watchPosition(
     position => {
       // console.log("WatchUserLocation:", position)
