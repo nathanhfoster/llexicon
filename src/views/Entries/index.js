@@ -248,9 +248,19 @@ class Entries extends Component {
                 },
                 {
                   title: "Location",
-                  key: "location"
+                  key: "address"
                   // width: '25%'
                 },
+                {
+                  title: "Rating",
+                  key: "rating"
+                  // width: '25%'
+                },
+                {
+                  title: "Views",
+                  key: "views"
+                  // width: '25%'
+                },  
                 {
                   title: "Date",
                   dataIndex: "date_created_by_author",
