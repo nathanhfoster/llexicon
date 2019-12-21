@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import {
   Container,
@@ -9,9 +9,10 @@ import {
   TabContent,
   TabPane
 } from "reactstrap"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-class BasicTabs extends PureComponent {
+class BasicTabs extends Component {
   constructor(props) {
     super(props)
     const { defaultTab, tabs } = props
@@ -50,6 +51,18 @@ class BasicTabs extends PureComponent {
     const { activeTab, tabs } = nextProps
 
     return { tabs, activeTab: activeTab || prevState.activeTab }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const previousActiveTab = this.state.activeTab
+    const previousTabs = this.state.tabs
+
+    const { activeTab, tabs } = nextState
+
+    const activeTabChanged = previousActiveTab !== activeTab
+    // const tabsChanged = !deepEquals(previousActiveTab, tabs)
+
+    return activeTabChanged
   }
 
   handleTabChanged = activeTab => this.setState({ activeTab })
