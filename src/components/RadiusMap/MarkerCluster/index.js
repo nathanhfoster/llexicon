@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react'
-import PropTypes from 'prop-types'
-import deepEquals from '../../../helpers/deepEquals'
+import React, { Component, Fragment } from "react"
+import PropTypes from "prop-types"
+import deepEquals from "../../../helpers/deepEquals"
 
-import Marker from '../Marker'
-import MarkerCounter from './MarkerCounter'
+import Marker from "../Marker"
+import MarkerCounter from "./MarkerCounter"
 
 class MarkerCluster extends Component {
   constructor(props) {
@@ -56,6 +56,7 @@ class MarkerCluster extends Component {
       const { id, ...props } = marker
       return (
         <Marker
+          {...this.props}
           {...props}
           $dimensionKey={id}
           $hover={hoveredChildKey === id}
@@ -82,7 +83,9 @@ class MarkerCluster extends Component {
     return (
       <Fragment>
         {this.renderMarkers(markers, hoveredChildKey)}
-        {shouldRenderMarkerCounter && <MarkerCounter>+{markerCounterValue}</MarkerCounter>}
+        {shouldRenderMarkerCounter && (
+          <MarkerCounter>+{markerCounterValue}</MarkerCounter>
+        )}
       </Fragment>
     )
   }

@@ -51,69 +51,14 @@ class Marker extends Component {
   static defaultProps = { inGroup: false, zIndex: 1 }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      $dimensionKey,
-      $geoService,
-      $getDimensions,
-      $hover,
-      $onMouseAllow,
-      $prerender,
-      hoveredChildKey,
-      boundaries,
-      clientId,
-      clientName,
-      engagingContacts,
-      lastActivity,
-      lat,
-      lng,
-      location,
-      siteDescription,
-      state,
-      zIndex,
-      zipcode,
-      score,
-      acreage,
-      boundary,
-      locations,
-      marketValue,
-      parcelNumbers,
-      siteType,
-      zoom,
-      inGroup,
-      renderUserLocation
-    } = nextProps
+    const { $dimensionKey, $hover, hoveredChildKey, zIndex } = nextProps
 
     const shouldShowPreview = $hover || hoveredChildKey === $dimensionKey
 
     return {
-      $dimensionKey,
-      $getDimensions,
       $hover,
-      $onMouseAllow,
-      $prerender,
-      boundaries,
-      clientId,
-      clientName,
-      engagingContacts,
-      lastActivity,
-      lat,
-      lng,
-      location,
-      siteDescription,
-      state,
       zIndex,
-      zipcode,
-      score,
-      acreage,
-      boundary,
-      locations,
-      marketValue,
-      parcelNumbers,
-      siteType,
-      inGroup,
-      shouldShowPreview,
-      zoom,
-      renderUserLocation
+      shouldShowPreview
     }
   }
 
@@ -135,58 +80,17 @@ class Marker extends Component {
   }
 
   render() {
-    const { selectSite, setMapCenterBoundsZoom, onChangeCallback } = this.props
-    const {
-      $dimensionKey,
-      $getDimensions,
-      $hover,
-      $onMouseAllow,
-      $prerender,
-      boundaries,
-
-      clientId,
-      clientName,
-      engagingContacts,
-      lastActivity,
-      lat,
-      lng,
-      location,
-      siteDescription,
-      state,
-      zIndex,
-      zipcode,
-      score,
-      acreage,
-      boundary,
-      locations,
-      marketValue,
-      parcelNumbers,
-      siteType,
-      inGroup,
-      shouldShowPreview,
-      zoom,
-      renderUserLocation
-    } = this.state
+    const { $hover, zIndex, shouldShowPreview } = this.state
 
     const style = {
       ...markerStyle,
       zIndex: $hover ? 1000 : zIndex
     }
 
-    const ComponentProps = {
-      $dimensionKey,
-      shouldShowPreview,
-      inGroup,
-      center: [lat, lng],
-      onChangeCallback,
-      zoom,
-      renderUserLocation
-    }
-
     return (
       <div style={style}>
-        {shouldShowPreview && <PreviewBox {...ComponentProps} />}
-        <Stick {...ComponentProps} />
+        {shouldShowPreview && <PreviewBox {...this.props} />}
+        <Stick {...this.props} />
       </div>
     )
   }

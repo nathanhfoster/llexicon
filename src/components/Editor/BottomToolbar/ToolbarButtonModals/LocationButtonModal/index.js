@@ -94,7 +94,6 @@ class LocationButtonModal extends PureComponent {
       >
         <Container fluid className="LocationButtonModal p-0">
           <BasicMap
-            renderUserLocation
             latitude={latitude}
             longitude={longitude}
             onChangeCallback={onChangeCallback}

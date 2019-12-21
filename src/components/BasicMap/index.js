@@ -2,6 +2,7 @@ import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import GoogleMapReact from "google-map-react"
+import MarkerCluster from "../RadiusMap/MarkerCluster"
 import Marker from "../RadiusMap/Marker"
 import { WatchUserLocation } from "../../actions/User"
 import {
@@ -12,6 +13,8 @@ import MapControl from "../RadiusMap/MapControl"
 import fitCoordsToBounds from "../RadiusMap/functions/fitCoordsToBounds"
 import MapSearchBox from "../RadiusMap/MapControl/Controls/MapSearchBox"
 import RecenterZoomButton from "../RadiusMap/MapControl/Controls/Buttons/RecenterZoomButton"
+import createClusters from "./functions/createClusters"
+import formatLocations from "./functions/formatLocations"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
@@ -34,11 +37,12 @@ class BasicMap extends PureComponent {
     latitude: PropTypes.number,
     longitude: PropTypes.number,
     WatchUserLocation: PropTypes.func.isRequired,
-    onChangeCallback: PropTypes.func
+    onChangeCallback: PropTypes.func,
+    locations: PropTypes.arrayOf(PropTypes.object)
   }
 
   static defaultProps = {
-    renderUserLocation: false,
+    renderUserLocation: true,
     height: 500,
     width: "100%",
     defaultCenter: {
@@ -51,7 +55,8 @@ class BasicMap extends PureComponent {
     },
     defaultZoom: 18,
     zoom: 18,
-    options: DEFAULT_MAP_OPTIONS
+    options: DEFAULT_MAP_OPTIONS,
+    locations: []
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -60,10 +65,32 @@ class BasicMap extends PureComponent {
       UserLocation,
       zoom,
       latitude,
-      longitude
+      longitude,
+      locations
     } = nextProps
 
-    const { center } = prevState
+    let markerClusters = []
+
+    const { center, bounds } = prevState
+
+    if (center && zoom && bounds) {
+      const markers = formatLocations(locations)
+      markerClusters = createClusters(markers, { ...prevState })
+    }
+
+    const formattedLocations = locations.reduce((result, item) => {
+      const { latitude, longitude, ...props } = item
+
+      if (latitude && longitude) {
+        return result.concat({
+          ...props,
+          lat: latitude,
+          lng: longitude
+        })
+      } else {
+        return result
+      }
+    }, [])
 
     if (latitude && longitude) {
       zoom = 16
@@ -85,12 +112,14 @@ class BasicMap extends PureComponent {
       latitude,
       longitude,
       shouldRenderEntryLocation,
-      shouldRenderUserLocation
+      shouldRenderUserLocation,
+      markerClusters,
+      formattedLocations
     }
   }
 
   onGoogleApiLoaded = ({ map, maps }) => {
-    const { UserLocation, latitude, longitude } = this.state
+    const { UserLocation, latitude, longitude, formattedLocations } = this.state
 
     this.setState({
       mapApiLoaded: true,
@@ -106,6 +135,12 @@ class BasicMap extends PureComponent {
 
     if (UserLocation.latitude && UserLocation.longitude) {
       coords.push({ lat: UserLocation.latitude, lng: UserLocation.longitude })
+    }
+
+    for (let i = 0; i < formattedLocations.length; i++) {
+      const { lat, lng } = formattedLocations[i]
+
+      coords.push({ lat, lng })
     }
 
     fitCoordsToBounds(map, maps, coords)
@@ -176,6 +211,35 @@ class BasicMap extends PureComponent {
     })
   }
 
+  renderMarkerClusters = markerClusters => {
+    const { onChangeCallback } = this.props
+    const { zoom } = this.state
+
+    return markerClusters.map(item => {
+      const { id, numPoints, points, ...props } = item
+      if (numPoints === 1) {
+        const { id, ...props } = points[0]
+        return (
+          <Marker
+            {...props}
+            key={id}
+            zoom={zoom}
+            onChangeCallback={onChangeCallback}
+          />
+        )
+      } else
+        return (
+          <MarkerCluster
+            {...props}
+            key={id}
+            points={points}
+            zoom={zoom}
+            onChangeCallback={onChangeCallback}
+          />
+        )
+    })
+  }
+
   render() {
     const {
       height,
@@ -194,7 +258,8 @@ class BasicMap extends PureComponent {
       renderUserLocation,
       UserLocation,
       shouldRenderEntryLocation,
-      shouldRenderUserLocation
+      shouldRenderUserLocation,
+      markerClusters
     } = this.state
     const mapControls = this.getMapControls()
 
@@ -216,7 +281,6 @@ class BasicMap extends PureComponent {
               key={1}
               lat={latitude}
               lng={longitude}
-              text="My Location"
               renderUserLocation={false}
               onChangeCallback={onChangeCallback}
             />
@@ -226,11 +290,11 @@ class BasicMap extends PureComponent {
               key={2}
               lat={UserLocation.latitude}
               lng={UserLocation.longitude}
-              text="My Location"
               renderUserLocation={renderUserLocation}
               onChangeCallback={onChangeCallback}
             />
           )}
+          {this.renderMarkerClusters(markerClusters)}
           {this.renderControls(mapControls)}
           {children}
         </GoogleMapReact>
