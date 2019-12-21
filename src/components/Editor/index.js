@@ -28,7 +28,6 @@ class Video extends BlockEmbed {
     // iframe.setAttribute("height", "auto")
     // iframe.setAttribute("width", 320)
     // iframe.setAttribute("height", 180)
- 
 
     if (value.includes("watch?v=")) {
       value = value.replace("watch?v=", "embed/")
@@ -85,13 +84,101 @@ const THEMES = {
   BUBBLE: "bubble"
 }
 
+const getModules = (toolbarId, topToolbarHidden) => {
+  return {
+    history: {
+      delay: 2000,
+      maxStack: 500,
+      userOnly: false
+    },
+    toolbar: topToolbarHidden ? "" : `#${toolbarId}`,
+    // toolbar: {
+    //   container: [
+    //     ["bold", "italic", "underline", "strike"], // toggled buttons
+    //     ["blockquote", "code-block"],
+
+    //     // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    //     // [{ header: 1 }, { header: 2 }], // custom button values
+    //     [{ header: [1, 2, 3, 4, 5, false] }],
+
+    //     [{ list: "ordered" }, { list: "bullet" }],
+    //     [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    //     [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    //     [{ direction: "rtl" }], // text direction
+
+    //     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+
+    //     [{ align: [] }, { font: [] }],
+    //     ["link", "image", "video"],
+    //     ["clean"],
+    //     ["undo", "redo"]
+    //   ],
+
+    //   // https://github.com/zenoamaro/react-quill/issues/436
+    //   handlers: {
+    //     undo: () => {
+    //       editorRef.current.editor.history.undo()
+    //     },
+    //     redo: () => {
+    //       editorRef.current.editor.history.undo()
+    //     }
+    //     // image: () => {
+    //     //   this.showImageUploadModal();
+    //     // },
+    //     // video: () => {
+    //     //   this.showVideoUploadModal()
+    //     // },
+    //     // insertImage: this.insertImage,
+    //   }
+    // },
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false
+    },
+    imageResize: {
+      parchment: Quill.import("parchment")
+      // See optional "config" below
+    }
+    // imageDrop: {}
+  }
+}
+
+const getFormats = ({}) => {
+  return [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "color",
+    "background",
+    "font",
+    "code",
+    "size",
+    "script",
+    "align",
+    "direction",
+    "code-block",
+    "image",
+    "video",
+    "alt",
+    "height",
+    "width",
+    "style",
+    "size"
+  ]
+}
+
 class Editor extends Component {
   constructor(props) {
     super(props)
 
     const { toolbarId, html, theme } = props
-
-    this.toolbarId = `toolbar-${toolbarId}`
 
     this.editorRef = createRef()
 
@@ -160,11 +247,17 @@ class Editor extends Component {
       onChangeCallback
     } = nextProps
 
+    const toolbarId = `toolbar-${nextProps.toolbarId}`
+
+    const formats = getFormats(nextProps)
+    const modules = getModules(toolbarId, topToolbarHidden)
+
     const editorHeight = bottomToolbarHidden
       ? "calc(100% - var(--topToolbarHeight))"
       : "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight))"
 
     return {
+      toolbarId,
       html,
       latitude,
       longitude,
@@ -173,7 +266,9 @@ class Editor extends Component {
       EntryFiles,
       topToolbarHidden,
       editorHeight,
-      bottomToolbarHidden
+      bottomToolbarHidden,
+      formats,
+      modules
     }
   }
 
@@ -193,103 +288,8 @@ class Editor extends Component {
     onChangeCallback({ html })
   }
 
-  getModules = ({
-    toolbarId,
-    editorRef,
-    props: {},
-    state: { topToolbarHidden }
-  }) => {
-    return {
-      history: {
-        delay: 2000,
-        maxStack: 500,
-        userOnly: false
-      },
-      toolbar: topToolbarHidden ? '' : `#${toolbarId}`,
-      // toolbar: {
-      //   container: [
-      //     ["bold", "italic", "underline", "strike"], // toggled buttons
-      //     ["blockquote", "code-block"],
-
-      //     // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-      //     // [{ header: 1 }, { header: 2 }], // custom button values
-      //     [{ header: [1, 2, 3, 4, 5, false] }],
-
-      //     [{ list: "ordered" }, { list: "bullet" }],
-      //     [{ script: "sub" }, { script: "super" }], // superscript/subscript
-      //     [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-      //     [{ direction: "rtl" }], // text direction
-
-      //     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-
-      //     [{ align: [] }, { font: [] }],
-      //     ["link", "image", "video"],
-      //     ["clean"],
-      //     ["undo", "redo"]
-      //   ],
-
-      //   // https://github.com/zenoamaro/react-quill/issues/436
-      //   handlers: {
-      //     undo: () => {
-      //       editorRef.current.editor.history.undo()
-      //     },
-      //     redo: () => {
-      //       editorRef.current.editor.history.undo()
-      //     }
-      //     // image: () => {
-      //     //   this.showImageUploadModal();
-      //     // },
-      //     // video: () => {
-      //     //   this.showVideoUploadModal()
-      //     // },
-      //     // insertImage: this.insertImage,
-      //   }
-      // },
-      clipboard: {
-        // toggle to add extra line breaks when pasting HTML:
-        matchVisual: false
-      },
-      imageResize: {
-        parchment: Quill.import("parchment")
-        // See optional "config" below
-      }
-      // imageDrop: {}
-    }
-  }
-
-  getFormats = ({}) => {
-    return [
-      "header",
-      "bold",
-      "italic",
-      "underline",
-      "strike",
-      "blockquote",
-      "list",
-      "bullet",
-      "indent",
-      "link",
-      "color",
-      "background",
-      "font",
-      "code",
-      "size",
-      "script",
-      "align",
-      "direction",
-      "code-block",
-      "image",
-      "video",
-      "alt",
-      "height",
-      "width",
-      "style",
-      "size"
-    ]
-  }
-
   render() {
-    const { toolbarId, editorRef } = this
+    const { editorRef } = this
     const {
       children,
       onChangeCallback,
@@ -298,6 +298,7 @@ class Editor extends Component {
       placeholder
     } = this.props
     const {
+      toolbarId,
       html,
       latitude,
       longitude,
@@ -308,7 +309,9 @@ class Editor extends Component {
       quillId,
       topToolbarHidden,
       editorHeight,
-      bottomToolbarHidden
+      bottomToolbarHidden,
+      formats,
+      modules
     } = this.state
 
     return (
@@ -329,8 +332,8 @@ class Editor extends Component {
             className="Editor"
             style={{ height: editorHeight }}
             theme={theme}
-            modules={this.getModules(this)}
-            formats={this.getFormats(this)}
+            formats={formats}
+            modules={modules}
             value={html}
             onChange={this.handleEditorStateChange}
             placeholder={placeholder}

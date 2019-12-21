@@ -193,21 +193,21 @@ class Entries extends Component {
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MINIMAL)
       },
-      // {
-      //   tabId: RouteMap.ENTRIES_DETAILED,
-      //   title: "Detailed",
-      //   Component: () => (
-      //     <Row>
-      //       <EntriesDetailed
-      //         height={detailedEntriesListHeight}
-      //         entries={entries}
-      //         itemSize={listItemHeight}
-      //         onItemsRendered={this.handleItemsRendered}
-      //       />
-      //     </Row>
-      //   ),
-      //   onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
-      // },
+      {
+        tabId: RouteMap.ENTRIES_DETAILED,
+        title: "Detailed",
+        Component: () => (
+          <Row>
+            <EntriesDetailed
+              height={detailedEntriesListHeight}
+              entries={entries}
+              itemSize={listItemHeight}
+              onItemsRendered={this.handleItemsRendered}
+            />
+          </Row>
+        ),
+        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
+      },
       {
         tabId: RouteMap.ENTRIES_TABLE,
         title: "Table",
