@@ -164,10 +164,29 @@ class Entries extends Component {
 
     const tabs = [
       {
+        tabId: RouteMap.ENTRIES_DETAILED,
+        title: () => (
+          <span>
+            <i className="fas fa-feather-alt" />
+          </span>
+        ),
+        render: () => (
+          <Row>
+            <EntriesDetailed
+              height={detailedEntriesListHeight}
+              entries={entries}
+              itemSize={listItemHeight}
+              onItemsRendered={this.handleItemsRendered}
+            />
+          </Row>
+        ),
+        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
+      },
+      {
         tabId: RouteMap.ENTRIES_MINIMAL,
         title: () => (
           <span>
-            <i className="fas fa-th-list" /> Timeline
+            <i className="fas fa-th-list" />
           </span>
         ),
         render: () => (
@@ -198,30 +217,12 @@ class Entries extends Component {
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MINIMAL)
       },
-      {
-        tabId: RouteMap.ENTRIES_DETAILED,
-        title: () => (
-          <span>
-            <i className="fas fa-feather-alt" /> Entries
-          </span>
-        ),
-        render: () => (
-          <Row>
-            <EntriesDetailed
-              height={detailedEntriesListHeight}
-              entries={entries}
-              itemSize={listItemHeight}
-              onItemsRendered={this.handleItemsRendered}
-            />
-          </Row>
-        ),
-        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
-      },
+
       {
         tabId: RouteMap.ENTRIES_TABLE,
         title: () => (
           <span>
-            <i className="fas fa-table" /> Table
+            <i className="fas fa-table" />
           </span>
         ),
         render: () => (
@@ -293,7 +294,7 @@ class Entries extends Component {
         tabId: RouteMap.ENTRIES_MAP,
         title: () => (
           <span>
-            <i className="fas fa-map-marked-alt" /> Map
+            <i className="fas fa-map-marked-alt" />
           </span>
         ),
         render: () => (
