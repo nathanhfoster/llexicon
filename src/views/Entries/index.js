@@ -164,8 +164,8 @@ class Entries extends Component {
     const tabs = [
       {
         tabId: RouteMap.ENTRIES_MINIMAL,
-        title: "Minimal",
-        Component: () => (
+        title: () => <i className="fas fa-th-list" />,
+        render: () => (
           <Fragment>
             <Row>
               <EntriesMinimal
@@ -195,8 +195,8 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_DETAILED,
-        title: "Detailed",
-        Component: () => (
+        title: () => <i className="fas fa-feather-alt" />,
+        render: () => (
           <Row>
             <EntriesDetailed
               height={detailedEntriesListHeight}
@@ -210,30 +210,31 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_TABLE,
-        title: "Table",
-        Component: () => (
+        title: () => <i className="fas fa-table" />,
+        render: () => (
           <Row>
             <BasicTable
               columns={[
                 {
-                  title: value => (
-                    <div>
-                      <i className="fas fa-tags mr-1" />
-                      Tags
-                    </div>
-                  ),
-                  dataIndex: "tags",
-                  key: "id",
-                  width: 100,
-                  render: item => (
-                    <TagsContainer tags={item.tags} overflowX="auto" />
-                  ),
+                  title: () => <i className="fas fa-star" />,
+                  key: "rating",
+                  width: 20,
                   onRowClick: id =>
                     RouterPush(
                       history,
                       RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
                     )
                 },
+                {
+                  title: "Tags",
+                  dataIndex: "tags",
+                  key: "id",
+                  width: 100,
+                  render: item => (
+                    <TagsContainer tags={item.tags} overflowX="auto" />
+                  )
+                },
+
                 {
                   title: "Title",
                   dataIndex: "title",
@@ -252,15 +253,11 @@ class Entries extends Component {
                   // width: '25%'
                 },
                 {
-                  title: "Rating",
-                  key: "rating"
-                  // width: '25%'
+                  title: () => <i className="far fa-eye" />,
+                  key: "views",
+                  width: 40
                 },
-                {
-                  title: "Views",
-                  key: "views"
-                  // width: '25%'
-                },  
+
                 {
                   title: "Date",
                   dataIndex: "date_created_by_author",

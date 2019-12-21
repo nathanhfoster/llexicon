@@ -33,12 +33,12 @@ class Header extends PureComponent {
   }
 
   renderColumnHeaders = columns =>
-    columns.map((c, i) => {
-      const { title, dataIndex, key, width, render } = c
+    columns.map((column, i) => {
+      const { title, dataIndex, key, width, render } = column
       const titleFunction = typeof title === "function"
       return (
         <th key={i} style={{ width }}>
-          {titleFunction ? title(key) : title}
+          {titleFunction ? title(column) : title}
         </th>
       )
     })
