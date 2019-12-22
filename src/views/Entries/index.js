@@ -5,7 +5,7 @@ import { Row, Button, ButtonGroup } from "reactstrap"
 import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import TagsContainer from "../../components/TagsContainer"
-
+import deepEquals from "../../helpers/deepEquals"
 import {
   SyncEntries,
   GetAllUserEntries,
@@ -93,6 +93,11 @@ class Entries extends Component {
       listItemHeight,
       activeTab: pathname
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const propsChanged = !deepEquals(this.props, nextProps)
+    return propsChanged
   }
 
   componentDidMount() {
@@ -292,6 +297,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_MAP,
+        unMountOnExit: true,
         title: () => (
           <span>
             <i className="fas fa-map-marked-alt" />
