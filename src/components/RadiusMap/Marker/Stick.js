@@ -13,12 +13,12 @@ import {
 
 import { DEFAULT_POLYGON_MIN_ZOOM } from "../constants"
 
-const infoClick = ({ center, onChangeCallback }) => {
-  const [latitude, longitude] = center
-
-  GetAddress(latitude, longitude)
-    .then(address => onChangeCallback({ latitude, longitude, address }))
-    .catch(e => onChangeCallback({ latitude, longitude }))
+const infoClick = ({ onChangeCallback, lat, lng, ...rest }) => {
+  GetAddress(lat, lat)
+    .then(address =>
+      onChangeCallback({ latitude: lat, longitude: lng, address })
+    )
+    .catch(e => onChangeCallback({ latitude: lat, longitude: lng }))
 }
 
 const zoomClick = ({ center, setMapCenterBoundsZoom }) =>
@@ -28,12 +28,15 @@ const zoomStyle = {
   fontSize: 14
 }
 
-const ClientNameCharacter = renderUserLocation => {
+const ClientNameCharacter = props => {
+  const { renderUserLocation } = props
   const className = renderUserLocation ? "fas fa-user-circle" : "fas fa-circle"
   const style = {
     fontSize: renderUserLocation ? "inherit" : K_CIRCLE_SIZE / 2
   }
-  return <i className={className} style={style} />
+  return (
+    <i className={className} style={style} onClick={() => infoClick(props)} />
+  )
   // if (!clientName) clientName = 'P'
   // return <span style={clientNameCharacterStyle}>{clientName.charAt(0).toUpperCase()}</span>
 }
@@ -53,14 +56,8 @@ const Zoom = props => (
 )
 
 const Stick = props => {
-  const {
-    clientName,
-    shouldShowPreview,
-    inGroup,
-    zoom,
-    renderUserLocation
-  } = props
-  let text = ClientNameCharacter(renderUserLocation)
+  const { shouldShowPreview, inGroup, zoom } = props
+  let text = ClientNameCharacter(props)
   let circleStyle = locationCircleStyle
   let stickStyle = locationStickStyle
 
