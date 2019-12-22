@@ -5,8 +5,8 @@ const formatLocations = locations =>
     if (latitude && longitude) {
       return result.concat({
         ...props,
-        lat: latitude,
-        lng: longitude
+        lat: parseFloat(latitude.toString()),
+        lng: parseFloat(longitude.toString())
       })
     } else {
       return result

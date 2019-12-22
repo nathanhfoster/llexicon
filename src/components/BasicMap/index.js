@@ -26,9 +26,9 @@ class BasicMap extends PureComponent {
   constructor(props) {
     super(props)
 
-    const { defaultCenter } = props
+    const { defaultCenter, zoom } = props
 
-    this.state = { center: defaultCenter, mapApiLoaded: false }
+    this.state = { center: defaultCenter, mapApiLoaded: false, zoom }
   }
 
   static propTypes = {
@@ -63,7 +63,7 @@ class BasicMap extends PureComponent {
     let {
       renderUserLocation,
       UserLocation,
-      zoom,
+
       latitude,
       longitude,
       locations
@@ -71,26 +71,17 @@ class BasicMap extends PureComponent {
 
     let markerClusters = []
 
-    const { center, bounds } = prevState
+    const { center, bounds, zoom } = prevState
+
+    const formattedLocations = formatLocations(locations)
 
     if (center && zoom && bounds) {
-      const markers = formatLocations(locations)
-      markerClusters = createClusters(markers, { ...prevState })
+      markerClusters = createClusters(formattedLocations, {
+        center,
+        bounds,
+        zoom
+      })
     }
-
-    const formattedLocations = locations.reduce((result, item) => {
-      const { latitude, longitude, ...props } = item
-
-      if (latitude && longitude) {
-        return result.concat({
-          ...props,
-          lat: latitude,
-          lng: longitude
-        })
-      } else {
-        return result
-      }
-    }, [])
 
     if (latitude && longitude) {
       zoom = 16
@@ -219,6 +210,7 @@ class BasicMap extends PureComponent {
       const { id, numPoints, points, ...props } = item
       if (numPoints === 1) {
         const { id, ...props } = points[0]
+
         return (
           <Marker
             {...props}
@@ -227,7 +219,7 @@ class BasicMap extends PureComponent {
             onChangeCallback={onChangeCallback}
           />
         )
-      } else
+      } else {
         return (
           <MarkerCluster
             {...props}
@@ -237,6 +229,7 @@ class BasicMap extends PureComponent {
             onChangeCallback={onChangeCallback}
           />
         )
+      }
     })
   }
 

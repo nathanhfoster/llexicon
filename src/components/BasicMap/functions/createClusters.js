@@ -1,7 +1,7 @@
 import SuperCluster from "points-cluster"
 
 const getMarkerClusters = ({ markers, center, zoom, bounds }) => {
-  const radius = 70 - zoom * 3
+  const radius = 66 - zoom * 3
   const markerClusters = SuperCluster(markers, {
     minZoom: 0,
     maxZoom: 22,
