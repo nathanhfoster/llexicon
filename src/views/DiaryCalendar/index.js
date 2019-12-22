@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -7,13 +7,14 @@ import TileContent from "./TileContent"
 import Moment from "react-moment"
 import EntryList from "../../components/EntryList"
 import { withRouter } from "react-router-dom"
-import { RouterPush, RouterLinkPush, RouteMap } from "../../ReactRouter/Routes"
+import { RouterPush, RouteMap } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
 import {
   GetEntryTags,
   SyncEntries,
   GetUserEntriesByDate
 } from "../../actions/Entries"
+import deepEquals from "../../helpers/deepEquals"
 import MomentJS from "moment"
 import "./styles.css"
 import "./stylesM.css"
@@ -30,7 +31,7 @@ const mapDispatchToProps = {
   GetUserEntriesByDate
 }
 
-class DiaryCalendar extends PureComponent {
+class DiaryCalendar extends Component {
   constructor(props) {
     super(props)
 
@@ -50,6 +51,12 @@ class DiaryCalendar extends PureComponent {
     const { activeDate, view } = nextProps
 
     return { activeDate: new Date(activeDate), view }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const stateChanged = !deepEquals(this.state, nextState)
+    
+    return stateChanged
   }
 
   componentDidMount() {

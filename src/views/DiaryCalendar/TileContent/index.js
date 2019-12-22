@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from "react"
+import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { RouteMap, RouterPush } from "../../../ReactRouter/Routes"
@@ -6,6 +6,7 @@ import { GetUserEntriesByDate } from "../../../actions/Entries"
 import { withRouter } from "react-router-dom"
 import EntryPreview from "./EntryPreview"
 import MomentJS from "moment"
+import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -20,7 +21,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = { GetUserEntriesByDate }
 
-class TileContent extends PureComponent {
+class TileContent extends Component {
   constructor(props) {
     super(props)
 
@@ -63,6 +64,11 @@ class TileContent extends PureComponent {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const stateChanged = !deepEquals(this.state, nextState)
+
+    return stateChanged
+  }
   handleTodayClick = () => {
     const { history } = this.props
     const { NEW_ENTRY } = RouteMap
@@ -106,6 +112,8 @@ class TileContent extends PureComponent {
       shouldRenderPlusButton,
       entries
     } = this.state
+
+    
     return (
       <Fragment>
         {shouldRenderPlusButton && (
