@@ -84,7 +84,6 @@ class BasicMap extends PureComponent {
     }
 
     if (latitude && longitude) {
-      zoom = 16
       // Remove possible trailing zeroes
       latitude = parseFloat(latitude.toString())
       longitude = parseFloat(longitude.toString())
