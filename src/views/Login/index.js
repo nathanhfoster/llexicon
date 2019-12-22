@@ -61,7 +61,7 @@ class Login extends PureComponent {
       {
         tabId: LOGIN,
         title: "Login",
-        Component: () => (
+        render: () => (
           <Jumbotron className="LoginFormContainer">
             <LogoImage center />
             <BasicForm
@@ -93,7 +93,7 @@ class Login extends PureComponent {
       {
         tabId: SIGNUP,
         title: "Sign up",
-        Component: () => (
+        render: () => (
           <Jumbotron className="LoginFormContainer">
             <LogoImage center />
             <BasicForm
@@ -109,7 +109,7 @@ class Login extends PureComponent {
       {
         tabId: PASSWORD_RESET,
         title: "Forgot password",
-        Component: () => (
+        render: () => (
           <Jumbotron className="LoginFormContainer">
             <LogoImage center />
             <BasicForm
