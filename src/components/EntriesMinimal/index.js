@@ -1,16 +1,9 @@
 import React, { Component, createRef } from "react"
-import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Col } from "reactstrap"
 import { FixedSizeList } from "react-window"
 import EntryMinimal from "../EntryMinimal"
 import deepEquals from "../../helpers/deepEquals"
-
-const mapStateToProps = ({ Entries: { search } }) => ({
-  entriesSearch: search
-})
-
-const mapDispatchToProps = {}
 
 class EntriesMinimal extends Component {
   constructor(props) {
@@ -40,13 +33,9 @@ class EntriesMinimal extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const previousEntriesSearch = this.props.entriesSearch
-    const { entriesSearch } = nextProps
-    // const stateChanged = !deepEquals(this.state, nextState)
+    const stateChanged = !deepEquals(this.state, nextState)
 
-    const searchChanged = previousEntriesSearch !== entriesSearch
-
-    return searchChanged
+    return stateChanged
   }
 
   renderMinimalEntries = ({ data, index, style, isScrolling }) => {
@@ -78,4 +67,4 @@ class EntriesMinimal extends Component {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesMinimal)
+export default EntriesMinimal
