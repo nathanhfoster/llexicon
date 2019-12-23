@@ -13,7 +13,8 @@ class ConfirmAction extends PureComponent {
   static propTypes = {
     onClickCallback: PropTypes.func,
     title: PropTypes.string,
-    icon: PropTypes.object
+    icon: PropTypes.object,
+    buttonClassName: PropTypes.string
   }
 
   static defaultProps = { show: false, disabled: false }
@@ -32,10 +33,16 @@ class ConfirmAction extends PureComponent {
   }
 
   render() {
+    const { buttonClassName } = this.props
     const { show, disabled, icon, title } = this.state
     return (
       <Fragment>
-        <Button disabled={disabled} color="inherit" onClick={this.toggleShow}>
+        <Button
+          disabled={disabled}
+          color="inherit"
+          onClick={this.toggleShow}
+          className={buttonClassName}
+        >
           {icon}
         </Button>
         <Modal

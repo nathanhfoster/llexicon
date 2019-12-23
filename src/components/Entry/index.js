@@ -141,7 +141,7 @@ class Entry extends Component {
               type="text"
               name="title"
               id="title"
-              placeholder="Dear Diary.."
+              placeholder="Dear Diary..."
               value={title}
               onChange={e => {
                 const title = e.target.value
@@ -169,6 +169,7 @@ class Entry extends Component {
                 style={{ background: "var(--quinaryColor)" }}
               >
                 <ConfirmAction
+                  buttonClassName="EntryInputDelete"
                   onClickCallback={() => {
                     shouldRedirectOnDelete && RouterGoBack(history)
                     setTimeout(async () => {
@@ -179,7 +180,7 @@ class Entry extends Component {
                   icon={
                     <i
                       className="fas fa-trash"
-                      style={{ color: "var(--danger)", fontSize: 22 }}
+                      style={{ color: "var(--danger)", fontSize: "1.5em" }}
                     />
                   }
                   title={"Delete Entry"}

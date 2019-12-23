@@ -6,8 +6,12 @@
   z-index: 3;
 }
 
-
 .EntryInput * {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+}
+
+.EntryInputDelete {
+  box-shadow: none !important;
+  padding: 10px 12px;
 }
