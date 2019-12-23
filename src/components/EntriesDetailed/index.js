@@ -41,8 +41,6 @@ class EntriesDetailed extends Component {
   renderDetailedEntries = ({ data, index, style, isScrolling }) => {
     const entry = data[index]
 
-    console.log(entry)
-
     return (
       <Col
         key={entry.id}

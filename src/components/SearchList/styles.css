@@ -32,6 +32,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    background: inherit;
 }
 
 .listSearchInput:hover, .listSearchInput:focus {
@@ -43,17 +44,32 @@
 }
 
 .listSearchDropDownIcon {
-    height: 20px;
-    width: 20px;
+    border: solid rgba(0, 0, 0, 0.4);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
     position: absolute;
     top: 20px;
-    right: 4px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' height='20' width='20' fill='rgba(0, 0, 0, 0.75)'><polygon points='0, 0 10,0 5, 5'/></svg>");
+    right: 12px;
+    outline: 0;
+    -webkit-transition: -webkit-transform .2s ease-in-out;
+    -ms-transition: -ms-transform .2s ease-in-out;
+    transition: transform .2s ease-in-out;
 }
 
 .listSearchDropDownIcon:hover {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' height='20' width='20' fill='rgba(0, 0, 0, 1)'><polygon points='0, 0 10,0 5, 5'/></svg>");
     cursor: pointer;
+    border-color: rgba(0, 0, 0, 1);
+}
+
+.Up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.Down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
 }
 
 .listSearchItem {
@@ -62,8 +78,8 @@
     font-weight: 400;
     max-width: 100%;
     white-space: nowrap;
-    /* overflow: hidden;
-    text-overflow: ellipsis; */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .listSearchItem:hover {
