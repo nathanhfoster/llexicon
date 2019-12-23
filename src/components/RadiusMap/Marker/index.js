@@ -19,7 +19,6 @@ class Marker extends Component {
     $onMouseAllow: PropTypes.func,
     $hover: PropTypes.bool,
     $prerender: PropTypes.bool,
-    hoveredChildKey: PropTypes.string,
     boundaries: PropTypes.arrayOf(
       PropTypes.arrayOf(PropTypes.objectOf(PropTypes.number))
     ),
@@ -45,15 +44,26 @@ class Marker extends Component {
     selectSite: PropTypes.func.isRequired,
     setMapCenterBoundsZoom: PropTypes.func.isRequired,
     renderUserLocation: PropTypes.bool,
-    onChangeCallback: PropTypes.func.isRequired
+    onChangeCallback: PropTypes.func.isRequired,
+    getAddressOnMarkerClick: PropTypes.bool.isRequired
   }
 
-  static defaultProps = { inGroup: false, zIndex: 1 }
+  static defaultProps = {
+    inGroup: false,
+    zIndex: 1,
+    getAddressOnMarkerClick: false
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { $dimensionKey, $hover, hoveredChildKey, zIndex } = nextProps
+    const {
+      $dimensionKey,
+      title,
+      $hover,
+      zIndex,
+      getAddressOnMarkerClick
+    } = nextProps
 
-    const shouldShowPreview = $hover || hoveredChildKey === $dimensionKey
+    const shouldShowPreview = $hover
 
     return {
       $hover,
@@ -63,20 +73,14 @@ class Marker extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { hoveredChildKey, $hover, zoom } = nextProps
-    const currentHoveredChildKey = this.props.hoveredChildKey
-    const currentDimensionKey = this.props.$dimensionKey
+    const { $hover } = nextProps
     const currentHover = this.props.$hover
-    const currentZoom = this.state.zoom
 
-    const mouseHovered = currentDimensionKey == hoveredChildKey || $hover
+    const mouseHovered = $hover
 
-    const mouseLeft =
-      currentHoveredChildKey != hoveredChildKey || currentHover != $hover
+    const mouseLeft = currentHover != $hover
 
-    const zoomChanged = currentZoom !== zoom
-
-    return mouseHovered || mouseLeft || zoomChanged
+    return mouseHovered || mouseLeft
   }
 
   render() {
@@ -90,7 +94,7 @@ class Marker extends Component {
     return (
       <div style={style}>
         {shouldShowPreview && <PreviewBox {...this.props} />}
-        <Stick {...this.props} />
+        <Stick {...this.props} shouldShowPreview={shouldShowPreview} />
       </div>
     )
   }

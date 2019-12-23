@@ -23,31 +23,15 @@ import "./styles.css"
 
 const mapStateToProps = ({
   Calendar: { activeDate },
-  TextEditor: {
-    clearedOn,
-    title,
-    html,
-    EntryFiles,
-    latitude,
-    longitude,
-    tags,
-    rating
-  },
+  TextEditor,
   Window: {
     innerHeight,
     screen: { availHeight }
   },
   Entries: { items }
 }) => ({
+  entry: { ...TextEditor },
   activeDate,
-  clearedOn,
-  title,
-  html,
-  EntryFiles,
-  latitude,
-  longitude,
-  tags,
-  rating,
   innerHeight,
   viewPortHeight: availHeight,
   entriesLength: items.length
@@ -69,11 +53,7 @@ class NewEntry extends PureComponent {
   }
 
   static propTypes = {
-    clearedOn: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.instanceOf(Date)
-    ]),
-    html: PropTypes.string,
+    entry: PropTypes.object.isRequired,
     SetCalendar: PropTypes.func.isRequired,
     SetEditorState: PropTypes.func.isRequired,
     ClearEditorState: PropTypes.func.isRequired,
@@ -86,35 +66,20 @@ class NewEntry extends PureComponent {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
+      entry,
       activeDate,
-      clearedOn,
-      title,
-      html,
-      EntryFiles,
-      latitude,
-      longitude,
-      tags,
-      rating,
       innerHeight,
       viewPortHeight,
       footerHeight
     } = nextProps
 
-    const editorStateHtmlIsBlank = html === DEFAULT_STATE_TEXT_EDITOR.html
+    const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
-    const postDisabled = editorStateHtmlIsBlank && !title
+    const postDisabled = editorStateHtmlIsBlank && !entry.title
 
     return {
+      entry,
       activeDate,
-      clearedOn,
-      title,
-      html,
-      EntryFiles,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
       postDisabled
     }
   }
@@ -129,18 +94,12 @@ class NewEntry extends PureComponent {
       entriesLength
     } = this.props
     const {
-      html,
-      title,
-      tags,
-      rating,
-      latitude,
-      longitude,
-      EntryFiles,
+      entry: { html, title, tags, rating, latitude, longitude, EntryFiles },
       activeDate
     } = this.state
 
     const payload = {
-      id: `shouldPost-${entriesLength}`,
+      id: `NewEntry-${entriesLength}`,
       title,
       html: html,
       tags,
@@ -172,19 +131,7 @@ class NewEntry extends PureComponent {
     this.props.SetCalendar({ activeDate })
 
   render() {
-    const {
-      html,
-      EntryFiles,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      clearedOn,
-      title,
-      editorHeight,
-      activeDate,
-      postDisabled
-    } = this.state
+    const { entry, editorHeight, activeDate, postDisabled } = this.state
 
     return (
       <Container className="NewEntry Container">
@@ -201,7 +148,7 @@ class NewEntry extends PureComponent {
                 name="title"
                 id="title"
                 placeholder="Dear Diary..."
-                value={title}
+                value={entry.title}
                 onChange={this.handleInputChange}
               />
               <InputGroupAddon addonType="append">
@@ -232,12 +179,7 @@ class NewEntry extends PureComponent {
         <Row className="EditorContainer">
           <Col xs={12} className="p-0">
             <Editor
-              html={html}
-              latitude={latitude}
-              longitude={longitude}
-              tags={tags}
-              EntryFiles={EntryFiles}
-              rating={rating}
+              entry={entry}
               onChangeCallback={({ ...payload }) =>
                 this.handleTextEditorChange(payload)
               }

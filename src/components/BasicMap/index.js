@@ -26,9 +26,13 @@ class BasicMap extends PureComponent {
   constructor(props) {
     super(props)
 
-    const { defaultCenter, zoom } = props
+    let { defaultCenter, zoom } = props
 
-    this.state = { center: defaultCenter, mapApiLoaded: false, zoom }
+    this.state = {
+      center: defaultCenter,
+      mapApiLoaded: false,
+      zoom
+    }
   }
 
   static propTypes = {
@@ -37,8 +41,10 @@ class BasicMap extends PureComponent {
     latitude: PropTypes.number,
     longitude: PropTypes.number,
     WatchUserLocation: PropTypes.func.isRequired,
-    onChangeCallback: PropTypes.func,
-    locations: PropTypes.arrayOf(PropTypes.object)
+    onChangeCallback: PropTypes.func.isRequired,
+    locations: PropTypes.arrayOf(PropTypes.object),
+    getAddressOnMarkerClick: PropTypes.bool.isRequired,
+    entry: PropTypes.object
   }
 
   static defaultProps = {
@@ -56,16 +62,17 @@ class BasicMap extends PureComponent {
     defaultZoom: 18,
     zoom: 18,
     options: DEFAULT_MAP_OPTIONS,
-    locations: []
+    locations: [],
+    getAddressOnMarkerClick: false,
+    entry: {}
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let {
+      entry,
       renderUserLocation,
       UserLocation,
 
-      latitude,
-      longitude,
       locations
     } = nextProps
 
@@ -83,26 +90,25 @@ class BasicMap extends PureComponent {
       })
     }
 
-    if (latitude && longitude) {
+    if (entry.latitude && entry.longitude) {
       // Remove possible trailing zeroes
-      latitude = parseFloat(latitude.toString())
-      longitude = parseFloat(longitude.toString())
+      entry.latitude = parseFloat(entry.latitude.toString())
+      entry.longitude = parseFloat(entry.longitude.toString())
     }
 
-    const shouldRenderEntryLocation = latitude && longitude
+    const shouldRenderEntryLocation = entry.latitude && entry.longitude
 
     const shouldRenderUserLocation =
       renderUserLocation && UserLocation.latitude && UserLocation.longitude
 
     return {
+      entry,
       renderUserLocation,
       UserLocation,
       center,
       zoom,
       mapInstance,
       mapApi,
-      latitude,
-      longitude,
       shouldRenderEntryLocation,
       shouldRenderUserLocation,
       markerClusters,
@@ -150,7 +156,11 @@ class BasicMap extends PureComponent {
       return
     }
     let coords = []
-    const { UserLocation, latitude, longitude, formattedLocations } = this.state
+    const {
+      UserLocation,
+      entry: { latitude, longitude },
+      formattedLocations
+    } = this.state
     if (latitude && longitude) {
       coords.push({ lat: latitude, lng: longitude })
     }
@@ -234,20 +244,19 @@ class BasicMap extends PureComponent {
   }
 
   renderMarkerClusters = markerClusters => {
-    const { onChangeCallback } = this.props
+    const { onChangeCallback, getAddressOnMarkerClick } = this.props
     const { zoom } = this.state
-
     return markerClusters.map(item => {
       const { id, numPoints, points, ...props } = item
       if (numPoints === 1) {
         const { id, ...props } = points[0]
-
         return (
           <Marker
             {...props}
             key={id}
             zoom={zoom}
             onChangeCallback={onChangeCallback}
+            getAddressOnMarkerClick={getAddressOnMarkerClick}
           />
         )
       } else {
@@ -257,6 +266,7 @@ class BasicMap extends PureComponent {
             key={id}
             points={points}
             zoom={zoom}
+            getAddressOnMarkerClick={getAddressOnMarkerClick}
             onChangeCallback={onChangeCallback}
           />
         )
@@ -271,14 +281,14 @@ class BasicMap extends PureComponent {
       defaultCenter,
       defaultZoom,
       options,
-      children,
-      onChangeCallback
+      onChangeCallback,
+      getAddressOnMarkerClick,
+      children
     } = this.props
     const {
+      entry,
       center,
       zoom,
-      latitude,
-      longitude,
       renderUserLocation,
       UserLocation,
       shouldRenderEntryLocation,
@@ -302,19 +312,22 @@ class BasicMap extends PureComponent {
         >
           {shouldRenderEntryLocation && (
             <Marker
-              key={1}
-              lat={latitude}
-              lng={longitude}
+              {...entry}
+              key={entry.id}
+              lat={entry.latitude}
+              lng={entry.longitude}
               renderUserLocation={false}
+              getAddressOnMarkerClick={getAddressOnMarkerClick}
               onChangeCallback={onChangeCallback}
             />
           )}
           {shouldRenderUserLocation && (
             <Marker
-              key={2}
+              key="MyLocation"
               lat={UserLocation.latitude}
               lng={UserLocation.longitude}
               renderUserLocation={renderUserLocation}
+              getAddressOnMarkerClick={getAddressOnMarkerClick}
               onChangeCallback={onChangeCallback}
             />
           )}

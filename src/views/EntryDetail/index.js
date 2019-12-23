@@ -68,7 +68,7 @@ class EntryDetail extends PureComponent {
         <Row>
           <Col xs={12} className="EntryDetail p-0">
             <Entry
-              {...entry}
+              entry={entry}
               // containerHeight={entryContainerHeight}
               shouldRedirectOnDelete
               topToolbarHidden={false}

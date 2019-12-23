@@ -40,19 +40,18 @@ class EntriesDetailed extends Component {
 
   renderDetailedEntries = ({ data, index, style, isScrolling }) => {
     const entry = data[index]
-    const { id, ...restOfProps } = entry
+
+    console.log(entry)
 
     return (
       <Col
-        key={id}
+        key={entry.id}
         style={{ ...style /* background: "red" */ }}
         xs={12}
         className="p-0"
       >
         <Entry
-          key={id}
-          id={id}
-          {...restOfProps}
+          entry={entry}
           containerHeight={style.height}
           bottomToolbarHidden
           theme="snow"

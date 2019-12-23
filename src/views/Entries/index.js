@@ -11,6 +11,7 @@ import {
   GetAllUserEntries,
   GetUserEntries
 } from "../../actions/Entries"
+import { SetEditorState } from "../../actions/TextEditor"
 import EntriesMinimal from "../../components/EntriesMinimal"
 import EntriesDetailed from "../../components/EntriesDetailed"
 import BasicTabs from "../../components/BasicTabs"
@@ -22,6 +23,7 @@ import "./styles.css"
 const mapStateToProps = ({
   User,
   Entries: { items, next, search },
+  TextEditor,
   Window: {
     innerHeight,
     screen: { availHeight },
@@ -35,12 +37,18 @@ const mapStateToProps = ({
       (a, b) =>
         new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
     ),
+  TextEditor,
   nextEntryPage: next,
   entriesSearch: search,
   viewPortHeight: innerHeight - navBarHeight
 })
 
-const mapDispatchToProps = { SyncEntries, GetAllUserEntries, GetUserEntries }
+const mapDispatchToProps = {
+  SyncEntries,
+  GetAllUserEntries,
+  GetUserEntries,
+  SetEditorState
+}
 
 class Entries extends Component {
   constructor(props) {
@@ -53,14 +61,16 @@ class Entries extends Component {
     UserId: PropTypes.number,
     SyncEntries: PropTypes.func.isRequired,
     GetAllUserEntries: PropTypes.func.isRequired,
-    GetUserEntries: PropTypes.func.isRequired
+    GetUserEntries: PropTypes.func.isRequired,
+    SetEditorState: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
+    let {
       entries,
+      TextEditor,
       nextEntryPage,
       viewPortHeight,
       history,
@@ -69,6 +79,10 @@ class Entries extends Component {
 
     if (pathname === RouteMap.ENTRIES) {
       RouterPush(history, RouteMap.ENTRIES_MINIMAL)
+    }
+
+    if (TextEditor.latitude && TextEditor.longitude) {
+      entries.push({ ...TextEditor })
     }
 
     const tabContainerHeight = 54
@@ -157,7 +171,7 @@ class Entries extends Component {
   }
 
   render() {
-    const { history, viewPortHeight } = this.props
+    const { history, viewPortHeight, SetEditorState } = this.props
     const {
       entries,
       minimalEntriesListHeight,
@@ -317,7 +331,28 @@ class Entries extends Component {
         ),
         render: () => (
           <Row>
-            <BasicMap height={viewPortHeight - 54} locations={entries} />
+            <BasicMap
+              height={viewPortHeight - 54}
+              locations={entries}
+              getAddressOnMarkerClick
+              onChangeCallback={({ entryId, address, latitude, longitude }) => {
+                if (!entryId) return
+                else if (entryId === "NewEntry") {
+                  SetEditorState({
+                    id: entryId,
+                    title: entryId,
+                    address,
+                    latitude,
+                    longitude
+                  })
+                } else if (entryId !== "MyLocation") {
+                  return RouterPush(
+                    history,
+                    RouteMap.ENTRY_DETAIL.replace(":entryId", `${entryId}`)
+                  )
+                }
+              }}
+            />
           </Row>
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MAP)

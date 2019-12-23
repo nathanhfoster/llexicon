@@ -33,12 +33,15 @@ class MapSearchBox extends PureComponent {
       mapApi,
       setMapCenterBoundsZoom,
       onChangeCallback,
-      UserLocation
+      getAddressOnMarkerClick,
+      UserLocation,
+      locations,
+      panTo
     } = this.props
 
     const selected = this.searchBox.getPlaces()
     const { 0: place } = selected
-    if (!place.geometry) return
+    if (!place || !place.geometry) return
     const {
       address_components,
       adr_address,
@@ -89,6 +92,7 @@ class MapSearchBox extends PureComponent {
     map.fitBounds(bounds)
 
     const newPosition = { lat: lat(), lng: lng() }
+
     const userLocation = {
       lat: UserLocation.latitude,
       lng: UserLocation.longitude
@@ -97,15 +101,40 @@ class MapSearchBox extends PureComponent {
     // console.log(formatted_address)
 
     onChangeCallback({
+      entryId: "NewEntry",
       latitude: newPosition.lat,
       longitude: newPosition.lng,
       address: formatted_address
     })
 
-    // const center = [lat(), lng()]
+    const center = Object.values(newPosition)
+
+    panTo({ center })
+
     //setMapCenterBoundsZoom({ center, zoom })
 
-    // fitCoordsToBounds(map, mapApi, [newPosition, userLocation])
+    // let coords = locations.reduce((result, location) => {
+    //   const { latitude, longitude } = location
+    //   if (latitude && longitude) {
+    //     location = {
+    //       lat: parseFloat(latitude.toString()),
+    //       lng: parseFloat(longitude.toString())
+    //     }
+    //     return result.concat(location)
+    //   } else {
+    //     return result
+    //   }
+    // }, [])
+
+    // if (newPosition.lat && newPosition.lng) {
+    //   coords.push(newPosition)
+    // }
+
+    // if (userLocation.lat && userLocation.lng) {
+    //   coords.push(userLocation)
+    // }
+
+    // fitCoordsToBounds(map, mapApi, coords)
     this.searchInput.blur()
   }
 

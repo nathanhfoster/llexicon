@@ -1,5 +1,7 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
+import { useHistory } from "react-router-dom"
+import { RouterPush, RouteMap } from "../../../ReactRouter/Routes"
 import { GetAddress } from "../../../actions/Google"
 import {
   K_CIRCLE_SIZE,
@@ -13,24 +15,48 @@ import {
 
 import { DEFAULT_POLYGON_MIN_ZOOM } from "../constants"
 
-const infoClick = ({ onChangeCallback, lat, lng, ...rest }) => {
-  GetAddress(lat, lat)
-    .then(address =>
-      onChangeCallback({ latitude: lat, longitude: lng, address })
-    )
-    .catch(e => onChangeCallback({ latitude: lat, longitude: lng }))
+const infoClick = ({
+  $dimensionKey,
+  onChangeCallback,
+  lat,
+  lng,
+  getAddressOnMarkerClick,
+  history
+}) => {
+  if ($dimensionKey === "NewEntry") {
+    RouterPush(history, RouteMap.NEW_ENTRY)
+  } else if (!getAddressOnMarkerClick) {
+    return onChangeCallback({
+      entryId: $dimensionKey,
+      latitude: lat,
+      longitude: lng
+    })
+  } else {
+    GetAddress(lat, lat)
+      .then(address =>
+        onChangeCallback({
+          entryId: $dimensionKey,
+          latitude: lat,
+          longitude: lng,
+          address
+        })
+      )
+      .catch(e => onChangeCallback({ latitude: lat, longitude: lng }))
+  }
 }
-
-const zoomClick = ({ center, setMapCenterBoundsZoom }) =>
-  setMapCenterBoundsZoom({ center, zoom: DEFAULT_POLYGON_MIN_ZOOM })
 
 const zoomStyle = {
   fontSize: 14
 }
 
 const ClientNameCharacter = props => {
-  const { renderUserLocation } = props
-  const className = renderUserLocation ? "fas fa-user-circle" : "fas fa-circle"
+  const { $dimensionKey, renderUserLocation } = props
+  const className =
+    $dimensionKey === "NewEntry"
+      ? "fas fa-search-location"
+      : renderUserLocation
+      ? "fas fa-user-circle"
+      : "fas fa-circle"
   const style = {
     fontSize: renderUserLocation ? "inherit" : K_CIRCLE_SIZE / 2
   }
@@ -41,31 +67,30 @@ const ClientNameCharacter = props => {
   // return <span style={clientNameCharacterStyle}>{clientName.charAt(0).toUpperCase()}</span>
 }
 
-const Info = props => (
-  <i
-    style={{ fontSize: K_CIRCLE_SIZE / 2 }}
-    className="fas fa-map-marked-alt"
-    onClick={() => infoClick(props)}
-  />
-)
-
-const Zoom = props => (
-  <span style={zoomStyle} onClick={() => zoomClick(props)}>
-    <i className="fas fa-search-location" />
-  </span>
-)
+const Zoom = props => {
+  const { $dimensionKey, renderUserLocation } = props
+  const className =
+    $dimensionKey === "NewEntry"
+      ? "fas fa-feather-alt"
+      : renderUserLocation
+      ? "fas fa-user-circle fa-2x"
+      : "fas fa-circle"
+  return (
+    <span style={zoomStyle} onClick={() => infoClick(props)}>
+      <i className={className} />
+    </span>
+  )
+}
 
 const Stick = props => {
+  const history = useHistory()
   const { shouldShowPreview, inGroup, zoom } = props
-  let text = ClientNameCharacter(props)
+  let text = ClientNameCharacter({ ...props, history })
   let circleStyle = locationCircleStyle
   let stickStyle = locationStickStyle
 
-  const zoomOffset = DEFAULT_POLYGON_MIN_ZOOM - 3
-
   if (shouldShowPreview) {
-    if (zoom <= zoomOffset) text = Zoom(props)
-    else text = Info(props)
+    text = Zoom({ ...props, history })
     circleStyle = locationCircleStyleHover
     stickStyle = locationStickStyleHover
   }
@@ -86,7 +111,8 @@ Stick.propTypes = {
   center: PropTypes.arrayOf(PropTypes.number.isRequired),
   selectSite: PropTypes.func.isRequired,
   setMapCenterBoundsZoom: PropTypes.func.isRequired,
-  renderUserLocation: PropTypes.bool
+  renderUserLocation: PropTypes.bool,
+  getAddressOnMarkerClick: PropTypes.bool.isRequired
 }
 
 export default memo(Stick)

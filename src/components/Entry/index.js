@@ -28,7 +28,8 @@ class Entry extends Component {
     topToolbarHidden: PropTypes.bool,
     bottomToolbarHidden: PropTypes.bool,
     UpdateReduxEntry: PropTypes.func.isRequired,
-    SyncEntries: PropTypes.func.isRequired
+    SyncEntries: PropTypes.func.isRequired,
+    entry: PropTypes.object.isRequired
   }
 
   static defaultProps = {
@@ -39,21 +40,8 @@ class Entry extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      id,
-      author,
-      title,
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
-      date_created,
-      date_created_by_author,
-      date_updated,
-      views,
-      lastUpdated,
+    let {
+      entry,
       containerHeight,
       topToolbarHidden,
       bottomToolbarHidden,
@@ -67,21 +55,10 @@ class Entry extends Component {
 
     const textEditorHeight = containerHeight - inputOffset
 
+    entry.date_created_by_author = new Date(entry.date_created_by_author)
+
     return {
-      id,
-      author,
-      title,
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
-      date_created,
-      date_created_by_author: new Date(date_created_by_author),
-      date_updated,
-      views,
-      lastUpdated,
+      entry,
       textEditorHeight,
       topToolbarHidden,
       bottomToolbarHidden,
@@ -98,20 +75,7 @@ class Entry extends Component {
   render() {
     const { UpdateReduxEntry, SyncEntries, history, theme } = this.props
     const {
-      id,
-      author,
-      title,
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
-      date_created,
-      date_created_by_author,
-      date_updated,
-      views,
-      lastUpdated,
+      entry,
       textEditorHeight,
       topToolbarHidden,
       bottomToolbarHidden,
@@ -121,45 +85,39 @@ class Entry extends Component {
     return (
       <Fragment>
         <Editor
-          toolbarId={id}
+          toolbarId={entry.id}
           topToolbarHidden={topToolbarHidden}
           bottomToolbarHidden={bottomToolbarHidden}
-          html={html}
-          tags={tags}
-          rating={rating}
-          EntryFiles={EntryFiles}
-          latitude={latitude}
-          longitude={longitude}
+          entry={entry}
           theme={theme}
           onChangeCallback={({ ...payload }) =>
-            UpdateReduxEntry({ id, ...payload })
+            UpdateReduxEntry({ id: entry.id, ...payload })
           }
         >
           <UseDebounce onChangeCallback={() => SyncEntries()} />
-          <InputGroup key={`EntryTitle-${id}`} className="EntryInput">
+          <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
             <Input
               type="text"
               name="title"
               id="title"
               placeholder="Dear Diary..."
-              value={title}
+              value={entry.title}
               onChange={e => {
                 const title = e.target.value
-                UpdateReduxEntry({ id, title })
+                UpdateReduxEntry({ id: entry.id, title })
               }}
             />
             <InputGroupAddon addonType="append">
               <InputGroupText className="p-0">
                 <ReactDatePicker
-                  selected={date_created_by_author || lastUpdated}
-                  onChange={date => {
-                    const date_created_by_author = date
+                  selected={entry.date_created_by_author || entry.lastUpdated}
+                  onChange={date_created_by_author =>
                     UpdateReduxEntry({
-                      id,
+                      id: entry.id,
                       date_created_by_author,
-                      lastUpdated: date
+                      lastUpdated: date_created_by_author
                     })
-                  }}
+                  }
                 />
               </InputGroupText>
             </InputGroupAddon>
@@ -173,7 +131,10 @@ class Entry extends Component {
                   onClickCallback={() => {
                     shouldRedirectOnDelete && RouterGoBack(history)
                     setTimeout(async () => {
-                      await UpdateReduxEntry({ id, shouldDelete: true })
+                      await UpdateReduxEntry({
+                        id: entry.id,
+                        shouldDelete: true
+                      })
                       SyncEntries()
                     }, 200)
                   }}

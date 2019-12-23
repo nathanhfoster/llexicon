@@ -2,9 +2,11 @@ import { ReduxActions } from "../../constants.js"
 const { TEXT_EDITOR_SET, TEXT_EDITOR_CLEAR, REDUX_RESET } = ReduxActions
 
 const DEFAULT_STATE_TEXT_EDITOR = {
+  id: "NewEntry",
   clearedOn: "",
   title: "",
   html: "<p><br></p>",
+  address: "",
   latitude: null,
   longitude: null,
   tags: [],

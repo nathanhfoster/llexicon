@@ -20,8 +20,7 @@ class LocationButtonModal extends PureComponent {
   }
 
   static propTypes = {
-    latitude: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    longitude: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    entry: PropTypes.object.isRequired,
     onChangeCallback: PropTypes.func.isRequired,
     WatchUserLocation: PropTypes.func.isRequired,
     SetUserLocation: PropTypes.func.isRequired
@@ -36,14 +35,14 @@ class LocationButtonModal extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let { UserLocation, latitude, longitude } = nextProps
+    let { entry, UserLocation } = nextProps
 
-    if (!(latitude || longitude)) {
-      latitude = UserLocation.latitude
-      longitude = UserLocation.longitude
+    if (!(entry.latitude || entry.longitude)) {
+      entry.latitude = UserLocation.latitude
+      entry.longitude = UserLocation.longitude
     }
 
-    return { UserLocation, latitude, longitude }
+    return { entry, UserLocation }
   }
 
   componentWillUnmount() {
@@ -66,7 +65,9 @@ class LocationButtonModal extends PureComponent {
 
   handleSave = () => {
     const { onChangeCallback } = this.props
-    const { latitude, longitude } = this.state
+    const {
+      entry: { latitude, longitude }
+    } = this.state
 
     if (latitude && longitude) {
       GetAddress(latitude, longitude)
@@ -78,7 +79,7 @@ class LocationButtonModal extends PureComponent {
 
   render() {
     const { xs, center, zoom, onChangeCallback } = this.props
-    const { UserLocation, latitude, longitude } = this.state
+    const { entry, UserLocation } = this.state
 
     return (
       <ToolbarModal
@@ -94,8 +95,8 @@ class LocationButtonModal extends PureComponent {
       >
         <Container fluid className="LocationButtonModal p-0">
           <BasicMap
-            latitude={latitude}
-            longitude={longitude}
+            entry={entry}
+            getAddressOnMarkerClick
             onChangeCallback={onChangeCallback}
           />
         </Container>

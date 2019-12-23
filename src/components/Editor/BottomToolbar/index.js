@@ -61,63 +61,40 @@ class BottomToolbar extends PureComponent {
   }
 
   static propTypes = {
-    id: PropTypes.any,
     editorRef: PropTypes.object,
-    html: PropTypes.string.isRequired,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    tags: PropTypes.arrayOf(PropTypes.object),
-    rating: PropTypes.number,
-    EntryFiles: PropTypes.arrayOf(PropTypes.object),
-    EntryTags: PropTypes.arrayOf(PropTypes.object),
+    entey: PropTypes.object.isRequired,
     onChangeCallback: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
-      EntryTags,
-      onChangeCallback,
-      editorRef
-    } = nextProps
+    const { entry, onChangeCallback, editorRef } = nextProps
 
     const buttons = [
       [
         {
           Component: MediaButtonModal,
-          props: { html, onChangeCallback, editorRef }
+          props: { html: entry.html, onChangeCallback, editorRef }
         },
-        { Component: TagsButtonModal, props: { tags, onChangeCallback } },
+        {
+          Component: TagsButtonModal,
+          props: { tags: entry.tags, onChangeCallback }
+        },
         {
           Component: RatingButtonModal,
-          props: { rating, onChangeCallback }
+          props: { rating: entry.rating, onChangeCallback }
         }
       ],
       [
         {
           Component: LocationButtonModal,
-          props: { latitude, longitude, onChangeCallback }
+          props: nextProps
         }
       ]
     ]
 
-    return {
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
-      EntryTags,
-      buttons
-    }
+    return { entry, buttons }
   }
 
   renderButtonColumns = columns => {
@@ -137,27 +114,18 @@ class BottomToolbar extends PureComponent {
 
   render() {
     const { onChangeCallback, editorRef } = this.props
-    const {
-      buttons,
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
-      EntryTags
-    } = this.state
+    const { entry, buttons } = this.state
 
     return (
       <Container fluid className="BottomToolBar">
         <Row className="BottomToolBarTags">
-          <TagsContainer tags={tags} />
+          <TagsContainer tags={entry.tags} />
         </Row>
         <Row className="BottomToolBarFiles">
           <Col xs={12} className="p-1">
             <EntryFilesCarousel
-              html={html}
-              files={EntryFiles}
+              html={entry.html}
+              files={entry.EntryFiles}
               onChangeCallback={onChangeCallback}
               editorRef={editorRef}
             />

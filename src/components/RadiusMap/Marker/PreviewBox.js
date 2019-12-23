@@ -27,6 +27,7 @@ const previewBoxStyle = {
   WebkitFontSmoothing: "subpixel-antialiased",
   zIndex: 999,
   backgroundColor: "white",
+  color: "black",
   boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
   borderRadius: 4
 }
@@ -61,11 +62,18 @@ const PreviewBox = ({
   lastActivity,
   title,
   date_created_by_author,
+  lastUpdated,
   address,
   tags,
   ...rest
 }) => {
-  date_created_by_author = moment(date_created_by_author).format("MM/DD/YYYY")
+  if ($dimensionKey === "MyLocation") {
+    title = "Me"
+  }
+  date_created_by_author = moment(date_created_by_author || lastUpdated).format(
+    "MM/DD/YYYY"
+  )
+
   return (
     <div style={previewBoxStyle}>
       <div>{title}</div>

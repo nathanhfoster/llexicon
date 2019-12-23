@@ -236,12 +236,7 @@ class Editor extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
+      entry,
       topToolbarHidden,
       bottomToolbarHidden,
       onChangeCallback
@@ -258,12 +253,7 @@ class Editor extends Component {
 
     return {
       toolbarId,
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
+      entry,
       topToolbarHidden,
       editorHeight,
       bottomToolbarHidden,
@@ -299,12 +289,7 @@ class Editor extends Component {
     } = this.props
     const {
       toolbarId,
-      html,
-      latitude,
-      longitude,
-      tags,
-      rating,
-      EntryFiles,
+      entry,
       theme,
       quillId,
       topToolbarHidden,
@@ -334,23 +319,18 @@ class Editor extends Component {
             theme={theme}
             formats={formats}
             modules={modules}
-            value={html}
+            value={entry.html}
             onChange={this.handleEditorStateChange}
             placeholder={placeholder}
           />
           {!bottomToolbarHidden && (
             <BottomToolbar
+              entry={entry}
               onChangeCallback={({ ...payload }) =>
                 onChangeCallback({ id: this.props.toolbarId, ...payload })
               }
               id={this.props.toolbarId}
               editorRef={editorRef}
-              html={html}
-              latitude={latitude}
-              longitude={longitude}
-              tags={tags}
-              rating={rating}
-              EntryFiles={EntryFiles}
             />
           )}
         </div>
