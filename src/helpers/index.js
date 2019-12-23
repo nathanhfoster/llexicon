@@ -61,6 +61,22 @@ const removeAttributeDuplicates = (array, objAttr = "id") => {
   return [...map.values()]
 }
 
+const removeArrayOfObjectsDuplicates = (array = [], key = "id") => {
+let duplicateMap = {}
+
+const filteredArray = array.reduce((duplicateMap, item) => {
+if(!duplicateMap[item[key]]) {
+duplicateMap[item[key]] = true
+return result.concat(item)
+} else {
+  return result
+} 
+} 
+, [])
+
+return filteredArray
+}
+
 const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e))
 
 const TopKFrequentStrings = (arrayOfObjs, prop, k) => {
@@ -319,6 +335,7 @@ export {
   sortedMap,
   removeArrayDuplicates,
   removeAttributeDuplicates,
+  removeArrayOfObjectsDuplicates,
   isSubset,
   TopKFrequentStrings,
   getUrlImageBase64,
