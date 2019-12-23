@@ -13,15 +13,15 @@ import {
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import EntryFilesCarousel from "../../../../EntryFilesCarousel"
+import { mapArray } from "../../../../../helpers"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
-  AllEntryFiles: items
-    .concat(filteredItems)
-    .reduce(
-      (allEntryFiles, entry) => allEntryFiles.concat(entry.EntryFiles),
-      []
-    )
+  AllEntryFiles: mapArray(items.concat(filteredItems), "id", "EntryFiles")
+    // .reduce(
+    //   (allEntryFiles, entry) => allEntryFiles.concat(entry.EntryFiles),
+    //   []
+    // )
     .flat(1)
     .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
 })

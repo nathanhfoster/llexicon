@@ -61,20 +61,43 @@ const removeAttributeDuplicates = (array, objAttr = "id") => {
   return [...map.values()]
 }
 
-const removeArrayOfObjectsDuplicates = (array = [], key = "id") => {
-let duplicateMap = {}
+const removePropsFromObject = (object = {}, props = []) => {
+  let newObject = {}
+  if (typeof props === "string") {
+    if (object[props]) {
+      newObject = object[props]
+    }
+  } else {
+    newObject = props.reduce((result, prop) => {
+      if (object[prop]) {
+        result[prop] = object[prop]
+        return result
+      } else {
+        return result
+      }
+    }, {})
+  }
+  return newObject
+}
 
-const filteredArray = array.reduce((duplicateMap, item) => {
-if(!duplicateMap[item[key]]) {
-duplicateMap[item[key]] = true
-return result.concat(item)
-} else {
-  return result
-} 
-} 
-, [])
+const mapArray = (array = [], key = "id", props = false) => {
+  let duplicateMap = {}
 
-return filteredArray
+  const filteredArray = array.reduce((result, item) => {
+    if (!duplicateMap[item[key]]) {
+      duplicateMap[item[key]] = true
+      if (props) {
+        const newItem = removePropsFromObject(item, props)
+        return result.concat(newItem)
+      } else {
+        return result.concat(item)
+      }
+    } else {
+      return result
+    }
+  }, [])
+
+  return filteredArray
 }
 
 const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e))
@@ -335,7 +358,8 @@ export {
   sortedMap,
   removeArrayDuplicates,
   removeAttributeDuplicates,
-  removeArrayOfObjectsDuplicates,
+  removePropsFromObject,
+  mapArray,
   isSubset,
   TopKFrequentStrings,
   getUrlImageBase64,
