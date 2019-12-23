@@ -20,7 +20,9 @@ class TagsContainer extends Component {
     overflowY: PropTypes.string,
     onClickCallback: PropTypes.func,
     minimalView: PropTypes.bool,
-    hoverable: PropTypes.bool
+    hoverable: PropTypes.bool,
+    showTagIcon: PropTypes.bool,
+    tagContainerClassName: PropTypes.string
   }
 
   static defaultProps = {
@@ -28,10 +30,12 @@ class TagsContainer extends Component {
     fontSize: "inherit",
     flexWrap: "nowrap",
     alignItems: "center",
-    overflowX: "hidden",
+    overflowX: "auto",
     overflowY: "hidden",
     minimalView: false,
-    hoverable: false
+    hoverable: false,
+    showTagIcon: true,
+    tagContainerClassName: "m-1"
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -73,17 +77,26 @@ class TagsContainer extends Component {
   }
 
   renderTags = tags => {
-    const { onClickCallback, hoverable } = this.props
+    const {
+      onClickCallback,
+      hoverable,
+      showTagIcon,
+      tagContainerClassName
+    } = this.props
 
     return tags.map(tag => {
       const { title } = tag
       return (
         <Badge
           key={title}
-          className={`TagContainer ${hoverable ? "TagContainerHover" : ""}`}
+          className={`TagContainer ${tagContainerClassName} ${
+            hoverable ? "TagContainerHover" : ""
+          }`}
           onClick={onClickCallback ? () => onClickCallback(title) : null}
         >
-          <i className="fas fa-tags" />{" "}
+          {showTagIcon && (
+            <i className="fas fa-tag" style={{ marginRight: 2 }} />
+          )}
           <span className="TagTitle">{title}</span>
         </Badge>
       )
@@ -101,9 +114,11 @@ class TagsContainer extends Component {
   }
 
   render() {
+    const { children } = this.props
     const { tags, styles, minimalView } = this.state
     return (
       <Col className="TagsContainer p-0" xs={12} style={styles}>
+        {children}
         {minimalView ? this.renderMinimalTags(tags) : this.renderTags(tags)}
       </Col>
     )

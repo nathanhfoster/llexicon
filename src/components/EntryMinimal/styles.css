@@ -3,6 +3,7 @@
     background: var(--quinaryColor);
     height: 100%;
     width: 100%;
+    text-align: inherit;
 }
 
 .EntryMinimal:hover {
@@ -10,13 +11,14 @@
     cursor: pointer;
 }
 
-.EntryMinimalTitle {
+.EntryMinimalDetail {
     font-size: 1.5em;
     font-weight: 900;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     text-align: left;
+    min-height: 21px;
 }
 
 .EntryMinimalTime, .EntryMinimalTime time {
@@ -25,6 +27,3 @@
     text-align: right;
 }
 
-.EntryMinimalTags {
-    margin-left: -4px;
-}

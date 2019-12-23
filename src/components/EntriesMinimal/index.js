@@ -24,7 +24,7 @@ class EntriesMinimal extends Component {
   static defaultProps = {
     height: 500,
     width: "100%",
-    itemSize: 60
+    itemSize: 92
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

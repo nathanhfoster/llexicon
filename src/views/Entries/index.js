@@ -237,7 +237,8 @@ class Entries extends Component {
                 {
                   title: () => <i className="fas fa-star" />,
                   key: "rating",
-                  width: 20,
+                  width: 30,
+                  render: item => <span className="ml-1">{item.rating}</span>,
                   onRowClick: item =>
                     RouterPush(
                       history,
@@ -245,46 +246,51 @@ class Entries extends Component {
                     )
                 },
                 {
-                  title: "Tags",
+                  title: item => <i className="fas fa-tags p-0" />,
                   dataIndex: "tags",
                   key: "id",
-                  width: 100,
-                  render: item => (
-                    <TagsContainer tags={item.tags} overflowX="auto" />
-                  )
+                  width: 80,
+                  render: item => <TagsContainer tags={item.tags} />
                 },
 
                 {
-                  title: "Title",
+                  title: title => <i className="fas fa-heading" />,
                   dataIndex: "title",
                   key: "title",
                   width: "25%"
                 },
                 {
-                  title: "Body",
+                  title: item => <i className="fas fa-keyboard" />,
                   dataIndex: "html",
                   key: "html"
-                  // width: '25%'
                 },
                 {
-                  title: "Location",
+                  title: item => <i className="fas fa-map-marker-alt" />,
                   key: "address"
-                  // width: '25%'
+                },
+                {
+                  title: () => <i className="far fa-eye" />,
+                  key: "views",
+                  width: 40,
+                  render: item => <span className="Center">{item.views}</span>
+                },
+                {
+                  title: () => <i className="fas fa-star" />,
+                  key: "rating",
+                  width: 40,
+                  render: item => <span className="Center">{item.rating}</span>
                 },
                 {
                   title: () => <i className="fas fa-photo-video" />,
                   key: "EntryFiles",
                   width: 40,
-                  render: item => item.EntryFiles.length
-                },
-                {
-                  title: () => <i className="far fa-eye" />,
-                  key: "views",
-                  width: 40
+                  render: item => (
+                    <span className="Center">{item.EntryFiles.length}</span>
+                  )
                 },
 
                 {
-                  title: "Date",
+                  title: item => <i className="fas fa-calendar-day" />,
                   dataIndex: "date_created_by_author",
                   key: "date_created_by_author",
                   width: 100,

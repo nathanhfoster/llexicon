@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import RatingStar from "../../../../RatingStar"
+import RatingIcon from "../../../../RatingIcon"
 
 import "./styles.css"
 
@@ -29,14 +30,7 @@ class RatingButtonModal extends PureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { rating, savedRating } = prevState
 
-    const ButtonIcon = () =>
-      rating === 0
-        ? new Array(1)
-            .fill()
-            .map((item, i) => <i key={i} className="far fa-star" />)
-        : new Array(rating)
-            .fill()
-            .map((item, i) => <i key={i} className="fas fa-star" />)
+    const ButtonIcon = () => <RatingIcon rating={rating} />
 
     return { rating, savedRating, ButtonIcon }
   }
