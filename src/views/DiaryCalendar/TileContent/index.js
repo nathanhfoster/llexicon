@@ -69,6 +69,7 @@ class TileContent extends Component {
 
     return stateChanged
   }
+  
   handleTodayClick = () => {
     const { history } = this.props
     const { NEW_ENTRY } = RouteMap
@@ -84,6 +85,7 @@ class TileContent extends Component {
 
   renderEntryPreviews = entries => {
     const { calendarDay, date, staticContext, view } = this.state
+
     return entries.map(entry => {
       const { id, date_created_by_author, ...restOfProps } = entry
 
@@ -97,7 +99,7 @@ class TileContent extends Component {
             id={id}
             date_created_by_author={date_created_by_author}
             {...restOfProps}
-            activeDate={date}
+            date={date}
             staticContext={staticContext}
             view={view}
           />
@@ -113,7 +115,6 @@ class TileContent extends Component {
       entries
     } = this.state
 
-    
     return (
       <Fragment>
         {shouldRenderPlusButton && (

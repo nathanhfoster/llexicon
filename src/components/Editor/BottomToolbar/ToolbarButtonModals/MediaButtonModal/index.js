@@ -5,7 +5,6 @@ import {
   Row,
   Col,
   InputGroup,
-  Form,
   InputGroupAddon,
   InputGroupText,
   Input,
@@ -16,8 +15,9 @@ import ToolbarModal from "../../ToolbarModal"
 import EntryFilesCarousel from "../../../../EntryFilesCarousel"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { items } }) => ({
+const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   AllEntryFiles: items
+    .concat(filteredItems)
     .reduce(
       (allEntryFiles, entry) => allEntryFiles.concat(entry.EntryFiles),
       []

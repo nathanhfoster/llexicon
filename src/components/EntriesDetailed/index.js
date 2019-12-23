@@ -1,16 +1,15 @@
 import React, { Component, createRef } from "react"
 import PropTypes from "prop-types"
 import { Col } from "reactstrap"
-import { FixedSizeList, shouldComponentUpdate } from "react-window"
+import { FixedSizeList } from "react-window"
 import Entry from "../../components/Entry"
+import deepEquals from "../../helpers/deepEquals"
 
 class EntriesDetailed extends Component {
   constructor(props) {
     super(props)
 
     this.detailedEntriesListRef = createRef()
-
-    // this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
 
     this.state = {}
   }
@@ -31,6 +30,12 @@ class EntriesDetailed extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { entries } = nextProps
     return { entries }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const stateChanged = !deepEquals(this.state, nextState)
+
+    return stateChanged
   }
 
   renderDetailedEntries = ({ data, index, style, isScrolling }) => {
@@ -59,6 +64,7 @@ class EntriesDetailed extends Component {
   render() {
     const { onItemsRendered, height, width, itemSize } = this.props
     const { entries } = this.state
+
     return (
       <FixedSizeList
         ref={this.detailedEntriesListRef}

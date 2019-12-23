@@ -1,9 +1,10 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import { Badge, Col } from "reactstrap"
 import PropTypes from "prop-types"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-class TagsContainer extends PureComponent {
+class TagsContainer extends Component {
   constructor(props) {
     super(props)
 
@@ -63,6 +64,12 @@ class TagsContainer extends PureComponent {
     }
 
     return { tags, styles, minimalView }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const stateChanged = !deepEquals(this.state, nextState)
+
+    return stateChanged
   }
 
   renderTags = tags => {

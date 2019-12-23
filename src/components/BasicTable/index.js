@@ -1,11 +1,12 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import Header from "./Header"
 import Body from "./Body"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-class BasicTable extends PureComponent {
+class BasicTable extends Component {
   constructor(props) {
     super(props)
 
@@ -105,15 +106,11 @@ class BasicTable extends PureComponent {
     return { columns, data, hover, onRowClick }
   }
 
-  componentDidMount() {}
+  shouldComponentUpdate(nextProps, nextState) {
+    const dataChanged = !deepEquals(this.state.data, nextState.data)
 
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    return null
+    return dataChanged
   }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
-  componentWillUnmount() {}
 
   render() {
     const { bordered, borderless, striped, dark, responsive } = this.props

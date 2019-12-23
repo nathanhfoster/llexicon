@@ -71,7 +71,7 @@ class BasicMap extends PureComponent {
 
     let markerClusters = []
 
-    const { center, bounds, zoom } = prevState
+    const { center, bounds, zoom, mapInstance, mapApi } = prevState
 
     const formattedLocations = formatLocations(locations)
 
@@ -99,6 +99,8 @@ class BasicMap extends PureComponent {
       UserLocation,
       center,
       zoom,
+      mapInstance,
+      mapApi,
       latitude,
       longitude,
       shouldRenderEntryLocation,
@@ -108,17 +110,47 @@ class BasicMap extends PureComponent {
     }
   }
 
-  onGoogleApiLoaded = ({ map, maps }) => {
-    const { UserLocation, latitude, longitude, formattedLocations } = this.state
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    const previousUserLocation = prevState.UserLocation
+    const { UserLocation, mapInstance, mapApi } = this.state
 
+    const recievedUserLocation =
+      mapInstance &&
+      mapApi &&
+      previousUserLocation.latitude === null &&
+      previousUserLocation.longitude === null &&
+      UserLocation.latitude &&
+      UserLocation.longitude
+
+    if (recievedUserLocation) {
+      return true
+    }
+
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { mapInstance, mapApi } = this.state
+    if (snapshot) {
+      this.handleFitCoordsToBounds(mapInstance, mapApi)
+    }
+  }
+
+  onGoogleApiLoaded = ({ map, maps }) => {
     this.setState({
       mapApiLoaded: true,
       mapInstance: map,
       mapApi: maps
     })
+    this.handleFitCoordsToBounds(map, maps)
+  }
 
+  handleFitCoordsToBounds = (map, maps) => {
+    if (!(map || maps)) {
+      return
+    }
     let coords = []
-
+    const { UserLocation, latitude, longitude, formattedLocations } = this.state
     if (latitude && longitude) {
       coords.push({ lat: latitude, lng: longitude })
     }
