@@ -61,14 +61,16 @@ const removeAttributeDuplicates = (array, objAttr = "id") => {
   return [...map.values()]
 }
 
-const removePropsFromObject = (object = {}, props = []) => {
-  let newObject = {}
+const mapObject = (object = {}, props = []) => {
   if (typeof props === "string") {
+    // console.log("Object to value")
     if (object[props]) {
-      newObject = object[props]
+      const value = object[props]
+      return value
     }
-  } else {
-    newObject = props.reduce((result, prop) => {
+  } else if (Array.isArray(props)) {
+    // console.log("New Object with specific props")
+    const newObject = props.reduce((result, prop) => {
       if (object[prop]) {
         result[prop] = object[prop]
         return result
@@ -76,28 +78,59 @@ const removePropsFromObject = (object = {}, props = []) => {
         return result
       }
     }, {})
+
+    return newObject
   }
-  return newObject
+
+  return object
 }
 
-const mapArray = (array = [], key = "id", props = false) => {
-  let duplicateMap = {}
+const filterMapArray = (array = [], uniqueKey = "id", props = false) => {
+  if (!uniqueKey && !props) {
+    // console.log("return original array")
+    return array
+  }
 
-  const filteredArray = array.reduce((result, item) => {
-    if (!duplicateMap[item[key]]) {
-      duplicateMap[item[key]] = true
-      if (props) {
-        const newItem = removePropsFromObject(item, props)
-        return result.concat(newItem)
-      } else {
-        return result.concat(item)
-      }
-    } else {
-      return result
+  if (uniqueKey) {
+    let duplicateMap = {}
+
+    if (!props) {
+      // console.log("Filter but don't map")
+      const filteredArray = array.filter(item => {
+        if (!duplicateMap[item[uniqueKey]]) {
+          duplicateMap[item[uniqueKey]] = true
+          return false
+        } else {
+          return true
+        }
+      })
+
+      return filteredArray
+    } else if (props) {
+      // console.log("Filter and map")
+      const filteredMappedArray = array.reduce((result, item) => {
+        if (!duplicateMap[item[uniqueKey]]) {
+          duplicateMap[item[uniqueKey]] = true
+          if (props) {
+            const newItem = mapObject(item, props)
+            return result.concat(newItem)
+          } else {
+            return result.concat(item)
+          }
+        } else {
+          return result
+        }
+      }, [])
+
+      return filteredMappedArray
     }
-  }, [])
+  } else if (props) {
+    // console.log("Don't filter but map")
+    const mappedArray = array.map(item => (item = mapObject(item, props)))
+    return mappedArray
+  }
 
-  return filteredArray
+  return array
 }
 
 const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e))
@@ -358,8 +391,8 @@ export {
   sortedMap,
   removeArrayDuplicates,
   removeAttributeDuplicates,
-  removePropsFromObject,
-  mapArray,
+  mapObject,
+  filterMapArray,
   isSubset,
   TopKFrequentStrings,
   getUrlImageBase64,

@@ -272,6 +272,12 @@ class Entries extends Component {
                   // width: '25%'
                 },
                 {
+                  title: () => <i className="fas fa-photo-video" />,
+                  key: "EntryFiles",
+                  width: 40,
+                  render: item => item.EntryFiles.length
+                },
+                {
                   title: () => <i className="far fa-eye" />,
                   key: "views",
                   width: 40
@@ -312,7 +318,16 @@ class Entries extends Component {
       }
     ]
 
-    return <BasicTabs activeTab={activeTab} tabs={tabs} />
+    return (
+      <BasicTabs
+        fluid={
+          activeTab === RouteMap.ENTRIES_TABLE ||
+          activeTab === RouteMap.ENTRIES_MAP
+        }
+        activeTab={activeTab}
+        tabs={tabs}
+      />
+    )
   }
 }
 export default withRouter(

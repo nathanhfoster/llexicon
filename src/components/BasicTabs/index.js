@@ -44,6 +44,7 @@ class BasicTabs extends Component {
   }
 
   static defaultProps = {
+    fluid: false,
     tabs: [
       { tabId: 1, title: "1", render: () => <div>render 1</div> },
       { tabId: 2, title: "2", render: () => <div>render 2</div> },
@@ -52,9 +53,9 @@ class BasicTabs extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { activeTab, tabs } = nextProps
+    const { activeTab, tabs, fluid } = nextProps
 
-    return { tabs, activeTab: activeTab || prevState.activeTab }
+    return { tabs, activeTab: activeTab || prevState.activeTab, fluid }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -98,10 +99,13 @@ class BasicTabs extends Component {
 
   render() {
     const { containerClassname } = this.props
-    const { activeTab, tabs } = this.state
+    const { activeTab, tabs, fluid } = this.state
 
     return (
-      <Container className={`BasicTabs Container ${containerClassname}`}>
+      <Container
+        fluid={fluid}
+        className={`BasicTabs Container ${containerClassname}`}
+      >
         <Row>
           <Nav tabs>{this.renderNavItems(activeTab, tabs)}</Nav>
         </Row>
