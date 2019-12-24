@@ -32,13 +32,20 @@ class TagsButtonModal extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { EntryTags, tags } = nextProps
+    let { EntryTags, tags } = nextProps
     const { tagsAsString } = prevState
 
+    const splitTagsAsString = tagsAsString.split(" ")
+    const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
+
+    if (lastTagAsString) {
+      EntryTags = EntryTags.filter(entryTag =>
+        entryTag.title.includes(lastTagAsString)
+      )
+    }
+
     return {
-      EntryTags: EntryTags.filter(
-        entryTag => !tagsAsString.includes(entryTag.title)
-      ),
+      EntryTags,
       tags,
       tagsAsString
     }

@@ -24,10 +24,11 @@ class Video extends BlockEmbed {
     let iframe = document.createElement("iframe")
     iframe.setAttribute("frameborder", "0")
     iframe.setAttribute("allowfullscreen", true)
+
+    // iframe.setAttribute("height", 320)
     // iframe.setAttribute("width", "100%")
-    // iframe.setAttribute("height", "auto")
-    // iframe.setAttribute("width", 320)
-    // iframe.setAttribute("height", 180)
+
+    // console.log(document.getElementById("TextEditor").offsetWidth)
 
     if (value.includes("watch?v=")) {
       value = value.replace("watch?v=", "embed/")
@@ -302,7 +303,7 @@ class Editor extends Component {
     return (
       <Fragment>
         {children}
-        <div className="text-editor" style={{ height, width }}>
+        <div id="TextEditor" style={{ height, width }}>
           {!topToolbarHidden && (
             <TopToolbar
               toolbarId={toolbarId}
