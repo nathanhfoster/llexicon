@@ -5,6 +5,7 @@ import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetEntryTags } from "../../../../../actions/Entries"
+import { removeArrayDuplicates } from "../../../../../helpers"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { EntryTags } }) => ({ EntryTags })
@@ -40,7 +41,7 @@ class TagsButtonModal extends PureComponent {
 
     if (lastTagAsString) {
       EntryTags = EntryTags.filter(entryTag =>
-        entryTag.title.includes(lastTagAsString)
+        entryTag.title.toUpperCase().includes(lastTagAsString.toUpperCase())
       )
     }
 
@@ -64,6 +65,13 @@ class TagsButtonModal extends PureComponent {
 
   handleTagClick = title => {
     this.setState(currentState => {
+      if (!currentState.tagsAsString) {
+        return {
+          tagsAsString: this.validatedString(
+            currentState.tagsAsString.concat(`${title} `)
+          )
+        }
+      }
       return {
         tagsAsString: this.validatedString(
           currentState.tagsAsString.concat(` ${title}`)
@@ -72,7 +80,14 @@ class TagsButtonModal extends PureComponent {
     })
   }
 
-  validatedString = s => s.replace(/[^A-Z0-9]+/gi, " ")
+  validatedString = s => {
+    const validatedString = s.replace(/[^A-Z0-9]+/gi, " ")
+    const filteredString = removeArrayDuplicates(
+      validatedString.split(" ")
+    ).join(" ")
+
+    return filteredString
+  }
 
   handleTagsInputChange = e => {
     const { value } = e.target
