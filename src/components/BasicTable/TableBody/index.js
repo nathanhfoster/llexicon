@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
+import { ColumnsPropType, DataPropType } from "../props"
 import "./styles.css"
 
 class TableBody extends PureComponent {
@@ -11,30 +12,8 @@ class TableBody extends PureComponent {
 
   static propTypes = {
     sortable: PropTypes.bool.isRequired,
-    columns: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.number,
-          PropTypes.func
-        ]),
-        dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        render: PropTypes.func,
-        sort: PropTypes.oneOfType([
-          PropTypes.func,
-          PropTypes.oneOf(["string"])
-        ]),
-        filter: PropTypes.oneOfType([
-          PropTypes.func,
-          PropTypes.oneOf(["string", "number"])
-        ]),
-        filterPlaceholder: PropTypes.string,
-        onRowClick: PropTypes.func
-      })
-    ),
-    data: PropTypes.arrayOf(PropTypes.object.isRequired)
+    columns: ColumnsPropType,
+    data: DataPropType
   }
 
   static defaultProps = {}

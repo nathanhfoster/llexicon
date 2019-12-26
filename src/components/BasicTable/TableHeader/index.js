@@ -2,6 +2,7 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import { capitalizeFirstLetter } from "../../../helpers"
+import { ColumnsPropType } from "../props"
 import "./styles.css"
 
 class TableHeader extends PureComponent {
@@ -15,29 +16,7 @@ class TableHeader extends PureComponent {
     sortable: PropTypes.bool.isRequired,
     sortCallback: PropTypes.func.isRequired,
     filterCallback: PropTypes.func.isRequired,
-    columns: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.number,
-          PropTypes.func
-        ]),
-        dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        render: PropTypes.func,
-        sort: PropTypes.oneOfType([
-          PropTypes.func,
-          PropTypes.oneOf(["string"])
-        ]),
-        filter: PropTypes.oneOfType([
-          PropTypes.func,
-          PropTypes.oneOf(["string", "number"])
-        ]),
-        filterPlaceholder: PropTypes.string,
-        onRowClick: PropTypes.func
-      })
-    )
+    columns: ColumnsPropType
   }
 
   static defaultProps = {}

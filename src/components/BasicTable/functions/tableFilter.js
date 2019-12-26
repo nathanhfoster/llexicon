@@ -1,4 +1,4 @@
-const tableFilter = (data, filterMap, sortUp) => {
+const tableFilter = (data, filterMap) => {
   Object.keys(filterMap).forEach(filterKey => {
     const { searchValue, filter } = filterMap[filterKey]
 
@@ -10,11 +10,7 @@ const tableFilter = (data, filterMap, sortUp) => {
       )
     } else if (filter === "number") {
       if (searchValue) {
-        data = data.filter(item =>
-          sortUp
-            ? item[filterKey] >= searchValue
-            : item[filterKey] <= searchValue
-        )
+        data = data.filter(item => item[filterKey] >= searchValue)
       }
     }
   })

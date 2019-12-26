@@ -5,6 +5,7 @@ import TableHeader from "./TableHeader"
 import TableBody from "./TableBody"
 import deepEquals from "../../helpers/deepEquals"
 import { tableSort, tableFilter } from "./functions"
+import { ColumnsPropType, DataPropType } from "./props"
 import "./styles.css"
 
 class BasicTable extends Component {
@@ -16,29 +17,8 @@ class BasicTable extends Component {
 
   static propTypes = {
     sortable: PropTypes.bool.isRequired,
-    columns: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.number,
-          PropTypes.func
-        ]),
-        dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        render: PropTypes.func,
-        sort: PropTypes.oneOfType([
-          PropTypes.func,
-          PropTypes.oneOf(["string"])
-        ]),
-        filter: PropTypes.oneOfType([
-          PropTypes.func,
-          PropTypes.oneOf(["string"])
-        ]),
-        onRowClick: PropTypes.func
-      })
-    ),
-    data: PropTypes.arrayOf(PropTypes.object.isRequired),
+    columns: ColumnsPropType,
+    data: DataPropType,
     // reactstrap Table
     tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     size: PropTypes.string,
@@ -75,13 +55,15 @@ class BasicTable extends Component {
         title: "First Name",
         dataIndex: "first_name",
         key: "first_name",
-        width: 100
+        width: 100,
+        filter: "string"
       },
       {
         title: "Last Name",
         dataIndex: "last_name",
         key: "last_name",
-        width: 200
+        width: 200,
+        filter: "string"
       },
       {
         title: "Username",
@@ -91,7 +73,9 @@ class BasicTable extends Component {
         sort: (a, b, sortUp) =>
           sortUp
             ? b.user_name.localeCompare(a.user_name)
-            : a.user_name.localeCompare(b.user_name)
+            : a.user_name.localeCompare(b.user_name),
+        filter: searchValue => item =>
+          item.user_name.toUpperCase().includes(searchValue.toUpperCase())
       }
     ],
     data: new Array(25).fill().map(
@@ -118,9 +102,9 @@ class BasicTable extends Component {
 
     if (Object.keys(filterMap).length > 0) {
       if (sortedData) {
-        sortedData = tableFilter(sortedData, filterMap, sortUp)
+        sortedData = tableFilter(sortedData, filterMap)
       } else {
-        sortedData = tableFilter(data, filterMap, sortUp)
+        sortedData = tableFilter(data, filterMap)
       }
     }
 

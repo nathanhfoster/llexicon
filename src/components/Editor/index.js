@@ -199,10 +199,8 @@ class Editor extends Component {
       title: PropTypes.string.isRequired,
       html: PropTypes.string.isRequired,
       address: PropTypes.string.isRequired,
-      latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
-      longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+      latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       tags: PropTypes.arrayOf(
         PropTypes.shape({
           title: PropTypes.string.isRequired,
