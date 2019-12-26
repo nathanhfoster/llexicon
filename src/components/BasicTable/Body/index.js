@@ -10,6 +10,7 @@ class Body extends PureComponent {
   }
 
   static propTypes = {
+    sortable: PropTypes.bool.isRequired,
     columns: PropTypes.arrayOf(
       PropTypes.shape({
         title: PropTypes.oneOfType([

@@ -2,8 +2,10 @@ import axios from "axios"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
-const GetAddress = (lat, lng) =>
-  axios
+const GetAddress = (lat, lng) => {
+  lat = parseFloat(lat.toString())
+  lng = parseFloat(lng.toString())
+  return axios
     .get(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${lat}, ${lng}&key=${REACT_APP_GOOGLE_LOCATION_API}`
     )
@@ -21,5 +23,6 @@ const GetAddress = (lat, lng) =>
       return formatted_address
     })
     .catch(e => console.log("GetAddress ERROR: ", e))
+}
 
 export { GetAddress }

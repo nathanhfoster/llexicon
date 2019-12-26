@@ -247,6 +247,7 @@ class Entries extends Component {
         render: () => (
           <Row>
             <BasicTable
+              sortable
               columns={[
                 {
                   title: () => <i className="fas fa-star" />,
@@ -264,6 +265,10 @@ class Entries extends Component {
                   dataIndex: "tags",
                   key: "id",
                   width: 80,
+                  sort: (a, b, sortUp) =>
+                    sortUp
+                      ? b.tags.join().localeCompare(a.tags.join())
+                      : a.tags.join().localeCompare(b.tags.join()),
                   render: item => <TagsContainer tags={item.tags} />
                 },
 
@@ -300,7 +305,11 @@ class Entries extends Component {
                   width: 40,
                   render: item => (
                     <span className="Center">{item.EntryFiles.length}</span>
-                  )
+                  ),
+                  sort: (a, b, sortUp) =>
+                    sortUp
+                      ? b.EntryFiles.length - a.EntryFiles.length
+                      : a.EntryFiles.length - b.EntryFiles.length
                 },
 
                 {
@@ -312,7 +321,13 @@ class Entries extends Component {
                     <Moment format="D MMM YY">
                       {item.date_created_by_author}
                     </Moment>
-                  )
+                  ),
+                  sort: (a, b, sortUp) =>
+                    sortUp
+                      ? new Date(b.date_created_by_author) -
+                        new Date(a.date_created_by_author)
+                      : new Date(a.date_created_by_author) -
+                        new Date(b.date_created_by_author)
                 }
               ]}
               data={entries}

@@ -10,10 +10,11 @@ class BasicTable extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { sortKey: null, sortUp: false }
   }
 
   static propTypes = {
+    sortable: PropTypes.bool.isRequired,
     columns: PropTypes.arrayOf(
       PropTypes.shape({
         title: PropTypes.oneOfType([
@@ -47,6 +48,7 @@ class BasicTable extends Component {
   }
 
   static defaultProps = {
+    sortable: false,
     bordered: false,
     borderless: true,
     striped: false,
@@ -76,7 +78,11 @@ class BasicTable extends Component {
         title: "Username",
         dataIndex: "user_name",
         key: "user_name",
-        render: key => <a href="#">Delete</a>
+        render: item => <a href="#">{`Delete ${item.user_name}`}</a>,
+        sort: (a, b, sortUp) =>
+          sortUp
+            ? b.user_name.localeCompare(a.user_name)
+            : a.user_name.localeCompare(b.user_name)
       }
     ],
     data: new Array(25).fill().map(
@@ -91,7 +97,49 @@ class BasicTable extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { columns, data } = nextProps
+    const { data, columns } = nextProps
+
+    let { sortKey, sortUp } = prevState
+
+    let sortedData = null
+
+    if (sortKey) {
+      const sortColumn = columns.find(
+        c => c.dataIndex === sortKey || c.key === sortKey
+      )
+
+      //JSON.parse(JSON.stringify(data))
+      sortedData = [...data].sort((a, b) => {
+        if (sortColumn.sort) {
+          return sortColumn.sort(a, b, sortUp)
+        } else {
+          const aValue = a[sortKey]
+          const bValue = b[sortKey]
+          let valueType = null
+
+          if (typeof aValue === typeof bValue) {
+            valueType = typeof aValue
+          }
+
+          // console.log("valueType: ", valueType)
+
+          if (valueType === "string") {
+            return sortUp
+              ? bValue.localeCompare(aValue)
+              : aValue.localeCompare(bValue)
+          } else if (valueType === "number") {
+            return sortUp ? bValue - aValue : aValue - bValue
+          } else if (Array.isArray(aValue)) {
+            return sortUp
+              ? bValue.join().localeCompare(aValue.join())
+              : aValue.join().localeCompare(bValue.join())
+          } else if (valueType === "object") {
+            // console.log(aValue)
+            // console.log("OBJECT")
+          }
+        }
+      })
+    }
 
     let onRowClick = null
 
@@ -103,18 +151,54 @@ class BasicTable extends Component {
 
     const hover = onRowClick ? true : false
 
-    return { columns, data, hover, onRowClick }
+    return {
+      columns,
+      data: sortedData || data,
+      sortKey,
+      sortUp,
+      hover,
+      onRowClick
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const dataChanged = !deepEquals(this.state.data, nextState.data)
+    const dataChanged = !deepEquals(this.props.data, nextProps.data)
+    const dataSorted = !deepEquals(this.state.data, nextState.data)
 
-    return dataChanged
+    return true
+  }
+
+  // getSnapshotBeforeUpdate(prevProps, prevState) {
+  //   const dataChanged = !deepEquals(prevProps.data, this.props.data)
+  //   if (dataChanged) {
+  //     return true
+  //   }
+  //   return null
+  // }
+
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if (snapshot) {
+  //     const { data } = this.props
+  //     this.setState({ data })
+  //   }
+  // }
+
+  handleSort = (sortKey, sortUp) => {
+    this.setState({ sortKey, sortUp })
   }
 
   render() {
-    const { bordered, borderless, striped, dark, responsive } = this.props
+    const {
+      sortable,
+      bordered,
+      borderless,
+      striped,
+      dark,
+      responsive
+    } = this.props
     const { columns, data, hover, onRowClick } = this.state
+
+    // console.log(data)
 
     return (
       <Table
@@ -126,8 +210,17 @@ class BasicTable extends Component {
         responsive={responsive}
         className="BasicTable"
       >
-        <Header columns={columns} />
-        <Body onRowClick={onRowClick} columns={columns} data={data} />
+        <Header
+          sortable={sortable}
+          sortCallback={(sortKey, sortUp) => this.handleSort(sortKey, sortUp)}
+          columns={columns}
+        />
+        <Body
+          sortable={sortable}
+          onRowClick={onRowClick}
+          columns={columns}
+          data={data}
+        />
       </Table>
     )
   }

@@ -1,0 +1,8 @@
+.BasicTableHeader {
+    vertical-align: middle;
+}
+
+.HeaderHoverable:hover {
+    cursor: pointer;
+    background-color: var(--dark_border);
+}
