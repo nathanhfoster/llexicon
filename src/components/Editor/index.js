@@ -179,13 +179,13 @@ class Editor extends Component {
   constructor(props) {
     super(props)
 
-    const { toolbarId, html, theme } = props
+    const { toolbarId, theme } = props
 
     this.editorRef = createRef()
 
     this.state = {
       quillId: toolbarId.toString(),
-      html,
+
       theme
     }
   }
@@ -193,7 +193,39 @@ class Editor extends Component {
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    html: PropTypes.string.isRequired,
+    entry: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      clearedOn: PropTypes.string,
+      title: PropTypes.string.isRequired,
+      html: PropTypes.string.isRequired,
+      address: PropTypes.string.isRequired,
+      latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
+      longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
+      tags: PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string.isRequired,
+          date_created: PropTypes.string.isRequired,
+          date_updated: PropTypes.string.isRequired,
+          authors: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired
+        })
+      ).isRequired,
+      rating: PropTypes.number.isRequired,
+      lastUpdated: PropTypes.string,
+      EntryFiles: PropTypes.arrayOf(
+        PropTypes.shape({
+          entry_id: PropTypes.number.isRequired,
+          file_type: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          size: PropTypes.number.isRequired,
+          url: PropTypes.string.isRequired,
+          date_created: PropTypes.string.isRequired,
+          date_updated: PropTypes.string.isRequired,
+          date_modified: PropTypes.string.isRequired
+        })
+      )
+    }).isRequired,
     onChangeCallback: PropTypes.func,
     toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,

@@ -5,6 +5,7 @@ import { Row, Button, ButtonGroup } from "reactstrap"
 import { withRouter } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import TagsContainer from "../../components/TagsContainer"
+import { stripHtml } from "../../helpers"
 import deepEquals from "../../helpers/deepEquals"
 import {
   SyncEntries,
@@ -18,6 +19,7 @@ import BasicTabs from "../../components/BasicTabs"
 import BasicTable from "../../components/BasicTable"
 import BasicMap from "../../components/BasicMap"
 import Moment from "react-moment"
+import MomentJS from "moment"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -170,6 +172,8 @@ class Entries extends Component {
     SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
   }
 
+  handleFilter = (key, value) => {}
+
   render() {
     const { history, viewPortHeight, SetEditorState } = this.props
     const {
@@ -236,7 +240,6 @@ class Entries extends Component {
         ),
         onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MINIMAL)
       },
-
       {
         tabId: RouteMap.ENTRIES_TABLE,
         title: () => (
@@ -252,8 +255,10 @@ class Entries extends Component {
                 {
                   title: () => <i className="fas fa-star" />,
                   key: "rating",
-                  width: 30,
-                  render: item => <span className="ml-1">{item.rating}</span>,
+                  width: 60,
+                  render: item => <span className="ml-2">{item.rating}</span>,
+                  filter: "number",
+                  filterPlaceholder: "<=",
                   onRowClick: item =>
                     RouterPush(
                       history,
@@ -269,6 +274,12 @@ class Entries extends Component {
                     sortUp
                       ? b.tags.join().localeCompare(a.tags.join())
                       : a.tags.join().localeCompare(b.tags.join()),
+                  filter: searchValue => item =>
+                    item.tags
+                      .map(t => t.title)
+                      .join()
+                      .toUpperCase()
+                      .includes(searchValue.toUpperCase()),
                   render: item => <TagsContainer tags={item.tags} />
                 },
 
@@ -276,40 +287,45 @@ class Entries extends Component {
                   title: title => <i className="fas fa-heading" />,
                   dataIndex: "title",
                   key: "title",
+                  filter: searchValue => item =>
+                    item.title
+                      .toUpperCase()
+                      .includes(searchValue.toUpperCase()),
                   width: "25%"
                 },
                 {
                   title: item => <i className="fas fa-keyboard" />,
-                  dataIndex: "html",
-                  key: "html"
+                  key: "html",
+                  render: item => stripHtml(item.html),
+                  filter: "string"
                 },
                 {
                   title: item => <i className="fas fa-map-marker-alt" />,
-                  key: "address"
+                  key: "address",
+                  filter: "string"
                 },
                 {
                   title: () => <i className="far fa-eye" />,
                   key: "views",
-                  width: 40,
-                  render: item => <span className="Center">{item.views}</span>
-                },
-                {
-                  title: () => <i className="fas fa-star" />,
-                  key: "rating",
-                  width: 40,
-                  render: item => <span className="Center">{item.rating}</span>
+                  width: 60,
+                  render: item => <span className="Center">{item.views}</span>,
+                  filter: "number",
+                  filterPlaceholder: "<="
                 },
                 {
                   title: () => <i className="fas fa-photo-video" />,
                   key: "EntryFiles",
-                  width: 40,
+                  width: 60,
                   render: item => (
                     <span className="Center">{item.EntryFiles.length}</span>
                   ),
                   sort: (a, b, sortUp) =>
                     sortUp
                       ? b.EntryFiles.length - a.EntryFiles.length
-                      : a.EntryFiles.length - b.EntryFiles.length
+                      : a.EntryFiles.length - b.EntryFiles.length,
+                  filter: searchValue => item =>
+                    item.EntryFiles.length >= searchValue,
+                  filterPlaceholder: "<="
                 },
 
                 {
@@ -327,7 +343,20 @@ class Entries extends Component {
                       ? new Date(b.date_created_by_author) -
                         new Date(a.date_created_by_author)
                       : new Date(a.date_created_by_author) -
-                        new Date(b.date_created_by_author)
+                        new Date(b.date_created_by_author),
+                  filter: searchValue => item => {
+                    if (searchValue) {
+                      const momentCreatedByAuthor = MomentJS(
+                        item.date_created_by_author
+                      )
+                      const momentOfSearchValue = MomentJS(searchValue)
+
+                      return momentCreatedByAuthor >= momentOfSearchValue
+                    } else {
+                      return true
+                    }
+                  },
+                  filterPlaceholder: "<="
                 }
               ]}
               data={entries}

@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import "./styles.css"
 
-class Body extends PureComponent {
+class TableBody extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -22,6 +22,15 @@ class Body extends PureComponent {
         key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         render: PropTypes.func,
+        sort: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.oneOf(["string"])
+        ]),
+        filter: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.oneOf(["string", "number"])
+        ]),
+        filterPlaceholder: PropTypes.string,
         onRowClick: PropTypes.func
       })
     ),
@@ -36,7 +45,7 @@ class Body extends PureComponent {
     return { columns, data, onRowClick }
   }
 
-  renderColumnData = (columns, data, onRowClick) => {
+  renderTableRows = (columns, data, onRowClick) => {
     if (columns.length === 0 || data.length === 0) return null
 
     return data.map((item, i) => {
@@ -62,7 +71,7 @@ class Body extends PureComponent {
   render() {
     const { columns, data, onRowClick } = this.state
 
-    return <tbody>{this.renderColumnData(columns, data, onRowClick)}</tbody>
+    return <tbody>{this.renderTableRows(columns, data, onRowClick)}</tbody>
   }
 }
-export default Body
+export default TableBody

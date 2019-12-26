@@ -53,6 +53,7 @@ a, a:hover {
 
 input {
   min-height: var(--inputHeight);
+  padding: 0.5rem !important;
   border: inherit;
   background: var(--quinaryColor) !important;
   color: var(--secondaryColor);

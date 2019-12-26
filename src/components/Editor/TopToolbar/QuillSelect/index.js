@@ -1,13 +1,13 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { capitalize } from "../../../../helpers"
+import { capitalizeFirstLetter } from "../../../../helpers"
 import "./styles.css"
 
 const capitalizeHeaders = string => {
   if (typeof string === "string" || string instanceof String) {
     const newString = string.split("-")
-    const first = capitalize(newString[0])
-    const second = capitalize(newString[1])
+    const first = capitalizeFirstLetter(newString[0])
+    const second = capitalizeFirstLetter(newString[1])
     if (second) return `${first} ${second}`
     else return first
   }

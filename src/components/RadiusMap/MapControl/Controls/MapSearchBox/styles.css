@@ -47,7 +47,7 @@
     backface-visibility: hidden;
     -webkit-font-smoothing: subpixel-antialiased;
     transition: -webkit-transform 0.425s cubic-bezier(0.485, 1.65, 0.545, 0.835);
-    transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.02, 1.02, 1);
+    transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.01, 1.01, 1);
 }
 
 .pac-item .pac-icon {}

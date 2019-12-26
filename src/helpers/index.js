@@ -325,7 +325,7 @@ const addDynamicScript = (scriptId, url, callback = null) => {
   if (existingScript && callback) callback()
 }
 
-const capitalize = string => {
+const capitalizeFirstLetter = string => {
   if (typeof string === "string" || string instanceof String)
     return `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 }
@@ -377,6 +377,12 @@ const cleanObject = obj => {
   return obj
 }
 
+const stripHtml = html => {
+  var tmp = document.createElement("DIV")
+  tmp.innerHTML = html
+  return tmp.textContent || tmp.innerText || ""
+}
+
 export {
   DeepClone,
   getObjectLength,
@@ -409,9 +415,10 @@ export {
   readmultifiles,
   lazyLoadWithTimeOut,
   addDynamicScript,
-  capitalize,
+  capitalizeFirstLetter,
   debounce,
   throttled,
   copyStringToClipboard,
-  cleanObject
+  cleanObject,
+  stripHtml
 }

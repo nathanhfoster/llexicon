@@ -61,7 +61,7 @@ const EntryMinimal = ({
           {showFileIcon && <i className="far fa-file-image mr-1" />}
         </Col>
 
-        <Col xs={12} classNamw="EntryMinimalDetail">
+        <Col xs={12}>
           <TagsContainer
             showTagIcon={false}
             tags={tags}
@@ -80,7 +80,10 @@ EntryMinimal.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   title: PropTypes.string,
   html: PropTypes.string,
-  date_created_by_author: PropTypes.string,
+  date_created_by_author: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date)
+  ]),
   EntryFiles: PropTypes.arrayOf(PropTypes.object)
 }
 

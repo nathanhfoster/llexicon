@@ -1,8 +1,10 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
+import { Input } from "reactstrap"
+import { capitalizeFirstLetter } from "../../../helpers"
 import "./styles.css"
 
-class Header extends PureComponent {
+class TableHeader extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -11,7 +13,8 @@ class Header extends PureComponent {
 
   static propTypes = {
     sortable: PropTypes.bool.isRequired,
-    sortCallback: PropTypes.func,
+    sortCallback: PropTypes.func.isRequired,
+    filterCallback: PropTypes.func.isRequired,
     columns: PropTypes.arrayOf(
       PropTypes.shape({
         title: PropTypes.oneOfType([
@@ -23,6 +26,15 @@ class Header extends PureComponent {
         key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         render: PropTypes.func,
+        sort: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.oneOf(["string"])
+        ]),
+        filter: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.oneOf(["string", "number"])
+        ]),
+        filterPlaceholder: PropTypes.string,
         onRowClick: PropTypes.func
       })
     )
@@ -36,18 +48,18 @@ class Header extends PureComponent {
     return { columns, sortKey, sortUp }
   }
 
-  handleSortCallback = key => {
+  handleSortCallback = (key, sort) => {
     const { sortCallback } = this.props
 
     this.setState(currentState => {
       const shouldToggle = currentState.sortKey === key
       if (shouldToggle) {
         const sortUp = !currentState.sortUp
-        sortCallback(key, sortUp)
+        sortCallback(key, sort, sortUp)
         return { sortUp }
       } else {
         const sortUp = !currentState.sortUp
-        sortCallback(key, sortUp)
+        sortCallback(key, sort, sortUp)
         return {
           sortKey: key,
           sortUp
@@ -57,10 +69,20 @@ class Header extends PureComponent {
   }
 
   renderColumnHeaders = columns => {
-    const { sortable } = this.props
+    const { sortable, filterCallback } = this.props
     const { sortKey, sortUp } = this.state
+    const shouldRenderSortContainer = columns.find(c => c.filter)
     return columns.map((column, i) => {
-      const { title, dataIndex, key, width, render } = column
+      const {
+        title,
+        dataIndex,
+        key,
+        width,
+        render,
+        sort,
+        filter,
+        filterPlaceholder
+      } = column
       const titleFunction = typeof title === "function"
       const showSort = sortKey === key
       return (
@@ -68,12 +90,30 @@ class Header extends PureComponent {
           key={key}
           className={`BasicTableHeader ${sortable ? "HeaderHoverable" : ""} `}
           style={{ width }}
-          title={title}
-          onClick={sortable ? () => this.handleSortCallback(key) : null}
+          // title={title}
+          onClick={sortable ? () => this.handleSortCallback(key, sort) : null}
         >
           {titleFunction ? title(column) : title}
           {sortable && showSort && (
             <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
+          )}
+          {shouldRenderSortContainer && (
+            <div style={{}}>
+              <Input
+                className="TableHeaderSortInput"
+                disabled={!filter}
+                onClick={e => e.stopPropagation()}
+                onChange={e =>
+                  filterCallback(dataIndex || key, e.target.value, filter)
+                }
+                placeholder={
+                  filter
+                    ? filterPlaceholder ||
+                      `${capitalizeFirstLetter(dataIndex || key)} filter`
+                    : null
+                }
+              />
+            </div>
           )}
         </th>
       )
@@ -89,4 +129,4 @@ class Header extends PureComponent {
     )
   }
 }
-export default Header
+export default TableHeader

@@ -6,3 +6,7 @@
     cursor: pointer;
     background-color: var(--dark_border);
 }
+
+.TableHeaderSortInput {
+    min-height: 20px !important;
+}

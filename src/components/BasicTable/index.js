@@ -1,16 +1,17 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
-import Header from "./Header"
-import Body from "./Body"
+import TableHeader from "./TableHeader"
+import TableBody from "./TableBody"
 import deepEquals from "../../helpers/deepEquals"
+import { tableSort, tableFilter } from "./functions"
 import "./styles.css"
 
 class BasicTable extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { sortKey: null, sortUp: false }
+    this.state = { sortKey: null, sortUp: false, filterMap: {} }
   }
 
   static propTypes = {
@@ -26,6 +27,14 @@ class BasicTable extends Component {
         key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         render: PropTypes.func,
+        sort: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.oneOf(["string"])
+        ]),
+        filter: PropTypes.oneOfType([
+          PropTypes.func,
+          PropTypes.oneOf(["string"])
+        ]),
         onRowClick: PropTypes.func
       })
     ),
@@ -99,46 +108,20 @@ class BasicTable extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { data, columns } = nextProps
 
-    let { sortKey, sortUp } = prevState
+    let { sort, sortKey, sortUp, filterMap } = prevState
 
     let sortedData = null
 
     if (sortKey) {
-      const sortColumn = columns.find(
-        c => c.dataIndex === sortKey || c.key === sortKey
-      )
+      sortedData = tableSort(data, sort, sortKey, sortUp)
+    }
 
-      //JSON.parse(JSON.stringify(data))
-      sortedData = [...data].sort((a, b) => {
-        if (sortColumn.sort) {
-          return sortColumn.sort(a, b, sortUp)
-        } else {
-          const aValue = a[sortKey]
-          const bValue = b[sortKey]
-          let valueType = null
-
-          if (typeof aValue === typeof bValue) {
-            valueType = typeof aValue
-          }
-
-          // console.log("valueType: ", valueType)
-
-          if (valueType === "string") {
-            return sortUp
-              ? bValue.localeCompare(aValue)
-              : aValue.localeCompare(bValue)
-          } else if (valueType === "number") {
-            return sortUp ? bValue - aValue : aValue - bValue
-          } else if (Array.isArray(aValue)) {
-            return sortUp
-              ? bValue.join().localeCompare(aValue.join())
-              : aValue.join().localeCompare(bValue.join())
-          } else if (valueType === "object") {
-            // console.log(aValue)
-            // console.log("OBJECT")
-          }
-        }
-      })
+    if (Object.keys(filterMap).length > 0) {
+      if (sortedData) {
+        sortedData = tableFilter(sortedData, filterMap, sortUp)
+      } else {
+        sortedData = tableFilter(data, filterMap, sortUp)
+      }
     }
 
     let onRowClick = null
@@ -162,29 +145,22 @@ class BasicTable extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const dataChanged = !deepEquals(this.props.data, nextProps.data)
-    const dataSorted = !deepEquals(this.state.data, nextState.data)
+    const dataPropsChanged = !deepEquals(this.props.data, nextProps.data)
+    const dataStateChanged = !deepEquals(this.state.data, nextState.data)
 
-    return true
+    return dataPropsChanged || dataStateChanged
   }
 
-  // getSnapshotBeforeUpdate(prevProps, prevState) {
-  //   const dataChanged = !deepEquals(prevProps.data, this.props.data)
-  //   if (dataChanged) {
-  //     return true
-  //   }
-  //   return null
-  // }
+  handleSort = (sortKey, sort, sortUp) => {
+    this.setState({ sortKey, sort, sortUp })
+  }
 
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   if (snapshot) {
-  //     const { data } = this.props
-  //     this.setState({ data })
-  //   }
-  // }
-
-  handleSort = (sortKey, sortUp) => {
-    this.setState({ sortKey, sortUp })
+  handleFilter = (filterKey, searchValue, filter) => {
+    this.setState(currentState => {
+      let newFilterMap = { ...currentState.filterMap }
+      newFilterMap[filterKey] = { searchValue, filter }
+      return { filterMap: newFilterMap }
+    })
   }
 
   render() {
@@ -198,8 +174,6 @@ class BasicTable extends Component {
     } = this.props
     const { columns, data, hover, onRowClick } = this.state
 
-    // console.log(data)
-
     return (
       <Table
         bordered={bordered}
@@ -210,12 +184,17 @@ class BasicTable extends Component {
         responsive={responsive}
         className="BasicTable"
       >
-        <Header
+        <TableHeader
           sortable={sortable}
-          sortCallback={(sortKey, sortUp) => this.handleSort(sortKey, sortUp)}
+          sortCallback={(sortKey, sort, sortUp) =>
+            this.handleSort(sortKey, sort, sortUp)
+          }
+          filterCallback={(filterKey, searchValue, filter) =>
+            this.handleFilter(filterKey, searchValue, filter)
+          }
           columns={columns}
         />
-        <Body
+        <TableBody
           sortable={sortable}
           onRowClick={onRowClick}
           columns={columns}

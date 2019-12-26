@@ -3,11 +3,12 @@ import { Button } from "reactstrap"
 import defaultStyles from "./defaultStyles"
 import { CENTER_OF_US, DEFAULT_ZOOM } from "../../../constants"
 
-const onClick = ({
+const onClick = async ({
   panTo,
   UserLocation: { latitude, longitude },
   WatchUserLocation
 }) => {
+  // await WatchUserLocation()
   if (latitude && longitude) {
     panTo({
       center: { lat: latitude, lng: longitude },
