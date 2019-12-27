@@ -7,13 +7,7 @@
   background: var(--slate_grey);
 }
 
-.Navlink, .nav-link {
-  color: var(--secondaryColor) !important;
-}
 
-.Navlink.active {
-  color: var(--accentColor) !important;
-}
 
 .NavBar button.dropdown-item {
   color: var(--primaryColor) !important;
@@ -38,11 +32,5 @@
 
 .NavBar .NavBarLink:hover {
   color: var(--accentColor);
-  cursor: pointer;
-}
-
-.Navlink:hover, .Navlink i:hover {
-  background: inherit;
-  color: var(--accentColor) !important;
   cursor: pointer;
 }

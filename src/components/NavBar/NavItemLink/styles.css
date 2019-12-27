@@ -1,0 +1,14 @@
+.Navlink, .nav-link {
+    color: var(--secondaryColor) !important;
+  }
+  
+  .Navlink.active {
+    color: var(--accentColor) !important;
+  }
+
+
+.Navlink:hover, .Navlink i:hover {
+    background: inherit;
+    color: var(--accentColor) !important;
+    cursor: pointer;
+  }
