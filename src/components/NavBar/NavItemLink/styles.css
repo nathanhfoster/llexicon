@@ -1,5 +1,6 @@
 .Navlink, .nav-link {
     color: var(--secondaryColor) !important;
+    text-align: center;
   }
   
   .Navlink.active {

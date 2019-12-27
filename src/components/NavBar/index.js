@@ -22,7 +22,16 @@ import Logo from "../../images/Logo.png"
 import AddToHomeScreen from "../AddToHomeScreen/"
 import NavItemLink from "./NavItemLink"
 
-const { NEW_ENTRY, CALENDAR, ENTRIES_DETAILED, LOGIN, SETTINGS } = RouteMap
+const {
+  NEW_ENTRY,
+  CALENDAR,
+  ENTRIES_DETAILED,
+  ENTRIES_MINIMAL,
+  ENTRIES_TABLE,
+  ENTRIES_MAP,
+  LOGIN,
+  SETTINGS
+} = RouteMap
 
 const mapStateToProps = ({
   User: { id },
@@ -67,9 +76,38 @@ class NavBar extends PureComponent {
         icon: <i className="fas fa-calendar-alt NavBarImage" />
       },
       {
-        route: ENTRIES_DETAILED,
-        title: "ENTRIES",
-        icon: <i className="fas fa-book NavBarImage" />
+        icon: (
+          <span>
+            <i className="fas fa-book NavBarImage" />
+            ENTRIES
+          </span>
+        ),
+        links: [
+          {
+            dropdownItem: true,
+            route: ENTRIES_DETAILED,
+            title: "DETAILED",
+            icon: <i className="fas fa-feather-alt NavBarImage" />
+          },
+          {
+            dropdownItem: true,
+            route: ENTRIES_MINIMAL,
+            title: "MINIMAL",
+            icon: <i className="fas fa-th-list NavBarImage" />
+          },
+          {
+            dropdownItem: true,
+            route: ENTRIES_TABLE,
+            title: "TABLE",
+            icon: <i className="fas fa-table NavBarImage" />
+          },
+          {
+            dropdownItem: true,
+            route: ENTRIES_MAP,
+            title: "MAP",
+            icon: <i className="fas fa-map-marked-alt NavBarImage" />
+          }
+        ]
       },
       {
         route: LOGIN,
@@ -80,6 +118,27 @@ class NavBar extends PureComponent {
           />
         ),
         onClick: UserId ? UserLogout : null
+      },
+      {
+        icon: <i className="fas fa-ellipsis-v" />,
+        links: [
+          {
+            dropdownItem: true,
+            route: SETTINGS,
+            title: "SETTINGS",
+            icon: <i className="fas fa-cog NavBarImage" />
+          },
+          {
+            render: !isInStandalone && (
+              <Fragment>
+                <DropdownItem divider />
+                <DropdownItem>
+                  <AddToHomeScreen />
+                </DropdownItem>
+              </Fragment>
+            )
+          }
+        ]
       }
     ]
     return { UserId, UserLogout, isMobile, isInStandalone, navLinks }
@@ -95,9 +154,22 @@ class NavBar extends PureComponent {
   closeHamburgerMenu = () => this.setState({ collapsed: true })
 
   renderNavLinks = links =>
-    links.map(link => (
-      <NavItemLink {...link} onClickCallback={this.closeHamburgerMenu} />
-    ))
+    links.map((link, i) =>
+      link.links ? (
+        this.renderDropDownMenu(`Dropdown-${i}`, link.icon, link.links)
+      ) : (
+        <NavItemLink {...link} onClickCallback={this.closeHamburgerMenu} />
+      )
+    )
+
+  renderDropDownMenu = (key, icon, links) => (
+    <UncontrolledDropdown key={key} nav inNavbar>
+      <DropdownToggle nav caret>
+        {icon}
+      </DropdownToggle>
+      <DropdownMenu right>{this.renderNavLinks(links)}</DropdownMenu>
+    </UncontrolledDropdown>
+  )
 
   handleTodayClick = () => {
     const { SetCalendar, GetUserEntriesByDate } = this.props
@@ -123,31 +195,6 @@ class NavBar extends PureComponent {
         <Collapse isOpen={!collapsed} navbar>
           <Nav className="ml-auto" navbar>
             {this.renderNavLinks(navLinks)}
-            <UncontrolledDropdown key="DropDown" nav inNavbar>
-              <DropdownToggle nav caret>
-                <i className="fas fa-ellipsis-v" />
-              </DropdownToggle>
-              <DropdownMenu right>
-                <NavItemLink
-                  dropdownItem
-                  route={SETTINGS}
-                  title="SETTINGS"
-                  icon={<i className="fas fa-cog NavBarImage" />}
-                  onClickCallback={this.closeHamburgerMenu}
-                />
-
-                {!isInStandalone && (
-                  <Fragment>
-                    <DropdownItem divider />
-                    <DropdownItem>
-                      <AddToHomeScreen
-                        onClickCallback={this.closeHamburgerMenu}
-                      />
-                    </DropdownItem>
-                  </Fragment>
-                )}
-              </DropdownMenu>
-            </UncontrolledDropdown>
           </Nav>
         </Collapse>
       </Navbar>
