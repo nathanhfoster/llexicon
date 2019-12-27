@@ -44,19 +44,19 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
 
     case ENTRIES_SEARCH_FILTER:
       let { filteredItems } = state
+      const searchValue = search.toUpperCase()
 
       const filteredEntries = mergeJson(
         state.items.concat(filteredItems),
         payload
       ).filter(item => {
         if (!search) return state
-        const { title, html, tags } = item
+        const { title, html, tags, address } = item
         if (
-          tags
-            .map(tag => tag.title.toLowerCase())
-            .includes(search.toLowerCase()) ||
-          title.toLowerCase().includes(search.toLowerCase()) ||
-          html.toLowerCase().includes(search.toLowerCase())
+          tags.map(tag => tag.title.toUpperCase()).includes(searchValue) ||
+          title.toUpperCase().includes(searchValue) ||
+          html.toUpperCase().includes(searchValue) ||
+          address.toUpperCase().includes(searchValue)
         ) {
           return true
         } else {
