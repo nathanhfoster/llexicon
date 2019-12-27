@@ -124,7 +124,7 @@ class TagsButtonModal extends PureComponent {
           <Row>
             <TagsContainer
               tags={EntryTags}
-              height={90}
+              height={120}
               flexWrap="wrap"
               onClickCallback={this.handleTagClick}
               hoverable
