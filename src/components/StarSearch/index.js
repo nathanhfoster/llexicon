@@ -28,22 +28,18 @@ class StarSearch extends Component {
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let { search } = nextProps
+    let { isMobile, search } = nextProps
     const currentSearch = prevState.search
 
     // if (currentSearch) search = currentSearch
 
-    return { search: currentSearch }
+    return { isMobile, search: currentSearch }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const propsChanges = !deepEquals(this.props, nextProps)
+    const stateChanged = !deepEquals(this.state, nextState)
 
-    const prevSearch = this.state.search
-    const { search } = nextState
-    const searchChanged = prevSearch !== search
-
-    return searchChanged
+    return stateChanged
   }
 
   handleSearch = e => {
@@ -52,14 +48,14 @@ class StarSearch extends Component {
   }
 
   render() {
-    const { history, SearchUserEntries, isMobile } = this.props
+    const { history, SearchUserEntries } = this.props
 
-    const { search } = this.state
+    const { isMobile, search } = this.state
 
     return (
       <InputGroup
         className="StarSearch"
-        style={{ maxWidth: isMobile ? "calc(100% - 42px)" : 300 }}
+        style={{ maxWidth: isMobile ? "calc(100% - 52px)" : 360 }}
       >
         <InputGroupAddon
           addonType="prepend"

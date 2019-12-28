@@ -72,11 +72,6 @@ class NavBar extends Component {
         icon: <i className="fas fa-feather-alt NavBarImage NavBarLink" />
       },
       {
-        route: CALENDAR,
-        title: "CALENDAR",
-        icon: <i className="fas fa-calendar-alt NavBarImage" />
-      },
-      {
         icon: (
           <span>
             <i className="fas fa-book NavBarImage" />
@@ -84,6 +79,11 @@ class NavBar extends Component {
           </span>
         ),
         links: [
+          {
+            route: CALENDAR,
+            title: "CALENDAR",
+            icon: <i className="fas fa-calendar-alt NavBarImage" />
+          },
           {
             dropdownItem: true,
             route: ENTRIES_DETAILED,
