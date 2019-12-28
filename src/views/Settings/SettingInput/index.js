@@ -22,9 +22,14 @@ class SettingInput extends Component {
     tooltipTitle: PropTypes.string
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { checked } = nextProps
+    return { checked }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
-    const propsChanged = !deepEquals(this.props, nextProps)
-    return propsChanged
+    const stateChanged = !deepEquals(this.state, nextState)
+    return stateChanged
   }
 
   toggleTooltip = () =>
@@ -34,13 +39,13 @@ class SettingInput extends Component {
     const {
       settingKey,
       disabled,
-      checked,
       onClickCallback,
       title,
       tooltipTitle
     } = this.props
-    const { isOpen } = this.state
-    console.log("RENDER")
+
+    const { checked, isOpen } = this.state
+
     return (
       <Row tag={FormGroup} check className="checkBoxTable">
         <Col tag={Label} check xs={12}>

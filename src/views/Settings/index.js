@@ -83,6 +83,7 @@ class Settings extends PureComponent {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { User } = nextProps
+    
     const {
       Settings: {
         show_footer,
@@ -91,6 +92,7 @@ class Settings extends PureComponent {
         push_messages
       }
     } = User
+
     const sections = [
       {
         title: "Appearance",
