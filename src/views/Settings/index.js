@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import ImportEntries from "../../components/ImportEntries"
@@ -21,7 +21,27 @@ import {
 import { copyStringToClipboard } from "../../helpers"
 import MomentJs from "moment"
 import BasicForm from "../../components/BasicForm"
+import SettingInput from "./SettingInput"
 import "./styles.css"
+
+const handleOnClick = (settingKey, props) => {
+  const {
+    User: { id, token, Settings },
+    PostSettings,
+    SetSettings
+  } = props
+
+  const value = Settings[settingKey]
+
+  !Settings.id
+    ? PostSettings({
+        user: id,
+        [settingKey]: !value
+      })
+    : SetSettings({
+        [settingKey]: !value
+      })
+}
 
 const mapStateToProps = ({ User, Entries }) => ({
   User,
@@ -41,6 +61,7 @@ class Settings extends PureComponent {
 
     this.state = {
       ShowFooterTooltip: false,
+      ShowContainerWidthTooltip: false,
       ShowPushMessagesTooltip: false,
       ShowOfflineModeTooltip: false
     }
@@ -49,6 +70,7 @@ class Settings extends PureComponent {
   static propTypes = {
     Settings: PropTypes.object,
     ShowFooterTooltip: PropTypes.bool,
+    ShowContainerWidthTooltip: PropTypes.bool,
     ShowPushMessagesTooltip: PropTypes.bool,
     ShowOfflineModeTooltip: PropTypes.bool,
     UpdateUser: PropTypes.func.isRequired,
@@ -60,7 +82,61 @@ class Settings extends PureComponent {
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
+    const { User } = nextProps
+    const {
+      Settings: {
+        show_footer,
+        full_container_width,
+        offline_mode,
+        push_messages
+      }
+    } = User
+    const sections = [
+      {
+        title: "Appearance",
+        inputs: [
+          {
+            settingKey: "show_footer",
+            disabled: !User.id,
+            checked: show_footer,
+            onClickCallback: key => handleOnClick(key, nextProps),
+            title: "Show footer",
+            tooltipTitle: "Toggles the view of the footer"
+          },
+          {
+            settingKey: "full_container_width",
+            disabled: !User.id,
+            checked: full_container_width,
+            onClickCallback: key => handleOnClick(key, nextProps),
+            title: "Full container width",
+            tooltipTitle:
+              "Toggles containers from being 100% the width of the screen or with padding"
+          }
+        ]
+      },
+      {
+        title: "Features",
+        inputs: [
+          {
+            settingKey: "offline_mode",
+            disabled: !User.id,
+            checked: offline_mode,
+            onClickCallback: key => handleOnClick(key, nextProps),
+            title: "Offline mode",
+            tooltipTitle: "Toggles frequent fetches of messages"
+          },
+          {
+            settingKey: "push_messages",
+            disabled: !User.id,
+            checked: push_messages,
+            onClickCallback: key => handleOnClick(key, nextProps),
+            title: "Push Messages",
+            tooltipTitle: "Toggles frequent fetches of messages"
+          }
+        ]
+      }
+    ]
+    return { User, sections }
   }
 
   componentDidMount() {
@@ -68,27 +144,21 @@ class Settings extends PureComponent {
     if (User.token) GetUserSettings()
   }
 
-  toggleTooltip = e =>
-    this.setState({ [e.target.id]: !this.state[e.target.id] })
+  renderInputs = inputs =>
+    inputs.map(input => <SettingInput key={input.settingKey} {...input} />)
 
-  handleOnClick = settingId => {
-    const {
-      User: { id, token, Settings },
-      PostSettings,
-      SetSettings
-    } = this.props
-
-    const value = Settings[settingId]
-
-    !Settings.id
-      ? PostSettings({
-          user: id,
-          [settingId]: !value
-        })
-      : SetSettings({
-          [settingId]: !value
-        })
-  }
+  renderSections = sections =>
+    sections.map((section, i) => {
+      const { title, inputs } = section
+      return (
+        <Fragment key={i}>
+          <Row>
+            <h2 className="headerBanner">{title}</h2>
+          </Row>
+          {this.renderInputs(inputs)}
+        </Fragment>
+      )
+    })
 
   handleExportEntries = () => {
     const { entries } = this.state
@@ -139,14 +209,7 @@ class Settings extends PureComponent {
   }
 
   render() {
-    const {
-      User,
-      ShowFooterTooltip,
-      ShowPushMessagesTooltip,
-      ShowOfflineModeTooltip
-    } = this.state
-    const { Settings } = User
-    const { show_footer, push_messages, offline_mode } = Settings
+    const { User, sections } = this.state
 
     return (
       <Container className="Settings Container">
@@ -223,78 +286,7 @@ class Settings extends PureComponent {
           </Col>
         </Row>
 
-        <Row>
-          <h2 className="headerBanner">Appearance</h2>
-        </Row>
-        <Row tag={FormGroup} check className="checkBoxTable">
-          <Col tag={Label} check xs={12}>
-            <Input
-              readOnly
-              type="radio"
-              disabled={!User.id}
-              checked={show_footer}
-              onClick={() => this.handleOnClick("show_footer")}
-            />
-            <span className="checkBoxText" id="ShowFooterTooltip">
-              Show footer
-            </span>
-            <Tooltip
-              placement="right"
-              isOpen={ShowFooterTooltip}
-              target="ShowFooterTooltip"
-              toggle={this.toggleTooltip}
-            >
-              Toggles the view of the footer
-            </Tooltip>
-          </Col>
-        </Row>
-        <Row>
-          <h2 className="headerBanner">Features</h2>
-        </Row>
-        <Row tag={FormGroup} check className="checkBoxTable">
-          <Col tag={Label} check xs={12}>
-            <Input
-              readOnly
-              type="radio"
-              disabled={!User.id}
-              checked={offline_mode}
-              onClick={() => this.handleOnClick("offline_mode")}
-            />
-            <span className="checkBoxText" id="ShowOfflineModeTooltip">
-              Offline mode
-            </span>
-            <Tooltip
-              placement="right"
-              isOpen={ShowOfflineModeTooltip}
-              target="ShowOfflineModeTooltip"
-              toggle={this.toggleTooltip}
-            >
-              Toggles frequent fetches of messages
-            </Tooltip>
-          </Col>
-        </Row>
-        <Row tag={FormGroup} check className="checkBoxTable">
-          <Col tag={Label} check xs={12}>
-            <Input
-              readOnly
-              type="radio"
-              disabled={!User.id}
-              checked={push_messages}
-              onClick={() => this.handleOnClick("push_messages")}
-            />
-            <span className="checkBoxText" id="ShowPushMessagesTooltip">
-              Push messages
-            </span>
-            <Tooltip
-              placement="right"
-              isOpen={ShowPushMessagesTooltip}
-              target="ShowPushMessagesTooltip"
-              toggle={this.toggleTooltip}
-            >
-              Toggles frequent fetches of messages
-            </Tooltip>
-          </Col>
-        </Row>
+        {this.renderSections(sections)}
       </Container>
     )
   }

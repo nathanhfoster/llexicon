@@ -67,19 +67,21 @@ class NavBar extends Component {
     const { UserId, UserLogout, isMobile, isInStandalone } = nextProps
     const navLinks = [
       {
-        route: NEW_ENTRY,
-        title: "NEW ENTRY",
-        icon: <i className="fas fa-feather-alt NavBarImage NavBarLink" />
-      },
-      {
         icon: (
-          <span>
+          <span className="NavBarLink">
             <i className="fas fa-book NavBarImage" />
             ENTRIES
           </span>
         ),
         links: [
           {
+            dropdownItem: true,
+            route: NEW_ENTRY,
+            title: "NEW ENTRY",
+            icon: <i className="fas fa-feather-alt NavBarImage" />
+          },
+          {
+            dropdownItem: true,
             route: CALENDAR,
             title: "CALENDAR",
             icon: <i className="fas fa-calendar-alt NavBarImage" />
@@ -88,7 +90,7 @@ class NavBar extends Component {
             dropdownItem: true,
             route: ENTRIES_DETAILED,
             title: "DETAILED",
-            icon: <i className="fas fa-feather-alt NavBarImage" />
+            icon: <i className="fas fa-newspaper NavBarImage" />
           },
           {
             dropdownItem: true,

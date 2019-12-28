@@ -22,6 +22,7 @@ import { DEFAULT_STATE_TEXT_EDITOR } from "../../store/Reducers/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
+  User,
   Calendar: { activeDate },
   TextEditor,
   Window: {
@@ -31,6 +32,7 @@ const mapStateToProps = ({
   Entries: { items }
 }) => ({
   entry: { ...TextEditor },
+  fluid: User.Settings.full_container_width,
   activeDate,
   innerHeight,
   viewPortHeight: availHeight,
@@ -84,8 +86,6 @@ class NewEntry extends PureComponent {
     }
   }
 
-  componentDidMount() {}
-
   handlePostEntry = async () => {
     const {
       PostReduxEntry,
@@ -131,10 +131,11 @@ class NewEntry extends PureComponent {
     this.props.SetCalendar({ activeDate })
 
   render() {
+    const { fluid } = this.props
     const { entry, editorHeight, activeDate, postDisabled } = this.state
 
     return (
-      <Container className="NewEntry Container">
+      <Container fluid={fluid} className="NewEntry Container">
         <Row>
           <Col xs={12} className="p-0">
             <InputGroup

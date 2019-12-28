@@ -25,6 +25,7 @@ const mapStateToProps = (
   }
 ) => ({
   UserId: User.id,
+  fluid: User.Settings.full_container_width,
   entry: items
     .concat(filteredItems)
     .filter(item => !item.shouldDelete)
@@ -62,9 +63,9 @@ class EntryDetail extends PureComponent {
   }
 
   render() {
-    const { entry, entryContainerHeight } = this.state
+    const { entry, entryContainerHeight, fluid } = this.state
     return entry ? (
-      <Container className="Container">
+      <Container fluid={fluid} className="Container">
         <Row>
           <Col xs={12} className="EntryDetail p-0">
             <Entry

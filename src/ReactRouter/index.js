@@ -30,7 +30,6 @@ const getRouteItems = props => {
     LOGIN,
     SIGNUP,
     PASSWORD_RESET,
-    ENTRY_ADD,
     SETTINGS,
     CALENDAR,
     ENTRY_DETAIL,
@@ -44,7 +43,6 @@ const getRouteItems = props => {
 
   return [
     { path: [ROOT, HOME], component: Home },
-    { path: [NEW_ENTRY, ENTRY_ADD], component: NewEntry },
     {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
       component: renderRedirectOrComponent(props, User.token, NEW_ENTRY, Login)
@@ -56,6 +54,7 @@ const getRouteItems = props => {
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {
       path: [
+        NEW_ENTRY,
         CALENDAR,
         ENTRIES,
         ENTRIES_MINIMAL,

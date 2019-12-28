@@ -5,7 +5,6 @@ const RouteMap = {
   NEW_ENTRY: "/new-entry",
   CALENDAR: "/calendar",
   ENTRY_DETAIL: "/calendar/:entryId",
-  ENTRY_ADD: "/entry/add",
   ENTRIES: "/entries",
   ENTRIES_MINIMAL: "/entries/minimal",
   ENTRIES_DETAILED: "/entries/detailed",

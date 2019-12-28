@@ -20,6 +20,7 @@ import BasicTable from "../../components/BasicTable"
 import BasicMap from "../../components/BasicMap"
 import Moment from "react-moment"
 import MomentJS from "moment"
+import NewEntry from "../NewEntry"
 import DiaryCalendar from "../DiaryCalendar"
 import "./styles.css"
 
@@ -34,6 +35,7 @@ const mapStateToProps = ({
   }
 }) => ({
   UserId: User.id,
+  fluid: User.Settings.full_container_width,
   entries: items
     .filter(item => !item.shouldDelete)
     .sort(
@@ -176,7 +178,7 @@ class Entries extends Component {
   handleFilter = (key, value) => {}
 
   render() {
-    const { history, viewPortHeight, SetEditorState } = this.props
+    const { history, viewPortHeight, SetEditorState, fluid } = this.props
     const {
       entries,
       minimalEntriesListHeight,
@@ -188,8 +190,18 @@ class Entries extends Component {
 
     const tabs = [
       {
+        tabId: RouteMap.NEW_ENTRY,
+        title: <i className="fas fa-feather-alt"></i>,
+        render: (
+          <Row>
+            <NewEntry />
+          </Row>
+        ),
+        onClickCallback: tabId => RouterPush(history, tabId)
+      },
+      {
         tabId: RouteMap.CALENDAR,
-        title: <i className="fas fa-calendar-alt NavBarImage"></i>,
+        title: <i className="fas fa-calendar-alt"></i>,
         render: (
           <Row>
             <DiaryCalendar />
@@ -199,7 +211,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_DETAILED,
-        title: <i className="fas fa-feather-alt" />,
+        title: <i className="fas fa-newspaper" />,
         render: (
           <Row>
             <EntriesDetailed
@@ -398,7 +410,7 @@ class Entries extends Component {
       }
     ]
 
-    return <BasicTabs fluid activeTab={activeTab} tabs={tabs} />
+    return <BasicTabs fluid={fluid} activeTab={activeTab} tabs={tabs} />
   }
 }
 export default withRouter(
