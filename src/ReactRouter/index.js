@@ -53,10 +53,10 @@ const getRouteItems = props => {
       path: [SETTINGS],
       component: Settings
     },
-    { path: [CALENDAR], component: DiaryCalendar },
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {
       path: [
+        CALENDAR,
         ENTRIES,
         ENTRIES_MINIMAL,
         ENTRIES_DETAILED,

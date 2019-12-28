@@ -20,6 +20,7 @@ import BasicTable from "../../components/BasicTable"
 import BasicMap from "../../components/BasicMap"
 import Moment from "react-moment"
 import MomentJS from "moment"
+import DiaryCalendar from "../DiaryCalendar"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -187,12 +188,18 @@ class Entries extends Component {
 
     const tabs = [
       {
-        tabId: RouteMap.ENTRIES_DETAILED,
-        title: (
-          <span>
-            <i className="fas fa-feather-alt" />
-          </span>
+        tabId: RouteMap.CALENDAR,
+        title: <i className="fas fa-calendar-alt NavBarImage"></i>,
+        render: (
+          <Row>
+            <DiaryCalendar />
+          </Row>
         ),
+        onClickCallback: tabId => RouterPush(history, tabId)
+      },
+      {
+        tabId: RouteMap.ENTRIES_DETAILED,
+        title: <i className="fas fa-feather-alt" />,
         render: (
           <Row>
             <EntriesDetailed
@@ -207,11 +214,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_MINIMAL,
-        title: (
-          <span>
-            <i className="fas fa-th-list" />
-          </span>
-        ),
+        title: <i className="fas fa-th-list" />,
         render: (
           <Fragment>
             <Row>
@@ -242,11 +245,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_TABLE,
-        title: (
-          <span>
-            <i className="fas fa-table" />
-          </span>
-        ),
+        title: <i className="fas fa-table" />,
         render: (
           <Row>
             <BasicTable
@@ -266,7 +265,7 @@ class Entries extends Component {
                     )
                 },
                 {
-                  title: <i className="fas fa-tags p-0" />,
+                  title: <i className="fas fa-tags" />,
                   dataIndex: "tags",
                   key: "id",
                   width: 80,
@@ -368,11 +367,7 @@ class Entries extends Component {
       {
         tabId: RouteMap.ENTRIES_MAP,
         unMountOnExit: true,
-        title: (
-          <span>
-            <i className="fas fa-map-marked-alt" />
-          </span>
-        ),
+        title: <i className="fas fa-map-marked-alt" />,
         render: (
           <Row>
             <BasicMap
@@ -403,16 +398,7 @@ class Entries extends Component {
       }
     ]
 
-    return (
-      <BasicTabs
-        fluid={
-          activeTab === RouteMap.ENTRIES_TABLE ||
-          activeTab === RouteMap.ENTRIES_MAP
-        }
-        activeTab={activeTab}
-        tabs={tabs}
-      />
-    )
+    return <BasicTabs fluid activeTab={activeTab} tabs={tabs} />
   }
 }
 export default withRouter(
