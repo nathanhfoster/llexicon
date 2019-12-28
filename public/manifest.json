@@ -30,8 +30,8 @@
   ],
   "background_color": "#29303b",
   "theme_color": "#29303b",
-  "start_url": "/calendar",
+  "start_url": "/new-entry",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "any"
 }
