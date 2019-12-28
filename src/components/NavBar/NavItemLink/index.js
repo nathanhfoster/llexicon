@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { NavItem, NavLink, DropdownItem } from "reactstrap"
 import { NavLink as RouterNavLink, withRouter } from "react-router-dom"
 import { RouterLinkPush } from "../../../ReactRouter/Routes"
-import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
 class NavItemLink extends Component {
@@ -23,15 +22,10 @@ class NavItemLink extends Component {
     render: PropTypes.object
   }
 
-  static defaultProps = { linkClicked: true, dropdownItem: false }
+  static defaultProps = { dropdownItem: false }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const linkClickedChanged = this.state.linkClicked !== nextState.linkClicked
-    return linkClickedChanged
-  }
-
-  componentDidMount() {
-    this.setState({ linkClicked: false })
+    return false
   }
 
   renderNavLink = ({
@@ -52,10 +46,9 @@ class NavItemLink extends Component {
             tag={RouterNavLink}
             to={RouterLinkPush(history, route)}
             onClick={() => {
-              this.setState({ linkClicked: true })
+              this.forceUpdate()
               onClick && onClick()
               onClickCallback && onClickCallback()
-              setTimeout(() => this.setState({ linkClicked: false }), 400)
             }}
           >
             {icon}
