@@ -61,7 +61,7 @@ class Login extends PureComponent {
       {
         tabId: LOGIN,
         title: "Login",
-        render: () => (
+        render: (
           <Jumbotron className="LoginFormContainer">
             <LogoImage center />
             <BasicForm
@@ -88,12 +88,12 @@ class Login extends PureComponent {
             <FacebookGoogleLogin />
           </Jumbotron>
         ),
-        onClickCallback: () => RouterPush(history, LOGIN)
+        onClickCallback: tabId => RouterPush(history, tabId)
       },
       {
         tabId: SIGNUP,
         title: "Sign up",
-        render: () => (
+        render: (
           <Jumbotron className="LoginFormContainer">
             <LogoImage center />
             <BasicForm
@@ -104,12 +104,12 @@ class Login extends PureComponent {
             <FacebookGoogleLogin />
           </Jumbotron>
         ),
-        onClickCallback: () => RouterPush(history, SIGNUP)
+        onClickCallback: tabId => RouterPush(history, tabId)
       },
       {
         tabId: PASSWORD_RESET,
         title: "Forgot password",
-        render: () => (
+        render: (
           <Jumbotron className="LoginFormContainer">
             <LogoImage center />
             <BasicForm
@@ -129,7 +129,7 @@ class Login extends PureComponent {
             <FacebookGoogleLogin />
           </Jumbotron>
         ),
-        onClickCallback: () => RouterPush(history, PASSWORD_RESET)
+        onClickCallback: tabId => RouterPush(history, tabId)
       }
     ]
 

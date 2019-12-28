@@ -149,7 +149,7 @@ class RadiusMap extends Component {
     resetProjects: PropTypes.func.isRequired,
     setProjectsSearchProps: PropTypes.func.isRequired,
     fetchProjectIfNeeded: PropTypes.func.isRequired,
-    setMapCenterBoundsZoom: PropTypes.func.isRequired,
+    setMapCenterBoundsZoom: PropTypes.func,
     fetchParlaySite: PropTypes.func.isRequired,
     setMapSites: PropTypes.func.isRequired,
     selectSite: PropTypes.func.isRequired,

@@ -62,7 +62,7 @@ class BottomToolbar extends PureComponent {
 
   static propTypes = {
     editorRef: PropTypes.object,
-    entey: PropTypes.object.isRequired,
+    entry: PropTypes.object.isRequired,
     onChangeCallback: PropTypes.func.isRequired
   }
 

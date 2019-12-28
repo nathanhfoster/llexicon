@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from "react"
+import React, { Component, Fragment } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { RouteMap } from "../../ReactRouter/Routes"
 import PropTypes from "prop-types"
@@ -21,6 +21,7 @@ import Hamburger from "./Hamburger"
 import Logo from "../../images/Logo.png"
 import AddToHomeScreen from "../AddToHomeScreen/"
 import NavItemLink from "./NavItemLink"
+import deepEquals from "../../helpers/deepEquals"
 
 const {
   NEW_ENTRY,
@@ -44,7 +45,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = { UserLogout, SetCalendar, GetUserEntriesByDate }
 
-class NavBar extends PureComponent {
+class NavBar extends Component {
   constructor(props) {
     super(props)
 
@@ -144,6 +145,11 @@ class NavBar extends PureComponent {
     return { UserId, UserLogout, isMobile, isInStandalone, navLinks }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const stateChanged = !deepEquals(this.state, nextState)
+    return stateChanged
+  }
+
   componentDidMount() {
     this.handleTodayClick()
   }
@@ -158,7 +164,11 @@ class NavBar extends PureComponent {
       link.links ? (
         this.renderDropDownMenu(`Dropdown-${i}`, link.icon, link.links)
       ) : (
-        <NavItemLink {...link} onClickCallback={this.closeHamburgerMenu} />
+        <NavItemLink
+          key={i}
+          {...link}
+          onClickCallback={this.closeHamburgerMenu}
+        />
       )
     )
 
@@ -180,6 +190,7 @@ class NavBar extends PureComponent {
 
   render() {
     const { collapsed, isMobile, isInStandalone, navLinks } = this.state
+
     return (
       <Navbar className="NavBar" fixed="top" expand="md">
         {isMobile && (

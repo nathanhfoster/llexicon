@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from "react"
+import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
@@ -18,11 +18,11 @@ import PageNotFound from "../views/PageNotFound"
 import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "./Routes"
 import { getRandomInt } from "../helpers"
+import deepEquals from "../helpers/deepEquals"
 import "./styles.css"
 
 const getRouteItems = props => {
-  const { User, history } = props
-  const { state } = history.location
+  const { User } = props
   const {
     HOME,
     ROOT,
@@ -56,7 +56,14 @@ const getRouteItems = props => {
     { path: [CALENDAR], component: DiaryCalendar },
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {
-      path: [ENTRIES, ENTRIES_MINIMAL, ENTRIES_DETAILED, ENTRIES_TABLE, ENTRIES_MAP, NEW_ENTRY],
+      path: [
+        ENTRIES,
+        ENTRIES_MINIMAL,
+        ENTRIES_DETAILED,
+        ENTRIES_TABLE,
+        ENTRIES_MAP,
+        NEW_ENTRY
+      ],
       component: Entries
     },
     { path: [PRIVACY_POLICY], component: PrivacyPolicy }
@@ -65,7 +72,9 @@ const getRouteItems = props => {
 
 const renderRedirectOrComponent = (props, shouldRedirect, route, Component) => {
   const { history } = props
-  return shouldRedirect ? () => <Redirect push to={RouterLinkPush(history, route)} /> : Component
+  return shouldRedirect
+    ? () => <Redirect push to={RouterLinkPush(history, route)} />
+    : Component
 }
 
 const mapStateToProps = ({
@@ -84,7 +93,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {}
 
-class ReactRouter extends PureComponent {
+class ReactRouter extends Component {
   constructor(props) {
     super(props)
 
@@ -114,6 +123,28 @@ class ReactRouter extends PureComponent {
       footerHeight,
       Settings
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const currentRouteOverlayHeight = this.state.routeOverlayHeight
+    const currentNavBarHeight = this.state.navBarHeight
+    const currentFooterHeight = this.state.footerHeight
+    const currentSettings = this.state.Settings
+
+    const {
+      routeOverlayHeight,
+      navBarHeight,
+      footerHeight,
+      Settings
+    } = nextState
+
+    const stateChanged =
+      currentRouteOverlayHeight !== routeOverlayHeight ||
+      currentNavBarHeight !== navBarHeight ||
+      currentFooterHeight !== footerHeight ||
+      !deepEquals(currentSettings, Settings)
+
+    return stateChanged
   }
 
   renderRouteItems = routeItems =>
@@ -167,4 +198,6 @@ class ReactRouter extends PureComponent {
     )
   }
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter))
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter)
+)

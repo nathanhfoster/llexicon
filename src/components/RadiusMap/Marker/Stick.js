@@ -110,7 +110,7 @@ Stick.propTypes = {
   inGroup: PropTypes.bool,
   center: PropTypes.arrayOf(PropTypes.number.isRequired),
   selectSite: PropTypes.func.isRequired,
-  setMapCenterBoundsZoom: PropTypes.func.isRequired,
+  setMapCenterBoundsZoom: PropTypes.func,
   renderUserLocation: PropTypes.bool,
   getAddressOnMarkerClick: PropTypes.bool.isRequired
 }

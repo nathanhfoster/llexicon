@@ -188,12 +188,12 @@ class Entries extends Component {
     const tabs = [
       {
         tabId: RouteMap.ENTRIES_DETAILED,
-        title: () => (
+        title: (
           <span>
             <i className="fas fa-feather-alt" />
           </span>
         ),
-        render: () => (
+        render: (
           <Row>
             <EntriesDetailed
               height={detailedEntriesListHeight}
@@ -203,16 +203,16 @@ class Entries extends Component {
             />
           </Row>
         ),
-        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_DETAILED)
+        onClickCallback: tabId => RouterPush(history, tabId)
       },
       {
         tabId: RouteMap.ENTRIES_MINIMAL,
-        title: () => (
+        title: (
           <span>
             <i className="fas fa-th-list" />
           </span>
         ),
-        render: () => (
+        render: (
           <Fragment>
             <Row>
               <EntriesMinimal
@@ -238,22 +238,22 @@ class Entries extends Component {
             </Row>
           </Fragment>
         ),
-        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MINIMAL)
+        onClickCallback: tabId => RouterPush(history, tabId)
       },
       {
         tabId: RouteMap.ENTRIES_TABLE,
-        title: () => (
+        title: (
           <span>
             <i className="fas fa-table" />
           </span>
         ),
-        render: () => (
+        render: (
           <Row>
             <BasicTable
               sortable
               columns={[
                 {
-                  title: () => <i className="fas fa-star" />,
+                  title: <i className="fas fa-star" />,
                   key: "rating",
                   width: 60,
                   render: item => <span className="ml-2">{item.rating}</span>,
@@ -266,7 +266,7 @@ class Entries extends Component {
                     )
                 },
                 {
-                  title: item => <i className="fas fa-tags p-0" />,
+                  title: <i className="fas fa-tags p-0" />,
                   dataIndex: "tags",
                   key: "id",
                   width: 80,
@@ -284,7 +284,7 @@ class Entries extends Component {
                 },
 
                 {
-                  title: title => <i className="fas fa-heading" />,
+                  title: <i className="fas fa-heading" />,
                   dataIndex: "title",
                   key: "title",
                   filter: searchValue => item =>
@@ -294,18 +294,18 @@ class Entries extends Component {
                   width: "25%"
                 },
                 {
-                  title: item => <i className="fas fa-keyboard" />,
+                  title: <i className="fas fa-keyboard" />,
                   key: "html",
                   render: item => stripHtml(item.html),
                   filter: "string"
                 },
                 {
-                  title: item => <i className="fas fa-map-marker-alt" />,
+                  title: <i className="fas fa-map-marker-alt" />,
                   key: "address",
                   filter: "string"
                 },
                 {
-                  title: () => <i className="far fa-eye" />,
+                  title: <i className="far fa-eye" />,
                   key: "views",
                   width: 60,
                   render: item => <span className="Center">{item.views}</span>,
@@ -313,7 +313,7 @@ class Entries extends Component {
                   filterPlaceholder: "<="
                 },
                 {
-                  title: () => <i className="fas fa-photo-video" />,
+                  title: <i className="fas fa-photo-video" />,
                   key: "EntryFiles",
                   width: 60,
                   render: item => (
@@ -329,7 +329,7 @@ class Entries extends Component {
                 },
 
                 {
-                  title: item => <i className="fas fa-calendar-day" />,
+                  title: <i className="fas fa-calendar-day" />,
                   dataIndex: "date_created_by_author",
                   key: "date_created_by_author",
                   width: 100,
@@ -363,17 +363,17 @@ class Entries extends Component {
             />
           </Row>
         ),
-        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_TABLE)
+        onClickCallback: tabId => RouterPush(history, tabId)
       },
       {
         tabId: RouteMap.ENTRIES_MAP,
         unMountOnExit: true,
-        title: () => (
+        title: (
           <span>
             <i className="fas fa-map-marked-alt" />
           </span>
         ),
-        render: () => (
+        render: (
           <Row>
             <BasicMap
               height={viewPortHeight - 54}
@@ -399,7 +399,7 @@ class Entries extends Component {
             />
           </Row>
         ),
-        onClickCallback: () => RouterPush(history, RouteMap.ENTRIES_MAP)
+        onClickCallback: tabId => RouterPush(history, tabId)
       }
     ]
 

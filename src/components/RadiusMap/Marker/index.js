@@ -42,7 +42,7 @@ class Marker extends Component {
     siteType: PropTypes.string,
     inGroup: PropTypes.bool,
     selectSite: PropTypes.func.isRequired,
-    setMapCenterBoundsZoom: PropTypes.func.isRequired,
+    setMapCenterBoundsZoom: PropTypes.func,
     renderUserLocation: PropTypes.bool,
     onChangeCallback: PropTypes.func.isRequired,
     getAddressOnMarkerClick: PropTypes.bool.isRequired

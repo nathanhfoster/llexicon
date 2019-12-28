@@ -19,7 +19,17 @@ class BasicForm extends PureComponent {
 
   static propTypes = {
     title: PropTypes.string,
-    inputs: PropTypes.arrayOf(PropTypes.object.isRequired),
+    inputs: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        defaultValue: PropTypes.string,
+        label: PropTypes.string,
+        type: PropTypes.string,
+        name: PropTypes.string,
+        placeholder: PropTypes.string,
+        check: PropTypes.bool
+      }).isRequired
+    ),
     onSubmit: PropTypes.func,
     submitLabel: PropTypes.string
   }

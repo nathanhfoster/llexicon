@@ -274,7 +274,7 @@ class Settings extends PureComponent {
           </Col>
         </Row>
         <Row tag={FormGroup} check className="checkBoxTable">
-          <Col ta={Label} check xs={12}>
+          <Col tag={Label} check xs={12}>
             <Input
               readOnly
               type="radio"

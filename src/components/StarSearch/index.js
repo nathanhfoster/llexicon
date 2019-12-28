@@ -43,7 +43,7 @@ class StarSearch extends Component {
     const { search } = nextState
     const searchChanged = prevSearch !== search
 
-    return propsChanges || searchChanged
+    return searchChanged
   }
 
   handleSearch = e => {

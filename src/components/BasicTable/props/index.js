@@ -5,6 +5,7 @@ const ColumnsPropType = PropTypes.arrayOf(
     title: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
+      PropTypes.object,
       PropTypes.func
     ]),
     dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

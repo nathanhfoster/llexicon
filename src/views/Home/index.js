@@ -32,7 +32,7 @@ class Home extends PureComponent {
         {
           title: "Notifications",
           text: "Daily motivation to journal your life.",
-          Component: () => (
+          render: (
             <svg
               aria-hidden="true"
               focusable="false"
@@ -55,7 +55,7 @@ class Home extends PureComponent {
         {
           title: "Offline",
           text: "Doesn't require an internet connections.",
-          Component: () => (
+          render: (
             <svg
               aria-hidden="true"
               focusable="false"
@@ -89,7 +89,7 @@ class Home extends PureComponent {
         {
           title: "Responsive",
           text: "UI fits the screen dimensions of any device.",
-          Component: () => (
+          render: (
             <svg
               aria-hidden="true"
               focusable="false"
@@ -112,7 +112,7 @@ class Home extends PureComponent {
         {
           title: "App-like",
           text: "Looks and interacts like a native app.",
-          Component: () => (
+          render: (
             <svg
               aria-hidden="true"
               focusable="false"
@@ -135,7 +135,7 @@ class Home extends PureComponent {
         {
           title: "Secure",
           text: "Always served over HTTPS.",
-          Component: () => (
+          render: (
             <svg
               aria-hidden="true"
               focusable="false"
@@ -163,7 +163,7 @@ class Home extends PureComponent {
 
   renderFeatures = features =>
     features.map((feature, i) => {
-      const { title, text, faIcon, Component } = feature
+      const { title, text, faIcon, render } = feature
 
       return (
         <Col key={i} md={3} sm={6} xs={12}>
@@ -172,7 +172,7 @@ class Home extends PureComponent {
               {typeof faIcon === "string" ? (
                 <i className={`HomeFeatureIcon ${faIcon}`} />
               ) : (
-                <Component />
+                render
               )}
             </CardHeader>
             <CardBody className="HomeFeatureBodyContainer">

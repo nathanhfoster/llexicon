@@ -35,9 +35,9 @@ class BasicTabs extends Component {
         unMountOnExit: PropTypes.bool,
         title: PropTypes.oneOfType([
           PropTypes.string.isRequired,
-          PropTypes.func
+          PropTypes.object
         ]),
-        render: PropTypes.func.isRequired,
+        render: PropTypes.object.isRequired,
         onClickCallback: PropTypes.func
       }).isRequired
     )
@@ -46,9 +46,9 @@ class BasicTabs extends Component {
   static defaultProps = {
     fluid: false,
     tabs: [
-      { tabId: 1, title: "1", render: () => <div>render 1</div> },
-      { tabId: 2, title: "2", render: () => <div>render 2</div> },
-      { tabId: 3, title: "3", render: () => <div>render 3</div> }
+      { tabId: 1, title: "1", render: <div>render 1</div> },
+      { tabId: 2, title: "2", render: <div>render 2</div> },
+      { tabId: 3, title: "3", render: <div>render 3</div> }
     ]
   }
 
@@ -69,7 +69,6 @@ class BasicTabs extends Component {
   renderNavItems = (activeTab, tabs) =>
     tabs.map(tab => {
       const { tabId, title, onClickCallback } = tab
-      const titleFunction = typeof title === "function" ? true : false
       return (
         <NavItem key={tabId}>
           <NavLink
@@ -80,7 +79,7 @@ class BasicTabs extends Component {
                 : this.handleTabChanged(tabId)
             }
           >
-            {titleFunction ? title(tab) : title}
+            {title}
           </NavLink>
         </NavItem>
       )
@@ -92,7 +91,7 @@ class BasicTabs extends Component {
       const shouldNotRender = unMountOnExit === true && activeTab !== tabId
       return shouldNotRender ? null : (
         <TabContent key={tabId} activeTab={activeTab} className={className}>
-          <TabPane tabId={tabId}>{render(tab)}</TabPane>
+          <TabPane tabId={tabId}>{render}</TabPane>
         </TabContent>
       )
     })
