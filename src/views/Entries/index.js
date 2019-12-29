@@ -142,7 +142,7 @@ class Entries extends Component {
     const { length } = entries
     const bottomOfListIndex = length === 0 ? length : length - 1
     const reachedBottomOfList =
-      bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
+      bottomOfListIndex !== 0 && visibleStopIndex === bottomOfListIndex
     // console.log("overscanStopIndex: ", overscanStopIndex)
     // console.log("visibleStopIndex: ", visibleStopIndex)
     // console.log("reachedBottomOfList: ", reachedBottomOfList)
