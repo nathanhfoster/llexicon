@@ -18,7 +18,10 @@ class TagsButtonModal extends PureComponent {
 
     const { tags } = props
 
-    this.state = { tagsAsString: tags.map(tag => tag.title).join(" ") }
+    this.state = {
+      tagsAsString: tags.map(tag => tag.title).join(" "),
+      typing: false
+    }
   }
 
   static propTypes = {
@@ -47,8 +50,7 @@ class TagsButtonModal extends PureComponent {
 
     return {
       EntryTags,
-      tags,
-      tagsAsString
+      tags
     }
   }
 
@@ -71,11 +73,20 @@ class TagsButtonModal extends PureComponent {
             currentState.tagsAsString.concat(`${title} `)
           )
         }
-      }
-      return {
-        tagsAsString: this.validatedString(
-          currentState.tagsAsString.concat(` ${title}`)
-        )
+      } else if (currentState.typing) {
+        let splitTagsAsStrings = currentState.tagsAsString.split(" ")
+        splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${title} `
+        return {
+          tagsAsString: this.validatedString(splitTagsAsStrings.join(" ")),
+          typing: false
+        }
+      } else {
+        return {
+          tagsAsString: this.validatedString(
+            currentState.tagsAsString.concat(` ${title}`)
+          ),
+          typing: false
+        }
       }
     })
   }
@@ -94,7 +105,7 @@ class TagsButtonModal extends PureComponent {
     // Remove double spaces and periods
     const newValue = this.validatedString(value)
 
-    this.setState({ tagsAsString: newValue })
+    this.setState({ tagsAsString: newValue, typing: true })
   }
 
   handleTagsSave = () => {
