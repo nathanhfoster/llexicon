@@ -71,7 +71,8 @@ class TagsButtonModal extends PureComponent {
         return {
           tagsAsString: this.validatedString(
             currentState.tagsAsString.concat(`${title} `)
-          )
+          ),
+          typing: false
         }
       } else if (currentState.typing) {
         let splitTagsAsStrings = currentState.tagsAsString.split(" ")
