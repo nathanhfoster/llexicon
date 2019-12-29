@@ -1,0 +1,19 @@
+/* .ql-size-extra-small, .ql-size span[data-value="extra-small"]::before {
+    font-size: 13px !important;
+  }
+  
+  .ql-size-small, .ql-size span[data-value="small"]::before {
+    font-size: 14px !important;
+  }
+
+  .ql-size-normal, .ql-size span[data-value="normal"]::before {
+    font-size: 16px !important;
+  }
+  
+  .ql-size-medium, .ql-size span[data-value="medium"]::before {
+    font-size: 18px !important;
+  }
+  
+  .ql-size-large, .ql-size span[data-value="large"]::before {
+    font-size: 20px !important;
+  } */

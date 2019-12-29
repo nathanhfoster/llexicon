@@ -1,4 +1,4 @@
-import React, { memo }  from "react"
+import React, { memo } from "react"
 import QuillSelect from "../../QuillSelect"
 
 const Headers = () => (

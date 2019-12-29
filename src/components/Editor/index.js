@@ -14,10 +14,6 @@ import BottomToolbar from "./BottomToolbar"
 
 const BlockEmbed = Quill.import("blots/block/embed")
 
-// const Size = Quill.import("formats/size")
-// Size.whitelist = ["extra-small", "small", "medium", "large"]
-// Quill.register(Size, true)
-
 class Video extends BlockEmbed {
   static create(value) {
     let node = super.create(value)
@@ -58,6 +54,31 @@ Video.blotName = "video"
 Video.className = "ql-video"
 Video.tagName = "div"
 
+const Size = Quill.import("attributors/style/size")
+Size.whitelist = [
+  "Header 1",
+  "Header 2",
+  "Header 3",
+  "Header 4",
+  "Header 5",
+  "8px",
+  "9px",
+  "10px",
+  "11px",
+  "12px",
+  "14px",
+  "16px",
+  "18px",
+  "20px",
+  "22px",
+  "24px",
+  "26px",
+  "28px",
+  "36px",
+  "48px",
+  "72px"
+]
+
 const Font = Quill.import("formats/font")
 Font.whitelist = [
   "roboto",
@@ -70,6 +91,8 @@ Font.whitelist = [
   "helvetica",
   "lucida"
 ]
+
+Quill.register(Size, true)
 
 Quill.register(Font, true)
 
