@@ -143,7 +143,6 @@ class Entries extends Component {
     const reachedBottomOfList =
       bottomOfListIndex !== 0 && visibleStopIndex === bottomOfListIndex
 
-    console.log(reachedBottomOfList)
     // console.log("overscanStopIndex: ", overscanStopIndex)
     // console.log("visibleStopIndex: ", visibleStopIndex)
     // console.log("reachedBottomOfList: ", reachedBottomOfList)
