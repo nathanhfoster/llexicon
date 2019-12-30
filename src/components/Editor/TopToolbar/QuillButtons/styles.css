@@ -6,3 +6,7 @@
 .ql-snow .ql-color-picker .ql-picker-label, .ql-snow .ql-icon-picker .ql-picker-label {
     padding: 2px;
 } */
+
+.ql-editor li:not(.ql-direction-rtl)::before {
+    margin-right: 0.75rem;
+}
