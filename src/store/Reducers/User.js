@@ -19,7 +19,7 @@ const DEFAULT_STATE_USER = {
   user_permissions: [],
   Settings: {
     show_footer: false,
-    full_container_width: true,
+    full_container_width: false,
     push_messages: false,
     offline_mode: false
   },
