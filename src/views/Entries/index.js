@@ -106,7 +106,6 @@ class Entries extends Component {
 
     return {
       entries,
-      nextEntryPage,
       minimalEntriesListHeight,
       detailedEntriesListHeight,
       listItemHeight,
@@ -143,6 +142,8 @@ class Entries extends Component {
     const bottomOfListIndex = length === 0 ? length : length - 1
     const reachedBottomOfList =
       bottomOfListIndex !== 0 && visibleStopIndex === bottomOfListIndex
+
+    console.log(reachedBottomOfList)
     // console.log("overscanStopIndex: ", overscanStopIndex)
     // console.log("visibleStopIndex: ", visibleStopIndex)
     // console.log("reachedBottomOfList: ", reachedBottomOfList)
@@ -154,8 +155,12 @@ class Entries extends Component {
   }
 
   GetEntries = () => {
-    const { SyncEntries, GetUserEntries, entriesSearch } = this.props
-    const { nextEntryPage } = this.state
+    const {
+      SyncEntries,
+      GetUserEntries,
+      entriesSearch,
+      nextEntryPage
+    } = this.props
 
     if (entriesSearch || !nextEntryPage) {
       return
@@ -178,14 +183,19 @@ class Entries extends Component {
   handleFilter = (key, value) => {}
 
   render() {
-    const { history, viewPortHeight, SetEditorState, fluid } = this.props
+    const {
+      history,
+      viewPortHeight,
+      SetEditorState,
+      fluid,
+      nextEntryPage
+    } = this.props
     const {
       entries,
       minimalEntriesListHeight,
       detailedEntriesListHeight,
       listItemHeight,
-      activeTab,
-      nextEntryPage
+      activeTab
     } = this.state
 
     const tabs = [
