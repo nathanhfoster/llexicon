@@ -149,6 +149,7 @@ class NavBar extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const stateChanged = !deepEquals(this.state, nextState)
+
     return stateChanged
   }
 

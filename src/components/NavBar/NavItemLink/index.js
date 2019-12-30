@@ -25,7 +25,12 @@ class NavItemLink extends Component {
   static defaultProps = { dropdownItem: false }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return false
+    const currentTitle = this.props.title
+    const { title } = nextProps
+
+    const titleChanged = currentTitle !== title
+
+    return titleChanged
   }
 
   renderNavLink = ({

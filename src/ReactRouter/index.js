@@ -128,22 +128,21 @@ class ReactRouter extends Component {
     const currentRouteOverlayHeight = this.state.routeOverlayHeight
     const currentNavBarHeight = this.state.navBarHeight
     const currentFooterHeight = this.state.footerHeight
-    const currentSettings = this.state.Settings
 
-    const {
-      routeOverlayHeight,
-      navBarHeight,
-      footerHeight,
-      Settings
-    } = nextState
+    const currentUser = this.props.User
+
+    const { routeOverlayHeight, navBarHeight, footerHeight } = nextState
+
+    const { User } = nextProps
+
+    const userChanged = !deepEquals(currentUser, User)
 
     const stateChanged =
       currentRouteOverlayHeight !== routeOverlayHeight ||
       currentNavBarHeight !== navBarHeight ||
-      currentFooterHeight !== footerHeight ||
-      !deepEquals(currentSettings, Settings)
+      currentFooterHeight !== footerHeight
 
-    return stateChanged
+    return userChanged || stateChanged
   }
 
   renderRouteItems = routeItems =>
