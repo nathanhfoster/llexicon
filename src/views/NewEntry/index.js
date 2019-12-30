@@ -93,17 +93,28 @@ class NewEntry extends PureComponent {
       ClearEditorState,
       entriesLength
     } = this.props
+
     const {
-      entry: { html, title, tags, rating, latitude, longitude, EntryFiles },
+      entry: {
+        html,
+        title,
+        tags,
+        rating,
+        address,
+        latitude,
+        longitude,
+        EntryFiles
+      },
       activeDate
     } = this.state
 
     const payload = {
       id: `NewEntry-${entriesLength}`,
       title,
-      html: html,
+      html,
       tags,
       rating,
+      address,
       latitude,
       longitude,
       date_created_by_author: activeDate,
