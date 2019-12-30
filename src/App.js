@@ -4,7 +4,6 @@ import { connect as reduxConnect } from "react-redux"
 import { SetWindow, SetAppVersion } from "./actions/App"
 import { WatchUserLocation } from "./actions/User"
 import { GetUserSettings } from "./actions/Settings"
-import { debounce } from "./helpers"
 
 const mapStateToProps = ({ User: { id } }) => ({
   UserId: id
@@ -52,7 +51,7 @@ class App extends PureComponent {
 
     // this.watchId = WatchUserLocation()
 
-    window.addEventListener("resize", debounce(this.updateWindowDimensions))
+    window.addEventListener("resize", this.updateWindowDimensions)
 
     this.updateWindowDimensions()
 
