@@ -17,12 +17,11 @@ import { filterMapArray } from "../../../../../helpers"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
-  AllEntryFiles: filterMapArray(
-    items
-      .concat(filteredItems)
-      .map(item => item.EntryFiles)
-      .flat(1)
-  ).sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
+  AllEntryFiles: items
+    .concat(filteredItems)
+    .map(item => item.EntryFiles)
+    .flat(1)
+    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
 })
 
 const mapDispatchToProps = {}
@@ -42,6 +41,7 @@ class MediaButtonModal extends PureComponent {
     let { html, AllEntryFiles } = nextProps
     const { url } = prevState
 
+    console.log(AllEntryFiles)
     const addUrlDisabled = false
 
     return { html, AllEntryFiles, url, addUrlDisabled }
