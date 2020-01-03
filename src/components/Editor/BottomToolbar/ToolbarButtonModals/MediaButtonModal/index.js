@@ -13,14 +13,16 @@ import {
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import EntryFilesCarousel from "../../../../EntryFilesCarousel"
+import { filterMapArray } from "../../../../../helpers"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
-  AllEntryFiles: items
-    .concat(filteredItems)
-    .map(item => item.EntryFiles)
-    .flat(1)
-    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
+  AllEntryFiles: filterMapArray(
+    items
+      .concat(filteredItems)
+      .map(item => item.EntryFiles)
+      .flat(1)
+  ).sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
 })
 
 const mapDispatchToProps = {}
