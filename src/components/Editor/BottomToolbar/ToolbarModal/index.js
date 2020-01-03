@@ -1,70 +1,33 @@
-import React, { useState, memo, Fragment } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import ToolbarButton from "../ToolbarButton"
-import "./styles.css"
+import BasicModal from "../../../BasicModal"
 
 const ToolbarModal = ({
-  modalTitle,
-  onClickCallback,
-  onSaveCallback,
-  onCancelCallback,
   ButtonIcon,
   buttonTitle,
   xs,
   children,
-  className,
   disabled = false,
-  saveDisabled = false,
-  Component
+  Component,
+  ...restOfProps
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const toggle = () => setIsOpen(!isOpen)
-
   return (
-    <Fragment>
-      <ToolbarButton
-        xs={xs}
-        onClickCallback={() => {
-          if (onClickCallback) onClickCallback()
-          toggle()
-        }}
-        ButtonIcon={ButtonIcon}
-        title={buttonTitle}
-        disabled={disabled}
-      >
-        {Component && <Component />}
-      </ToolbarButton>
-      <Modal
-        isOpen={isOpen}
-        toggle={toggle}
-        className="ToolbarModal"
-        size="lg"
-        centered
-        onClosed={onCancelCallback}
-      >
-        <ModalHeader toggle={toggle} className="Center">
-          {modalTitle}
-        </ModalHeader>
-        <ModalBody className={className}>{children}</ModalBody>
-        <ModalFooter className="Center">
-          <Button
-            color="primary"
-            onClick={() => {
-              onSaveCallback()
-              toggle()
-            }}
-            disabled={saveDisabled}
-          >
-            Save
-          </Button>{" "}
-          <Button color="danger" onClick={toggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
-    </Fragment>
+    <BasicModal
+      {...restOfProps}
+      ModalButton={
+        <ToolbarButton
+          xs={xs}
+          ButtonIcon={ButtonIcon}
+          title={buttonTitle}
+          disabled={disabled}
+        >
+          {Component && <Component />}
+        </ToolbarButton>
+      }
+    >
+      {children}
+    </BasicModal>
   )
 }
 
@@ -78,7 +41,7 @@ ToolbarModal.propTypes = {
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  saveDisabled: PropTypes.bool,
+  saveDisabled: PropTypes.bool
 }
 
 export default memo(ToolbarModal)

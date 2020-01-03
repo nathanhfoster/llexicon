@@ -1,8 +1,7 @@
-.EntryFilesCarousel {
-    height: var(--bottomToolbarFilesHeight);
-}
+.EntryFilesCarousel {}
 
 .EntryFilesCarouselImageContainer {
+    height: calc(500px - var(--inputHeight) - 20px);
     /* flex: 1;
     flex-wrap: wrap;
     flex-basis: 400px; */

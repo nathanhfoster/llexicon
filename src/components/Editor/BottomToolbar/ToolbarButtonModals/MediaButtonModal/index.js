@@ -45,14 +45,6 @@ class MediaButtonModal extends PureComponent {
     return { html, AllEntryFiles, url, addUrlDisabled }
   }
 
-  handleClick = () => {}
-
-  handleCancel = () => {}
-
-  handleSave = () => {
-    const { onChangeCallback } = this.props
-  }
-
   findFileType = url => {
     if (url.includes("youtube")) return "video"
     return "image"
@@ -88,9 +80,6 @@ class MediaButtonModal extends PureComponent {
       <ToolbarModal
         className="p-0"
         modalTitle="Add Media"
-        onClickCallback={this.handleClick}
-        onCancelCallback={this.handleCancel}
-        onSaveCallback={this.handleSave}
         ButtonIcon="fas fa-photo-video"
         buttonTitle="Add Media"
         xs={xs}
@@ -131,8 +120,8 @@ class MediaButtonModal extends PureComponent {
             files={AllEntryFiles}
             onChangeCallback={onChangeCallback}
             editorRef={editorRef}
-            overFlowX="hidden"
-            overFlowY="auto"
+            overflowX="hidden"
+            overflowY="auto"
             whiteSpace="wrap"
           />
         </Container>

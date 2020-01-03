@@ -38,12 +38,12 @@ class TagsButtonModal extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { EntryTags, tags } = nextProps
-    const { tagsAsString } = prevState
+    const { tagsAsString, typing } = prevState
 
     const splitTagsAsString = tagsAsString.split(" ")
     const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
-    if (lastTagAsString) {
+    if (typing && lastTagAsString) {
       EntryTags = EntryTags.filter(entryTag =>
         entryTag.title.toUpperCase().includes(lastTagAsString.toUpperCase())
       )

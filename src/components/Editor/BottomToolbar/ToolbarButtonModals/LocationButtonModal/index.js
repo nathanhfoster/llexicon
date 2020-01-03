@@ -16,7 +16,9 @@ class LocationButtonModal extends PureComponent {
   constructor(props) {
     super(props)
     this.watchId = null
-    this.state = {}
+
+    const { entry, UserLocation } = props
+    this.state = { entry, UserLocation }
   }
 
   static propTypes = {
@@ -40,9 +42,10 @@ class LocationButtonModal extends PureComponent {
     if (!(entry.latitude || entry.longitude)) {
       entry.latitude = UserLocation.latitude
       entry.longitude = UserLocation.longitude
+      return { entry, UserLocation }
     }
 
-    return { entry, UserLocation }
+    return null
   }
 
   componentWillUnmount() {

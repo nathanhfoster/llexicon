@@ -1,19 +1,19 @@
-.ToolbarModal {
+.BasicModal {
     /* position: fixed;
     top: 50%;
     left: 50%;
     transform-origin: (-50%, -50%); */
 }
 
-.ToolbarModal .modal-title {
+.BasicModal .modal-title {
     font-size: 2em;
 }
 
-.ToolbarModal .modal-header .close {
+.BasicModal .modal-header .close {
     display: none;
 }
 
-.ToolbarModal .modal-content {
+.BasicModal .modal-content {
     background: var(--slate_grey);
     color: var(--secondaryColor);
 }
