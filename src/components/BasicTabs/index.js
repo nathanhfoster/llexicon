@@ -32,7 +32,7 @@ class BasicTabs extends Component {
       PropTypes.shape({
         tabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
           .isRequired,
-        unMountOnExit: PropTypes.bool,
+        mountTabWhenActive: PropTypes.bool,
         title: PropTypes.oneOfType([
           PropTypes.string.isRequired,
           PropTypes.object
@@ -87,8 +87,8 @@ class BasicTabs extends Component {
 
   renderTabs = (activeTab, tabs) =>
     tabs.map(tab => {
-      const { tabId, render, unMountOnExit, className } = tab
-      const shouldNotRender = unMountOnExit === true && activeTab !== tabId
+      const { tabId, render, mountTabWhenActive, className } = tab
+      const shouldNotRender = mountTabWhenActive === true && activeTab !== tabId
       return shouldNotRender ? null : (
         <TabContent key={tabId} activeTab={activeTab} className={className}>
           <TabPane tabId={tabId}>{render}</TabPane>

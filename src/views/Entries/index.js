@@ -200,6 +200,7 @@ class Entries extends Component {
     const tabs = [
       {
         tabId: RouteMap.NEW_ENTRY,
+        mountTabWhenActive: true,
         title: <i className="fas fa-feather-alt"></i>,
         render: (
           <Row>
@@ -210,6 +211,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.CALENDAR,
+        mountTabWhenActive: true,
         title: <i className="fas fa-calendar-alt"></i>,
         render: (
           <Row>
@@ -220,6 +222,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_DETAILED,
+        mountTabWhenActive: true,
         title: <i className="fas fa-newspaper" />,
         render: (
           <Row>
@@ -235,6 +238,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_MINIMAL,
+        mountTabWhenActive: true,
         title: <i className="fas fa-th-list" />,
         render: (
           <Fragment>
@@ -266,6 +270,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_TABLE,
+        mountTabWhenActive: true,
         title: <i className="fas fa-table" />,
         render: (
           <Row>
@@ -387,7 +392,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_MAP,
-        unMountOnExit: true,
+        mountTabWhenActive: true,
         title: <i className="fas fa-map-marked-alt" />,
         render: (
           <Row>
