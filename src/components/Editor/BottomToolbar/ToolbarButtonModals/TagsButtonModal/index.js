@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -6,13 +6,14 @@ import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetEntryTags } from "../../../../../actions/Entries"
 import { removeArrayDuplicates } from "../../../../../helpers"
+import deepEquals from "../../../../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { EntryTags } }) => ({ EntryTags })
 
 const mapDispatchToProps = { GetEntryTags }
 
-class TagsButtonModal extends PureComponent {
+class TagsButtonModal extends Component {
   constructor(props) {
     super(props)
 
@@ -52,6 +53,11 @@ class TagsButtonModal extends PureComponent {
       EntryTags,
       tags
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const stateChanged = !deepEquals(this.state, nextState)
+    return stateChanged
   }
 
   componentDidMount() {
@@ -109,7 +115,7 @@ class TagsButtonModal extends PureComponent {
     this.setState({ tagsAsString: newValue, typing: true })
   }
 
-  handleTagsSave = () => {
+  handleClick = () => {
     const { onChangeCallback, EntryTags } = this.props
     const { tagsAsString, tags } = this.state
     const newTags = tagsAsString
@@ -120,6 +126,10 @@ class TagsButtonModal extends PureComponent {
     onChangeCallback({ tags: newTags })
   }
 
+  handleCancel = () => {
+    this.setState({ tagsAsString: "" })
+  }
+
   render() {
     const { xs } = this.props
     const { EntryTags, tagsAsString } = this.state
@@ -127,7 +137,8 @@ class TagsButtonModal extends PureComponent {
     return (
       <ToolbarModal
         modalTitle="Add Tags"
-        onSaveCallback={this.handleTagsSave}
+        onSaveCallback={this.handleClick}
+        onCancelCallback={this.handleCancel}
         ButtonIcon="fas fa-tags"
         buttonTitle="Add Tags"
         xs={xs}

@@ -57,14 +57,6 @@ class LocationButtonModal extends PureComponent {
     }
   }
 
-  handleCancel = () => {
-    const { WatchUserLocation, SetUserLocation } = this.props
-
-    if (this.watchId) {
-      WatchUserLocation(this.watchId)
-    }
-  }
-
   handleSave = () => {
     const { onChangeCallback } = this.props
     const {
@@ -77,6 +69,14 @@ class LocationButtonModal extends PureComponent {
         .catch(e => onChangeCallback({ latitude, longitude }))
     }
     this.handleCancel()
+  }
+
+  handleCancel = () => {
+    const { WatchUserLocation, SetUserLocation } = this.props
+
+    if (this.watchId) {
+      WatchUserLocation(this.watchId)
+    }
   }
 
   render() {

@@ -18,9 +18,9 @@ const ToolbarModal = ({
   saveDisabled = false,
   Component
 }) => {
-  const [modal, setModal] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
-  const toggle = () => setModal(!modal)
+  const toggle = () => setIsOpen(!isOpen)
 
   return (
     <Fragment>
@@ -36,9 +36,8 @@ const ToolbarModal = ({
       >
         {Component && <Component />}
       </ToolbarButton>
-
       <Modal
-        isOpen={modal}
+        isOpen={isOpen}
         toggle={toggle}
         className="ToolbarModal"
         size="lg"
@@ -79,7 +78,7 @@ ToolbarModal.propTypes = {
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  saveDisabled: PropTypes.bool
+  saveDisabled: PropTypes.bool,
 }
 
 export default memo(ToolbarModal)
