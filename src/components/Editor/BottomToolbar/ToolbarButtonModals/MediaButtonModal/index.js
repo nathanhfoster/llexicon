@@ -41,7 +41,6 @@ class MediaButtonModal extends PureComponent {
     let { html, AllEntryFiles } = nextProps
     const { url } = prevState
 
-    console.log(AllEntryFiles)
     const addUrlDisabled = false
 
     return { html, AllEntryFiles, url, addUrlDisabled }

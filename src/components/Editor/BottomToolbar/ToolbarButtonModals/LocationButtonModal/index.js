@@ -42,10 +42,9 @@ class LocationButtonModal extends PureComponent {
     if (!(entry.latitude || entry.longitude)) {
       entry.latitude = UserLocation.latitude
       entry.longitude = UserLocation.longitude
-      return { entry, UserLocation }
     }
 
-    return null
+    return { entry, UserLocation }
   }
 
   componentWillUnmount() {
