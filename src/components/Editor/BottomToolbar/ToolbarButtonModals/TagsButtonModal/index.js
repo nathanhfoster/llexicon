@@ -115,7 +115,7 @@ class TagsButtonModal extends Component {
     this.setState({ tagsAsString: newValue, typing: true })
   }
 
-  handleClick = () => {
+  handleSave = () => {
     const { onChangeCallback, EntryTags } = this.props
     const { tagsAsString, tags } = this.state
     const newTags = tagsAsString
@@ -127,7 +127,7 @@ class TagsButtonModal extends Component {
   }
 
   handleCancel = () => {
-    this.setState({ tagsAsString: "" })
+    // this.setState({ tagsAsString: "" })
   }
 
   render() {
@@ -137,7 +137,7 @@ class TagsButtonModal extends Component {
     return (
       <ToolbarModal
         modalTitle="Add Tags"
-        onSaveCallback={this.handleClick}
+        onSaveCallback={this.handleSave}
         onCancelCallback={this.handleCancel}
         ButtonIcon="fas fa-tags"
         buttonTitle="Add Tags"
