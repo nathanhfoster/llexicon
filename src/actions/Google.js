@@ -7,7 +7,7 @@ const GetAddress = (lat, lng) => {
   lng = parseFloat(lng.toString())
   return axios
     .get(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${lat}, ${lng}&key=${REACT_APP_GOOGLE_LOCATION_API}`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=${REACT_APP_GOOGLE_LOCATION_API}`
     )
     .then(res => {
       const {
