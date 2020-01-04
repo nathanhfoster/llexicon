@@ -147,7 +147,7 @@ class TagsButtonModal extends Component {
           <Row>
             <TagsContainer
               tags={EntryTags}
-              height={120}
+              height={200}
               flexWrap="wrap"
               onClickCallback={this.handleTagClick}
               hoverable
