@@ -144,7 +144,7 @@ class NewEntry extends PureComponent {
     const { entry, editorHeight, activeDate, postDisabled } = this.state
 
     return (
-      <Container fluid className="NewEntry Container">
+      <Container className="NewEntry Container">
         <Row>
           <Col xs={12} className="p-0">
             <InputGroup

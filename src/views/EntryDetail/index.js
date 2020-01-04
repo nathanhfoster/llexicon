@@ -64,7 +64,7 @@ class EntryDetail extends PureComponent {
   render() {
     const { entry, entryContainerHeight } = this.state
     return entry ? (
-      <Container fluid className="Container">
+      <Container className="Container">
         <Row>
           <Col xs={12} className="EntryDetail p-0">
             <Entry

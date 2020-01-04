@@ -432,7 +432,17 @@ class Entries extends Component {
       }
     ]
 
-    return <BasicTabs fluid activeTab={activeTab} tabs={tabs} />
+    return (
+      <BasicTabs
+        fluid={
+          activeTab === RouteMap.CALENDAR ||
+          activeTab === RouteMap.ENTRIES_TABLE ||
+          activeTab === RouteMap.ENTRIES_MAP
+        }
+        activeTab={activeTab}
+        tabs={tabs}
+      />
+    )
   }
 }
 export default withRouter(
