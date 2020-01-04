@@ -27,12 +27,19 @@ class RatingButtonModal extends PureComponent {
 
   static defaultProps = {}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { rating, savedRating } = prevState
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    const ratingChanged = prevProps.rating !== this.props.rating
+    if (ratingChanged) {
+      return this.props.rating
+    }
 
-    const ButtonIcon = () => <RatingIcon rating={rating} />
+    return null
+  }
 
-    return { rating, savedRating, ButtonIcon }
+  componentDidUpdate(prevProps, prevState, rating) {
+    if (rating) {
+      this.setState({ rating })
+    }
   }
 
   handleClick = () => {}
@@ -88,7 +95,9 @@ class RatingButtonModal extends PureComponent {
 
   render() {
     const { xs } = this.props
-    const { rating, ButtonIcon } = this.state
+    const { rating } = this.state
+
+    const ButtonIcon = () => <RatingIcon rating={rating} />
 
     return (
       <ToolbarModal
