@@ -395,6 +395,7 @@ class Entries extends Component {
         render: (
           <Row>
             <BasicMap
+              renderUserLocation
               height={viewPortHeight - 54}
               locations={entries}
               getAddressOnMarkerClick
@@ -403,12 +404,21 @@ class Entries extends Component {
                 else if (entryId === "NewEntry") {
                   SetEditorState({
                     id: entryId,
-                    title: entryId,
+                    title: "",
                     address,
                     latitude,
                     longitude
                   })
-                } else if (entryId !== "MyLocation") {
+                } else if (entryId === "MyLocation") {
+                  SetEditorState({
+                    id: entryId,
+                    title: "",
+                    address,
+                    latitude,
+                    longitude
+                  })
+                  return RouterPush(history, RouteMap.NEW_ENTRY)
+                } else {
                   return RouterPush(
                     history,
                     RouteMap.ENTRY_DETAIL.replace(":entryId", `${entryId}`)

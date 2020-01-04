@@ -77,7 +77,7 @@ class LocationButtonModal extends PureComponent {
     const { WatchUserLocation, SetUserLocation } = this.props
 
     if (this.watchId) {
-      WatchUserLocation(this.watchId)
+      this.watchId = WatchUserLocation(this.watchId)
     }
   }
 
@@ -99,6 +99,7 @@ class LocationButtonModal extends PureComponent {
       >
         <Container fluid className="LocationButtonModal p-0">
           <BasicMap
+            renderUserLocation
             entry={entry}
             getAddressOnMarkerClick
             onChangeCallback={onChangeCallback}
