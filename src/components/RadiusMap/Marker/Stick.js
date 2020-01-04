@@ -32,7 +32,7 @@ const infoClick = ({
       longitude: lng
     })
   } else {
-    GetAddress(lat, lat)
+    GetAddress(lat, lng)
       .then(address =>
         onChangeCallback({
           entryId: $dimensionKey,

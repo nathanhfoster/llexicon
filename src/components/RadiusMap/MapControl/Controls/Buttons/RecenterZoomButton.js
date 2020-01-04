@@ -20,7 +20,7 @@ class RecenterZoomButton extends PureComponent {
   componentWillUnmount() {
     const { WatchUserLocation } = this.props
     if (this.watchId) {
-      WatchUserLocation(this.watchId)
+      this.watchId = WatchUserLocation(this.watchId)
     }
   }
 
