@@ -73,7 +73,11 @@ class Settings extends PureComponent {
 
     const sections = [
       {
-        title: "Appearance",
+        title: (
+          <span>
+            Appearance <i className="fas fa-user-astronaut" />
+          </span>
+        ),
         inputs: [
           {
             settingKey: "show_footer",
@@ -86,7 +90,11 @@ class Settings extends PureComponent {
         ]
       },
       {
-        title: "Features",
+        title: (
+          <span>
+            Features <i className="fas fa-space-shuttle" />
+          </span>
+        ),
         inputs: [
           {
             settingKey: "offline_mode",
@@ -184,7 +192,10 @@ class Settings extends PureComponent {
       <Container className="Settings Container">
         <Row>
           <Col xs={12}>
-            <h1 className="pageHeader">SETTINGS</h1>
+            <h1 className="pageHeader Center">
+              <i className="fa fa-cog mr-2" />
+              SETTINGS
+            </h1>
           </Col>
         </Row>
         <Row>
