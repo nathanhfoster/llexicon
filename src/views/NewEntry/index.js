@@ -32,7 +32,6 @@ const mapStateToProps = ({
   Entries: { items }
 }) => ({
   entry: { ...TextEditor },
-  fluid: User.Settings.full_container_width,
   activeDate,
   innerHeight,
   viewPortHeight: availHeight,
@@ -142,11 +141,10 @@ class NewEntry extends PureComponent {
     this.props.SetCalendar({ activeDate })
 
   render() {
-    const { fluid } = this.props
     const { entry, editorHeight, activeDate, postDisabled } = this.state
 
     return (
-      <Container fluid={fluid} className="NewEntry Container">
+      <Container fluid className="NewEntry Container">
         <Row>
           <Col xs={12} className="p-0">
             <InputGroup

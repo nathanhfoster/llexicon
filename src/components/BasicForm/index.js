@@ -21,7 +21,8 @@ class BasicForm extends PureComponent {
     title: PropTypes.string,
     inputs: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+          .isRequired,
         defaultValue: PropTypes.string,
         label: PropTypes.string,
         type: PropTypes.string,
@@ -67,18 +68,16 @@ class BasicForm extends PureComponent {
 
   handleSubmit = e => {
     e.preventDefault()
-    const {
-      inputs: { length }
-    } = this.state
+    const { inputs } = this.state
     const { onSubmit } = this.props
     let payload = {}
 
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < inputs.length; i++) {
       const { id, value, type, checked } = e.target[i]
       if (value) {
         payload[id] = value
       } else if (type === "radio") {
-        console.log("RADIO: ", checked)
+        // console.log("RADIO: ", checked)
         payload[id] = checked
       }
     }
@@ -97,7 +96,7 @@ class BasicForm extends PureComponent {
           <Input
             defaultValue={defaultValue}
             type={type}
-            name={name}
+            name={name || id}
             id={id}
             placeholder={placeholder}
           />

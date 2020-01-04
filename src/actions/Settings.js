@@ -17,8 +17,8 @@ const GetUserSettings = () => (dispatch, getState) => {
     .catch(e => console.log(e))
 }
 
-const PostSettings = payload => dispatch =>
-  AxiosOffline()
+const PostSettings = payload => dispatch => {
+  return AxiosOffline()
     .post(`user/settings/`, qs.stringify(payload))
     .then(res => {
       dispatch({
@@ -27,9 +27,10 @@ const PostSettings = payload => dispatch =>
       })
     })
     .catch(e => console.log("PostSettings: ", e.response))
-
+}
 const SetSettings = payload => (dispatch, getState) => {
   const { id } = getState().User.Settings
+
   return AxiosOffline()
     .patch(`user/settings/${id}/`, qs.stringify(payload))
     .then(res => {

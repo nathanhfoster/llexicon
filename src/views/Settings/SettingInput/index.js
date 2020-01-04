@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { Row, Col, FormGroup, Label, Input, Tooltip } from "reactstrap"
+import { FormGroup, Label, Input, FormText, Tooltip } from "reactstrap"
 import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
@@ -47,18 +47,19 @@ class SettingInput extends Component {
     const { checked, isOpen } = this.state
 
     return (
-      <Row tag={FormGroup} check className="checkBoxTable">
-        <Col tag={Label} check xs={12}>
+      <FormGroup check>
+        <Label check inline >
           <Input
             readOnly
+            name={settingKey}
             type="radio"
             disabled={disabled}
             checked={checked}
             onClick={() => onClickCallback(settingKey)}
           />
-          <span className="checkBoxText" id={settingKey}>
+          <FormText color="white" className="checkBoxText" id={settingKey}>
             {title}
-          </span>
+          </FormText>
           <Tooltip
             placement="right"
             isOpen={isOpen}
@@ -67,8 +68,8 @@ class SettingInput extends Component {
           >
             {tooltipTitle}
           </Tooltip>
-        </Col>
-      </Row>
+        </Label>
+      </FormGroup>
     )
   }
 }

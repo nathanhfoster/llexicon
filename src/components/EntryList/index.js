@@ -4,8 +4,8 @@ import { connect as reduxConnect } from "react-redux"
 import { ListGroup, ListGroupItem, Container, Row, Col } from "reactstrap"
 import Moment from "react-moment"
 import MomentJS from "moment"
-import { removeAttributeDuplicates } from "../../helpers"
 import { RouterPush } from "../../ReactRouter/Routes"
+import { RouteMap } from "../../ReactRouter/Routes"
 import Star from "../BackgroundImage/Star"
 import TagsContainer from "../TagsContainer"
 import "./styles.css"
@@ -66,7 +66,12 @@ class EntryList extends PureComponent {
             <Row
               tag={ListGroupItem}
               key={id}
-              onClick={() => RouterPush(history, `/calendar/${id}`)}
+              onClick={() =>
+                RouterPush(
+                  history,
+                  RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
+                )
+              }
               className="listItem"
               header={title}
             >

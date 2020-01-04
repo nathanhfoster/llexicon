@@ -203,12 +203,6 @@ class ReactDatePicker extends PureComponent {
     return { selected: new Date(selected), ...resOfProps }
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
-
   render() {
     const {
       calendarClassName,

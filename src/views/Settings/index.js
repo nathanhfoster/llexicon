@@ -1,17 +1,8 @@
-import React, { PureComponent, Fragment } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import ImportEntries from "../../components/ImportEntries"
-import {
-  Container,
-  Row,
-  Col,
-  FormGroup,
-  Label,
-  Input,
-  Tooltip,
-  Button
-} from "reactstrap"
+import { Container, Row, Col, Button, Form, FormGroup } from "reactstrap"
 import { UpdateUser } from "../../actions/User"
 import {
   GetUserSettings,
@@ -43,9 +34,9 @@ const handleOnClick = (settingKey, props) => {
       })
 }
 
-const mapStateToProps = ({ User, Entries }) => ({
+const mapStateToProps = ({ User, Entries: { items, filteredItems } }) => ({
   User,
-  entries: Entries.items
+  entries: items.concat(filteredItems)
 })
 
 const mapDispatchToProps = {
@@ -59,20 +50,12 @@ class Settings extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {
-      ShowFooterTooltip: false,
-      ShowContainerWidthTooltip: false,
-      ShowPushMessagesTooltip: false,
-      ShowOfflineModeTooltip: false
-    }
+    this.state = {}
   }
 
   static propTypes = {
-    Settings: PropTypes.object,
-    ShowFooterTooltip: PropTypes.bool,
-    ShowContainerWidthTooltip: PropTypes.bool,
-    ShowPushMessagesTooltip: PropTypes.bool,
-    ShowOfflineModeTooltip: PropTypes.bool,
+    User: PropTypes.object.isRequired,
+    entries: PropTypes.arrayOf(PropTypes.object).isRequired,
     UpdateUser: PropTypes.func.isRequired,
     GetUserSettings: PropTypes.func.isRequired,
     PostSettings: PropTypes.func.isRequired,
@@ -82,15 +65,10 @@ class Settings extends PureComponent {
   static defaultProps = {}
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { User } = nextProps
-    
+    const { User, entries } = nextProps
+
     const {
-      Settings: {
-        show_footer,
-        full_container_width,
-        offline_mode,
-        push_messages
-      }
+      Settings: { show_footer, offline_mode, push_messages }
     } = User
 
     const sections = [
@@ -104,15 +82,6 @@ class Settings extends PureComponent {
             onClickCallback: key => handleOnClick(key, nextProps),
             title: "Show footer",
             tooltipTitle: "Toggles the view of the footer"
-          },
-          {
-            settingKey: "full_container_width",
-            disabled: !User.id,
-            checked: full_container_width,
-            onClickCallback: key => handleOnClick(key, nextProps),
-            title: "Full container width",
-            tooltipTitle:
-              "Toggles containers from being 100% the width of the screen or with padding"
           }
         ]
       },
@@ -138,7 +107,7 @@ class Settings extends PureComponent {
         ]
       }
     ]
-    return { User, sections }
+    return { User, entries, sections }
   }
 
   componentDidMount() {
@@ -153,12 +122,10 @@ class Settings extends PureComponent {
     sections.map((section, i) => {
       const { title, inputs } = section
       return (
-        <Fragment key={i}>
-          <Row>
-            <h2 className="headerBanner">{title}</h2>
-          </Row>
+        <FormGroup key={i} tag="fieldset">
+          <legend className="headerBanner">{title}</legend>
           {this.renderInputs(inputs)}
-        </Fragment>
+        </FormGroup>
       )
     })
 
@@ -240,7 +207,6 @@ class Settings extends PureComponent {
                 {
                   label: "Username",
                   type: "text",
-                  name: "username",
                   id: "username",
                   placeholder: "Username...",
                   defaultValue: User.username
@@ -248,7 +214,6 @@ class Settings extends PureComponent {
                 {
                   label: "email",
                   type: "email",
-                  name: "email",
                   id: "email",
                   placeholder: "Email...",
                   defaultValue: User.email
@@ -256,7 +221,6 @@ class Settings extends PureComponent {
                 {
                   label: "First name",
                   type: "text",
-                  name: "first_name",
                   id: "first_name",
                   placeholder: "First Name...",
                   defaultValue: User.first_name
@@ -264,7 +228,6 @@ class Settings extends PureComponent {
                 {
                   label: "Last name",
                   type: "text",
-                  name: "last_name",
                   id: "last_name",
                   placeholder: "Last name...",
                   defaultValue: User.last_name
@@ -272,7 +235,6 @@ class Settings extends PureComponent {
                 {
                   label: "Password",
                   type: "password",
-                  name: "password",
                   id: "password",
                   placeholder: "Password..."
                 }
@@ -287,8 +249,7 @@ class Settings extends PureComponent {
             />
           </Col>
         </Row>
-
-        {this.renderSections(sections)}
+        <Form>{this.renderSections(sections)}</Form>
       </Container>
     )
   }
