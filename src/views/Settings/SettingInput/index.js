@@ -1,8 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { FormGroup, Label, Input, FormText, Tooltip } from "reactstrap"
+import { FormGroup, Label, Input, Tooltip } from "reactstrap"
 import deepEquals from "../../../helpers/deepEquals"
-import "./styles.css"
 
 class SettingInput extends Component {
   constructor(props) {
@@ -48,7 +47,7 @@ class SettingInput extends Component {
 
     return (
       <FormGroup check>
-        <Label check inline >
+        <Label check inline>
           <Input
             readOnly
             name={settingKey}
@@ -57,9 +56,7 @@ class SettingInput extends Component {
             checked={checked}
             onClick={() => onClickCallback(settingKey)}
           />
-          <FormText color="white" className="checkBoxText" id={settingKey}>
-            {title}
-          </FormText>
+          <span id={settingKey}>{title}</span>
           <Tooltip
             placement="right"
             isOpen={isOpen}
