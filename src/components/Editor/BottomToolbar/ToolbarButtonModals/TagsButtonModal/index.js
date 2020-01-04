@@ -109,10 +109,12 @@ class TagsButtonModal extends Component {
 
   handleTagsInputChange = e => {
     const { value } = e.target
+    // Replace commas
+    const string = value.replace(",", " ")
     // Remove double spaces and periods
-    const newValue = this.validatedString(value)
+    const validatedString = this.validatedString(string)
 
-    this.setState({ tagsAsString: newValue, typing: true })
+    this.setState({ tagsAsString: validatedString, typing: true })
   }
 
   handleSave = () => {
