@@ -28,7 +28,10 @@ class RatingButtonModal extends PureComponent {
   static defaultProps = {}
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
-    const ratingChanged = prevProps.rating !== this.props.rating
+    const ratingChanged =
+      prevProps.rating !== this.props.rating &&
+      this.props.rating !== this.state.rating
+      
     if (ratingChanged) {
       return this.props.rating
     }
