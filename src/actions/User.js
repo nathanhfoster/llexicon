@@ -1,5 +1,6 @@
 import { ReduxActions } from "../constants"
 import { Axios, AxiosForm } from "."
+import { saveReduxState } from "../store/Persister/persist"
 import qs from "qs"
 
 const {
@@ -13,8 +14,8 @@ const {
 
 const ChangeUser = payload => ({ type: USER_SET, payload })
 
-const UserLogin = (payload, rememberMe) => dispatch =>
-  Axios()
+const UserLogin = (payload, rememberMe) => async dispatch =>
+  await Axios()
     .post("login/", qs.stringify(payload))
     .then(res => {
       const { id, token } = res.data
@@ -23,6 +24,8 @@ const UserLogin = (payload, rememberMe) => dispatch =>
         type: USER_SET,
         payload: res.data
       })
+      dispatch(saveReduxState())
+      return res.data
     })
     .catch(e => console.log("UserLogin: ", e.response))
 
