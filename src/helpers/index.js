@@ -183,8 +183,43 @@ const getImageBase64 = image =>
 
 const htmlToArrayOfBase64 = html => {
   const [first, ...data] = html.split("data:")
-  const arrayOfBase64 = data.map(e => `data:${e.split('"')[0]}`)
+  const arrayOfBase64 = data.reduce((result, e) => {
+    const url = `data:${e.split('"')[0]}`
+    return isDecodable(url, { allowMime: true }) ? result.concat(url) : result
+  }, [])
+
   return arrayOfBase64
+}
+
+const isDecodable = (str, opts) => {
+  if (str instanceof Boolean || typeof str === "boolean") {
+    return false
+  }
+
+  if (!(opts instanceof Object)) {
+    opts = {}
+  }
+
+  if (opts.allowEmpty === false && str === "") {
+    return false
+  }
+
+  var regex =
+    "(?:[A-Za-z0-9+\\/]{4})*(?:[A-Za-z0-9+\\/]{2}==|[A-Za-z0-9+/]{3}=)?"
+  var mimeRegex = "(data:\\w+\\/[a-zA-Z\\+\\-\\.]+;base64,)"
+
+  if (opts.mimeRequired === true) {
+    regex = mimeRegex + regex
+  } else if (opts.allowMime === true) {
+    regex = mimeRegex + "?" + regex
+  }
+
+  if (opts.paddingRequired === false) {
+    regex =
+      "(?:[A-Za-z0-9+\\/]{4})*(?:[A-Za-z0-9+\\/]{2}(==)?|[A-Za-z0-9+\\/]{3}=?)?"
+  }
+
+  return new RegExp("^" + regex + "$", "gi").test(str)
 }
 
 const htmlToArrayOfFiles = (html, filename) =>
@@ -197,7 +232,6 @@ const getImageBlob = image =>
   new Promise((resolve, reject) => resolve(window.URL.createObjectURL(image)))
 
 const getFileFromBase64 = (dataurl, filename) => {
-  if (!dataurl.includes("data")) return dataurl
   var arr = dataurl.split(","),
     mime = arr[0].match(/:(.*?);/)[1],
     type = mime.split("/")[1],
@@ -405,6 +439,7 @@ export {
   getCanvasImageBase64,
   getImageBase64,
   htmlToArrayOfBase64,
+  isDecodable,
   htmlToArrayOfFiles,
   getImageBlob,
   getFileFromBase64,
