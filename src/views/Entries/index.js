@@ -276,17 +276,39 @@ class Entries extends Component {
               sortable
               columns={[
                 {
-                  title: <i className="fas fa-star" />,
-                  key: "rating",
-                  width: 60,
-                  render: item => <span className="ml-2">{item.rating}</span>,
-                  filter: "number",
-                  filterPlaceholder: "<=",
+                  title: <i className="fas fa-calendar-day" />,
+                  dataIndex: "date_created_by_author",
+                  key: "date_created_by_author",
+                  width: 100,
                   onRowClick: item =>
                     RouterPush(
                       history,
                       RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
-                    )
+                    ),
+                  render: item => (
+                    <Moment format="D MMM YY">
+                      {item.date_created_by_author}
+                    </Moment>
+                  ),
+                  sort: (a, b, sortUp) =>
+                    sortUp
+                      ? new Date(b.date_created_by_author) -
+                        new Date(a.date_created_by_author)
+                      : new Date(a.date_created_by_author) -
+                        new Date(b.date_created_by_author),
+                  filter: searchValue => item => {
+                    if (searchValue) {
+                      const momentCreatedByAuthor = MomentJS(
+                        item.date_created_by_author
+                      )
+                      const momentOfSearchValue = MomentJS(searchValue)
+
+                      return momentCreatedByAuthor >= momentOfSearchValue
+                    } else {
+                      return true
+                    }
+                  },
+                  filterPlaceholder: "<="
                 },
                 {
                   title: <i className="fas fa-tags" />,
@@ -336,6 +358,14 @@ class Entries extends Component {
                   filterPlaceholder: "<="
                 },
                 {
+                  title: <i className="fas fa-star" />,
+                  key: "rating",
+                  width: 60,
+                  render: item => <span className="ml-2">{item.rating}</span>,
+                  filter: "number",
+                  filterPlaceholder: "<="
+                },
+                {
                   title: <i className="fas fa-photo-video" />,
                   key: "EntryFiles",
                   width: 60,
@@ -348,37 +378,6 @@ class Entries extends Component {
                       : a.EntryFiles.length - b.EntryFiles.length,
                   filter: searchValue => item =>
                     item.EntryFiles.length >= searchValue,
-                  filterPlaceholder: "<="
-                },
-
-                {
-                  title: <i className="fas fa-calendar-day" />,
-                  dataIndex: "date_created_by_author",
-                  key: "date_created_by_author",
-                  width: 100,
-                  render: item => (
-                    <Moment format="D MMM YY">
-                      {item.date_created_by_author}
-                    </Moment>
-                  ),
-                  sort: (a, b, sortUp) =>
-                    sortUp
-                      ? new Date(b.date_created_by_author) -
-                        new Date(a.date_created_by_author)
-                      : new Date(a.date_created_by_author) -
-                        new Date(b.date_created_by_author),
-                  filter: searchValue => item => {
-                    if (searchValue) {
-                      const momentCreatedByAuthor = MomentJS(
-                        item.date_created_by_author
-                      )
-                      const momentOfSearchValue = MomentJS(searchValue)
-
-                      return momentCreatedByAuthor >= momentOfSearchValue
-                    } else {
-                      return true
-                    }
-                  },
                   filterPlaceholder: "<="
                 }
               ]}
