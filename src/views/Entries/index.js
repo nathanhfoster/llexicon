@@ -390,7 +390,7 @@ class Entries extends Component {
       },
       {
         tabId: RouteMap.ENTRIES_MAP,
-        // mountTabWhenActive: true,
+        mountTabWhenActive: true,
         title: <i className="fas fa-map-marked-alt" />,
         render: (
           <Row>
