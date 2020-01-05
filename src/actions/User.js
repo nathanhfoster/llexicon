@@ -1,6 +1,7 @@
 import { ReduxActions } from "../constants"
 import { Axios, AxiosForm } from "."
 import { saveReduxState } from "../store/Persister/persist"
+import { GetUserEntries } from "./Entries"
 import qs from "qs"
 
 const {
@@ -25,6 +26,7 @@ const UserLogin = (payload, rememberMe) => async dispatch =>
         payload: res.data
       })
       dispatch(saveReduxState())
+      dispatch(GetUserEntries(1))
       return res.data
     })
     .catch(e => console.log("UserLogin: ", e.response))

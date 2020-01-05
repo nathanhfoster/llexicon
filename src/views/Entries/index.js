@@ -25,7 +25,6 @@ import DiaryCalendar from "../DiaryCalendar"
 import "./styles.css"
 
 const mapStateToProps = ({
-  User,
   Entries: { items, next, search },
   TextEditor,
   Window: {
@@ -34,7 +33,6 @@ const mapStateToProps = ({
     navBarHeight
   }
 }) => ({
-  UserId: User.id,
   entries: items
     .filter(item => !item.shouldDelete)
     .sort(
@@ -62,7 +60,6 @@ class Entries extends Component {
   }
 
   static propTypes = {
-    UserId: PropTypes.number,
     SyncEntries: PropTypes.func.isRequired,
     GetAllUserEntries: PropTypes.func.isRequired,
     GetUserEntries: PropTypes.func.isRequired,
@@ -115,14 +112,6 @@ class Entries extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const propsChanged = !deepEquals(this.props, nextProps)
     return propsChanged
-  }
-
-  componentDidMount() {
-    const { UserId, SyncEntries, GetUserEntries } = this.props
-    const { entries } = this.state
-    if (UserId && entries.length === 0) {
-      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
-    }
   }
 
   handleDeleteEntry = id => {
@@ -253,12 +242,7 @@ class Entries extends Component {
                   <i className="fas fa-cloud-download-alt" /> Load More
                 </Button>
               )}
-
-              <Button
-                color="accent"
-                onClick={this.GetAllEntries}
-                disabled={!nextEntryPage}
-              >
+              <Button color="accent" onClick={this.GetAllEntries}>
                 <i className="fas fa-cloud-download-alt" /> Load All
               </Button>
             </Row>

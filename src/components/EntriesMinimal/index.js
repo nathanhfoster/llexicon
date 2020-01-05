@@ -27,15 +27,10 @@ class EntriesMinimal extends Component {
     itemSize: 92
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { entries } = nextProps
-    return { entries }
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !deepEquals(this.state, nextState)
+    const entriesChanged = !deepEquals(this.props.entries, nextProps.entries)
 
-    return stateChanged
+    return entriesChanged
   }
 
   renderMinimalEntries = ({ data, index, style, isScrolling }) => {
@@ -49,8 +44,7 @@ class EntriesMinimal extends Component {
   }
 
   render() {
-    const { onItemsRendered, height, width, itemSize } = this.props
-    const { entries } = this.state
+    const { onItemsRendered, height, width, itemSize, entries } = this.props
 
     return (
       <FixedSizeList

@@ -19,6 +19,11 @@ import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "./Routes"
 import { getRandomInt } from "../helpers"
 import deepEquals from "../helpers/deepEquals"
+import {
+  SyncEntries,
+  GetAllUserEntries,
+  GetUserEntries
+} from "../actions/Entries"
 import "./styles.css"
 
 const getRouteItems = props => {
@@ -90,7 +95,7 @@ const mapStateToProps = ({
   footerHeight
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { SyncEntries, GetAllUserEntries, GetUserEntries }
 
 class ReactRouter extends Component {
   constructor(props) {
@@ -99,7 +104,12 @@ class ReactRouter extends Component {
     this.state = {}
   }
 
-  static propTypes = { User: PropTypes.objectOf(PropTypes.any) }
+  static propTypes = {
+    User: PropTypes.objectOf(PropTypes.any),
+    SyncEntries: PropTypes.func.isRequired,
+    GetAllUserEntries: PropTypes.func.isRequired,
+    GetUserEntries: PropTypes.func.isRequired
+  }
 
   static defaultProps = {}
 
@@ -143,6 +153,14 @@ class ReactRouter extends Component {
       currentFooterHeight !== footerHeight
 
     return userChanged || stateChanged
+  }
+
+  componentDidMount() {
+    const { User, SyncEntries, GetUserEntries } = this.props
+  
+    if (User.id) {
+      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
+    }
   }
 
   renderRouteItems = routeItems =>
