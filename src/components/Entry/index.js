@@ -100,7 +100,7 @@ class Entry extends Component {
               type="text"
               name="title"
               id="title"
-              placeholder="Dear Diary..."
+              placeholder="Entry title..."
               value={entry.title}
               onChange={e => {
                 const title = e.target.value

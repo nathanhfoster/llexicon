@@ -157,7 +157,7 @@ class NewEntry extends PureComponent {
                 type="text"
                 name="title"
                 id="title"
-                placeholder="Dear Diary..."
+                placeholder="Entry title..."
                 value={entry.title}
                 onChange={this.handleInputChange}
               />
