@@ -77,7 +77,7 @@ class TableHeader extends PureComponent {
             <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
           )}
           {shouldRenderSortContainer && (
-            <div style={{}}>
+            <div>
               <Input
                 className="TableHeaderSortInput"
                 disabled={!filter}

@@ -36,18 +36,20 @@ const EntryMinimal = ({
       fluid
       tag={Badge}
       className="EntryMinimal p-2"
-      onClick={() =>
-        RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
-      }
+      onClick={() => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))}
     >
       <Row>
-        <Col xs={8} md={9} lg={10} className="EntryMinimalDetail">
+        <Col xs={12} className="EntryMinimalDetail">
           <Star size={14} animation={false} opacity={1} />
           <span className="ml-1">{title}</span>
         </Col>
-        <Col xs={4} md={3} lg={2} className="EntryMinimalTime">
+        <Col xs={6} className="EntryMinimalTime">
           <i className="fas fa-calendar-day mr-1" />
           <Moment format="D MMM YY">{date_created_by_author}</Moment>
+        </Col>
+        <Col xs={6} className="EntryMinimalTime">
+          <i className="fas fa-pencil-alt mr-1" />
+          <Moment format="D MMM YY HH:MMa">{lastUpdated || date_updated}</Moment>
         </Col>
 
         <Col xs={12} className="EntryMinimalDetail mt-1 mb-1">
@@ -80,10 +82,7 @@ EntryMinimal.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   title: PropTypes.string,
   html: PropTypes.string,
-  date_created_by_author: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.instanceOf(Date)
-  ]),
+  date_created_by_author: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
   EntryFiles: PropTypes.arrayOf(PropTypes.object)
 }
 

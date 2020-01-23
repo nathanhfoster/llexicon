@@ -17,13 +17,11 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    text-align: left;
     min-height: 21px;
 }
 
 .EntryMinimalTime, .EntryMinimalTime time {
     font-size: 1.25em;
     font-weight: 200;
-    text-align: right;
 }
 
