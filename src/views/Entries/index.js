@@ -260,7 +260,7 @@ class Entries extends Component {
                   key: "date_updated",
                   width: 130,
                   render: item => (
-                    <Moment format="HH:MMa MMM D YY">{item.lastUpdated || item.date_updated}</Moment>
+                    <Moment format="hh:mma MMM D YY">{item.lastUpdated || item.date_updated}</Moment>
                   ),
                   sort: (a, b, sortUp) =>
                     sortUp
