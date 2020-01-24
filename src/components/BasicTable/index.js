@@ -12,7 +12,24 @@ class BasicTable extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { sortKey: null, sortUp: false, filterMap: {} }
+    const { columns } = props
+
+    let onRowClick = null
+
+    const firstRowClickFound = columns.find(column => column.onRowClick)
+
+    if (firstRowClickFound) {
+      onRowClick = firstRowClickFound.onRowClick
+    }
+
+    const hover = onRowClick ? true : false
+
+    this.state = { 
+      sortKey: null,
+      sortUp: false,
+      filterMap: {},
+      onRowClick,
+     }
   }
 
   static propTypes = {
@@ -92,39 +109,25 @@ class BasicTable extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { data, columns } = nextProps
 
-    let { sort, sortKey, sortUp, filterMap } = prevState
+    const { sort, sortKey, sortUp, filterMap } = prevState
 
-    let sortedData = null
+    let newData = null
 
     if (sortKey) {
-      sortedData = tableSort(data, sort, sortKey, sortUp)
+      newData = tableSort(data, sort, sortKey, sortUp)
     }
 
     if (Object.keys(filterMap).length > 0) {
-      if (sortedData) {
-        sortedData = tableFilter(sortedData, filterMap)
+      if (newData) {
+        newData = tableFilter(newData, filterMap)
       } else {
-        sortedData = tableFilter(data, filterMap)
+        newData = tableFilter(data, filterMap)
       }
     }
 
-    let onRowClick = null
-
-    const firstRowClickFound = columns.find(column => column.onRowClick)
-
-    if (firstRowClickFound) {
-      onRowClick = firstRowClickFound.onRowClick
-    }
-
-    const hover = onRowClick ? true : false
-
     return {
       columns,
-      data: sortedData || data,
-      sortKey,
-      sortUp,
-      hover,
-      onRowClick
+      data: newData || data
     }
   }
 
