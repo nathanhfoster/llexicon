@@ -22,13 +22,12 @@ class BasicTable extends Component {
       onRowClick = firstRowClickFound.onRowClick
     }
 
-    const hover = onRowClick ? true : false
-
     this.state = { 
       sortKey: null,
       sortUp: false,
       filterMap: {},
       onRowClick,
+
      }
   }
 
@@ -59,7 +58,6 @@ class BasicTable extends Component {
     borderless: true,
     striped: false,
     dark: true,
-    hover: false,
     responsive: true,
     columns: [
       {
@@ -159,7 +157,7 @@ class BasicTable extends Component {
       dark,
       responsive
     } = this.props
-    const { columns, data, hover, onRowClick } = this.state
+    const { columns, data, onRowClick } = this.state
 
     return (
       <Table
@@ -167,7 +165,7 @@ class BasicTable extends Component {
         borderless={borderless}
         striped={striped}
         dark={dark}
-        hover={hover}
+        hover={onRowClick}
         responsive={responsive}
         className="BasicTable"
       >
