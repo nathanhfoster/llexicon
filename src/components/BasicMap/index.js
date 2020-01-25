@@ -72,7 +72,6 @@ class BasicMap extends PureComponent {
       entry,
       renderUserLocation,
       UserLocation,
-
       locations
     } = nextProps
 

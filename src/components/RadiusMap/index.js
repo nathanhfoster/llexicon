@@ -1,29 +1,29 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
-import GoogleMap from 'google-map-react'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
+import GoogleMap from "google-map-react"
 
-import Marker from './Marker'
-import MarkerCluster from './MarkerCluster'
+import Marker from "./Marker"
+import MarkerCluster from "./MarkerCluster"
 
-import PolygonSystem from './PolygonSystem'
-import DrawingManager from './DrawingManager'
-import MapControl from './MapControl'
-import LocationList from '../../components/LocationList'
-import fitCoordsToBounds from './functions/fitCoordsToBounds'
+import PolygonSystem from "./PolygonSystem"
+import DrawingManager from "./DrawingManager"
+import MapControl from "./MapControl"
+import LocationList from "../../components/LocationList"
+import fitCoordsToBounds from "./functions/fitCoordsToBounds"
 import {
   resetProject,
   resetProjects,
   setProjectsSearchProps,
   fetchProjectIfNeeded
-} from '../../../actions/ProjectActions'
+} from "../../../actions/ProjectActions"
 import {
   setMapCenterBoundsZoom,
   fetchParlaySite,
   setMapSites,
   selectSite,
   resetMap
-} from '../../../actions/MetaActions'
+} from "../../../actions/MetaActions"
 import {
   GOOGLE_MAP_CONTROL_POSITIONS,
   GOOGLE_MAP_TYPE_CONTROL_STYLE,
@@ -37,14 +37,14 @@ import {
   DEFAULT_PARLAY_MIN_ZOOM,
   DEFAULT_PARLAY_MAX_ZOOM,
   DEFAULT_MAP_OPTIONS
-} from './constants'
-import { K_CIRCLE_SIZE, K_STICK_SIZE } from './Marker/styles'
-import styles from './styles'
-import deepEquals from '../../helpers/deepEquals'
-import createClusters from './functions/createClusters'
-import formatLocations from './functions/formatLocations'
-import zoomWithinRange from './functions/zoomWithinRange'
-import './styles.css'
+} from "./constants"
+import { K_CIRCLE_SIZE, K_STICK_SIZE } from "./Marker/styles"
+import styles from "./styles"
+import deepEquals from "../../helpers/deepEquals"
+import createClusters from "./functions/createClusters"
+import formatLocations from "./functions/formatLocations"
+import zoomWithinRange from "./functions/zoomWithinRange"
+import "./styles.css"
 
 const mapStateToProps = ({
   projects: {
@@ -84,13 +84,7 @@ class RadiusMap extends Component {
   mousePosRef = { x: null, y: null, lat: null, lng: null } // Used so we don't have to update state and rerender
   constructor(props) {
     super(props)
-    let {
-      shouldShowParlay,
-      showParlayMinZoom,
-      showParlayMaxZoom,
-      options,
-      shouldFitCoordsToBounds
-    } = props
+    let { shouldShowParlay, showParlayMinZoom, showParlayMaxZoom, options, shouldFitCoordsToBounds } = props
 
     options = { ...DEFAULT_MAP_OPTIONS, ...options }
 
@@ -104,7 +98,7 @@ class RadiusMap extends Component {
     }
 
     this.state = {
-      hoveredChildKey: '',
+      hoveredChildKey: "",
       showingInfoWindow: false,
       zooming: false,
       shouldRenderPolygons: true,
@@ -193,9 +187,9 @@ class RadiusMap extends Component {
   }
 
   static defaultProps = {
-    toggleKey: '', // Refreshes map instance if this changes
-    height: '100%',
-    width: '100%',
+    toggleKey: "", // Refreshes map instance if this changes
+    height: "100%",
+    width: "100%",
     center: CENTER_OF_US,
     defaultCenter: CENTER_OF_US,
     bounds: {
@@ -394,7 +388,7 @@ class RadiusMap extends Component {
   onChildMouseLeave = key => {
     // console.log('onChildMouseLeave: ', key)
     const { setHoveredChildKey } = this.props
-    if (setHoveredChildKey) setHoveredChildKey('')
+    if (setHoveredChildKey) setHoveredChildKey("")
   }
   onZoomAnimationStart = () => {
     // console.log('onZoomAnimationStart')
@@ -511,14 +505,7 @@ class RadiusMap extends Component {
   }
 
   renderPolygons = polygonClusters => {
-    const {
-      shouldRenderPolygons,
-      drawingMode,
-      bounds,
-      mapInstance,
-      mapApi,
-      hoveredChildKey
-    } = this.state
+    const { shouldRenderPolygons, drawingMode, bounds, mapInstance, mapApi, hoveredChildKey } = this.state
     if (!shouldRenderPolygons || drawingMode || !mapInstance) {
       return null
     } else {
@@ -580,9 +567,7 @@ class RadiusMap extends Component {
       sites
     } = this.props
 
-    const hasUserDefinedSite = sites.find(
-      site => site.siteType === 'USER_DEFINED' && site._attached
-    )
+    const hasUserDefinedSite = sites.find(site => site.siteType === "USER_DEFINED" && site._attached)
     const shouldRenderParlayMapButton = id && !hasUserDefinedSite
     const shouldShowDrawingModeButton =
       shouldRenderParlayMapButton && sites.filter(site => site._attached).length === 0
@@ -698,7 +683,7 @@ class RadiusMap extends Component {
         style={{
           height,
           width,
-          display: 'flex'
+          display: "flex"
         }}
       >
         {shouldRenderLocationList && (
@@ -718,7 +703,7 @@ class RadiusMap extends Component {
         )}
         <div
           style={styles(shouldRenderLocationList).GoogleMapWrapper}
-          className={drawingMode ? 'CursorStyle' : ''}
+          className={drawingMode ? "CursorStyle" : ""}
         >
           <GoogleMap
             ref={ref => (this.mapRef = ref)}

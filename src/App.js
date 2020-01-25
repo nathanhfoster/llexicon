@@ -35,10 +35,6 @@ class App extends PureComponent {
     GetUserSettings
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   componentDidMount() {
     const {
       WatchUserLocation,

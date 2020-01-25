@@ -18,12 +18,6 @@ class TableBody extends PureComponent {
 
   static defaultProps = {}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { columns, data, onRowClick } = nextProps
-
-    return { columns, data, onRowClick }
-  }
-
   renderTableRows = (columns, data, onRowClick) => {
     if (columns.length === 0 || data.length === 0) return null
 
@@ -48,7 +42,7 @@ class TableBody extends PureComponent {
   }
 
   render() {
-    const { columns, data, onRowClick } = this.state
+    const { columns, data, onRowClick } = this.props
 
     return <tbody>{this.renderTableRows(columns, data, onRowClick)}</tbody>
   }

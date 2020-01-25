@@ -22,13 +22,12 @@ class BasicTable extends Component {
       onRowClick = firstRowClickFound.onRowClick
     }
 
-    this.state = { 
+    this.state = {
       sortKey: null,
       sortUp: false,
       filterMap: {},
-      onRowClick,
-
-     }
+      onRowClick
+    }
   }
 
   static propTypes = {
@@ -45,11 +44,7 @@ class BasicTable extends Component {
     hover: PropTypes.bool,
     responsive: PropTypes.bool,
     // Custom ref handler that will be assigned to the "ref" of the inner <table> element
-    innerRef: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.string,
-      PropTypes.object
-    ])
+    innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object])
   }
 
   static defaultProps = {
@@ -86,11 +81,8 @@ class BasicTable extends Component {
         key: "user_name",
         render: item => <a href="#">{`Delete ${item.user_name}`}</a>,
         sort: (a, b, sortUp) =>
-          sortUp
-            ? b.user_name.localeCompare(a.user_name)
-            : a.user_name.localeCompare(b.user_name),
-        filter: searchValue => item =>
-          item.user_name.toUpperCase().includes(searchValue.toUpperCase())
+          sortUp ? b.user_name.localeCompare(a.user_name) : a.user_name.localeCompare(b.user_name),
+        filter: searchValue => item => item.user_name.toUpperCase().includes(searchValue.toUpperCase())
       }
     ],
     data: new Array(25).fill().map(
@@ -149,14 +141,7 @@ class BasicTable extends Component {
   }
 
   render() {
-    const {
-      sortable,
-      bordered,
-      borderless,
-      striped,
-      dark,
-      responsive
-    } = this.props
+    const { sortable, bordered, borderless, striped, dark, responsive } = this.props
     const { columns, data, onRowClick } = this.state
 
     return (
@@ -171,20 +156,13 @@ class BasicTable extends Component {
       >
         <TableHeader
           sortable={sortable}
-          sortCallback={(sortKey, sort, sortUp) =>
-            this.handleSort(sortKey, sort, sortUp)
-          }
+          sortCallback={(sortKey, sort, sortUp) => this.handleSort(sortKey, sort, sortUp)}
           filterCallback={(filterKey, searchValue, filter) =>
             this.handleFilter(filterKey, searchValue, filter)
           }
           columns={columns}
         />
-        <TableBody
-          sortable={sortable}
-          onRowClick={onRowClick}
-          columns={columns}
-          data={data}
-        />
+        <TableBody sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} />
       </Table>
     )
   }

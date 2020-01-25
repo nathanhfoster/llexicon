@@ -62,10 +62,6 @@ class BasicForm extends PureComponent {
     submitLabel: "Submit"
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   handleSubmit = e => {
     e.preventDefault()
     const { inputs } = this.state
@@ -105,7 +101,7 @@ class BasicForm extends PureComponent {
     })
 
   render() {
-    const { title, inputs, submitLabel } = this.state
+    const { title, inputs, submitLabel } = this.props
     return (
       <Form onSubmit={this.handleSubmit} method="post">
         {title && <h2 className="Center">{title}</h2>}

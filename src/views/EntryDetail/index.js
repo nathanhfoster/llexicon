@@ -50,19 +50,13 @@ class EntryDetail extends PureComponent {
 
   static defaultProps = {}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
-  }
-
   componentDidMount() {
     const { entryId, SyncEntries, GetUserEntryDetails } = this.props
-    SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntryDetails(entryId)))
-    )
+    SyncEntries(() => new Promise(resolve => resolve(GetUserEntryDetails(entryId))))
   }
 
   render() {
-    const { entry, entryContainerHeight } = this.state
+    const { entry, entryContainerHeight } = this.props
     return entry ? (
       <Container className="Container">
         <Row>
@@ -81,6 +75,4 @@ class EntryDetail extends PureComponent {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail))

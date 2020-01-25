@@ -21,12 +21,6 @@ class TableHeader extends PureComponent {
 
   static defaultProps = {}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { columns } = nextProps
-    const { sortKey, sortUp } = prevState
-    return { columns, sortKey, sortUp }
-  }
-
   handleSortCallback = (key, sort) => {
     const { sortCallback } = this.props
 
@@ -52,16 +46,7 @@ class TableHeader extends PureComponent {
     const { sortKey, sortUp } = this.state
     const shouldRenderSortContainer = columns.find(c => c.filter)
     return columns.map((column, i) => {
-      const {
-        title,
-        dataIndex,
-        key,
-        width,
-        render,
-        sort,
-        filter,
-        filterPlaceholder
-      } = column
+      const { title, dataIndex, key, width, render, sort, filter, filterPlaceholder } = column
       const titleFunction = typeof title === "function"
       const showSort = sortKey === key
       return (
@@ -73,23 +58,16 @@ class TableHeader extends PureComponent {
           onClick={sortable ? () => this.handleSortCallback(key, sort) : null}
         >
           {titleFunction ? title(column) : title}
-          {sortable && showSort && (
-            <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
-          )}
+          {sortable && showSort && <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />}
           {shouldRenderSortContainer && (
             <div>
               <Input
                 className="TableHeaderSortInput"
                 disabled={!filter}
                 onClick={e => e.stopPropagation()}
-                onChange={e =>
-                  filterCallback(dataIndex || key, e.target.value, filter)
-                }
+                onChange={e => filterCallback(dataIndex || key, e.target.value, filter)}
                 placeholder={
-                  filter
-                    ? filterPlaceholder ||
-                      `${capitalizeFirstLetter(dataIndex || key)} filter`
-                    : null
+                  filter ? filterPlaceholder || `${capitalizeFirstLetter(dataIndex || key)} filter` : null
                 }
               />
             </div>
@@ -100,7 +78,7 @@ class TableHeader extends PureComponent {
   }
 
   render() {
-    const { columns } = this.state
+    const { columns } = this.props
     return (
       <thead>
         <tr>{this.renderColumnHeaders(columns)}</tr>
