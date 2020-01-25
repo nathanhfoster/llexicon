@@ -1,21 +1,10 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  Button
-} from "reactstrap"
+import { Container, Row, Col } from "reactstrap"
 import RatingIcon from "../../components/RatingIcon"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
-import Moment from "react-moment"
+
 import MomentJs from "moment"
 import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
@@ -183,14 +172,14 @@ class Home extends PureComponent {
           <Col xs={12}>
             <h4>Tag Count</h4>
           </Col>
-          {this.renderTagCounts(tagCountMap)}
         </Row>
+        <Row style={{ maxHeight: 180, overflowY: "auto" }}>{this.renderTagCounts(tagCountMap)}</Row>
         <Row>
           <Col xs={12}>
             <h4>Average Time Updating Entires</h4>
           </Col>
-          {this.renderAverageTimesUpdatingEntries(averageTimesUpdatingEntries)}
         </Row>
+        <Row>{this.renderAverageTimesUpdatingEntries(averageTimesUpdatingEntries)}</Row>
       </Container>
     )
   }
