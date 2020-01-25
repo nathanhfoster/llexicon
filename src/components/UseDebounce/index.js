@@ -1,5 +1,5 @@
-import { Component } from "react"
-import PropTypes from "prop-types"
+import { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class UseDebounce extends Component {
   constructor(props) {
@@ -8,7 +8,7 @@ class UseDebounce extends Component {
   }
 
   static propTypes = {
-    onChangeCallback: PropTypes.func,
+    onChangeCallback: PropTypes.func.isRequired,
     value: PropTypes.any,
     delay: PropTypes.number
   }
@@ -20,7 +20,6 @@ class UseDebounce extends Component {
   shouldComponentUpdate(nextProps) {
     const previousValue = this.props.value
     const nextValue = nextProps.value
-    if (!this.props.value) return true
     const valueChanged = previousValue !== nextValue
     return valueChanged
   }
@@ -33,9 +32,7 @@ class UseDebounce extends Component {
   componentDidUpdate() {
     const { onChangeCallback, value, delay } = this.props
 
-    if (onChangeCallback) {
-      this.debounce = setTimeout(() => onChangeCallback(value), delay)
-    }
+    this.debounce = setTimeout(() => onChangeCallback(value), delay)
   }
 
   render() {

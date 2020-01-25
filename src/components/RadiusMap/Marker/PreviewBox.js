@@ -1,13 +1,13 @@
-import React, { memo } from "react"
+import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import moment from "moment"
-import { K_CIRCLE_SIZE } from "./styles"
+import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from "./styles"
 import TagContainer from "../../../components/TagsContainer"
 
 const HEIGHT = 100
 const WIDTH = 200
 
-const previewBoxStyle = {
+const styles = {
   display: "block",
   margin: "auto",
   padding: "6px",
@@ -19,18 +19,14 @@ const previewBoxStyle = {
   position: "absolute",
   left: -(WIDTH / 2) + 16,
   bottom: K_CIRCLE_SIZE - 2,
-  transform: "perspective(1px) translate3d(0, 0, 0) scale3d(1.5, 1.5, 1)",
-  transition: "-webkit-transform .425s cubic-bezier(0.485, 1.65, 0.545, 0.835)",
-  willChange: "transform",
-  backgroundRepeat: "no-repeat",
-  backfaceVisibility: "hidden",
-  WebkitFontSmoothing: "subpixel-antialiased",
   zIndex: 999,
   backgroundColor: "white",
   color: "black",
   boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
   borderRadius: 4
 }
+
+const mountedStyles = { ...styles, ...K_POP_UP_ANIMATION }
 
 const lineStyle = {
   marginTop: 8,
@@ -56,51 +52,70 @@ const rightColumn = {
   right: 0
 }
 
-const PreviewBox = ({
-  $dimensionKey,
-  clientName,
-  lastActivity,
-  title,
-  date_created_by_author,
-  lastUpdated,
-  address,
-  tags,
-  ...rest
-}) => {
-  if ($dimensionKey === "MyLocation") {
-    title = "Me"
-  }
-  date_created_by_author = moment(date_created_by_author || lastUpdated).format(
-    "MM/DD/YYYY"
-  )
+class PreviewBox extends PureComponent {
+  constructor(props) {
+    super(props)
 
-  return (
-    <div style={previewBoxStyle}>
-      <div>{title}</div>
-      <div>{address}</div>
-      {tags && (
-        <div>
-          <TagContainer tags={tags} />
-        </div>
-      )}
-      <div style={lineStyle}>
-        <div style={leftColumn}>
-          <i>Date</i>
-        </div>
-        <div style={rightColumn}>
-          <i>{date_created_by_author}</i>
+    this.state = {
+      styles
+    }
+  }
+
+  static propTypes = {
+    $dimensionKey: PropTypes.string,
+    clientName: PropTypes.string,
+    siteDescription: PropTypes.string,
+    score: PropTypes.number,
+    lastActivity: PropTypes.string
+  }
+
+  static defaultProps = {}
+
+  componentDidMount() {
+    setTimeout(() => this.setState({ styles: mountedStyles }), 10)
+  }
+
+  render() {
+    let {
+      $dimensionKey,
+      clientName,
+      lastActivity,
+      title,
+      date_created_by_author,
+      lastUpdated,
+      address,
+      tags,
+      ...rest
+    } = this.props
+
+    const { styles } = this.state
+
+    if ($dimensionKey === "MyLocation") {
+      title = "Me"
+    }
+
+    date_created_by_author = moment(date_created_by_author || lastUpdated).format("MM/DD/YYYY")
+
+    return (
+      <div style={styles}>
+        <div>{title}</div>
+        <div>{address}</div>
+        {tags && (
+          <div>
+            <TagContainer tags={tags} />
+          </div>
+        )}
+        <div style={lineStyle}>
+          <div style={leftColumn}>
+            <i>Date</i>
+          </div>
+          <div style={rightColumn}>
+            <i>{date_created_by_author}</i>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
-PreviewBox.propTypes = {
-  $dimensionKey: PropTypes.string,
-  clientName: PropTypes.string,
-  siteDescription: PropTypes.string,
-  score: PropTypes.number,
-  lastActivity: PropTypes.string
-}
-
-export default memo(PreviewBox)
+export default PreviewBox
