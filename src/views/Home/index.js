@@ -49,8 +49,10 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
 
     previousDate = updatedDated
 
-    charCount += title.length
-    wordCount += title.split(" ").length
+    const entryString = `${title} ${html}`
+
+    charCount += entryString.length
+    wordCount += entryString.split(" ").length
     viewCount += views
 
     for (let j = 0, l = tags.length; j < l; j++) {
