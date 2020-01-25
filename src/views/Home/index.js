@@ -65,7 +65,7 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
   const averageSecondsUpdatingEntries = averageMillisecondsUpdatingEntries / 1000
   const averageMinutesUpdatingEntries = averageSecondsUpdatingEntries / 60
   const averageHoursUpdatingEntries = averageMinutesUpdatingEntries / 60
-  const averageDaysUpdatingEntries = averageMinutesUpdatingEntries / 24
+  const averageDaysUpdatingEntries = averageHoursUpdatingEntries / 24
   const averageWeeksUpdatingEntries = averageDaysUpdatingEntries / 7
   const averageMonthsUpdatingEntries = averageWeeksUpdatingEntries / 4.34524
   const averageYearsUpdatingEntries = averageMonthsUpdatingEntries / 12
@@ -176,7 +176,7 @@ class Home extends PureComponent {
         <Row style={{ maxHeight: 180, overflowY: "auto" }}>{this.renderTagCounts(tagCountMap)}</Row>
         <Row>
           <Col xs={12}>
-            <h4>Average Time Updating Entires</h4>
+            <h4>Average Time Updating Entries</h4>
           </Col>
         </Row>
         <Row>{this.renderAverageTimesUpdatingEntries(averageTimesUpdatingEntries)}</Row>
