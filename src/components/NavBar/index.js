@@ -11,19 +11,22 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Media
 } from "reactstrap"
 import StarSearch from "../StarSearch"
 import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
 import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
-import Logo from "../../images/Logo.png"
 import AddToHomeScreen from "../AddToHomeScreen/"
 import NavItemLink from "./NavItemLink"
 import deepEquals from "../../helpers/deepEquals"
+import { Logo } from "../../images/AWS"
 
 const {
+  HOME,
+  ABOUT,
   NEW_ENTRY,
   CALENDAR,
   ENTRIES_DETAILED,
@@ -34,10 +37,7 @@ const {
   SETTINGS
 } = RouteMap
 
-const mapStateToProps = ({
-  User: { id },
-  Window: { isMobile, isInStandalone }
-}) => ({
+const mapStateToProps = ({ User: { id }, Window: { isMobile, isInStandalone } }) => ({
   UserId: id,
   isMobile,
   isInStandalone
@@ -66,6 +66,11 @@ class NavBar extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { UserId, UserLogout, isMobile, isInStandalone } = nextProps
     const navLinks = [
+      {
+        route: HOME,
+        title: "HOME",
+        icon: <Media left height={24} src={Logo} style={{ verticalAlign: "inherit" }} />
+      },
       {
         icon: (
           <span className="NavBarLink">
@@ -115,11 +120,7 @@ class NavBar extends Component {
       {
         route: LOGIN,
         title: UserId ? "LOGOUT" : "LOGIN",
-        icon: (
-          <i
-            className={`fas fa-sign-${UserId ? "out" : "in"}-alt NavBarImage`}
-          />
-        ),
+        icon: <i className={`fas fa-sign-${UserId ? "out" : "in"}-alt NavBarImage`} />,
         onClick: UserId ? UserLogout : null
       },
       {
@@ -130,6 +131,11 @@ class NavBar extends Component {
             route: SETTINGS,
             title: "SETTINGS",
             icon: <i className="fas fa-cog NavBarImage" />
+          },
+          {
+            route: ABOUT,
+            title: "ABOUT",
+            icon: <i className="fas fa-info-circle NavBarImage" />
           },
           {
             render: !isInStandalone && (
@@ -157,8 +163,7 @@ class NavBar extends Component {
     this.handleTodayClick()
   }
 
-  toggleHamburgerMenu = () =>
-    this.setState({ collapsed: !this.state.collapsed })
+  toggleHamburgerMenu = () => this.setState({ collapsed: !this.state.collapsed })
 
   closeHamburgerMenu = () => this.setState({ collapsed: true })
 
@@ -167,11 +172,7 @@ class NavBar extends Component {
       link.links ? (
         this.renderDropDownMenu(`Dropdown-${i}`, link.icon, link.links)
       ) : (
-        <NavItemLink
-          key={i}
-          {...link}
-          onClickCallback={this.closeHamburgerMenu}
-        />
+        <NavItemLink key={i} {...link} onClickCallback={this.closeHamburgerMenu} />
       )
     )
 
@@ -197,11 +198,7 @@ class NavBar extends Component {
     return (
       <Navbar className="NavBar" fixed="top" expand="md">
         {isMobile && (
-          <NavbarToggler
-            tag={Hamburger}
-            onClick={() => this.toggleHamburgerMenu()}
-            collapsed={collapsed}
-          />
+          <NavbarToggler tag={Hamburger} onClick={() => this.toggleHamburgerMenu()} collapsed={collapsed} />
         )}
 
         <StarSearch />

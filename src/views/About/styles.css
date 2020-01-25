@@ -1,0 +1,36 @@
+.About {
+  color: var(--secondaryColor);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.AboutFeatureCard {
+  background: rgba(0, 0, 0, 0.4);
+  border: 0;
+  margin: 15px 0;
+  height: 350px;
+}
+
+.AboutFeatureContainer {
+  text-align: center;
+}
+
+.AboutFeatureBodyContainer {
+  background: var(--midNight);
+}
+
+.AboutFeatureIcon {
+  font-size: 8em;
+}
+
+.AboutFeatureImage {
+  width: auto;
+  height: 128px;
+}
+
+.AboutFeatureTitle {
+  font-weight: 900;
+}
+
+.AboutFeatureText {
+  height: 64px;
+}

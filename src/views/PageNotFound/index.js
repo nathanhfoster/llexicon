@@ -48,10 +48,7 @@ class PageNotFound extends PureComponent {
         </div>
         <div className="central-body">
           <FourOFOur />
-          <Link
-            to={RouterLinkPush(history, RouteMap.HOME)}
-            className="btn-go-home"
-          >
+          <Link to={RouterLinkPush(history, RouteMap.HOME)} className="btn-go-home">
             GO BACK HOME
           </Link>
         </div>
@@ -69,6 +66,4 @@ class PageNotFound extends PureComponent {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(PageNotFound)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(PageNotFound))

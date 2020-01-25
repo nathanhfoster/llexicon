@@ -21,8 +21,7 @@ class BasicForm extends PureComponent {
     title: PropTypes.string,
     inputs: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-          .isRequired,
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         defaultValue: PropTypes.string,
         label: PropTypes.string,
         type: PropTypes.string,
@@ -64,11 +63,10 @@ class BasicForm extends PureComponent {
 
   handleSubmit = e => {
     e.preventDefault()
-    const { inputs } = this.state
-    const { onSubmit } = this.props
+    const { inputs, onSubmit } = this.props
     let payload = {}
 
-    for (let i = 0; i < inputs.length; i++) {
+    for (let i = 0, { length } = inputs; i < length; i++) {
       const { id, value, type, checked } = e.target[i]
       if (value) {
         payload[id] = value
@@ -115,6 +113,4 @@ class BasicForm extends PureComponent {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(BasicForm)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(BasicForm))

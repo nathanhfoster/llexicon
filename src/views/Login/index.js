@@ -133,11 +133,7 @@ class Login extends PureComponent {
       }
     ]
 
-    return (
-      <BasicTabs containerClassname="Login" activeTab={activeTab} tabs={tabs} />
-    )
+    return <BasicTabs containerClassname="Login" activeTab={activeTab} tabs={tabs} />
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(Login)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(Login))
