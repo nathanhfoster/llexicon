@@ -269,7 +269,7 @@ class Entries extends Component {
                       RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
                     ),
                   render: item => (
-                    <Moment format="D MMM YY">
+                    <Moment format="D MMM YY hh:mma">
                       {item.date_created_by_author}
                     </Moment>
                   ),
@@ -298,7 +298,7 @@ class Entries extends Component {
                   key: "date_updated",
                   width: 130,
                   render: item => (
-                    <Moment format="hh:mma MMM D YY">
+                    <Moment format="D MMM YY hh:mma">
                       {item.lastUpdated || item.date_updated}
                     </Moment>
                   ),
