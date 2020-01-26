@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { PureComponent, Fragment } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import RatingIcon from "../../components/RatingIcon"
@@ -44,7 +44,10 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
     let updatedDated = MomentJs(lastUpdated || date_updated)
 
     if (previousDate) {
-      sumRatingTimeUpdatingEntries += previousDate.diff(updatedDated, "milliseconds")
+      sumRatingTimeUpdatingEntries += previousDate.diff(
+        updatedDated,
+        "milliseconds"
+      )
     }
 
     previousDate = updatedDated
@@ -63,8 +66,11 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
   }
 
   const averageRating = (sumRating / length).toFixed(3)
-  const averageMillisecondsUpdatingEntries = Math.abs(sumRatingTimeUpdatingEntries / length)
-  const averageSecondsUpdatingEntries = averageMillisecondsUpdatingEntries / 1000
+  const averageMillisecondsUpdatingEntries = Math.abs(
+    sumRatingTimeUpdatingEntries / length
+  )
+  const averageSecondsUpdatingEntries =
+    averageMillisecondsUpdatingEntries / 1000
   const averageMinutesUpdatingEntries = averageSecondsUpdatingEntries / 60
   const averageHoursUpdatingEntries = averageMinutesUpdatingEntries / 60
   const averageDaysUpdatingEntries = averageHoursUpdatingEntries / 24
@@ -83,12 +89,21 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
     { title: "Years", value: averageYearsUpdatingEntries }
   ]
 
+  const entryAverages = [
+    { title: "Rating", value: averageRating },
+    { title: "Time Updating Entries", value: averageTimesUpdatingEntries }
+  ]
+
+  const entryCounts = [
+    { title: "Rating", value: averageRating },
+    { title: "Characters", value: charCount },
+    { title: "Words", value: wordCount },
+    { title: "Views", value: viewCount }
+  ]
+
   return {
-    averageRating,
-    averageTimesUpdatingEntries,
-    charCount,
-    wordCount,
-    viewCount,
+    entryAverages,
+    entryCounts,
     tagCountMap
   }
 }
@@ -106,84 +121,70 @@ class Home extends PureComponent {
 
   static defaultProps = {}
 
-  renderAverageTimesUpdatingEntries = averageTimesUpdatingEntries =>
-    averageTimesUpdatingEntries.map(time => {
-      const { title, value } = time
-      return (
-        <Col xs={12}>
-          <span className="Stat">{`${title}: ${value.toFixed(3)}`}</span>
-        </Col>
-      )
+  renderEntryStats = stats =>
+    stats.map(stat => {
+      const { title, value } = stat
+      if (Array.isArray(value)) {
+        return (
+          <Fragment>
+            <Col xs={12}>{this.renderSubHeader(title)}</Col>
+
+            {value.map(v => this.renderStat(v, 3))}
+          </Fragment>
+        )
+      }
+      return this.renderStat(stat, 3)
     })
 
   renderTagCounts = tagCountMap =>
     Object.keys(tagCountMap)
       .sort((a, b) => tagCountMap[b] - tagCountMap[a])
-      .map(key => {
-        const title = key
+      .map(title => {
         const value = tagCountMap[title]
 
-        return (
-          <Col xs={12}>
-            <span className="Stat">{`${title}: ${value}`}</span>
-          </Col>
-        )
+        return this.renderStat({ title, value })
       })
 
+  renderStat = ({ title, value }, fixedValue = 0) => (
+    <Col xs={12}>
+      <span style={{ fontSize: 14, fontWeight: 600 }}>{`${title}: `}</span>
+      <span className="Stat">{value}</span>
+    </Col>
+  )
+
+  renderSubHeader = title => (
+    <span style={{ fontSize: 26, fontWeight: 600 }}>{title}</span>
+  )
+
   render() {
-    const {
-      averageRating,
-      averageTimesUpdatingEntries,
-      charCount,
-      wordCount,
-      viewCount,
-      tagCountMap
-    } = this.props
+    const { entryAverages, entryCounts, tagCountMap } = this.props
 
     return (
       <Container className="Home Container">
         <Row>
-          <Col xs={12}>
-            <h4>Average Rating</h4>
-            <RatingIcon rating={averageRating} />
-            <span className="Stat ml-1">{averageRating}</span>
+          <Col xs={12} className="p-0">
+            <h1>Entry Statistics</h1>
           </Col>
         </Row>
-        <Row>
-          <Col xs={12}>
-            <h4>Char Count</h4>
-            <i className="fab fa-wordpress-simple" />
-            <span className="Stat ml-1">{charCount}</span>
-          </Col>
+
+        <Row className="StatContainer">
+          <Col xs={12}>{this.renderSubHeader("Average")}</Col>
+          {this.renderEntryStats(entryAverages)}
         </Row>
-        <Row>
-          <Col xs={12}>
-            <h4>Word Count</h4>
-            <i className="fas fa-keyboard" />
-            <span className="Stat ml-1">{wordCount}</span>
-          </Col>
+
+        <Row className="StatContainer">
+          <Col xs={12}>{this.renderSubHeader("Count")}</Col>
+          {this.renderEntryStats(entryCounts)}
         </Row>
-        <Row>
-          <Col xs={12}>
-            <h4>View Count</h4>
-            <i className="far fa-eye" />
-            <span className="Stat ml-1">{viewCount}</span>
-          </Col>
+
+        <Row className="StatContainer">
+          <Col xs={12}>{this.renderSubHeader("Tags")}</Col>
+          {this.renderTagCounts(tagCountMap)}
         </Row>
-        <Row>
-          <Col xs={12}>
-            <h4>Tag Count</h4>
-          </Col>
-        </Row>
-        <Row style={{ maxHeight: 180, overflowY: "auto" }}>{this.renderTagCounts(tagCountMap)}</Row>
-        <Row>
-          <Col xs={12}>
-            <h4>Average Time Updating Entries</h4>
-          </Col>
-        </Row>
-        <Row>{this.renderAverageTimesUpdatingEntries(averageTimesUpdatingEntries)}</Row>
       </Container>
     )
   }
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(Home))
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(Home)
+)

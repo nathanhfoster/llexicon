@@ -3,6 +3,12 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
+.StatContainer {
+  border: 1px solid var(--tertiarycolor);
+  max-height: 290px;
+  overflow-y: auto;
+}
+
 .Stat {
-    font-weight: 300;
+  font-weight: 300;
 }

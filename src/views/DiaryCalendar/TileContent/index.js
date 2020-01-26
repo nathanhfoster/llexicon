@@ -43,6 +43,7 @@ class TileContent extends Component {
       view,
       isMobile
     } = nextProps
+    
     const calendarDay = MomentJS(date)
     const activeDay = MomentJS(activeDate)
 
