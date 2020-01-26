@@ -45,7 +45,7 @@ const EntryMinimal = ({
         </Col>
         <Col xs={6} className="EntryMinimalTime">
           <i className="fas fa-calendar-day mr-1" />
-          <Moment format="D MMM YY">{date_created_by_author}</Moment>
+          <Moment format="D MMM YY hh:mma">{date_created_by_author}</Moment>
         </Col>
         <Col xs={6} className="EntryMinimalTime">
           <i className="fas fa-pencil-alt mr-1" />
