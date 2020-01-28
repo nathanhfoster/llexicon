@@ -25,6 +25,11 @@ const BasicModal = ({
         cloneElement(ModalButton, {
           ...ModalButton.props,
           disabled,
+          // TODO
+          // onClick: () => {
+          //   onClickCallback && onClickCallback()
+          //   toggle()
+          // },
           onClickCallback: () => {
             onClickCallback && onClickCallback()
             toggle()
