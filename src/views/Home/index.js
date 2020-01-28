@@ -44,10 +44,7 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
     let updatedDated = MomentJs(lastUpdated || date_updated)
 
     if (previousDate) {
-      sumRatingTimeUpdatingEntries += previousDate.diff(
-        updatedDated,
-        "milliseconds"
-      )
+      sumRatingTimeUpdatingEntries += previousDate.diff(updatedDated, "milliseconds")
     }
 
     previousDate = updatedDated
@@ -66,11 +63,8 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
   }
 
   const averageRating = (sumRating / length).toFixed(3)
-  const averageMillisecondsUpdatingEntries = Math.abs(
-    sumRatingTimeUpdatingEntries / length
-  )
-  const averageSecondsUpdatingEntries =
-    averageMillisecondsUpdatingEntries / 1000
+  const averageMillisecondsUpdatingEntries = Math.abs(sumRatingTimeUpdatingEntries / length)
+  const averageSecondsUpdatingEntries = averageMillisecondsUpdatingEntries / 1000
   const averageMinutesUpdatingEntries = averageSecondsUpdatingEntries / 60
   const averageHoursUpdatingEntries = averageMinutesUpdatingEntries / 60
   const averageDaysUpdatingEntries = averageHoursUpdatingEntries / 24
@@ -147,13 +141,11 @@ class Home extends PureComponent {
   renderStat = ({ title, value }, fixedValue = 0) => (
     <Col xs={12}>
       <span style={{ fontSize: 14, fontWeight: 600 }}>{`${title}: `}</span>
-      <span className="Stat">{value}</span>
+      <span className="Stat">{Number(value).toFixed(fixedValue)}</span>
     </Col>
   )
 
-  renderSubHeader = title => (
-    <span style={{ fontSize: 26, fontWeight: 600 }}>{title}</span>
-  )
+  renderSubHeader = title => <span style={{ fontSize: 26, fontWeight: 600 }}>{title}</span>
 
   render() {
     const { entryAverages, entryCounts, tagCountMap } = this.props
@@ -184,6 +176,4 @@ class Home extends PureComponent {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(Home)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(Home))
