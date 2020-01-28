@@ -11,8 +11,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
-  Media
+  DropdownItem
 } from "reactstrap"
 import StarSearch from "../StarSearch"
 import { SetCalendar } from "../../actions/Calendar"
@@ -37,10 +36,7 @@ const {
   SETTINGS
 } = RouteMap
 
-const mapStateToProps = ({
-  User: { id },
-  Window: { isMobile, isInStandalone }
-}) => ({
+const mapStateToProps = ({ User: { id }, Window: { isMobile, isInStandalone } }) => ({
   UserId: id,
   isMobile,
   isInStandalone
@@ -73,12 +69,7 @@ class NavBar extends Component {
         route: HOME,
         icon: (
           <span className="NavBarLink">
-            <Media
-              left
-              height={24}
-              src={Logo}
-              style={{ verticalAlign: "inherit" }}
-            />
+            <i class="fas fa-home NavBarImage" />
             HOME
           </span>
         )
@@ -132,11 +123,7 @@ class NavBar extends Component {
       {
         route: LOGIN,
         title: UserId ? "LOGOUT" : "LOGIN",
-        icon: (
-          <i
-            className={`fas fa-sign-${UserId ? "out" : "in"}-alt NavBarImage`}
-          />
-        ),
+        icon: <i className={`fas fa-sign-${UserId ? "out" : "in"}-alt NavBarImage`} />,
         onClick: UserId ? UserLogout : null
       },
       {
@@ -179,8 +166,7 @@ class NavBar extends Component {
     this.handleTodayClick()
   }
 
-  toggleHamburgerMenu = () =>
-    this.setState({ collapsed: !this.state.collapsed })
+  toggleHamburgerMenu = () => this.setState({ collapsed: !this.state.collapsed })
 
   closeHamburgerMenu = () => this.setState({ collapsed: true })
 
@@ -189,11 +175,7 @@ class NavBar extends Component {
       link.links ? (
         this.renderDropDownMenu(`Dropdown-${i}`, link.icon, link.links)
       ) : (
-        <NavItemLink
-          key={i}
-          {...link}
-          onClickCallback={this.closeHamburgerMenu}
-        />
+        <NavItemLink key={i} {...link} onClickCallback={this.closeHamburgerMenu} />
       )
     )
 
@@ -219,11 +201,7 @@ class NavBar extends Component {
     return (
       <Navbar className="NavBar" fixed="top" expand="md">
         {isMobile && (
-          <NavbarToggler
-            tag={Hamburger}
-            onClick={() => this.toggleHamburgerMenu()}
-            collapsed={collapsed}
-          />
+          <NavbarToggler tag={Hamburger} onClick={() => this.toggleHamburgerMenu()} collapsed={collapsed} />
         )}
 
         <StarSearch />

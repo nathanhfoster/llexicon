@@ -7,7 +7,6 @@ import { withRouter } from "react-router-dom"
 
 import MomentJs from "moment"
 import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
-import LogoImage from "../../components/BackgroundImage/LogoImage"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
