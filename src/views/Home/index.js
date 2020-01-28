@@ -120,7 +120,9 @@ class Home extends PureComponent {
       if (Array.isArray(value)) {
         return (
           <Fragment>
-            <Col xs={12}>{this.renderSubHeader(title)}</Col>
+            <Col xs={12}>
+              <span className="HomeSubHeader">{title}</span>
+            </Col>
 
             {value.map(v => this.renderStat(v, 3))}
           </Fragment>
@@ -145,8 +147,6 @@ class Home extends PureComponent {
     </Col>
   )
 
-  renderSubHeader = title => <span style={{ fontSize: 26, fontWeight: 600 }}>{title}</span>
-
   render() {
     const { entryAverages, entryCounts, tagCountMap } = this.props
 
@@ -159,17 +159,23 @@ class Home extends PureComponent {
         </Row>
 
         <Row className="StatContainer">
-          <Col xs={12}>{this.renderSubHeader("Average")}</Col>
+          <Col xs={12}>
+            <span className="HomeSubHeader">Average</span>
+          </Col>
           {this.renderEntryStats(entryAverages)}
         </Row>
 
         <Row className="StatContainer">
-          <Col xs={12}>{this.renderSubHeader("Count")}</Col>
+          <Col xs={12}>
+            <span className="HomeSubHeader">Count</span>
+          </Col>
           {this.renderEntryStats(entryCounts)}
         </Row>
 
         <Row className="StatContainer">
-          <Col xs={12}>{this.renderSubHeader("Tags")}</Col>
+          <Col xs={12}>
+            <span className="HomeSubHeader">Tags</span>
+          </Col>
           {this.renderTagCounts(tagCountMap)}
         </Row>
       </Container>

@@ -9,6 +9,11 @@
   overflow-y: auto;
 }
 
+.HomeSubHeader {
+  font-size: 26px;
+  font-weight: 600;
+}
+
 .Stat {
   font-weight: 300;
 }
