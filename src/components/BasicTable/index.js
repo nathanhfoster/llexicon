@@ -47,7 +47,7 @@ class BasicTable extends Component {
     dark: PropTypes.bool,
     hover: PropTypes.bool,
     responsive: PropTypes.bool,
-    pageSize: PropTypes.number,
+    pageSize: PropTypes.number.isRequired,
     // Custom ref handler that will be assigned to the "ref" of the inner <table> element
     innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object])
   }
@@ -59,7 +59,7 @@ class BasicTable extends Component {
     striped: false,
     dark: true,
     responsive: true,
-    pageSize: 25,
+    pageSize: 10,
     columns: [
       {
         title: "#",
@@ -103,31 +103,38 @@ class BasicTable extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { columns } = nextProps
+    const { data, columns } = nextProps
 
     const { sort, sortKey, sortUp, filterMap, currentPage, pageSize } = prevState
 
-    const data = nextProps.data.slice(currentPage, pageSize)
+    const dataLength = data.length
 
-    const totalPages = nextProps.data.length / pageSize
+    const totalPages = Math.ceil(dataLength / pageSize)
+
+    const sliceStart = currentPage * pageSize
+
+    const sliceEnd = sliceStart + pageSize
+
+    let slicedData = data.slice(sliceStart, sliceEnd)
 
     let newData = null
 
     if (sortKey) {
-      newData = tableSort(data, sort, sortKey, sortUp)
+      newData = tableSort(slicedData, sort, sortKey, sortUp)
     }
 
     if (Object.keys(filterMap).length > 0) {
       if (newData) {
         newData = tableFilter(newData, filterMap)
       } else {
-        newData = tableFilter(data, filterMap)
+        newData = tableFilter(slicedData, filterMap)
       }
     }
 
     return {
       columns,
-      data: newData || data,
+      data: newData || slicedData,
+      dataLength,
       totalPages
     }
   }
@@ -151,11 +158,16 @@ class BasicTable extends Component {
     })
   }
 
+  handlePageChange = currentPage => this.setState({ currentPage })
+
+  handlePageSizeChange = pageSize => {
+    this.setState({ pageSize })
+    this.handlePageChange(0)
+  }
+
   render() {
     const { sortable, bordered, borderless, striped, dark, responsive } = this.props
-    const { columns, data, onRowClick, currentPage, pageSize, totalPages } = this.state
-
-    console.log(totalPages)
+    const { columns, data, dataLength, onRowClick, currentPage, pageSize, totalPages } = this.state
 
     return (
       <Fragment>
@@ -179,7 +191,14 @@ class BasicTable extends Component {
           <TableBody sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} />
           {/* <TableFooter sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} /> */}
         </Table>
-        <TablePaginator currentPage={currentPage} totalPages={totalPages} pageSize={pageSize} />
+        <TablePaginator
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          dataLength={dataLength}
+          handlePageChange={this.handlePageChange}
+          handlePageSizeChange={this.handlePageSizeChange}
+        />
       </Fragment>
     )
   }

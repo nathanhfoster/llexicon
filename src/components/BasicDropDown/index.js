@@ -25,11 +25,28 @@ const BasicDropDown = ({ list, onClickCallback, direction, toggleTitle, children
     })
 
   return (
-    <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={direction} className="BasicDropDown">
+    <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={direction} className="BasicDropDown" size="sm">
       <DropdownToggle caret color="primary" className="BasicDropDownToggle">
         {toggleTitle}
       </DropdownToggle>
-      <DropdownMenu>{renderList(list)}</DropdownMenu>
+      <DropdownMenu
+        modifiers={{
+          setMaxHeight: {
+            enabled: true,
+            order: 890,
+            fn: data => ({
+              ...data,
+              styles: {
+                ...data.styles,
+                overflow: "auto",
+                maxHeight: 200
+              }
+            })
+          }
+        }}
+      >
+        {renderList(list)}
+      </DropdownMenu>
     </Dropdown>
   )
 }
