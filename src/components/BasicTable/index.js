@@ -1,8 +1,10 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import TableHeader from "./TableHeader"
 import TableBody from "./TableBody"
+import TableFooter from "./TableFooter"
+import TablePaginator from "./TablePaginator"
 import deepEquals from "../../helpers/deepEquals"
 import { tableSort, tableFilter } from "./functions"
 import { ColumnsPropType, DataPropType } from "./props"
@@ -12,7 +14,7 @@ class BasicTable extends Component {
   constructor(props) {
     super(props)
 
-    const { columns } = props
+    const { columns, data, pageSize } = props
 
     let onRowClick = null
 
@@ -26,7 +28,9 @@ class BasicTable extends Component {
       sortKey: null,
       sortUp: false,
       filterMap: {},
-      onRowClick
+      onRowClick,
+      currentPage: 0,
+      pageSize
     }
   }
 
@@ -43,6 +47,7 @@ class BasicTable extends Component {
     dark: PropTypes.bool,
     hover: PropTypes.bool,
     responsive: PropTypes.bool,
+    pageSize: PropTypes.number,
     // Custom ref handler that will be assigned to the "ref" of the inner <table> element
     innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object])
   }
@@ -54,6 +59,7 @@ class BasicTable extends Component {
     striped: false,
     dark: true,
     responsive: true,
+    pageSize: 25,
     columns: [
       {
         title: "#",
@@ -97,9 +103,13 @@ class BasicTable extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { data, columns } = nextProps
+    const { columns } = nextProps
 
-    const { sort, sortKey, sortUp, filterMap } = prevState
+    const { sort, sortKey, sortUp, filterMap, currentPage, pageSize } = prevState
+
+    const data = nextProps.data.slice(currentPage, pageSize)
+
+    const totalPages = nextProps.data.length / pageSize
 
     let newData = null
 
@@ -117,7 +127,8 @@ class BasicTable extends Component {
 
     return {
       columns,
-      data: newData || data
+      data: newData || data,
+      totalPages
     }
   }
 
@@ -142,28 +153,34 @@ class BasicTable extends Component {
 
   render() {
     const { sortable, bordered, borderless, striped, dark, responsive } = this.props
-    const { columns, data, onRowClick } = this.state
+    const { columns, data, onRowClick, currentPage, pageSize, totalPages } = this.state
+
+    console.log(totalPages)
 
     return (
-      <Table
-        bordered={bordered}
-        borderless={borderless}
-        striped={striped}
-        dark={dark}
-        hover={onRowClick}
-        responsive={responsive}
-        className="BasicTable"
-      >
-        <TableHeader
-          sortable={sortable}
-          sortCallback={(sortKey, sort, sortUp) => this.handleSort(sortKey, sort, sortUp)}
-          filterCallback={(filterKey, searchValue, filter) =>
-            this.handleFilter(filterKey, searchValue, filter)
-          }
-          columns={columns}
-        />
-        <TableBody sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} />
-      </Table>
+      <Fragment>
+        <Table
+          bordered={bordered}
+          borderless={borderless}
+          striped={striped}
+          dark={dark}
+          hover={onRowClick}
+          responsive={responsive}
+          className="BasicTable"
+        >
+          <TableHeader
+            sortable={sortable}
+            sortCallback={(sortKey, sort, sortUp) => this.handleSort(sortKey, sort, sortUp)}
+            filterCallback={(filterKey, searchValue, filter) =>
+              this.handleFilter(filterKey, searchValue, filter)
+            }
+            columns={columns}
+          />
+          <TableBody sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} />
+          {/* <TableFooter sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} /> */}
+        </Table>
+        <TablePaginator currentPage={currentPage} totalPages={totalPages} pageSize={pageSize} />
+      </Fragment>
     )
   }
 }

@@ -41,7 +41,7 @@ class BasicList extends PureComponent {
     maxHeight: 250,
     height: 250,
     width: '100%',
-    itemSize: 25,
+    itemSize: 50,
     list: [],
     listPosition: 'absolute',
     listItemHoverable: false
