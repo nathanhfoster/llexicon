@@ -80,7 +80,7 @@ const BasicModal = ({
 }
 
 BasicModal.propTypes = {
-  modalTitle: PropTypes.string,
+  modalTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
