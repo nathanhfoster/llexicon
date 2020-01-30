@@ -43,7 +43,10 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
     let updatedDated = MomentJs(lastUpdated || date_updated)
 
     if (previousDate) {
-      sumRatingTimeUpdatingEntries += previousDate.diff(updatedDated, "milliseconds")
+      sumRatingTimeUpdatingEntries += previousDate.diff(
+        updatedDated,
+        "milliseconds"
+      )
     }
 
     previousDate = updatedDated
@@ -62,8 +65,11 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
   }
 
   const averageRating = (sumRating / length).toFixed(3)
-  const averageMillisecondsUpdatingEntries = Math.abs(sumRatingTimeUpdatingEntries / length)
-  const averageSecondsUpdatingEntries = averageMillisecondsUpdatingEntries / 1000
+  const averageMillisecondsUpdatingEntries = Math.abs(
+    sumRatingTimeUpdatingEntries / length
+  )
+  const averageSecondsUpdatingEntries =
+    averageMillisecondsUpdatingEntries / 1000
   const averageMinutesUpdatingEntries = averageSecondsUpdatingEntries / 60
   const averageHoursUpdatingEntries = averageMinutesUpdatingEntries / 60
   const averageDaysUpdatingEntries = averageHoursUpdatingEntries / 24
@@ -88,6 +94,7 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
   ]
 
   const entryCounts = [
+    { title: "Entries", value: entries.length },
     { title: "Characters", value: charCount },
     { title: "Words", value: wordCount },
     { title: "Views", value: viewCount }
@@ -113,7 +120,7 @@ class Home extends PureComponent {
 
   static defaultProps = {}
 
-  renderEntryStats = stats =>
+  renderEntryStats = (stats, fixedValue = 3) =>
     stats.map(stat => {
       const { title, value } = stat
       if (Array.isArray(value)) {
@@ -123,11 +130,11 @@ class Home extends PureComponent {
               <span className="HomeSubHeader">{title}</span>
             </Col>
 
-            {value.map(v => this.renderStat(v, 3))}
+            {value.map(v => this.renderStat(v, fixedValue))}
           </Fragment>
         )
       }
-      return this.renderStat(stat, 3)
+      return this.renderStat(stat, fixedValue)
     })
 
   renderTagCounts = tagCountMap =>
@@ -168,7 +175,7 @@ class Home extends PureComponent {
           <Col xs={12}>
             <span className="HomeSubHeader">Count</span>
           </Col>
-          {this.renderEntryStats(entryCounts)}
+          {this.renderEntryStats(entryCounts, 0)}
         </Row>
 
         <Row className="StatContainer">
@@ -181,4 +188,6 @@ class Home extends PureComponent {
     )
   }
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(Home))
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(Home)
+)
