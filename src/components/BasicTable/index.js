@@ -49,7 +49,11 @@ class BasicTable extends Component {
     responsive: PropTypes.bool,
     pageSize: PropTypes.number.isRequired,
     // Custom ref handler that will be assigned to the "ref" of the inner <table> element
-    innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object])
+    innerRef: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string,
+      PropTypes.object
+    ])
   }
 
   static defaultProps = {
@@ -87,8 +91,11 @@ class BasicTable extends Component {
         key: "user_name",
         render: item => <a href="#">{`Delete ${item.user_name}`}</a>,
         sort: (a, b, sortUp) =>
-          sortUp ? b.user_name.localeCompare(a.user_name) : a.user_name.localeCompare(b.user_name),
-        filter: searchValue => item => item.user_name.toUpperCase().includes(searchValue.toUpperCase())
+          sortUp
+            ? b.user_name.localeCompare(a.user_name)
+            : a.user_name.localeCompare(b.user_name),
+        filter: searchValue => item =>
+          item.user_name.toUpperCase().includes(searchValue.toUpperCase())
       }
     ],
     data: new Array(25).fill().map(
@@ -105,35 +112,42 @@ class BasicTable extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { data, columns } = nextProps
 
-    const { sort, sortKey, sortUp, filterMap, currentPage, pageSize } = prevState
-
-    const dataLength = data.length
-
-    const totalPages = Math.ceil(dataLength / pageSize)
-
-    const sliceStart = currentPage * pageSize
-
-    const sliceEnd = sliceStart + pageSize
-
-    let slicedData = data.slice(sliceStart, sliceEnd)
+    const {
+      sort,
+      sortKey,
+      sortUp,
+      filterMap,
+      currentPage,
+      pageSize
+    } = prevState
 
     let newData = null
 
     if (sortKey) {
-      newData = tableSort(slicedData, sort, sortKey, sortUp)
+      newData = tableSort(data, sort, sortKey, sortUp)
     }
 
     if (Object.keys(filterMap).length > 0) {
       if (newData) {
         newData = tableFilter(newData, filterMap)
       } else {
-        newData = tableFilter(slicedData, filterMap)
+        newData = tableFilter(data, filterMap)
       }
     }
 
+    const sliceStart = currentPage * pageSize
+
+    const sliceEnd = sliceStart + pageSize
+
+    const slicedData = (newData || data).slice(sliceStart, sliceEnd)
+
+    const dataLength = data.length
+
+    const totalPages = Math.ceil(dataLength / pageSize)
+
     return {
       columns,
-      data: newData || slicedData,
+      data: slicedData,
       dataLength,
       totalPages
     }
@@ -166,8 +180,23 @@ class BasicTable extends Component {
   }
 
   render() {
-    const { sortable, bordered, borderless, striped, dark, responsive } = this.props
-    const { columns, data, dataLength, onRowClick, currentPage, pageSize, totalPages } = this.state
+    const {
+      sortable,
+      bordered,
+      borderless,
+      striped,
+      dark,
+      responsive
+    } = this.props
+    const {
+      columns,
+      data,
+      dataLength,
+      onRowClick,
+      currentPage,
+      pageSize,
+      totalPages
+    } = this.state
 
     return (
       <Fragment>
@@ -182,13 +211,20 @@ class BasicTable extends Component {
         >
           <TableHeader
             sortable={sortable}
-            sortCallback={(sortKey, sort, sortUp) => this.handleSort(sortKey, sort, sortUp)}
+            sortCallback={(sortKey, sort, sortUp) =>
+              this.handleSort(sortKey, sort, sortUp)
+            }
             filterCallback={(filterKey, searchValue, filter) =>
               this.handleFilter(filterKey, searchValue, filter)
             }
             columns={columns}
           />
-          <TableBody sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} />
+          <TableBody
+            sortable={sortable}
+            onRowClick={onRowClick}
+            columns={columns}
+            data={data}
+          />
           {/* <TableFooter sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} /> */}
         </Table>
         <TablePaginator
