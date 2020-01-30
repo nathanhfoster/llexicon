@@ -69,7 +69,7 @@ class NavBar extends Component {
         route: HOME,
         icon: (
           <span className="NavBarLink">
-            <i class="fas fa-home NavBarImage" />
+            <i className="fas fa-home NavBarImage" />
             HOME
           </span>
         )

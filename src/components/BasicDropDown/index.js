@@ -1,9 +1,20 @@
 import React, { useState, memo } from "react"
 import PropTypes from "prop-types"
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap"
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap"
 import "./styles.css"
 
-const BasicDropDown = ({ list, onClickCallback, direction, toggleTitle, children }) => {
+const BasicDropDown = ({
+  list,
+  onClickCallback,
+  direction,
+  toggleTitle,
+  children
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const toggle = () => setDropdownOpen(prevState => !prevState)
@@ -25,7 +36,13 @@ const BasicDropDown = ({ list, onClickCallback, direction, toggleTitle, children
     })
 
   return (
-    <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={direction} className="BasicDropDown" size="sm">
+    <Dropdown
+      isOpen={dropdownOpen}
+      toggle={toggle}
+      direction={direction}
+      className="BasicDropDown"
+      size="sm"
+    >
       <DropdownToggle caret color="primary" className="BasicDropDownToggle">
         {toggleTitle}
       </DropdownToggle>
@@ -55,10 +72,15 @@ BasicDropDown.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.any.isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+      value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.object
+      ]).isRequired,
       otherValue: PropTypes.any,
       header: PropTypes.bool,
-      disabled: PropTypes.bool
+      disabled: PropTypes.bool,
+      divider: PropTypes.bool
     }).isRequired
   ),
   onClickCallback: PropTypes.func,

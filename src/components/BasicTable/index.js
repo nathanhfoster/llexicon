@@ -14,7 +14,7 @@ class BasicTable extends Component {
   constructor(props) {
     super(props)
 
-    const { columns, data, pageSize } = props
+    const { columns, pageSize, pageSizes } = props
 
     let onRowClick = null
 
@@ -30,7 +30,10 @@ class BasicTable extends Component {
       filterMap: {},
       onRowClick,
       currentPage: 0,
-      pageSize
+      pageSize,
+      pageSizes: [{ id: 0, header: true, value: "Page Sizes" }].concat(
+        pageSizes.map((value, i) => ({ id: i + 1, value }))
+      )
     }
   }
 
@@ -48,6 +51,7 @@ class BasicTable extends Component {
     hover: PropTypes.bool,
     responsive: PropTypes.bool,
     pageSize: PropTypes.number.isRequired,
+    pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     // Custom ref handler that will be assigned to the "ref" of the inner <table> element
     innerRef: PropTypes.oneOfType([
       PropTypes.func,
@@ -64,6 +68,7 @@ class BasicTable extends Component {
     dark: true,
     responsive: true,
     pageSize: 10,
+    pageSizes: [5, 10, 15, 20, 25, 50, 100],
     columns: [
       {
         title: "#",
@@ -195,6 +200,7 @@ class BasicTable extends Component {
       onRowClick,
       currentPage,
       pageSize,
+      pageSizes,
       totalPages
     } = this.state
 
@@ -205,7 +211,7 @@ class BasicTable extends Component {
           borderless={borderless}
           striped={striped}
           dark={dark}
-          hover={onRowClick}
+          hover={onRowClick ? true : false}
           responsive={responsive}
           className="BasicTable"
         >
@@ -231,6 +237,7 @@ class BasicTable extends Component {
           currentPage={currentPage}
           totalPages={totalPages}
           pageSize={pageSize}
+          pageSizes={pageSizes}
           dataLength={dataLength}
           handlePageChange={this.handlePageChange}
           handlePageSizeChange={this.handlePageSizeChange}

@@ -14,23 +14,27 @@ class TablePaginator extends PureComponent {
   static propTypes = {
     currentPage: PropTypes.number.isRequired,
     pageSize: PropTypes.number.isRequired,
+    pageSizes: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.any.isRequired,
+        value: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.object
+        ]).isRequired,
+        otherValue: PropTypes.any,
+        header: PropTypes.bool,
+        disabled: PropTypes.bool,
+        divider: PropTypes.bool
+      })
+    ).isRequired,
     totalPages: PropTypes.number.isRequired,
     dataLength: PropTypes.number.isRequired,
     handlePageChange: PropTypes.func.isRequired,
     handlePageSizeChange: PropTypes.func.isRequired
   }
 
-  static defaultProps = {
-    pageSizes: [
-      { id: 0, header: true, value: "Page Sizes" },
-      { id: 1, value: 5 },
-      { id: 2, value: 10 },
-      { id: 3, value: 15 },
-      { id: 4, value: 25 },
-      { id: 5, value: 50 },
-      { id: 6, value: 100 }
-    ]
-  }
+  static defaultProps = {}
 
   render() {
     const {
@@ -43,7 +47,9 @@ class TablePaginator extends PureComponent {
       handlePageSizeChange
     } = this.props
 
-    const pageList = new Array(totalPages).fill().map((e, i) => ({ id: i, value: i + 1 }))
+    const pageList = new Array(totalPages)
+      .fill()
+      .map((e, i) => ({ id: i, value: i + 1 }))
 
     const disabledLeftArrow = currentPage === 0
 
