@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { ListGroup, ListGroupItem, Container, Row, Col } from "reactstrap"
+import { withRouter } from "react-router-dom"
 import Moment from "react-moment"
 import MomentJS from "moment"
 import { RouterPush } from "../../ReactRouter/Routes"
@@ -104,4 +105,6 @@ class EntryList extends Component {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryList)
+export default withRouter(
+reduxConnect(mapStateToProps, mapDispatchToProps)(EntryList)
+)
