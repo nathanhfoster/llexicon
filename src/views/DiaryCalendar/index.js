@@ -1,9 +1,8 @@
-import React, { Component } from "react"
+import React, { Component, lazy } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import Calendar from "react-calendar/dist/entry.nostyle"
-import TileContent from "./TileContent"
 import Moment from "react-moment"
 import EntryList from "../../components/EntryList"
 import { withRouter } from "react-router-dom"
@@ -18,6 +17,7 @@ import deepEquals from "../../helpers/deepEquals"
 import MomentJS from "moment"
 import "./styles.css"
 import "./stylesM.css"
+const TileContent = lazy(() => import("./TileContent"))
 
 const mapStateToProps = ({ Calendar: { activeDate, view } }) => ({
   activeDate,
@@ -55,7 +55,7 @@ class DiaryCalendar extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const stateChanged = !deepEquals(this.state, nextState)
-    
+
     return stateChanged
   }
 

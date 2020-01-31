@@ -5,7 +5,7 @@
         line-height: 0;
         height: 16px;
     }
-    .TileContentPlus {
+    .TileContentFeather {
         top: 1px;
         right: 1px;
     }
@@ -22,7 +22,7 @@
         right: 0;
         bottom: 0;
     }
-    .TileContentPlus {
+    .TileContentFeather {
         top: 4px;
         right: 4px;
     }
@@ -33,17 +33,17 @@
     /* display: inline-block; */
 }
 
-.TileContentPlus {
+.TileContentFeather {
     position: absolute;
     font-size: 14px;
-    color: rgba(55, 57, 67, 0.05);
+    color: rgba(55, 57, 67, 0.5);
     transition: color 0.2s ease-in-out;
 }
 
-.react-calendar__tile--active .TileContentPlus, .react-calendar__month-view button:hover .TileContentPlus {
-    color: var(--accentColor);
+.react-calendar__tile--active .TileContentFeather, .react-calendar__month-view button:hover .TileContentFeather {
+    color: var(--accentColor)
 }
 
-.TileContentPlus:hover {
+.TileContentFeather:hover {
     color: var(--tertiaryColor) !important;
 }

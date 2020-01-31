@@ -43,7 +43,7 @@ class TileContent extends Component {
       view,
       isMobile
     } = nextProps
-    
+
     const calendarDay = MomentJS(date)
     const activeDay = MomentJS(activeDate)
 
@@ -70,7 +70,7 @@ class TileContent extends Component {
 
     return stateChanged
   }
-  
+
   handleTodayClick = () => {
     const { history } = this.props
     const { NEW_ENTRY } = RouteMap
@@ -120,7 +120,7 @@ class TileContent extends Component {
       <Fragment>
         {shouldRenderPlusButton && (
           <i
-            className="fas fa-plus TileContentPlus"
+            className="fas fa-feather-alt TileContentFeather"
             onClick={this.handleTodayClick}
           />
         )}

@@ -1,16 +1,15 @@
-import React, { Component, Fragment } from "react"
+import React, { PureComponent, Fragment, lazy } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
-import TableHeader from "./TableHeader"
 import TableBody from "./TableBody"
 import TableFooter from "./TableFooter"
 import TablePaginator from "./TablePaginator"
-import deepEquals from "../../helpers/deepEquals"
 import { tableSort, tableFilter } from "./functions"
 import { ColumnsPropType, DataPropType } from "./props"
 import "./styles.css"
+const TableHeader = lazy(() => import("./TableHeader"))
 
-class BasicTable extends Component {
+class BasicTable extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -57,7 +56,11 @@ class BasicTable extends Component {
     pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     defaultSortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     // Custom ref handler that will be assigned to the "ref" of the inner <table> element
-    innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object])
+    innerRef: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string,
+      PropTypes.object
+    ])
   }
 
   static defaultProps = {
@@ -96,8 +99,11 @@ class BasicTable extends Component {
         key: "user_name",
         render: item => <a href="#">{`Delete ${item.user_name}`}</a>,
         sort: (a, b, sortUp) =>
-          sortUp ? b.user_name.localeCompare(a.user_name) : a.user_name.localeCompare(b.user_name),
-        filter: searchValue => item => item.user_name.toUpperCase().includes(searchValue.toUpperCase())
+          sortUp
+            ? b.user_name.localeCompare(a.user_name)
+            : a.user_name.localeCompare(b.user_name),
+        filter: searchValue => item =>
+          item.user_name.toUpperCase().includes(searchValue.toUpperCase())
       }
     ],
     data: new Array(25).fill().map(
@@ -114,7 +120,14 @@ class BasicTable extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { data, columns } = nextProps
 
-    const { sort, sortKey, sortUp, filterMap, currentPage, pageSize } = prevState
+    const {
+      sort,
+      sortKey,
+      sortUp,
+      filterMap,
+      currentPage,
+      pageSize
+    } = prevState
 
     let newData = null
 
@@ -148,13 +161,6 @@ class BasicTable extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const dataPropsChanged = !deepEquals(this.props.data, nextProps.data)
-    const dataStateChanged = !deepEquals(this.state.data, nextState.data)
-
-    return dataPropsChanged || dataStateChanged
-  }
-
   handleSort = (sortKey, sort, sortUp) => {
     this.setState({ sortKey, sort, sortUp })
   }
@@ -175,7 +181,14 @@ class BasicTable extends Component {
   }
 
   render() {
-    const { sortable, bordered, borderless, striped, dark, responsive } = this.props
+    const {
+      sortable,
+      bordered,
+      borderless,
+      striped,
+      dark,
+      responsive
+    } = this.props
     const {
       columns,
       sortKey,
@@ -208,7 +221,12 @@ class BasicTable extends Component {
             sortKey={sortKey}
             sortUp={sortUp}
           />
-          <TableBody sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} />
+          <TableBody
+            sortable={sortable}
+            onRowClick={onRowClick}
+            columns={columns}
+            data={data}
+          />
           {/* <TableFooter sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} /> */}
         </Table>
         <TablePaginator
