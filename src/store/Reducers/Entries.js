@@ -50,7 +50,6 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         state.items.concat(filteredItems),
         payload
       ).filter(item => {
-        if (!search) return state
         const { title, html, tags, address } = item
         if (
           tags.map(tag => tag.title.toUpperCase()).includes(searchValue) ||
