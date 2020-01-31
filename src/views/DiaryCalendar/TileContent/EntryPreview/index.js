@@ -1,36 +1,36 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { Container, Row, Col } from "reactstrap"
 import { withRouter } from "react-router-dom"
-import { RouterPush, RouterLinkPush } from "../../../../ReactRouter/Routes"
+import { RouterPush } from "../../../../ReactRouter/Routes"
 import { RouteMap } from "../../../../ReactRouter/Routes"
 import Moment from "react-moment"
 import Star from "../../../../components/BackgroundImage/Star"
+import deepEquals from "../../../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
 
-const mapDispatchToProps = {}
-
-class EntryPreview extends PureComponent {
-  constructor(props) {
-    super(props)
-
-    this.state = {}
-  }
-
+class EntryPreview extends Component {
   static propTypes = {}
 
   static defaultProps = {}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
+  shouldComponentUpdate(nextProps, nextState) {
+    const propsChanged = !deepEquals(this.props, nextProps)
+    return propsChanged
+  }
+
+  handleOnClick = () => {
+    const { history, id } = this.props
+    RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
   }
 
   render() {
-    const { history, location, match } = this.props
     const {
+      history,
+      location,
+      match,
       isMobile,
       view,
       id,
@@ -42,28 +42,12 @@ class EntryPreview extends PureComponent {
       date_created_by_author,
       date_updated,
       views
-    } = this.state
+    } = this.props
 
     return view == "month" && !isMobile ? (
       <div className="TileContent">
-        <div
-          onClick={() =>
-            RouterPush(
-              history,
-              RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
-            )
-          }
-          className="hasEventsContainer"
-          data-for={`${id}`}
-          data-tip={id}
-        >
-          <Star
-            size={8}
-            marginRight={2}
-            color="White"
-            animation={false}
-            opacity={1}
-          />
+        <div onClick={this.handleOnClick} className="hasEventsContainer" data-for={`${id}`} data-tip={id}>
+          <Star size={8} marginRight={2} color="White" animation={false} opacity={1} />
           <span className="eventDate">
             <Moment format="h:mma">{date_created_by_author}</Moment>
           </span>
@@ -75,6 +59,4 @@ class EntryPreview extends PureComponent {
     ) : null
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(EntryPreview)
-)
+export default withRouter(reduxConnect(mapStateToProps, null)(EntryPreview))

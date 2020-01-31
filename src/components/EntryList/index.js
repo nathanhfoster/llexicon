@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { ListGroup, ListGroupItem, Container, Row, Col } from "reactstrap"
@@ -8,15 +8,25 @@ import { RouterPush } from "../../ReactRouter/Routes"
 import { RouteMap } from "../../ReactRouter/Routes"
 import Star from "../BackgroundImage/Star"
 import TagsContainer from "../TagsContainer"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { items } }) => ({
-  entries: items.filter(item => !item.shouldDelete)
-})
+const mapStateToProps = ({ Calendar: { activeDate }, Entries: { items } }) => {
+  return {
+    activeDate,
+    entries: items.filter(entry => {
+      const { date_created_by_author, shouldDelete } = entry
+      const date = MomentJS(activeDate)
+      const startDate = MomentJS(date_created_by_author)
+      const sameDayEvent = startDate.isSame(date, "day")
+      return !shouldDelete && sameDayEvent
+    })
+  }
+}
 
 const mapDispatchToProps = {}
 
-class EntryList extends PureComponent {
+class EntryList extends Component {
   constructor(props) {
     super(props)
 
@@ -26,10 +36,7 @@ class EntryList extends PureComponent {
   }
 
   static propTypes = {
-    activeDate: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.instanceOf(Date)
-    ]).isRequired,
+    activeDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
     entries: PropTypes.array
   }
 
@@ -38,12 +45,14 @@ class EntryList extends PureComponent {
     entries: []
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return nextProps
+  shouldComponentUpdate(nextProps, nextState) {
+    const propsChanged = !deepEquals(this.props, nextProps)
+    return propsChanged
   }
 
-  renderItems = (date, entries, history) =>
-    entries.map((e, i) => {
+  renderItems = entries => {
+    const { history } = this.props
+    return entries.map((e, i) => {
       const {
         id,
         author,
@@ -56,50 +65,41 @@ class EntryList extends PureComponent {
         views,
         EntryFiles
       } = e
-      const activeDate = MomentJS(date)
-      const startDate = MomentJS(date_created_by_author)
-      const sameDayEvent = startDate.isSame(activeDate, "day")
       const showImageIcon = EntryFiles.length > 0
       return (
         <div key={i} className="ListItemContainer">
-          {sameDayEvent ? (
-            <Row
-              tag={ListGroupItem}
-              key={id}
-              onClick={() =>
-                RouterPush(
-                  history,
-                  RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
-                )
-              }
-              className="listItem"
-              header={title}
-            >
-              <Col className="p-0" xs={10}>
-                <Star size={8} color="White" animation={false} opacity={1} />
-                <span className="eventTitle">{title || "No title"}</span>
-              </Col>
+          <Row
+            tag={ListGroupItem}
+            key={id}
+            onClick={() => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))}
+            className="listItem"
+            header={title}
+          >
+            <Col className="p-0" xs={10}>
+              <Star size={8} color="White" animation={false} opacity={1} />
+              <span className="eventTitle">{title || "No title"}</span>
+            </Col>
 
-              <Col className="eventDate p-0" xs={2}>
-                {showImageIcon && <i className="fas fa-image mr-1" />}
-                <Moment format="h:mma">{date_created_by_author}</Moment>
-              </Col>
+            <Col className="eventDate p-0" xs={2}>
+              {showImageIcon && <i className="fas fa-image mr-1" />}
+              <Moment format="h:mma">{date_created_by_author}</Moment>
+            </Col>
 
-              <Col className="p-0" style={{ marginLeft: -4 }} xs={12}>
-                <TagsContainer tags={tags} />
-              </Col>
-            </Row>
-          ) : null}
+            <Col className="p-0" style={{ marginLeft: -4 }} xs={12}>
+              <TagsContainer tags={tags} />
+            </Col>
+          </Row>
         </div>
       )
     })
+  }
 
   render() {
-    const { history } = this.props
-    const { entries, activeDate } = this.state
+    const { entries } = this.props
+
     return (
       <Container fluid tag={ListGroup} className="List">
-        {this.renderItems(activeDate, entries, history)}
+        {this.renderItems(entries)}
       </Container>
     )
   }
