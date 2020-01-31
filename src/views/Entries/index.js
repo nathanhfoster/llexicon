@@ -146,8 +146,6 @@ class Entries extends Component {
     SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
   }
 
-  handleFilter = (key, value) => {}
-
   render() {
     const { history, viewPortHeight, SetEditorState, nextEntryPage } = this.props
     const {
