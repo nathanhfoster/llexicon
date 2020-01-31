@@ -60,7 +60,7 @@ export class AlertNotifications extends PureComponent {
           timeout: 600
         }}
       >
-        <UseDebounce onChangeCallback={() => ClearAlerts()} />
+        <UseDebounce onChangeCallback={ClearAlerts} />
         <ToastHeader icon={<i className="fas fa-feather-alt" />}>
           {title}
         </ToastHeader>

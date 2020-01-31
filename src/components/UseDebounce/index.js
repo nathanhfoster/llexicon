@@ -1,7 +1,7 @@
-import { Component } from 'react'
-import PropTypes from 'prop-types'
+import { PureComponent } from "react"
+import PropTypes from "prop-types"
 
-class UseDebounce extends Component {
+class UseDebounce extends PureComponent {
   constructor(props) {
     super(props)
     this.debounce = null
@@ -14,7 +14,7 @@ class UseDebounce extends Component {
   }
 
   static defaultProps = {
-    delay: 3000
+    delay: 400
   }
 
   shouldComponentUpdate(nextProps) {

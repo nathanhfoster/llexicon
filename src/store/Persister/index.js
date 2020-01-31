@@ -28,9 +28,9 @@ class Persister extends PureComponent {
     const { saveReduxState, lastUpdated } = this.props
     return (
       <UseDebounce
-        onChangeCallback={value => saveReduxState()}
+        onChangeCallback={saveReduxState}
         value={lastUpdated}
-        delay={1500}
+        delay={800}
       />
     )
   }

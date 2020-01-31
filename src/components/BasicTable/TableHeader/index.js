@@ -6,44 +6,26 @@ import { ColumnsPropType } from "../props"
 import "./styles.css"
 
 class TableHeader extends PureComponent {
-  constructor(props) {
-    super(props)
-
-    this.state = { sortKey: null, sortUp: false }
-  }
-
   static propTypes = {
     sortable: PropTypes.bool.isRequired,
     sortCallback: PropTypes.func.isRequired,
     filterCallback: PropTypes.func.isRequired,
-    columns: ColumnsPropType
+    columns: ColumnsPropType,
+    sortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    sortUp: PropTypes.bool
   }
 
   static defaultProps = {}
 
-  handleSortCallback = (key, sort) => {
-    const { sortCallback } = this.props
 
-    this.setState(currentState => {
-      const shouldToggle = currentState.sortKey === key
-      if (shouldToggle) {
-        const sortUp = !currentState.sortUp
-        sortCallback(key, sort, sortUp)
-        return { sortUp }
-      } else {
-        const sortUp = !currentState.sortUp
-        sortCallback(key, sort, sortUp)
-        return {
-          sortKey: key,
-          sortUp
-        }
-      }
-    })
+  handleSortCallback = (key, sort) => {
+    const { sortUp, sortCallback } = this.props
+
+    sortCallback(key, sort, !sortUp)
   }
 
   renderColumnHeaders = columns => {
-    const { sortable, filterCallback } = this.props
-    const { sortKey, sortUp } = this.state
+    const { sortable, sortKey, sortUp, filterCallback } = this.props
     const shouldRenderSortContainer = columns.find(c => c.filter)
     return columns.map((column, i) => {
       const { title, dataIndex, key, width, render, sort, filter, filterPlaceholder } = column

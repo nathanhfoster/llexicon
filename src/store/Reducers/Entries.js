@@ -43,8 +43,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return { ...state, EntryTags: payload }
 
     case ENTRIES_SEARCH_FILTER:
-      let { filteredItems } = state
+      const { filteredItems } = state
       const searchValue = search.toUpperCase()
+      let cachedFilteredEntries = []
 
       const filteredEntries = mergeJson(
         state.items.concat(filteredItems),
@@ -59,16 +60,14 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ) {
           return true
         } else {
-          filteredItems.push(item)
+          cachedFilteredEntries.push(item)
           return false
         }
       })
 
       return {
         ...state,
-        filteredItems: filteredItems.filter(
-          item => !filteredEntries.includes(entry => entry.id === item.id)
-        ),
+        filteredItems: cachedFilteredEntries,
         items: filteredEntries,
         search
       }

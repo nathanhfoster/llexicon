@@ -72,11 +72,9 @@ class StarSearch extends Component {
           className="p-0"
           onChange={this.handleSearch}
         />
-
         <UseDebounce
-          onChangeCallback={value => SearchUserEntries(value)}
+          onChangeCallback={SearchUserEntries}
           value={search}
-          delay={800}
         />
       </InputGroup>
     )

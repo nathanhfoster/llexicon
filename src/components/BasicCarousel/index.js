@@ -1,15 +1,9 @@
 import React, { useState, memo } from "react"
 import PropTypes from "prop-types"
-import {
-  Carousel,
-  CarouselItem,
-  CarouselControl,
-  CarouselIndicators,
-  CarouselCaption,
-  Media
-} from "reactstrap"
+import { Carousel, CarouselItem, CarouselControl, CarouselIndicators, CarouselCaption } from "reactstrap"
+import "./styles.css"
 
-const BasicCarousel = ({ images, imageHeight = 50, imageWidth = 50 }) => {
+const BasicCarousel = ({ images, autoPlay }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [animating, setAnimating] = useState(false)
 
@@ -30,44 +24,25 @@ const BasicCarousel = ({ images, imageHeight = 50, imageWidth = 50 }) => {
     setActiveIndex(newIndex)
   }
 
-  const slides = images.map(item => {
+  const slides = images.map((item, i) => {
     return (
       <CarouselItem
+        key={`${i}-${item.src}`}
         onExiting={() => setAnimating(true)}
         onExited={() => setAnimating(false)}
-        key={item.src}
       >
-        <Media
-          src={item.src}
-          alt={item.altText}
-          style={{ height: imageHeight, width: imageWidth }}
-        />
-        <CarouselCaption
-          captionText={item.caption}
-          captionHeader={item.caption}
-        />
+        <img src={item.src} alt={item.altText} height={item.height} width={item.width} />
+        <CarouselCaption captionHeader={item.captionHeader} captionText={item.captionText} />
       </CarouselItem>
     )
   })
 
   return (
-    <Carousel activeIndex={activeIndex} next={next} previous={previous}>
-      <CarouselIndicators
-        items={images}
-        activeIndex={activeIndex}
-        onClickHandler={goToIndex}
-      />
+    <Carousel autoPlay={autoPlay} activeIndex={activeIndex} next={next} previous={previous}>
+      <CarouselIndicators items={images} activeIndex={activeIndex} onClickHandler={goToIndex} />
       {slides}
-      <CarouselControl
-        direction="prev"
-        directionText="Previous"
-        onClickHandler={previous}
-      />
-      <CarouselControl
-        direction="next"
-        directionText="Next"
-        onClickHandler={next}
-      />
+      <CarouselControl direction="prev" directionText="Previous" onClickHandler={previous} />
+      <CarouselControl direction="next" directionText="Next" onClickHandler={next} />
     </Carousel>
   )
 }
@@ -77,11 +52,18 @@ BasicCarousel.propTypes = {
     PropTypes.shape({
       src: PropTypes.string.isRequired,
       altText: PropTypes.string,
-      caption: PropTypes.string
+      captionHeader: PropTypes.string,
+      captionText: PropTypes.string,
+      href: PropTypes.string,
+      height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     })
   ),
-  imageHeight: PropTypes.number,
-  imageWidth: PropTypes.number
+  autoPlay: PropTypes.bool.isRequired
+}
+
+BasicCarousel.defaultProps = {
+  autoPlay: true
 }
 
 export default memo(BasicCarousel)

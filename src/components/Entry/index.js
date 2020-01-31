@@ -94,7 +94,7 @@ class Entry extends Component {
             UpdateReduxEntry({ id: entry.id, ...payload })
           }
         >
-          <UseDebounce onChangeCallback={() => SyncEntries()} />
+          <UseDebounce onChangeCallback={SyncEntries} />
           <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
             <Input
               type="text"

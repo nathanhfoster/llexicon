@@ -1,0 +1,16 @@
+.carousel {
+}
+
+.carousel a {
+  transition: all 0.4s ease-in-out;
+  background-color: rgba(153, 75, 75, 0.075);
+}
+
+.carousel a:hover {
+  background-color: rgb(0, 0, 0, 0.8);
+}
+
+.carousel-item,
+.carousel-item.active {
+  text-align: center;
+}

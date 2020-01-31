@@ -7,11 +7,7 @@ import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import TagsContainer from "../../components/TagsContainer"
 import { stripHtml } from "../../helpers"
 import deepEquals from "../../helpers/deepEquals"
-import {
-  SyncEntries,
-  GetAllUserEntries,
-  GetUserEntries
-} from "../../actions/Entries"
+import { SyncEntries, GetAllUserEntries, GetUserEntries } from "../../actions/Entries"
 import { SetEditorState } from "../../actions/TextEditor"
 import EntriesMinimal from "../../components/EntriesMinimal"
 import EntriesDetailed from "../../components/EntriesDetailed"
@@ -35,10 +31,7 @@ const mapStateToProps = ({
 }) => ({
   entries: items
     .filter(item => !item.shouldDelete)
-    .sort(
-      (a, b) =>
-        new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
-    ),
+    .sort((a, b) => new Date(b.date_created_by_author) - new Date(a.date_created_by_author)),
   TextEditor,
   nextEntryPage: next,
   entriesSearch: search,
@@ -90,15 +83,13 @@ class Entries extends Component {
 
     const loadButtonContainerHeight = 38
 
-    const minimalEntriesListHeight =
-      viewPortHeight - tabContainerHeight - loadButtonContainerHeight
+    const minimalEntriesListHeight = viewPortHeight - tabContainerHeight - loadButtonContainerHeight
 
     const detailedEntriesListHeight = viewPortHeight - tabContainerHeight
 
     let listItemHeight = detailedEntriesListHeight / 2
 
-    if (detailedEntriesListHeight / 3 > listItemHeight)
-      listItemHeight = detailedEntriesListHeight / 3
+    if (detailedEntriesListHeight / 3 > listItemHeight) listItemHeight = detailedEntriesListHeight / 3
 
     return {
       entries,
@@ -119,17 +110,11 @@ class Entries extends Component {
     DeleteEntry(id)
   }
 
-  handleItemsRendered = ({
-    overscanStartIndex,
-    overscanStopIndex,
-    visibleStartIndex,
-    visibleStopIndex
-  }) => {
+  handleItemsRendered = ({ overscanStartIndex, overscanStopIndex, visibleStartIndex, visibleStopIndex }) => {
     const { entries } = this.state
     const { length } = entries
     const bottomOfListIndex = length === 0 ? length : length - 1
-    const reachedBottomOfList =
-      bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
+    const reachedBottomOfList = bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
 
     // console.log("overscanStopIndex: ", overscanStopIndex)
     // console.log("visibleStopIndex: ", visibleStopIndex)
@@ -142,12 +127,7 @@ class Entries extends Component {
   }
 
   GetEntries = () => {
-    const {
-      SyncEntries,
-      GetUserEntries,
-      entriesSearch,
-      nextEntryPage
-    } = this.props
+    const { SyncEntries, GetUserEntries, entriesSearch, nextEntryPage } = this.props
 
     if (entriesSearch || !nextEntryPage) {
       return
@@ -156,9 +136,7 @@ class Entries extends Component {
     const split = nextEntryPage.split(/\?page=(.*)/)
     const pageNumber = split[1]
 
-    SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
-    )
+    SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(pageNumber))))
   }
 
   GetAllEntries = () => {
@@ -170,12 +148,7 @@ class Entries extends Component {
   handleFilter = (key, value) => {}
 
   render() {
-    const {
-      history,
-      viewPortHeight,
-      SetEditorState,
-      nextEntryPage
-    } = this.props
+    const { history, viewPortHeight, SetEditorState, nextEntryPage } = this.props
     const {
       entries,
       minimalEntriesListHeight,
@@ -258,32 +231,22 @@ class Entries extends Component {
           <Row>
             <BasicTable
               sortable
+              defaultSortKey="date_updated"
               columns={[
                 {
                   title: <i className="fas fa-calendar-day" />,
                   key: "date_created_by_author",
                   width: 100,
                   onRowClick: item =>
-                    RouterPush(
-                      history,
-                      RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
-                    ),
-                  render: item => (
-                    <Moment format="D MMM YY hh:mma">
-                      {item.date_created_by_author}
-                    </Moment>
-                  ),
+                    RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)),
+                  render: item => <Moment format="D MMM YY hh:mma">{item.date_created_by_author}</Moment>,
                   sort: (a, b, sortUp) =>
                     sortUp
-                      ? new Date(b.date_created_by_author) -
-                        new Date(a.date_created_by_author)
-                      : new Date(a.date_created_by_author) -
-                        new Date(b.date_created_by_author),
+                      ? new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
+                      : new Date(a.date_created_by_author) - new Date(b.date_created_by_author),
                   filter: searchValue => item => {
                     if (searchValue) {
-                      const momentCreatedByAuthor = MomentJS(
-                        item.date_created_by_author
-                      )
+                      const momentCreatedByAuthor = MomentJS(item.date_created_by_author)
                       const momentOfSearchValue = MomentJS(searchValue)
 
                       return momentCreatedByAuthor >= momentOfSearchValue
@@ -298,21 +261,15 @@ class Entries extends Component {
                   key: "date_updated",
                   width: 130,
                   render: item => (
-                    <Moment format="D MMM YY hh:mma">
-                      {item.lastUpdated || item.date_updated}
-                    </Moment>
+                    <Moment format="D MMM YY hh:mma">{item.lastUpdated || item.date_updated}</Moment>
                   ),
                   sort: (a, b, sortUp) =>
                     sortUp
-                      ? new Date(b.lastUpdated || b.date_updated) -
-                        new Date(a.lastUpdated || a.date_updated)
-                      : new Date(a.lastUpdated || a.date_updated) -
-                        new Date(b.lastUpdated || b.date_updated),
+                      ? new Date(b.lastUpdated || b.date_updated) - new Date(a.lastUpdated || a.date_updated)
+                      : new Date(a.lastUpdated || a.date_updated) - new Date(b.lastUpdated || b.date_updated),
                   filter: searchValue => item => {
                     if (searchValue) {
-                      const momentCreatedByAuthor = MomentJS(
-                        item.lastUpdated || item.date_updated
-                      )
+                      const momentCreatedByAuthor = MomentJS(item.lastUpdated || item.date_updated)
                       const momentOfSearchValue = MomentJS(searchValue)
 
                       return momentCreatedByAuthor >= momentOfSearchValue
@@ -342,10 +299,7 @@ class Entries extends Component {
                 {
                   title: <i className="fas fa-heading" />,
                   key: "title",
-                  filter: searchValue => item =>
-                    item.title
-                      .toUpperCase()
-                      .includes(searchValue.toUpperCase()),
+                  filter: searchValue => item => item.title.toUpperCase().includes(searchValue.toUpperCase()),
                   width: 180
                 },
                 {
@@ -382,15 +336,12 @@ class Entries extends Component {
                   title: <i className="fas fa-photo-video" />,
                   key: "EntryFiles",
                   width: 60,
-                  render: item => (
-                    <span className="Center">{item.EntryFiles.length}</span>
-                  ),
+                  render: item => <span className="Center">{item.EntryFiles.length}</span>,
                   sort: (a, b, sortUp) =>
                     sortUp
                       ? b.EntryFiles.length - a.EntryFiles.length
                       : a.EntryFiles.length - b.EntryFiles.length,
-                  filter: searchValue => item =>
-                    item.EntryFiles.length >= searchValue,
+                  filter: searchValue => item => item.EntryFiles.length >= searchValue,
                   filterPlaceholder: "<="
                 }
               ]}
@@ -431,10 +382,7 @@ class Entries extends Component {
                   })
                   return RouterPush(history, RouteMap.NEW_ENTRY)
                 } else {
-                  return RouterPush(
-                    history,
-                    RouteMap.ENTRY_DETAIL.replace(":entryId", `${entryId}`)
-                  )
+                  return RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${entryId}`))
                 }
               }}
             />
@@ -457,6 +405,4 @@ class Entries extends Component {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(Entries)
-)
+export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(Entries))
