@@ -28,14 +28,6 @@ const mapStateToProps = ({ Calendar: { activeDate }, Entries: { items } }) => {
 const mapDispatchToProps = {}
 
 class EntryList extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      entries: []
-    }
-  }
-
   static propTypes = {
     activeDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
     entries: PropTypes.array
