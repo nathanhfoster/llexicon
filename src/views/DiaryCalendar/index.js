@@ -34,6 +34,8 @@ const mapDispatchToProps = {
 
 class DiaryCalendar extends Component {
   static propTypes = {
+    activeDate: PropTypes.string.isRequired,
+    view: PropTypes.string.isRequired,
     SetCalendar: PropTypes.func.isRequired,
     GetEntryTags: PropTypes.func.isRequired,
     SyncEntries: PropTypes.func.isRequired,
@@ -56,7 +58,10 @@ class DiaryCalendar extends Component {
     )
   }
 
-  handleDateChange = ({ activeStartDate, view }) => {
+  handleDateChange = (
+    { activeStartDate, view },
+    shouldGetUserEntries = true
+  ) => {
     const { SetCalendar } = this.props
 
     const now = new Date()
@@ -67,7 +72,8 @@ class DiaryCalendar extends Component {
     activeDate.setMilliseconds(now.getMilliseconds())
 
     SetCalendar({ activeDate, view })
-    this.getUserEntriesByDate(activeDate)
+
+    if (shouldGetUserEntries) this.getUserEntriesByDate(activeDate)
   }
 
   getUserEntriesByDate = date => {
@@ -88,7 +94,7 @@ class DiaryCalendar extends Component {
   }
 
   render() {
-    const { activeDate } = this.props
+    const { activeDate, entries } = this.props
 
     return (
       <Container fluid className="DiaryCalendar Container">
@@ -141,17 +147,20 @@ class DiaryCalendar extends Component {
               onChange={null}
               onActiveDateChange={this.handleDateChange}
               onClickDay={activeStartDate =>
-                this.handleDateChange({ activeStartDate, view: "month" })
+                this.handleDateChange({ activeStartDate, view: "month" }, false)
               }
               // onClickWeekNumber={props => console.log("Week: ", props)}
-              onClickMonth={activeStartDate =>
-                this.handleDateChange({ activeStartDate, view: "month" })
-              }
+              onClickMonth={activeStartDate => {
+                this.handleDateChange({ activeStartDate, view: "month" }, false)
+              }}
               onClickYear={activeStartDate =>
-                this.handleDateChange({ activeStartDate, view: "year" })
+                this.handleDateChange({ activeStartDate, view: "year" }, false)
               }
               onClickDecade={activeStartDate =>
-                this.handleDateChange({ activeStartDate, view: "decade" })
+                this.handleDateChange(
+                  { activeStartDate, view: "decade" },
+                  false
+                )
               }
             />
           </Col>

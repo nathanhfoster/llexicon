@@ -2,11 +2,6 @@ import { PureComponent } from "react"
 import PropTypes from "prop-types"
 
 class UseDebounce extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.debounce = null
-  }
-
   static propTypes = {
     onChangeCallback: PropTypes.func.isRequired,
     value: PropTypes.any,
@@ -15,13 +10,6 @@ class UseDebounce extends PureComponent {
 
   static defaultProps = {
     delay: 400
-  }
-
-  shouldComponentUpdate(nextProps) {
-    const previousValue = this.props.value
-    const nextValue = nextProps.value
-    const valueChanged = previousValue !== nextValue
-    return valueChanged
   }
 
   getSnapshotBeforeUpdate() {

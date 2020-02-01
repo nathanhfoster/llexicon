@@ -13,15 +13,16 @@ import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({ Calendar: { activeDate }, Entries: { items } }) => {
+  const entries = items.filter(entry => {
+    const { date_created_by_author, shouldDelete } = entry
+    const date = MomentJS(activeDate)
+    const startDate = MomentJS(date_created_by_author)
+    const sameDayEvent = startDate.isSame(date, "day")
+    return !shouldDelete && sameDayEvent
+  })
   return {
     activeDate,
-    entries: items.filter(entry => {
-      const { date_created_by_author, shouldDelete } = entry
-      const date = MomentJS(activeDate)
-      const startDate = MomentJS(date_created_by_author)
-      const sameDayEvent = startDate.isSame(date, "day")
-      return !shouldDelete && sameDayEvent
-    })
+    entries
   }
 }
 
@@ -29,7 +30,10 @@ const mapDispatchToProps = {}
 
 class EntryList extends Component {
   static propTypes = {
-    activeDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
+    activeDate: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]).isRequired,
     entries: PropTypes.array
   }
 
@@ -64,7 +68,12 @@ class EntryList extends Component {
           <Row
             tag={ListGroupItem}
             key={id}
-            onClick={() => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))}
+            onClick={() =>
+              RouterPush(
+                history,
+                RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
+              )
+            }
             className="listItem"
             header={title}
           >
@@ -98,5 +107,5 @@ class EntryList extends Component {
   }
 }
 export default withRouter(
-reduxConnect(mapStateToProps, mapDispatchToProps)(EntryList)
+  reduxConnect(mapStateToProps, mapDispatchToProps)(EntryList)
 )

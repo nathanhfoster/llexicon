@@ -30,7 +30,7 @@ class Persister extends PureComponent {
       <UseDebounce
         onChangeCallback={saveReduxState}
         value={lastUpdated}
-        delay={800}
+        delay={1600}
       />
     )
   }
