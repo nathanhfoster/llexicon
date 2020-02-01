@@ -24,10 +24,16 @@ const EntryPreview = ({
   date_updated,
   views,
   history
-}) => view == "month" && !isMobile ? (
+}) =>
+  view == "month" && !isMobile ? (
     <div className="TileContent">
       <div
-        onClick={() => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))}
+        onClick={() =>
+          RouterPush(
+            history,
+            RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
+          )
+        }
         className="hasEventsContainer"
         data-for={`${id}`}
         data-tip={id}
@@ -63,6 +69,4 @@ EntryPreview.propTypes = {
   views: PropTypes.number
 }
 
-export default memo(
-  reduxConnect(mapStateToProps, null)(EntryPreview)
-)
+export default memo(reduxConnect(mapStateToProps, null)(EntryPreview))

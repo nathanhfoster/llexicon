@@ -65,12 +65,6 @@ class TileContent extends Component {
     setTimeout(() => RouterPush(history, RouteMap.NEW_ENTRY), 150)
   }
 
-  handleTileClick = () => {
-    const { onTileClick, date } = this.props
-
-    onTileClick(date)
-  }
-
   renderEntryPreviews = entries => {
     const { date, staticContext, view, history } = this.props
 
