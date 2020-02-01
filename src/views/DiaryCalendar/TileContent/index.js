@@ -6,6 +6,7 @@ import { GetUserEntriesByDate } from "../../../actions/Entries"
 import { withRouter } from "react-router-dom"
 import EntryPreview from "./EntryPreview"
 import MomentJS from "moment"
+import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = (
@@ -53,7 +54,13 @@ class TileContent extends Component {
   static defaultProps = {}
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { shouldRenderEntryPreview, shouldRenderPlusButton } = this.props
+    const {
+      entries,
+      shouldRenderEntryPreview,
+      shouldRenderPlusButton
+    } = this.props
+
+    const entriesChanged = !deepEquals(entries, nextProps.entries)
 
     const shouldRenderEntryPreviewChanged =
       shouldRenderEntryPreview !== nextProps.shouldRenderEntryPreview
@@ -61,7 +68,11 @@ class TileContent extends Component {
     const shouldRenderPlusButtonChanged =
       shouldRenderPlusButton !== nextProps.shouldRenderPlusButton
 
-    return shouldRenderEntryPreviewChanged || shouldRenderPlusButtonChanged
+    return (
+      entriesChanged ||
+      shouldRenderEntryPreviewChanged ||
+      shouldRenderPlusButtonChanged
+    )
   }
 
   handleTodayClick = () => {
