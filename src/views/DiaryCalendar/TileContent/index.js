@@ -6,12 +6,11 @@ import { GetUserEntriesByDate } from "../../../actions/Entries"
 import { withRouter } from "react-router-dom"
 import EntryPreview from "./EntryPreview"
 import MomentJS from "moment"
-import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = (
-  { Calendar: { activeDate }, Entries: { items }, Window: { isMobile } },
-  { date, view, staticContext }
+  { Window: { isMobile } },
+  { date, view, staticContext, activeDate, entriesWithinView }
 ) => {
   const calendarDay = MomentJS(date)
   const activeDay = MomentJS(activeDate)
@@ -19,9 +18,11 @@ const mapStateToProps = (
   const shouldRenderEntryPreview = view === "month"
 
   const shouldRenderPlusButton =
-    shouldRenderEntryPreview && isMobile ? calendarDay.isSame(activeDay, "day") : true
+    shouldRenderEntryPreview && isMobile
+      ? calendarDay.isSame(activeDay, "day")
+      : true
 
-  const entries = items.filter(entry => {
+  const entries = entriesWithinView.filter(entry => {
     const { date_created_by_author, shouldDelete } = entry
 
     const entryDate = MomentJS(date_created_by_author)
@@ -52,8 +53,10 @@ class TileContent extends Component {
   static defaultProps = {}
 
   shouldComponentUpdate(nextProps, nextState) {
-    const propsChanged = !deepEquals(this.props, nextProps)
-    return propsChanged
+    const { view, isMobile } = this.props
+    const viewChanged = view !== nextProps.view
+    const isMobileChanged = isMobile !== nextProps.isMobile
+    return viewChanged || isMobileChanged
   }
 
   handleTodayClick = () => {
@@ -88,18 +91,31 @@ class TileContent extends Component {
   }
 
   render() {
-    const { shouldRenderEntryPreview, shouldRenderPlusButton, entries } = this.props
+    const {
+      shouldRenderEntryPreview,
+      shouldRenderPlusButton,
+      entries
+    } = this.props
+
+    // console.log("TileContent: ")
 
     return (
       <Fragment>
         {shouldRenderPlusButton && (
-          <i className="fas fa-feather-alt TileContentFeather" onClick={this.handleTodayClick} />
+          <i
+            className="fas fa-feather-alt TileContentFeather"
+            onClick={this.handleTodayClick}
+          />
         )}
         {shouldRenderEntryPreview && (
-          <div className="TileContentContainer">{this.renderEntryPreviews(entries)}</div>
+          <div className="TileContentContainer">
+            {this.renderEntryPreviews(entries)}
+          </div>
         )}
       </Fragment>
     )
   }
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent))
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)
+)

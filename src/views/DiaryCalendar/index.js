@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import Calendar from "react-calendar/dist/entry.nostyle"
 import Moment from "react-moment"
+import MomentJS from "moment"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouteMap } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
@@ -20,10 +21,22 @@ const TileContent = lazy(() => import("./TileContent"))
 
 const EntryList = lazy(() => import("../../components/EntryList"))
 
-const mapStateToProps = ({ Calendar: { activeDate, view } }) => ({
-  activeDate,
-  view
-})
+const mapStateToProps = ({
+  Calendar: { activeDate, view },
+  Entries: { items }
+}) => {
+  const calendarDate = MomentJS(activeDate)
+
+  const entriesWithinView = items.filter(entry => {
+    const { date_created_by_author, shouldDelete } = entry
+    const entryDate = MomentJS(date_created_by_author)
+    const entryDateWithinView = entryDate.isSame(calendarDate, view)
+
+    return !shouldDelete && entryDateWithinView
+  })
+
+  return { entriesWithinView, activeDate, view }
+}
 
 const mapDispatchToProps = {
   SetCalendar,
@@ -34,7 +47,11 @@ const mapDispatchToProps = {
 
 class DiaryCalendar extends Component {
   static propTypes = {
-    activeDate: PropTypes.string.isRequired,
+    entriesWithinView: PropTypes.arrayOf(PropTypes.object).isRequired,
+    activeDate: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date)
+    ]).isRequired,
     view: PropTypes.string.isRequired,
     SetCalendar: PropTypes.func.isRequired,
     GetEntryTags: PropTypes.func.isRequired,
@@ -73,7 +90,7 @@ class DiaryCalendar extends Component {
 
     SetCalendar({ activeDate, view })
 
-    if (shouldGetUserEntries) this.getUserEntriesByDate(activeDate)
+    if (shouldGetUserEntries) this.getUserEntriesByDate(activeStartDate)
   }
 
   getUserEntriesByDate = date => {
@@ -94,7 +111,9 @@ class DiaryCalendar extends Component {
   }
 
   render() {
-    const { activeDate, entries } = this.props
+    const { activeDate, entriesWithinView } = this.props
+
+    // console.log("DiaryCalendar: ")
 
     return (
       <Container fluid className="DiaryCalendar Container">
@@ -121,7 +140,10 @@ class DiaryCalendar extends Component {
                 <i className="fas fa-feather-alt NavBarImage NavBarLink" />
               </Button>
             </div>
-            <EntryList />
+            <EntryList
+              activeDate={activeDate}
+              entriesWithinView={entriesWithinView}
+            />
           </Col>
           <Col
             md={{ size: 9, order: 2 }}
@@ -132,7 +154,13 @@ class DiaryCalendar extends Component {
               //calendarType="ISO 8601"
               value={activeDate}
               ativeStartDate={new Date()} // fallback if value not set
-              tileContent={props => <TileContent {...props} />}
+              tileContent={props => (
+                <TileContent
+                  {...props}
+                  activeDate={activeDate}
+                  entriesWithinView={entriesWithinView}
+                />
+              )}
               //tileClassName={this.tileHandler}
               // minDetail={"year"}
               showFixedNumberOfWeeks={true}

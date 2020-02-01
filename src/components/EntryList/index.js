@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
 import { ListGroup, ListGroupItem, Container, Row, Col } from "reactstrap"
 import { withRouter } from "react-router-dom"
 import Moment from "react-moment"
@@ -12,34 +11,18 @@ import TagsContainer from "../TagsContainer"
 import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-const mapStateToProps = ({ Calendar: { activeDate }, Entries: { items } }) => {
-  const entries = items.filter(entry => {
-    const { date_created_by_author, shouldDelete } = entry
-    const date = MomentJS(activeDate)
-    const startDate = MomentJS(date_created_by_author)
-    const sameDayEvent = startDate.isSame(date, "day")
-    return !shouldDelete && sameDayEvent
-  })
-  return {
-    activeDate,
-    entries
-  }
-}
-
-const mapDispatchToProps = {}
-
 class EntryList extends Component {
   static propTypes = {
     activeDate: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.instanceOf(Date)
     ]).isRequired,
-    entries: PropTypes.array
+    entriesWithinView: PropTypes.arrayOf(PropTypes.object)
   }
 
   static defaultProps = {
     activeDate: new Date(),
-    entries: []
+    entriesWithinView: []
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -97,7 +80,17 @@ class EntryList extends Component {
   }
 
   render() {
-    const { entries } = this.props
+    const { entriesWithinView, activeDate } = this.props
+
+    const entries = entriesWithinView.filter(entry => {
+      const { date_created_by_author, shouldDelete } = entry
+      const date = MomentJS(activeDate)
+      const startDate = MomentJS(date_created_by_author)
+      const sameDayEvent = startDate.isSame(date, "day")
+      return !shouldDelete && sameDayEvent
+    })
+
+    // console.log("EntryList: ")
 
     return (
       <Container fluid tag={ListGroup} className="List">
@@ -106,6 +99,4 @@ class EntryList extends Component {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(EntryList)
-)
+export default withRouter(EntryList)
