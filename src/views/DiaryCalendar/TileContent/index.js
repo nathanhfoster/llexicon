@@ -72,7 +72,7 @@ class TileContent extends Component {
   }
 
   renderEntryPreviews = entries => {
-    const { date, staticContext, view } = this.props
+    const { date, staticContext, view, history } = this.props
 
     return entries.map(entry => {
       const { id, ...restOfProps } = entry
@@ -85,6 +85,7 @@ class TileContent extends Component {
           date={date}
           staticContext={staticContext}
           view={view}
+          history={history}
         />
       )
     })
