@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { RouterPush } from "../../../../ReactRouter/Routes"
 import { RouteMap } from "../../../../ReactRouter/Routes"
 import Moment from "react-moment"
@@ -10,8 +10,10 @@ import "./styles.css"
 
 const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
 
-const handleOnClick = (history, id) =>
+const handleOnClick = id => {
+  const history = useHistory()
   RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
+}
 
 const EntryPreview = ({
   history,
@@ -55,9 +57,6 @@ const EntryPreview = ({
   ) : null
 
 EntryPreview.propTypes = {
-  history: PropTypes.object,
-  location: PropTypes.object,
-  match: PropTypes.object,
   isMobile: PropTypes.bool,
   view: PropTypes.string,
   id: PropTypes.number,
@@ -72,5 +71,5 @@ EntryPreview.propTypes = {
 }
 
 export default memo(
-  withRouter(reduxConnect(mapStateToProps, null)(EntryPreview))
+  reduxConnect(mapStateToProps, null)(EntryPreview)
 )
