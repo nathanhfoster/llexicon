@@ -10,10 +10,8 @@ import "./styles.css"
 
 const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
 
-const handleOnClick = id => {
-  const history = useHistory()
+const handleOnClick = (history, id) => 
   RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
-}
 
 const EntryPreview = ({
   history,
@@ -30,8 +28,9 @@ const EntryPreview = ({
   date_created_by_author,
   date_updated,
   views
-}) =>
-  view == "month" && !isMobile ? (
+}) => { 
+ const history = useHistory()
+ return view == "month" && !isMobile ? (
     <div className="TileContent">
       <div
         onClick={() => handleOnClick(history, id)}
@@ -55,6 +54,8 @@ const EntryPreview = ({
   ) : view == "month" ? (
     <Star bottom="8px" size={8} color="White" animation={false} opacity={1} />
   ) : null
+
+}
 
 EntryPreview.propTypes = {
   isMobile: PropTypes.bool,
