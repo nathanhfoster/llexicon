@@ -12,21 +12,23 @@ const mapStateToProps = (
   { Window: { isMobile } },
   { date, view, staticContext, activeDate, entriesWithinView }
 ) => {
-  const calendarDay = MomentJS(date)
-  const activeDay = MomentJS(activeDate)
+  const calendarDate = MomentJS(date)
+  const currentDate = MomentJS(activeDate)
 
-  const shouldRenderEntryPreview = view === "month"
+  const sameMonth = calendarDate.isSame(currentDate, "month")
+
+  const shouldRenderEntryPreview = view === "month" && sameMonth
 
   const shouldRenderPlusButton =
     shouldRenderEntryPreview && isMobile
-      ? calendarDay.isSame(activeDay, "day")
+      ? calendarDate.isSame(currentDate, "day")
       : true
 
   const entries = entriesWithinView.filter(entry => {
     const { date_created_by_author, shouldDelete } = entry
 
     const entryDate = MomentJS(date_created_by_author)
-    const eventFound = entryDate.isSame(calendarDay, "day")
+    const eventFound = entryDate.isSame(calendarDate, "day")
 
     return !shouldDelete && eventFound
   })
