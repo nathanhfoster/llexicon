@@ -10,9 +10,6 @@ import "./styles.css"
 
 const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
 
-const handleOnClick = (history, id) => 
-  RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
-
 const EntryPreview = ({
   history,
   location,
@@ -33,7 +30,7 @@ const EntryPreview = ({
  return view == "month" && !isMobile ? (
     <div className="TileContent">
       <div
-        onClick={() => handleOnClick(history, id)}
+        onClick={() => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))}
         className="hasEventsContainer"
         data-for={`${id}`}
         data-tip={id}
