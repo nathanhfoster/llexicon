@@ -12,6 +12,7 @@ const ColumnsPropType = PropTypes.arrayOf(
     key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     render: PropTypes.func,
+    footer: PropTypes.func,
     sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["string"])]),
     filter: PropTypes.oneOfType([
       PropTypes.func,

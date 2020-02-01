@@ -173,11 +173,11 @@ class BasicTable extends PureComponent {
     })
   }
 
-  handlePageChange = (id, currentPage) => this.setState({ currentPage })
+  handlePageChange = currentPage => this.setState({ currentPage })
 
   handlePageSizeChange = (id, pageSize) => {
     this.setState({ pageSize })
-    this.handlePageChange(null, 0)
+    this.handlePageChange(0)
   }
 
   render() {
@@ -221,13 +221,8 @@ class BasicTable extends PureComponent {
             sortKey={sortKey}
             sortUp={sortUp}
           />
-          <TableBody
-            sortable={sortable}
-            onRowClick={onRowClick}
-            columns={columns}
-            data={data}
-          />
-          {/* <TableFooter sortable={sortable} onRowClick={onRowClick} columns={columns} data={data} /> */}
+          <TableBody onRowClick={onRowClick} columns={columns} data={data} />
+          <TableFooter onRowClick={onRowClick} columns={columns} data={data} />
         </Table>
         <TablePaginator
           currentPage={currentPage}
