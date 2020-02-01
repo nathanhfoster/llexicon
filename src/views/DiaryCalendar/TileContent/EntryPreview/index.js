@@ -1,7 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { useHistory } from "react-router-dom"
 import { RouterPush } from "../../../../ReactRouter/Routes"
 import { RouteMap } from "../../../../ReactRouter/Routes"
 import Moment from "react-moment"
@@ -11,7 +10,6 @@ import "./styles.css"
 const mapStateToProps = ({ Window: { isMobile } }) => ({ isMobile })
 
 const EntryPreview = ({
-  history,
   location,
   match,
   isMobile,
@@ -24,10 +22,9 @@ const EntryPreview = ({
   date_created,
   date_created_by_author,
   date_updated,
-  views
-}) => { 
- const history = useHistory()
- return view == "month" && !isMobile ? (
+  views,
+  history
+}) => view == "month" && !isMobile ? (
     <div className="TileContent">
       <div
         onClick={() => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))}
@@ -51,8 +48,6 @@ const EntryPreview = ({
   ) : view == "month" ? (
     <Star bottom="8px" size={8} color="White" animation={false} opacity={1} />
   ) : null
-
-}
 
 EntryPreview.propTypes = {
   isMobile: PropTypes.bool,
