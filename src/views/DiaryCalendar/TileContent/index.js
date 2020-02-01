@@ -34,12 +34,10 @@ const mapStateToProps = (
   return {
     shouldRenderEntryPreview,
     shouldRenderPlusButton,
-    calendarDay,
     entries,
     date,
     staticContext,
-    view,
-    isMobile
+    view
   }
 }
 
@@ -53,10 +51,15 @@ class TileContent extends Component {
   static defaultProps = {}
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { view, isMobile } = this.props
-    const viewChanged = view !== nextProps.view
-    const isMobileChanged = isMobile !== nextProps.isMobile
-    return viewChanged || isMobileChanged
+    const { shouldRenderEntryPreview, shouldRenderPlusButton } = this.props
+
+    const shouldRenderEntryPreviewChanged =
+      shouldRenderEntryPreview !== nextProps.shouldRenderEntryPreview
+
+    const shouldRenderPlusButtonChanged =
+      shouldRenderPlusButton !== nextProps.shouldRenderPlusButton
+
+    return shouldRenderEntryPreviewChanged || shouldRenderPlusButtonChanged
   }
 
   handleTodayClick = () => {
