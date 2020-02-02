@@ -28,9 +28,9 @@ class EntriesMinimal extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const entriesChanged = !deepEquals(this.props.entries, nextProps.entries)
+    const propsChanged = !deepEquals(this.props, nextProps)
 
-    return entriesChanged
+    return propsChanged
   }
 
   renderMinimalEntries = ({ data, index, style, isScrolling }) => {
