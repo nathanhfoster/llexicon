@@ -3,17 +3,34 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
-.StatContainer {
-  border: 1px solid var(--tertiarycolor);
-  max-height: 290px;
-  overflow-y: auto;
+.HomeFeatureCard {
+  background: rgba(0, 0, 0, 0.4);
+  border: 0;
+  margin: 15px 0;
+  height: 350px;
 }
 
-.HomeSubHeader {
-  font-size: 26px;
-  font-weight: 600;
+.HomeFeatureContainer {
+  text-align: center;
 }
 
-.Stat {
-  font-weight: 300;
+.HomeFeatureBodyContainer {
+  background: var(--midNight);
+}
+
+.AboutFeatureIcon {
+  font-size: 8em;
+}
+
+.AboutFeatureImage {
+  width: auto;
+  height: 128px;
+}
+
+.AboutFeatureTitle {
+  font-weight: 900;
+}
+
+.AboutFeatureText {
+  height: 64px;
 }

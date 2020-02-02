@@ -69,10 +69,11 @@ class BasicTabs extends Component {
   renderNavItems = (activeTab, tabs) =>
     tabs.map(tab => {
       const { tabId, title, onClickCallback } = tab
+      const onTab = activeTab === tabId
       return (
         <NavItem key={tabId}>
           <NavLink
-            className={`${activeTab === tabId ? "active" : ""}`}
+            className={`BasicTabsNavLink ${onTab ? "active" : ""}`}
             onClick={() =>
               onClickCallback
                 ? onClickCallback(tabId)

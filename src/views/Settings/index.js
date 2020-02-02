@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import ImportEntries from "../../components/ImportEntries"
-import { Container, Row, Col, Button, Form, FormGroup } from "reactstrap"
+import { Container, Row, Col, Button, Form, FormGroup, Media } from "reactstrap"
 import { UpdateUser } from "../../actions/User"
 import {
   GetUserSettings,
@@ -13,6 +13,8 @@ import { copyStringToClipboard } from "../../helpers"
 import MomentJs from "moment"
 import BasicForm from "../../components/BasicForm"
 import SettingInput from "./SettingInput"
+import EntryStatistics from "../../components/EntryStatistics"
+import Moment from "react-moment"
 import "./styles.css"
 
 const handleOnClick = (settingKey, props) => {
@@ -130,10 +132,12 @@ class Settings extends PureComponent {
     sections.map((section, i) => {
       const { title, inputs } = section
       return (
-        <FormGroup key={i} tag="fieldset">
-          <legend className="headerBanner">{title}</legend>
-          {this.renderInputs(inputs)}
-        </FormGroup>
+        <Col xs={12}>
+          <FormGroup key={i} tag="fieldset">
+            <legend className="headerBanner">{title}</legend>
+            {this.renderInputs(inputs)}
+          </FormGroup>
+        </Col>
       )
     })
 
@@ -198,6 +202,7 @@ class Settings extends PureComponent {
             </h1>
           </Col>
         </Row>
+
         <Row>
           <Col xs={6}>
             <ImportEntries />
@@ -206,6 +211,24 @@ class Settings extends PureComponent {
             <Button color="primary" onClick={this.handleExportEntries}>
               <i className="fas fa-clipboard" /> Export Entries
             </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col
+            xs={12}
+            tag="h3"
+            style={{ display: "flex", alignContent: "center" }}
+          >
+            {User.picture && (
+              <Media middle src={User.picture} height={52} className="mr-2" />
+            )}
+            {`${User.first_name} ${User.last_name}`}
+          </Col>
+          <Col xs={12}>
+            <span>Joined </span>
+            <Moment fromNow>{User.date_joined}</Moment>
+            <span> on </span>
+            <Moment format="MMMM DD, YYYY hh:mma">{User.date_joined}</Moment>
           </Col>
         </Row>
         <Row>
@@ -260,7 +283,14 @@ class Settings extends PureComponent {
             />
           </Col>
         </Row>
-        <Form>{this.renderSections(sections)}</Form>
+        <Row>
+          <Form>{this.renderSections(sections)}</Form>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <EntryStatistics />
+          </Col>
+        </Row>
       </Container>
     )
   }

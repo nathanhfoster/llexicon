@@ -6,7 +6,6 @@ import { RouteMap } from "./Routes"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
-import About from "../views/About"
 import Home from "../views/Home"
 import NewEntry from "../views/NewEntry"
 import Settings from "../views/Settings"
@@ -20,13 +19,16 @@ import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "./Routes"
 import { getRandomInt } from "../helpers"
 import deepEquals from "../helpers/deepEquals"
-import { SyncEntries, GetAllUserEntries, GetUserEntries } from "../actions/Entries"
+import {
+  SyncEntries,
+  GetAllUserEntries,
+  GetUserEntries
+} from "../actions/Entries"
 import "./styles.css"
 
 const getRouteItems = props => {
   const { User } = props
   const {
-    ABOUT,
     HOME,
     ROOT,
     NEW_ENTRY,
@@ -45,7 +47,6 @@ const getRouteItems = props => {
   } = RouteMap
 
   return [
-    { path: [ABOUT], component: About },
     { path: [ROOT, HOME], component: Home },
     {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
@@ -75,7 +76,9 @@ const getRouteItems = props => {
 
 const renderRedirectOrComponent = (props, shouldRedirect, route, Component) => {
   const { history } = props
-  return shouldRedirect ? () => <Redirect push to={RouterLinkPush(history, route)} /> : Component
+  return shouldRedirect
+    ? () => <Redirect push to={RouterLinkPush(history, route)} />
+    : Component
 }
 
 const mapStateToProps = ({
@@ -211,4 +214,6 @@ class ReactRouter extends Component {
     )
   }
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter))
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter)
+)

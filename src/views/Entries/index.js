@@ -376,11 +376,16 @@ class Entries extends Component {
                   width: 60,
                   render: item => <span className="ml-2">{item.rating}</span>,
                   footer: items => {
-                    const ratingSum = items.reduce(
-                      (count, item) => (count += item.rating),
-                      0
-                    )
-                    const averageRating = (ratingSum / items.length).toFixed(3)
+                    let validItems = 0
+                    const ratingSum = items.reduce((count, item) => {
+                      const { rating } = item
+                      if (rating !== 0) {
+                        count += item.rating
+                        validItems += 1
+                      }
+                      return count
+                    }, 0)
+                    const averageRating = (ratingSum / validItems).toFixed(3)
 
                     return <span>{averageRating > 0 ? averageRating : 0}</span>
                   },

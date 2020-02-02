@@ -1,0 +1,19 @@
+.EntryStatistics {
+  color: var(--secondaryColor);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.StatContainer {
+  border: 1px solid var(--tertiarycolor);
+  max-height: 290px;
+  overflow-y: auto;
+}
+
+.HomeSubHeader {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.Stat {
+  font-weight: 300;
+}

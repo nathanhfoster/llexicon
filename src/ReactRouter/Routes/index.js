@@ -1,6 +1,5 @@
 const RouteMap = {
   ROOT: "/",
-  ABOUT: "/about",
   SETTINGS: "/settings",
   HOME: "/home",
   NEW_ENTRY: "/new-entry",
