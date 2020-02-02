@@ -27,15 +27,10 @@ class EntriesDetailed extends Component {
     itemSize: 60
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { entries } = nextProps
-    return { entries }
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !deepEquals(this.state, nextState)
+    const propsChanged = !deepEquals(this.props, nextProps)
 
-    return stateChanged
+    return propsChanged
   }
 
   renderDetailedEntries = ({ data, index, style, isScrolling }) => {
@@ -59,9 +54,8 @@ class EntriesDetailed extends Component {
   }
 
   render() {
-    const { onItemsRendered, height, width, itemSize } = this.props
-    const { entries } = this.state
-
+    const { entries, onItemsRendered, height, width, itemSize } = this.props
+    
     return (
       <FixedSizeList
         ref={this.detailedEntriesListRef}
