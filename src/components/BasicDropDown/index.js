@@ -8,13 +8,7 @@ import {
 } from "reactstrap"
 import "./styles.css"
 
-const BasicDropDown = ({
-  list,
-  onClickCallback,
-  direction,
-  toggleTitle,
-  children
-}) => {
+const BasicDropDown = ({ list, onClickCallback, direction, toggleTitle }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const toggle = () => setDropdownOpen(prevState => !prevState)
@@ -57,6 +51,7 @@ const BasicDropDown = ({
                 ...data.styles,
                 overflow: "auto",
                 maxHeight: 200
+                // backgroundColor: "var(--primaryColor)"
               }
             })
           }
@@ -85,7 +80,6 @@ BasicDropDown.propTypes = {
   ),
   onClickCallback: PropTypes.func,
   toggleTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  children: PropTypes.any,
 
   // ---Dropdown---
   a11y: PropTypes.bool, // defaults to true. Set to false to enable more bootstrap like tabbing behavior

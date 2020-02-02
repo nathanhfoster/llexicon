@@ -3,7 +3,7 @@
     width: 100%;
 }
 
-.BasicTable tr, .BasicTable td {
+.BasicTable th, .BasicTable tr, .BasicTable td {
     text-overflow: clip;
     white-space: nowrap;
     overflow: auto;
