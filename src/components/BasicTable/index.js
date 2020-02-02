@@ -129,17 +129,17 @@ class BasicTable extends PureComponent {
       pageSize
     } = prevState
 
-    let newData = null
+    let sortedAndFilteredData = null
 
     if (sortKey) {
-      newData = tableSort(data, sort, sortKey, sortUp)
+      sortedAndFilteredData = tableSort(data, sort, sortKey, sortUp)
     }
 
     if (Object.keys(filterMap).length > 0) {
-      if (newData) {
-        newData = tableFilter(newData, filterMap)
+      if (sortedAndFilteredData) {
+        sortedAndFilteredData = tableFilter(sortedAndFilteredData, filterMap)
       } else {
-        newData = tableFilter(data, filterMap)
+        sortedAndFilteredData = tableFilter(data, filterMap)
       }
     }
 
@@ -147,7 +147,10 @@ class BasicTable extends PureComponent {
 
     const sliceEnd = sliceStart + pageSize
 
-    const slicedData = (newData || data).slice(sliceStart, sliceEnd)
+    const slicedData = (sortedAndFilteredData || data).slice(
+      sliceStart,
+      sliceEnd
+    )
 
     const dataLength = data.length
 
@@ -155,6 +158,7 @@ class BasicTable extends PureComponent {
 
     return {
       columns,
+      sortedAndFilteredData,
       data: slicedData,
       dataLength,
       totalPages
@@ -193,6 +197,7 @@ class BasicTable extends PureComponent {
       columns,
       sortKey,
       sortUp,
+      sortedAndFilteredData,
       data,
       dataLength,
       onRowClick,
@@ -222,7 +227,11 @@ class BasicTable extends PureComponent {
             sortUp={sortUp}
           />
           <TableBody onRowClick={onRowClick} columns={columns} data={data} />
-          <TableFooter onRowClick={onRowClick} columns={columns} data={data} />
+          <TableFooter
+            onRowClick={onRowClick}
+            columns={columns}
+            sortedAndFilteredData={sortedAndFilteredData}
+          />
         </Table>
         <TablePaginator
           currentPage={currentPage}

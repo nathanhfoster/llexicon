@@ -377,12 +377,12 @@ class Entries extends Component {
                   render: item => <span className="ml-2">{item.rating}</span>,
                   footer: items => {
                     const ratingSum = items.reduce(
-                      (count, item) => count + item.rating,
+                      (count, item) => (count += item.rating),
                       0
                     )
-                    const averageRating = ratingSum / items.length
+                    const averageRating = (ratingSum / items.length).toFixed(3)
 
-                    return <span>{averageRating}</span>
+                    return <span>{averageRating > 0 ? averageRating : 0}</span>
                   },
                   filter: "number",
                   filterPlaceholder: "<="

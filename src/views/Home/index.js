@@ -1,10 +1,10 @@
-import React, { PureComponent, Fragment } from "react"
+import React, { Component, Fragment } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import RatingIcon from "../../components/RatingIcon"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
-
+import deepEquals from "../../helpers/deepEquals"
 import MomentJs from "moment"
 import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import "./styles.css"
@@ -64,7 +64,7 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
     }
   }
 
-  const averageRating = (sumRating / length).toFixed(3)
+  const averageRating = sumRating / length
   const averageMillisecondsUpdatingEntries = Math.abs(
     sumRatingTimeUpdatingEntries / length
   )
@@ -109,16 +109,15 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
 
 const mapDispatchToProps = {}
 
-class Home extends PureComponent {
-  constructor(props) {
-    super(props)
-
-    this.state = {}
-  }
-
+class Home extends Component {
   static propTypes = {}
 
   static defaultProps = {}
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const propsChanged = !deepEquals(this.props, nextProps)
+    return propsChanged
+  }
 
   renderEntryStats = (stats, fixedValue = 3) =>
     stats.map(stat => {
