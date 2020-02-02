@@ -10,6 +10,7 @@ import {
   CardText,
   CardBody,
   CardTitle,
+  ButtonGroup,
   Button
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -190,14 +191,24 @@ const Home = () => {
           <h3>The first progressive web app journal</h3>
         </Col>
         <Col xs={12}>
-          <Button
-            tag={Button}
-            color="primary"
-            onClick={() => RouterPush(history, RouteMap.NEW_ENTRY)}
-          >
-            <i className="fas fa-feather-alt mr-1" />
-            Start a new entry
-          </Button>
+          <ButtonGroup size="lg">
+            <Button
+              tag={Button}
+              color="accent"
+              onClick={() => RouterPush(history, RouteMap.NEW_ENTRY)}
+            >
+              <i className="fas fa-feather-alt mr-1" />
+              Start a new entry
+            </Button>
+            <Button
+              tag={Button}
+              color="accent"
+              onClick={() => RouterPush(history, RouteMap.SIGNUP)}
+            >
+              <i className="fas fa-sign-in-alt mr-1" />
+              Sign up
+            </Button>
+          </ButtonGroup>
         </Col>
       </Row>
       <Row>{renderFeatures(features)}</Row>
