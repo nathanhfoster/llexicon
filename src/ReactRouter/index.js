@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from "react"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
 import Home from "../views/Home"
 import NewEntry from "../views/NewEntry"
@@ -179,38 +178,35 @@ class ReactRouter extends Component {
     } = this.state
 
     return (
-      <Fragment>
-        <NavBar />
-        <OverlayScrollbarsComponent
-          className="App routeOverlay os-theme-light"
-          style={{
-            top: navBarHeight,
-            bottom: show_footer ? footerHeight : 0
-            // background: "red"
-          }}
-          options={{
-            /* overflowBehavior: {
+      <OverlayScrollbarsComponent
+        className="App routeOverlay os-theme-light"
+        style={{
+          top: navBarHeight,
+          bottom: show_footer ? footerHeight : 0
+          // background: "red"
+        }}
+        options={{
+          /* overflowBehavior: {
               x: "visible-hidden",
               y: "visible-hidden"
             }, */
-            scrollbars: {
-              // visibility: "auto",
-              autoHide: "scroll",
-              autoHideDelay: 200
-              // dragScrolling: false
-            }
-            // callbacks: {
-            //   onScrollStart: () => console.log("Scrolling")
-            // }
-          }}
-        >
-          <Switch>
-            {this.renderRouteItems(routeItems)}
-            <Route component={PageNotFound} />
-          </Switch>
-          <Footer />
-        </OverlayScrollbarsComponent>
-      </Fragment>
+          scrollbars: {
+            // visibility: "auto",
+            autoHide: "scroll",
+            autoHideDelay: 200
+            // dragScrolling: false
+          }
+          // callbacks: {
+          //   onScrollStart: () => console.log("Scrolling")
+          // }
+        }}
+      >
+        <Switch>
+          {this.renderRouteItems(routeItems)}
+          <Route component={PageNotFound} />
+        </Switch>
+        <Footer />
+      </OverlayScrollbarsComponent>
     )
   }
 }

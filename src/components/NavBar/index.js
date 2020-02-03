@@ -14,7 +14,6 @@ import {
   DropdownItem
 } from "reactstrap"
 import StarSearch from "../StarSearch"
-import { SetCalendar } from "../../actions/Calendar"
 import { GetUserEntriesByDate } from "../../actions/Entries"
 import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
@@ -43,7 +42,7 @@ const mapStateToProps = ({
   isInStandalone
 })
 
-const mapDispatchToProps = { UserLogout, SetCalendar, GetUserEntriesByDate }
+const mapDispatchToProps = { UserLogout, GetUserEntriesByDate }
 
 class NavBar extends PureComponent {
   constructor(props) {
@@ -57,15 +56,10 @@ class NavBar extends PureComponent {
   static propTypes = {
     UserId: PropTypes.number,
     UserLogout: PropTypes.func.isRequired,
-    SetCalendar: PropTypes.func.isRequired,
     GetUserEntriesByDate: PropTypes.func.isRequired
   }
 
   static defaultProps = {}
-
-  componentDidMount() {
-    this.handleTodayClick()
-  }
 
   toggleHamburgerMenu = () =>
     this.setState({ collapsed: !this.state.collapsed })
@@ -94,16 +88,9 @@ class NavBar extends PureComponent {
     </UncontrolledDropdown>
   )
 
-  handleTodayClick = () => {
-    const { SetCalendar, GetUserEntriesByDate } = this.props
-    const activeDate = new Date()
-    // GetUserEntriesByDate(activeDate)
-    SetCalendar({ activeDate })
-  }
-
   render() {
     const { collapsed } = this.state
-    const { UserId, isInStandalone, isMobile } = this.props
+    const { UserId, isInStandalone, isMobile, UserLogout } = this.props
 
     const navLinks = [
       {

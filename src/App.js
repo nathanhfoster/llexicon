@@ -2,8 +2,8 @@ import { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { SetWindow, SetAppVersion } from "./actions/App"
-import { WatchUserLocation } from "./actions/User"
 import { GetUserSettings } from "./actions/Settings"
+import { SetCalendar } from "./actions/Calendar"
 
 const mapStateToProps = ({ User: { id } }) => ({
   UserId: id
@@ -11,41 +11,27 @@ const mapStateToProps = ({ User: { id } }) => ({
 
 const mapDispatchToProps = {
   SetWindow,
-  WatchUserLocation,
   GetUserSettings,
-  SetAppVersion
+  SetAppVersion,
+  SetCalendar
 }
 
 class App extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.watchId = null
-    this.state = {}
-  }
-
   static propTypes = {
     UserId: PropTypes.number,
     SetWindow: PropTypes.func.isRequired,
-    WatchUserLocation: PropTypes.func.isRequired,
-    GetUserSettings: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    SetWindow,
-    GetUserSettings
+    GetUserSettings: PropTypes.func.isRequired,
+    SetCalendar: PropTypes.func.isRequired
   }
 
   componentDidMount() {
-    const {
-      WatchUserLocation,
-      GetUserSettings,
-      UserId,
-      SetAppVersion
-    } = this.props
+    const { GetUserSettings, UserId, SetAppVersion, SetCalendar } = this.props
+
+    const activeDate = new Date()
+
+    SetCalendar({ activeDate })
 
     SetAppVersion()
-
-    // this.watchId = WatchUserLocation()
 
     window.addEventListener("resize", this.updateWindowDimensions)
 
@@ -57,10 +43,6 @@ class App extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { WatchUserLocation } = this.props
-
-    // WatchUserLocation(this.watchId)
-
     window.removeEventListener("resize", this.updateWindowDimensions)
   }
 

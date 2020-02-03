@@ -8,10 +8,12 @@ import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import App from "./App"
 import AlertNotifications from "./store/AlertNotifications"
-import BackgroundImage from ".//components/BackgroundImage"
+import BackgroundImage from "./components/BackgroundImage"
 import Persister from "./store/Persister"
 import { getReduxState } from "./store/Persister/persist"
 import * as serviceWorker from "./serviceWorker"
+
+const NavBar = lazy(() => import("./components/NavBar"))
 const ReactRouter = lazy(() => import("./ReactRouter"))
 
 const { NODE_ENV } = process.env
@@ -27,6 +29,7 @@ ReactDOM.render(
       <App />
       <BrowserRouter>
         <BackgroundImage />
+        <NavBar />
         <ReactRouter />
       </BrowserRouter>
     </Suspense>

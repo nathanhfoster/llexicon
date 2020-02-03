@@ -1,22 +1,12 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  ButtonGroup,
-  Button
-} from "reactstrap"
+import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
+import Feature from "./Feature"
 import { connect as reduxConnect } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
+import AddToHomeScreen from "../../components/AddToHomeScreen"
 
 import "./styles.css"
 
@@ -25,32 +15,11 @@ const mapStateToProps = ({}) => ({})
 const mapDispatchToProps = {}
 
 const renderFeatures = features =>
-  features.map((feature, i) => {
-    const { title, text, faIcon, render } = feature
-
-    return (
-      <Col key={i} lg={3} md={4} sm={6} xs={12}>
-        <Card className="HomeFeatureCard">
-          <CardHeader className="HomeFeatureContainer">
-            {typeof faIcon === "string" ? (
-              <i className={`AboutFeatureIcon ${faIcon}`} />
-            ) : (
-              render
-            )}
-          </CardHeader>
-          <CardBody className="HomeFeatureBodyContainer">
-            <CardTitle tag="h4" className="AboutFeatureTitle Center">
-              {title}
-            </CardTitle>
-            <CardText className="AboutFeatureText Center">{text}</CardText>
-            {/* <div className="Center">
-            <Button color="accent">Learn More</Button>
-          </div> */}
-          </CardBody>
-        </Card>
-      </Col>
-    )
-  })
+  features.map((feature, i) => (
+    <Col key={i} lg={3} md={4} sm={6} xs={12}>
+      <Feature {...feature} />
+    </Col>
+  ))
 
 const Home = () => {
   const history = useHistory()
@@ -58,7 +27,7 @@ const Home = () => {
     {
       title: "Notifications",
       text: "Daily motivation to journal your life.",
-      render: (
+      header: (
         <svg
           aria-hidden="true"
           focusable="false"
@@ -81,7 +50,7 @@ const Home = () => {
     {
       title: "Offline",
       text: "Doesn't require an internet connections.",
-      render: (
+      header: (
         <svg
           aria-hidden="true"
           focusable="false"
@@ -105,17 +74,19 @@ const Home = () => {
       title: "Linkable",
       text: "Share any public view you want with your friends and family.",
       faIcon: "fas fa-link"
+      // button: <Button color="accent">Learn More</Button>
     },
     {
       title: "Installable",
       text:
         "Install this app to your device just like you would in an app store.",
-      faIcon: "fas fa-download"
+      faIcon: "fas fa-download",
+      button: <AddToHomeScreen />
     },
     {
       title: "Responsive",
       text: "UI fits the screen dimensions of any device.",
-      render: (
+      header: (
         <svg
           aria-hidden="true"
           focusable="false"
@@ -138,7 +109,7 @@ const Home = () => {
     {
       title: "App-like",
       text: "Looks and interacts like a native app.",
-      render: (
+      header: (
         <svg
           aria-hidden="true"
           focusable="false"
@@ -161,7 +132,7 @@ const Home = () => {
     {
       title: "Secure",
       text: "Always served over HTTPS.",
-      render: (
+      header: (
         <svg
           aria-hidden="true"
           focusable="false"
@@ -176,6 +147,7 @@ const Home = () => {
       )
     }
   ]
+
   return (
     <Container className="Home Container">
       <Row>
@@ -198,7 +170,7 @@ const Home = () => {
               onClick={() => RouterPush(history, RouteMap.NEW_ENTRY)}
             >
               <i className="fas fa-feather-alt mr-1" />
-              Start a new entry
+              New Entry
             </Button>
             <Button
               tag={Button}
@@ -206,7 +178,7 @@ const Home = () => {
               onClick={() => RouterPush(history, RouteMap.SIGNUP)}
             >
               <i className="fas fa-sign-in-alt mr-1" />
-              Sign up
+              Sign Up
             </Button>
           </ButtonGroup>
         </Col>
