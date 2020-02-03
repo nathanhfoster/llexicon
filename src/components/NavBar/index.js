@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"
+import React, { PureComponent, Fragment } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { RouteMap } from "../../ReactRouter/Routes"
 import PropTypes from "prop-types"
@@ -20,7 +20,6 @@ import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
 import AddToHomeScreen from "../AddToHomeScreen/"
 import NavItemLink from "./NavItemLink"
-import deepEquals from "../../helpers/deepEquals"
 import { Logo } from "../../images/AWS"
 
 const {
@@ -46,7 +45,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = { UserLogout, SetCalendar, GetUserEntriesByDate }
 
-class NavBar extends Component {
+class NavBar extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -64,8 +63,48 @@ class NavBar extends Component {
 
   static defaultProps = {}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { UserId, UserLogout, isMobile, isInStandalone } = nextProps
+  componentDidMount() {
+    this.handleTodayClick()
+  }
+
+  toggleHamburgerMenu = () =>
+    this.setState({ collapsed: !this.state.collapsed })
+
+  closeHamburgerMenu = () => this.setState({ collapsed: true })
+
+  renderNavLinks = links =>
+    links.map((link, i) =>
+      link.links ? (
+        this.renderDropDownMenu(`Dropdown-${i}`, link.icon, link.links)
+      ) : (
+        <NavItemLink
+          key={i}
+          {...link}
+          onClickCallback={this.closeHamburgerMenu}
+        />
+      )
+    )
+
+  renderDropDownMenu = (key, icon, links) => (
+    <UncontrolledDropdown key={key} nav inNavbar>
+      <DropdownToggle nav caret>
+        {icon}
+      </DropdownToggle>
+      <DropdownMenu right>{this.renderNavLinks(links)}</DropdownMenu>
+    </UncontrolledDropdown>
+  )
+
+  handleTodayClick = () => {
+    const { SetCalendar, GetUserEntriesByDate } = this.props
+    const activeDate = new Date()
+    // GetUserEntriesByDate(activeDate)
+    SetCalendar({ activeDate })
+  }
+
+  render() {
+    const { collapsed } = this.state
+    const { UserId, isInStandalone, isMobile } = this.props
+
     const navLinks = [
       {
         route: HOME,
@@ -146,7 +185,7 @@ class NavBar extends Component {
               <Fragment>
                 <DropdownItem divider />
                 <DropdownItem>
-                  <AddToHomeScreen />
+                  <AddToHomeScreen onClickCallback={this.closeHamburgerMenu} />
                 </DropdownItem>
               </Fragment>
             )
@@ -154,55 +193,6 @@ class NavBar extends Component {
         ]
       }
     ]
-    return { UserId, UserLogout, isMobile, isInStandalone, navLinks }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return stateChanged
-  }
-
-  componentDidMount() {
-    this.handleTodayClick()
-  }
-
-  toggleHamburgerMenu = () =>
-    this.setState({ collapsed: !this.state.collapsed })
-
-  closeHamburgerMenu = () => this.setState({ collapsed: true })
-
-  renderNavLinks = links =>
-    links.map((link, i) =>
-      link.links ? (
-        this.renderDropDownMenu(`Dropdown-${i}`, link.icon, link.links)
-      ) : (
-        <NavItemLink
-          key={i}
-          {...link}
-          onClickCallback={this.closeHamburgerMenu}
-        />
-      )
-    )
-
-  renderDropDownMenu = (key, icon, links) => (
-    <UncontrolledDropdown key={key} nav inNavbar>
-      <DropdownToggle nav caret>
-        {icon}
-      </DropdownToggle>
-      <DropdownMenu right>{this.renderNavLinks(links)}</DropdownMenu>
-    </UncontrolledDropdown>
-  )
-
-  handleTodayClick = () => {
-    const { SetCalendar, GetUserEntriesByDate } = this.props
-    const activeDate = new Date()
-    // GetUserEntriesByDate(activeDate)
-    SetCalendar({ activeDate })
-  }
-
-  render() {
-    const { collapsed, isMobile, navLinks } = this.state
 
     return (
       <Navbar className="NavBar" fixed="top" expand="md">
