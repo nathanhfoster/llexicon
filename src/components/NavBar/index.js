@@ -17,7 +17,6 @@ import StarSearch from "../StarSearch"
 import { GetUserEntriesByDate } from "../../actions/Entries"
 import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
-import AddToHomeScreen from "../AddToHomeScreen/"
 import NavItemLink from "./NavItemLink"
 import { Logo } from "../../images/AWS"
 
@@ -159,25 +158,9 @@ class NavBar extends PureComponent {
         onClick: UserId ? UserLogout : null
       },
       {
-        icon: <i className="fas fa-ellipsis-v" />,
-        links: [
-          {
-            dropdownItem: true,
-            route: SETTINGS,
-            title: "SETTINGS",
-            icon: <i className="fas fa-cog NavBarImage" />
-          },
-          {
-            render: !isInStandalone && (
-              <Fragment>
-                <DropdownItem divider />
-                <DropdownItem>
-                  <AddToHomeScreen onClickCallback={this.closeHamburgerMenu} />
-                </DropdownItem>
-              </Fragment>
-            )
-          }
-        ]
+        route: SETTINGS,
+        title: "SETTINGS",
+        icon: <i className="fas fa-cog NavBarImage" />
       }
     ]
 
