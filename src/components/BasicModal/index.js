@@ -4,16 +4,17 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./styles.css"
 
 const BasicModal = ({
-  modalTitle,
+  title,
   onClickCallback,
   onSaveCallback,
   onCancelCallback,
   children,
   className,
-  disabled = false,
-  saveDisabled = false,
-  ModalButton,
-  ModalButtonTitle
+  disabled,
+  saveDisabled,
+  button,
+  buttonTitle,
+  footer
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -21,15 +22,15 @@ const BasicModal = ({
 
   return (
     <Fragment>
-      {ModalButton ? (
-        cloneElement(ModalButton, {
-          ...ModalButton.props,
+      {button ? (
+        cloneElement(button, {
+          ...button.props,
           disabled,
-          // TODO
-          // onClick: () => {
-          //   onClickCallback && onClickCallback()
-          //   toggle()
-          // },
+          onClick: () => {
+            const { onClick } = button.props
+            onClick && onClick()
+            toggle()
+          },
           onClickCallback: () => {
             onClickCallback && onClickCallback()
             toggle()
@@ -44,7 +45,7 @@ const BasicModal = ({
             toggle()
           }}
         >
-          {ModalButtonTitle}
+          {buttonTitle}
         </Button>
       )}
       <Modal
@@ -56,23 +57,28 @@ const BasicModal = ({
         onClosed={onCancelCallback}
       >
         <ModalHeader toggle={toggle} className="Center">
-          {modalTitle}
+          {title}
         </ModalHeader>
         <ModalBody className={className}>{children}</ModalBody>
         <ModalFooter className="Center">
-          <Button
-            color="primary"
-            onClick={() => {
-              onSaveCallback && onSaveCallback()
-              toggle()
-            }}
-            disabled={saveDisabled}
-          >
-            Save
-          </Button>{" "}
-          <Button color="danger" onClick={toggle}>
-            Cancel
-          </Button>
+          {footer || (
+            <Fragment>
+              <Button
+                className="mr-1"
+                color="primary"
+                onClick={() => {
+                  onSaveCallback && onSaveCallback()
+                  toggle()
+                }}
+                disabled={saveDisabled}
+              >
+                Save
+              </Button>
+              <Button color="danger" onClick={toggle}>
+                Cancel
+              </Button>
+            </Fragment>
+          )}
         </ModalFooter>
       </Modal>
     </Fragment>
@@ -80,7 +86,7 @@ const BasicModal = ({
 }
 
 BasicModal.propTypes = {
-  modalTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
@@ -90,8 +96,14 @@ BasicModal.propTypes = {
   className: PropTypes.string,
   disabled: PropTypes.bool,
   saveDisabled: PropTypes.bool,
-  ModalButton: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-  ModalButtonTitle: PropTypes.string
+  button: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+  buttonTitle: PropTypes.string,
+  footer: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+}
+
+BasicModal.defaultProps = {
+  disabled: false,
+  saveDisabled: false
 }
 
 export default memo(BasicModal)

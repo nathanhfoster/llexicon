@@ -80,7 +80,7 @@ class MediaButtonModal extends PureComponent {
     return (
       <ToolbarModal
         className="p-0"
-        modalTitle="Add Media"
+        title="Add Media"
         ButtonIcon="fas fa-photo-video"
         buttonTitle="Add Media"
         xs={xs}

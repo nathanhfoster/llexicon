@@ -88,7 +88,7 @@ class LocationButtonModal extends PureComponent {
     return (
       <ToolbarModal
         className="p-0"
-        modalTitle="Add Location"
+        title="Add Location"
         onClickCallback={this.handleClick}
         onCancelCallback={this.handleCancel}
         onSaveCallback={this.handleSave}

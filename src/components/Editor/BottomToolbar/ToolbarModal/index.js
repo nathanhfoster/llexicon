@@ -11,28 +11,26 @@ const ToolbarModal = ({
   disabled = false,
   Component,
   ...restOfProps
-}) => {
-  return (
-    <BasicModal
-      {...restOfProps}
-      ModalButton={
-        <ToolbarButton
-          xs={xs}
-          ButtonIcon={ButtonIcon}
-          title={buttonTitle}
-          disabled={disabled}
-        >
-          {Component && <Component />}
-        </ToolbarButton>
-      }
-    >
-      {children}
-    </BasicModal>
-  )
-}
+}) => (
+  <BasicModal
+    {...restOfProps}
+    button={
+      <ToolbarButton
+        xs={xs}
+        ButtonIcon={ButtonIcon}
+        title={buttonTitle}
+        disabled={disabled}
+      >
+        {Component && <Component />}
+      </ToolbarButton>
+    }
+  >
+    {children}
+  </BasicModal>
+)
 
 ToolbarModal.propTypes = {
-  modalTitle: PropTypes.string,
+  title: PropTypes.string,
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,

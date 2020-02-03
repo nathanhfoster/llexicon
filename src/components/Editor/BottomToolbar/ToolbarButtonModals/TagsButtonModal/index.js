@@ -109,7 +109,7 @@ class TagsButtonModal extends Component {
 
   handleTagsInputChange = e => {
     const { value } = e.target
-    
+
     // Replace commas
     const string = value.replace(",", " ")
     // Remove double spaces and periods
@@ -139,7 +139,7 @@ class TagsButtonModal extends Component {
 
     return (
       <ToolbarModal
-        modalTitle="Add Tags"
+        title="Add Tags"
         onSaveCallback={this.handleSave}
         onCancelCallback={this.handleCancel}
         ButtonIcon="fas fa-tags"

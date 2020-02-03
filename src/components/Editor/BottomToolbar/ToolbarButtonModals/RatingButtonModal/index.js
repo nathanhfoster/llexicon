@@ -31,7 +31,7 @@ class RatingButtonModal extends PureComponent {
     const ratingChanged =
       prevProps.rating !== this.props.rating &&
       this.props.rating !== this.state.rating
-      
+
     if (ratingChanged) {
       return this.props.rating
     }
@@ -105,7 +105,7 @@ class RatingButtonModal extends PureComponent {
     return (
       <ToolbarModal
         className="Center p-0"
-        modalTitle="Add Rating"
+        title="Add Rating"
         onClickCallback={this.handleClick}
         onCancelCallback={this.handleCancel}
         onSaveCallback={this.handleSave}
