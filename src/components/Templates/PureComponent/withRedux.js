@@ -1,10 +1,7 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
-import "./styles.css"
+import { Container, Row, Col } from "reactstrap"
 
 const mapStateToProps = ({}) => ({})
 
@@ -29,12 +26,6 @@ class Template extends PureComponent {
     return nextProps
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // If you are NOT using a PureComponent compare the nextState (derived from getDerivedStateFromProps) with this.state
-    // and determine what condition(s) your component should re render
-    return true
-  }
-
   componentDidMount() {}
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -55,6 +46,4 @@ class Template extends PureComponent {
     )
   }
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(Template)
-)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Template)
