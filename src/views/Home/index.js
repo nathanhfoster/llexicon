@@ -24,6 +24,13 @@ const renderFeatures = features =>
 const Home = () => {
   const history = useHistory()
   const features = [
+{
+      title: "Installable",
+      text:
+        "Install this app to your device just like you would in an app store.",
+      faIcon: "fas fa-download",
+      button: <AddToHomeScreen />
+    },
     {
       title: "Notifications",
       text: "Daily motivation to journal your life.",
@@ -75,13 +82,6 @@ const Home = () => {
       text: "Share any public view you want with your friends and family.",
       faIcon: "fas fa-link"
       // button: <Button color="accent">Learn More</Button>
-    },
-    {
-      title: "Installable",
-      text:
-        "Install this app to your device just like you would in an app store.",
-      faIcon: "fas fa-download",
-      button: <AddToHomeScreen />
     },
     {
       title: "Responsive",
