@@ -58,6 +58,7 @@ const AddToHomeScreenModal = ({
           color="success"
           className="InstallButton"
           onClick={toggle}
+          disabled={isDisabled}
         >
           {icon} Install
         </Button>
