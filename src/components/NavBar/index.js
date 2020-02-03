@@ -157,10 +157,21 @@ class NavBar extends PureComponent {
         ),
         onClick: UserId ? UserLogout : null
       },
+
       {
-        route: SETTINGS,
-        title: "SETTINGS",
-        icon: <i className="fas fa-cog NavBarImage" />
+        icon: (
+          <span className="NavBarLink">
+            <i class="fas fa-ellipsis-v NavBarImage" />
+          </span>
+        ),
+        links: [
+          {
+            dropdownItem: true,
+            route: SETTINGS,
+            title: "SETTINGS",
+            icon: <i className="fas fa-cog NavBarImage" />
+          }
+        ]
       }
     ]
 

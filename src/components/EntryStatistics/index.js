@@ -92,7 +92,7 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
 
   const entryAverages = [
     { title: "Rating", value: averageRating },
-    { title: "Time Updating Entries", value: averageTimesUpdatingEntries }
+    { title: "Time Writing Entries", value: averageTimesUpdatingEntries }
   ]
 
   const entryCounts = [

@@ -10,30 +10,45 @@ import AddToHomeScreen from "../../components/AddToHomeScreen"
 
 import "./styles.css"
 
-const mapStateToProps = ({}) => ({})
+const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 
 const mapDispatchToProps = {}
 
 const renderFeatures = features =>
   features.map((feature, i) => (
-    <Col key={i} lg={3} md={4} sm={6} xs={12}>
+    <Col key={i} md={4} sm={6} xs={12}>
       <Feature {...feature} />
     </Col>
   ))
 
-const Home = () => {
+const Home = ({ userId }) => {
   const history = useHistory()
   const features = [
-{
+    {
       title: "Installable",
       text:
-        "Install this app to your device just like you would in an app store.",
+        "Install this app to your device just like you would in an app store",
       faIcon: "fas fa-download",
       button: <AddToHomeScreen />
     },
     {
+      title: "Sync",
+      text: "Automatically synced across all devices",
+      faIcon: "fas fa-sync-alt",
+      button: (
+        <Button
+          tag={Button}
+          color="accent"
+          onClick={() => RouterPush(history, RouteMap.SIGNUP)}
+          disabled={userId}
+        >
+          Sign Up
+        </Button>
+      )
+    },
+    {
       title: "Notifications",
-      text: "Daily motivation to journal your life.",
+      text: "Daily motivation to journal your life",
       header: (
         <svg
           aria-hidden="true"
@@ -52,11 +67,20 @@ const Home = () => {
             className="fa-primary"
           ></path>
         </svg>
+      ),
+      button: (
+        <Button
+          tag={Button}
+          color="accent"
+          onClick={() => RouterPush(history, RouteMap.SETTINGS)}
+        >
+          Comming Soon
+        </Button>
       )
     },
     {
       title: "Offline",
-      text: "Doesn't require an internet connections.",
+      text: "Doesn't require an internet connections",
       header: (
         <svg
           aria-hidden="true"
@@ -75,17 +99,26 @@ const Home = () => {
             className="fa-primary"
           ></path>
         </svg>
+      ),
+      button: (
+        <Button
+          tag={Button}
+          color="accent"
+          onClick={() => RouterPush(history, RouteMap.SETTINGS)}
+        >
+          Go Offline
+        </Button>
       )
     },
     {
       title: "Linkable",
-      text: "Share any public view you want with your friends and family.",
+      text: "Share any public view you want with your friends and family",
       faIcon: "fas fa-link"
       // button: <Button color="accent">Learn More</Button>
     },
     {
       title: "Responsive",
-      text: "UI fits the screen dimensions of any device.",
+      text: "UI fits the screen dimensions of any device",
       header: (
         <svg
           aria-hidden="true"
@@ -103,12 +136,12 @@ const Home = () => {
     },
     {
       title: "Fresh",
-      text: "Always get the latest verision of the app.",
+      text: "Always get the latest verision of the app",
       faIcon: "fas fa-cloud-download-alt"
     },
     {
       title: "App-like",
-      text: "Looks and interacts like a native app.",
+      text: "Looks and interacts like a native app",
       header: (
         <svg
           aria-hidden="true"
@@ -131,7 +164,7 @@ const Home = () => {
     },
     {
       title: "Secure",
-      text: "Always served over HTTPS.",
+      text: "Always served over HTTPS",
       header: (
         <svg
           aria-hidden="true"
@@ -172,20 +205,16 @@ const Home = () => {
               <i className="fas fa-feather-alt mr-1" />
               New Entry
             </Button>
-            <Button
-              tag={Button}
-              color="accent"
-              onClick={() => RouterPush(history, RouteMap.SIGNUP)}
-            >
-              <i className="fas fa-sign-in-alt mr-1" />
-              Sign Up
-            </Button>
           </ButtonGroup>
         </Col>
       </Row>
       <Row>{renderFeatures(features)}</Row>
     </Container>
   )
+}
+
+Home.propTypes = {
+  userId: PropTypes.number
 }
 
 export default memo(reduxConnect(mapStateToProps, mapDispatchToProps)(Home))

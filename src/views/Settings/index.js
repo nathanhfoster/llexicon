@@ -104,7 +104,7 @@ class Settings extends PureComponent {
             checked: offline_mode,
             onClickCallback: key => handleOnClick(key, nextProps),
             title: "Offline mode",
-            tooltipTitle: "Toggles frequent fetches of messages"
+            tooltipTitle: "Disconnect from the stars"
           },
           {
             settingKey: "push_messages",
