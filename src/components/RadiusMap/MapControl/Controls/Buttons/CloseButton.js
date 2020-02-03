@@ -1,13 +1,13 @@
-import React, { memo } from 'react'
-import { Fab } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
-import defaultStyles from './defaultStyles'
-import { withStyles } from '@material-ui/core/styles'
+import React, { memo } from "react"
+import { Fab } from "@material-ui/core"
+import { Close } from "@material-ui/icons"
+import defaultStyles from "./defaultStyles"
+import { withStyles } from "@material-ui/core/styles"
 
 const styles = theme => ({
   root: {
     ...defaultStyles,
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
     zIndex: 9999
@@ -24,4 +24,4 @@ const CloseButton = props => {
   )
 }
 
-export default memo(withStyles(styles)(CloseButton))
+export default withStyles(styles)(memo(CloseButton))

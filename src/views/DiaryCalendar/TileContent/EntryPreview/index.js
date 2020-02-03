@@ -69,4 +69,4 @@ EntryPreview.propTypes = {
   views: PropTypes.number
 }
 
-export default memo(reduxConnect(mapStateToProps, null)(EntryPreview))
+export default reduxConnect(mapStateToProps, null)(memo(EntryPreview))

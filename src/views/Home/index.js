@@ -217,4 +217,4 @@ Home.propTypes = {
   userId: PropTypes.number
 }
 
-export default memo(reduxConnect(mapStateToProps, mapDispatchToProps)(Home))
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(memo(Home))

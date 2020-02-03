@@ -1,8 +1,8 @@
-import React, { memo } from 'react'
-import { Fab } from '@material-ui/core'
-import { SelectAll } from '@material-ui/icons'
-import defaultStyles from './defaultStyles'
-import { withStyles } from '@material-ui/core/styles'
+import React, { memo } from "react"
+import { Fab } from "@material-ui/core"
+import { SelectAll } from "@material-ui/icons"
+import defaultStyles from "./defaultStyles"
+import { withStyles } from "@material-ui/core/styles"
 
 const styles = theme => ({
   root: {
@@ -14,10 +14,16 @@ const ParlayMapButton = props => {
   const { classes, onClick, disabled } = props
   const { root } = classes
   return (
-    <Fab className={root} size="medium" aria-label="exit" onClick={onClick} disabled={disabled}>
+    <Fab
+      className={root}
+      size="medium"
+      aria-label="exit"
+      onClick={onClick}
+      disabled={disabled}
+    >
       <SelectAll />
     </Fab>
   )
 }
 
-export default memo(withStyles(styles)(ParlayMapButton))
+export default withStyles(styles)(memo(ParlayMapButton))
