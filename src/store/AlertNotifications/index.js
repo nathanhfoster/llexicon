@@ -10,7 +10,7 @@ const mapStateToProps = ({ Alerts: { title, message } }) => ({ title, message })
 
 const mapDispatchToProps = { ClearAlerts }
 
-export class AlertNotifications extends PureComponent {
+class AlertNotifications extends PureComponent {
   constructor(props) {
     super(props)
     this.interval = null

@@ -288,7 +288,7 @@ const SearchUserEntries = search => async (dispatch, getState) => {
 const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User,
-    Entries: { items }
+    Entries: { items, filteredItems }
   } = getState()
 
   const UserId = User.id
@@ -297,7 +297,9 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
   let dispatchPostEntries = []
   let dispatchUpdateEntries = []
 
-  for (const entry of items) {
+  const entries = items.concat(filteredItems)
+
+  for (let i = 0, { length } = entries; i < length; i++) {
     const {
       id,
       title,
@@ -314,7 +316,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       address,
       latitude,
       longitude
-    } = entry
+    } = entries[i]
 
     if (shouldDelete) {
       if (shouldPost) dispatch({ type: ENTRY_DELETE, id })
@@ -372,7 +374,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
   let dispatchActions = []
 
-  if (getEntryMethod) dispatchActions.push(getEntryMethod)
+  if (typeof getEntryMethod === "function") dispatchActions.push(getEntryMethod)
 
   dispatchActions = dispatchActions
     .concat(dispatchDeleteEntries)
