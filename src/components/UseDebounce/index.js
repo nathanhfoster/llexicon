@@ -1,30 +1,24 @@
-import { PureComponent } from "react"
+import { useEffect, memo } from "react"
 import PropTypes from "prop-types"
 
-class UseDebounce extends PureComponent {
-  static propTypes = {
-    onChangeCallback: PropTypes.func.isRequired,
-    value: PropTypes.any,
-    delay: PropTypes.number
-  }
+const UseDebounce = ({ value, delay, onChangeCallback }) => {
+  useEffect(() => {
+    const debounce = setTimeout(() => onChangeCallback(value), delay)
 
-  static defaultProps = {
-    delay: 400
-  }
+    return () => clearTimeout(debounce)
+  }, [value])
 
-  getSnapshotBeforeUpdate() {
-    clearTimeout(this.debounce)
-    return null
-  }
-
-  componentDidUpdate() {
-    const { onChangeCallback, value, delay } = this.props
-
-    this.debounce = setTimeout(() => onChangeCallback(value), delay)
-  }
-
-  render() {
-    return null
-  }
+  return null
 }
-export default UseDebounce
+
+UseDebounce.propTypes = {
+  onChangeCallback: PropTypes.func.isRequired,
+  value: PropTypes.any,
+  delay: PropTypes.number
+}
+
+UseDebounce.defaultProps = {
+  delay: 400
+}
+
+export default memo(UseDebounce)
