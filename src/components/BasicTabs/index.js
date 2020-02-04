@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { useState, useEffect, useRef, memo } from "react"
 import PropTypes from "prop-types"
 import {
   Container,
@@ -9,64 +9,42 @@ import {
   TabContent,
   TabPane
 } from "reactstrap"
-import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-class BasicTabs extends Component {
-  constructor(props) {
-    super(props)
-    const { defaultTab, tabs } = props
-    let firstTabId = null
+const getInitialState = (activeTab, defaultTab, tabs) => {
+  let firstTabId = null
 
-    if (tabs.length > 0) {
-      firstTabId = tabs[0].tabId
+  if (tabs.length > 0) {
+    firstTabId = tabs[0].tabId
+  }
+
+  return defaultTab || activeTab || firstTabId
+}
+
+const BasicTabs = ({
+  containerClassname,
+  defaultTab,
+  fluid,
+  tabs,
+  ...restOfProps
+}) => {
+  const [activeTab, setState] = useState(
+    getInitialState(restOfProps.activeTab, defaultTab, tabs)
+  )
+
+  const mounted = useRef()
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true
+    } else {
+      setState(restOfProps.activeTab)
     }
+  }, [restOfProps.activeTab])
 
-    this.state = { activeTab: defaultTab || firstTabId }
-  }
+  const handleTabChanged = activeTab => setState(activeTab)
 
-  static propTypes = {
-    containerClassname: PropTypes.string,
-    defaultTab: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    tabs: PropTypes.arrayOf(
-      PropTypes.shape({
-        tabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-          .isRequired,
-        mountTabWhenActive: PropTypes.bool,
-        title: PropTypes.oneOfType([
-          PropTypes.string.isRequired,
-          PropTypes.object
-        ]),
-        render: PropTypes.object.isRequired,
-        onClickCallback: PropTypes.func
-      }).isRequired
-    )
-  }
-
-  static defaultProps = {
-    fluid: false,
-    tabs: [
-      { tabId: 1, title: "1", render: <div>render 1</div> },
-      { tabId: 2, title: "2", render: <div>render 2</div> },
-      { tabId: 3, title: "3", render: <div>render 3</div> }
-    ]
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { activeTab, tabs, fluid } = nextProps
-
-    return { tabs, activeTab: activeTab || prevState.activeTab, fluid }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return stateChanged
-  }
-
-  handleTabChanged = activeTab => this.setState({ activeTab })
-
-  renderNavItems = (activeTab, tabs) =>
+  const renderNavItems = (activeTab, tabs) =>
     tabs.map(tab => {
       const { tabId, title, onClickCallback } = tab
       const onTab = activeTab === tabId
@@ -75,9 +53,7 @@ class BasicTabs extends Component {
           <NavLink
             className={`BasicTabsNavLink ${onTab ? "active" : ""}`}
             onClick={() =>
-              onClickCallback
-                ? onClickCallback(tabId)
-                : this.handleTabChanged(tabId)
+              onClickCallback ? onClickCallback(tabId) : handleTabChanged(tabId)
             }
           >
             {title}
@@ -86,7 +62,7 @@ class BasicTabs extends Component {
       )
     })
 
-  renderTabs = (activeTab, tabs) =>
+  const renderTabs = (activeTab, tabs) =>
     tabs.map(tab => {
       const { tabId, render, mountTabWhenActive, className } = tab
       const shouldNotRender = mountTabWhenActive === true && activeTab !== tabId
@@ -97,21 +73,44 @@ class BasicTabs extends Component {
       )
     })
 
-  render() {
-    const { containerClassname } = this.props
-    const { activeTab, tabs, fluid } = this.state
-
-    return (
-      <Container
-        fluid={fluid}
-        className={`BasicTabs Container ${containerClassname}`}
-      >
-        <Row>
-          <Nav tabs>{this.renderNavItems(activeTab, tabs)}</Nav>
-        </Row>
-        {this.renderTabs(activeTab, tabs)}
-      </Container>
-    )
-  }
+  return (
+    <Container
+      fluid={fluid}
+      className={`BasicTabs Container ${containerClassname}`}
+    >
+      <Row>
+        <Nav tabs>{renderNavItems(activeTab, tabs)}</Nav>
+      </Row>
+      {renderTabs(activeTab, tabs)}
+    </Container>
+  )
 }
-export default BasicTabs
+
+BasicTabs.propTypes = {
+  containerClassname: PropTypes.string,
+  defaultTab: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  tabs: PropTypes.arrayOf(
+    PropTypes.shape({
+      tabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        .isRequired,
+      mountTabWhenActive: PropTypes.bool,
+      title: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.object
+      ]),
+      render: PropTypes.object.isRequired,
+      onClickCallback: PropTypes.func
+    }).isRequired
+  )
+}
+
+BasicTabs.defaultProps = {
+  fluid: false,
+  tabs: [
+    { tabId: 1, title: "1", render: <div>Tab 1</div> },
+    { tabId: 2, title: "2", render: <div>Tab 2</div> },
+    { tabId: 3, title: "3", render: <div>Tab 3</div> }
+  ]
+}
+
+export default memo(BasicTabs)

@@ -9,29 +9,42 @@ import { ColumnsPropType, DataPropType } from "./props"
 import "./styles.css"
 const TableHeader = lazy(() => import("./TableHeader"))
 
-const BasicTable = props => {
-  const { sort } = props.columns.find(
-    c => (c.dataIndex || c.key) == props.defaultSortKey
-  )
+const getInitialState = (columns, { defaultSortKey, pageSize, pageSizes }) => {
+  const { sort } = columns.find(c => (c.dataIndex || c.key) == defaultSortKey)
 
-  const firstRowClickFound = props.columns.find(column => column.onRowClick)
+  const firstRowClickFound = columns.find(column => column.onRowClick)
 
-  const [state, setState] = useState({
-    sortKey: props.defaultSortKey,
-    sortUp: props.defaultSortKey ? true : false,
+  return {
+    sortKey: defaultSortKey,
+    sortUp: defaultSortKey ? true : false,
     sort,
     filterMap: {},
     onRowClick: firstRowClickFound && firstRowClickFound.onRowClick,
     currentPage: 0,
-    pageSize: props.pageSize,
+    pageSize,
     pageSizes: [{ id: 0, header: true, value: "Page Sizes" }].concat(
-      props.pageSizes.map((value, i) => ({ id: i + 1, value }))
+      pageSizes.map((value, i) => ({ id: i + 1, value }))
     )
-  })
+  }
+}
+
+const BasicTable = ({
+  data,
+  bordered,
+  borderless,
+  striped,
+  dark,
+  responsive,
+  sortable,
+  columns,
+  ...restOfProps
+}) => {
+  const [state, setState] = useState(getInitialState(columns, restOfProps))
 
   const {
     sortKey,
     sortUp,
+    sort,
     onRowClick,
     currentPage,
     pageSize,
@@ -60,7 +73,7 @@ const BasicTable = props => {
   let sortedAndFilteredData = null
 
   if (sortKey) {
-    sortedAndFilteredData = tableSort(props.data, sort, sortKey, sortUp)
+    sortedAndFilteredData = tableSort(data, sort, sortKey, sortUp)
   }
 
   const hasFilters = Object.keys(filterMap).find(
@@ -71,7 +84,7 @@ const BasicTable = props => {
     if (sortedAndFilteredData) {
       sortedAndFilteredData = tableFilter(sortedAndFilteredData, filterMap)
     } else {
-      sortedAndFilteredData = tableFilter(props.data, filterMap)
+      sortedAndFilteredData = tableFilter(data, filterMap)
     }
   }
 
@@ -79,42 +92,39 @@ const BasicTable = props => {
 
   const sliceEnd = sliceStart + pageSize
 
-  const slicedData = (sortedAndFilteredData || props.data).slice(
-    sliceStart,
-    sliceEnd
-  )
+  const slicedData = (sortedAndFilteredData || data).slice(sliceStart, sliceEnd)
 
-  const dataLength = (sortedAndFilteredData || props.data).length
+  const dataLength = (sortedAndFilteredData || data).length
 
   const totalPages = Math.ceil(dataLength / pageSize)
 
   return (
     <Fragment>
       <Table
-        bordered={props.bordered}
-        borderless={props.borderless}
-        striped={props.striped}
-        dark={props.dark}
+        bordered={bordered}
+        borderless={borderless}
+        striped={striped}
+        dark={dark}
         hover={onRowClick ? true : false}
-        responsive={props.responsive}
+        responsive={responsive}
         className="BasicTable"
       >
         <TableHeader
-          sortable={props.sortable}
+          sortable={sortable}
           sortCallback={handleSort}
           filterCallback={handleFilter}
-          columns={props.columns}
+          columns={columns}
           sortKey={sortKey}
           sortUp={sortUp}
         />
         <TableBody
           onRowClick={onRowClick}
-          columns={props.columns}
+          columns={columns}
           data={slicedData}
         />
         <TableFooter
           onRowClick={onRowClick}
-          columns={props.columns}
+          columns={columns}
           sortedAndFilteredData={sortedAndFilteredData}
         />
       </Table>

@@ -168,6 +168,11 @@ class Entries extends Component {
     SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
   }
 
+  handleTabChange = tabId => {
+    const { history } = this.props
+    RouterPush(history, tabId)
+  }
+
   render() {
     const {
       history,
@@ -193,7 +198,7 @@ class Entries extends Component {
             <NewEntry />
           </Row>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       },
       {
         tabId: RouteMap.CALENDAR,
@@ -204,7 +209,7 @@ class Entries extends Component {
             <DiaryCalendar />
           </Row>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       },
       {
         tabId: RouteMap.ENTRIES_DETAILED,
@@ -220,7 +225,7 @@ class Entries extends Component {
             />
           </Row>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       },
       {
         tabId: RouteMap.ENTRIES_MINIMAL,
@@ -247,7 +252,7 @@ class Entries extends Component {
             </Row>
           </Fragment>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       },
       {
         tabId: RouteMap.ENTRIES_TABLE,
@@ -412,7 +417,7 @@ class Entries extends Component {
             />
           </Row>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       },
       {
         tabId: RouteMap.ENTRIES_MAP,
@@ -454,7 +459,7 @@ class Entries extends Component {
             />
           </Row>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       }
     ]
 

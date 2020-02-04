@@ -53,6 +53,11 @@ class Login extends PureComponent {
     PasswordReset(payload)
   }
 
+  handleTabChange = tabId => {
+    const { history } = this.props
+    RouterPush(history, tabId)
+  }
+
   render() {
     const { history } = this.props
     const { activeTab } = this.state
@@ -88,7 +93,7 @@ class Login extends PureComponent {
             <FacebookGoogleLogin />
           </Jumbotron>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       },
       {
         tabId: SIGNUP,
@@ -104,7 +109,7 @@ class Login extends PureComponent {
             <FacebookGoogleLogin />
           </Jumbotron>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       },
       {
         tabId: PASSWORD_RESET,
@@ -129,11 +134,15 @@ class Login extends PureComponent {
             <FacebookGoogleLogin />
           </Jumbotron>
         ),
-        onClickCallback: tabId => RouterPush(history, tabId)
+        onClickCallback: this.handleTabChange
       }
     ]
 
-    return <BasicTabs containerClassname="Login" activeTab={activeTab} tabs={tabs} />
+    return (
+      <BasicTabs containerClassname="Login" activeTab={activeTab} tabs={tabs} />
+    )
   }
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(Login))
+export default withRouter(
+  reduxConnect(mapStateToProps, mapDispatchToProps)(Login)
+)

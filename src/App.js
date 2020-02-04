@@ -1,4 +1,4 @@
-import { PureComponent } from "react"
+import { useEffect, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { SetWindow, SetAppVersion } from "./actions/App"
@@ -16,38 +16,19 @@ const mapDispatchToProps = {
   SetCalendar
 }
 
-class App extends PureComponent {
-  static propTypes = {
-    UserId: PropTypes.number,
-    SetWindow: PropTypes.func.isRequired,
-    GetUserSettings: PropTypes.func.isRequired,
-    SetCalendar: PropTypes.func.isRequired
-  }
+const App = ({
+  GetUserSettings,
+  UserId,
+  SetAppVersion,
+  SetWindow,
+  SetCalendar
+}) => {
+  const isOnMobileBrowser = userAgent =>
+    /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
 
-  componentDidMount() {
-    const { GetUserSettings, UserId, SetAppVersion, SetCalendar } = this.props
-
-    const activeDate = new Date()
-
-    SetCalendar({ activeDate })
-
-    SetAppVersion()
-
-    window.addEventListener("resize", this.updateWindowDimensions)
-
-    this.updateWindowDimensions()
-
-    if (UserId) {
-      GetUserSettings()
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateWindowDimensions)
-  }
-
-  updateWindowDimensions = () => {
-    const { SetWindow } = this.props
+  const getWindowDimensions = () => {
+    const isClient = typeof window === "object"
+    if (!isClient) return undefined
     const {
       innerHeight,
       innerWidth,
@@ -108,8 +89,10 @@ class App extends PureComponent {
       },
       performance
     } = window
+
     const isMobile = innerWidth < 768
-    SetWindow({
+
+    return {
       innerHeight,
       innerWidth,
       screen: {
@@ -172,16 +155,38 @@ class App extends PureComponent {
       navBarHeight: isMobile ? 64 : 68,
       footerHeight: isMobile ? 52 : 70,
       isInStandalone: matchMedia("(display-mode: standalone)").matches,
-      isOnMobileBrowser: this.isOnMobileBrowser(window.navigator.userAgent)
-    })
+      isOnMobileBrowser: isOnMobileBrowser(window.navigator.userAgent)
+    }
   }
 
-  isOnMobileBrowser = userAgent =>
-    /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
+  useEffect(() => {
+    const activeDate = new Date()
 
-  render() {
-    return null
-  }
+    SetCalendar({ activeDate })
+
+    SetAppVersion()
+
+    const handleResize = () => SetWindow(getWindowDimensions())
+
+    window.addEventListener("resize", handleResize)
+
+    handleResize()
+
+    if (UserId) {
+      GetUserSettings()
+    }
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return null
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(App)
+App.propTypes = {
+  UserId: PropTypes.number,
+  SetWindow: PropTypes.func.isRequired,
+  GetUserSettings: PropTypes.func.isRequired,
+  SetCalendar: PropTypes.func.isRequired
+}
+
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(memo(App))

@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useMemo, memo } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect, useMemo, memo } from "react"
+import PropTypes from "prop-types"
 
-const Template = (
-  {
-    /* props */
-  }
-) => {
+const getInitialState = ({}) => {
+  return {}
+}
+
+const Template = props => {
+  const [state, setState] = useState(getInitialState(props))
+
+  const {} = state
+
   return <div className="Template Container">Template</div>
 }
 
