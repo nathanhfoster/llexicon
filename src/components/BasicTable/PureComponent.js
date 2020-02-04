@@ -161,7 +161,6 @@ class BasicTable extends PureComponent {
     const totalPages = Math.ceil(dataLength / pageSize)
 
     return {
-      columns,
       sortedAndFilteredData,
       data: slicedData,
       dataLength,
@@ -190,6 +189,7 @@ class BasicTable extends PureComponent {
 
   render() {
     const {
+      columns,
       sortable,
       bordered,
       borderless,
@@ -198,7 +198,6 @@ class BasicTable extends PureComponent {
       responsive
     } = this.props
     const {
-      columns,
       sortKey,
       sortUp,
       sortedAndFilteredData,
