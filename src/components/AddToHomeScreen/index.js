@@ -50,8 +50,6 @@ const AddToHomeScreenModal = ({
 
   const icon = getBrowserIcon(isOnMobileBrowser, userAgent)
 
-  console.log("JFNJKDB")
-
   return (
     <div>
       {!isInStandalone && (
