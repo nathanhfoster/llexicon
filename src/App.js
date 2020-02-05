@@ -1,4 +1,4 @@
-import { useEffect, memo } from "react"
+import { useEffect } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { SetWindow, SetAppVersion } from "./actions/App"
@@ -189,4 +189,4 @@ App.propTypes = {
   SetCalendar: PropTypes.func.isRequired
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(memo(App))
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(App)

@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { useState, memo } from "react"
 import PropTypes from "prop-types"
 import {
   Container,
@@ -13,47 +13,39 @@ import {
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import EntryFilesCarousel from "../../../../EntryFilesCarousel"
-import { filterMapArray } from "../../../../../helpers"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
-  AllEntryFiles: items
-    .concat(filteredItems)
-    .map(item => item.EntryFiles)
-    .flat(1)
-    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
+  items,
+  filteredItems
 })
 
 const mapDispatchToProps = {}
 
-class MediaButtonModal extends PureComponent {
-  constructor(props) {
-    super(props)
+const MediaButtonModal = ({
+  html,
+  onChangeCallback,
+  xs,
+  editorRef,
+  items,
+  filteredItems
+}) => {
+  const [url, setUrl] = useState("")
 
-    this.state = { url: "" }
-  }
+  const AllEntryFiles = items
+    .concat(filteredItems)
+    .map(item => item.EntryFiles)
+    .flat(1)
+    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
 
-  static propTypes = {}
+  const addUrlDisabled = false
 
-  static defaultProps = { editorRef: PropTypes.object.isRequired }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let { html, AllEntryFiles } = nextProps
-    const { url } = prevState
-
-    const addUrlDisabled = false
-
-    return { html, AllEntryFiles, url, addUrlDisabled }
-  }
-
-  findFileType = url => {
+  const findFileType = url => {
     if (url.includes("youtube")) return "video"
     return "image"
   }
 
-  handleAddUrl = () => {
-    const { editorRef } = this.props
-    let { url } = this.state
+  const handleAddUrl = () => {
     let cursorIndex = 0
 
     if (editorRef.current) {
@@ -64,73 +56,71 @@ class MediaButtonModal extends PureComponent {
       }
     }
 
-    const type = this.findFileType(url)
+    const type = findFileType(url)
 
     editorRef.current.editor.insertEmbed(cursorIndex, type, url)
 
-    this.setState({ url: "" })
+    setUrl("")
   }
 
-  handleInputChange = e => this.setState({ url: e.target.value })
+  const handleInputChange = ({ target: value }) => setUrl({ url: value })
 
-  render() {
-    const { onChangeCallback, xs, editorRef } = this.props
-    const { html, AllEntryFiles, url, addUrlDisabled } = this.state
-
-    return (
-      <ToolbarModal
-        className="p-0"
-        title="Add Media"
-        ButtonIcon="fas fa-photo-video"
-        buttonTitle="Add Media"
-        xs={xs}
-      >
-        <Container fluid className="MediaButtonModal p-0">
-          <Row className="p-2">
-            <Col xs={12}>
-              <InputGroup
-                // tag={Form}
-                className="EntryInput"
-                // onSubmit={this.handleAddUrl}
-                // method="post"
-              >
-                <Input
-                  type="text"
-                  name="url"
-                  id="url"
-                  placeholder="Embeded"
-                  value={url}
-                  onChange={this.handleInputChange}
-                />
-                <InputGroupAddon addonType="append" onClick={this.handleAddUrl}>
-                  <InputGroupText
-                    tag={Button}
-                    color="primary"
-                    style={{ color: "white" }}
-                    disabled={addUrlDisabled}
-                    // type="submit"
-                  >
-                    <i className="fas fa-save" style={{ fontSize: 20 }} />
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-            </Col>
-          </Row>
-          <EntryFilesCarousel
-            html={html}
-            files={AllEntryFiles}
-            onChangeCallback={onChangeCallback}
-            editorRef={editorRef}
-            overflowX="hidden"
-            overflowY="auto"
-            whiteSpace="wrap"
-          />
-        </Container>
-      </ToolbarModal>
-    )
-  }
+  return (
+    <ToolbarModal
+      className="p-0"
+      title="Add Media"
+      ButtonIcon="fas fa-photo-video"
+      buttonTitle="Add Media"
+      xs={xs}
+    >
+      <Container fluid className="MediaButtonModal p-0">
+        <Row className="p-2">
+          <Col xs={12}>
+            <InputGroup
+              // tag={Form}
+              className="EntryInput"
+              // onSubmit={handleAddUrl}
+              // method="post"
+            >
+              <Input
+                type="text"
+                name="url"
+                id="url"
+                placeholder="Embeded"
+                value={url}
+                onChange={handleInputChange}
+              />
+              <InputGroupAddon addonType="append" onClick={handleAddUrl}>
+                <InputGroupText
+                  tag={Button}
+                  color="primary"
+                  style={{ color: "white" }}
+                  disabled={addUrlDisabled}
+                  // type="submit"
+                >
+                  <i className="fas fa-save" style={{ fontSize: 20 }} />
+                </InputGroupText>
+              </InputGroupAddon>
+            </InputGroup>
+          </Col>
+        </Row>
+        <EntryFilesCarousel
+          html={html}
+          files={AllEntryFiles}
+          onChangeCallback={onChangeCallback}
+          editorRef={editorRef}
+          overflowX="hidden"
+          overflowY="auto"
+          whiteSpace="wrap"
+        />
+      </Container>
+    </ToolbarModal>
+  )
 }
+
+MediaButtonModal.defaultProps = { editorRef: PropTypes.object.isRequired }
+
 export default reduxConnect(
   mapStateToProps,
   mapDispatchToProps
-)(MediaButtonModal)
+)(memo(MediaButtonModal))

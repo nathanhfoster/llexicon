@@ -1,7 +1,7 @@
-import React, { Component } from "react"
+import React, { useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter, Route, Switch, Redirect } from "react-router-dom"
+import { useHistory, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import Footer from "../components/Footer"
@@ -25,31 +25,63 @@ import {
 } from "../actions/Entries"
 import "./styles.css"
 
-const getRouteItems = props => {
-  const { User } = props
-  const {
-    HOME,
-    ROOT,
-    NEW_ENTRY,
-    LOGIN,
-    SIGNUP,
-    PASSWORD_RESET,
-    SETTINGS,
-    CALENDAR,
-    ENTRY_DETAIL,
-    ENTRIES,
-    ENTRIES_MINIMAL,
-    ENTRIES_DETAILED,
-    ENTRIES_TABLE,
-    ENTRIES_MAP,
-    PRIVACY_POLICY
-  } = RouteMap
+const {
+  HOME,
+  ROOT,
+  NEW_ENTRY,
+  LOGIN,
+  SIGNUP,
+  PASSWORD_RESET,
+  SETTINGS,
+  CALENDAR,
+  ENTRY_DETAIL,
+  ENTRIES,
+  ENTRIES_MINIMAL,
+  ENTRIES_DETAILED,
+  ENTRIES_TABLE,
+  ENTRIES_MAP,
+  PRIVACY_POLICY
+} = RouteMap
 
-  return [
+const mapStateToProps = ({ User, Window: { navBarHeight, footerHeight } }) => ({
+  User,
+  navBarHeight,
+  footerHeight
+})
+
+const mapDispatchToProps = { SyncEntries, GetAllUserEntries, GetUserEntries }
+
+const ReactRouter = props => {
+  const history = useHistory()
+  const {
+    User,
+    navBarHeight,
+    footerHeight,
+    SyncEntries,
+    GetUserEntries
+  } = props
+
+  const {
+    Settings: { show_footer }
+  } = User
+
+  useEffect(() => {
+    if (User.id) {
+      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
+    }
+  }, [])
+
+  const renderRedirectOrComponent = (shouldRedirect, route, Component) => {
+    return shouldRedirect
+      ? () => <Redirect push to={RouterLinkPush(history, route)} />
+      : Component
+  }
+
+  const routeItems = [
     { path: [ROOT, HOME], component: Home },
     {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
-      component: renderRedirectOrComponent(props, User.token, NEW_ENTRY, Login)
+      component: renderRedirectOrComponent(User.token, NEW_ENTRY, Login)
     },
     {
       path: [SETTINGS],
@@ -71,145 +103,73 @@ const getRouteItems = props => {
     },
     { path: [PRIVACY_POLICY], component: PrivacyPolicy }
   ]
-}
 
-const renderRedirectOrComponent = (props, shouldRedirect, route, Component) => {
-  const { history } = props
-  return shouldRedirect
-    ? () => <Redirect push to={RouterLinkPush(history, route)} />
-    : Component
-}
+  const renderRouteItems = useMemo(
+    () =>
+      routeItems.map((k, i) => {
+        const { path, component } = k
+        return <Route exact key={i} path={path} component={component} />
+      }),
+    [routeItems]
+  )
 
-const mapStateToProps = ({
-  User,
-  Window: {
-    screen: { availHeight },
-    navBarHeight,
-    footerHeight
-  }
-}) => ({
-  User,
-  viewPortHeight: availHeight,
-  navBarHeight,
-  footerHeight
-})
-
-const mapDispatchToProps = { SyncEntries, GetAllUserEntries, GetUserEntries }
-
-class ReactRouter extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {}
-  }
-
-  static propTypes = {
-    User: PropTypes.objectOf(PropTypes.any),
-    SyncEntries: PropTypes.func.isRequired,
-    GetAllUserEntries: PropTypes.func.isRequired,
-    GetUserEntries: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {}
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      User: { Settings },
-      viewPortHeight,
-      navBarHeight,
-      footerHeight
-    } = nextProps
-
-    const routeItems = getRouteItems(nextProps)
-
-    const routeOverlayHeight = viewPortHeight - navBarHeight
-
-    return {
-      routeItems,
-      routeOverlayHeight,
-      navBarHeight,
-      footerHeight,
-      Settings
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const currentRouteOverlayHeight = this.state.routeOverlayHeight
-    const currentNavBarHeight = this.state.navBarHeight
-    const currentFooterHeight = this.state.footerHeight
-
-    const currentUser = this.props.User
-
-    const { routeOverlayHeight, navBarHeight, footerHeight } = nextState
-
-    const { User } = nextProps
-
-    const userChanged = !deepEquals(currentUser, User)
-
-    const stateChanged =
-      currentRouteOverlayHeight !== routeOverlayHeight ||
-      currentNavBarHeight !== navBarHeight ||
-      currentFooterHeight !== footerHeight
-
-    return userChanged || stateChanged
-  }
-
-  componentDidMount() {
-    const { User, SyncEntries, GetUserEntries } = this.props
-
-    if (User.id) {
-      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
-    }
-  }
-
-  renderRouteItems = routeItems =>
-    routeItems.map((k, i) => {
-      const { path, component } = k
-      return <Route exact key={i} path={path} component={component} />
-    })
-
-  render() {
-    const {
-      routeItems,
-      Settings: { show_footer },
-      routeOverlayHeight,
-      navBarHeight,
-      footerHeight
-    } = this.state
-
-    return (
-      <OverlayScrollbarsComponent
-        className="App routeOverlay os-theme-light"
-        style={{
-          top: navBarHeight,
-          bottom: show_footer ? footerHeight : 0
-          // background: "red"
-        }}
-        options={{
-          /* overflowBehavior: {
+  return (
+    <OverlayScrollbarsComponent
+      className="App routeOverlay os-theme-light"
+      style={{
+        top: navBarHeight,
+        bottom: show_footer ? footerHeight : 0
+        // background: "red"
+      }}
+      options={{
+        /* overflowBehavior: {
               x: "visible-hidden",
               y: "visible-hidden"
             }, */
-          scrollbars: {
-            // visibility: "auto",
-            autoHide: "scroll",
-            autoHideDelay: 200
-            // dragScrolling: false
-          }
-          // callbacks: {
-          //   onScrollStart: () => console.log("Scrolling")
-          // }
-        }}
-      >
-        <Switch>
-          {this.renderRouteItems(routeItems)}
-          <Route component={PageNotFound} />
-        </Switch>
-        <Footer />
-      </OverlayScrollbarsComponent>
-    )
-  }
+        scrollbars: {
+          // visibility: "auto",
+          autoHide: "scroll",
+          autoHideDelay: 200
+          // dragScrolling: false
+        }
+        // callbacks: {
+        //   onScrollStart: () => console.log("Scrolling")
+        // }
+      }}
+    >
+      <Switch>
+        {renderRouteItems}
+        <Route component={PageNotFound} />
+      </Switch>
+      <Footer />
+    </OverlayScrollbarsComponent>
+  )
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(ReactRouter)
-)
+
+ReactRouter.propTypes = {
+  User: PropTypes.objectOf(PropTypes.any),
+  SyncEntries: PropTypes.func.isRequired,
+  GetAllUserEntries: PropTypes.func.isRequired,
+  GetUserEntries: PropTypes.func.isRequired
+}
+
+const isEqual = (prevProps, nextProps) => {
+  const memoProps = [
+    "User",
+    "routeOverlayHeight",
+    "navBarHeight",
+    "footerHeight"
+  ]
+  for (let i = 0, { length } = memoProps; i < length; i++) {
+    const prop = memoProps[i]
+    if (!deepEquals(prevProps[prop], nextProps[prop])) {
+      return false
+    }
+  }
+  return true
+}
+
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(memo(ReactRouter, isEqual))

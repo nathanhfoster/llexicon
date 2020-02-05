@@ -132,8 +132,8 @@ class Settings extends PureComponent {
     sections.map((section, i) => {
       const { title, inputs } = section
       return (
-        <Col xs={12}>
-          <FormGroup key={i} tag="fieldset">
+        <Col xs={12} key={i}>
+          <FormGroup tag="fieldset">
             <legend className="headerBanner">{title}</legend>
             {this.renderInputs(inputs)}
           </FormGroup>

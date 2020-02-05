@@ -17,7 +17,6 @@ class TableHeader extends PureComponent {
 
   static defaultProps = {}
 
-
   handleSortCallback = (key, sort) => {
     const { sortUp, sortCallback } = this.props
 
@@ -28,7 +27,16 @@ class TableHeader extends PureComponent {
     const { sortable, sortKey, sortUp, filterCallback } = this.props
     const shouldRenderSortContainer = columns.find(c => c.filter)
     return columns.map((column, i) => {
-      const { title, dataIndex, key, width, render, sort, filter, filterPlaceholder } = column
+      const {
+        title,
+        dataIndex,
+        key,
+        width,
+        render,
+        sort,
+        filter,
+        filterPlaceholder
+      } = column
       const titleFunction = typeof title === "function"
       const showSort = sortKey === key
       return (
@@ -40,16 +48,23 @@ class TableHeader extends PureComponent {
           onClick={sortable ? () => this.handleSortCallback(key, sort) : null}
         >
           {titleFunction ? title(column) : title}
-          {sortable && showSort && <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />}
+          {sortable && showSort && (
+            <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
+          )}
           {shouldRenderSortContainer && (
             <div>
               <Input
                 className="TableHeaderSortInput"
                 disabled={!filter}
                 onClick={e => e.stopPropagation()}
-                onChange={e => filterCallback(dataIndex || key, e.target.value, filter)}
+                onChange={({ target: { value } }) =>
+                  filterCallback(dataIndex || key, value, filter)
+                }
                 placeholder={
-                  filter ? filterPlaceholder || `${capitalizeFirstLetter(dataIndex || key)} filter` : null
+                  filter
+                    ? filterPlaceholder ||
+                      `${capitalizeFirstLetter(dataIndex || key)} filter`
+                    : null
                 }
               />
             </div>

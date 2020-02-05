@@ -52,7 +52,7 @@ class MapControl extends Component {
     const { children, controlPosition, width, ...props } = this.props
 
     if (!props.map || !controlPosition) return
-    console.log("ReNDER")
+
     render(
       <div
         className="mapControl"

@@ -1,12 +1,17 @@
-import React, { Component, Fragment } from "react"
+import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
-import deepEquals from "../../helpers/deepEquals"
 import MomentJs from "moment"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
+const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
+  items,
+  filteredItems
+})
+
+const EntryStatistics = ({ items, filteredItems }) => {
   let sumRating = 0
   let sumRatingTimeUpdatingEntries = 0
   let previousDate = false
@@ -102,94 +107,68 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => {
     { title: "Views", value: viewCount }
   ]
 
-  return {
-    entryAverages,
-    entryCounts,
-    tagCountMap
-  }
-}
-
-const mapDispatchToProps = {}
-
-class EntryStatistics extends Component {
-  static propTypes = {}
-
-  static defaultProps = {}
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const propsChanged = !deepEquals(this.props, nextProps)
-    return propsChanged
-  }
-
-  renderEntryStats = (stats, fixedValue = 3) =>
-    stats.map(stat => {
+  const renderEntryStats = (stats, fixedValue = 3) =>
+    stats.map((stat, i) => {
       const { title, value } = stat
       if (Array.isArray(value)) {
         return (
-          <Fragment>
+          <Fragment key={`${title}-${i}`}>
             <Col xs={12}>
               <span className="HomeSubHeader">{title}</span>
             </Col>
-
-            {value.map(v => this.renderStat(v, fixedValue))}
+            {value.map(v => renderStat(i, v, fixedValue))}
           </Fragment>
         )
       }
-      return this.renderStat(stat, fixedValue)
+      return renderStat(i, stat, fixedValue)
     })
 
-  renderTagCounts = tagCountMap =>
+  const renderTagCounts = tagCountMap =>
     Object.keys(tagCountMap)
       .sort((a, b) => tagCountMap[b] - tagCountMap[a])
-      .map(title => {
+      .map((title, i) => {
         const value = tagCountMap[title]
 
-        return this.renderStat({ title, value })
+        return renderStat(i, { title, value })
       })
 
-  renderStat = ({ title, value }, fixedValue = 0) => (
-    <Col xs={12}>
+  const renderStat = (key, { title, value }, fixedValue = 0) => (
+    <Col xs={12} key={`${title}-${key}`}>
       <span style={{ fontSize: 14, fontWeight: 600 }}>{`${title}: `}</span>
       <span className="Stat">{Number(value).toFixed(fixedValue)}</span>
     </Col>
   )
 
-  render() {
-    const { entryAverages, entryCounts, tagCountMap } = this.props
+  return (
+    <Container className="EntryStatistics Container">
+      <Row>
+        <Col xs={12} className="p-0">
+          <h1>Entry Statistics</h1>
+        </Col>
+      </Row>
 
-    return (
-      <Container className="EntryStatistics Container">
-        <Row>
-          <Col xs={12} className="p-0">
-            <h1>Entry Statistics</h1>
-          </Col>
-        </Row>
+      <Row className="StatContainer">
+        <Col xs={12}>
+          <span className="HomeSubHeader">Average</span>
+        </Col>
+        {renderEntryStats(entryAverages)}
+      </Row>
 
-        <Row className="StatContainer">
-          <Col xs={12}>
-            <span className="HomeSubHeader">Average</span>
-          </Col>
-          {this.renderEntryStats(entryAverages)}
-        </Row>
+      <Row className="StatContainer">
+        <Col xs={12}>
+          <span className="HomeSubHeader">Count</span>
+        </Col>
+        {renderEntryStats(entryCounts, 0)}
+      </Row>
 
-        <Row className="StatContainer">
-          <Col xs={12}>
-            <span className="HomeSubHeader">Count</span>
-          </Col>
-          {this.renderEntryStats(entryCounts, 0)}
-        </Row>
-
-        <Row className="StatContainer">
-          <Col xs={12}>
-            <span className="HomeSubHeader">Tags</span>
-          </Col>
-          {this.renderTagCounts(tagCountMap)}
-        </Row>
-      </Container>
-    )
-  }
+      <Row className="StatContainer">
+        <Col xs={12}>
+          <span className="HomeSubHeader">Tags</span>
+        </Col>
+        {renderTagCounts(tagCountMap)}
+      </Row>
+    </Container>
+  )
 }
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EntryStatistics)
+
+export default reduxConnect(mapStateToProps)(EntryStatistics)

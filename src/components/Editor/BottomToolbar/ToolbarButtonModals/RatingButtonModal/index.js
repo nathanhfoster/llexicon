@@ -1,16 +1,11 @@
 import React, { PureComponent } from "react"
-import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import { Container, Row, Col } from "reactstrap"
+import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import RatingStar from "../../../../RatingStar"
 import RatingIcon from "../../../../RatingIcon"
 
 import "./styles.css"
-
-const mapStateToProps = ({}) => ({})
-
-const mapDispatchToProps = {}
 
 class RatingButtonModal extends PureComponent {
   constructor(props) {
@@ -120,7 +115,4 @@ class RatingButtonModal extends PureComponent {
     )
   }
 }
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RatingButtonModal)
+export default RatingButtonModal

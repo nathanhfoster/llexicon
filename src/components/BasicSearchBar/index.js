@@ -14,7 +14,7 @@ import UseDebounce from "../UseDebounce"
 const BasicSearchBar = ({ placeholder, onSubmit }) => {
   const [searchValue, setSearchValue] = useState("")
 
-  const handleOnChange = e => setSearchValue(e.target.value)
+  const handleOnChange = ({ target: { value } }) => setSearchValue(value)
 
   const handleSubmit = e => {
     e.preventDefault()

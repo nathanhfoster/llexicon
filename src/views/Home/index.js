@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import Feature from "./Feature"
@@ -217,4 +217,4 @@ Home.propTypes = {
   userId: PropTypes.number
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(memo(Home))
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Home)

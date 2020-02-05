@@ -161,7 +161,7 @@ class NavBar extends PureComponent {
       {
         icon: (
           <span className="NavBarLink">
-            <i class="fas fa-ellipsis-v NavBarImage" />
+            <i className="fas fa-ellipsis-v NavBarImage" />
           </span>
         ),
         links: [
