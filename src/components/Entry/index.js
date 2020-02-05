@@ -16,144 +16,115 @@ const mapStateToProps = ({}) => ({})
 
 const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 
-class Entry extends Component {
-  constructor(props) {
-    super(props)
+const Entry = ({
+  entry,
+  containerHeight,
+  topToolbarHidden,
+  bottomToolbarHidden,
+  shouldRedirectOnDelete,
+  UpdateReduxEntry,
+  SyncEntries,
+  history,
+  theme
+}) => {
+  const inputHeight = 48
+  const numberOfInputs = 1
+  const inputOffset = inputHeight * numberOfInputs
+  const toolBarToggleButton = 44
 
-    this.state = {}
-  }
+  const textEditorHeight = containerHeight - inputOffset
 
-  static propTypes = {
-    containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    topToolbarHidden: PropTypes.bool,
-    bottomToolbarHidden: PropTypes.bool,
-    UpdateReduxEntry: PropTypes.func.isRequired,
-    SyncEntries: PropTypes.func.isRequired,
-    entry: PropTypes.object.isRequired
-  }
+  entry.date_created_by_author = new Date(entry.date_created_by_author)
 
-  static defaultProps = {
-    topToolbarHidden: false,
-    bottomToolbarHidden: false,
-    shouldRedirectOnDelete: false,
-    theme: "snow"
-  }
+  const handleDateChange = date_created_by_author =>
+    UpdateReduxEntry({
+      id: entry.id,
+      date_created_by_author,
+      lastUpdated: date_created_by_author
+    })
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let {
-      entry,
-      containerHeight,
-      topToolbarHidden,
-      bottomToolbarHidden,
-      shouldRedirectOnDelete
-    } = nextProps
-
-    const inputHeight = 48
-    const numberOfInputs = 1
-    const inputOffset = inputHeight * numberOfInputs
-    const toolBarToggleButton = 44
-
-    const textEditorHeight = containerHeight - inputOffset
-
-    entry.date_created_by_author = new Date(entry.date_created_by_author)
-
-    return {
-      entry,
-      textEditorHeight,
-      topToolbarHidden,
-      bottomToolbarHidden,
-      shouldRedirectOnDelete
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return stateChanged
-  }
-
-  render() {
-    const { UpdateReduxEntry, SyncEntries, history, theme } = this.props
-    const {
-      entry,
-      textEditorHeight,
-      topToolbarHidden,
-      bottomToolbarHidden,
-      shouldRedirectOnDelete
-    } = this.state
-
-    return (
-      <Fragment>
-        <Editor
-          toolbarId={entry.id}
-          topToolbarHidden={topToolbarHidden}
-          bottomToolbarHidden={bottomToolbarHidden}
-          entry={entry}
-          theme={theme}
-          onChangeCallback={({ ...payload }) =>
-            UpdateReduxEntry({ id: entry.id, ...payload })
-          }
-        >
-          <UseDebounce onChangeCallback={SyncEntries} value={entry} />
-          <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
-            <Input
-              type="text"
-              name="title"
-              id="title"
-              placeholder="Entry title..."
-              value={entry.title}
-              onChange={e => {
-                const title = e.target.value
-                UpdateReduxEntry({ id: entry.id, title })
-              }}
-            />
-            <InputGroupAddon addonType="append">
-              <InputGroupText className="p-0">
-                <ReactDatePicker
-                  selected={entry.date_created_by_author || entry.lastUpdated}
-                  onChange={date_created_by_author =>
-                    UpdateReduxEntry({
+  return (
+    <Fragment>
+      <Editor
+        toolbarId={entry.id}
+        topToolbarHidden={topToolbarHidden}
+        bottomToolbarHidden={bottomToolbarHidden}
+        entry={entry}
+        theme={theme}
+        onChangeCallback={({ ...payload }) =>
+          UpdateReduxEntry({ id: entry.id, ...payload })
+        }
+      >
+        <UseDebounce onChangeCallback={SyncEntries} value={entry} />
+        <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
+          <Input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Entry title..."
+            value={entry.title}
+            onChange={e => {
+              const title = e.target.value
+              UpdateReduxEntry({ id: entry.id, title })
+            }}
+          />
+          <InputGroupAddon addonType="append">
+            <InputGroupText className="p-0">
+              <ReactDatePicker
+                selected={entry.date_created_by_author || entry.lastUpdated}
+                onChange={handleDateChange}
+              />
+            </InputGroupText>
+          </InputGroupAddon>
+          <InputGroupAddon addonType="append">
+            <InputGroupText
+              className="p-0"
+              style={{ background: "var(--quinaryColor)" }}
+            >
+              <ConfirmAction
+                buttonClassName="EntryInputDelete"
+                onClickCallback={() => {
+                  shouldRedirectOnDelete && RouterGoBack(history)
+                  setTimeout(async () => {
+                    await UpdateReduxEntry({
                       id: entry.id,
-                      date_created_by_author,
-                      lastUpdated: date_created_by_author
+                      shouldDelete: true
                     })
-                  }
-                />
-              </InputGroupText>
-            </InputGroupAddon>
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                className="p-0"
-                style={{ background: "var(--quinaryColor)" }}
-              >
-                <ConfirmAction
-                  buttonClassName="EntryInputDelete"
-                  onClickCallback={() => {
-                    shouldRedirectOnDelete && RouterGoBack(history)
-                    setTimeout(async () => {
-                      await UpdateReduxEntry({
-                        id: entry.id,
-                        shouldDelete: true
-                      })
-                      SyncEntries()
-                    }, 200)
-                  }}
-                  icon={
-                    <i
-                      className="fas fa-trash"
-                      style={{ color: "var(--danger)", fontSize: "1.5em" }}
-                    />
-                  }
-                  title={"Delete Entry"}
-                />
-              </InputGroupText>
-            </InputGroupAddon>
-          </InputGroup>
-        </Editor>
-      </Fragment>
-    )
-  }
+                    SyncEntries()
+                  }, 200)
+                }}
+                icon={
+                  <i
+                    className="fas fa-trash"
+                    style={{ color: "var(--danger)", fontSize: "1.5em" }}
+                  />
+                }
+                title={"Delete Entry"}
+              />
+            </InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
+      </Editor>
+    </Fragment>
+  )
 }
+
+Entry.propTypes = {
+  containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  topToolbarHidden: PropTypes.bool,
+  bottomToolbarHidden: PropTypes.bool,
+  UpdateReduxEntry: PropTypes.func.isRequired,
+  SyncEntries: PropTypes.func.isRequired,
+  entry: PropTypes.object.isRequired
+}
+
+Entry.defaultProps = {
+  topToolbarHidden: false,
+  bottomToolbarHidden: false,
+  shouldRedirectOnDelete: false,
+  theme: "snow"
+}
+
 export default withRouter(
   reduxConnect(mapStateToProps, mapDispatchToProps)(Entry)
 )

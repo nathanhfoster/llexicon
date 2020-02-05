@@ -1,91 +1,65 @@
-import React, { PureComponent, createRef } from 'react'
-import PropTypes from 'prop-types'
-import { FixedSizeList } from 'react-window'
-import './styles.css'
+import React, { useRef, useCallback, memo } from "react"
+import PropTypes from "prop-types"
+import { FixedSizeList } from "react-window"
+import "./styles.css"
 
-class BasicList extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.listRef = createRef()
-  }
+const BasicList = ({
+  itemSize,
+  listPosition,
+  list,
+  height,
+  width,
+  onListItemClickCallback,
+  onScrollToBottomOfListCallback,
+  listItemHoverable,
+  containerClass,
+  containerStyles,
+  listItemStyles
+}) => {
+  const listRef = useRef()
 
-  static propTypes = {
-    list: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.any.isRequired,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-        otherValue: PropTypes.any
-      }).isRequired
-    ),
+  const styles = { position: listPosition, ...containerStyles }
 
-    maxHeight: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    itemSize: PropTypes.number.isRequired,
-    listPosition: PropTypes.oneOf([
-      'static',
-      'absolute',
-      'fixed',
-      'relative',
-      'sticky',
-      'initial',
-      'inherit'
-    ]),
-
-    // Callback props
-    onListItemClickCallback: PropTypes.func, // When an item is clicked
-    onScrollToBottomOfListCallback: PropTypes.func // When scrolled to the bottom of the list,
-  }
-
-  static defaultProps = {
-    maxHeight: 250,
-    height: 250,
-    width: '100%',
-    itemSize: 50,
-    list: [],
-    listPosition: 'absolute',
-    listItemHoverable: false
-  }
-
-  onListItemClick = (id, value) => {
-    const { onListItemClickCallback } = this.props
-    if (onListItemClickCallback) {
-      onListItemClickCallback(id, value)
-    }
-  }
-
-  renderList = ({ data, index, style, isScrolling }) => {
-    const { listItemHoverable, onListItemClickCallback, itemSize } = this.props
+  const renderList = ({ data, index, style, isScrolling }) => {
     const { id, value, otherValue } = data[index]
 
-    return typeof value === 'object' ? (
+    const onListItemClick = useCallback(() => {
+      if (onListItemClickCallback) {
+        onListItemClickCallback(id, value)
+      }
+    }, [id, value])
+
+    return typeof value === "object" ? (
       value
     ) : (
       <div
-        className={`basicListItem ${listItemHoverable && 'basicListItemHoverable'}`}
-        style={{ ...style, padding: itemSize / 4 }}
         key={id}
+        className={`basicListItem ${listItemHoverable &&
+          "basicListItemHoverable"}`}
+        style={{ ...style, padding: itemSize / 4, ...listItemStyles }}
         id={id}
         value={value}
-        onClick={() => onListItemClickCallback && onListItemClickCallback(id, value)}
+        onClick={onListItemClick}
       >
         <span className="basicListItemValue FirstValue">{value}</span>
-        {otherValue && <span className="basicListItemValue OtherValue">{otherValue}</span>}
+        {otherValue && (
+          <span className="basicListItemValue OtherValue">{otherValue}</span>
+        )}
       </div>
     )
   }
 
-  handleItemsRendered = ({
+  const handleItemsRendered = ({
     overscanStartIndex,
     overscanStopIndex,
     visibleStartIndex,
     visibleStopIndex
   }) => {
-    const { onScrollToBottomOfListCallback } = this.props
     if (!onScrollToBottomOfListCallback) return
-    const listLength = this.props.list.length
+    const listLength = list.length
     const bottomOfListIndex = listLength === 0 ? listLength : listLength - 1
-    const reachedBottomOfList = bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
+    const reachedBottomOfList =
+      bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
     // console.log("overscanStopIndex: ", overscanStopIndex)
     // console.log("visibleStopIndex: ", visibleStopIndex)
     // console.log('reachedBottomOfList: ', reachedBottomOfList)
@@ -94,24 +68,64 @@ class BasicList extends PureComponent {
     reachedBottomOfList && onScrollToBottomOfListCallback()
   }
 
-  render() {
-    const { itemSize, listPosition, list, height, width } = this.props
-
-    return (
-      <FixedSizeList
-        ref={this.listRef}
-        className="basicListContainer fade-in"
-        style={{ position: listPosition }}
-        height={height}
-        width={width}
-        itemData={list}
-        itemCount={list.length}
-        itemSize={itemSize}
-        onItemsRendered={this.handleItemsRendered}
-      >
-        {this.renderList}
-      </FixedSizeList>
-    )
-  }
+  return (
+    <FixedSizeList
+      ref={listRef}
+      className={`basicListContainer fade-in ${containerClass}`}
+      style={styles}
+      height={height}
+      width={width}
+      itemData={list}
+      itemCount={list.length}
+      itemSize={itemSize}
+      onItemsRendered={handleItemsRendered}
+    >
+      {renderList}
+    </FixedSizeList>
+  )
 }
-export default BasicList
+
+BasicList.propTypes = {
+  list: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.any.isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+        .isRequired,
+      otherValue: PropTypes.any
+    }).isRequired
+  ),
+
+  maxHeight: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  itemSize: PropTypes.number.isRequired,
+  listPosition: PropTypes.oneOf([
+    "static",
+    "absolute",
+    "fixed",
+    "relative",
+    "sticky",
+    "initial",
+    "inherit"
+  ]),
+  containerClass: PropTypes.string,
+  containerStyles: PropTypes.object,
+  listItemStyles: PropTypes.object,
+
+  // Callback props
+  onListItemClickCallback: PropTypes.func, // When an item is clicked
+  onScrollToBottomOfListCallback: PropTypes.func // When scrolled to the bottom of the list,
+}
+
+BasicList.defaultProps = {
+  maxHeight: 250,
+  height: 250,
+  width: "100%",
+  itemSize: 25,
+  list: [],
+  listPosition: "absolute",
+  listItemHoverable: false,
+  containerStyles: {},
+  listItemStyles: {}
+}
+export default memo(BasicList)
