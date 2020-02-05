@@ -1,30 +1,21 @@
-import React, { PureComponent } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import { capitalizeFirstLetter } from "../../../helpers"
 import { ColumnsPropType } from "../props"
 import "./styles.css"
 
-class TableHeader extends PureComponent {
-  static propTypes = {
-    sortable: PropTypes.bool.isRequired,
-    sortCallback: PropTypes.func.isRequired,
-    filterCallback: PropTypes.func.isRequired,
-    columns: ColumnsPropType,
-    sortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    sortUp: PropTypes.bool
-  }
+const TableHeader = ({
+  columns,
+  sortUp,
+  sortCallback,
+  sortable,
+  sortKey,
+  filterCallback
+}) => {
+  const handleSortCallback = (key, sort) => sortCallback(key, sort, !sortUp)
 
-  static defaultProps = {}
-
-  handleSortCallback = (key, sort) => {
-    const { sortUp, sortCallback } = this.props
-
-    sortCallback(key, sort, !sortUp)
-  }
-
-  renderColumnHeaders = columns => {
-    const { sortable, sortKey, sortUp, filterCallback } = this.props
+  const renderColumnHeaders = useMemo(() => {
     const shouldRenderSortContainer = columns.find(c => c.filter)
     return columns.map((column, i) => {
       const {
@@ -45,7 +36,7 @@ class TableHeader extends PureComponent {
           className={`BasicTableHeader ${sortable ? "HeaderHoverable" : ""} `}
           style={{ width }}
           // title={title}
-          onClick={sortable ? () => this.handleSortCallback(key, sort) : null}
+          onClick={sortable ? () => handleSortCallback(key, sort) : null}
         >
           {titleFunction ? title(column) : title}
           {sortable && showSort && (
@@ -72,15 +63,22 @@ class TableHeader extends PureComponent {
         </th>
       )
     })
-  }
+  }, [columns, sortKey, sortUp])
 
-  render() {
-    const { columns } = this.props
-    return (
-      <thead>
-        <tr>{this.renderColumnHeaders(columns)}</tr>
-      </thead>
-    )
-  }
+  return (
+    <thead>
+      <tr>{renderColumnHeaders}</tr>
+    </thead>
+  )
 }
-export default TableHeader
+
+TableHeader.propTypes = {
+  sortable: PropTypes.bool.isRequired,
+  sortCallback: PropTypes.func.isRequired,
+  filterCallback: PropTypes.func.isRequired,
+  columns: ColumnsPropType,
+  sortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  sortUp: PropTypes.bool
+}
+
+export default memo(TableHeader)
