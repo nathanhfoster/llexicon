@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { useEffect, useState, memo } from "react"
 import PropTypes from "prop-types"
 import moment from "moment"
 import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from "./styles"
@@ -7,7 +7,7 @@ import TagContainer from "../../../components/TagsContainer"
 const HEIGHT = 100
 const WIDTH = 200
 
-const styles = {
+const rootStyles = {
   display: "block",
   margin: "auto",
   padding: "6px",
@@ -26,7 +26,7 @@ const styles = {
   borderRadius: 4
 }
 
-const mountedStyles = { ...styles, ...K_POP_UP_ANIMATION }
+const mountedStyles = { ...rootStyles, ...K_POP_UP_ANIMATION }
 
 const lineStyle = {
   marginTop: 8,
@@ -52,70 +52,58 @@ const rightColumn = {
   right: 0
 }
 
-class PreviewBox extends PureComponent {
-  constructor(props) {
-    super(props)
+const PreviewBox = ({
+  $dimensionKey,
+  clientName,
+  lastActivity,
+  title,
+  date_created_by_author,
+  lastUpdated,
+  address,
+  tags,
+  ...rest
+}) => {
+  const [styles, setStyles] = useState(rootStyles)
 
-    this.state = {
-      styles
-    }
+  useEffect(() => {
+    setStyles(mountedStyles)
+  }, [])
+
+  if ($dimensionKey === "MyLocation") {
+    title = "Me"
   }
 
-  static propTypes = {
-    $dimensionKey: PropTypes.string,
-    clientName: PropTypes.string,
-    siteDescription: PropTypes.string,
-    score: PropTypes.number,
-    lastActivity: PropTypes.string
-  }
+  date_created_by_author = moment(date_created_by_author || lastUpdated).format(
+    "MM/DD/YYYY"
+  )
 
-  static defaultProps = {}
-
-  componentDidMount() {
-    setTimeout(() => this.setState({ styles: mountedStyles }), 10)
-  }
-
-  render() {
-    let {
-      $dimensionKey,
-      clientName,
-      lastActivity,
-      title,
-      date_created_by_author,
-      lastUpdated,
-      address,
-      tags,
-      ...rest
-    } = this.props
-
-    const { styles } = this.state
-
-    if ($dimensionKey === "MyLocation") {
-      title = "Me"
-    }
-
-    date_created_by_author = moment(date_created_by_author || lastUpdated).format("MM/DD/YYYY")
-
-    return (
-      <div style={styles}>
-        <div>{title}</div>
-        <div>{address}</div>
-        {tags && (
-          <div>
-            <TagContainer tags={tags} />
-          </div>
-        )}
-        <div style={lineStyle}>
-          <div style={leftColumn}>
-            <i>Date</i>
-          </div>
-          <div style={rightColumn}>
-            <i>{date_created_by_author}</i>
-          </div>
+  return (
+    <div style={styles}>
+      <div>{title}</div>
+      <div>{address}</div>
+      {tags && (
+        <div>
+          <TagContainer tags={tags} />
+        </div>
+      )}
+      <div style={lineStyle}>
+        <div style={leftColumn}>
+          <i>Date</i>
+        </div>
+        <div style={rightColumn}>
+          <i>{date_created_by_author}</i>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-export default PreviewBox
+PreviewBox.propTypes = {
+  $dimensionKey: PropTypes.string,
+  clientName: PropTypes.string,
+  siteDescription: PropTypes.string,
+  score: PropTypes.number,
+  lastActivity: PropTypes.string
+}
+
+export default memo(PreviewBox)

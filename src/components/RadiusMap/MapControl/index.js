@@ -16,67 +16,16 @@ class MapControl extends Component {
   static defaultProps = { width: "100%" }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const {
-      $geoService,
-      $onMouseAllow,
-      $prerender,
-      bounds,
-      center,
-      zoom,
-      controlPosition,
-      controls,
-      defaultCenter,
-      draggable,
-      drawingMode,
-      fetchParlaySite,
-      fetchProjectIfNeeded,
-      height,
-      hoveredChildKey,
-      item,
-      locations,
-      locationsList,
-      map,
-      mapApi,
-      options,
-      resetProject,
-      resetProjects,
-      search,
-      selectSite,
-      setHoveredChildKey,
-      setMapCenterBoundsZoom,
-      setMapSites,
-      setProjectsSearchProps,
-      shouldShowParlay,
-      showMarkersMaxZoom,
-      showMarkersMinZoom,
-      showParlayMaxZoom,
-      showParlayMinZoom,
-      showPolygonsMaxZoom,
-      showPolygonsMinZoom,
-      siteDescription,
-      sites,
-      toggleKey,
-      useGoogleMapApi,
-      width,
-      children
-    } = nextProps
+    const memoProps = ["item", "map", "mapApi", "children"]
 
-    const childrenChanged = !deepEquals(this.props.children, children)
-    const activeProjectChanged = !deepEquals(this.props.item, item)
+    for (let i = 0, { length } = memoProps; i < length; i++) {
+      const prop = memoProps[i]
+      if (!deepEquals(this.props[prop], nextProps[prop])) {
+        return true
+      }
+    }
 
-    const currentMap = this.props.map
-    const currentMapApi = this.props.mapApi
-
-    const mapChanged = !currentMap && map
-    const mapApiChanged = !currentMapApi && mapApi
-
-    return (
-      // boundsChanged ||
-      // centerChanged ||
-      // zoomChanged ||
-      // siteDescriptionChanged ||
-      mapChanged || mapApiChanged || childrenChanged || activeProjectChanged
-    )
+    return false
   }
 
   componentDidMount() {
@@ -103,6 +52,7 @@ class MapControl extends Component {
     const { children, controlPosition, width, ...props } = this.props
 
     if (!props.map || !controlPosition) return
+    console.log("ReNDER")
     render(
       <div
         className="mapControl"

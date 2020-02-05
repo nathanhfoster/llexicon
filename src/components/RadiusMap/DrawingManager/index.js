@@ -1,126 +1,73 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
-import PolygonSystem from '../PolygonSystem'
-import GooglePolygon from '../NativePolygonSystem/GooglePolygon'
-import cloneDeep from 'lodash/cloneDeep'
-import { formatBoundaries } from '../../../services/map'
-import { fetchDrawnSite } from '../../../../actions/MetaActions'
-import deepEquals from '../../../helpers/deepEquals'
+import React, { useState, memo } from "react"
+import PropTypes from "prop-types"
+import { useDispatch } from "react-redux"
+import PolygonSystem from "../PolygonSystem"
+import GooglePolygon from "../NativePolygonSystem/GooglePolygon"
+import cloneDeep from "lodash/cloneDeep"
+import { formatBoundaries } from "../../../services/map"
+import { fetchDrawnSite } from "../../../../actions/MetaActions"
 import {
   DEFAULT_STROKE,
   SELECTED_COLOR,
   NOT_ATTACHED_OR_SELECTED_COLOR
-} from '../PolygonSystem/getOptions'
-import { Geometry } from '../classes'
+} from "../PolygonSystem"
+import { Geometry } from "../classes"
 
-const mapDispatchToProps = { fetchDrawnSite }
-
-class DrawingManager extends Component {
-  constructor(props) {
-    super(props)
-
-    const { mousePos, options, shouldRenderPolygons } = props
-    const polygon = this.getInitialPolygon(mousePos)
-
-    this.state = {
-      mousePos,
-      options,
-      drawingPolyline: false,
-      shouldCompletePolygon: false,
-      drawnPolylineIsIntersecting: false,
-      shouldRenderPolygons,
-      polygon
-    }
+const getInitialPolygon = ({ lat, lng }) => {
+  const polygon = {
+    lat,
+    lng,
+    boundary: [{ lat, lng }]
   }
 
-  static propTypes = {
-    $dimensionKey: PropTypes.string,
-    $geoService: PropTypes.object,
-    $getDimensions: PropTypes.func,
-    $hover: PropTypes.bool,
-    $onMouseAllow: PropTypes.func,
-    $prerender: PropTypes.bool,
-    bounds: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number)),
-    lat: PropTypes.any.isRequired,
-    lng: PropTypes.any.isRequired,
-    mousePos: PropTypes.any.isRequired,
-    options: PropTypes.any,
-    height: PropTypes.any.isRequired,
-    width: PropTypes.any.isRequired,
-    toggleDrawingMode: PropTypes.func.isRequired,
-    shouldRenderPolygons: PropTypes.bool.isRequired,
-    fetchDrawnSite: PropTypes.func.isRequired,
-    mapApi: PropTypes.object.isRequired
+  return polygon
+}
+
+const getInitialState = ({ mousePos, options }) => {
+  const polygon = getInitialPolygon(mousePos)
+
+  return {
+    options,
+    drawingPolyline: false,
+    shouldCompletePolygon: false,
+    drawnPolylineIsIntersecting: false,
+    polygon
+  }
+}
+
+const DrawingManager = props => {
+  const dispatch = useDispatch()
+  let { height, width, zoom } = props
+
+  const {
+    $dimensionKey,
+    $geoService,
+    mousePos,
+    bounds,
+    setMapCenterBoundsZoom,
+    toggleDrawingMode,
+    mapApi,
+    shouldRenderPolygons
+  } = props
+
+  const [state, setState] = useState(getInitialState(props))
+
+  const {
+    polygon,
+    options,
+    shouldCompletePolygon,
+    drawingPolyline,
+    drawnPolylineIsIntersecting
+  } = state
+
+  if ($geoService) {
+    height = $geoService.getHeight()
+    width = $geoService.getWidth()
+    zoom = $geoService.getZoom()
   }
 
-  static defaultProps = {
-    height: 0,
-    width: 0,
-    zoom: 0,
-    mousePos: {},
-    options: {
-      strokeWidth: 2,
-      stroke: DEFAULT_STROKE,
-      strokeOpacity: 1,
-      fill: SELECTED_COLOR,
-      fillOpacity: 0.4
-    }
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let { height, width, zoom } = nextProps
-    const { $dimensionKey, $geoService, mousePos, bounds } = nextProps
-
-    const {
-      polygon,
-      options,
-      shouldCompletePolygon,
-      shouldRenderPolygons,
-      drawingPolyline
-    } = prevState
-
-    if ($geoService) {
-      height = $geoService.getHeight()
-      width = $geoService.getWidth()
-      zoom = $geoService.getZoom()
-    }
-
-    return {
-      mousePos,
-      bounds,
-      height,
-      width,
-      zoom,
-      shouldRenderPolygons,
-      polygon,
-      options,
-      shouldCompletePolygon,
-      drawingPolyline
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const propsChanged = !deepEquals(this.props, nextProps)
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return propsChanged || stateChanged
-  }
-
-  getInitialPolygon = ({ lat, lng }) => {
-    const polygon = {
-      lat,
-      lng,
-      boundary: [{ lat, lng }]
-    }
-
-    return polygon
-  }
-
-  getInitialStartingPolygon = () => {
-    const {
-      mousePos: { lat, lng }
-    } = this.state
+  const getInitialStartingPolygon = () => {
+    const { lat, lng } = mousePos
 
     const polyline = { lat, lng }
 
@@ -135,19 +82,17 @@ class DrawingManager extends Component {
     return polygon
   }
 
-  handlePolygonStart = () => {
-    const polygon = this.getInitialStartingPolygon()
+  const handlePolygonStart = () => {
+    const polygon = getInitialStartingPolygon()
 
-    this.setState({
+    setState({
+      ...state,
       drawingPolyline: true,
       polygon
     })
   }
 
-  handlePolygonComplete = () => {
-    const { toggleDrawingMode, fetchDrawnSite, mapApi } = this.props
-    const { polygon } = this.state
-
+  const handlePolygonComplete = () => {
     let newPolygon = cloneDeep(polygon)
 
     const firstPolyline = newPolygon.boundary[0]
@@ -160,16 +105,17 @@ class DrawingManager extends Component {
     const acres = mapApi.geometry.spherical.computeArea(paths) * 0.000247105
 
     const newSite = {
-      siteType: 'USER_DEFINED',
+      siteType: "USER_DEFINED",
       acreage: acres,
       boundary: boundaries
     }
 
-    fetchDrawnSite(newSite)
+    dispatch(fetchDrawnSite(newSite))
 
-    const initialPolygon = this.getInitialStartingPolygon()
+    const initialPolygon = getInitialStartingPolygon()
 
-    this.setState({
+    setState({
+      ...state,
       polygon: initialPolygon,
       shouldCompletePolygon: false,
       drawnPolylineIsIntersecting: false,
@@ -179,12 +125,8 @@ class DrawingManager extends Component {
     return toggleDrawingMode()
   }
 
-  handleAddingNewPolyline = () => {
-    const {
-      polygon,
-      mousePos: { lat, lng },
-      drawnPolylineIsIntersecting
-    } = this.state
+  const handleAddingNewPolyline = () => {
+    const { lat, lng } = mousePos
 
     if (drawnPolylineIsIntersecting) return
 
@@ -197,13 +139,14 @@ class DrawingManager extends Component {
 
     newPolygon.boundary.push(newPolyline)
 
-    this.setState({ polygon: newPolygon })
+    setState({ ...state, polygon: newPolygon })
   }
 
-  handleShouldCompletePolygon = (point, centerOfCircle) => {
+  const handleShouldCompletePolygon = (point, centerOfCircle) => {
     const radius = Math.pow(0.00005, 2)
     const distance =
-      Math.pow(point.lat - centerOfCircle.lat, 2) + Math.pow(point.lng - centerOfCircle.lng, 2)
+      Math.pow(point.lat - centerOfCircle.lat, 2) +
+      Math.pow(point.lng - centerOfCircle.lng, 2)
 
     if (distance < radius) {
       return true
@@ -211,20 +154,17 @@ class DrawingManager extends Component {
     return false
   }
 
-  handleClick = () => {
-    const { drawingPolyline, shouldCompletePolygon } = this.state
-
+  const handleClick = () => {
     if (!drawingPolyline) {
-      this.handlePolygonStart()
+      handlePolygonStart()
     } else if (shouldCompletePolygon) {
-      this.handlePolygonComplete()
+      handlePolygonComplete()
     } else {
-      this.handleAddingNewPolyline()
+      handleAddingNewPolyline()
     }
   }
 
-  handleMouseMove = () => {
-    const { polygon, drawingPolyline, mousePos, options } = this.state
+  const handleMouseMove = () => {
     const intersectingOpacity = 0.9
     const completedOpacity = 0.9
     const regularOpacity = 0.4
@@ -234,26 +174,33 @@ class DrawingManager extends Component {
     let newPolygon = cloneDeep(polygon)
     const lastPolylineIndex = newPolygon.boundary.length - 1
 
-    newPolygon.boundary[lastPolylineIndex] = { lat: mousePos.lat, lng: mousePos.lng }
+    newPolygon.boundary[lastPolylineIndex] = {
+      lat: mousePos.lat,
+      lng: mousePos.lng
+    }
 
     const geometry = new Geometry({ points: newPolygon.boundary })
 
     const drawnPolylineIsIntersecting = geometry.intersects()
 
-    const fill = drawnPolylineIsIntersecting ? NOT_ATTACHED_OR_SELECTED_COLOR : SELECTED_COLOR
+    const fill = drawnPolylineIsIntersecting
+      ? NOT_ATTACHED_OR_SELECTED_COLOR
+      : SELECTED_COLOR
 
     const shouldCompletePolygon =
-      this.handleShouldCompletePolygon(mousePos, newPolygon) && !drawnPolylineIsIntersecting
+      handleShouldCompletePolygon(mousePos, newPolygon) &&
+      !drawnPolylineIsIntersecting
 
     const fillOpacity = drawnPolylineIsIntersecting
       ? intersectingOpacity
       : shouldCompletePolygon
-        ? completedOpacity
-        : regularOpacity
+      ? completedOpacity
+      : regularOpacity
 
     const newOptions = { ...options, fillOpacity, fill }
 
-    this.setState({
+    setState({
+      ...state,
       polygon: newPolygon,
       options: newOptions,
       shouldCompletePolygon,
@@ -261,17 +208,16 @@ class DrawingManager extends Component {
     })
   }
 
-  renderPolygon = () => {
-    const { polygon, bounds, options, shouldRenderPolygons, height, width, zoom } = this.state
+  const { lat, lng, boundary } = polygon
 
-    if (!shouldRenderPolygons) return null
-    else {
-      const { lat, lng, boundary } = polygon
-
-      return (
+  if (!shouldRenderPolygons) return null
+  else
+    return (
+      <div onClick={handleClick} onMouseMove={handleMouseMove}>
         <PolygonSystem
           key="userDefinedPolygon"
           id="userDefinedPolygon"
+          pointerEvents="auto"
           lat={bounds.ne.lat}
           lng={bounds.nw.lng}
           center={[lat, lng]}
@@ -281,17 +227,44 @@ class DrawingManager extends Component {
           height={height}
           width={width}
           zoom={zoom}
+          setMapCenterBoundsZoom={setMapCenterBoundsZoom}
         />
-      )
-    }
-  }
-
-  render() {
-    return (
-      <div onClick={this.handleClick} onMouseMove={this.handleMouseMove}>
-        {this.renderPolygon()}
       </div>
     )
+}
+
+DrawingManager.propTypes = {
+  $dimensionKey: PropTypes.string,
+  $geoService: PropTypes.object,
+  $getDimensions: PropTypes.func,
+  $hover: PropTypes.bool,
+  $onMouseAllow: PropTypes.func,
+  $prerender: PropTypes.bool,
+  bounds: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number)),
+  lat: PropTypes.any.isRequired,
+  lng: PropTypes.any.isRequired,
+  mousePos: PropTypes.any.isRequired,
+  options: PropTypes.any,
+  height: PropTypes.any.isRequired,
+  width: PropTypes.any.isRequired,
+  toggleDrawingMode: PropTypes.func.isRequired,
+  shouldRenderPolygons: PropTypes.bool.isRequired,
+  mapApi: PropTypes.object.isRequired,
+  setMapCenterBoundsZoom: PropTypes.func.isRequired
+}
+
+DrawingManager.defaultProps = {
+  height: 0,
+  width: 0,
+  zoom: 0,
+  mousePos: {},
+  options: {
+    strokeWidth: 2,
+    stroke: DEFAULT_STROKE,
+    strokeOpacity: 1,
+    fill: SELECTED_COLOR,
+    fillOpacity: 0.4
   }
 }
-export default reduxConnect(null, mapDispatchToProps)(DrawingManager)
+
+export default memo(DrawingManager)
