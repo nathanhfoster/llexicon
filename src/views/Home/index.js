@@ -7,12 +7,9 @@ import { useHistory } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../ReactRouter/Routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import AddToHomeScreen from "../../components/AddToHomeScreen"
-
 import "./styles.css"
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
-
-const mapDispatchToProps = {}
 
 const renderFeatures = features =>
   features.map((feature, i) => (
@@ -217,4 +214,4 @@ Home.propTypes = {
   userId: PropTypes.number
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Home)
+export default reduxConnect(mapStateToProps)(Home)

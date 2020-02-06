@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import ImportEntries from "../../components/ImportEntries"
@@ -17,28 +17,10 @@ import EntryStatistics from "../../components/EntryStatistics"
 import Moment from "react-moment"
 import "./styles.css"
 
-const handleOnClick = (settingKey, props) => {
-  const {
-    User: { id, token, Settings },
-    PostSettings,
-    SetSettings
-  } = props
-
-  const value = Settings[settingKey]
-
-  !Settings.id
-    ? PostSettings({
-        user: id,
-        [settingKey]: !value
-      })
-    : SetSettings({
-        [settingKey]: !value
-      })
-}
-
 const mapStateToProps = ({ User, Entries: { items, filteredItems } }) => ({
   User,
-  entries: items.concat(filteredItems)
+  items,
+  filteredItems
 })
 
 const mapDispatchToProps = {
@@ -48,102 +30,105 @@ const mapDispatchToProps = {
   SetSettings
 }
 
-class Settings extends PureComponent {
-  constructor(props) {
-    super(props)
+const Settings = ({
+  User,
+  items,
+  filteredItems,
+  GetUserSettings,
+  PostSettings,
+  SetSettings,
+  UpdateUser
+}) => {
+  const entries = items.concat(filteredItems)
 
-    this.state = {}
-  }
-
-  static propTypes = {
-    User: PropTypes.object.isRequired,
-    entries: PropTypes.arrayOf(PropTypes.object).isRequired,
-    UpdateUser: PropTypes.func.isRequired,
-    GetUserSettings: PropTypes.func.isRequired,
-    PostSettings: PropTypes.func.isRequired,
-    SetSettings: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {}
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { User, entries } = nextProps
-
-    const {
-      Settings: { show_footer, offline_mode, push_messages }
-    } = User
-
-    const sections = [
-      {
-        title: (
-          <span>
-            Appearance <i className="fas fa-user-astronaut" />
-          </span>
-        ),
-        inputs: [
-          {
-            settingKey: "show_footer",
-            disabled: !User.id,
-            checked: show_footer,
-            onClickCallback: key => handleOnClick(key, nextProps),
-            title: "Show footer",
-            tooltipTitle: "Toggles the view of the footer"
-          }
-        ]
-      },
-      {
-        title: (
-          <span>
-            Features <i className="fas fa-space-shuttle" />
-          </span>
-        ),
-        inputs: [
-          {
-            settingKey: "offline_mode",
-            disabled: !User.id,
-            checked: offline_mode,
-            onClickCallback: key => handleOnClick(key, nextProps),
-            title: "Offline mode",
-            tooltipTitle: "Disconnect from the stars"
-          },
-          {
-            settingKey: "push_messages",
-            disabled: !User.id,
-            checked: push_messages,
-            onClickCallback: key => handleOnClick(key, nextProps),
-            title: "Push Messages",
-            tooltipTitle: "Toggles frequent fetches of messages"
-          }
-        ]
-      }
-    ]
-    return { User, entries, sections }
-  }
-
-  componentDidMount() {
-    const { User, GetUserSettings } = this.props
+  useEffect(() => {
     if (User.token) GetUserSettings()
+  }, [])
+
+  const {
+    Settings: { show_footer, offline_mode, push_messages }
+  } = User
+
+  const handleOnClick = settingKey => {
+    const { id, token, Settings } = User
+
+    const value = Settings[settingKey]
+
+    !Settings.id
+      ? PostSettings({
+          user: id,
+          [settingKey]: !value
+        })
+      : SetSettings({
+          [settingKey]: !value
+        })
   }
 
-  renderInputs = inputs =>
+  const sections = [
+    {
+      title: (
+        <span>
+          Appearance <i className="fas fa-user-astronaut" />
+        </span>
+      ),
+      inputs: [
+        {
+          settingKey: "show_footer",
+          disabled: !User.id,
+          checked: show_footer,
+          onClickCallback: handleOnClick,
+          title: "Show footer",
+          tooltipTitle: "Toggles the view of the footer"
+        }
+      ]
+    },
+    {
+      title: (
+        <span>
+          Features <i className="fas fa-space-shuttle" />
+        </span>
+      ),
+      inputs: [
+        {
+          settingKey: "offline_mode",
+          disabled: !User.id,
+          checked: offline_mode,
+          onClickCallback: handleOnClick,
+          title: "Offline mode",
+          tooltipTitle: "Disconnect from the stars"
+        },
+        {
+          settingKey: "push_messages",
+          disabled: !User.id,
+          checked: push_messages,
+          onClickCallback: handleOnClick,
+          title: "Push Messages",
+          tooltipTitle: "Toggles frequent fetches of messages"
+        }
+      ]
+    }
+  ]
+
+  const renderInputs = inputs =>
     inputs.map(input => <SettingInput key={input.settingKey} {...input} />)
 
-  renderSections = sections =>
-    sections.map((section, i) => {
-      const { title, inputs } = section
-      return (
-        <Col xs={12} key={i}>
-          <FormGroup tag="fieldset">
-            <legend className="headerBanner">{title}</legend>
-            {this.renderInputs(inputs)}
-          </FormGroup>
-        </Col>
-      )
-    })
+  const renderSections = useMemo(
+    () =>
+      sections.map((section, i) => {
+        const { title, inputs } = section
+        return (
+          <Col xs={12} key={i}>
+            <FormGroup tag="fieldset">
+              <legend className="headerBanner">{title}</legend>
+              {renderInputs(inputs)}
+            </FormGroup>
+          </Col>
+        )
+      }),
+    [sections]
+  )
 
-  handleExportEntries = () => {
-    const { entries } = this.state
-
+  const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
         id,
@@ -183,116 +168,119 @@ class Settings extends PureComponent {
     alert("Entries copied to clipboard.")
   }
 
-  handleChangeUser = payload => {
-    const { UpdateUser } = this.props
+  const handleChangeUser = payload => UpdateUser(payload)
 
-    UpdateUser(payload)
-  }
+  return (
+    <Container className="Settings Container">
+      <Row>
+        <Col xs={12}>
+          <h1 className="pageHeader Center">
+            <i className="fa fa-cog mr-2" />
+            SETTINGS
+          </h1>
+        </Col>
+      </Row>
 
-  render() {
-    const { User, sections } = this.state
-
-    return (
-      <Container className="Settings Container">
-        <Row>
-          <Col xs={12}>
-            <h1 className="pageHeader Center">
-              <i className="fa fa-cog mr-2" />
-              SETTINGS
-            </h1>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={6}>
-            <ImportEntries />
-          </Col>
-          <Col xs={6}>
-            <Button color="primary" onClick={this.handleExportEntries}>
-              <i className="fas fa-clipboard" /> Export Entries
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col
-            xs={12}
-            tag="h3"
-            style={{ display: "flex", alignContent: "center" }}
-          >
-            {User.picture && (
-              <Media middle src={User.picture} height={52} className="mr-2" />
-            )}
-            {`${User.first_name} ${User.last_name}`}
-          </Col>
-          <Col xs={12}>
-            <span>Joined </span>
-            <Moment fromNow>{User.date_joined}</Moment>
-            <span> on </span>
-            <Moment format="MMMM DD, YYYY hh:mma">{User.date_joined}</Moment>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <BasicForm
-              title="Update Profile"
-              onSubmit={payload => this.handleChangeUser(payload)}
-              submitLabel="Update"
-              inputs={[
-                {
-                  label: "Username",
-                  type: "text",
-                  id: "username",
-                  placeholder: "Username...",
-                  defaultValue: User.username
-                },
-                {
-                  label: "email",
-                  type: "email",
-                  id: "email",
-                  placeholder: "Email...",
-                  defaultValue: User.email
-                },
-                {
-                  label: "First name",
-                  type: "text",
-                  id: "first_name",
-                  placeholder: "First Name...",
-                  defaultValue: User.first_name
-                },
-                {
-                  label: "Last name",
-                  type: "text",
-                  id: "last_name",
-                  placeholder: "Last name...",
-                  defaultValue: User.last_name
-                },
-                {
-                  label: "Password",
-                  type: "password",
-                  id: "password",
-                  placeholder: "Password..."
-                }
-                // {
-                //   label: "Opt in",
-                //   type: "radio",
-                //   name: "opt_in",
-                //   id: "opt_in",
-                //   placeholder: "Opt in?"
-                // }
-              ]}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Form>{this.renderSections(sections)}</Form>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <EntryStatistics />
-          </Col>
-        </Row>
-      </Container>
-    )
-  }
+      <Row>
+        <Col xs={6}>
+          <ImportEntries />
+        </Col>
+        <Col xs={6}>
+          <Button color="primary" onClick={handleExportEntries}>
+            <i className="fas fa-clipboard" /> Export Entries
+          </Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          xs={12}
+          tag="h3"
+          style={{ display: "flex", alignContent: "center" }}
+        >
+          {User.picture && (
+            <Media middle src={User.picture} height={52} className="mr-2" />
+          )}
+          {`${User.first_name} ${User.last_name}`}
+        </Col>
+        <Col xs={12}>
+          <span>Joined </span>
+          <Moment fromNow>{User.date_joined}</Moment>
+          <span> on </span>
+          <Moment format="MMMM DD, YYYY hh:mma">{User.date_joined}</Moment>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12}>
+          <BasicForm
+            title="Update Profile"
+            onSubmit={handleChangeUser}
+            submitLabel="Update"
+            inputs={[
+              {
+                label: "Username",
+                type: "text",
+                id: "username",
+                placeholder: "Username...",
+                defaultValue: User.username
+              },
+              {
+                label: "email",
+                type: "email",
+                id: "email",
+                placeholder: "Email...",
+                defaultValue: User.email
+              },
+              {
+                label: "First name",
+                type: "text",
+                id: "first_name",
+                placeholder: "First Name...",
+                defaultValue: User.first_name
+              },
+              {
+                label: "Last name",
+                type: "text",
+                id: "last_name",
+                placeholder: "Last name...",
+                defaultValue: User.last_name
+              },
+              {
+                label: "Password",
+                type: "password",
+                id: "password",
+                placeholder: "Password..."
+              }
+              // {
+              //   label: "Opt in",
+              //   type: "radio",
+              //   name: "opt_in",
+              //   id: "opt_in",
+              //   placeholder: "Opt in?"
+              // }
+            ]}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Form>{renderSections}</Form>
+      </Row>
+      <Row>
+        <Col xs={12}>
+          <EntryStatistics items={items} filteredItems={filteredItems} />
+        </Col>
+      </Row>
+    </Container>
+  )
 }
+
+Settings.propTypes = {
+  User: PropTypes.object.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
+  UpdateUser: PropTypes.func.isRequired,
+  GetUserSettings: PropTypes.func.isRequired,
+  PostSettings: PropTypes.func.isRequired,
+  SetSettings: PropTypes.func.isRequired
+}
+
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(Settings)

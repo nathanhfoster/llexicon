@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import Editor from "../../components/Editor"
@@ -14,7 +14,6 @@ import {
   Button
 } from "reactstrap"
 import ReactDatePicker from "../../components/ReactDatePicker"
-import "react-datepicker/dist/react-datepicker.css"
 import { SetCalendar } from "../../actions/Calendar"
 import { PostReduxEntry, SyncEntries } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
@@ -22,7 +21,6 @@ import { DEFAULT_STATE_TEXT_EDITOR } from "../../store/Reducers/TextEditor"
 import "./styles.css"
 
 const mapStateToProps = ({
-  User,
   Calendar: { activeDate },
   TextEditor,
   Window: {
@@ -31,7 +29,7 @@ const mapStateToProps = ({
   },
   Entries: { items }
 }) => ({
-  entry: { ...TextEditor },
+  entry: TextEditor,
   activeDate,
   innerHeight,
   viewPortHeight: availHeight,
@@ -46,66 +44,32 @@ const mapDispatchToProps = {
   ClearEditorState
 }
 
-class NewEntry extends PureComponent {
-  constructor(props) {
-    super(props)
+const NewEntry = ({
+  entry,
+  activeDate,
+  innerHeight,
+  viewPortHeight,
+  footerHeight,
+  PostReduxEntry,
+  SyncEntries,
+  ClearEditorState,
+  entriesLength
+}) => {
+  const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
-    this.state = {}
-  }
+  const postDisabled = editorStateHtmlIsBlank && !entry.title
 
-  static propTypes = {
-    entry: PropTypes.object.isRequired,
-    SetCalendar: PropTypes.func.isRequired,
-    SetEditorState: PropTypes.func.isRequired,
-    ClearEditorState: PropTypes.func.isRequired,
-    PostReduxEntry: PropTypes.func.isRequired,
-    SyncEntries: PropTypes.func.isRequired,
-    entriesLength: PropTypes.number.isRequired
-  }
-
-  static defaultProps = {}
-
-  static getDerivedStateFromProps(nextProps, prevState) {
+  const handlePostEntry = async () => {
     const {
-      entry,
-      activeDate,
-      innerHeight,
-      viewPortHeight,
-      footerHeight
-    } = nextProps
-
-    const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
-
-    const postDisabled = editorStateHtmlIsBlank && !entry.title
-
-    return {
-      entry,
-      activeDate,
-      postDisabled
-    }
-  }
-
-  handlePostEntry = async () => {
-    const {
-      PostReduxEntry,
-      SyncEntries,
-      ClearEditorState,
-      entriesLength
-    } = this.props
-
-    const {
-      entry: {
-        html,
-        title,
-        tags,
-        rating,
-        address,
-        latitude,
-        longitude,
-        EntryFiles
-      },
-      activeDate
-    } = this.state
+      html,
+      title,
+      tags,
+      rating,
+      address,
+      latitude,
+      longitude,
+      EntryFiles
+    } = entry
 
     const payload = {
       id: `NewEntry-${entriesLength}`,
@@ -126,78 +90,72 @@ class NewEntry extends PureComponent {
     ClearEditorState()
   }
 
-  handleInputChange = e => {
-    const { SetEditorState } = this.props
-    const { id, value } = e.target
+  const handleInputChange = ({ target: { id, value } }) =>
     SetEditorState({ [id]: value })
-  }
 
-  handleTextEditorChange = payload => {
-    const { SetEditorState } = this.props
+  const handleTextEditorChange = ({ ...payload }) =>
     SetEditorState({ ...payload })
-  }
 
-  handleChangeDateCreatedByAuthor = activeDate =>
-    this.props.SetCalendar({ activeDate })
+  const handleChangeDateCreatedByAuthor = activeDate =>
+    SetCalendar({ activeDate })
 
-  render() {
-    const { entry, editorHeight, activeDate, postDisabled } = this.state
-
-    return (
-      <Container className="NewEntry Container">
-        <Row>
-          <Col xs={12} className="p-0">
-            <InputGroup
-              tag={Form}
-              className="EntryInput"
-              onSubmit={this.handlePostEntry}
-              method="post"
-            >
-              <Input
-                type="text"
-                name="title"
-                id="title"
-                placeholder="Entry title..."
-                value={entry.title}
-                onChange={this.handleInputChange}
-              />
-              <InputGroupAddon addonType="append">
-                <InputGroupText color="primary" className="p-0">
-                  <ReactDatePicker
-                    selected={activeDate}
-                    onChange={this.handleChangeDateCreatedByAuthor}
-                  />
-                </InputGroupText>
-              </InputGroupAddon>
-              <InputGroupAddon
-                addonType="append"
-                onClick={this.handlePostEntry}
-              >
-                <InputGroupText
-                  tag={Button}
-                  color="primary"
-                  style={{ color: "white" }}
-                  disabled={postDisabled}
-                  type="submit"
-                >
-                  <i className="fas fa-save" style={{ fontSize: 20 }} />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </Col>
-        </Row>
-        <Row className="EditorContainer">
-          <Col xs={12} className="p-0">
-            <Editor
-              entry={entry}
-              onChangeCallback={({ ...payload }) =>
-                this.handleTextEditorChange(payload)
-              }
+  return (
+    <Container className="NewEntry Container">
+      <Row>
+        <Col xs={12} className="p-0">
+          <InputGroup
+            tag={Form}
+            className="EntryInput"
+            onSubmit={handlePostEntry}
+            method="post"
+          >
+            <Input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Entry title..."
+              value={entry.title}
+              onChange={handleInputChange}
             />
-          </Col>
-        </Row>
-      </Container>
-    )
-  }
+            <InputGroupAddon addonType="append">
+              <InputGroupText color="primary" className="p-0">
+                <ReactDatePicker
+                  selected={activeDate}
+                  onChange={handleChangeDateCreatedByAuthor}
+                />
+              </InputGroupText>
+            </InputGroupAddon>
+            <InputGroupAddon addonType="append" onClick={handlePostEntry}>
+              <InputGroupText
+                tag={Button}
+                color="primary"
+                style={{ color: "white" }}
+                disabled={postDisabled}
+                type="submit"
+              >
+                <i className="fas fa-save" style={{ fontSize: 20 }} />
+              </InputGroupText>
+            </InputGroupAddon>
+          </InputGroup>
+        </Col>
+      </Row>
+      <Row className="EditorContainer">
+        <Col xs={12} className="p-0">
+          <Editor entry={entry} onChangeCallback={handleTextEditorChange} />
+        </Col>
+      </Row>
+    </Container>
+  )
 }
+
+NewEntry.propTypes = {
+  entry: PropTypes.object.isRequired,
+  SetCalendar: PropTypes.func.isRequired,
+  SetEditorState: PropTypes.func.isRequired,
+  ClearEditorState: PropTypes.func.isRequired,
+  PostReduxEntry: PropTypes.func.isRequired,
+  SyncEntries: PropTypes.func.isRequired,
+  entriesLength: PropTypes.number.isRequired
+}
+
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(NewEntry)

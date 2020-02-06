@@ -5,7 +5,9 @@ const UseDebounce = ({ value, delay, onChangeCallback }) => {
   useEffect(() => {
     const debounce = setTimeout(() => onChangeCallback(value), delay)
 
-    return () => clearTimeout(debounce)
+    return () => {
+      clearTimeout(debounce)
+    }
   }, [value])
 
   return null

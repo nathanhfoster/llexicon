@@ -118,7 +118,11 @@ const MediaButtonModal = ({
   )
 }
 
-MediaButtonModal.defaultProps = { editorRef: PropTypes.object.isRequired }
+MediaButtonModal.propTypes = {
+  editorRef: PropTypes.object.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired
+}
 
 export default reduxConnect(
   mapStateToProps,

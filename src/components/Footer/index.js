@@ -11,13 +11,7 @@ const mapStateToProps = ({ User }) => ({
   shouldRenderSettingsLink: User.token ? true : false
 })
 
-const Footer = ({
-  isOpen,
-  shouldRenderSettingsLink,
-  history,
-  match,
-  location
-}) => (
+const Footer = ({ isOpen, shouldRenderSettingsLink }) => (
   <Collapse
     className="MainFooter"
     isOpen={isOpen}
@@ -47,9 +41,4 @@ Footer.propTypes = {
   shouldRenderSettingsLink: PropTypes.bool.isRequired
 }
 
-const isEqual = (prevProps, nextProps) => {
-  console.log(prevProps)
-  return true
-}
-
-export default reduxConnect(mapStateToProps)(Footer, isEqual)
+export default reduxConnect(mapStateToProps)(Footer)

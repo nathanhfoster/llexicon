@@ -1,15 +1,9 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
 import MomentJs from "moment"
-import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
-
-const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
-  items,
-  filteredItems
-})
+import deepEquals from "../../helpers/deepEquals"
 
 const EntryStatistics = ({ items, filteredItems }) => {
   let sumRating = 0
@@ -171,4 +165,14 @@ const EntryStatistics = ({ items, filteredItems }) => {
   )
 }
 
-export default reduxConnect(mapStateToProps)(EntryStatistics)
+EntryStatistics.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired
+}
+
+const isEqual = (prevProps, nextProps) => {
+  console.log(prevProps)
+  return deepEquals(prevProps, nextProps)
+}
+
+export default memo(EntryStatistics, isEqual)

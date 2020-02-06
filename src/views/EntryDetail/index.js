@@ -1,78 +1,72 @@
-import React, { PureComponent } from "react"
+import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import Entry from "../../components/Entry"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { GetUserEntryDetails, SyncEntries } from "../../actions/Entries"
-import { RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
 import PageNotFound from "../PageNotFound"
 import "./styles.css"
 
-const mapStateToProps = (
-  {
-    User,
-    Entries: { items, filteredItems },
-    Window: {
-      isMobile,
-      screen: { availHeight }
-    }
-  },
-  {
-    match: {
-      params: { entryId }
-    }
+const mapStateToProps = ({
+  User,
+  Entries: { items, filteredItems },
+  Window: {
+    isMobile,
+    screen: { availHeight }
   }
-) => ({
+}) => ({
   UserId: User.id,
-  entry: items
-    .concat(filteredItems)
-    .filter(item => !item.shouldDelete)
-    .find(entry => entry.id == entryId),
-  entryId,
+  items,
+  filteredItems,
   entryContainerHeight: availHeight - (isMobile ? 46 : 68) - 48
 })
 
 const mapDispatchToProps = { GetUserEntryDetails, SyncEntries }
 
-class EntryDetail extends PureComponent {
-  constructor(props) {
-    super(props)
+const EntryDetail = ({
+  items,
+  filteredItems,
+  entryContainerHeight,
+  SyncEntries,
+  GetUserEntryDetails
+}) => {
+  const { entryId } = useParams()
+  const entry = useMemo(
+    () => items.concat(filteredItems).find(entry => entry.id == entryId),
+    [entryId]
+  )
 
-    this.state = {}
-  }
-
-  static propTypes = {
-    UserId: PropTypes.number,
-    GetUserEntryDetails: PropTypes.func.isRequired,
-    SyncEntries: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {}
-
-  componentDidMount() {
-    const { entryId, SyncEntries, GetUserEntryDetails } = this.props
-    SyncEntries(() => new Promise(resolve => resolve(GetUserEntryDetails(entryId))))
-  }
-
-  render() {
-    const { entry, entryContainerHeight } = this.props
-    return entry ? (
-      <Container className="Container">
-        <Row>
-          <Col xs={12} className="EntryDetail p-0">
-            <Entry
-              entry={entry}
-              // containerHeight={entryContainerHeight}
-              shouldRedirectOnDelete
-              topToolbarHidden={false}
-            />
-          </Col>
-        </Row>
-      </Container>
-    ) : (
-      <PageNotFound title={"Entry Not Found"} />
+  useEffect(() => {
+    SyncEntries(
+      () => new Promise(resolve => resolve(GetUserEntryDetails(entryId)))
     )
-  }
+  }, [])
+
+  return entry ? (
+    <Container className="Container">
+      <Row>
+        <Col xs={12} className="EntryDetail p-0">
+          <Entry
+            entry={entry}
+            // containerHeight={entryContainerHeight}
+            shouldRedirectOnDelete
+            topToolbarHidden={false}
+          />
+        </Col>
+      </Row>
+    </Container>
+  ) : (
+    <PageNotFound title={"Entry Not Found"} />
+  )
 }
-export default withRouter(reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail))
+
+EntryDetail.propTypes = {
+  UserId: PropTypes.number,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
+  GetUserEntryDetails: PropTypes.func.isRequired,
+  SyncEntries: PropTypes.func.isRequired
+}
+
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)

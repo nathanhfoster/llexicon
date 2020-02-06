@@ -1,20 +1,15 @@
-import React, { Component, Fragment } from "react"
+import React, { Fragment, useCallback, memo } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
-import { withRouter } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { useHistory } from "react-router-dom"
 import { RouterGoBack } from "../../ReactRouter/Routes"
 import Editor from "../../components/Editor"
 import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
-import deepEquals from "../../helpers/deepEquals"
 import UseDebounce from "../UseDebounce"
 import "./styles.css"
-
-const mapStateToProps = ({}) => ({})
-
-const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 
 const Entry = ({
   entry,
@@ -22,11 +17,11 @@ const Entry = ({
   topToolbarHidden,
   bottomToolbarHidden,
   shouldRedirectOnDelete,
-  UpdateReduxEntry,
-  SyncEntries,
-  history,
   theme
 }) => {
+  console.log("RENDER")
+  const history = useHistory()
+  const dispatch = useDispatch()
   const inputHeight = 48
   const numberOfInputs = 1
   const inputOffset = inputHeight * numberOfInputs
@@ -37,11 +32,40 @@ const Entry = ({
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 
   const handleDateChange = date_created_by_author =>
-    UpdateReduxEntry({
-      id: entry.id,
-      date_created_by_author,
-      lastUpdated: date_created_by_author
-    })
+    dispatch(
+      UpdateReduxEntry({
+        id: entry.id,
+        date_created_by_author,
+        lastUpdated: date_created_by_author
+      })
+    )
+
+  const handleDebounce = useCallback(() => dispatch(SyncEntries()), [entry])
+
+  const handleEditorChange = useCallback(
+    ({ ...payload }) =>
+      dispatch(UpdateReduxEntry({ id: entry.id, ...payload })),
+    [entry]
+  )
+
+  const handleTitleChange = useCallback(
+    ({ target: { value } }) =>
+      dispatch(UpdateReduxEntry({ id: entry.id, title: value })),
+    [entry]
+  )
+
+  const handleDelete = () => {
+    shouldRedirectOnDelete && RouterGoBack(history)
+    setTimeout(async () => {
+      await dispatch(
+        UpdateReduxEntry({
+          id: entry.id,
+          shouldDelete: true
+        })
+      )
+      dispatch(SyncEntries())
+    }, 200)
+  }
 
   return (
     <Fragment>
@@ -51,11 +75,9 @@ const Entry = ({
         bottomToolbarHidden={bottomToolbarHidden}
         entry={entry}
         theme={theme}
-        onChangeCallback={({ ...payload }) =>
-          UpdateReduxEntry({ id: entry.id, ...payload })
-        }
+        onChangeCallback={handleEditorChange}
       >
-        <UseDebounce onChangeCallback={SyncEntries} value={entry} />
+        <UseDebounce onChangeCallback={handleDebounce} value={entry} />
         <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
           <Input
             type="text"
@@ -63,10 +85,7 @@ const Entry = ({
             id="title"
             placeholder="Entry title..."
             value={entry.title}
-            onChange={e => {
-              const title = e.target.value
-              UpdateReduxEntry({ id: entry.id, title })
-            }}
+            onChange={handleTitleChange}
           />
           <InputGroupAddon addonType="append">
             <InputGroupText className="p-0">
@@ -83,16 +102,7 @@ const Entry = ({
             >
               <ConfirmAction
                 buttonClassName="EntryInputDelete"
-                onClickCallback={() => {
-                  shouldRedirectOnDelete && RouterGoBack(history)
-                  setTimeout(async () => {
-                    await UpdateReduxEntry({
-                      id: entry.id,
-                      shouldDelete: true
-                    })
-                    SyncEntries()
-                  }, 200)
-                }}
+                onClickCallback={handleDelete}
                 icon={
                   <i
                     className="fas fa-trash"
@@ -125,6 +135,4 @@ Entry.defaultProps = {
   theme: "snow"
 }
 
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(Entry)
-)
+export default memo(Entry)

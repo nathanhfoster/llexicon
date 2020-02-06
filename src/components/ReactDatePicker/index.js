@@ -1,6 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 import "./styles.css"
 
 const popperPlacementPositions = {
@@ -214,4 +215,5 @@ ReactDatePicker.defaultProps = {
   timeIntervals: 1,
   timeCaption: "time"
 }
+
 export default memo(ReactDatePicker)
