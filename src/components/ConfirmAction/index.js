@@ -19,8 +19,6 @@ const ConfirmAction = ({
     }
   }, [])
 
-  const handleConfirm = () => onClickCallback()
-
   const toggleShow = () => setShow(!show)
 
   return (
@@ -38,7 +36,7 @@ const ConfirmAction = ({
       title={title}
       footer={
         <Fragment>
-          <Button color="danger" onClick={handleConfirm}>
+          <Button color="danger" onClick={onClickCallback}>
             Confirm
           </Button>{" "}
           <Button color="primary" onClick={toggleShow}>

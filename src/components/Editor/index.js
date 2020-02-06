@@ -232,7 +232,10 @@ class Editor extends Component {
         })
       ).isRequired,
       rating: PropTypes.number.isRequired,
-      _lastUpdated: PropTypes.string,
+      _lastUpdated: PropTypes.oneOfType(
+        PropTypes.string,
+        PropTypes.instanceOf(Date)
+      ),
       EntryFiles: PropTypes.arrayOf(
         PropTypes.shape({
           entry_id: PropTypes.number.isRequired,
