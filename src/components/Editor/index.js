@@ -208,7 +208,6 @@ class Editor extends Component {
 
     this.state = {
       quillId: toolbarId.toString(),
-
       theme
     }
   }

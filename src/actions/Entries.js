@@ -18,8 +18,7 @@ const {
   ENTRY_IMPORT,
   ENTRY_SET,
   ENTRY_POST,
-  ENTRY_UPDATE,
-  ENTRY_UPDATE_IMAGE
+  ENTRY_UPDATE
 } = ReduxActions
 
 const GetUserEntryTags = () => (dispatch, getState) => {
@@ -105,12 +104,6 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
       }
       // console.log("updateEntryPayload: ", updateEntryPayload)
       dispatch(UpdateEntry(entry_id, updateEntryPayload))
-      // dispatch({
-      //   type: ENTRY_UPDATE_IMAGE,
-      //   id: entry_id,
-      //   replaceKey: base64,
-      //   payload: data.url
-      // })
       return data
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
@@ -245,7 +238,7 @@ const UpdateEntry = (id, payload) => dispatch =>
         type: ENTRY_UPDATE,
         id,
         payload: data,
-        _lastUpdated: false
+        _lastUpdated: null
       })
       return data
     })
@@ -283,6 +276,7 @@ const SearchUserEntries = search => async (dispatch, getState) => {
 }
 
 const SyncEntries = getEntryMethod => (dispatch, getState) => {
+  console.log("SYNC")
   const {
     User,
     Entries: { items, filteredItems }

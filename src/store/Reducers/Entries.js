@@ -10,7 +10,6 @@ const {
   ENTRY_SET,
   ENTRY_POST,
   ENTRY_UPDATE,
-  ENTRY_UPDATE_IMAGE,
   ENTRY_DELETE,
   REDUX_RESET,
   ENTRIES_SEARCH_FILTER
@@ -29,7 +28,7 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const { id, replaceKey, type, payload, search } = action
+  const { id, replaceKey, type, payload, search, _lastUpdated } = action
   switch (type) {
     case ENTRIES_SET_TAGS:
       return { ...state, EntryTags: payload }
@@ -106,28 +105,11 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           item.id === id
             ? {
                 ...item,
-                ...payload
+                ...payload,
+                _lastUpdated
               }
             : item
         )
-      }
-
-    case ENTRY_UPDATE_IMAGE:
-      return {
-        ...state,
-        items: state.items.map(item => {
-          const { html } = item
-          const hasImage = html.includes(replaceKey)
-
-          if (hasImage) {
-            return {
-              ...item,
-              html: html.replace(replaceKey, payload),
-              _shouldPost: false,
-              _lastUpdated: new Date()
-            }
-          } else return item
-        })
       }
 
     case ENTRY_DELETE:
