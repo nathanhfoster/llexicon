@@ -1,114 +1,91 @@
-import React, { PureComponent } from "react"
+import React, { useRef, useEffect } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import BasicMap from "../../../../BasicMap"
-import { WatchUserLocation, SetUserLocation } from "../../../../../actions/User"
+import { WatchUserLocation } from "../../../../../actions/User"
 import { GetAddress } from "../../../../../actions/Google"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { location } }) => ({ UserLocation: location })
 
-const mapDispatchToProps = { WatchUserLocation, SetUserLocation }
+const mapDispatchToProps = { WatchUserLocation }
 
-class LocationButtonModal extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.watchId = null
+const LocationButtonModal = ({
+  entry,
+  UserLocation,
+  xs,
+  onChangeCallback,
+  WatchUserLocation
+}) => {
+  let watchId = useRef(null)
 
-    const { entry, UserLocation } = props
-    this.state = { entry, UserLocation }
-  }
-
-  static propTypes = {
-    entry: PropTypes.object.isRequired,
-    onChangeCallback: PropTypes.func.isRequired,
-    WatchUserLocation: PropTypes.func.isRequired,
-    SetUserLocation: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    center: {
-      lat: 59.95,
-      lng: 30.33
-    },
-    zoom: 11
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let { entry, UserLocation } = nextProps
-
-    if (!(entry.latitude || entry.longitude)) {
-      entry.latitude = UserLocation.latitude
-      entry.longitude = UserLocation.longitude
+  useEffect(() => {
+    return () => {
+      handleCancel()
     }
+  }, [])
 
-    return { entry, UserLocation }
+  if (!(entry.latitude || entry.longitude)) {
+    entry.latitude = UserLocation.latitude
+    entry.longitude = UserLocation.longitude
   }
 
-  componentWillUnmount() {
-    this.handleCancel()
-  }
-
-  handleClick = () => {
-    const { WatchUserLocation } = this.props
-
-    if (!this.watchId) {
-      this.watchId = WatchUserLocation()
+  const handleClick = () => {
+    if (!watchId.current) {
+      watchId.current = WatchUserLocation()
     }
   }
 
-  handleSave = () => {
-    const { onChangeCallback } = this.props
-    const {
-      entry: { address, latitude, longitude }
-    } = this.state
-
+  const handleSave = () => {
+    const { address, latitude, longitude } = entry
     if (!address && latitude && longitude) {
       GetAddress(latitude, longitude)
         .then(address => onChangeCallback({ latitude, longitude, address }))
         .catch(e => onChangeCallback({ latitude, longitude }))
     }
-    this.handleCancel()
+    handleCancel()
   }
 
-  handleCancel = () => {
-    const { WatchUserLocation, SetUserLocation } = this.props
-
-    if (this.watchId) {
-      this.watchId = WatchUserLocation(this.watchId)
+  const handleCancel = () => {
+    if (watchId.current) {
+      watchId.current = WatchUserLocation(watchId.current)
     }
   }
 
-  render() {
-    const { xs, center, zoom, onChangeCallback } = this.props
-    const { entry, UserLocation } = this.state
-
-    return (
-      <ToolbarModal
-        className="p-0"
-        title="Add Location"
-        onClickCallback={this.handleClick}
-        onCancelCallback={this.handleCancel}
-        onSaveCallback={this.handleSave}
-        ButtonIcon="fas fa-map-marker-alt"
-        buttonTitle="Add Location"
-        xs={xs}
-        saveDisabled={!UserLocation.latitude || !UserLocation.longitude}
-      >
-        <Container fluid className="LocationButtonModal p-0">
-          <BasicMap
-            renderUserLocation
-            entry={entry}
-            getAddressOnMarkerClick
-            onChangeCallback={onChangeCallback}
-          />
-        </Container>
-      </ToolbarModal>
-    )
-  }
+  return (
+    <ToolbarModal
+      className="p-0"
+      title="Add Location"
+      onClickCallback={handleClick}
+      onCancelCallback={handleCancel}
+      onSaveCallback={handleSave}
+      ButtonIcon="fas fa-map-marker-alt"
+      buttonTitle="Add Location"
+      xs={xs}
+      saveDisabled={!UserLocation.latitude || !UserLocation.longitude}
+    >
+      <Container fluid className="LocationButtonModal p-0">
+        <BasicMap
+          renderUserLocation
+          entry={entry}
+          getAddressOnMarkerClick
+          onChangeCallback={onChangeCallback}
+        />
+      </Container>
+    </ToolbarModal>
+  )
 }
+
+LocationButtonModal.propTypes = {
+  UserLocation: PropTypes.object,
+  xs: PropTypes.number,
+  entry: PropTypes.object.isRequired,
+  onChangeCallback: PropTypes.func.isRequired,
+  WatchUserLocation: PropTypes.func.isRequired
+}
+
 export default reduxConnect(
   mapStateToProps,
   mapDispatchToProps
