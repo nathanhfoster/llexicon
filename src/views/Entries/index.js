@@ -64,7 +64,6 @@ const Entries = ({
   GetAllUserEntries,
   SetEditorState
 }) => {
-  console.log("Entries")
   const history = useHistory()
   const { pathname } = useLocation()
 
