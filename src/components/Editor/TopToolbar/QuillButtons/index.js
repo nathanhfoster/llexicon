@@ -1,11 +1,12 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import Group from "../Group"
 
 import "./styles.css"
 
 const renderButtonGroup = (key, buttons) => (
-  <Group key={key}>{renderButtons(buttons)}</Group>
+  <span key={key} className="ql-formats">
+    {renderButtons(buttons)}
+  </span>
 )
 
 const renderButtons = buttons =>
