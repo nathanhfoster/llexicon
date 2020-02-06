@@ -3,6 +3,40 @@ import PropTypes from "prop-types"
 import { FixedSizeList } from "react-window"
 import "./styles.css"
 
+const renderList = (
+  listItemHoverable,
+  listItemStyles,
+  onListItemClickCallback,
+  itemSize
+) => ({ data, index, style, isScrolling }) => {
+  const { id, value, otherValue } = data[index]
+
+  const onListItemClick = useCallback(() => {
+    if (onListItemClickCallback) {
+      onListItemClickCallback(id, value)
+    }
+  }, [id, value])
+
+  return typeof value === "object" ? (
+    value
+  ) : (
+    <div
+      key={id}
+      className={`basicListItem ${listItemHoverable &&
+        "basicListItemHoverable"}`}
+      style={{ ...style, padding: itemSize / 4, ...listItemStyles }}
+      id={id}
+      value={value}
+      onClick={onListItemClick}
+    >
+      <span className="basicListItemValue FirstValue">{value}</span>
+      {otherValue && (
+        <span className="basicListItemValue OtherValue">{otherValue}</span>
+      )}
+    </div>
+  )
+}
+
 const BasicList = ({
   itemSize,
   listPosition,
@@ -19,35 +53,6 @@ const BasicList = ({
   const listRef = useRef()
 
   const styles = { position: listPosition, ...containerStyles }
-
-  const renderList = ({ data, index, style, isScrolling }) => {
-    const { id, value, otherValue } = data[index]
-
-    const onListItemClick = useCallback(() => {
-      if (onListItemClickCallback) {
-        onListItemClickCallback(id, value)
-      }
-    }, [id, value])
-
-    return typeof value === "object" ? (
-      value
-    ) : (
-      <div
-        key={id}
-        className={`basicListItem ${listItemHoverable &&
-          "basicListItemHoverable"}`}
-        style={{ ...style, padding: itemSize / 4, ...listItemStyles }}
-        id={id}
-        value={value}
-        onClick={onListItemClick}
-      >
-        <span className="basicListItemValue FirstValue">{value}</span>
-        {otherValue && (
-          <span className="basicListItemValue OtherValue">{otherValue}</span>
-        )}
-      </div>
-    )
-  }
 
   const handleItemsRendered = ({
     overscanStartIndex,
@@ -80,7 +85,12 @@ const BasicList = ({
       itemSize={itemSize}
       onItemsRendered={handleItemsRendered}
     >
-      {renderList}
+      {renderList(
+        listItemHoverable,
+        listItemStyles,
+        onListItemClickCallback,
+        itemSize
+      )}
     </FixedSizeList>
   )
 }
