@@ -250,7 +250,6 @@ DrawingManager.propTypes = {
   toggleDrawingMode: PropTypes.func.isRequired,
   shouldRenderPolygons: PropTypes.bool.isRequired,
   mapApi: PropTypes.object.isRequired,
-  setMapCenterBoundsZoom: PropTypes.func.isRequired
 }
 
 DrawingManager.defaultProps = {

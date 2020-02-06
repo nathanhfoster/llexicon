@@ -65,8 +65,6 @@ Marker.propTypes = {
   parcelNumbers: PropTypes.array,
   siteType: PropTypes.string,
   inGroup: PropTypes.bool,
-  selectSite: PropTypes.func.isRequired,
-  setMapCenterBoundsZoom: PropTypes.func.isRequired
 }
 
 Marker.defaultProps = { inGroup: false, zIndex: 1 }
