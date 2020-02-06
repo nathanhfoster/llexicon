@@ -29,15 +29,7 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const {
-    id,
-    replaceKey,
-    shouldDelete,
-    lastUpdated,
-    type,
-    payload,
-    search
-  } = action
+  const { id, replaceKey, type, payload, search } = action
   switch (type) {
     case ENTRIES_SET_TAGS:
       return { ...state, EntryTags: payload }
@@ -114,9 +106,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           item.id === id
             ? {
                 ...item,
-                ...payload,
-                lastUpdated,
-                shouldDelete
+                ...payload
               }
             : item
         )
@@ -133,8 +123,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
             return {
               ...item,
               html: html.replace(replaceKey, payload),
-              shouldPost: false,
-              lastUpdated: new Date()
+              _shouldPost: false,
+              _lastUpdated: new Date()
             }
           } else return item
         })

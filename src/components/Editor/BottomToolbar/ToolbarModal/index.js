@@ -34,7 +34,7 @@ ToolbarModal.propTypes = {
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
-  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   buttonTitle: PropTypes.string,
   xs: PropTypes.number,
   className: PropTypes.string,

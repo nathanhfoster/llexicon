@@ -4,6 +4,11 @@ import { connect as reduxConnect } from "react-redux"
 import { SetWindow, SetAppVersion } from "./actions/App"
 import { GetUserSettings } from "./actions/Settings"
 import { SetCalendar } from "./actions/Calendar"
+import {
+  SyncEntries,
+  GetUserEntries,
+  GetUserEntryTags
+} from "./actions/Entries"
 
 const mapStateToProps = ({ User: { id } }) => ({
   UserId: id
@@ -13,7 +18,10 @@ const mapDispatchToProps = {
   SetWindow,
   GetUserSettings,
   SetAppVersion,
-  SetCalendar
+  SetCalendar,
+  SyncEntries,
+  GetUserEntries,
+  GetUserEntryTags
 }
 
 const App = ({
@@ -21,8 +29,33 @@ const App = ({
   UserId,
   SetAppVersion,
   SetWindow,
-  SetCalendar
+  SetCalendar,
+  SyncEntries,
+  GetUserEntries,
+  GetUserEntryTags
 }) => {
+  useEffect(() => {
+    const activeDate = new Date()
+
+    SetCalendar({ activeDate })
+
+    SetAppVersion()
+
+    const handleResize = () => SetWindow(getWindowDimensions())
+
+    window.addEventListener("resize", handleResize)
+
+    handleResize()
+
+    if (UserId) {
+      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
+      GetUserSettings()
+      GetUserEntryTags()
+    }
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   const isOnMobileBrowser = userAgent =>
     /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
 
@@ -159,26 +192,6 @@ const App = ({
     }
   }
 
-  useEffect(() => {
-    const activeDate = new Date()
-
-    SetCalendar({ activeDate })
-
-    SetAppVersion()
-
-    const handleResize = () => SetWindow(getWindowDimensions())
-
-    window.addEventListener("resize", handleResize)
-
-    handleResize()
-
-    if (UserId) {
-      GetUserSettings()
-    }
-
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
   return null
 }
 
@@ -186,7 +199,9 @@ App.propTypes = {
   UserId: PropTypes.number,
   SetWindow: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
-  SetCalendar: PropTypes.func.isRequired
+  SetCalendar: PropTypes.func.isRequired,
+  SyncEntries: PropTypes.func.isRequired,
+  GetUserEntries: PropTypes.func.isRequired
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(App)

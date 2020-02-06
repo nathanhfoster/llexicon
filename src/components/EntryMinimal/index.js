@@ -14,7 +14,7 @@ const EntryMinimal = ({
   title,
   html,
   date_created_by_author,
-  lastUpdated,
+  _lastUpdated,
   EntryFiles = [],
   author,
   date_create,
@@ -49,7 +49,7 @@ const EntryMinimal = ({
         </Col>
         <Col xs={6} className="EntryMinimalTime">
           <i className="fas fa-pencil-alt mr-1" />
-          <Moment format="D MMM YY hh:mma">{lastUpdated || date_updated}</Moment>
+          <Moment format="D MMM YY hh:mma">{_lastUpdated || date_updated}</Moment>
         </Col>
 
         <Col xs={12} className="EntryMinimalDetail mt-1 mb-1">

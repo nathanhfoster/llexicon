@@ -22,7 +22,7 @@ const {
   ENTRY_UPDATE_IMAGE
 } = ReduxActions
 
-const GetEntryTags = () => (dispatch, getState) => {
+const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`tags/${id}/view/`)
@@ -202,7 +202,7 @@ const PostReduxEntry = payload => dispatch => {
   }) */
   dispatch({
     type: ENTRY_SET,
-    payload: { ...payload, shouldPost: true, shouldDelete: false }
+    payload: { ...payload, _shouldPost: true }
   })
 }
 
@@ -229,16 +229,15 @@ const PostEntry = payload => dispatch =>
       dispatch({ type: ENTRIES_ERROR, payload: error })
     })
 
-const UpdateReduxEntry = ({ shouldDelete = false, ...payload }) => ({
+const UpdateReduxEntry = payload => ({
   type: ENTRY_UPDATE,
   id: payload.id,
   payload,
-  shouldDelete,
-  lastUpdated: new Date()
+  _lastUpdated: new Date()
 })
 
-const UpdateEntry = (id, payload) => dispatch => {
-  return Axios()
+const UpdateEntry = (id, payload) => dispatch =>
+  Axios()
     .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
     .then(res => {
       const { data } = res
@@ -246,7 +245,7 @@ const UpdateEntry = (id, payload) => dispatch => {
         type: ENTRY_UPDATE,
         id,
         payload: data,
-        lastUpdated: false
+        _lastUpdated: false
       })
       return data
     })
@@ -254,10 +253,9 @@ const UpdateEntry = (id, payload) => dispatch => {
       const payload = JSON.parse(JSON.stringify(e.response))
       dispatch({ type: ENTRIES_ERROR, payload })
     })
-}
 
-const DeleteEntry = id => dispatch => {
-  return Axios()
+const DeleteEntry = id => dispatch =>
+  Axios()
     .delete(`/entries/${id}/`)
     .then(res => {
       dispatch({ type: ENTRY_DELETE, id })
@@ -269,7 +267,6 @@ const DeleteEntry = id => dispatch => {
       const payload = error.response
       dispatch({ type: ENTRIES_ERROR, payload })
     })
-}
 
 const SearchUserEntries = search => async (dispatch, getState) => {
   const { id } = getState().User
@@ -310,19 +307,19 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       date_created_by_author,
       date_updated,
       views,
-      shouldDelete,
-      shouldPost,
-      lastUpdated,
+      _shouldDelete,
+      _shouldPost,
+      _lastUpdated,
       address,
       latitude,
       longitude
     } = entries[i]
 
-    if (shouldDelete) {
-      if (shouldPost) dispatch({ type: ENTRY_DELETE, id })
+    if (_shouldDelete) {
+      if (_shouldPost) dispatch({ type: ENTRY_DELETE, id })
       else dispatchDeleteEntries.push(DeleteEntry(id))
       continue
-    } else if (shouldPost) {
+    } else if (_shouldPost) {
       const postPayload = {
         id,
         author: UserId,
@@ -353,7 +350,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })
       continue
-    } else if (lastUpdated) {
+    } else if (_lastUpdated) {
       const updateEntryPayload = {
         title,
         date_created_by_author,
@@ -405,7 +402,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 export {
   AddEntryTagAuthor,
   CreateEntryTag,
-  GetEntryTags,
+  GetUserEntryTags,
   GetUserEntry,
   GetUserEntryDetails,
   GetAllUserEntries,

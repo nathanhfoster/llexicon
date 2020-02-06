@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { cloneElement, memo } from "react"
 import PropTypes from "prop-types"
 import { Col, Button } from "reactstrap"
 import "./styles.css"
@@ -8,8 +8,7 @@ const ToolbarButton = ({
   onClickCallback,
   ButtonIcon,
   title,
-  disabled,
-  children
+  disabled
 }) => {
   return (
     <Col
@@ -23,7 +22,10 @@ const ToolbarButton = ({
       {typeof ButtonIcon === "string" ? (
         <i className={ButtonIcon} />
       ) : (
-        <ButtonIcon key={title} />
+        cloneElement(ButtonIcon, {
+          ...ButtonIcon.props,
+          key: title
+        })
       )}
       <div>{title}</div>
     </Col>
@@ -33,7 +35,7 @@ const ToolbarButton = ({
 ToolbarButton.propTypes = {
   xs: PropTypes.number,
   onClickCallback: PropTypes.func,
-  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   title: PropTypes.string,
   disabled: PropTypes.bool
 }

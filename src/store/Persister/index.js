@@ -4,14 +4,14 @@ import { connect as reduxConnect } from "react-redux"
 import { saveReduxState } from "./persist"
 import UseDebounce from "../../components/UseDebounce"
 
-const mapStateToProps = ({ Persister: { lastUpdated } }) => ({ lastUpdated })
+const mapStateToProps = ({ Persister: { _lastUpdated } }) => ({ _lastUpdated })
 
 const mapDispatchToProps = { saveReduxState }
 
 class Persister extends PureComponent {
   static propTypes = {
     saveReduxState: PropTypes.func.isRequired,
-    lastUpdated: PropTypes.oneOfType([
+    _lastUpdated: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.instanceOf(Date)
     ]).isRequired
@@ -25,11 +25,11 @@ class Persister extends PureComponent {
   }
 
   render() {
-    const { saveReduxState, lastUpdated } = this.props
+    const { saveReduxState, _lastUpdated } = this.props
     return (
       <UseDebounce
         onChangeCallback={saveReduxState}
-        value={lastUpdated}
+        value={_lastUpdated}
         delay={1600}
       />
     )

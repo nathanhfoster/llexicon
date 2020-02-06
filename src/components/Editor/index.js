@@ -233,7 +233,7 @@ class Editor extends Component {
         })
       ).isRequired,
       rating: PropTypes.number.isRequired,
-      lastUpdated: PropTypes.string,
+      _lastUpdated: PropTypes.string,
       EntryFiles: PropTypes.arrayOf(
         PropTypes.shape({
           entry_id: PropTypes.number.isRequired,

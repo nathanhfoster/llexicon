@@ -1,179 +1,170 @@
-import React, { Component } from "react"
+import React, { useState, useEffect, memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
-import { GetEntryTags } from "../../../../../actions/Entries"
+import { GetUserEntryTags } from "../../../../../actions/Entries"
 import { removeArrayDuplicates } from "../../../../../helpers"
 import deepEquals from "../../../../../helpers/deepEquals"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { EntryTags } }) => ({ EntryTags })
+const mapStateToProps = ({ User: { id }, Entries: { EntryTags } }) => ({
+  UserId: id,
+  EntryTags
+})
 
-const mapDispatchToProps = { GetEntryTags }
+const mapDispatchToProps = { GetUserEntryTags }
 
-class TagsButtonModal extends Component {
-  constructor(props) {
-    super(props)
+const validatedString = s => {
+  const validatedString = s.replace(/[^A-Z0-9]+/gi, " ")
+  const filteredString = removeArrayDuplicates(validatedString.split(" ")).join(
+    " "
+  )
+  return filteredString
+}
 
-    const { tags } = props
+const getInitialState = tags => ({
+  tagsAsString: tags.map(tag => tag.title).join(" "),
+  typing: false
+})
 
-    this.state = {
-      tagsAsString: tags.map(tag => tag.title).join(" "),
-      typing: false
-    }
+const TagsButtonModal = ({
+  UserId,
+  GetUserEntryTags,
+  EntryTags,
+  tags,
+  xs,
+  onChangeCallback
+}) => {
+  useEffect(() => {
+    if (UserId) GetUserEntryTags()
+  }, [])
+
+  const [state, setState] = useState(getInitialState(tags))
+
+  const { tagsAsString, typing } = state
+
+  const splitTagsAsString = tagsAsString.split(" ")
+  const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
+
+  if (typing && lastTagAsString) {
+    EntryTags = EntryTags.filter(entryTag =>
+      entryTag.title.toUpperCase().includes(lastTagAsString.toUpperCase())
+    )
   }
 
-  static propTypes = {
-    EntryTags: PropTypes.arrayOf(PropTypes.object).isRequired,
-    tags: PropTypes.arrayOf(PropTypes.object).isRequired,
-    GetEntryTags: PropTypes.func.isRequired,
-    onChangeCallback: PropTypes.func.isRequired
-  }
+  const handleTagClick = title => {
+    let nextState = {}
 
-  static defaultProps = {
-    tags: []
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let { EntryTags, tags } = nextProps
-    const { tagsAsString, typing } = prevState
-
-    const splitTagsAsString = tagsAsString.split(" ")
-    const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
-
-    if (typing && lastTagAsString) {
-      EntryTags = EntryTags.filter(entryTag =>
-        entryTag.title.toUpperCase().includes(lastTagAsString.toUpperCase())
-      )
-    }
-
-    return {
-      EntryTags,
-      tags
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !deepEquals(this.state, nextState)
-    return stateChanged
-  }
-
-  componentDidMount() {
-    const { GetEntryTags } = this.props
-    GetEntryTags()
-  }
-
-  renderTags = tags =>
-    tags.map(tag => {
-      const { title } = tag
-      return <Col xs={12}>{title}</Col>
-    })
-
-  handleTagClick = title => {
-    this.setState(currentState => {
-      if (!currentState.tagsAsString) {
-        return {
-          tagsAsString: this.validatedString(
-            currentState.tagsAsString.concat(`${title} `)
-          ),
-          typing: false
-        }
-      } else if (currentState.typing) {
-        let splitTagsAsStrings = currentState.tagsAsString.split(" ")
-        splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${title} `
-        return {
-          tagsAsString: this.validatedString(splitTagsAsStrings.join(" ")),
-          typing: false
-        }
-      } else {
-        return {
-          tagsAsString: this.validatedString(
-            currentState.tagsAsString.concat(` ${title}`)
-          ),
-          typing: false
-        }
+    if (!state.tagsAsString) {
+      nextState = {
+        ...state,
+        tagsAsString: validatedString(state.tagsAsString.concat(`${title} `)),
+        typing: false
       }
-    })
+    } else if (state.typing) {
+      let splitTagsAsStrings = state.tagsAsString.split(" ")
+      splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${title} `
+      nextState = {
+        ...state,
+        tagsAsString: validatedString(splitTagsAsStrings.join(" ")),
+        typing: false
+      }
+    } else {
+      nextState = {
+        ...state,
+        tagsAsString: validatedString(state.tagsAsString.concat(` ${title}`)),
+        typing: false
+      }
+    }
+
+    setState(nextState)
   }
 
-  validatedString = s => {
-    const validatedString = s.replace(/[^A-Z0-9]+/gi, " ")
-    const filteredString = removeArrayDuplicates(
-      validatedString.split(" ")
-    ).join(" ")
-
-    return filteredString
-  }
-
-  handleTagsInputChange = e => {
+  const handleTagsInputChange = e => {
     const { value } = e.target
 
     // Replace commas
     const string = value.replace(",", " ")
     // Remove double spaces and periods
-    const validatedString = this.validatedString(string)
+    const validatedTagsAsString = validatedString(string)
 
-    this.setState({ tagsAsString: validatedString, typing: true })
+    setState({ ...state, tagsAsString: validatedTagsAsString, typing: true })
   }
 
-  handleSave = () => {
-    const { onChangeCallback, EntryTags } = this.props
-    const { tagsAsString, tags } = this.state
+  const handleSave = () => {
     const newTags = tagsAsString
       .split(" ")
       .filter(string => string)
       .map(tag => (tag = { title: tag }))
-
     onChangeCallback({ tags: newTags })
   }
 
-  handleCancel = () => {
-    // this.setState({ tagsAsString: "" })
+  const handleCancel = () => {
+    // setState({ ...state, tagsAsString: "" })
   }
 
-  render() {
-    const { xs } = this.props
-    const { EntryTags, tagsAsString } = this.state
-
-    return (
-      <ToolbarModal
-        title="Add Tags"
-        onSaveCallback={this.handleSave}
-        onCancelCallback={this.handleCancel}
-        ButtonIcon="fas fa-tags"
-        buttonTitle="Add Tags"
-        xs={xs}
-      >
-        <Container className="TagsButtonModal Container">
-          <Row>
-            <TagsContainer
-              tags={EntryTags}
-              height={200}
-              flexWrap="wrap"
-              onClickCallback={this.handleTagClick}
-              hoverable
-            />
-          </Row>
-          <Row className="mt-3">
-            <Col
-              tag={Input}
-              onChange={this.handleTagsInputChange}
-              type="text"
-              id="tagTitle"
-              name="tagTitle"
-              value={tagsAsString}
-              placeholder="Family Friends Health Vacation"
-              xs={12}
-            ></Col>
-          </Row>
-        </Container>
-      </ToolbarModal>
-    )
-  }
+  return (
+    <ToolbarModal
+      title="Add Tags"
+      onSaveCallback={handleSave}
+      onCancelCallback={handleCancel}
+      ButtonIcon="fas fa-tags"
+      buttonTitle="Add Tags"
+      xs={xs}
+    >
+      <Container className="TagsButtonModal Container">
+        <Row>
+          <TagsContainer
+            tags={EntryTags}
+            height={200}
+            flexWrap="wrap"
+            onClickCallback={handleTagClick}
+            hoverable
+          />
+        </Row>
+        <Row className="mt-3">
+          <Col
+            tag={Input}
+            onChange={handleTagsInputChange}
+            type="text"
+            id="tagTitle"
+            name="tagTitle"
+            value={tagsAsString}
+            placeholder="Family Friends Health Vacation"
+            xs={12}
+          ></Col>
+        </Row>
+      </Container>
+    </ToolbarModal>
+  )
 }
+
+TagsButtonModal.propTypes = {
+  UserId: PropTypes.number,
+  EntryTags: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.object).isRequired,
+  GetUserEntryTags: PropTypes.func.isRequired,
+  onChangeCallback: PropTypes.func.isRequired
+}
+
+TagsButtonModal.defaultProps = {
+  tags: []
+}
+
+const isEqual = (prevProps, nextProps) => {
+  const memoProps = ["UserId", "EntryTags", "tags", "xs"]
+  for (let i = 0, { length } = memoProps; i < length; i++) {
+    const prop = memoProps[i]
+    if (!deepEquals(prevProps[prop], nextProps[prop])) {
+      return false
+    }
+  }
+  return true
+}
+
 export default reduxConnect(
   mapStateToProps,
   mapDispatchToProps
-)(TagsButtonModal)
+)(memo(TagsButtonModal, isEqual))

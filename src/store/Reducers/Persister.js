@@ -1,7 +1,7 @@
 import { ReduxActions } from "../../constants.js"
 const { REDUX_PERSIST, ENTRY_IMPORT } = ReduxActions
 
-const DEFAULT_STATE_PERSISTER = { lastUpdated: "" }
+const DEFAULT_STATE_PERSISTER = { _lastUpdated: "" }
 
 const Persister = (state = DEFAULT_STATE_PERSISTER, action) => {
   const { type, payload } = action
@@ -13,7 +13,7 @@ const Persister = (state = DEFAULT_STATE_PERSISTER, action) => {
       return state
     // Catch all actions
     default:
-      return { ...state, lastUpdated: new Date() }
+      return { ...state, _lastUpdated: new Date() }
   }
 }
 

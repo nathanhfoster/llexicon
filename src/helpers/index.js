@@ -275,7 +275,7 @@ const splitStrings = value => {
 
 const getMostRecent = (reduxData, newData) => {
   const reduxDataLastUpdated = new Date(
-    reduxData.lastUpdated || reduxData.date_updated
+    reduxData._lastUpdated || reduxData.date_updated
   )
   const newDataLastUpdated = new Date(newData.date_updated)
 
@@ -283,7 +283,8 @@ const getMostRecent = (reduxData, newData) => {
   // console.log(newDataLastUpdated - 0 > reduxDataLastUpdated - 0)
 
   if (newDataLastUpdated > reduxDataLastUpdated) {
-    delete reduxData.lastUpdated
+    // delete reduxData._lastUpdated
+    // delete reduxData._shouldDelete
     return { ...reduxData, ...newData }
   } else {
     return { ...newData, ...reduxData }

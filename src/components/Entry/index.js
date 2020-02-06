@@ -5,10 +5,10 @@ import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { RouterGoBack } from "../../ReactRouter/Routes"
 import Editor from "../../components/Editor"
-import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import UseDebounce from "../UseDebounce"
+import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
 import "./styles.css"
 
 const Entry = ({
@@ -19,7 +19,6 @@ const Entry = ({
   shouldRedirectOnDelete,
   theme
 }) => {
-  console.log("RENDER")
   const history = useHistory()
   const dispatch = useDispatch()
   const inputHeight = 48
@@ -36,7 +35,7 @@ const Entry = ({
       UpdateReduxEntry({
         id: entry.id,
         date_created_by_author,
-        lastUpdated: date_created_by_author
+        _lastUpdated: date_created_by_author
       })
     )
 
@@ -60,7 +59,7 @@ const Entry = ({
       await dispatch(
         UpdateReduxEntry({
           id: entry.id,
-          shouldDelete: true
+          _shouldDelete: true
         })
       )
       dispatch(SyncEntries())
@@ -90,7 +89,7 @@ const Entry = ({
           <InputGroupAddon addonType="append">
             <InputGroupText className="p-0">
               <ReactDatePicker
-                selected={entry.date_created_by_author || entry.lastUpdated}
+                selected={entry.date_created_by_author || entry._lastUpdated}
                 onChange={handleDateChange}
               />
             </InputGroupText>

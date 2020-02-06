@@ -27,7 +27,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
       html,
       date_created,
       date_created_by_author,
-      lastUpdated,
+      _lastUpdated,
       date_updated,
       views,
       rating,
@@ -41,7 +41,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
       validRatedEntries += 1
     }
 
-    let updatedDated = MomentJs(lastUpdated || date_updated)
+    let updatedDated = MomentJs(_lastUpdated || date_updated)
 
     if (previousDate) {
       sumRatingTimeUpdatingEntries += previousDate.diff(
@@ -170,9 +170,6 @@ EntryStatistics.propTypes = {
   filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
-const isEqual = (prevProps, nextProps) => {
-  console.log(prevProps)
-  return deepEquals(prevProps, nextProps)
-}
+const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
 
 export default memo(EntryStatistics, isEqual)

@@ -34,7 +34,7 @@ const ImportEntries = () => {
           html: html.join(""),
           date_created_by_author,
           tags: [],
-          shouldPost: true
+          _shouldPost: true
         }
         dispatch(ImportReduxEntry(payload))
       }

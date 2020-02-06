@@ -83,11 +83,11 @@ class EntryList extends Component {
     const { entriesWithinView, activeDate } = this.props
 
     const entries = entriesWithinView.filter(entry => {
-      const { date_created_by_author, shouldDelete } = entry
+      const { date_created_by_author, _shouldDelete } = entry
       const date = MomentJS(activeDate)
       const startDate = MomentJS(date_created_by_author)
       const sameDayEvent = startDate.isSame(date, "day")
-      return !shouldDelete && sameDayEvent
+      return !_shouldDelete && sameDayEvent
     })
 
     // console.log("EntryList: ")

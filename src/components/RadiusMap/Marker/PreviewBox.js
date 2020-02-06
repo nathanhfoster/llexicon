@@ -58,7 +58,7 @@ const PreviewBox = ({
   lastActivity,
   title,
   date_created_by_author,
-  lastUpdated,
+  _lastUpdated,
   address,
   tags,
   ...rest
@@ -73,7 +73,7 @@ const PreviewBox = ({
     title = "Me"
   }
 
-  date_created_by_author = moment(date_created_by_author || lastUpdated).format(
+  date_created_by_author = moment(date_created_by_author || _lastUpdated).format(
     "MM/DD/YYYY"
   )
 

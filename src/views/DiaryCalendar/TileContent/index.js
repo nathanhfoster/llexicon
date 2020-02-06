@@ -26,12 +26,12 @@ const mapStateToProps = (
       : true
 
   const entries = entriesWithinView.filter(entry => {
-    const { date_created_by_author, shouldDelete } = entry
+    const { date_created_by_author, _shouldDelete } = entry
 
     const entryDate = MomentJS(date_created_by_author)
     const eventFound = entryDate.isSame(calendarDate, "day")
 
-    return !shouldDelete && eventFound
+    return !_shouldDelete && eventFound
   })
 
   return {

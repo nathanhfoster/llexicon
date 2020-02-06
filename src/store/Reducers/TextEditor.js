@@ -11,7 +11,7 @@ const DEFAULT_STATE_TEXT_EDITOR = {
   longitude: null,
   tags: [],
   rating: 0,
-  lastUpdated: "",
+  _lastUpdated: "",
   EntryFiles: []
 }
 
@@ -19,7 +19,7 @@ const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
   const { type, payload } = action
   switch (type) {
     case TEXT_EDITOR_SET:
-      return { ...state, ...payload, lastUpdated: new Date() }
+      return { ...state, ...payload, _lastUpdated: new Date() }
     case TEXT_EDITOR_CLEAR:
       return { ...DEFAULT_STATE_TEXT_EDITOR, clearedOn: new Date() }
     case REDUX_RESET:

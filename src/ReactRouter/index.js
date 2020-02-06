@@ -18,11 +18,6 @@ import { GetUserSettings } from "../actions/Settings"
 import { RouterLinkPush } from "./Routes"
 import { getRandomInt } from "../helpers"
 import deepEquals from "../helpers/deepEquals"
-import {
-  SyncEntries,
-  GetAllUserEntries,
-  GetUserEntries
-} from "../actions/Entries"
 import "./styles.css"
 
 const {
@@ -49,27 +44,15 @@ const mapStateToProps = ({ User, Window: { navBarHeight, footerHeight } }) => ({
   footerHeight
 })
 
-const mapDispatchToProps = { SyncEntries, GetAllUserEntries, GetUserEntries }
-
 const ReactRouter = props => {
   const history = useHistory()
-  const {
-    User,
-    navBarHeight,
-    footerHeight,
-    SyncEntries,
-    GetUserEntries
-  } = props
+  const { User, navBarHeight, footerHeight } = props
 
   const {
     Settings: { show_footer }
   } = User
 
-  useEffect(() => {
-    if (User.id) {
-      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
-    }
-  }, [])
+  useEffect(() => {}, [])
 
   const renderRedirectOrComponent = (shouldRedirect, route, Component) => {
     return shouldRedirect
@@ -106,8 +89,8 @@ const ReactRouter = props => {
 
   const renderRouteItems = useMemo(
     () =>
-      routeItems.map((k, i) => {
-        const { path, component } = k
+      routeItems.map((item, i) => {
+        const { path, component } = item
         return <Route exact key={i} path={path} component={component} />
       }),
     [routeItems]
@@ -147,10 +130,7 @@ const ReactRouter = props => {
 }
 
 ReactRouter.propTypes = {
-  User: PropTypes.objectOf(PropTypes.any),
-  SyncEntries: PropTypes.func.isRequired,
-  GetAllUserEntries: PropTypes.func.isRequired,
-  GetUserEntries: PropTypes.func.isRequired
+  User: PropTypes.objectOf(PropTypes.any)
 }
 
 const isEqual = (prevProps, nextProps) => {
@@ -169,7 +149,4 @@ const isEqual = (prevProps, nextProps) => {
   return true
 }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(memo(ReactRouter, isEqual))
+export default reduxConnect(mapStateToProps)(memo(ReactRouter, isEqual))

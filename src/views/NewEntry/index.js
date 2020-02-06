@@ -23,16 +23,10 @@ import "./styles.css"
 const mapStateToProps = ({
   Calendar: { activeDate },
   TextEditor,
-  Window: {
-    innerHeight,
-    screen: { availHeight }
-  },
   Entries: { items }
 }) => ({
   entry: TextEditor,
   activeDate,
-  innerHeight,
-  viewPortHeight: availHeight,
   entriesLength: items.length
 })
 
@@ -47,13 +41,12 @@ const mapDispatchToProps = {
 const NewEntry = ({
   entry,
   activeDate,
-  innerHeight,
-  viewPortHeight,
-  footerHeight,
+  entriesLength,
+  SetCalendar,
   PostReduxEntry,
   SyncEntries,
-  ClearEditorState,
-  entriesLength
+  SetEditorState,
+  ClearEditorState
 }) => {
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
@@ -82,7 +75,7 @@ const NewEntry = ({
       longitude,
       date_created_by_author: activeDate,
       EntryFiles,
-      shouldPost: true
+      _shouldPost: true
     }
 
     await PostReduxEntry(payload)
