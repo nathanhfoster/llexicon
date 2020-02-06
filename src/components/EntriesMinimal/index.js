@@ -7,7 +7,6 @@ import deepEquals from "../../helpers/deepEquals"
 
 const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
   const entry = data[index]
-
   return (
     <Col key={entry.id} xs={12} style={{ ...style, padding: 4 }}>
       <EntryMinimal {...entry} />

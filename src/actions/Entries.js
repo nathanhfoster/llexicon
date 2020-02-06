@@ -276,7 +276,6 @@ const SearchUserEntries = search => async (dispatch, getState) => {
 }
 
 const SyncEntries = getEntryMethod => (dispatch, getState) => {
-  console.log("SYNC")
   const {
     User,
     Entries: { items, filteredItems }
