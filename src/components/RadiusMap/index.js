@@ -21,7 +21,6 @@ import {
   setMapCenterBoundsZoom,
   fetchParlaySite,
   setMapSites,
-  selectSite,
   resetMap
 } from "../../../actions/MetaActions"
 import {
@@ -75,7 +74,6 @@ const mapDispatchToProps = {
   setMapCenterBoundsZoom,
   fetchParlaySite,
   setMapSites,
-  selectSite,
   resetMap
 }
 
@@ -143,10 +141,8 @@ class RadiusMap extends Component {
     resetProjects: PropTypes.func.isRequired,
     setProjectsSearchProps: PropTypes.func.isRequired,
     fetchProjectIfNeeded: PropTypes.func.isRequired,
-    setMapCenterBoundsZoom: PropTypes.func,
     fetchParlaySite: PropTypes.func.isRequired,
     setMapSites: PropTypes.func.isRequired,
-    selectSite: PropTypes.func.isRequired,
     resetMap: PropTypes.func.isRequired,
 
     // GoogleMap from google-map-react
@@ -471,7 +467,7 @@ class RadiusMap extends Component {
   }
 
   renderMarkerClusters = markerClusters => {
-    const { selectSite, setMapCenterBoundsZoom } = this.props
+    const {  setMapCenterBoundsZoom } = this.props
     const { shouldRenderMarkers, hoveredChildKey, zoom } = this.state
     if (!shouldRenderMarkers) return null
     else
@@ -484,7 +480,6 @@ class RadiusMap extends Component {
               {...props}
               key={id}
               hoveredChildKey={hoveredChildKey}
-              selectSite={selectSite}
               setMapCenterBoundsZoom={setMapCenterBoundsZoom}
               zoom={zoom}
             />
@@ -496,7 +491,6 @@ class RadiusMap extends Component {
               key={id}
               points={points}
               hoveredChildKey={hoveredChildKey}
-              selectSite={selectSite}
               setMapCenterBoundsZoom={setMapCenterBoundsZoom}
               zoom={zoom}
             />

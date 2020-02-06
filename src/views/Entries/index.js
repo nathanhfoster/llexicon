@@ -1,4 +1,4 @@
-import React, { Fragment, lazy, memo } from "react"
+import React, { Fragment, lazy, useCallback, memo } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Row, Button, ButtonGroup } from "reactstrap"
@@ -91,26 +91,29 @@ const Entries = ({
 
   const activeTab = pathname
 
-  const handleItemsRendered = ({
-    overscanStartIndex,
-    overscanStopIndex,
-    visibleStartIndex,
-    visibleStopIndex
-  }) => {
-    const { length } = entries
-    const bottomOfListIndex = length === 0 ? length : length - 1
-    const reachedBottomOfList =
-      bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
+  const handleItemsRendered = useCallback(
+    ({
+      overscanStartIndex,
+      overscanStopIndex,
+      visibleStartIndex,
+      visibleStopIndex
+    }) => {
+      const { length } = entries
+      const bottomOfListIndex = length === 0 ? length : length - 1
+      const reachedBottomOfList =
+        bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
 
-    // console.log("overscanStopIndex: ", overscanStopIndex)
-    // console.log("visibleStopIndex: ", visibleStopIndex)
-    // console.log("reachedBottomOfList: ", reachedBottomOfList)
-    // console.log("---------------------------------------")
+      // console.log("overscanStopIndex: ", overscanStopIndex)
+      // console.log("visibleStopIndex: ", visibleStopIndex)
+      // console.log("reachedBottomOfList: ", reachedBottomOfList)
+      // console.log("---------------------------------------")
 
-    if (reachedBottomOfList) {
-      GetEntries()
-    }
-  }
+      if (reachedBottomOfList) {
+        GetEntries()
+      }
+    },
+    [entries.length]
+  )
 
   const GetEntries = () => {
     if (entriesSearch || !nextEntryPage) {
@@ -417,13 +420,36 @@ const Entries = ({
 }
 
 Entries.propTypes = {
+  history: PropTypes.object,
+  loaction: PropTypes.object,
+  match: PropTypes.object,
+  staticContext: PropTypes.any,
+  entries: PropTypes.arrayOf(PropTypes.object),
+  TextEditor: PropTypes.object,
+  nextEntryPage: PropTypes.string,
+  entriesSearch: PropTypes.string,
   SyncEntries: PropTypes.func.isRequired,
   GetAllUserEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
   SetEditorState: PropTypes.func.isRequired
 }
 
-const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
+const isEqual = (prevProps, nextProps) => {
+  const memoProps = [
+    "entries",
+    "TextEditor",
+    "nextEntryPage",
+    "entriesSearch",
+    "viewPortHeight"
+  ]
+  for (let i = 0, { length } = memoProps; i < length; i++) {
+    const prop = memoProps[i]
+    if (!deepEquals(prevProps[prop], nextProps[prop])) {
+      return false
+    }
+  }
+  return true
+}
 
 export default reduxConnect(
   mapStateToProps,

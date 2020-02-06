@@ -13,9 +13,9 @@ const RatingButtonModal = props => {
   const [state, setState] = useState(getInitialState(props))
   const { rating, savedRating } = state
 
-  const previousPropsRating = useRef(props.rating).current
+  const previousPropsRating = useRef(props.rating)
   const ratingChanged =
-    previousPropsRating !== props.rating && props.ratring !== rating
+    previousPropsRating.current !== props.rating && props.ratring !== rating
 
   useEffect(() => {
     if (ratingChanged) {

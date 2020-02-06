@@ -1,6 +1,5 @@
-import React, { Component } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
-import Group from "./Group"
 import Headers from "./QuillSelect/Headers"
 import Sizes from "./QuillSelect/Sizes"
 import QuillButtons from "./QuillButtons"
@@ -14,75 +13,46 @@ import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR
 
-class TopToolbar extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { ...props }
-  }
+const TopToolbar = ({ toolbarId, editorRef, onChangeCallback }) => {
+  const handleUndo = () => editorRef.current.editor.history.undo()
+  const handleRedo = () => editorRef.current.editor.history.redo()
+  const handleClear = () => onChangeCallback({ html })
 
-  static propTypes = {
-    toolbarId: PropTypes.PropTypes.string.isRequired,
-    editorRef: PropTypes.object,
-    onChangeCallback: PropTypes.func.isRequired
-  }
+  return (
+    <div id={toolbarId}>
+      <span className="ql-formats">
+        <Align />
+        <Fonts />
+        <Headers />
+        <Sizes />
+        <Colors />
+        <Backgrounds />
+      </span>
 
-  static defaultProps = {}
+      <QuillButtons />
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const editorRefChanged = !deepEquals(
-      nextProps.editorRef,
-      prevState.editorRef
-    )
-
-    if (editorRefChanged) {
-      return { editorRef: nextProps.editorRef }
-    } else return null
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const editorRefChanged = !deepEquals(
-      nextProps.editorRef,
-      nextState.editorRef
-    )
-    return editorRefChanged
-  }
-
-  undo = editorRef => editorRef.current.editor.history.undo()
-  redo = editorRef => editorRef.current.editor.history.redo()
-  // clear = editorRef => editorRef.current.editor.history.clear()
-
-  render() {
-    const { toolbarId, editorRef, onChangeCallback } = this.state
-    return (
-      <div id={toolbarId}>
-        <Group>
-          <Align />
-          <Fonts />
-          <Headers />
-          <Sizes />
-          <Colors />
-          <Backgrounds />
-        </Group>
-
-        <QuillButtons />
-
-        <Group>
-          <button className="ql-undo" onClick={() => this.undo(editorRef)}>
-            <i className="fas fa-undo-alt" />
-          </button>
-          <button className="ql-undo" onClick={() => this.redo(editorRef)}>
-            <i className="fas fa-redo-alt" />
-          </button>
-          <button
-            className="ql-clear"
-            onClick={() => onChangeCallback({ html })}
-          >
-            <i className="fas fa-times-circle" />
-          </button>
-        </Group>
-      </div>
-    )
-  }
+      <span className="ql-formats">
+        <button className="ql-undo" onClick={handleUndo}>
+          <i className="fas fa-undo-alt" />
+        </button>
+        <button className="ql-undo" onClick={handleRedo}>
+          <i className="fas fa-redo-alt" />
+        </button>
+        <button className="ql-clear" onClick={handleClear}>
+          <i className="fas fa-times-circle" />
+        </button>
+      </span>
+    </div>
+  )
 }
 
-export default TopToolbar
+TopToolbar.propTypes = {
+  toolbarId: PropTypes.PropTypes.string.isRequired,
+  editorRef: PropTypes.object,
+  onChangeCallback: PropTypes.func.isRequired
+}
+
+const isEqual = (prevProps, nextProps) =>
+  deepEquals(prevProps.editorRef, nextProps.editorRef)
+
+export default memo(TopToolbar, isEqual)

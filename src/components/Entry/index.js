@@ -1,14 +1,15 @@
-import React, { Fragment, useCallback, memo } from "react"
+import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { useDispatch } from "react-redux"
-import { useHistory } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 import { RouterGoBack } from "../../ReactRouter/Routes"
 import Editor from "../../components/Editor"
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import UseDebounce from "../UseDebounce"
 import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const Entry = ({
@@ -17,9 +18,9 @@ const Entry = ({
   topToolbarHidden,
   bottomToolbarHidden,
   shouldRedirectOnDelete,
-  theme
+  theme,
+  history
 }) => {
-  const history = useHistory()
   const dispatch = useDispatch()
   const inputHeight = 48
   const numberOfInputs = 1
@@ -39,19 +40,15 @@ const Entry = ({
       })
     )
 
-  const handleDebounce = useCallback(() => dispatch(SyncEntries()), [entry])
+  const handleDebounce = () => {
+    dispatch(SyncEntries())
+  }
 
-  const handleEditorChange = useCallback(
-    ({ ...payload }) =>
-      dispatch(UpdateReduxEntry({ id: entry.id, ...payload })),
-    [entry]
-  )
+  const handleEditorChange = ({ ...payload }) =>
+    dispatch(UpdateReduxEntry({ id: entry.id, ...payload }))
 
-  const handleTitleChange = useCallback(
-    ({ target: { value } }) =>
-      dispatch(UpdateReduxEntry({ id: entry.id, title: value })),
-    [entry]
-  )
+  const handleTitleChange = ({ target: { value } }) =>
+    dispatch(UpdateReduxEntry({ id: entry.id, title: value }))
 
   const handleDelete = () => {
     shouldRedirectOnDelete && RouterGoBack(history)
@@ -119,12 +116,18 @@ const Entry = ({
 }
 
 Entry.propTypes = {
+  entry: PropTypes.object.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  topToolbarHidden: PropTypes.bool,
   bottomToolbarHidden: PropTypes.bool,
-  UpdateReduxEntry: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
-  entry: PropTypes.object.isRequired
+  theme: PropTypes.string,
+  history: PropTypes.object,
+  location: PropTypes.object,
+  match: PropTypes.object,
+  staticContext: PropTypes.any,
+  topToolbarHidden: PropTypes.bool,
+  shouldRedirectOnDelete: PropTypes.bool,
+  shouldRedirectOnDelete: PropTypes.bool,
+  theme: PropTypes.string
 }
 
 Entry.defaultProps = {
@@ -134,4 +137,15 @@ Entry.defaultProps = {
   theme: "snow"
 }
 
-export default memo(Entry)
+const isEqual = (prevProps, nextProps) => {
+  const memoProps = ["entry", "itemSize", "width"]
+  for (let i = 0, { length } = memoProps; i < length; i++) {
+    const prop = memoProps[i]
+    if (!deepEquals(prevProps[prop], nextProps[prop])) {
+      return false
+    }
+  }
+  return true
+}
+
+export default withRouter(memo(Entry, isEqual))
