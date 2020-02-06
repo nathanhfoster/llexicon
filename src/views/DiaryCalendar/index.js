@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, memo } from "react"
+import React, { lazy, useEffect } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -8,11 +8,7 @@ import MomentJS from "moment"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouteMap } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
-import {
-  SyncEntries,
-  GetUserEntriesByDate
-} from "../../actions/Entries"
-import deepEquals from "../../helpers/deepEquals"
+import { SyncEntries, GetUserEntriesByDate } from "../../actions/Entries"
 import "./styles.css"
 import "./stylesM.css"
 
@@ -37,12 +33,12 @@ const DiaryCalendar = ({
   view,
   SyncEntries,
   SetCalendar,
+  GetUserEntriesByDate,
   history
 }) => {
   useEffect(() => {
-    
     SyncEntries(
-      () => new Promise(resolve => resolve(getUserEntriesByDate(activeDate)))
+      () => new Promise(resolve => resolve(GetUserEntriesByDate(activeDate)))
     )
   }, [])
 
@@ -68,12 +64,7 @@ const DiaryCalendar = ({
 
     SetCalendar({ activeDate, view })
 
-    if (shouldGetUserEntries) getUserEntriesByDate(activeStartDate)
-  }
-
-  const getUserEntriesByDate = date => {
-    // console.log("getUserEntriesByDate: ", date)
-    GetUserEntriesByDate(date)
+    if (shouldGetUserEntries) GetUserEntriesByDate(activeStartDate)
   }
 
   const handleTodayClick = () => {
