@@ -24,7 +24,7 @@ const Axios = (responseType = "json") => {
     token,
     Settings: { offline_mode }
   } = getReduxState().User
-  if (offline_mode) return axios.create({ baseURL: "http://offline" })
+  if (offline_mode) return axios.create({ baseURL: "https://offline_mode" })
   return axios.create({
     withCredentials: token ? true : false,
     baseURL: REACT_APP_API_URL,
