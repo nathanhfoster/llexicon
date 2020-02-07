@@ -12,7 +12,7 @@
 }
 
 .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
-  border-color: var(--light_grey);
+  border-color: var(--accentColor);
   cursor: pointer;
 }
 

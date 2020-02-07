@@ -10,7 +10,8 @@
 }
 
 .form-control:focus {
+  transition: box-shadow 0.3s ease-in-out;
   border-color: inherit !important;
   outline: 0;
-  box-shadow: none;
+  box-shadow: 0 0 0 0.175rem var(--accentColor);
 }

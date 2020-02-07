@@ -1,12 +1,11 @@
-import React, { Component } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import { RouteMap, RouterPush, RouterLinkPush } from "../../ReactRouter/Routes"
+import { Link } from "react-router-dom"
+import { RouteMap } from "../../ReactRouter/Routes"
 import { SearchUserEntries } from "../../actions/Entries"
 import UseDebounce from "../UseDebounce"
-import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
@@ -16,70 +15,60 @@ const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
 
 const mapDispatchToProps = { SearchUserEntries }
 
-class StarSearch extends Component {
-  constructor(props) {
-    super(props)
+const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
+  const previousPropSearch = useRef(search)
+  const isTyping = useRef(false)
+  const [searchValue, setSearch] = useState(search)
 
-    this.state = { search: "" }
+  const shouldDeriveStateFromProps =
+    !isTyping.current &&
+    previousPropSearch.current !== search &&
+    search !== searchValue
+
+  const handleSearch = ({ target: { value } }) => {
+    isTyping.current = true
+    setSearch(value)
   }
 
-  static propTypes = { SearchUserEntries: PropTypes.func.isRequired }
+  useEffect(() => {
+    if (shouldDeriveStateFromProps) {
+      setSearch(search)
+    }
+    return () => {
+      isTyping.current = false
+    }
+  })
 
-  static defaultProps = {}
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let { isMobile, search } = nextProps
-    const currentSearch = prevState.search
-
-    // if (currentSearch) search = currentSearch
-
-    return { isMobile, search: currentSearch }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return stateChanged
-  }
-
-  handleSearch = e => {
-    const { value } = e.target
-    this.setState({ search: value })
-  }
-
-  render() {
-    const { history, SearchUserEntries } = this.props
-
-    const { isMobile, search } = this.state
-
-    return (
-      <InputGroup
-        className="StarSearch"
-        style={{ maxWidth: isMobile ? "calc(100% - 52px)" : 360 }}
+  return (
+    <InputGroup
+      className="StarSearch"
+      style={{ maxWidth: isMobile ? "calc(100% - 52px)" : 360 }}
+    >
+      <InputGroupAddon
+        addonType="prepend"
+        className="TelescopeIconContainer Center"
       >
-        <InputGroupAddon
-          addonType="prepend"
-          className="TelescopeIconContainer Center"
-        >
-          <InputGroupText onClick={e => RouterPush(history, RouteMap.HOME)}>
-            <i className="fab fa-wpexplorer TelescopeIcon" />
-          </InputGroupText>
-        </InputGroupAddon>
+        <InputGroupText tag={Link} to={RouteMap.HOME}>
+          <i className="fab fa-wpexplorer TelescopeIcon" />
+        </InputGroupText>
+      </InputGroupAddon>
 
-        <Input
-          value={search}
-          placeholder="Search the stars..."
-          className="p-0"
-          onChange={this.handleSearch}
-        />
-        <UseDebounce
-          onChangeCallback={SearchUserEntries}
-          value={search}
-        />
-      </InputGroup>
-    )
-  }
+      <Input
+        value={searchValue}
+        placeholder="Search the stars..."
+        className="p-0"
+        onChange={handleSearch}
+        // style={{ outline: "red" }}
+      />
+      <UseDebounce onChangeCallback={SearchUserEntries} value={searchValue} />
+    </InputGroup>
+  )
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(StarSearch)
-)
+
+StarSearch.propTypes = {
+  search: PropTypes.string,
+  isMobile: PropTypes.bool,
+  SearchUserEntries: PropTypes.func.isRequired
+}
+
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(StarSearch)

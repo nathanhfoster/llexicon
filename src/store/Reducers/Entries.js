@@ -1,5 +1,5 @@
 import { ReduxActions } from "../../constants.js"
-import { mergeJson, removeAttributeDuplicates } from "../../helpers"
+import { mergeJson } from "../../helpers"
 const {
   ENTRIES_SET_TAGS,
   ENTRIES_PENDING,
@@ -27,6 +27,31 @@ const DEFAULT_STATE_ENTRIES = {
   EntryTags: []
 }
 
+const handleFilterEntries = (entries, search) => {
+  const searchValue = search.toUpperCase()
+  let cachedFilteredEntries = []
+
+  const filteredEntries = entries.filter(item => {
+    const { title, html, tags, address } = item
+    if (
+      tags.map(tag => tag.title.toUpperCase()).includes(searchValue) ||
+      title.toUpperCase().includes(searchValue) ||
+      html.toUpperCase().includes(searchValue) ||
+      address.toUpperCase().includes(searchValue)
+    ) {
+      return true
+    } else {
+      cachedFilteredEntries.push(item)
+      return false
+    }
+  })
+
+  return {
+    filteredItems: cachedFilteredEntries,
+    items: filteredEntries
+  }
+}
+
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   const { id, replaceKey, type, payload, search, _lastUpdated } = action
   switch (type) {
@@ -34,32 +59,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return { ...state, EntryTags: payload }
 
     case ENTRIES_SEARCH_FILTER:
-      const { filteredItems } = state
-      const searchValue = search.toUpperCase()
-      let cachedFilteredEntries = []
-
-      const filteredEntries = mergeJson(
-        state.items.concat(filteredItems),
-        payload
-      ).filter(item => {
-        const { title, html, tags, address } = item
-        if (
-          tags.map(tag => tag.title.toUpperCase()).includes(searchValue) ||
-          title.toUpperCase().includes(searchValue) ||
-          html.toUpperCase().includes(searchValue) ||
-          address.toUpperCase().includes(searchValue)
-        ) {
-          return true
-        } else {
-          cachedFilteredEntries.push(item)
-          return false
-        }
-      })
-
       return {
         ...state,
-        filteredItems: cachedFilteredEntries,
-        items: filteredEntries,
+        ...handleFilterEntries(
+          mergeJson(state.items.concat(state.filteredItems), payload),
+          search
+        ),
         search
       }
     case ENTRIES_PENDING:
@@ -79,41 +84,68 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         count,
         next,
         previous,
-        items: mergeJson(state.items, results)
+        ...handleFilterEntries(
+          mergeJson(state.items.concat(state.filteredItems), results),
+          state.search
+        )
       }
     case ENTRIES_SET_BY_DATE:
-      return { ...state, items: mergeJson(state.items, payload) }
+      return {
+        ...state,
+        ...handleFilterEntries(
+          mergeJson(state.items.concat(state.filteredItems), payload),
+          state.search
+        )
+      }
     case ENTRY_SET:
       return {
         ...state,
-        items: mergeJson(state.items, [payload])
+        ...handleFilterEntries(
+          mergeJson(state.items.concat(state.filteredItems), [payload]),
+          state.search
+        )
       }
     case ENTRY_POST:
       return {
         ...state,
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
-        items: state.items.map(item => (item.id === id ? payload : item))
-        // [payload].concat(state.items.filter(item => item.id !== id))
+        ...handleFilterEntries(
+          state.items
+            .concat(state.filteredItems)
+            .map(item => (item.id === id ? payload : item)),
+          state.search
+        )
       }
     case ENTRY_UPDATE:
       return {
         ...state,
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
-        items: state.items.map(item =>
-          item.id === id
-            ? {
-                ...item,
-                ...payload,
-                _lastUpdated
-              }
-            : item
+        ...handleFilterEntries(
+          state.items.concat(state.filteredItems).map(item =>
+            item.id === id
+              ? {
+                  ...item,
+                  ...payload,
+                  _lastUpdated
+                }
+              : item
+          ),
+          state.search
         )
       }
 
     case ENTRY_DELETE:
-      return { ...state, items: state.items.filter(item => item.id !== id) }
+      return {
+        ...state,
+        ...handleFilterEntries(
+          state.items
+            .concat(state.filteredItems)
+            .filter(item => item.id !== id),
+          state.search
+        )
+      }
     case REDUX_RESET:
       return DEFAULT_STATE_ENTRIES
     default:
