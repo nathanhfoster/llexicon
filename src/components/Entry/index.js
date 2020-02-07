@@ -40,9 +40,7 @@ const Entry = ({
       })
     )
 
-  const handleDebounce = () => {
-    dispatch(SyncEntries())
-  }
+  const handleDebounce = () => dispatch(SyncEntries())
 
   const handleEditorChange = ({ ...payload }) =>
     dispatch(UpdateReduxEntry({ id: entry.id, ...payload }))
@@ -152,4 +150,4 @@ const isEqual = (prevProps, nextProps) => {
   return true
 }
 
-export default withRouter(memo(Entry, isEqual))
+export default withRouter(memo(Entry))

@@ -34,7 +34,7 @@ const EntryDetail = ({
   const { entryId } = useParams()
   const entry = useMemo(
     () => items.concat(filteredItems).find(entry => entry.id == entryId),
-    [entryId]
+    [entryId, items, filteredItems]
   )
 
   useEffect(() => {

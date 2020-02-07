@@ -11,6 +11,19 @@ import TagsContainer from "../../TagsContainer"
 import EntryFilesCarousel from "../../EntryFilesCarousel"
 import "./styles.css"
 
+const renderButtonColumns = columns =>
+  columns.map((ButtonModal, i) => {
+    const { Component, props } = ButtonModal
+    return <Component key={i} xs={12 / columns.length} {...props} />
+  })
+
+const renderButtonRows = buttons =>
+  buttons.map((columns, i) => (
+    <Row key={i} className="BottomToolButtonRow">
+      {renderButtonColumns(columns)}
+    </Row>
+  ))
+
 const BottomToolbar = ({ entry, editorRef, onChangeCallback, xs }) => {
   const buttons = useMemo(
     () => [
@@ -38,22 +51,6 @@ const BottomToolbar = ({ entry, editorRef, onChangeCallback, xs }) => {
     [entry]
   )
 
-  const renderButtonColumns = columns =>
-    columns.map((ButtonModal, i) => {
-      const { Component, props } = ButtonModal
-      return <Component key={i} xs={12 / columns.length} {...props} />
-    })
-
-  const renderButtonRows = useMemo(
-    () =>
-      buttons.map((columns, i) => (
-        <Row key={i} className="BottomToolButtonRow">
-          {renderButtonColumns(columns)}
-        </Row>
-      )),
-    [buttons]
-  )
-
   return (
     <Container fluid className="BottomToolBar">
       <Row className="BottomToolBarTags">
@@ -69,7 +66,7 @@ const BottomToolbar = ({ entry, editorRef, onChangeCallback, xs }) => {
           />
         </Col>
       </Row>
-      {renderButtonRows}
+      {renderButtonRows(buttons)}
     </Container>
   )
 }

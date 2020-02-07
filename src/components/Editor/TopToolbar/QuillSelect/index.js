@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { capitalizeFirstLetter } from "../../../../helpers"
 import "./styles.css"
@@ -44,4 +44,4 @@ QuillSelect.propTypes = {
   onChange: PropTypes.func
 }
 
-export default QuillSelect
+export default memo(QuillSelect)

@@ -43,8 +43,6 @@ const QuillButtons = ({
     [{ name: "link" }, { name: "image" }, { name: "video" }],
     [{ name: "clean" }]
   ]
-}) => {
-  return renderButtons(buttons)
-}
+}) => renderButtons(buttons)
 
 export default memo(QuillButtons)

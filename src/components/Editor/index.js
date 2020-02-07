@@ -334,6 +334,11 @@ class Editor extends Component {
     onChangeCallback({ html })
   }
 
+  handleBottomToolBarOnChange = ({ ...payload }) => {
+    const { toolbarId, onChangeCallback } = this.props
+    onChangeCallback({ id: toolbarId, ...payload })
+  }
+
   render() {
     const { editorRef } = this
     const {
@@ -382,9 +387,7 @@ class Editor extends Component {
           {!bottomToolbarHidden && (
             <BottomToolbar
               entry={entry}
-              onChangeCallback={({ ...payload }) =>
-                onChangeCallback({ id: this.props.toolbarId, ...payload })
-              }
+              onChangeCallback={this.handleBottomToolBarOnChange}
               id={this.props.toolbarId}
               editorRef={editorRef}
             />
