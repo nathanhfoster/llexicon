@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from "react"
+import React, { lazy, useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -43,13 +43,18 @@ const DiaryCalendar = ({
   }, [])
 
   const calendarDate = MomentJS(activeDate)
-  const entriesWithinView = entries.filter(entry => {
-    const { date_created_by_author, _shouldDelete } = entry
-    const entryDate = MomentJS(date_created_by_author)
-    const entryDateWithinView = entryDate.isSame(calendarDate, view)
 
-    return !_shouldDelete && entryDateWithinView
-  })
+  const entriesWithinView = useMemo(
+    () =>
+      entries.filter(entry => {
+        const { date_created_by_author, _shouldDelete } = entry
+        const entryDate = MomentJS(date_created_by_author)
+        const entryDateWithinView = entryDate.isSame(calendarDate, view)
+
+        return !_shouldDelete && entryDateWithinView
+      }),
+    [entries]
+  )
 
   const handleDateChange = (
     { activeStartDate, view },

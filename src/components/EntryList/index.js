@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { ListGroup, ListGroupItem, Container, Row, Col } from "reactstrap"
 import { withRouter } from "react-router-dom"
@@ -11,28 +11,17 @@ import TagsContainer from "../TagsContainer"
 import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-class EntryList extends Component {
-  static propTypes = {
-    activeDate: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.instanceOf(Date)
-    ]).isRequired,
-    entriesWithinView: PropTypes.arrayOf(PropTypes.object)
-  }
+const EntryList = ({ history, entriesWithinView, activeDate }) => {
+  const entries = entriesWithinView.filter(entry => {
+    const { date_created_by_author, _shouldDelete } = entry
+    const date = MomentJS(activeDate)
+    const startDate = MomentJS(date_created_by_author)
+    const sameDayEvent = startDate.isSame(date, "day")
+    return !_shouldDelete && sameDayEvent
+  })
 
-  static defaultProps = {
-    activeDate: new Date(),
-    entriesWithinView: []
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const propsChanged = !deepEquals(this.props, nextProps)
-    return propsChanged
-  }
-
-  renderItems = entries => {
-    const { history } = this.props
-    return entries.map((e, i) => {
+  const renderItems = () =>
+    entries.map((e, i) => {
       const {
         id,
         author,
@@ -77,26 +66,27 @@ class EntryList extends Component {
         </div>
       )
     })
-  }
 
-  render() {
-    const { entriesWithinView, activeDate } = this.props
-
-    const entries = entriesWithinView.filter(entry => {
-      const { date_created_by_author, _shouldDelete } = entry
-      const date = MomentJS(activeDate)
-      const startDate = MomentJS(date_created_by_author)
-      const sameDayEvent = startDate.isSame(date, "day")
-      return !_shouldDelete && sameDayEvent
-    })
-
-    // console.log("EntryList: ")
-
-    return (
-      <Container fluid tag={ListGroup} className="List">
-        {this.renderItems(entries)}
-      </Container>
-    )
-  }
+  return (
+    <Container fluid tag={ListGroup} className="List">
+      {renderItems}
+    </Container>
+  )
 }
-export default withRouter(EntryList)
+
+EntryList.propTypes = {
+  activeDate: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date)
+  ]).isRequired,
+  entriesWithinView: PropTypes.arrayOf(PropTypes.object)
+}
+
+EntryList.defaultProps = {
+  activeDate: new Date(),
+  entriesWithinView: []
+}
+
+const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
+
+export default withRouter(memo(EntryList, isEqual))

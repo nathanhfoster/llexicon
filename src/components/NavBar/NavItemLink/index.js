@@ -1,48 +1,24 @@
-import React, { Component } from "react"
+import React, { useState, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { NavItem, NavLink, DropdownItem } from "reactstrap"
 import { NavLink as RouterNavLink, withRouter } from "react-router-dom"
 import { RouterLinkPush } from "../../../ReactRouter/Routes"
 import "./styles.css"
 
-class NavItemLink extends Component {
-  constructor(props) {
-    super(props)
+const NavItemLink = ({
+  dropdownItem,
+  route,
+  title,
+  icon,
+  onClick,
+  history,
+  onClickCallback,
+  render
+}) => {
+  const [reRender, forceUpdate] = useState(false)
 
-    this.state = {}
-  }
-
-  static propTypes = {
-    dropdownItem: PropTypes.bool.isRequired,
-    route: PropTypes.string,
-    title: PropTypes.string,
-    icon: PropTypes.object,
-    onClick: PropTypes.func,
-    onClickCallback: PropTypes.func,
-    render: PropTypes.object
-  }
-
-  static defaultProps = { dropdownItem: false }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const currentTitle = this.props.title
-    const { title } = nextProps
-
-    const titleChanged = currentTitle !== title
-
-    return titleChanged
-  }
-
-  renderNavLink = ({
-    route,
-    title,
-    icon,
-    onClick,
-    history,
-    onClickCallback,
-    render
-  }) => {
-    return (
+  const renderNavLink = useMemo(
+    () =>
       render || (
         <NavItem key={title}>
           <NavLink
@@ -51,7 +27,7 @@ class NavItemLink extends Component {
             tag={RouterNavLink}
             to={RouterLinkPush(history, route)}
             onClick={() => {
-              this.forceUpdate()
+              forceUpdate(!reRender)
               onClick && onClick()
               onClickCallback && onClickCallback()
             }}
@@ -60,20 +36,29 @@ class NavItemLink extends Component {
             <span className="NavBarLink">{title}</span>
           </NavLink>
         </NavItem>
-      )
-    )
-  }
+      ),
+    [title]
+  )
 
-  render() {
-    const { dropdownItem, ...restOfProps } = this.props
-
-    return dropdownItem ? (
-      <DropdownItem className="Navlink">
-        {this.renderNavLink(restOfProps)}
-      </DropdownItem>
-    ) : (
-      this.renderNavLink(restOfProps)
-    )
-  }
+  return dropdownItem ? (
+    <DropdownItem className="Navlink">{renderNavLink}</DropdownItem>
+  ) : (
+    renderNavLink
+  )
 }
-export default withRouter(NavItemLink)
+
+NavItemLink.propTypes = {
+  dropdownItem: PropTypes.bool.isRequired,
+  route: PropTypes.string,
+  title: PropTypes.string,
+  icon: PropTypes.object,
+  onClick: PropTypes.func,
+  onClickCallback: PropTypes.func,
+  render: PropTypes.object
+}
+
+const isEqual = (prevProps, nextProps) => prevProps.title === nextProps.title
+
+NavItemLink.defaultProps = { dropdownItem: false }
+
+export default withRouter(memo(NavItemLink, isEqual))

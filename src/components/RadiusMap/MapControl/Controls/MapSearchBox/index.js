@@ -1,45 +1,35 @@
-import React, { PureComponent } from "react"
+import React, { useEffect, useRef, memo } from "react"
 import PropTypes from "prop-types"
 import deepEquals from "../../../../../helpers/deepEquals"
 import fitCoordsToBounds from "../../../functions/fitCoordsToBounds"
 import "./styles.css"
 
-class MapSearchBox extends PureComponent {
-  constructor(props) {
-    super(props)
+const MapSearchBox = ({
+  map,
+  mapApi,
+  setMapCenterBoundsZoom,
+  onChangeCallback,
+  getAddressOnMarkerClick,
+  UserLocation,
+  locations,
+  panTo,
+  zoom
+}) => {
+  let searchBox = useRef()
+  let searchInput = useRef()
 
-    this.state = {}
-  }
+  useEffect(() => {
+    searchBox = new mapApi.places.SearchBox(searchInput)
+    searchBox.addListener("places_changed", handlePlacesChange)
+    searchBox.bindTo("bounds", map)
+    return () => {
+      console.log("UNFdnfjs")
+      mapApi.event.clearInstanceListeners(searchInput)
+    }
+  }, [])
 
-  static propTypes = {}
-
-  static defaultProps = {}
-
-  componentDidMount() {
-    const { map, mapApi } = this.props
-    this.searchBox = new mapApi.places.SearchBox(this.searchInput)
-    this.searchBox.addListener("places_changed", this.handlePlacesChange)
-    this.searchBox.bindTo("bounds", map)
-  }
-
-  componentWillUnmount() {
-    const { mapApi } = this.props
-    mapApi.event.clearInstanceListeners(this.searchInput)
-  }
-
-  handlePlacesChange = () => {
-    const {
-      map,
-      mapApi,
-      setMapCenterBoundsZoom,
-      onChangeCallback,
-      getAddressOnMarkerClick,
-      UserLocation,
-      locations,
-      panTo
-    } = this.props
-
-    const selected = this.searchBox.getPlaces()
+  const handlePlacesChange = () => {
+    const selected = searchBox.getPlaces()
     const { 0: place } = selected
     if (!place || !place.geometry) return
     const {
@@ -64,7 +54,6 @@ class MapSearchBox extends PureComponent {
     const { location, viewport } = geometry
     const { lat, lng } = location
 
-    let { zoom } = this.props
     const bounds = new mapApi.LatLngBounds()
 
     if (types.includes("country")) {
@@ -135,40 +124,27 @@ class MapSearchBox extends PureComponent {
     // }
 
     // fitCoordsToBounds(map, mapApi, coords)
-    this.searchInput.blur()
+    searchInput.blur()
   }
 
-  setProjectsSearchProps = id => {
-    const { setProjectsSearchProps } = this.props
-    const searchProjectsPayload = {
-      clientId: id !== "All" ? id : null,
-      pageNumber: 1
-    }
-    setProjectsSearchProps(searchProjectsPayload)
+  const clearSearchBox = () => {
+    searchInput.value = ""
   }
 
-  clearSearchBox = () => {
-    this.searchInput.value = ""
-  }
+  const selectSearchBox = ({ target }) => target.select()
 
-  selectSearchBox = e => {
-    e.target.select()
-  }
-
-  render() {
-    return (
-      <div className="mapBoxSearchBoxContainer">
-        <input
-          ref={ref => (this.searchInput = ref)}
-          className="mapBoxSearchBoxInput"
-          type="text"
-          onFocus={this.selectSearchBox}
-          placeholder="Enter a location"
-          onChange={this.handleInputChange}
-        />
-      </div>
-    )
-  }
+  return (
+    <div className="mapBoxSearchBoxContainer">
+      <input
+        ref={ref => (searchInput = ref)}
+        className="mapBoxSearchBoxInput"
+        type="text"
+        onFocus={selectSearchBox}
+        placeholder="Enter a location"
+        // onChange={handleInputChange}
+      />
+    </div>
+  )
 }
 
-export default MapSearchBox
+export default memo(MapSearchBox)

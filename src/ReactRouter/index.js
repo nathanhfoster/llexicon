@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { useHistory, Route, Switch, Redirect } from "react-router-dom"
@@ -51,8 +51,6 @@ const ReactRouter = props => {
   const {
     Settings: { show_footer }
   } = User
-
-  useEffect(() => {}, [])
 
   const renderRedirectOrComponent = (shouldRedirect, route, Component) => {
     return shouldRedirect
