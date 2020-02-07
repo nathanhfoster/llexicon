@@ -3,6 +3,7 @@ import "overlayscrollbars/css/OverlayScrollbars.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import LoadingScreen from "./components/LoadingScreen"
+import NavBar from "./components/NavBar"
 import storeFactory from "./store"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
@@ -14,7 +15,6 @@ import * as serviceWorker from "./serviceWorker"
 
 const BackgroundImage = lazy(() => import("./components/BackgroundImage"))
 const ReactRouter = lazy(() => import("./ReactRouter"))
-const NavBar = lazy(() => import("./components/NavBar"))
 
 const { NODE_ENV } = process.env
 

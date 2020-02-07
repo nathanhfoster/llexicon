@@ -1,7 +1,8 @@
-import React, { useEffect } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Toast, ToastHeader, ToastBody } from "reactstrap"
+import UseDebounce from "../../components/UseDebounce"
 import { ClearAlerts } from "../../actions/Alerts"
 import "./styles.css"
 
@@ -12,14 +13,7 @@ const mapDispatchToProps = { ClearAlerts }
 const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
   const shouldShow = title && message ? true : false
 
-  useEffect(() => {
-    debounceClear()
-    return () => {
-      debounceClear()
-    }
-  })
-
-  const debounceClear = () => setTimeout(() => ClearAlerts(), alertInterval)
+  const debounceClear = setTimeout(() => ClearAlerts(), alertInterval)
 
   return (
     <Toast
@@ -34,6 +28,11 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
         timeout: 600
       }}
     >
+      <UseDebounce
+        onChangeCallback={debounceClear}
+        value={shouldShow}
+        delay={1600}
+      />
       <ToastHeader icon={<i className="fas fa-feather-alt" />}>
         {title}
       </ToastHeader>

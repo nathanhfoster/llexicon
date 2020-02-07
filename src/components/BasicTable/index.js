@@ -1,13 +1,13 @@
-import React, { Fragment, lazy, useState, memo } from "react"
+import React, { Fragment, useState, memo } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
+import TableHeader from "./TableHeader"
 import TableBody from "./TableBody"
 import TableFooter from "./TableFooter"
 import TablePaginator from "./TablePaginator"
 import { tableSort, tableFilter } from "./functions"
 import { ColumnsPropType, DataPropType } from "./props"
 import "./styles.css"
-const TableHeader = lazy(() => import("./TableHeader"))
 
 const getInitialState = (columns, { defaultSortKey, pageSize, pageSizes }) => {
   const { sort } = columns.find(c => (c.dataIndex || c.key) == defaultSortKey)

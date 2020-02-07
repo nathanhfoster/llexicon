@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useState } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { RouteMap } from "../../ReactRouter/Routes"
 import PropTypes from "prop-types"
@@ -155,7 +155,7 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
       {isMobile && (
         <NavbarToggler
           tag={Hamburger}
-          onClick={() => toggleHamburgerMenu()}
+          onClick={toggleHamburgerMenu}
           collapsed={collapsed}
         />
       )}
@@ -173,8 +173,7 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
 
 Navbar.propTypes = {
   UserId: PropTypes.number,
-  UserLogout: PropTypes.func.isRequired,
-  GetUserEntriesByDate: PropTypes.func.isRequired
+  UserLogout: PropTypes.func
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(NavBar)

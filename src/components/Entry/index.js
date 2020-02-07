@@ -73,7 +73,11 @@ const Entry = ({
         theme={theme}
         onChangeCallback={handleEditorChange}
       >
-        <UseDebounce onChangeCallback={handleDebounce} value={entry} />
+        <UseDebounce
+          onChangeCallback={handleDebounce}
+          value={entry}
+          delay={800}
+        />
         <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
           <Input
             type="text"

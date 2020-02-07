@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { Jumbotron, Container, Row, Col } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { Jumbotron } from "reactstrap"
+import { useDispatch } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouteMap } from "../../ReactRouter/Routes"
 import BasicForm from "../../components/BasicForm"
@@ -12,137 +12,103 @@ import BasicTabs from "../../components/BasicTabs"
 import "./styles.css"
 const { LOGIN, SIGNUP, PASSWORD_RESET } = RouteMap
 
-const mapStateToProps = ({}) => ({})
+const Login = ({ history, location: { pathname } }) => {
+  const dispatch = useDispatch()
+  const activeTab = pathname
 
-const mapDispatchToProps = { UserLogin, CreateUser, PasswordReset }
+  const handleLogin = payload => dispatch(UserLogin(payload))
 
-class Login extends PureComponent {
-  constructor(props) {
-    super(props)
+  const handleSignUp = payload => dispatch(CreateUser(payload))
 
-    this.state = {}
-  }
+  const handlePasswordReset = payload => dispatch(PasswordReset(payload))
 
-  static propTypes = {
-    UserLogin: PropTypes.func.isRequired,
-    CreateUser: PropTypes.func.isRequired,
-    PasswordReset: PropTypes.func.isRequired
-  }
+  const handleTabChange = tabId => RouterPush(history, tabId)
 
-  static defaultProps = {}
+  const tabs = [
+    {
+      tabId: LOGIN,
+      title: "Login",
+      render: (
+        <Jumbotron className="LoginFormContainer">
+          <LogoImage center />
+          <BasicForm
+            title="Login"
+            onSubmit={payload => handleLogin(payload)}
+            submitLabel="Login"
+            inputs={[
+              {
+                label: "Username",
+                type: "text",
+                name: "username",
+                id: "username",
+                placeholder: "Username..."
+              },
+              {
+                label: "Password",
+                type: "password",
+                name: "password",
+                id: "password",
+                placeholder: "Password..."
+              }
+            ]}
+          />
+          <FacebookGoogleLogin />
+        </Jumbotron>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
+      tabId: SIGNUP,
+      title: "Sign up",
+      render: (
+        <Jumbotron className="LoginFormContainer">
+          <LogoImage center />
+          <BasicForm
+            title="Sign Up"
+            onSubmit={payload => handleSignUp(payload)}
+            submitLabel="Sign Up"
+          />
+          <FacebookGoogleLogin />
+        </Jumbotron>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
+      tabId: PASSWORD_RESET,
+      title: "Forgot password",
+      render: (
+        <Jumbotron className="LoginFormContainer">
+          <LogoImage center />
+          <BasicForm
+            title="Forgot password"
+            onSubmit={payload => handlePasswordReset(payload)}
+            submitLabel="Request"
+            inputs={[
+              {
+                label: "Email",
+                type: "email",
+                name: "email",
+                id: "email",
+                placeholder: "Email..."
+              }
+            ]}
+          />
+          <FacebookGoogleLogin />
+        </Jumbotron>
+      ),
+      onClickCallback: handleTabChange
+    }
+  ]
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      location: { pathname }
-    } = nextProps
-    return { activeTab: pathname }
-  }
-
-  handleLogin = payload => {
-    const { UserLogin } = this.props
-    UserLogin(payload)
-  }
-
-  handleSignUp = payload => {
-    const { CreateUser } = this.props
-    CreateUser(payload)
-  }
-
-  handlePasswordReset = payload => {
-    const { PasswordReset } = this.props
-    PasswordReset(payload)
-  }
-
-  handleTabChange = tabId => {
-    const { history } = this.props
-    RouterPush(history, tabId)
-  }
-
-  render() {
-    const { history } = this.props
-    const { activeTab } = this.state
-
-    const tabs = [
-      {
-        tabId: LOGIN,
-        title: "Login",
-        render: (
-          <Jumbotron className="LoginFormContainer">
-            <LogoImage center />
-            <BasicForm
-              title="Login"
-              onSubmit={payload => this.handleLogin(payload)}
-              submitLabel="Login"
-              inputs={[
-                {
-                  label: "Username",
-                  type: "text",
-                  name: "username",
-                  id: "username",
-                  placeholder: "Username..."
-                },
-                {
-                  label: "Password",
-                  type: "password",
-                  name: "password",
-                  id: "password",
-                  placeholder: "Password..."
-                }
-              ]}
-            />
-            <FacebookGoogleLogin />
-          </Jumbotron>
-        ),
-        onClickCallback: this.handleTabChange
-      },
-      {
-        tabId: SIGNUP,
-        title: "Sign up",
-        render: (
-          <Jumbotron className="LoginFormContainer">
-            <LogoImage center />
-            <BasicForm
-              title="Sign Up"
-              onSubmit={payload => this.handleSignUp(payload)}
-              submitLabel="Sign Up"
-            />
-            <FacebookGoogleLogin />
-          </Jumbotron>
-        ),
-        onClickCallback: this.handleTabChange
-      },
-      {
-        tabId: PASSWORD_RESET,
-        title: "Forgot password",
-        render: (
-          <Jumbotron className="LoginFormContainer">
-            <LogoImage center />
-            <BasicForm
-              title="Forgot password"
-              onSubmit={payload => this.handlePasswordReset(payload)}
-              submitLabel="Request"
-              inputs={[
-                {
-                  label: "Email",
-                  type: "email",
-                  name: "email",
-                  id: "email",
-                  placeholder: "Email..."
-                }
-              ]}
-            />
-            <FacebookGoogleLogin />
-          </Jumbotron>
-        ),
-        onClickCallback: this.handleTabChange
-      }
-    ]
-
-    return (
-      <BasicTabs containerClassname="Login" activeTab={activeTab} tabs={tabs} />
-    )
-  }
+  return (
+    <BasicTabs containerClassname="Login" activeTab={activeTab} tabs={tabs} />
+  )
 }
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(Login)
-)
+
+Login.propTypes = {
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
+}
+
+export default withRouter(memo(Login))
