@@ -30,7 +30,7 @@ const Home = ({ userId }) => {
     },
     {
       title: "Sync",
-      text: "Automatically synced across all devices",
+      text: "Automatically sync your entries across all devices",
       faIcon: "fas fa-sync-alt",
       button: (
         <Button
