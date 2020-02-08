@@ -14,7 +14,7 @@ import "./stylesM.css"
 
 const TileContent = lazy(() => import("./TileContent"))
 
-const EntryList = lazy(() => import("../../components/EntryList"))
+const EntryList = lazy(() => import("../EntryList"))
 
 const mapStateToProps = ({
   Calendar: { activeDate, view },
