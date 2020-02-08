@@ -28,6 +28,7 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const handleFilterEntries = (entries, search) => {
+  if(!search) return { items: entries, filteredItems: [] }
   const searchValue = search.toUpperCase()
   let cachedFilteredEntries = []
 
