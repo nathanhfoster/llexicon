@@ -8,7 +8,6 @@ import { RouterPush } from "../../ReactRouter/Routes"
 import { RouteMap } from "../../ReactRouter/Routes"
 import Star from "../BackgroundImage/Star"
 import TagsContainer from "../TagsContainer"
-import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const EntryList = ({ history, entriesWithinView, activeDate }) => {
@@ -69,7 +68,7 @@ const EntryList = ({ history, entriesWithinView, activeDate }) => {
 
   return (
     <Container fluid tag={ListGroup} className="List">
-      {renderItems}
+      {renderItems()}
     </Container>
   )
 }
@@ -82,11 +81,4 @@ EntryList.propTypes = {
   entriesWithinView: PropTypes.arrayOf(PropTypes.object)
 }
 
-EntryList.defaultProps = {
-  activeDate: new Date(),
-  entriesWithinView: []
-}
-
-const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
-
-export default withRouter(memo(EntryList, isEqual))
+export default withRouter(memo(EntryList))

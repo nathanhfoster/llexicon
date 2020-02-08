@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"
+import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { RouteMap, RouterPush } from "../../../ReactRouter/Routes"
@@ -46,45 +46,20 @@ const mapStateToProps = (
 
 const mapDispatchToProps = { GetUserEntriesByDate }
 
-class TileContent extends Component {
-  static propTypes = {
-    GetUserEntriesByDate: PropTypes.func.isRequired
-  }
+const TileContent = ({
+  shouldRenderEntryPreview,
+  shouldRenderPlusButton,
+  entries,
+  date,
+  staticContext,
+  view,
+  history
+}) => {
+  const handleTodayClick = () =>
+    setTimeout(() => RouterPush(history, RouteMap.NEW_ENTRY), 10)
 
-  static defaultProps = {}
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const {
-      entries,
-      shouldRenderEntryPreview,
-      shouldRenderPlusButton
-    } = this.props
-
-    const entriesChanged = !deepEquals(entries, nextProps.entries)
-
-    const shouldRenderEntryPreviewChanged =
-      shouldRenderEntryPreview !== nextProps.shouldRenderEntryPreview
-
-    const shouldRenderPlusButtonChanged =
-      shouldRenderPlusButton !== nextProps.shouldRenderPlusButton
-
-    return (
-      entriesChanged ||
-      shouldRenderEntryPreviewChanged ||
-      shouldRenderPlusButtonChanged
-    )
-  }
-
-  handleTodayClick = () => {
-    const { history } = this.props
-
-    setTimeout(() => RouterPush(history, RouteMap.NEW_ENTRY), 150)
-  }
-
-  renderEntryPreviews = entries => {
-    const { date, staticContext, view, history } = this.props
-
-    return entries.map(entry => {
+  const renderEntryPreviews = entries =>
+    entries.map(entry => {
       const { id, ...restOfProps } = entry
 
       return (
@@ -99,34 +74,53 @@ class TileContent extends Component {
         />
       )
     })
-  }
 
-  render() {
-    const {
-      shouldRenderEntryPreview,
-      shouldRenderPlusButton,
-      entries
-    } = this.props
+  // console.log("TileContent: ")
 
-    // console.log("TileContent: ")
-
-    return (
-      <Fragment>
-        {shouldRenderPlusButton && (
-          <i
-            className="fas fa-feather-alt TileContentFeather"
-            onClick={this.handleTodayClick}
-          />
-        )}
-        {shouldRenderEntryPreview && (
-          <div className="TileContentContainer">
-            {this.renderEntryPreviews(entries)}
-          </div>
-        )}
-      </Fragment>
-    )
-  }
+  return (
+    <Fragment>
+      {shouldRenderPlusButton && (
+        <i
+          className="fas fa-feather-alt TileContentFeather"
+          onClick={handleTodayClick}
+        />
+      )}
+      {shouldRenderEntryPreview && (
+        <div className="TileContentContainer">
+          {renderEntryPreviews(entries)}
+        </div>
+      )}
+    </Fragment>
+  )
 }
+
+TileContent.propTypes = {
+  GetUserEntriesByDate: PropTypes.func.isRequired
+}
+
+const isEqual = (prevProps, nextProps) => {
+  const {
+    entries,
+    shouldRenderEntryPreview,
+    shouldRenderPlusButton
+  } = prevProps
+
+  const entriesAreEqual = deepEquals(entries, nextProps.entries)
+
+  const shouldRenderEntryPreviewAreEqual =
+    shouldRenderEntryPreview === nextProps.shouldRenderEntryPreview
+
+  const shouldRenderPlusButtonAreEqual =
+    shouldRenderPlusButton === nextProps.shouldRenderPlusButton
+
+  const equal =
+    entriesAreEqual &&
+    shouldRenderEntryPreviewAreEqual &&
+    shouldRenderPlusButtonAreEqual
+
+  return equal
+}
+
 export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)
+  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(TileContent, isEqual))
 )

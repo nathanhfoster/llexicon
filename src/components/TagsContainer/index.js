@@ -1,90 +1,41 @@
-import React, { Component } from "react"
+import React, { memo } from "react"
 import { Badge, Col } from "reactstrap"
 import PropTypes from "prop-types"
-import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
-class TagsContainer extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {}
+const TagsContainer = ({
+  children,
+  tags,
+  minimalView,
+  height,
+  fontSize,
+  flexWrap,
+  alignItems,
+  overflowX,
+  overflowY,
+  onClickCallback,
+  hoverable,
+  showTagIcon,
+  tagContainerClassName
+}) => {
+  if (flexWrap === "wrap") {
+    overflowX = "auto"
+    overflowY = "auto"
   }
 
-  static propTypes = {
-    tags: PropTypes.array,
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    flexWrap: PropTypes.oneOf(["wrap", "nowrap"]),
-    overflowX: PropTypes.string,
-    overflowY: PropTypes.string,
-    onClickCallback: PropTypes.func,
-    minimalView: PropTypes.bool,
-    hoverable: PropTypes.bool,
-    showTagIcon: PropTypes.bool,
-    tagContainerClassName: PropTypes.string
+  const styles = {
+    height,
+    flexWrap,
+    alignItems,
+    alignContent: "flex-start",
+    flexStart: "space-around",
+    overflowX,
+    overflowY,
+    fontSize
   }
 
-  static defaultProps = {
-    height: "auto",
-    fontSize: "inherit",
-    flexWrap: "nowrap",
-    alignItems: "center",
-    overflowX: "auto",
-    overflowY: "hidden",
-    minimalView: false,
-    hoverable: false,
-    showTagIcon: true,
-    tagContainerClassName: "m-1"
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let {
-      tags,
-      height,
-      fontSize,
-      flexWrap,
-      alignItems,
-      overflowX,
-      overflowY,
-
-      minimalView
-    } = nextProps
-
-    if (flexWrap === "wrap") {
-      overflowX = "auto"
-      overflowY = "auto"
-    }
-
-    const styles = {
-      height,
-      flexWrap,
-      alignItems,
-      alignContent: "flex-start",
-      flexStart: "space-around",
-      overflowX,
-      overflowY,
-      fontSize
-    }
-
-    return { tags, styles, minimalView }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return stateChanged
-  }
-
-  renderTags = tags => {
-    const {
-      onClickCallback,
-      hoverable,
-      showTagIcon,
-      tagContainerClassName
-    } = this.props
-
-    return tags.map(tag => {
+  const renderTags = () =>
+    tags.map(tag => {
       const { title } = tag
       return (
         <Badge
@@ -101,9 +52,8 @@ class TagsContainer extends Component {
         </Badge>
       )
     })
-  }
 
-  renderMinimalTags = tags => {
+  const renderMinimalTags = () => {
     const initialString = "| "
     const mininmalString = tags.reduce(
       (mininmalString, tag) => mininmalString + `${tag.title} | `,
@@ -113,15 +63,38 @@ class TagsContainer extends Component {
     else return <span>{mininmalString}</span>
   }
 
-  render() {
-    const { children } = this.props
-    const { tags, styles, minimalView } = this.state
-    return (
-      <Col className="TagsContainer p-0" xs={12} style={styles}>
-        {children}
-        {minimalView ? this.renderMinimalTags(tags) : this.renderTags(tags)}
-      </Col>
-    )
-  }
+  return (
+    <Col className="TagsContainer p-0" xs={12} style={styles}>
+      {children}
+      {minimalView ? renderMinimalTags() : renderTags()}
+    </Col>
+  )
 }
-export default TagsContainer
+
+TagsContainer.propTypes = {
+  tags: PropTypes.array,
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  flexWrap: PropTypes.oneOf(["wrap", "nowrap"]),
+  overflowX: PropTypes.string,
+  overflowY: PropTypes.string,
+  onClickCallback: PropTypes.func,
+  minimalView: PropTypes.bool,
+  hoverable: PropTypes.bool,
+  showTagIcon: PropTypes.bool,
+  tagContainerClassName: PropTypes.string
+}
+
+TagsContainer.defaultProps = {
+  height: "auto",
+  fontSize: "inherit",
+  flexWrap: "nowrap",
+  alignItems: "center",
+  overflowX: "auto",
+  overflowY: "hidden",
+  minimalView: false,
+  hoverable: false,
+  showTagIcon: true,
+  tagContainerClassName: "m-1"
+}
+export default memo(TagsContainer)
