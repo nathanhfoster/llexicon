@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, memo } from "react"
+import React, { useState, useRef, useEffect, memo } from "react"
 import PropTypes from "prop-types"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
@@ -17,7 +17,7 @@ const RatingButtonModal = props => {
   const ratingChanged =
     previousPropsRating.current !== props.rating && props.ratring !== rating
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (ratingChanged) {
       setState({ ...state, rating: props.rating })
     }

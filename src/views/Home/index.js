@@ -37,7 +37,7 @@ const Home = ({ userId }) => {
           tag={Button}
           color="accent"
           onClick={() => RouterPush(history, RouteMap.SIGNUP)}
-          disabled={userId}
+          disabled={userId ? true : false}
         >
           Sign Up
         </Button>
