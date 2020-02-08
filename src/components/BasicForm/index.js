@@ -45,7 +45,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit }) => {
       {title && <h2 className="Center">{title}</h2>}
       {renderInputs(inputs)}
       <div className="Center">
-        <Button color="primary" type="submit">
+        <Button color="accent" type="submit">
           {submitLabel}
         </Button>
       </div>
