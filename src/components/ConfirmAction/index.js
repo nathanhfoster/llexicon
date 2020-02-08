@@ -53,7 +53,7 @@ const ConfirmAction = ({
 }
 
 ConfirmAction.propTypes = {
-  onClickCallback: PropTypes.func,
+  onClickCallback: PropTypes.func.isRequired,
   title: PropTypes.string,
   icon: PropTypes.object,
   buttonClassName: PropTypes.string

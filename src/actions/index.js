@@ -3,6 +3,16 @@ import { getReduxState } from "../store/Persister/persist"
 
 const { REACT_APP_API_URL } = process.env
 
+const getUser = () => {
+  const { User } = getReduxState()
+  if (!User) return { token: null, offline_mode: null }
+  const {
+    token,
+    Settings: { offline_mode }
+  } = User
+  return { token, offline_mode }
+}
+
 const base = {
   Accept: "application/json"
 }
@@ -20,10 +30,7 @@ const baseFormHeaders = payload => ({
 })
 
 const Axios = (responseType = "json") => {
-  const {
-    token,
-    Settings: { offline_mode }
-  } = getReduxState().User
+  const { token, offline_mode } = getUser()
   if (offline_mode) return axios.create({ baseURL: "https://offline_mode" })
   return axios.create({
     withCredentials: token ? true : false,
