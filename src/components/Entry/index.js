@@ -74,7 +74,7 @@ const Entry = ({
         <UseDebounce
           onChangeCallback={handleDebounce}
           value={entry}
-          delay={800}
+          delay={1600}
         />
         <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
           <Input
@@ -150,4 +150,4 @@ const isEqual = (prevProps, nextProps) => {
   return true
 }
 
-export default withRouter(memo(Entry))
+export default withRouter(memo(Entry, isEqual))

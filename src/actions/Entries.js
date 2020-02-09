@@ -1,6 +1,5 @@
 import { ReduxActions } from "../constants"
 import { Axios, AxiosForm, Sync } from "."
-import { getFile } from "../store/Persister/persist"
 import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from "../helpers"
 import FormData from "form-data"
 import qs from "qs"
@@ -283,9 +282,9 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
   const UserId = User.id
 
-  let dispatchDeleteEntries = []
-  let dispatchPostEntries = []
-  let dispatchUpdateEntries = []
+  // let dispatchDeleteEntries = []
+  // let dispatchPostEntries = []
+  // let dispatchUpdateEntries = []
 
   const entries = items.concat(filteredItems)
 
@@ -310,7 +309,8 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
     if (_shouldDelete) {
       if (_shouldPost) dispatch({ type: ENTRY_DELETE, id })
-      else dispatchDeleteEntries.push(DeleteEntry(id))
+      else DeleteEntry(id)
+      // else dispatchDeleteEntries.push(DeleteEntry(id))
       continue
     } else if (_shouldPost) {
       const postPayload = {
@@ -354,42 +354,51 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         latitude,
         longitude
       }
-      dispatchUpdateEntries.push(
-        ParseBase64(id, cleanObject(updateEntryPayload))
-      )
+      dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+      // dispatchUpdateEntries.push(
+      //   ParseBase64(id, cleanObject(updateEntryPayload))
+      // )
       // payload = {title, date_created_by_author}
       // dispatchUpdateEntries.push(UpdateEntry(id, payload))
     }
   }
 
-  let dispatchActions = []
+  // let dispatchActions = []
 
-  if (typeof getEntryMethod === "function") dispatchActions.push(getEntryMethod)
-
-  dispatchActions = dispatchActions
-    .concat(dispatchDeleteEntries)
-    .concat(dispatchPostEntries)
-    .concat(dispatchUpdateEntries)
-
-  if (
-    dispatchDeleteEntries.length > 0 ||
-    dispatchPostEntries.length > 0 ||
-    dispatchUpdateEntries.length > 0
-  ) {
-    dispatchActions = dispatchActions.concat(
-      () =>
-        new Promise(resolve =>
-          dispatch({
-            type: ALERTS_SET_MESSAGE,
-            payload: { title: "Synced", message: "Entries" }
-          })
-        )
-    )
+  if (typeof getEntryMethod === "function") {
+    getEntryMethod()
+    // dispatchActions.push(getEntryMethod)
   }
 
-  // console.log("dispatchActions: ", dispatchActions)
+  // dispatchActions = dispatchActions
+  //   .concat(dispatchDeleteEntries)
+  //   .concat(dispatchPostEntries)
+  //   .concat(dispatchUpdateEntries)
 
-  dispatch(Sync(dispatchActions))
+  // if (
+  //   dispatchDeleteEntries.length > 0 ||
+  //   dispatchPostEntries.length > 0 ||
+  //   dispatchUpdateEntries.length > 0
+  // ) {
+  //   dispatchActions = dispatchActions.concat(
+  //     () =>
+  //       new Promise(resolve =>
+  //         dispatch({
+  //           type: ALERTS_SET_MESSAGE,
+  //           payload: { title: "Synced", message: "Entries" }
+  //         })
+  //       )
+  //   )
+  // }
+
+  // console.log("dispatchActions: ", dispatchUpdateEntries)
+
+  // dispatch(Sync(dispatchActions))
+
+  dispatch({
+    type: ALERTS_SET_MESSAGE,
+    payload: { title: "Synced", message: "Entries" }
+  })
 }
 
 export {

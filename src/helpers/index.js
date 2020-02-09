@@ -365,7 +365,7 @@ const capitalizeFirstLetter = string => {
     return `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 }
 
-const debounce = (func, delay = 600) => {
+const debounce = (func, delay = 400) => {
   let debounceTimer
   return function(...args) {
     const context = this
