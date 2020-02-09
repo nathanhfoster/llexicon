@@ -18,8 +18,8 @@ export const StarColorGradients = {
 const StarColorGradientsList = objectToArray(StarColorGradients)
 
 const styles = ({
-  position = "inherit",
-  display = "inline-block",
+  position,
+  display,
   top,
   bottom,
   left,
@@ -32,7 +32,7 @@ const styles = ({
   marginLeft,
   marginRight
 }) => {
-  const randomSize = getRandomInt(1, 8)
+  const randomSize = getRandomInt(1, 6)
   const randomGradientIndex = getRandomInt(0, StarColorGradientsList.length - 1)
   const randomZIndex = getRandomInt(0, 100)
   if (typeof top === "string" && !top.includes("px")) top = `${top}%`
@@ -78,6 +78,13 @@ Star.propTypes = {
   opacity: PropTypes.number,
   marginLeft: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   marginRight: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+}
+
+Star.defaultProps = {
+  position: "inherit",
+  display: "inline-block",
+  marginLeft: 0,
+  marginRight: 0
 }
 
 export default memo(Star)
