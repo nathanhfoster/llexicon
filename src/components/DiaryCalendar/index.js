@@ -8,7 +8,7 @@ import MomentJS from "moment"
 import { withRouter } from "react-router-dom"
 import { RouterPush, RouteMap } from "../../ReactRouter/Routes"
 import { SetCalendar } from "../../actions/Calendar"
-import { SyncEntries, GetUserEntriesByDate } from "../../actions/Entries"
+import { GetUserEntriesByDate } from "../../actions/Entries"
 import "./styles.css"
 import "./stylesM.css"
 
@@ -23,7 +23,6 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
   SetCalendar,
-  SyncEntries,
   GetUserEntriesByDate
 }
 
@@ -31,15 +30,12 @@ const DiaryCalendar = ({
   entries,
   activeDate,
   view,
-  SyncEntries,
   SetCalendar,
   GetUserEntriesByDate,
   history
 }) => {
   useEffect(() => {
-    SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntriesByDate(activeDate)))
-    )
+    GetUserEntriesByDate(activeDate)
   }, [])
 
   const calendarDate = MomentJS(activeDate)
@@ -170,7 +166,6 @@ DiaryCalendar.propTypes = {
   ]).isRequired,
   view: PropTypes.string.isRequired,
   SetCalendar: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
   GetUserEntriesByDate: PropTypes.func.isRequired
 }
 
