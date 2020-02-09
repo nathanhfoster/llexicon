@@ -287,6 +287,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
   const UserId = User.id
 
+  let synced = false
   // let dispatchDeleteEntries = []
   // let dispatchPostEntries = []
   // let dispatchUpdateEntries = []
@@ -313,11 +314,13 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
     } = entries[i]
 
     if (_shouldDelete) {
+      synced = true
       if (_shouldPost) dispatch({ type: ENTRY_DELETE, id })
       else DeleteEntry(id)
       // else dispatchDeleteEntries.push(DeleteEntry(id))
       continue
     } else if (_shouldPost) {
+      synced = true
       const postPayload = {
         id,
         author: UserId,
@@ -349,6 +352,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       })
       continue
     } else if (_lastUpdated) {
+      synced = true
       const updateEntryPayload = {
         title,
         date_created_by_author,
@@ -400,10 +404,13 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
   // dispatch(Sync(dispatchActions))
 
+  if(synced) {
   dispatch({
     type: ALERTS_SET_MESSAGE,
     payload: { title: "Synced", message: "Entries" }
   })
+}
+
   dispatch({ type: ENTRIES_COMPLETE })
 }
 
