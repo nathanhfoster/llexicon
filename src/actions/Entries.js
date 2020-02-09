@@ -9,6 +9,7 @@ const {
   CALENDAR_SET,
   ENTRIES_SET_TAGS,
   ENTRIES_PENDING,
+  ENTRIES_COMPLETE,
   ENTRIES_ERROR,
   ENTRIES_SEARCH_FILTER,
   ENTRIES_SET,
@@ -277,8 +278,12 @@ const SearchUserEntries = search => async (dispatch, getState) => {
 const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User,
-    Entries: { items, filteredItems }
+    Entries: { items, filteredItems, isPending }
   } = getState()
+
+  if (isPending) return
+
+  dispatch({ type: ENTRIES_PENDING })
 
   const UserId = User.id
 
@@ -399,6 +404,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
     type: ALERTS_SET_MESSAGE,
     payload: { title: "Synced", message: "Entries" }
   })
+  dispatch({ type: ENTRIES_COMPLETE })
 }
 
 export {

@@ -4,6 +4,7 @@ const {
   ENTRIES_SET_TAGS,
   ENTRIES_PENDING,
   ENTRIES_ERROR,
+  ENTRIES_COMPLETE,
   ENTRY_IMPORT,
   ENTRIES_SET,
   ENTRIES_SET_BY_DATE,
@@ -28,7 +29,7 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const handleFilterEntries = (entries, search) => {
-  if(!search) return { items: entries, filteredItems: [] }
+  if (!search) return { items: entries, filteredItems: [] }
   const searchValue = search.toUpperCase()
   let cachedFilteredEntries = []
 
@@ -72,6 +73,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return { ...state, isPending: true }
     case ENTRIES_ERROR:
       return { ...state, isPending: false, error: payload }
+    case ENTRIES_COMPLETE:
+      return { ...state, isPending: false, error: DEFAULT_STATE_ENTRIES.error }
     case ENTRY_IMPORT:
       return {
         ...state,
