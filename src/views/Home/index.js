@@ -77,7 +77,7 @@ const Home = ({ userId }) => {
     },
     {
       title: "Offline",
-      text: "Doesn't require an internet connections",
+      text: "Doesn't require an internet connection",
       header: (
         <svg
           aria-hidden="true"
