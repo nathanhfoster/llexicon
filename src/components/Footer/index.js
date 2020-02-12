@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Collapse } from "reactstrap"
 import { Link } from "react-router-dom"
-import { RouteMap } from "../../ReactRouter/Routes"
+import { RouteMap } from "../ReactRouter/Routes"
 import "./styles.css"
 
 const mapStateToProps = ({ User }) => ({

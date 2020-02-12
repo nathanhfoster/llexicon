@@ -4,16 +4,17 @@ import { connect as reduxConnect } from "react-redux"
 import { useHistory, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import Footer from "../components/Footer"
-import Home from "../views/Home"
-import Settings from "../views/Settings"
-import EntryDetail from "../views/EntryDetail"
-import Entries from "../views/Entries"
-import Login from "../views/Login"
-import PrivacyPolicy from "../components/PrivacyPolicy"
-import PageNotFound from "../views/PageNotFound"
+import Footer from "../Footer"
+import Home from "../../views/Home"
+import Settings from "../../views/Settings"
+import Support from "../../views/Support"
+import EntryDetail from "../../views/EntryDetail"
+import Entries from "../../views/Entries"
+import Login from "../../views/Login"
+import PrivacyPolicy from "../PrivacyPolicy"
+import PageNotFound from "../../views/PageNotFound"
 import { RouterLinkPush } from "./Routes"
-import deepEquals from "../helpers/deepEquals"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 
 const {
@@ -24,6 +25,7 @@ const {
   SIGNUP,
   PASSWORD_RESET,
   SETTINGS,
+  SUPPORT,
   CALENDAR,
   ENTRY_DETAIL,
   ENTRIES,
@@ -63,6 +65,10 @@ const ReactRouter = props => {
     {
       path: [SETTINGS],
       component: Settings
+    },
+    {
+      path: [SUPPORT],
+      component: Support
     },
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {

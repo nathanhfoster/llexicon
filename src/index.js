@@ -14,7 +14,7 @@ import { getReduxState } from "./store/Persister/persist"
 import * as serviceWorker from "./serviceWorker"
 
 const BackgroundImage = lazy(() => import("./components/BackgroundImage"))
-const ReactRouter = lazy(() => import("./ReactRouter"))
+const ReactRouter = lazy(() => import("./components/ReactRouter"))
 
 const { NODE_ENV } = process.env
 

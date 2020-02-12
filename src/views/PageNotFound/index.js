@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { RouteMap, RouterLinkPush } from "../../ReactRouter/Routes"
+import { RouteMap, RouterLinkPush } from "../../components/ReactRouter/Routes"
 import { withRouter, Link } from "react-router-dom"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import StarGenerator from "../../components/BackgroundImage/StarGenerator"

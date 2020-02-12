@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { RouteMap, RouterPush } from "../../../../ReactRouter/Routes"
+import { RouteMap, RouterPush } from "../../../ReactRouter/Routes"
 import Moment from "react-moment"
 import Star from "../../../BackgroundImage/Star"
 import "./styles.css"

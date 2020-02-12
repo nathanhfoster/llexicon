@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { connect as reduxConnect } from "react-redux"
-import { RouteMap } from "../../ReactRouter/Routes"
+import { RouteMap } from "../ReactRouter/Routes"
 import PropTypes from "prop-types"
 import "./styles.css"
 import {
@@ -19,6 +19,7 @@ import { UserLogout } from "../../actions/User"
 import Hamburger from "./Hamburger"
 import NavItemLink from "./NavItemLink"
 import { Logo } from "../../images/AWS"
+import Support from "../../views/Support"
 
 const {
   HOME,
@@ -29,7 +30,8 @@ const {
   ENTRIES_TABLE,
   ENTRIES_MAP,
   LOGIN,
-  SETTINGS
+  SETTINGS,
+  SUPPORT
 } = RouteMap
 
 const mapStateToProps = ({
@@ -123,6 +125,12 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           route: SETTINGS,
           title: "SETTINGS",
           icon: <i className="fas fa-cog NavBarImage" />
+        },
+        {
+          dropdownItem: true,
+          route: SUPPORT,
+          title: "SUPPORT",
+          icon: <i className="fas fa-satellite NavBarImage" />
         }
       ]
     }

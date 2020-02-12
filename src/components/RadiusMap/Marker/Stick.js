@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { useHistory } from "react-router-dom"
-import { RouterPush, RouteMap } from "../../../ReactRouter/Routes"
+import { RouterPush, RouteMap } from "../../ReactRouter/Routes"
 import { GetAddress } from "../../../actions/Google"
 import {
   K_CIRCLE_SIZE,

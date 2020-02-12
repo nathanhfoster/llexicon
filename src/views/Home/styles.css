@@ -3,21 +3,6 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
-.HomeFeatureCard {
-  background: rgba(0, 0, 0, 0.4);
-  border: 0;
-  margin: 15px 0;
-  height: 350px;
-}
-
-.HomeFeatureContainer {
-  text-align: center;
-}
-
-.HomeFeatureBodyContainer {
-  background: var(--midNight);
-}
-
 .AboutFeatureIcon {
   font-size: 8em;
 }
