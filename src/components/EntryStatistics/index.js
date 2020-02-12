@@ -18,7 +18,12 @@ const EntryStatistics = ({ items, filteredItems }) => {
 
   let validRatedEntries = 0
 
-  for (var i = 0, { length } = entries; i < length; i++) {
+  const totalEntries = entries.length
+
+  let minimumWordsInAnEntry = Infinity
+  let maximumWordsInAnEntry = -Infinity
+
+  for (var i = 0; i < totalEntries; i++) {
     const {
       id,
       tags,
@@ -53,10 +58,17 @@ const EntryStatistics = ({ items, filteredItems }) => {
     previousDate = updatedDated
 
     const entryString = `${title} ${html}`
+    const currentCharCount = entryString.length
+    const currentWordCount = entryString.split(" ").length
 
-    charCount += entryString.length
-    wordCount += entryString.split(" ").length
+    charCount += currentCharCount
+    wordCount += currentWordCount
     viewCount += views
+
+    if (currentWordCount < minimumWordsInAnEntry)
+      minimumWordsInAnEntry = currentWordCount
+    if (currentWordCount > maximumWordsInAnEntry)
+      maximumWordsInAnEntry = currentWordCount
 
     for (let j = 0, l = tags.length; j < l; j++) {
       const { title } = tags[j]
@@ -66,8 +78,9 @@ const EntryStatistics = ({ items, filteredItems }) => {
   }
 
   const averageRating = sumRating / validRatedEntries
+  const averageWordsPerEntry = wordCount / totalEntries
   const averageMillisecondsUpdatingEntries = Math.abs(
-    sumRatingTimeUpdatingEntries / length
+    sumRatingTimeUpdatingEntries / totalEntries
   )
   const averageSecondsUpdatingEntries =
     averageMillisecondsUpdatingEntries / 1000
@@ -91,14 +104,17 @@ const EntryStatistics = ({ items, filteredItems }) => {
 
   const entryAverages = [
     { title: "Rating", value: averageRating },
+    { title: "Words / entry", value: averageWordsPerEntry },
     { title: "Time Writing Entries", value: averageTimesUpdatingEntries }
   ]
 
   const entryCounts = [
-    { title: "Entries", value: entries.length },
+    { title: "Entries", value: totalEntries },
+    { title: "Views", value: viewCount },
     { title: "Characters", value: charCount },
     { title: "Words", value: wordCount },
-    { title: "Views", value: viewCount }
+    { title: "Minimum words / entry", value: minimumWordsInAnEntry },
+    { title: "Maximum words / entry", value: maximumWordsInAnEntry }
   ]
 
   const renderEntryStats = (stats, fixedValue = 3) =>

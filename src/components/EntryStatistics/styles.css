@@ -5,7 +5,7 @@
 
 .StatContainer {
   border: 1px solid var(--tertiarycolor);
-  max-height: 290px;
+  max-height: 320px;
   overflow-y: auto;
 }
 
