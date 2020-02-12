@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import "./styles.css"
+import "../styles.css"
 
 const UserHeadSet = ({ className }) => (
   <svg
@@ -28,7 +28,7 @@ const UserHeadSet = ({ className }) => (
 )
 
 UserHeadSet.defaultProps = {
-  className: "UserHeadSet"
+  className: "DefaultSvgClass"
 }
 
 export default memo(UserHeadSet)
