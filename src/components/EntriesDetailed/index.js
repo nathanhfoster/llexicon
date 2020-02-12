@@ -2,7 +2,7 @@ import React, { useRef, memo } from "react"
 import PropTypes from "prop-types"
 import { Col } from "reactstrap"
 import { FixedSizeList } from "react-window"
-import Entry from "../../components/Entry"
+import { Entry } from "../../components"
 import deepEquals from "../../helpers/deepEquals"
 
 const renderDetailedEntries = ({ data, index, style, isScrolling }) => {

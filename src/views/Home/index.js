@@ -1,13 +1,13 @@
-import React, { Fragment } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
-import BasicCard from "../../components/BasicCard"
-import { connect as reduxConnect } from "react-redux"
-import { useHistory } from "react-router-dom"
+import { AddToHomeScreen, BasicCard } from "../../components"
 import { RouteMap, RouterPush } from "../../components/ReactRouter/Routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
-import AddToHomeScreen from "../../components/AddToHomeScreen"
+import { connect as reduxConnect } from "react-redux"
+import { useHistory } from "react-router-dom"
 import Support from "../Support"
+import { UserHeadset } from "../../images/SVG"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
@@ -106,6 +106,20 @@ const Home = ({ userId }) => {
       )
     },
     {
+      title: "Support",
+      text: "Open to feature suggestions, bug reports, or conversation!",
+      header: <UserHeadset className="AboutFeatureImage" />,
+      button: (
+        <Button
+          color="accent"
+          onClick={() => RouterPush(history, RouteMap.SUPPORT)}
+        >
+          Support Page
+        </Button>
+      )
+    },
+
+    {
       title: "Linkable",
       text: "Share any public view you want with your friends and family",
       faIcon: "fas fa-link"
@@ -177,37 +191,34 @@ const Home = ({ userId }) => {
   ]
 
   return (
-    <Fragment>
-      <Container className="Home Container">
-        <Row>
-          <Col xs={12} className="Center">
-            <LogoImage height={256} width={256} />
-          </Col>
-        </Row>
-        <Row className="Center">
-          <Col xs={12}>
-            <h1>Astral Tree</h1>
-          </Col>
-          <Col xs={12}>
-            <h3>The first progressive web app journal</h3>
-          </Col>
-          <Col xs={12}>
-            <ButtonGroup size="lg">
-              <Button
-                color="accent"
-                onClick={() => RouterPush(history, RouteMap.NEW_ENTRY)}
-              >
-                <i className="fas fa-feather-alt mr-1" />
-                New Entry
-              </Button>
-            </ButtonGroup>
-          </Col>
-        </Row>
-        <Row>{renderFeatures(features)}</Row>
-        <hr style={{ height: 40 }} />
-      </Container>
-      <Support />
-    </Fragment>
+    <Container className="Home Container">
+      <Row>
+        <Col xs={12} className="Center">
+          <LogoImage height={256} width={256} />
+        </Col>
+      </Row>
+      <Row className="Center">
+        <Col xs={12}>
+          <h1>Astral Tree</h1>
+        </Col>
+        <Col xs={12}>
+          <h3>The first progressive web app journal</h3>
+        </Col>
+        <Col xs={12}>
+          <ButtonGroup size="lg">
+            <Button
+              color="accent"
+              onClick={() => RouterPush(history, RouteMap.NEW_ENTRY)}
+            >
+              <i className="fas fa-feather-alt mr-1" />
+              New Entry
+            </Button>
+          </ButtonGroup>
+        </Col>
+      </Row>
+      <Row>{renderFeatures(features)}</Row>
+      <hr style={{ height: 40 }} />
+    </Container>
   )
 }
 

@@ -11,7 +11,7 @@ const UseInterval = ({ callback, delay = 5000 }) => {
 
   // Set up the interval.
   useEffect(() => {
-    tick = () => {
+    const tick = () => {
       savedCallback.current()
     }
     if (delay !== null) {

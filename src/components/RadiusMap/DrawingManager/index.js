@@ -10,7 +10,7 @@ import {
   DEFAULT_STROKE,
   SELECTED_COLOR,
   NOT_ATTACHED_OR_SELECTED_COLOR
-} from "../PolygonSystem"
+} from "../PolygonSystem/getOptions"
 import { Geometry } from "../classes"
 
 const getInitialPolygon = ({ lat, lng }) => {
@@ -249,7 +249,7 @@ DrawingManager.propTypes = {
   width: PropTypes.any.isRequired,
   toggleDrawingMode: PropTypes.func.isRequired,
   shouldRenderPolygons: PropTypes.bool.isRequired,
-  mapApi: PropTypes.object.isRequired,
+  mapApi: PropTypes.object.isRequired
 }
 
 DrawingManager.defaultProps = {

@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { saveReduxState } from "./persist"
-import UseDebounce from "../../components/UseDebounce"
+import { UseDebounce } from "../../components"
 
 const mapStateToProps = ({ Persister: { _lastUpdated } }) => ({ _lastUpdated })
 

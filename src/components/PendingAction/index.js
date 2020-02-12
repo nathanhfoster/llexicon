@@ -31,15 +31,6 @@ const PendingAction = ({
     }
   }
 
-  const {
-    ShouldShow,
-    Disabled,
-    Click,
-    ActionName,
-    Pending,
-    Completed
-  } = this.state
-
   return (
     ShouldShow && (
       <Button

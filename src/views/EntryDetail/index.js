@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
-import Entry from "../../components/Entry"
+import { Entry } from "../../components"
 import { connect as reduxConnect } from "react-redux"
 import { useParams } from "react-router-dom"
 import { GetUserEntryDetails, SyncEntries } from "../../actions/Entries"

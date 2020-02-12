@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Toast, ToastHeader, ToastBody } from "reactstrap"
-import UseDebounce from "../../components/UseDebounce"
+import { UseDebounce } from "../../components"
 import { ClearAlerts } from "../../actions/Alerts"
 import "./styles.css"
 

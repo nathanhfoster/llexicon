@@ -3,12 +3,11 @@ import PropTypes from "prop-types"
 import { Jumbotron } from "reactstrap"
 import { useDispatch } from "react-redux"
 import { withRouter } from "react-router-dom"
-import { RouterPush, RouteMap } from "../../components/ReactRouter/Routes"
-import BasicForm from "../../components/BasicForm"
-import FacebookGoogleLogin from "../../components/FacebookGoogleLogin"
-import { UserLogin, CreateUser, PasswordReset } from "../../actions/User"
+import { BasicTabs, BasicForm, FacebookGoogleLogin } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
-import BasicTabs from "../../components/BasicTabs"
+import { RouterPush, RouteMap } from "../../components/ReactRouter/Routes"
+import { UserLogin, CreateUser, PasswordReset } from "../../actions/User"
+
 import "./styles.css"
 const { LOGIN, SIGNUP, PASSWORD_RESET } = RouteMap
 

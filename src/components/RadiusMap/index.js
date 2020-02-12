@@ -9,7 +9,7 @@ import MarkerCluster from "./MarkerCluster"
 import PolygonSystem from "./PolygonSystem"
 import DrawingManager from "./DrawingManager"
 import MapControl from "./MapControl"
-import LocationList from "../../components/LocationList"
+import { LocationList } from "../../components"
 import fitCoordsToBounds from "./functions/fitCoordsToBounds"
 import {
   resetProject,
@@ -61,7 +61,9 @@ const mapStateToProps = ({
   zoom,
   center,
   bounds,
-  sites: sites.filter(site => !(site._attached === false && site._selected === false)),
+  sites: sites.filter(
+    site => !(site._attached === false && site._selected === false)
+  ),
   siteDescription
 })
 
@@ -82,7 +84,13 @@ class RadiusMap extends Component {
   mousePosRef = { x: null, y: null, lat: null, lng: null } // Used so we don't have to update state and rerender
   constructor(props) {
     super(props)
-    let { shouldShowParlay, showParlayMinZoom, showParlayMaxZoom, options, shouldFitCoordsToBounds } = props
+    let {
+      shouldShowParlay,
+      showParlayMinZoom,
+      showParlayMaxZoom,
+      options,
+      shouldFitCoordsToBounds
+    } = props
 
     options = { ...DEFAULT_MAP_OPTIONS, ...options }
 
@@ -240,7 +248,13 @@ class RadiusMap extends Component {
       shouldRenderLocationList
     } = nextProps
 
-    const { zooming, mapApiLoaded, mapInstance, mapApi, shouldFitCoordsToBounds } = prevState
+    const {
+      zooming,
+      mapApiLoaded,
+      mapInstance,
+      mapApi,
+      shouldFitCoordsToBounds
+    } = prevState
     const stateHoverChildKey = prevState.hoveredChildKey
 
     let { locations } = nextProps
@@ -259,9 +273,15 @@ class RadiusMap extends Component {
     const markerClusters = createClusters(markers, { ...nextProps })
 
     const sitePolygons = formatLocations(sites)
-    const polygonClusters = createClusters(sitePolygons, { ...nextProps }).concat(markerClusters)
+    const polygonClusters = createClusters(sitePolygons, {
+      ...nextProps
+    }).concat(markerClusters)
 
-    const shouldRenderMarkers = zoomWithinRange(showMarkersMinZoom, showMarkersMaxZoom, zoom)
+    const shouldRenderMarkers = zoomWithinRange(
+      showMarkersMinZoom,
+      showMarkersMaxZoom,
+      zoom
+    )
 
     const shouldRenderPolygons = zooming
       ? false
@@ -287,7 +307,9 @@ class RadiusMap extends Component {
       shouldRenderMarkers,
       shouldRenderPolygons,
       shouldRenderLocationList,
-      hoveredChildKey: setHoveredChildKey ? hoveredChildKey : stateHoverChildKey,
+      hoveredChildKey: setHoveredChildKey
+        ? hoveredChildKey
+        : stateHoverChildKey,
       mapApiLoaded,
       mapInstance,
       mapApi,
@@ -324,7 +346,12 @@ class RadiusMap extends Component {
 
   componentDidUpdate(prevProps, prevState, newCoords) {
     if (newCoords) {
-      const { shouldFitCoordsToBounds, mapInstance, mapApi, bounds } = this.state
+      const {
+        shouldFitCoordsToBounds,
+        mapInstance,
+        mapApi,
+        bounds
+      } = this.state
       if (shouldFitCoordsToBounds && mapInstance && mapApi) {
         fitCoordsToBounds(mapInstance, mapApi, newCoords)
         this.setState({ shouldFitCoordsToBounds: false })
@@ -433,7 +460,10 @@ class RadiusMap extends Component {
 
     const distanceToMouse =
       distanceKoef *
-      Math.sqrt((markerX - mouseX) * (markerX - mouseX) + (markerY - mouseY) * (markerY - mouseY))
+      Math.sqrt(
+        (markerX - mouseX) * (markerX - mouseX) +
+          (markerY - mouseY) * (markerY - mouseY)
+      )
 
     // console.log('distanceToMouse: ', distanceToMouse)
     this.mousePosRef = mousePos
@@ -442,7 +472,11 @@ class RadiusMap extends Component {
   }
 
   onGoogleApiLoaded = ({ map, maps }) => {
-    const { shouldFitCoordsToBounds, shouldShowParlay, polygonClusters } = this.state
+    const {
+      shouldFitCoordsToBounds,
+      shouldShowParlay,
+      polygonClusters
+    } = this.state
 
     this.setState({
       mapApiLoaded: true,
@@ -460,14 +494,10 @@ class RadiusMap extends Component {
 
       fitCoordsToBounds(map, maps, coords)
     }
-
-    if (shouldShowParlay) {
-      REP.Layer.Google.Initialize(map, { Return_Buildings: true })
-    }
   }
 
   renderMarkerClusters = markerClusters => {
-    const {  setMapCenterBoundsZoom } = this.props
+    const { setMapCenterBoundsZoom } = this.props
     const { shouldRenderMarkers, hoveredChildKey, zoom } = this.state
     if (!shouldRenderMarkers) return null
     else
@@ -499,7 +529,14 @@ class RadiusMap extends Component {
   }
 
   renderPolygons = polygonClusters => {
-    const { shouldRenderPolygons, drawingMode, bounds, mapInstance, mapApi, hoveredChildKey } = this.state
+    const {
+      shouldRenderPolygons,
+      drawingMode,
+      bounds,
+      mapInstance,
+      mapApi,
+      hoveredChildKey
+    } = this.state
     if (!shouldRenderPolygons || drawingMode || !mapInstance) {
       return null
     } else {
@@ -561,10 +598,13 @@ class RadiusMap extends Component {
       sites
     } = this.props
 
-    const hasUserDefinedSite = sites.find(site => site.siteType === "USER_DEFINED" && site._attached)
+    const hasUserDefinedSite = sites.find(
+      site => site.siteType === "USER_DEFINED" && site._attached
+    )
     const shouldRenderParlayMapButton = id && !hasUserDefinedSite
     const shouldShowDrawingModeButton =
-      shouldRenderParlayMapButton && sites.filter(site => site._attached).length === 0
+      shouldRenderParlayMapButton &&
+      sites.filter(site => site._attached).length === 0
 
     const TIME_TO_WAIT_FOR_DRAWING_MANAGER_TO_MOUNT = 1000
 
@@ -589,7 +629,10 @@ class RadiusMap extends Component {
             Component: DrawButton,
             onClick: () => {
               this.toggleParlayMapRender()
-              setTimeout(() => this.toggleDrawingMode(), TIME_TO_WAIT_FOR_DRAWING_MANAGER_TO_MOUNT)
+              setTimeout(
+                () => this.toggleDrawingMode(),
+                TIME_TO_WAIT_FOR_DRAWING_MANAGER_TO_MOUNT
+              )
             },
             disabled: !shouldShowDrawingModeButton
           }

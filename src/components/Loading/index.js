@@ -17,12 +17,10 @@ const Loading = ({
   dataLength
 }) => {
   const percentage = (currentIndex / dataLength) * 100
-  const percentageDone = new Number(percentage)
-  const progressColor = getColor(percentageDone)
 
   return (
     <div>
-      <Progress color={progressColor} value={percentageDone} />
+      <Progress color={getColor(progressColor)} value={new Number(percentageDone)} />
     </div>
   )
 }

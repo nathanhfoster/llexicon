@@ -1,5 +1,4 @@
 .listSearchContainer {
-    padding: 8px;
     font-size: 1rem;
     position: relative;
     height: 55px;
@@ -12,7 +11,10 @@
     border-radius: 2px;
     z-index: 9999;
     background-color: white;
-    position: absolute !important;
+    /* position: fixed !important; */
+    /* will-change: transform; */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
 }
 
 .listSearchInputDropDown {
@@ -23,8 +25,8 @@
 }
 
 .listSearchInput {
-    width: calc(100% - 10px);
-    padding: 12px 0;
+    width: 100%;
+    padding: 6px 0;
     outline: 0;
     border-width: 0 0 1px;
     border-color: rgba(0, 0, 0, 0.54);
@@ -49,8 +51,8 @@
     display: inline-block;
     padding: 3px;
     position: absolute;
-    top: 20px;
-    right: 12px;
+    top: 8px;
+    right: 4px;
     outline: 0;
     -webkit-transition: -webkit-transform .2s ease-in-out;
     -ms-transition: -ms-transform .2s ease-in-out;
@@ -70,27 +72,6 @@
 .Down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
-}
-
-.listSearchItem {
-    padding: 16px 8px;
-    box-sizing: border-box;
-    font-weight: 400;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.listSearchItem:hover {
-    background-color: whitesmoke;
-    cursor: pointer;
-    background-repeat: no-repeat;
-    backface-visibility: hidden;
-    -webkit-font-smoothing: subpixel-antialiased;
-    transition: -webkit-transform 0.425s cubic-bezier(0.485, 1.65, 0.545, 0.835);
-    transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.01, 1.01, 1);
-    --webkit-perspective: 1000;
 }
 
 .listSearchHelper {

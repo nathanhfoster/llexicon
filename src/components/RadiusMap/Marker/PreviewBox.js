@@ -2,7 +2,7 @@ import React, { useEffect, useState, memo } from "react"
 import PropTypes from "prop-types"
 import moment from "moment"
 import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from "./styles"
-import TagContainer from "../../../components/TagsContainer"
+import { TagsContainer } from "../../../components"
 
 const HEIGHT = 100
 const WIDTH = 200
@@ -73,9 +73,9 @@ const PreviewBox = ({
     title = "Me"
   }
 
-  date_created_by_author = moment(date_created_by_author || _lastUpdated).format(
-    "MM/DD/YYYY"
-  )
+  date_created_by_author = moment(
+    date_created_by_author || _lastUpdated
+  ).format("MM/DD/YYYY")
 
   return (
     <div style={styles}>
@@ -83,7 +83,7 @@ const PreviewBox = ({
       <div>{address}</div>
       {tags && (
         <div>
-          <TagContainer tags={tags} />
+          <TagsContainer tags={tags} />
         </div>
       )}
       <div style={lineStyle}>

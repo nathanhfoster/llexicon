@@ -45,7 +45,7 @@ const PolygonSystem = ({
   onChildMouseEnter,
   onChildMouseLeave
 }) => {
-  if (coords.length === 0) return null
+  // if (coords.length === 0) return null
 
   // Disable hover events and only allow them on the polyline level
   useEffect(() => {

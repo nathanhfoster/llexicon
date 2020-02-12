@@ -1,7 +1,7 @@
 import React from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import Editor from "../../components/Editor"
+import { Editor, ReactDatePicker } from "../../components"
 import {
   Container,
   Row,
@@ -13,7 +13,6 @@ import {
   InputGroupText,
   Button
 } from "reactstrap"
-import ReactDatePicker from "../../components/ReactDatePicker"
 import { SetCalendar } from "../../actions/Calendar"
 import { PostReduxEntry, SyncEntries } from "../../actions/Entries"
 import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"

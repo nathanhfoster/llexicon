@@ -2,18 +2,21 @@ import React, { Fragment, lazy, useCallback, memo } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Row, Button, ButtonGroup } from "reactstrap"
-import DiaryCalendar from "../../components/DiaryCalendar"
-import EntriesMinimal from "../../components/EntriesMinimal"
-import EntriesDetailed from "../../components/EntriesDetailed"
-import BasicTabs from "../../components/BasicTabs"
-import BasicTable from "../../components/BasicTable"
-import BasicMap from "../../components/BasicMap"
+import {
+  DiaryCalendar,
+  EntriesMinimal,
+  EntriesDetailed,
+  BasicTabs,
+  BasicTable,
+  BasicMap,
+  TagsContainer
+} from "../../components"
+import { RouteMap, RouterPush } from "../../components/ReactRouter/Routes"
 import Moment from "react-moment"
 import MomentJS from "moment"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
-import { RouteMap, RouterPush } from "../../components/ReactRouter/Routes"
-import TagsContainer from "../../components/TagsContainer"
+
 import { stripHtml } from "../../helpers"
 import deepEquals from "../../helpers/deepEquals"
 import {

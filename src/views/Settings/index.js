@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import ImportEntries from "../../components/ImportEntries"
+import { ImportEntries, BasicForm, EntryStatistics } from "../../components"
 import { Container, Row, Col, Button, Form, FormGroup, Media } from "reactstrap"
 import { UpdateUser } from "../../actions/User"
 import {
@@ -11,9 +11,7 @@ import {
 } from "../../actions/Settings"
 import { copyStringToClipboard } from "../../helpers"
 import MomentJs from "moment"
-import BasicForm from "../../components/BasicForm"
 import SettingInput from "./SettingInput"
-import EntryStatistics from "../../components/EntryStatistics"
 import Moment from "react-moment"
 import "./styles.css"
 
