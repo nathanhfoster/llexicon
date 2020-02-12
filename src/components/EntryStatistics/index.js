@@ -92,7 +92,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
   const averageYearsUpdatingEntries = averageMonthsUpdatingEntries / 12
 
   const averageTimesUpdatingEntries = [
-    { title: "Milliseconds", value: averageMillisecondsUpdatingEntries },
+    // { title: "Milliseconds", value: averageMillisecondsUpdatingEntries },
     { title: "Seconds", value: averageSecondsUpdatingEntries },
     { title: "Minutes", value: averageMinutesUpdatingEntries },
     { title: "Hours", value: averageHoursUpdatingEntries },
