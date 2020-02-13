@@ -24,7 +24,7 @@ const Support = () => {
           color="accent"
           tag="a"
           href="mailto:nateinthegame@gmail.com?subject=Astral%20Tree%20Support"
-          // target="_blank"
+          target="_blank"
           rel="noopener noreferrer"
         >
           nateinthegame@gmail.com
