@@ -315,8 +315,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
     if (_shouldDelete) {
       synced = true
-      if (_shouldPost) dispatch({ type: ENTRY_DELETE, id })
-      else DeleteEntry(id)
+      dispatch(DeleteEntry(id))
       // else dispatchDeleteEntries.push(DeleteEntry(id))
       continue
     } else if (_shouldPost) {
@@ -404,12 +403,12 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
   // dispatch(Sync(dispatchActions))
 
-  if(synced) {
-  dispatch({
-    type: ALERTS_SET_MESSAGE,
-    payload: { title: "Synced", message: "Entries" }
-  })
-}
+  if (synced) {
+    dispatch({
+      type: ALERTS_SET_MESSAGE,
+      payload: { title: "Synced", message: "Entries" }
+    })
+  }
 
   dispatch({ type: ENTRIES_COMPLETE })
 }
