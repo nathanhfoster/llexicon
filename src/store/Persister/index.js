@@ -4,15 +4,18 @@ import { connect as reduxConnect } from "react-redux"
 import { saveReduxState } from "./persist"
 import { UseDebounce } from "../../components"
 
-const mapStateToProps = ({ Persister: { _lastUpdated } }) => ({ _lastUpdated })
+const mapStateToProps = ({ Persister: { _lastUpdated, shouldDelay } }) => ({
+  _lastUpdated,
+  shouldDelay
+})
 
 const mapDispatchToProps = { saveReduxState }
 
-const Persister = ({ saveReduxState, _lastUpdated }) => (
+const Persister = ({ saveReduxState, _lastUpdated, shouldDelay }) => (
   <UseDebounce
     onChangeCallback={saveReduxState}
     value={_lastUpdated}
-    delay={1600}
+    delay={shouldDelay ? 1600 : 0}
   />
 )
 

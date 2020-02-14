@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { Toast, ToastHeader, ToastBody } from "reactstrap"
+import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
 import { UseDebounce } from "../../components"
 import { ClearAlerts } from "../../actions/Alerts"
 import "./styles.css"
@@ -11,13 +11,21 @@ const mapStateToProps = ({ Alerts: { title, message } }) => ({ title, message })
 const mapDispatchToProps = { ClearAlerts }
 
 const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
-  const shouldShow = title && message ? true : false
+  const appUpdate = title === "App Update"
+  const shouldShow = appUpdate || (title && message) ? true : false
 
-  const debounceClear = setTimeout(() => ClearAlerts(), alertInterval)
+  const debounceClear = () => {
+    ClearAlerts()
+  }
+
+  const handleOnClickCallback = () => {
+    debounceClear()
+    setTimeout(() => window.location.reload(true), 1000)
+  }
 
   return (
     <Toast
-      className="Alert"
+      className="Alert rounded"
       isOpen={shouldShow}
       appear={true}
       enter={true}
@@ -29,6 +37,7 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
       }}
     >
       <UseDebounce
+        debounceOnMount={!appUpdate}
         onChangeCallback={debounceClear}
         value={shouldShow}
         delay={1600}
@@ -36,7 +45,17 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
       <ToastHeader icon={<i className="fas fa-feather-alt" />}>
         {title}
       </ToastHeader>
-      <ToastBody>{message}</ToastBody>
+      <ToastBody>
+        <h6>{message}</h6>
+
+        {appUpdate && (
+          <div className="Center">
+            <Button onClick={handleOnClickCallback} color="accent">
+              Update
+            </Button>
+          </div>
+        )}
+      </ToastBody>
     </Toast>
   )
 }

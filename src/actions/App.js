@@ -1,5 +1,6 @@
 import { ReduxActions } from "../constants"
 import { Axios } from "."
+import { ClearAlerts } from "../actions/Alerts"
 import qs from "qs"
 
 const SetWindow = payload => ({
@@ -43,17 +44,15 @@ const SetAppVersion = () => (dispatch, getState) => {
       const clientVersion = new Date(version)
       const clientNeedsUpdate = clientVersion - latestAppVersion < 0
       if (clientNeedsUpdate) {
-        const message = "There is a new version of the app!"
         dispatch({ type: ReduxActions.SET_APP_VERSION, payload: date_created })
         // dispatch({ type: ReduxActions.REDUX_RESET })
         dispatch({
           type: ReduxActions.ALERTS_SET_MESSAGE,
           payload: {
             title: "App Update",
-            message
+            message: "There is a new version of the app!"
           }
         })
-        setTimeout(() => window.location.reload(true), 3500)
       }
     })
     .catch(e => console.log(e))

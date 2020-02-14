@@ -10,6 +10,8 @@ import {
   GetUserEntryTags
 } from "./actions/Entries"
 
+const FIFTEEN_MINUTES = 1000 * 60 * 15
+
 const mapStateToProps = ({ User: { id } }) => ({
   UserId: id
 })
@@ -40,6 +42,8 @@ const App = ({
     SetCalendar({ activeDate })
 
     SetAppVersion()
+
+    setInterval(() => SetAppVersion(), FIFTEEN_MINUTES)
 
     const handleResize = () => SetWindow(getWindowDimensions())
 

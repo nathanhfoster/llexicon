@@ -11,7 +11,10 @@ const {
   REDUX_RESET
 } = ReduxActions
 
-const DEFAULT_STATE_ALERTS = { title: "", message: "" }
+const DEFAULT_STATE_ALERTS = {
+  title: "",
+  message: ""
+}
 
 const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
   const { type, payload } = action
