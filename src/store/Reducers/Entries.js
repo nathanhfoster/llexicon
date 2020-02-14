@@ -139,7 +139,6 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         )
       }
-
     case ENTRY_DELETE:
       return {
         ...state,
