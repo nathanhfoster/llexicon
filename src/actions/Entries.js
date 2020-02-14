@@ -281,7 +281,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
     Entries: { items, filteredItems, isPending }
   } = getState()
 
-  if (isPending) return
+  // if (isPending) return
 
   dispatch({ type: ENTRIES_PENDING })
 
