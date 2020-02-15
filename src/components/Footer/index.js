@@ -13,6 +13,7 @@ const mapStateToProps = ({ User }) => ({
 
 const Footer = ({ isOpen, shouldRenderSettingsLink }) => (
   <Collapse
+    tag="footer"
     className="MainFooter"
     isOpen={isOpen}
     // onEntering={setStatus("Opening")}
@@ -20,7 +21,6 @@ const Footer = ({ isOpen, shouldRenderSettingsLink }) => (
     // onExiting={setStatus("Closing")}
     // onExited={setStatus("Closed")}
   >
-    <footer>
       <div>&copy; {new Date().getFullYear()} Nathan Foster</div>
       <div>
         <Link to="/privacy-policy">
@@ -32,7 +32,6 @@ const Footer = ({ isOpen, shouldRenderSettingsLink }) => (
           </Link>
         )}
       </div>
-    </footer>
   </Collapse>
 )
 
