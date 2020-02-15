@@ -9,7 +9,7 @@ import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import UseDebounce from "../UseDebounce"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
-import deepEquals from "../../helpers/deepEquals"
+import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
 
 const Entry = ({
@@ -139,15 +139,7 @@ Entry.defaultProps = {
   theme: "snow"
 }
 
-const isEqual = (prevProps, nextProps) => {
-  const memoProps = ["entry", "itemSize", "width"]
-  for (let i = 0, { length } = memoProps; i < length; i++) {
-    const prop = memoProps[i]
-    if (!deepEquals(prevProps[prop], nextProps[prop])) {
-      return false
-    }
-  }
-  return true
-}
+const isEqual = (prevProps, nextProps) =>
+  memoizeProps(prevProps, nextProps, ["entry", "itemSize", "width"])
 
 export default withRouter(memo(Entry, isEqual))

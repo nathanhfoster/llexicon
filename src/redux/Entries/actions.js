@@ -1,7 +1,11 @@
 import { AlertActionTypes } from "../Alerts/types"
 import { EntriesActionTypes } from "./types"
 import { Axios, AxiosForm } from "../Actions"
-import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from "../../helpers"
+import {
+  getFileFromBase64,
+  htmlToArrayOfBase64,
+  cleanObject
+} from "../../helpers"
 import FormData from "form-data"
 import qs from "qs"
 
@@ -158,6 +162,7 @@ const GetUserEntries = pageNumber => (dispatch, getState) => {
 
 const GetUserEntriesByDate = date => (dispatch, getState) => {
   const { id } = getState().User
+  if (!id) return
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify({ date }))
     .then(res => {

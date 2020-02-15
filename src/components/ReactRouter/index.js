@@ -13,7 +13,7 @@ import Login from "../../views/Login"
 import PrivacyPolicy from "../PrivacyPolicy"
 import PageNotFound from "../../views/PageNotFound"
 import { RouterLinkPush } from "./Routes"
-import deepEquals from "../../helpers/deepEquals"
+import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
 
 const {
@@ -131,20 +131,12 @@ ReactRouter.propTypes = {
   User: PropTypes.objectOf(PropTypes.any)
 }
 
-const isEqual = (prevProps, nextProps) => {
-  const memoProps = [
+const isEqual = (prevProps, nextProps) =>
+  memoizeProps(prevProps, nextProps, [
     "User",
     "routeOverlayHeight",
     "navBarHeight",
     "footerHeight"
-  ]
-  for (let i = 0, { length } = memoProps; i < length; i++) {
-    const prop = memoProps[i]
-    if (!deepEquals(prevProps[prop], nextProps[prop])) {
-      return false
-    }
-  }
-  return true
-}
+  ])
 
 export default reduxConnect(mapStateToProps)(memo(ReactRouter, isEqual))

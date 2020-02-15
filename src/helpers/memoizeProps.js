@@ -1,6 +1,6 @@
 import deepEquals from "./deepEquals"
 
-const memoProps = (prevProps, nextProps) => memoProps => {
+const memoizeProps = (prevProps, nextProps, memoProps) => {
   for (let i = 0, { length } = memoProps; i < length; i++) {
     const prop = memoProps[i]
     if (!deepEquals(prevProps[prop], nextProps[prop])) {
@@ -11,4 +11,4 @@ const memoProps = (prevProps, nextProps) => memoProps => {
   return false
 }
 
-export default memoProps
+export default memoizeProps

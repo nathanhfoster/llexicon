@@ -6,7 +6,7 @@ import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
 import { removeArrayDuplicates } from "../../../../../helpers"
-import deepEquals from "../../../../../helpers/deepEquals"
+import memoizeProps from "../../../../../helpers/memoizeProps"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { id }, Entries: { EntryTags } }) => ({
@@ -153,16 +153,8 @@ TagsButtonModal.defaultProps = {
   tags: []
 }
 
-const isEqual = (prevProps, nextProps) => {
-  const memoProps = ["UserId", "EntryTags", "tags", "xs"]
-  for (let i = 0, { length } = memoProps; i < length; i++) {
-    const prop = memoProps[i]
-    if (!deepEquals(prevProps[prop], nextProps[prop])) {
-      return false
-    }
-  }
-  return true
-}
+const isEqual = (prevProps, nextProps) =>
+  memoizeProps(prevProps, nextProps, ["UserId", "EntryTags", "tags", "xs"])
 
 export default reduxConnect(
   mapStateToProps,

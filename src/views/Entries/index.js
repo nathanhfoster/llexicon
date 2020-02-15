@@ -18,7 +18,7 @@ import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
 
 import { stripHtml } from "../../helpers"
-import deepEquals from "../../helpers/deepEquals"
+import memoizeProps from "../../helpers/memoizeProps"
 import {
   SyncEntries,
   GetAllUserEntries,
@@ -437,22 +437,14 @@ Entries.propTypes = {
   SetEditorState: PropTypes.func.isRequired
 }
 
-const isEqual = (prevProps, nextProps) => {
-  const memoProps = [
+const isEqual = (prevProps, nextProps) =>
+  memoizeProps(prevProps, nextProps, [
     "entries",
     "TextEditor",
     "nextEntryPage",
     "entriesSearch",
     "viewPortHeight"
-  ]
-  for (let i = 0, { length } = memoProps; i < length; i++) {
-    const prop = memoProps[i]
-    if (!deepEquals(prevProps[prop], nextProps[prop])) {
-      return false
-    }
-  }
-  return true
-}
+  ])
 
 export default reduxConnect(
   mapStateToProps,

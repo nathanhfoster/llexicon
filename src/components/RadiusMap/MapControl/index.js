@@ -1,7 +1,7 @@
 import React, { Component, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { render } from "react-dom"
-import deepEquals from "../../../helpers/deepEquals"
+import memoizeProps from "../../../helpers/memoizeProps"
 import "./styles.css"
 
 class MapControl extends Component {
@@ -16,16 +16,12 @@ class MapControl extends Component {
   static defaultProps = { width: "100%" }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const memoProps = ["item", "map", "mapApi", "children"]
-
-    for (let i = 0, { length } = memoProps; i < length; i++) {
-      const prop = memoProps[i]
-      if (!deepEquals(this.props[prop], nextProps[prop])) {
-        return true
-      }
-    }
-
-    return false
+    return memoizeProps(this.props, nextProps, [
+      "item",
+      "map",
+      "mapApi",
+      "children"
+    ])
   }
 
   componentDidMount() {

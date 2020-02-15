@@ -5,6 +5,7 @@ import Polyline from "./Polyline"
 import toPoints from "../functions/toPoints"
 import getOptions from "./getOptions"
 import { DEFAULT_STROKE, ATTACHED_COLOR } from "./getOptions"
+import memoizeProps from "../../../helpers/memoizeProps"
 
 const PolygonSystem = ({
   $dimensionKey,
@@ -182,22 +183,19 @@ PolygonSystem.defaultProps = {
 const getHover = ({ $hover, hoveredChildKey, $dimensionKey }) =>
   $hover || hoveredChildKey === $dimensionKey
 
-const areEqual = (prevProps, nextProps) => {
+const isEqual = (prevProps, nextProps) => {
   const previoushover = getHover(prevProps)
   const nextHover = getHover(nextProps)
 
   if (previoushover !== nextHover) return false
-
-  const memoProps = ["bounds", "options", "zoom", "heading", "tilt"]
-
-  for (let i = 0, { length } = memoProps; i < length; i++) {
-    const prop = memoProps[i]
-    if (prevProps[prop] !== nextProps[prop]) {
-      return false
-    }
-  }
-
-  return true
+  else
+    return memoizeProps(prevProps, nextProps, [
+      "bounds",
+      "options",
+      "zoom",
+      "heading",
+      "tilt"
+    ])
 }
 
-export default memo(PolygonSystem, areEqual)
+export default memo(PolygonSystem, isEqual)

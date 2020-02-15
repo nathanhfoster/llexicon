@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { Col } from "reactstrap"
 import { FixedSizeList } from "react-window"
 import { Entry } from "../../components"
-import deepEquals from "../../helpers/deepEquals"
+import memoizeProps from "../../helpers/memoizeProps"
 
 const renderDetailedEntries = ({ data, index, style, isScrolling }) => {
   const entry = data[index]
@@ -62,15 +62,7 @@ EntriesDetailed.defaultProps = {
   itemSize: 60
 }
 
-const isEqual = (prevProps, nextProps) => {
-  const memoProps = ["entries", "height", "itemSize", "width"]
-  for (let i = 0, { length } = memoProps; i < length; i++) {
-    const prop = memoProps[i]
-    if (!deepEquals(prevProps[prop], nextProps[prop])) {
-      return false
-    }
-  }
-  return true
-}
+const isEqual = (prevProps, nextProps) =>
+  memoizeProps(prevProps, nextProps, ["entries", "height", "itemSize", "width"])
 
 export default memo(EntriesDetailed, isEqual)
