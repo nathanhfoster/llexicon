@@ -1,5 +1,6 @@
 import { WindowActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
+import { getWindowDimensions } from "./utils"
 
 const DEFAULT_STATE_WINDOW = {
   version: 0,
@@ -49,7 +50,7 @@ const Window = (state = DEFAULT_STATE_WINDOW, action) => {
   const { type, payload } = action
   switch (type) {
     case WindowActionTypes.SET_WINDOW:
-      return { ...state, ...payload }
+      return { ...state, ...getWindowDimensions() }
     case AppActionTypes.SET_APP_VERSION:
       return { ...state, version: payload }
     default:

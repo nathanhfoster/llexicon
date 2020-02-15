@@ -4,7 +4,6 @@ import { connect as reduxConnect } from "react-redux"
 import { useHistory, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import Footer from "../Footer"
 import Home from "../../views/Home"
 import Settings from "../../views/Settings"
 import Support from "../../views/Support"
@@ -124,7 +123,6 @@ const ReactRouter = props => {
         {renderRouteItems}
         <Route component={PageNotFound} />
       </Switch>
-      <Footer />
     </OverlayScrollbarsComponent>
   )
 }
