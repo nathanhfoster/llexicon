@@ -4,7 +4,7 @@ import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { Link } from "react-router-dom"
 import { RouteMap } from "../ReactRouter/Routes"
-import { SearchUserEntries } from "../../actions/Entries"
+import { SearchUserEntries } from "../../redux/Entries/actions"
 import UseDebounce from "../UseDebounce"
 import "./styles.css"
 

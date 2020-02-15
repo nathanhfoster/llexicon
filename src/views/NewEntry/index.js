@@ -13,10 +13,13 @@ import {
   InputGroupText,
   Button
 } from "reactstrap"
-import { SetCalendar } from "../../actions/Calendar"
-import { PostReduxEntry, SyncEntries } from "../../actions/Entries"
-import { SetEditorState, ClearEditorState } from "../../actions/TextEditor"
-import { DEFAULT_STATE_TEXT_EDITOR } from "../../store/Reducers/TextEditor"
+import { SetCalendar } from "../../redux/Calendar/Calendar"
+import { PostReduxEntry, SyncEntries } from "../../redux/Entries/actions"
+import {
+  SetEditorState,
+  ClearEditorState
+} from "../../redux/TextEditor/actions"
+import { DEFAULT_STATE_TEXT_EDITOR } from "../../redux/TextEditor/reducer"
 import "./styles.css"
 
 const mapStateToProps = ({

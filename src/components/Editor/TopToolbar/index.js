@@ -7,7 +7,7 @@ import Backgrounds from "./QuillSelect/Backgrounds"
 import Colors from "./QuillSelect/Colors"
 import Align from "./QuillSelect/Align"
 import Fonts from "./QuillSelect/Fonts"
-import { DEFAULT_STATE_TEXT_EDITOR } from "../../../store/Reducers/TextEditor"
+import { DEFAULT_STATE_TEXT_EDITOR } from "../../../redux/TextEditor/reducer"
 import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 

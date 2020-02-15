@@ -14,8 +14,8 @@ import {
   DropdownItem
 } from "reactstrap"
 import StarSearch from "../StarSearch"
-import { GetUserEntriesByDate } from "../../actions/Entries"
-import { UserLogout } from "../../actions/User"
+import { GetUserEntriesByDate } from "../../redux/Entries/actions"
+import { UserLogout } from "../../redux/User/actions"
 import Hamburger from "./Hamburger"
 import NavItemLink from "./NavItemLink"
 import { Logo } from "../../images/AWS"

@@ -4,13 +4,13 @@ import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import { LoadingScreen, NavBar } from "./components"
 
-import storeFactory from "./store"
+import storeFactory from "./redux"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import App from "./App"
-import AlertNotifications from "./store/AlertNotifications"
-import Persister from "./store/Persister"
-import { getReduxState } from "./store/Persister/persist"
+import AlertNotifications from "./components/AlertNotifications"
+import Persister from "./components/Persister"
+import { getReduxState } from "./redux/Persister/actions"
 import * as serviceWorker from "./serviceWorker"
 
 const BackgroundImage = lazy(() => import("./components/BackgroundImage"))

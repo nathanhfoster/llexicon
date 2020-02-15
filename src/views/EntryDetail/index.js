@@ -4,7 +4,7 @@ import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import { connect as reduxConnect } from "react-redux"
 import { useParams } from "react-router-dom"
-import { GetUserEntryDetails, SyncEntries } from "../../actions/Entries"
+import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
 import PageNotFound from "../PageNotFound"
 import "./styles.css"
 

@@ -23,8 +23,8 @@ import {
   SyncEntries,
   GetAllUserEntries,
   GetUserEntries
-} from "../../actions/Entries"
-import { SetEditorState } from "../../actions/TextEditor"
+} from "../../redux/Entries/actions"
+import { SetEditorState } from "../../redux/TextEditor/actions"
 
 import "./styles.css"
 

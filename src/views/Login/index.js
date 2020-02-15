@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom"
 import { BasicTabs, BasicForm, FacebookGoogleLogin } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { RouterPush, RouteMap } from "../../components/ReactRouter/Routes"
-import { UserLogin, CreateUser, PasswordReset } from "../../actions/User"
+import { UserLogin, CreateUser, PasswordReset } from "../../redux/User/actions"
 
 import "./styles.css"
 const { LOGIN, SIGNUP, PASSWORD_RESET } = RouteMap

@@ -3,12 +3,12 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { ImportEntries, BasicForm, EntryStatistics } from "../../components"
 import { Container, Row, Col, Button, Form, FormGroup, Media } from "reactstrap"
-import { UpdateUser } from "../../actions/User"
+import { UpdateUser } from "../../redux/User/actions"
 import {
   GetUserSettings,
   PostSettings,
   SetSettings
-} from "../../actions/Settings"
+} from "../../redux/User/actions"
 import { copyStringToClipboard } from "../../helpers"
 import MomentJs from "moment"
 import SettingInput from "./SettingInput"

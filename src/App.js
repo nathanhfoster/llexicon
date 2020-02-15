@@ -1,14 +1,14 @@
 import { useEffect } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { SetWindow, SetAppVersion } from "./actions/App"
-import { GetUserSettings } from "./actions/Settings"
-import { SetCalendar } from "./actions/Calendar"
+import { SetWindow, SetAppVersion } from "./redux/App/actions"
+import { GetUserSettings } from "./redux/User/actions"
+import { SetCalendar } from "./redux/Calendar/Calendar"
 import {
   SyncEntries,
   GetUserEntries,
   GetUserEntryTags
-} from "./actions/Entries"
+} from "./redux/Entries/actions"
 
 const FIFTEEN_MINUTES = 1000 * 60 * 15
 

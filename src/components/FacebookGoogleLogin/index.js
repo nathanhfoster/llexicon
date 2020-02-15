@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 import FacebookLogin from "react-facebook-login"
 import GoogleLogin from "react-google-login"
 import { SocialAuthenticationProviders } from "../../constants"
-import { SocialAuthentication } from "../../actions/SocialAuthentication"
+import { SocialAuthentication } from "../../redux/Actions/SocialAuthentication"
 import "./styles.css"
 const { REACT_APP_FACEBOOK_API, REACT_APP_GOOGLE_API } = process.env
 

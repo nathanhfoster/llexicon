@@ -4,8 +4,8 @@ import PropTypes from "prop-types"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import BasicMap from "../../../../BasicMap"
-import { WatchUserLocation } from "../../../../../actions/User"
-import { GetAddress } from "../../../../../actions/Google"
+import { WatchUserLocation } from "../../../../../redux/User/actions"
+import { GetAddress } from "../../../../../redux/Actions/Google"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { location } }) => ({ UserLocation: location })

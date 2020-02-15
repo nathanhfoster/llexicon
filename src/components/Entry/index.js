@@ -8,7 +8,7 @@ import { Editor } from "../../components"
 import ReactDatePicker from "../ReactDatePicker"
 import ConfirmAction from "../ConfirmAction"
 import UseDebounce from "../UseDebounce"
-import { UpdateReduxEntry, SyncEntries } from "../../actions/Entries"
+import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
 import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 

@@ -4,7 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import GoogleMapReact from "google-map-react"
 import MarkerCluster from "../RadiusMap/MarkerCluster"
 import Marker from "../RadiusMap/Marker"
-import { WatchUserLocation } from "../../actions/User"
+import { WatchUserLocation } from "../../redux/User/actions"
 import {
   DEFAULT_MAP_OPTIONS,
   GOOGLE_MAP_CONTROL_POSITIONS
@@ -68,12 +68,7 @@ class BasicMap extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let {
-      entry,
-      renderUserLocation,
-      UserLocation,
-      locations
-    } = nextProps
+    let { entry, renderUserLocation, UserLocation, locations } = nextProps
 
     let markerClusters = []
 
