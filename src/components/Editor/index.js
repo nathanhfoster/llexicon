@@ -1,8 +1,7 @@
-import React, { Component, Fragment, createRef } from "react"
+import React, { PureComponent, Fragment, createRef } from "react"
 import PropTypes from "prop-types"
 import ReactQuill, { Quill } from "react-quill"
 import ImageResize from "quill-image-resize-module-react"
-import deepEquals from "../../helpers/deepEquals"
 import "react-quill/dist/quill.snow.css"
 import "react-quill/dist/quill.bubble.css"
 import "react-quill/dist/quill.core.css"
@@ -198,7 +197,7 @@ const getFormats = ({}) => {
   ]
 }
 
-class Editor extends Component {
+class Editor extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -316,16 +315,6 @@ class Editor extends Component {
       formats,
       modules
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const { children } = this.props
-    const nextChildren = nextProps.children
-
-    const childrenChanged = !deepEquals(children, nextChildren)
-    const stateChanged = !deepEquals(this.state, nextState)
-
-    return stateChanged || childrenChanged
   }
 
   handleEditorStateChange = html => {
