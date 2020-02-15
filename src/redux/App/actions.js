@@ -1,5 +1,4 @@
 import { WindowActionTypes } from "../Window/types"
-import { ReduxActionTypes } from "../Actions/types"
 import { AppActionTypes } from "../App/types"
 import { AlertActionTypes } from "../Alerts/types"
 import { Axios } from "../Actions"
@@ -11,7 +10,7 @@ const SetWindow = payload => ({
 })
 
 const ResetRedux = () => dispatch =>
-  dispatch({ type: ReduxActionTypes.REDUX_RESET })
+  dispatch({ type: AppActionTypes.REDUX_RESET })
 
 const SetAppVersion = () => (dispatch, getState) => {
   const { version } = getState().Window
@@ -54,9 +53,4 @@ const GetAppVersion = () => (dispatch, getState) => {
     .catch(e => console.log(e))
 }
 
-export {
-  SetWindow,
-  ResetRedux,
-  SetAppVersion,
-  GetAppVersion
-}
+export { SetWindow, ResetRedux, SetAppVersion, GetAppVersion }

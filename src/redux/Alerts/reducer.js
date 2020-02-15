@@ -1,5 +1,5 @@
 import { AlertActionTypes } from "../Alerts/types"
-import { ReduxActionTypes } from "../Actions/types"
+import { AppActionTypes } from "../App/types"
 
 const DEFAULT_STATE_ALERTS = {
   title: "",
@@ -13,7 +13,7 @@ const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
       return { ...state, ...payload }
     case AlertActionTypes.ALERTS_CLEAR:
       return DEFAULT_STATE_ALERTS
-    case ReduxActionTypes.REDUX_RESET:
+    case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ALERTS
     default:
       return state
