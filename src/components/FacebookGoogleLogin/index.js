@@ -54,7 +54,7 @@ const FacebookGoogleLogin = () => {
         session_state,
         token_type
       },
-      w3: { Eea, Paa, U3, ig, ofa, wea }
+      // w3: { Eea, Paa, U3, ig, ofa, wea }
     } = response
 
     const payload = {
