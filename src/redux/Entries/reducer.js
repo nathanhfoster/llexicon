@@ -1,4 +1,5 @@
 import { EntriesActionTypes } from "../Entries/types"
+import { AppActionTypes } from "../App/types"
 import { handleFilterEntries } from "./utils"
 import { mergeJson } from "../../helpers"
 
@@ -109,7 +110,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         )
       }
-    case EntriesActionTypes.REDUX_RESET:
+    case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ENTRIES
     default:
       return state
