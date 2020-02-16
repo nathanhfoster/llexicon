@@ -4,13 +4,20 @@ import { connect as reduxConnect } from "react-redux"
 import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
 import { UseDebounce } from ".."
 import { ClearAlerts } from "../../redux/Alerts/actions"
+import { SetAppVersion } from "../../redux/App/actions"
 import "./styles.css"
 
 const mapStateToProps = ({ Alerts: { title, message } }) => ({ title, message })
 
-const mapDispatchToProps = { ClearAlerts }
+const mapDispatchToProps = { ClearAlerts, SetAppVersion }
 
-const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
+const AlertNotifications = ({
+  title,
+  message,
+  alertInterval,
+  ClearAlerts,
+  SetAppVersion
+}) => {
   const appUpdate = title === "App Update"
   const shouldShow = appUpdate || (title && message) ? true : false
 
@@ -19,6 +26,7 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
   }
 
   const handleOnClickCallback = () => {
+    SetAppVersion(new Date())
     debounceClear()
     setTimeout(() => window.location.reload(true), 1000)
   }
@@ -64,6 +72,7 @@ AlertNotifications.propTypes = {
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   ClearAlerts: PropTypes.func.isRequired,
+  SetAppVersion: PropTypes.func.isRequired,
   alertInterval: PropTypes.number.isRequired
 }
 

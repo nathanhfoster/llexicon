@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { SetWindow, SetAppVersion } from "./redux/App/actions"
+import { SetWindow, CheckAppVersion } from "./redux/App/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/Calendar"
 import {
@@ -19,7 +19,7 @@ const mapStateToProps = ({ User: { id } }) => ({
 const mapDispatchToProps = {
   SetWindow,
   GetUserSettings,
-  SetAppVersion,
+  CheckAppVersion,
   SetCalendar,
   SyncEntries,
   GetUserEntries,
@@ -29,7 +29,7 @@ const mapDispatchToProps = {
 const App = ({
   GetUserSettings,
   UserId,
-  SetAppVersion,
+  CheckAppVersion,
   SetWindow,
   SetCalendar,
   SyncEntries,
@@ -41,9 +41,9 @@ const App = ({
 
     SetCalendar({ activeDate })
 
-    SetAppVersion()
+    CheckAppVersion()
 
-    setInterval(() => SetAppVersion(), FIFTEEN_MINUTES)
+    setInterval(() => CheckAppVersion(), FIFTEEN_MINUTES)
 
     const handleResize = () => SetWindow()
 
