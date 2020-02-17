@@ -31,7 +31,8 @@ const {
   ENTRIES_MAP,
   LOGIN,
   SETTINGS,
-  SUPPORT
+  SUPPORT,
+  PRIVACY_POLICY
 } = RouteMap
 
 const mapStateToProps = ({
@@ -131,6 +132,12 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           route: SUPPORT,
           title: "SUPPORT",
           icon: <i className="fas fa-satellite NavBarImage" />
+        },
+        {
+          dropdownItem: true,
+          route: PRIVACY_POLICY,
+          title: "PRIVACY POLICY",
+          icon: <i className="fas fa-user-secret NavBarImage" />
         }
       ]
     }
