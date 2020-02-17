@@ -12,7 +12,7 @@ const mapStateToProps = ({ User }) => ({
 })
 
 const Footer = ({ isOpen, shouldRenderSettingsLink }) => (
-  <Collapse
+ {isOpen && <Collapse
     tag="footer"
     className="MainFooter"
     isOpen={isOpen}
@@ -33,6 +33,7 @@ const Footer = ({ isOpen, shouldRenderSettingsLink }) => (
         )}
       </div>
   </Collapse>
+ }
 )
 
 Footer.propTypes = {
