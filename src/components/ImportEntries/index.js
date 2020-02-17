@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import { useDispatch } from "react-redux"
 import PropTypes from "prop-types"
-import FileUpload from "../ReactRouter/FileUpload"
+import FileUpload from "../FileUpload"
 import { ImportReduxEntry } from "../../redux/Entries/actions"
 import "./styles.css"
 

@@ -11,30 +11,29 @@ const mapStateToProps = ({ User }) => ({
   shouldRenderSettingsLink: User.token ? true : false
 })
 
-const Footer = ({ isOpen, shouldRenderSettingsLink }) => 
-  (
-    <Collapse
-      tag="footer"
-      className="MainFooter"
-      isOpen={isOpen}
-      // onEntering={setStatus("Opening")}
-      // onEntered={setStatus("Opened")}
-      // onExiting={setStatus("Closing")}
-      // onExited={setStatus("Closed")}
-    >
-      <div>&copy; {new Date().getFullYear()} Nathan Foster</div>
-      <div>
-        <Link to="/privacy-policy">
-          <i className="fas fa-user-secret" /> Privacy policy
+const Footer = ({ isOpen, shouldRenderSettingsLink }) => (
+  <Collapse
+    tag="footer"
+    className="MainFooter"
+    isOpen={isOpen}
+    // onEntering={setStatus("Opening")}
+    // onEntered={setStatus("Opened")}
+    // onExiting={setStatus("Closing")}
+    // onExited={setStatus("Closed")}
+  >
+    <div>&copy; {new Date().getFullYear()} Nathan Foster</div>
+    <div>
+      <Link to="/privacy-policy">
+        <i className="fas fa-user-secret" /> Privacy policy
+      </Link>
+      {shouldRenderSettingsLink && (
+        <Link to={RouteMap.SETTINGS}>
+          <i className="fas fa-cog" /> Remove footer
         </Link>
-        {shouldRenderSettingsLink && (
-          <Link to={RouteMap.SETTINGS}>
-            <i className="fas fa-cog" /> Remove footer
-          </Link>
-        )}
-      </div>
-    </Collapse>
-  )
+      )}
+    </div>
+  </Collapse>
+)
 
 Footer.propTypes = {
   isOpen: PropTypes.bool.isRequired,
