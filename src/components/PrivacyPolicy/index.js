@@ -11,7 +11,7 @@ const PrivacyPolicy = () => (
         <p>Effective date: June 15, 2019</p>
 
         <p>
-          Nathan Foster ("us", "we", or "our") operates the
+          Astral Tree ("us", "we", or "our") operates the
           https://astraltree.com/ website (the "Service").
         </p>
 
@@ -99,7 +99,7 @@ const PrivacyPolicy = () => (
 
         <h2 className="headerBanner">Use of Data</h2>
 
-        <p>Nathan Foster uses the collected data for various purposes:</p>
+        <p>Astral Tree uses the collected data for various purposes:</p>
         <ul>
           <li>To provide and maintain the Service</li>
           <li>To notify you about changes to our Service</li>
@@ -133,7 +133,7 @@ const PrivacyPolicy = () => (
           such information represents your agreement to that transfer.
         </p>
         <p>
-          Nathan Foster will take all steps reasonably necessary to ensure that
+          Astral Tree will take all steps reasonably necessary to ensure that
           your data is treated securely and in accordance with this Privacy
           Policy and no transfer of your Personal Data will take place to an
           organization or a country unless there are adequate controls in place
@@ -144,12 +144,12 @@ const PrivacyPolicy = () => (
 
         <h3>Legal Requirements</h3>
         <p>
-          Nathan Foster may disclose your Personal Data in the good faith belief
+          Astral Tree may disclose your Personal Data in the good faith belief
           that such action is necessary to:
         </p>
         <ul>
           <li>To comply with a legal obligation</li>
-          <li>To protect and defend the rights or property of Nathan Foster</li>
+          <li>To protect and defend the rights or property of Astral Tree</li>
           <li>
             To prevent or investigate possible wrongdoing in connection with the
             Service
