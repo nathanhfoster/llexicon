@@ -11,8 +11,8 @@ const mapStateToProps = ({ User }) => ({
   shouldRenderSettingsLink: User.token ? true : false
 })
 
-const Footer = ({ isOpen, shouldRenderSettingsLink }) =>
-  isOpen && (
+const Footer = ({ isOpen, shouldRenderSettingsLink }) => 
+  (
     <Collapse
       tag="footer"
       className="MainFooter"
