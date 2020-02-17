@@ -1,7 +1,7 @@
-import React, { PureComponent, createRef } from 'react'
-import PropTypes from 'prop-types'
-import { FixedSizeList } from 'react-window'
-import './styles.css'
+import React, { PureComponent, createRef } from "react"
+import PropTypes from "prop-types"
+import { FixedSizeList } from "react-window"
+import "./styles.css"
 
 class BasicList extends PureComponent {
   constructor(props) {
@@ -14,7 +14,11 @@ class BasicList extends PureComponent {
     list: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.any.isRequired,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+        value: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.object
+        ]).isRequired,
         otherValue: PropTypes.any
       }).isRequired
     ),
@@ -24,13 +28,13 @@ class BasicList extends PureComponent {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     itemSize: PropTypes.number.isRequired,
     listPosition: PropTypes.oneOf([
-      'static',
-      'absolute',
-      'fixed',
-      'relative',
-      'sticky',
-      'initial',
-      'inherit'
+      "static",
+      "absolute",
+      "fixed",
+      "relative",
+      "sticky",
+      "initial",
+      "inherit"
     ]),
 
     // Callback props
@@ -41,10 +45,10 @@ class BasicList extends PureComponent {
   static defaultProps = {
     maxHeight: 250,
     height: 250,
-    width: '100%',
+    width: "100%",
     itemSize: 25,
     list: [],
-    listPosition: 'absolute',
+    listPosition: "absolute",
     listItemHoverable: false
   }
 
@@ -59,19 +63,22 @@ class BasicList extends PureComponent {
       }
     }
 
-    return typeof value === 'object' ? (
+    return typeof value === "object" ? (
       value
     ) : (
       <div
         key={id}
-        className={`basicListItem ${listItemHoverable && 'basicListItemHoverable'}`}
+        className={`basicListItem ${listItemHoverable &&
+          "basicListItemHoverable"}`}
         style={{ ...style, padding: itemSize / 4 }}
         id={id}
         value={value}
         onClick={onListItemClick}
       >
         <span className="basicListItemValue FirstValue">{value}</span>
-        {otherValue && <span className="basicListItemValue OtherValue">{otherValue}</span>}
+        {otherValue && (
+          <span className="basicListItemValue OtherValue">{otherValue}</span>
+        )}
       </div>
     )
   }
@@ -87,7 +94,8 @@ class BasicList extends PureComponent {
     if (!onScrollToBottomOfListCallback) return
     const listLength = list.length
     const bottomOfListIndex = listLength === 0 ? listLength : listLength - 1
-    const reachedBottomOfList = bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
+    const reachedBottomOfList =
+      bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
     // console.log("overscanStopIndex: ", overscanStopIndex)
     // console.log("visibleStopIndex: ", visibleStopIndex)
     // console.log('reachedBottomOfList: ', reachedBottomOfList)
