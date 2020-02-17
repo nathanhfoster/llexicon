@@ -119,7 +119,7 @@ const Home = ({ userId }) => {
   ]
 
   return (
-    <Container className="Home Container">
+    <Container tag="article" className="Home Container">
       <Row>
         <Col xs={12} className="Center">
           <LogoImage height={256} width={256} />
