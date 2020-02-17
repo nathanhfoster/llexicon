@@ -3,7 +3,7 @@ import { AppActionTypes } from "../App/types"
 import { getWindowDimensions } from "./utils"
 
 const DEFAULT_STATE_WINDOW = {
-  version: 0,
+  version: new Date(),
   innerHeight: null,
   innerWidth: null,
   isMobile: null,
