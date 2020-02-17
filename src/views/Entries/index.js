@@ -1,4 +1,4 @@
-import React, { Fragment, lazy, useCallback, memo } from "react"
+import React, { Fragment, useCallback, memo } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Row, Button, ButtonGroup } from "reactstrap"
@@ -16,7 +16,6 @@ import Moment from "react-moment"
 import MomentJS from "moment"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
-
 import { stripHtml } from "../../helpers"
 import memoizeProps from "../../helpers/memoizeProps"
 import {
@@ -25,7 +24,6 @@ import {
   GetUserEntries
 } from "../../redux/Entries/actions"
 import { SetEditorState } from "../../redux/TextEditor/actions"
-
 import "./styles.css"
 
 const mapStateToProps = ({

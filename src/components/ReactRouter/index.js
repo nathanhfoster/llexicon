@@ -4,15 +4,16 @@ import { connect as reduxConnect } from "react-redux"
 import { useHistory, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
-import Home from "../../views/Home"
-import Settings from "../../views/Settings"
-import Support from "../../views/Support"
-import EntryDetail from "../../views/EntryDetail"
-import Entries from "../../views/Entries"
-import Login from "../../views/Login"
-import PrivacyPolicy from "../PrivacyPolicy"
-import PageNotFound from "../../views/PageNotFound"
-import { Footer } from "../"
+import {
+  Home,
+  Settings,
+  Support,
+  EntryDetail,
+  Entries,
+  Login,
+  PageNotFound
+} from "../../views"
+import { PrivacyPolicy, Footer } from "../"
 import { RouterLinkPush } from "./Routes"
 import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
@@ -130,7 +131,9 @@ const ReactRouter = props => {
 }
 
 ReactRouter.propTypes = {
-  User: PropTypes.objectOf(PropTypes.any)
+  User: PropTypes.objectOf(PropTypes.any),
+  navBarHeight: PropTypes.number.isRequired,
+  footerHeight: PropTypes.number.isRequired
 }
 
 const isEqual = (prevProps, nextProps) =>

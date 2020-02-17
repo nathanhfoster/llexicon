@@ -22,36 +22,7 @@ const popperPlacementPositions = {
   TOP_START: "top-start"
 }
 
-const ReactDatePicker = ({
-  calendarClassName,
-  todayButton,
-  popperClassName,
-  popperPlacement,
-  showPopperArrow,
-  selected,
-  onChange,
-  showTimeSelect,
-  timeFormat,
-  timeIntervals,
-  timeCaption
-}) => {
-  return (
-    <DatePicker
-      calendarClassName={calendarClassName}
-      todayButton={todayButton}
-      popperClassName={popperClassName}
-      popperPlacement={popperPlacement}
-      showPopperArrow={showPopperArrow}
-      selected={selected}
-      onChange={onChange}
-      showTimeSelect={showTimeSelect}
-      timeFormat={timeFormat}
-      timeIntervals={timeIntervals}
-      timeCaption={timeCaption}
-      // fixedHeight={false}
-    />
-  )
-}
+const ReactDatePicker = props => <DatePicker {...props} />
 
 ReactDatePicker.propTypes = {
   adjustDateOnChange: PropTypes.bool,
