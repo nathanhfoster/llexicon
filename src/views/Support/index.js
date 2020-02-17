@@ -33,7 +33,7 @@ const Support = () => {
     }
   ]
   return (
-    <Container className="Support">
+    <Container tag="article" className="Support">
       <Row>
         <Col xs={12} className="Center">
           <UserHeadset />
