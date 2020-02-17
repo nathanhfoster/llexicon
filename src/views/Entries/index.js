@@ -1,16 +1,7 @@
-import React, { Fragment, useCallback, memo } from "react"
+import React, { Fragment, useCallback, memo, lazy } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Row, Button, ButtonGroup } from "reactstrap"
-import {
-  DiaryCalendar,
-  EntriesMinimal,
-  EntriesDetailed,
-  BasicTabs,
-  BasicTable,
-  BasicMap,
-  TagsContainer
-} from "../../components"
 import { RouteMap, RouterPush } from "../../components/ReactRouter/Routes"
 import Moment from "react-moment"
 import MomentJS from "moment"
@@ -25,6 +16,14 @@ import {
 } from "../../redux/Entries/actions"
 import { SetEditorState } from "../../redux/TextEditor/actions"
 import "./styles.css"
+
+const DiaryCalendar = lazy(() => import("../../components/DiaryCalendar"))
+const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
+const EntriesDetailed = lazy(() => import("../../components/EntriesDetailed"))
+const BasicTabs = lazy(() => import("../../components/BasicTabs"))
+const BasicTable = lazy(() => import("../../components/BasicTable"))
+const BasicMap = lazy(() => import("../../components/BasicMap"))
+const TagsContainer = lazy(() => import("../../components/TagsContainer"))
 
 const mapStateToProps = ({
   Entries: { items, next, search },
