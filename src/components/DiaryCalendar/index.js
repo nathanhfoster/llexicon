@@ -9,12 +9,10 @@ import { withRouter } from "react-router-dom"
 import { RouterPush, RouteMap } from "../ReactRouter/Routes"
 import { SetCalendar } from "../../redux/Calendar/Calendar"
 import { GetUserEntriesByDate } from "../../redux/Entries/actions"
+import TileContent from "./TileContent"
+import EntryList from "../EntryList"
 import "./styles.css"
 import "./stylesM.css"
-
-const TileContent = lazy(() => import("./TileContent"))
-
-const EntryList = lazy(() => import("../EntryList"))
 
 const mapStateToProps = ({
   Calendar: { activeDate, view },
