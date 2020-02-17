@@ -2,7 +2,7 @@ import "./styles/index.css"
 import "overlayscrollbars/css/OverlayScrollbars.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
-import { LoadingScreen, NavBar, Footer } from "./components"
+import { LoadingScreen, NavBar } from "./components"
 import storeFactory from "./redux"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
@@ -30,7 +30,6 @@ ReactDOM.render(
         <BackgroundImage />
         <NavBar />
         <ReactRouter />
-        <Footer />
       </BrowserRouter>
     </Suspense>
   </Provider>,
