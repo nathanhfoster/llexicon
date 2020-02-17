@@ -12,6 +12,7 @@ import Entries from "../../views/Entries"
 import Login from "../../views/Login"
 import PrivacyPolicy from "../PrivacyPolicy"
 import PageNotFound from "../../views/PageNotFound"
+import { Footer } from "../"
 import { RouterLinkPush } from "./Routes"
 import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
@@ -123,6 +124,7 @@ const ReactRouter = props => {
         {renderRouteItems}
         <Route component={PageNotFound} />
       </Switch>
+      <Footer />
     </OverlayScrollbarsComponent>
   )
 }
