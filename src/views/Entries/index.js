@@ -5,6 +5,7 @@ import { Row, Button, ButtonGroup } from "reactstrap"
 import { RouteMap, RouterPush } from "../../components/ReactRouter/Routes"
 import Moment from "react-moment"
 import MomentJS from "moment"
+Import BasicTabs from "../../components/BasicTabs"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
 import { stripHtml } from "../../helpers"
@@ -20,7 +21,6 @@ import "./styles.css"
 const DiaryCalendar = lazy(() => import("../../components/DiaryCalendar"))
 const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
 const EntriesDetailed = lazy(() => import("../../components/EntriesDetailed"))
-const BasicTabs = lazy(() => import("../../components/BasicTabs"))
 const BasicTable = lazy(() => import("../../components/BasicTable"))
 const BasicMap = lazy(() => import("../../components/BasicMap"))
 const TagsContainer = lazy(() => import("../../components/TagsContainer"))
