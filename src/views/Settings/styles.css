@@ -1,5 +1,4 @@
 .Settings {
     background: rgba(0, 0, 0, 0.75);
-    color: var(--secondaryColor);
     overflow-y: auto;
 }

@@ -36,7 +36,9 @@ const EntryMinimal = ({
       fluid
       tag={Badge}
       className="EntryMinimal p-2"
-      onClick={() => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))}
+      onClick={() =>
+        RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
+      }
     >
       <Row>
         <Col xs={12} className="EntryMinimalDetail">
@@ -49,7 +51,7 @@ const EntryMinimal = ({
         </Col>
         <Col xs={6} className="EntryMinimalTime">
           <i className="fas fa-pencil-alt mr-1" />
-          <Moment format="D MMM YY hh:mma">{_lastUpdated || date_updated}</Moment>
+          <Moment format="D MMM YY hh:mma">{date_updated}</Moment>
         </Col>
 
         <Col xs={12} className="EntryMinimalDetail mt-1 mb-1">
@@ -82,7 +84,10 @@ EntryMinimal.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   title: PropTypes.string,
   html: PropTypes.string,
-  date_created_by_author: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+  date_created_by_author: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date)
+  ]),
   EntryFiles: PropTypes.arrayOf(PropTypes.object)
 }
 

@@ -6,6 +6,7 @@
 .Container {
   touch-action: pan-x;
   touch-action: pan-y;
+  color: var(--secondaryColor);
 }
 
 .Center {

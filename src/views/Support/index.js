@@ -9,7 +9,7 @@ import "./styles.css"
 const renderSupportCards = supportCards =>
   supportCards.map((supportCard, i) => (
     <Col key={i} md={4} sm={6} xs={12}>
-      <BasicCard {...supportCard} />
+      <BasicCard cardHeaderClassName="Center" {...supportCard} />
     </Col>
   ))
 
@@ -33,7 +33,7 @@ const Support = () => {
     }
   ]
   return (
-    <Container tag="article" className="Support">
+    <Container tag="article" className="Support Container">
       <Row>
         <Col xs={12} className="Center">
           <UserHeadset />

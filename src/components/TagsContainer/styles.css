@@ -1,7 +1,6 @@
 .TagsContainer {
     display: flex;
     width: 100%;
-   
 }
 
 .TagContainer {
@@ -9,14 +8,22 @@
     padding: 0.25rem;
 }
 
-.TagContainer *{
+.TagContainer:first-child {
+    margin-right: 0.25rem;
+}
+
+.TagContainer:not(:first-child) {
+    margin: 0.25rem;
+}
+
+.TagContainer * {
     display: inline-block;
     vertical-align: middle;
 }
 
-.TagTitle {
-   
-}
+.TagTitle {}
+
+
 
 .TagContainerHover:hover {
     background: var(--dark_border);

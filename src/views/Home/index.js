@@ -22,7 +22,7 @@ const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 const renderFeatures = features =>
   features.map((feature, i) => (
     <Col key={i} md={4} sm={6} xs={12}>
-      <BasicCard {...feature} />
+      <BasicCard cardHeaderClassName="Center" {...feature} />
     </Col>
   ))
 

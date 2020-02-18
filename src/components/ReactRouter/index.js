@@ -34,6 +34,7 @@ const {
   ENTRIES_DETAILED,
   ENTRIES_TABLE,
   ENTRIES_MAP,
+  ENTRIES_CARDS,
   PRIVACY_POLICY
 } = RouteMap
 
@@ -81,7 +82,7 @@ const ReactRouter = props => {
         ENTRIES_DETAILED,
         ENTRIES_TABLE,
         ENTRIES_MAP,
-        NEW_ENTRY
+        ENTRIES_CARDS
       ],
       component: Entries
     },
@@ -117,7 +118,7 @@ const ReactRouter = props => {
           // dragScrolling: false
         }
         // callbacks: {
-        //   onScrollStart: () => console.log("Scrolling")
+        //   onScrollStart: e => console.log("Scrolling: ", e.target)
         // }
       }}
     >

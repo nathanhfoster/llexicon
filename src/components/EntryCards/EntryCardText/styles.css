@@ -1,0 +1,15 @@
+.EntryCardText {
+    height: 48px;
+}
+
+.EntryCardTextTags {
+    height: 26px;
+}
+
+.EntryCardTextLeftColumn {
+    text-align: left;
+}
+
+.EntryCardTextRightColumn {
+    text-align: right;
+}

@@ -17,6 +17,7 @@ import Editor from "./Editor"
 import EntriesDetailed from "./EntriesDetailed"
 import EntriesMinimal from "./EntriesMinimal"
 import Entry from "./Entry"
+import EntryCards from "./EntryCards"
 import EntryFilesCarousel from "./EntryFilesCarousel"
 import EntryList from "./EntryList"
 import EntryMinimal from "./EntryMinimal"
@@ -62,6 +63,7 @@ export {
   EntriesDetailed,
   EntriesMinimal,
   Entry,
+  EntryCards,
   EntryFilesCarousel,
   EntryList,
   EntryMinimal,

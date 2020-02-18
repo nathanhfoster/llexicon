@@ -54,7 +54,9 @@ const BottomToolbar = ({ entry, editorRef, onChangeCallback, xs }) => {
   return (
     <Container fluid className="BottomToolBar">
       <Row className="BottomToolBarTags">
-        <TagsContainer tags={entry.tags} />
+        <Col xs={12} className="pl-1 pr-1">
+          <TagsContainer tags={entry.tags} />
+        </Col>
       </Row>
       <Row className="BottomToolBarFiles">
         <Col xs={12} className="p-1">

@@ -1,0 +1,11 @@
+.EntryCardTitleContainer {
+    margin-bottom: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.EntryCardTitle {
+    font-size: 18px;
+    font-weight: normal;
+}

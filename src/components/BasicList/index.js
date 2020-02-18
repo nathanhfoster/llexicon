@@ -1,4 +1,4 @@
-import React, { PureComponent, createRef } from "react"
+import React, { PureComponent, createRef, Fragment } from "react"
 import PropTypes from "prop-types"
 import { FixedSizeList } from "react-window"
 import "./styles.css"
@@ -14,11 +14,8 @@ class BasicList extends PureComponent {
     list: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.any.isRequired,
-        value: PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.number,
-          PropTypes.object
-        ]).isRequired,
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+          .isRequired,
         otherValue: PropTypes.any
       }).isRequired
     ),
@@ -36,6 +33,9 @@ class BasicList extends PureComponent {
       "initial",
       "inherit"
     ]),
+    listItemHoverable: PropTypes.bool,
+    listItemStyles: PropTypes.object,
+    layout: PropTypes.oneOf(["vertical", "horizontal"]),
 
     // Callback props
     onListItemClickCallback: PropTypes.func, // When an item is clicked
@@ -49,13 +49,20 @@ class BasicList extends PureComponent {
     itemSize: 25,
     list: [],
     listPosition: "absolute",
-    listItemHoverable: false
+    listItemHoverable: false,
+    listItemStyles: {},
+    layout: "vertical"
   }
 
   renderList = ({ data, index, style, isScrolling }) => {
     const { id, value, otherValue } = data[index]
 
-    const { onListItemClickCallback, listItemHoverable, itemSize } = this.props
+    const {
+      onListItemClickCallback,
+      listItemHoverable,
+      itemSize,
+      listItemStyles
+    } = this.props
 
     const onListItemClick = () => {
       if (onListItemClickCallback) {
@@ -63,21 +70,27 @@ class BasicList extends PureComponent {
       }
     }
 
-    return typeof value === "object" ? (
-      value
-    ) : (
+    return (
       <div
         key={id}
         className={`basicListItem ${listItemHoverable &&
           "basicListItemHoverable"}`}
-        style={{ ...style, padding: itemSize / 4 }}
+        style={{ ...style, padding: itemSize / 4, ...listItemStyles }}
         id={id}
         value={value}
         onClick={onListItemClick}
       >
-        <span className="basicListItemValue FirstValue">{value}</span>
-        {otherValue && (
-          <span className="basicListItemValue OtherValue">{otherValue}</span>
+        {typeof value === "object" ? (
+          value
+        ) : (
+          <Fragment>
+            <span className="basicListItemValue FirstValue">{value}</span>
+            {otherValue && (
+              <span className="basicListItemValue OtherValue">
+                {otherValue}
+              </span>
+            )}
+          </Fragment>
         )}
       </div>
     )
@@ -105,7 +118,7 @@ class BasicList extends PureComponent {
   }
 
   render() {
-    const { itemSize, listPosition, list, height, width } = this.props
+    const { itemSize, listPosition, list, height, width, layout } = this.props
     return (
       <FixedSizeList
         ref={this.listRef}
@@ -117,6 +130,7 @@ class BasicList extends PureComponent {
         itemCount={list.length}
         itemSize={itemSize}
         onItemsRendered={this.handleItemsRendered}
+        layout={layout}
       >
         {this.renderList}
       </FixedSizeList>

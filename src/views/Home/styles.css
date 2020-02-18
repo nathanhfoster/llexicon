@@ -1,5 +1,4 @@
 .Home {
-  color: var(--secondaryColor);
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -10,10 +9,6 @@
 .AboutFeatureImage {
   width: auto;
   height: 128px;
-}
-
-.AboutFeatureTitle {
-  font-weight: 900;
 }
 
 .AboutFeatureText {

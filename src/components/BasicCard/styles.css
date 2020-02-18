@@ -1,14 +1,33 @@
 .BasicCard {
-    background: rgba(0, 0, 0, 0.4);
-    border: 0;
-    margin: 15px 0;
-    height: 350px;
-  }
-  
-  .BasicCardContainer {
-    text-align: center;
-  }
-  
-  .BasicCardBodyContainer {
-    background: var(--midNight);
-  }
+  background: rgba(0, 0, 0, 0.4);
+  border: 0;
+  margin: 15px 0;
+  height: 350px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+.BasicCardHover {
+  transition: all 0.4s ease-in-out;
+}
+
+.BasicCardHover:hover {
+  box-shadow: 0 0 8px 2px var(--accentColor);
+}
+
+.BasicCardContainer {
+
+}
+
+.BasicCardBodyContainer {
+  background: var(--midNight);
+}
+
+.BasicCardTitle {
+  font-size: 20px;
+  font-weight: 900;
+  height: 22px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

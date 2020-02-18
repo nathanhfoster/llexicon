@@ -5,7 +5,7 @@ import { Row, Button, ButtonGroup } from "reactstrap"
 import { RouteMap, RouterPush } from "../../components/ReactRouter/Routes"
 import Moment from "react-moment"
 import MomentJS from "moment"
-import { BasicTabs } from "../../components"
+import { BasicTabs, EntryCards } from "../../components"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
 import { stripHtml } from "../../helpers"
@@ -400,6 +400,17 @@ const Entries = ({
               }
             }}
           />
+        </Row>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
+      tabId: RouteMap.ENTRIES_CARDS,
+      // mountTabWhenActive: true,
+      title: <i className="fas fa-columns"></i>,
+      render: (
+        <Row>
+          <EntryCards entries={entries} />
         </Row>
       ),
       onClickCallback: handleTabChange

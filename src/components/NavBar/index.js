@@ -29,6 +29,7 @@ const {
   ENTRIES_MINIMAL,
   ENTRIES_TABLE,
   ENTRIES_MAP,
+  ENTRIES_CARDS,
   LOGIN,
   SETTINGS,
   SUPPORT,
@@ -102,6 +103,12 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           route: ENTRIES_MAP,
           title: "MAP",
           icon: <i className="fas fa-map-marked-alt NavBarImage" />
+        },
+        {
+          dropdownItem: true,
+          route: ENTRIES_CARDS,
+          title: "CARDS",
+          icon: <i className="fas fa-columns NavBarImage" />
         }
       ]
     },

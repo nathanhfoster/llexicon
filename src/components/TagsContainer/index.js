@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 import { Badge, Col } from "reactstrap"
+import { BasicList } from "../"
 import PropTypes from "prop-types"
 import "./styles.css"
 
@@ -35,23 +36,18 @@ const TagsContainer = ({
   }
 
   const renderTags = () =>
-    tags.map(tag => {
-      const { title } = tag
-      return (
-        <Badge
-          key={title}
-          className={`TagContainer ${tagContainerClassName} ${
-            hoverable ? "TagContainerHover" : ""
-          }`}
-          onClick={onClickCallback ? () => onClickCallback(title) : null}
-        >
-          {showTagIcon && (
-            <i className="fas fa-tag" style={{ marginRight: 2 }} />
-          )}
-          <span className="TagTitle">{title}</span>
-        </Badge>
-      )
-    })
+    tags.map(({ title }, i) => (
+      <Badge
+        key={title}
+        className={`TagContainer ${tagContainerClassName} ${
+          hoverable ? "TagContainerHover" : ""
+        }`}
+        onClick={onClickCallback ? () => onClickCallback(title) : null}
+      >
+        {showTagIcon && <i className="fas fa-tag" style={{ marginRight: 2 }} />}
+        <span className="TagTitle">{title}</span>
+      </Badge>
+    ))
 
   const renderMinimalTags = () => {
     const initialString = "| "
@@ -66,7 +62,13 @@ const TagsContainer = ({
   return (
     <Col className="TagsContainer p-0" xs={12} style={styles}>
       {children}
-      {minimalView ? renderMinimalTags() : renderTags()}
+      {tags.length === 0 ? (
+        <span>No tags...</span>
+      ) : minimalView ? (
+        renderMinimalTags()
+      ) : (
+        renderTags()
+      )}
     </Col>
   )
 }
@@ -95,6 +97,6 @@ TagsContainer.defaultProps = {
   minimalView: false,
   hoverable: false,
   showTagIcon: true,
-  tagContainerClassName: "m-1"
+  tagContainerClassName: ""
 }
 export default memo(TagsContainer)

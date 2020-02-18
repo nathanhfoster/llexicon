@@ -9,11 +9,13 @@ const RatingStar = ({
   onMouseLeaveCallback,
   onClickCallback
 }) => {
-  const handleMouseEnter = () => onMouseEnterCallback(value)
+  const handleMouseEnter = () =>
+    onMouseEnterCallback && onMouseEnterCallback(value)
 
-  const handleMouseLeave = () => onMouseLeaveCallback(value)
+  const handleMouseLeave = () =>
+    onMouseLeaveCallback && onMouseLeaveCallback(value)
 
-  const handleOnClick = () => onClickCallback(value)
+  const handleOnClick = () => onClickCallback && onClickCallback(value)
 
   return (
     <span>

@@ -46,7 +46,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
       validRatedEntries += 1
     }
 
-    let updatedDated = MomentJs(_lastUpdated || date_updated)
+    let updatedDated = MomentJs(date_updated)
 
     if (previousDate) {
       sumRatingTimeUpdatingEntries += previousDate.diff(

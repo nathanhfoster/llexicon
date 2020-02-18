@@ -286,7 +286,8 @@ class Editor extends PureComponent {
     toolbarId: 1,
     placeholder: "Today I have...",
     topToolbarHidden: false,
-    bottomToolbarHidden: false
+    bottomToolbarHidden: false,
+    readOnly: false
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -335,7 +336,8 @@ class Editor extends PureComponent {
       onChangeCallback,
       height,
       width,
-      placeholder
+      placeholder,
+      readOnly
     } = this.props
     const {
       toolbarId,
@@ -362,6 +364,7 @@ class Editor extends PureComponent {
           )}
           <ReactQuill
             id={quillId}
+            readOnly={readOnly}
             bounds={"app"}
             ref={editorRef}
             className="Editor"
