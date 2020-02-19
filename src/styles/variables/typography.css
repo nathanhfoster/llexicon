@@ -6,13 +6,11 @@
 @media (max-width: 767px) {
   :root {
     --navBarHeight: 68px;
-    --footerHeight: 52px
   }
 }
 
 @media (min-width: 768px) {
   :root {
     --navBarHeight: 64px;
-    --footerHeight: 70px;
   }
 }

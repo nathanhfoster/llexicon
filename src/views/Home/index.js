@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
-import { AddToHomeScreen, BasicCard } from "../../components"
+import { AddToHomeScreen, BasicCard, Footer } from "../../components"
 import { RouteMap, RouterPush } from "../../components/ReactRouter/Routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
@@ -146,6 +146,7 @@ const Home = ({ userId }) => {
       </Row>
       <Row>{renderFeatures(features)}</Row>
       <hr style={{ height: 40 }} />
+      <Footer />
     </Container>
   )
 }

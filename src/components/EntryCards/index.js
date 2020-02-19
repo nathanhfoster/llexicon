@@ -9,7 +9,7 @@ import { RouteMap, RouterPush } from "../ReactRouter/Routes"
 import PropTypes from "prop-types"
 import "./styles.css"
 
-const INITIAL_ENTRIES_RENDERED = 6
+const ENTRIES_RENDER_OFFSET = 6
 
 const renderEntryCards = ([start, end], entries, history) =>
   entries.slice(start, end).map((entry, i) => {
@@ -33,7 +33,7 @@ const renderEntryCards = ([start, end], entries, history) =>
     const onClickCallback = () =>
       RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
     return (
-      <Col key={id} md={4} xs={12}>
+      <Col key={id} xl={3} lg={4} md={4} sm={6} xs={12} className="pl-3 pr-3">
         <BasicCard
           title={<EntryCardTitle title={title} />}
           text={
@@ -55,8 +55,9 @@ const renderEntryCards = ([start, end], entries, history) =>
 const EntryCards = ({ entries }) => {
   const [viewableEntries, setViewableEntries] = useState([
     0,
-    INITIAL_ENTRIES_RENDERED
+    ENTRIES_RENDER_OFFSET * 2
   ])
+  const [beginOffset, startOffset] = viewableEntries
   const history = useHistory()
 
   const handleScroll = ({
@@ -65,17 +66,11 @@ const EntryCards = ({ entries }) => {
     const reachedBottom = scrollHeight - scrollTop === clientHeight
 
     if (reachedBottom) {
-      setViewableEntries([
-        viewableEntries[0],
-        viewableEntries[1] + INITIAL_ENTRIES_RENDERED
-      ])
+      setViewableEntries([beginOffset, startOffset + ENTRIES_RENDER_OFFSET])
     }
   }
   return (
-    <Container
-      className="EntryCards Container"
-      onScroll={handleScroll}
-    >
+    <Container className="EntryCards Container" onScroll={handleScroll}>
       <Row>{renderEntryCards(viewableEntries, entries, history)}</Row>
     </Container>
   )

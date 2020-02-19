@@ -1,7 +1,7 @@
 .Alert {
     position: absolute;
     z-index: 9999;
-    bottom: var(--footerHeight);
+    bottom: 52px;
     right: 0;
     background: var(--dark_border);
     color: var(--secondaryColor);

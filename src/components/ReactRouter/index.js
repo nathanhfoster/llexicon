@@ -12,7 +12,7 @@ import {
   Login,
   PageNotFound
 } from "../../views"
-import { PrivacyPolicy, Footer } from "../"
+import { PrivacyPolicy } from "../"
 import { RouterLinkPush } from "./Routes"
 import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
@@ -37,19 +37,14 @@ const {
   PRIVACY_POLICY
 } = RouteMap
 
-const mapStateToProps = ({ User, Window: { navBarHeight, footerHeight } }) => ({
+const mapStateToProps = ({ User, Window: { navBarHeight } }) => ({
   User,
-  navBarHeight,
-  footerHeight
+  navBarHeight
 })
 
 const ReactRouter = props => {
   const history = useHistory()
-  const { User, navBarHeight, footerHeight } = props
-
-  const {
-    Settings: { show_footer }
-  } = User
+  const { User, navBarHeight } = props
 
   const renderRedirectOrComponent = (shouldRedirect, route, Component) => {
     return shouldRedirect
@@ -103,7 +98,7 @@ const ReactRouter = props => {
       className="App routeOverlay"
       style={{
         top: navBarHeight,
-        bottom: show_footer ? footerHeight : 0
+        bottom: 0
         // background: "red"
       }}
     >
@@ -111,23 +106,20 @@ const ReactRouter = props => {
         {renderRouteItems}
         <Route component={PageNotFound} />
       </Switch>
-      <Footer />
     </div>
   )
 }
 
 ReactRouter.propTypes = {
   User: PropTypes.objectOf(PropTypes.any),
-  navBarHeight: PropTypes.number.isRequired,
-  footerHeight: PropTypes.number.isRequired
+  navBarHeight: PropTypes.number.isRequired
 }
 
 const isEqual = (prevProps, nextProps) =>
   memoizeProps(prevProps, nextProps, [
     "User",
     "routeOverlayHeight",
-    "navBarHeight",
-    "footerHeight"
+    "navBarHeight"
   ])
 
 export default reduxConnect(mapStateToProps)(memo(ReactRouter, isEqual))
