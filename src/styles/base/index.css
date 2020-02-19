@@ -89,7 +89,7 @@ input[type="file"] {
 ::-webkit-scrollbar {
   display: none;
   background-color: transparent;
-  -webkit-border-radius: 100px;
+  -webkit-border-radius: 6px;
   transition: 200ms linear;
 }
 
@@ -101,7 +101,7 @@ input[type="file"] {
 ::-webkit-scrollbar-track {
   /* box-shadow: inset 0 0 5px var(--grey);
   background: var(--grey; */
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {

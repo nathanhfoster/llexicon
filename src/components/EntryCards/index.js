@@ -72,7 +72,10 @@ const EntryCards = ({ entries }) => {
     }
   }
   return (
-    <Container className="EntryCards Container" onScroll={handleScroll}>
+    <Container
+      className="EntryCards Container"
+      onScroll={handleScroll}
+    >
       <Row>{renderEntryCards(viewableEntries, entries, history)}</Row>
     </Container>
   )

@@ -1,4 +1,5 @@
 .EntryCards {
     height: calc(100vh - var(--navBarHeight) - 54px - var(--footerHeight));
+    width: 100%;
     overflow-y: auto;
 }
