@@ -63,10 +63,10 @@ EntryPreview.propTypes = {
   title: PropTypes.string,
   html: PropTypes.string,
   date_created: PropTypes.string,
-  date_created_by_author: PropTypes.oneOfType(
+  date_created_by_author: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.instanceOf(Date)
-  ),
+  ]),
   date_updated: PropTypes.string,
   views: PropTypes.number
 }
