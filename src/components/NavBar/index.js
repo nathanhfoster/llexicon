@@ -82,6 +82,12 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
         },
         {
           dropdownItem: true,
+          route: ENTRIES_CARDS,
+          title: "CARDS",
+          icon: <i className="fas fa-columns NavBarImage" />
+        },
+        {
+          dropdownItem: true,
           route: ENTRIES_DETAILED,
           title: "DETAILED",
           icon: <i className="fas fa-newspaper NavBarImage" />
@@ -103,12 +109,6 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           route: ENTRIES_MAP,
           title: "MAP",
           icon: <i className="fas fa-map-marked-alt NavBarImage" />
-        },
-        {
-          dropdownItem: true,
-          route: ENTRIES_CARDS,
-          title: "CARDS",
-          icon: <i className="fas fa-columns NavBarImage" />
         }
       ]
     },

@@ -157,6 +157,17 @@ const Entries = ({
       onClickCallback: handleTabChange
     },
     {
+      tabId: RouteMap.ENTRIES_CARDS,
+      mountTabWhenActive: true,
+      title: <i className="fas fa-columns"></i>,
+      render: (
+        <Row>
+          <EntryCards entries={entries} />
+        </Row>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
       tabId: RouteMap.ENTRIES_DETAILED,
       mountTabWhenActive: true,
       title: <i className="fas fa-newspaper" />,
@@ -400,17 +411,6 @@ const Entries = ({
               }
             }}
           />
-        </Row>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
-      tabId: RouteMap.ENTRIES_CARDS,
-      mountTabWhenActive: true,
-      title: <i className="fas fa-columns"></i>,
-      render: (
-        <Row>
-          <EntryCards entries={entries} />
         </Row>
       ),
       onClickCallback: handleTabChange

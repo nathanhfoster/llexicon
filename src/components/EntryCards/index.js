@@ -1,6 +1,5 @@
 import React, { useState, memo } from "react"
 import { Container, Row, Col } from "reactstrap"
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import EntryCardHtml from "./EntryCardHtml"
 import EntryCardTitle from "./EntryCardTitle"
 import EntryCardText from "./EntryCardText"
@@ -73,11 +72,7 @@ const EntryCards = ({ entries }) => {
     }
   }
   return (
-    <Container
-      tag={OverlayScrollbarsComponent}
-      className="EntryCards Container os-theme-light"
-      onScroll={handleScroll}
-    >
+    <Container className="EntryCards Container" onScroll={handleScroll}>
       <Row>{renderEntryCards(viewableEntries, entries, history)}</Row>
     </Container>
   )

@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { useHistory, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import {
   Home,
   Settings,
@@ -30,10 +31,10 @@ const {
   ENTRY_DETAIL,
   ENTRIES,
   ENTRIES_MINIMAL,
+  ENTRIES_CARDS,
   ENTRIES_DETAILED,
   ENTRIES_TABLE,
   ENTRIES_MAP,
-  ENTRIES_CARDS,
   PRIVACY_POLICY
 } = RouteMap
 
@@ -74,14 +75,15 @@ const ReactRouter = props => {
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {
       path: [
+        ENTRIES,
         NEW_ENTRY,
         CALENDAR,
-        ENTRIES,
+        ENTRIES_CARDS,
         ENTRIES_MINIMAL,
         ENTRIES_DETAILED,
         ENTRIES_TABLE,
         ENTRIES_MAP,
-        ENTRIES_CARDS
+        NEW_ENTRY
       ],
       component: Entries
     },
@@ -98,12 +100,27 @@ const ReactRouter = props => {
   )
 
   return (
-    <div
-      className="App routeOverlay "
+    <OverlayScrollbarsComponent
+      className="App routeOverlay os-theme-light"
       style={{
         top: navBarHeight,
         bottom: show_footer ? footerHeight : 0
         // background: "red"
+      }}
+      options={{
+        /* overflowBehavior: {
+              x: "visible-hidden",
+              y: "visible-hidden"
+            }, */
+        scrollbars: {
+          // visibility: "auto",
+          autoHide: "scroll",
+          autoHideDelay: 200
+          // dragScrolling: false
+        }
+        // callbacks: {
+        //   onScrollStart: () => console.log("Scrolling")
+        // }
       }}
     >
       <Switch>
@@ -111,7 +128,7 @@ const ReactRouter = props => {
         <Route component={PageNotFound} />
       </Switch>
       <Footer />
-    </div>
+    </OverlayScrollbarsComponent>
   )
 }
 
