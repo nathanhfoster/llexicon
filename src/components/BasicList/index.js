@@ -123,7 +123,7 @@ class BasicList extends PureComponent {
       <FixedSizeList
         ref={this.listRef}
         className="basicListContainer fade-in"
-        style={{ position: listPosition }}
+        style={{ position: listPosition, background: "transparent" }}
         height={height}
         width={width}
         itemData={list}

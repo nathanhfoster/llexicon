@@ -4,7 +4,7 @@
   }
 }
 
-.DiaryCalendar {
+.ReactCalendar {
   color: white;
   opacity: var(--mainOpacity);
 }

@@ -11,7 +11,7 @@ import BasicSearchBar from "./BasicSearchBar"
 import BasicTable from "./BasicTable"
 import BasicTabs from "./BasicTabs"
 import ConfirmAction from "./ConfirmAction"
-import DiaryCalendar from "./DiaryCalendar"
+import ReactCalendar from "./ReactCalendar"
 import Divider from "./Divider"
 import Editor from "./Editor"
 import EntriesDetailed from "./EntriesDetailed"
@@ -57,7 +57,7 @@ export {
   BasicTable,
   BasicTabs,
   ConfirmAction,
-  DiaryCalendar,
+  ReactCalendar,
   Divider,
   Editor,
   EntriesDetailed,

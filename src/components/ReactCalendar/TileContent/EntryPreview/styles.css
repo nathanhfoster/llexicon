@@ -40,15 +40,10 @@
 }
 
 .eventTitle {
-    flex: 1 0 0;
-    margin-left: 0.25rem;
-    user-select: none;
+    flex: 1;
     font-weight: 500;
     overflow: hidden;
     white-space: nowrap;
-    font-size: inherit;
-    line-height: inherit;
-    overflow: hidden;
-    white-space: nowrap;
+    text-overflow: ellipsis;
     /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 2px), transparent calc(100% - 2px), transparent); */
 }

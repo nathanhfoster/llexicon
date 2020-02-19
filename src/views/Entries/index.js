@@ -18,7 +18,7 @@ import {
 import { SetEditorState } from "../../redux/TextEditor/actions"
 import "./styles.css"
 
-const DiaryCalendar = lazy(() => import("../../components/DiaryCalendar"))
+const ReactCalendar = lazy(() => import("../../components/ReactCalendar"))
 const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
 const EntriesDetailed = lazy(() => import("../../components/EntriesDetailed"))
 const BasicTable = lazy(() => import("../../components/BasicTable"))
@@ -151,7 +151,7 @@ const Entries = ({
       title: <i className="fas fa-calendar-alt"></i>,
       render: (
         <Row>
-          <DiaryCalendar />
+          <ReactCalendar />
         </Row>
       ),
       onClickCallback: handleTabChange

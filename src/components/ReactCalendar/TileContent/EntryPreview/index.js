@@ -44,7 +44,7 @@ const EntryPreview = ({
           animation={false}
           opacity={1}
         />
-        <span className="eventDate">
+        <span className="eventDate mr-1">
           <Moment format="h:mma">{date_created_by_author}</Moment>
         </span>
         <span className="eventTitle">{title || "No title"}</span>
