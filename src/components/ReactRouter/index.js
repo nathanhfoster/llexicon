@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { useHistory, Route, Switch, Redirect } from "react-router-dom"
 import { RouteMap } from "./Routes"
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 import {
   Home,
   Settings,
@@ -99,27 +98,12 @@ const ReactRouter = props => {
   )
 
   return (
-    <OverlayScrollbarsComponent
-      className="App routeOverlay os-theme-light"
+    <div
+      className="App routeOverlay "
       style={{
         top: navBarHeight,
         bottom: show_footer ? footerHeight : 0
         // background: "red"
-      }}
-      options={{
-        /* overflowBehavior: {
-              x: "visible-hidden",
-              y: "visible-hidden"
-            }, */
-        scrollbars: {
-          // visibility: "auto",
-          autoHide: "scroll",
-          autoHideDelay: 200
-          // dragScrolling: false
-        }
-        // callbacks: {
-        //   onScrollStart: e => console.log("Scrolling: ", e.target)
-        // }
       }}
     >
       <Switch>
@@ -127,7 +111,7 @@ const ReactRouter = props => {
         <Route component={PageNotFound} />
       </Switch>
       <Footer />
-    </OverlayScrollbarsComponent>
+    </div>
   )
 }
 

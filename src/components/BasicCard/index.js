@@ -9,6 +9,7 @@ import {
   CardTitle,
   Button
 } from "reactstrap"
+import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
 
 const BasicCard = ({
@@ -58,7 +59,8 @@ BasicCard.propTypes = {
   header: PropTypes.object,
   button: PropTypes.object,
   cardClassName: PropTypes.string,
-  cardHeaderClassName: PropTypes.string
+  cardHeaderClassName: PropTypes.string,
+  onClickCallback: PropTypes.func
 }
 
 BasicCard.defaultProps = {
@@ -67,4 +69,15 @@ BasicCard.defaultProps = {
   cardBodyClassName: ""
 }
 
-export default memo(BasicCard)
+const isEqual = (prevProps, nextProps) =>
+  memoizeProps(prevProps, nextProps, [
+    "title",
+    "text",
+    "faIcon",
+    "button",
+    "cardClassName",
+    "cardHeaderClassName"
+    // "onClickCallback"
+  ])
+
+export default memo(BasicCard, isEqual)

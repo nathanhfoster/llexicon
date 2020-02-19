@@ -136,7 +136,7 @@ const Entries = ({
   const tabs = [
     {
       tabId: RouteMap.NEW_ENTRY,
-      // mountTabWhenActive: true,
+      mountTabWhenActive: true,
       title: <i className="fas fa-feather-alt"></i>,
       render: (
         <Row>
@@ -147,7 +147,7 @@ const Entries = ({
     },
     {
       tabId: RouteMap.CALENDAR,
-      // mountTabWhenActive: true,
+      mountTabWhenActive: true,
       title: <i className="fas fa-calendar-alt"></i>,
       render: (
         <Row>
@@ -158,7 +158,7 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_DETAILED,
-      // mountTabWhenActive: true,
+      mountTabWhenActive: true,
       title: <i className="fas fa-newspaper" />,
       render: (
         <Row>
@@ -174,7 +174,7 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_MINIMAL,
-      // mountTabWhenActive: true,
+      mountTabWhenActive: true,
       title: <i className="fas fa-th-list" />,
       render: (
         <Fragment>
@@ -201,7 +201,7 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_TABLE,
-      // mountTabWhenActive: true,
+      mountTabWhenActive: true,
       title: <i className="fas fa-table" />,
       render: (
         <Row>
@@ -406,7 +406,7 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_CARDS,
-      // mountTabWhenActive: true,
+      mountTabWhenActive: true,
       title: <i className="fas fa-columns"></i>,
       render: (
         <Row>

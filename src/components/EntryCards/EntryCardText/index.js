@@ -5,19 +5,7 @@ import { RatingIcon, TagsContainer } from "../../"
 import Moment from "react-moment"
 import "./styles.css"
 
-const EntryCardText = ({
-  tags,
-  EntryFiles,
-  date_created,
-  date_created_by_author,
-  date_updated,
-  views,
-  rating,
-  address,
-  latitude,
-  longitude,
-  _lastUpdated
-}) => {
+const EntryCardText = ({ tags, date_updated, views, rating }) => {
   return (
     <Container className="EntryCardText Container">
       <Row>
@@ -43,7 +31,12 @@ const EntryCardText = ({
   )
 }
 
-EntryCardText.propTypes = { entries: PropTypes.arrayOf(PropTypes.object) }
+EntryCardText.propTypes = {
+  tags: PropTypes.arrayOf(PropTypes.object),
+  date_updated: PropTypes.string,
+  views: PropTypes.number,
+  rating: PropTypes.number
+}
 
 EntryCardText.defaultProps = {}
 
