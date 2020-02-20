@@ -1,4 +1,4 @@
-.Login {
+.Account {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,5 +8,5 @@
 }
 
 .LoginFormContainer {
-    /* background: rgba(0, 0, 0, 0.1); */
+    /* margin-top: 40px; */
 }
