@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { ImportEntries, BasicForm, EntryStatistics } from "../../components"
+import { ImportEntries, EntryStatistics } from "../../components"
 import { Container, Row, Col, Button, Form, FormGroup, Media } from "reactstrap"
-import { UpdateUser } from "../../redux/User/actions"
+import UpdateProfile from "./UpdateProfile"
+import SettingInput from "./SettingInput"
+
 import {
   GetUserSettings,
   PostSettings,
@@ -11,7 +13,7 @@ import {
 } from "../../redux/User/actions"
 import { copyStringToClipboard } from "../../helpers"
 import MomentJs from "moment"
-import SettingInput from "./SettingInput"
+
 import Moment from "react-moment"
 import "./styles.css"
 
@@ -22,7 +24,6 @@ const mapStateToProps = ({ User, Entries: { items, filteredItems } }) => ({
 })
 
 const mapDispatchToProps = {
-  UpdateUser,
   GetUserSettings,
   PostSettings,
   SetSettings
@@ -34,8 +35,7 @@ const Settings = ({
   filteredItems,
   GetUserSettings,
   PostSettings,
-  SetSettings,
-  UpdateUser
+  SetSettings
 }) => {
   const entries = items.concat(filteredItems)
 
@@ -166,8 +166,6 @@ const Settings = ({
     alert("Entries copied to clipboard.")
   }
 
-  const handleChangeUser = payload => UpdateUser(payload)
-
   return (
     <Container className="Settings Container">
       <Row>
@@ -209,54 +207,7 @@ const Settings = ({
       </Row>
       <Row>
         <Col xs={12}>
-          <BasicForm
-            title="Update Profile"
-            onSubmit={handleChangeUser}
-            submitLabel="Update"
-            inputs={[
-              {
-                label: "Username",
-                type: "text",
-                id: "username",
-                placeholder: "Username...",
-                defaultValue: User.username
-              },
-              {
-                label: "email",
-                type: "email",
-                id: "email",
-                placeholder: "Email...",
-                defaultValue: User.email
-              },
-              {
-                label: "First name",
-                type: "text",
-                id: "first_name",
-                placeholder: "First Name...",
-                defaultValue: User.first_name
-              },
-              {
-                label: "Last name",
-                type: "text",
-                id: "last_name",
-                placeholder: "Last name...",
-                defaultValue: User.last_name
-              },
-              {
-                label: "Password",
-                type: "password",
-                id: "password",
-                placeholder: "Password..."
-              }
-              // {
-              //   label: "Opt in",
-              //   type: "radio",
-              //   name: "opt_in",
-              //   id: "opt_in",
-              //   placeholder: "Opt in?"
-              // }
-            ]}
-          />
+          <UpdateProfile />
         </Col>
       </Row>
       <Row>
@@ -275,7 +226,6 @@ Settings.propTypes = {
   User: PropTypes.object.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
-  UpdateUser: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   PostSettings: PropTypes.func.isRequired,
   SetSettings: PropTypes.func.isRequired
