@@ -1,6 +1,6 @@
-import React from "react";
-import { Grid, Row, Col } from "react-bootstrap";
-import "./styles.css";
+import React from "react"
+import { Grid, Row, Col } from "react-bootstrap"
+import "./styles.css"
 
 const Tooltip = props => {
   const {
@@ -18,14 +18,14 @@ const Tooltip = props => {
     class_preferences,
     location,
     group_size
-  } = props;
+  } = props
   return (
     <Row className="toolTipWrapper">
       <Col className="Center">
-        <h3 className="pageHeader">{title}</h3>
+        <h3>{title}</h3>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default Tooltip;
+export default Tooltip

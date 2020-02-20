@@ -32,6 +32,9 @@ const {
   ENTRIES_CARDS,
   LOGIN,
   SETTINGS,
+  SETTINGS_ENTRIES,
+  SETTINGS_PREFERENCES,
+  SETTINGS_PROFILE,
   SUPPORT,
   PRIVACY_POLICY
 } = RouteMap
@@ -129,10 +132,32 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
       ),
       links: [
         {
-          dropdownItem: true,
-          route: SETTINGS,
-          title: "SETTINGS",
-          icon: <i className="fas fa-cog NavBarImage" />
+          icon: (
+            <span className="NavBarLink">
+              <i className="fas fa-cog NavBarImage" />
+              SETTINGS
+            </span>
+          ),
+          links: [
+            {
+              dropdownItem: true,
+              route: SETTINGS_PROFILE,
+              title: "PROFILE",
+              icon: <i className="fas fa-user-circle NavBarImage" />
+            },
+            {
+              dropdownItem: true,
+              route: SETTINGS_PREFERENCES,
+              title: "PREFERENCES",
+              icon: <i class="fas fa-sliders-h NavBarImage" />
+            },
+            {
+              dropdownItem: true,
+              route: SETTINGS_ENTRIES,
+              title: "ENTRIES",
+              icon: <i className="fas fa-book NavBarImage" />
+            }
+          ]
         },
         {
           dropdownItem: true,

@@ -25,6 +25,9 @@ const {
   SIGNUP,
   PASSWORD_RESET,
   SETTINGS,
+  SETTINGS_ENTRIES,
+  SETTINGS_PREFERENCES,
+  SETTINGS_PROFILE,
   SUPPORT,
   CALENDAR,
   ENTRY_DETAIL,
@@ -59,7 +62,12 @@ const ReactRouter = props => {
       component: renderRedirectOrComponent(User.token, NEW_ENTRY, Account)
     },
     {
-      path: [SETTINGS],
+      path: [
+        SETTINGS,
+        SETTINGS_ENTRIES,
+        SETTINGS_PREFERENCES,
+        SETTINGS_PROFILE
+      ],
       component: Settings
     },
     {

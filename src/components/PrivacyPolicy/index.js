@@ -6,7 +6,7 @@ const PrivacyPolicy = () => (
   <Container className="PrivacyPolicy Container">
     <Row>
       <Col xs={12}>
-        <h1 className="pageHeader">Privacy Policy</h1>
+        <h1>Privacy Policy</h1>
 
         <p>Effective date: June 15, 2019</p>
 
