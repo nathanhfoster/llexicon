@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo } from "react"
+import React, { useState, useEffect, useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import {
   Container,
@@ -44,34 +44,43 @@ const BasicTabs = ({
 
   const handleTabChanged = activeTab => setState(activeTab)
 
-  const renderNavItems = (activeTab, tabs) =>
-    tabs.map(tab => {
-      const { tabId, title, onClickCallback } = tab
-      const onTab = activeTab === tabId
-      return (
-        <NavItem key={tabId}>
-          <NavLink
-            className={`BasicTabsNavLink ${onTab ? "active" : ""}`}
-            onClick={() =>
-              onClickCallback ? onClickCallback(tabId) : handleTabChanged(tabId)
-            }
-          >
-            {title}
-          </NavLink>
-        </NavItem>
-      )
-    })
+  const renderNavItems = useMemo(
+    () =>
+      tabs.map(tab => {
+        const { tabId, title, onClickCallback } = tab
+        const onTab = activeTab === tabId
+        return (
+          <NavItem key={tabId}>
+            <NavLink
+              className={`BasicTabsNavLink ${onTab ? "active" : ""}`}
+              onClick={() =>
+                onClickCallback
+                  ? onClickCallback(tabId)
+                  : handleTabChanged(tabId)
+              }
+            >
+              {title}
+            </NavLink>
+          </NavItem>
+        )
+      }),
+    [activeTab]
+  )
 
-  const renderTabs = (activeTab, tabs) =>
-    tabs.map(tab => {
-      const { tabId, render, mountTabWhenActive, className } = tab
-      const shouldNotRender = mountTabWhenActive === true && activeTab !== tabId
-      return shouldNotRender ? null : (
-        <TabContent key={tabId} activeTab={activeTab} className={className}>
-          <TabPane tabId={tabId}>{render}</TabPane>
-        </TabContent>
-      )
-    })
+  const renderTabs = useMemo(
+    () =>
+      tabs.map(tab => {
+        const { tabId, render, mountTabWhenActive, className } = tab
+        const shouldNotRender =
+          mountTabWhenActive === true && activeTab !== tabId
+        return shouldNotRender ? null : (
+          <TabContent key={tabId} activeTab={activeTab} className={className}>
+            <TabPane tabId={tabId}>{render}</TabPane>
+          </TabContent>
+        )
+      }),
+    [activeTab]
+  )
 
   return (
     <Container
@@ -79,9 +88,9 @@ const BasicTabs = ({
       className={`BasicTabs Container ${containerClassname}`}
     >
       <Row>
-        <Nav tabs>{renderNavItems(activeTab, tabs)}</Nav>
+        <Nav tabs>{renderNavItems}</Nav>
       </Row>
-      {renderTabs(activeTab, tabs)}
+      {renderTabs}
     </Container>
   )
 }
