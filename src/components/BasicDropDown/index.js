@@ -8,7 +8,7 @@ import {
 } from "reactstrap"
 import "./styles.css"
 
-const BasicDropDown = ({ list, onClickCallback, direction, toggleTitle }) => {
+const BasicDropDown = ({ list, onClickCallback, direction, title }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const toggle = () => setDropdownOpen(prevState => !prevState)
@@ -38,7 +38,7 @@ const BasicDropDown = ({ list, onClickCallback, direction, toggleTitle }) => {
       size="sm"
     >
       <DropdownToggle caret color="primary" className="BasicDropDownToggle">
-        {toggleTitle}
+        {title}
       </DropdownToggle>
       <DropdownMenu
         modifiers={{
@@ -79,7 +79,7 @@ BasicDropDown.propTypes = {
     }).isRequired
   ),
   onClickCallback: PropTypes.func,
-  toggleTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
   // ---Dropdown---
   a11y: PropTypes.bool, // defaults to true. Set to false to enable more bootstrap like tabbing behavior
@@ -135,6 +135,6 @@ BasicDropDown.propTypes = {
   toggle: PropTypes.bool // default: true
 }
 
-BasicDropDown.defaultProps = { direction: "down", toggleTitle: "toggleTitle" }
+BasicDropDown.defaultProps = { direction: "down", title: "title" }
 
 export default memo(BasicDropDown)

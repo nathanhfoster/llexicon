@@ -6,6 +6,11 @@ import { saveReduxState } from "../Persister/actions"
 import { GetUserEntries } from "../Entries/actions"
 import qs from "qs"
 
+const SetUser = payload => ({
+  type: UserActionTypes.USER_SET,
+  payload
+})
+
 const ChangeUser = payload => ({ type: UserActionTypes.USER_SET, payload })
 
 const UserLogin = (payload, rememberMe) => async dispatch =>
@@ -14,10 +19,7 @@ const UserLogin = (payload, rememberMe) => async dispatch =>
     .then(res => {
       const { id, token } = res.data
       dispatch(RefreshPatchUser(token, id))
-      dispatch({
-        type: UserActionTypes.USER_SET,
-        payload: res.data
-      })
+      dispatch(SetUser(res.data))
       dispatch(saveReduxState())
       dispatch(GetUserEntries(1))
       return res.data
@@ -197,6 +199,7 @@ const SetSettings = payload => (dispatch, getState) => {
 }
 
 export {
+  SetUser,
   ChangeUser,
   UserLogin,
   RefreshPatchUser,

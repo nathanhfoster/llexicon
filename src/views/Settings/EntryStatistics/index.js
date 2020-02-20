@@ -4,7 +4,7 @@ import { Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import MomentJs from "moment"
 import "./styles.css"
-import deepEquals from "../../helpers/deepEquals"
+import deepEquals from "../../../helpers/deepEquals"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
