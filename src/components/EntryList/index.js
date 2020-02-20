@@ -14,7 +14,7 @@ import "./styles.css"
 const mapStateToProps = ({
   Window: { innerHeight, navBarHeight, isMobile }
 }) => ({
-  listHeight: isMobile ? 330 : innerHeight - navBarHeight - 54 - 64
+  listHeight: isMobile ? 330 : innerHeight - navBarHeight
 })
 
 const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
