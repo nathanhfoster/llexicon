@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, memo, lazy } from "react"
+import React, { Fragment, useCallback, useMemo, memo, lazy } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Row, Button, ButtonGroup } from "reactstrap"
@@ -28,11 +28,7 @@ const TagsContainer = lazy(() => import("../../components/TagsContainer"))
 const mapStateToProps = ({
   Entries: { items, next, search },
   TextEditor,
-  Window: {
-    innerHeight,
-    screen: { availHeight },
-    navBarHeight
-  }
+  Window: { innerHeight, navBarHeight }
 }) => ({
   entries: items,
   TextEditor,
@@ -59,12 +55,18 @@ const Entries = ({
   GetAllUserEntries,
   SetEditorState
 }) => {
-  const viewableEntries = entries
-    .filter(item => !item._shouldDelete)
-    .sort(
-      (a, b) =>
-        new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
-    )
+  const viewableEntries = useMemo(
+    () =>
+      entries
+        .filter(item => !item._shouldDelete)
+        .sort(
+          (a, b) =>
+            new Date(b.date_created_by_author) -
+            new Date(a.date_created_by_author)
+        ),
+    [entries]
+  )
+
   const history = useHistory()
   const { pathname } = useLocation()
 
