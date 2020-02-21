@@ -29,3 +29,7 @@
 .TelescopeIcon:hover {
     color: var(--accentColor);
 }
+
+.StarSearch:focus-within .TelescopeIcon {
+    animation: fa-spin 0.8s alternate ease-in;
+}
