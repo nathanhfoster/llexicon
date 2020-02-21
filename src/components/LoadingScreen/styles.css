@@ -1,56 +1,36 @@
 .LoadingScreenContainer {
-    height: 100vh;
-    width: 100vw;
-    background: var(--primaryBackgroundGradient);
+  height: 100vh;
+  width: 100vw;
+  background: var(--primaryBackgroundGradient);
 }
 
-.loader {
-    width: 250px;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: helvetica, arial, sans-serif;
-    text-transform: uppercase;
-    font-weight: 900;
-    color: var(--accentColor);
-    letter-spacing: 0.2em;
+.LoadingScreenContainer svg {
+  display: block;
+  width: 258px;
+  height: 258px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.loader::before, .loader::after {
-    content: "";
-    display: block;
-    width: 15px;
-    height: 15px;
-    background: var(--accentColor);
-    position: absolute;
-    animation: load 0.7s infinite alternate ease-in-out;
+.LoadingScreenContainer .tree {
+  fill: var(--accentColor);
 }
 
-.loader::before {
-    top: 0;
+.LoadingScreenContainer .circle-mask {
+  transform-origin: 50% 90%;
+  animation: scale 5s infinite ease-out;
 }
 
-.loader::after {
-    bottom: 0;
-}
-
-@keyframes load {
-    0% {
-        left: 0;
-        height: 30px;
-        width: 15px;
-   }
-    50% {
-        height: 8px;
-        width: 40px;
-   }
-    100% {
-        left: 235px;
-        height: 30px;
-        width: 15px;
-   }
+@keyframes scale {
+  0%, 100% {
+    transform: scale(0.0);
+  }
+  7%, 90% {
+    transform: scale(0.4);
+  }
+  50% {
+    transform: scale(1);
+  }
 }
