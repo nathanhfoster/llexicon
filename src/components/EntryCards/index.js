@@ -5,7 +5,7 @@ import EntryCardTitle from "./EntryCardTitle"
 import EntryCardText from "./EntryCardText"
 import { BasicCard } from ".."
 import { useHistory } from "react-router-dom"
-import { RouteMap, RouterPush } from "../ReactRouter/Routes"
+import { RouteMap, RouterPush } from "../../routes"
 import PropTypes from "prop-types"
 import "./styles.css"
 

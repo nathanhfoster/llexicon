@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { connect as reduxConnect } from "react-redux"
-import { RouteMap } from "../ReactRouter/Routes"
+import { RouteMap } from "../../routes"
 import PropTypes from "prop-types"
 import "./styles.css"
 import {

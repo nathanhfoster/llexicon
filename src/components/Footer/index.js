@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
-import { RouteMap } from "../ReactRouter/Routes"
+import { RouteMap } from "../../routes"
 import "./styles.css"
 
 const Footer = () => (

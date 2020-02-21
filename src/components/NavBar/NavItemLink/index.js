@@ -2,7 +2,7 @@ import React, { useState, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { NavItem, NavLink, DropdownItem } from "reactstrap"
 import { NavLink as RouterNavLink, withRouter } from "react-router-dom"
-import { RouterLinkPush } from "../../ReactRouter/Routes"
+import { RouterLinkPush } from "../../../routes"
 import "./styles.css"
 
 const NavItemLink = ({

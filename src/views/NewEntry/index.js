@@ -54,6 +54,8 @@ const NewEntry = ({
 
   const postDisabled = editorStateHtmlIsBlank && !entry.title
 
+  activeDate = new Date(activeDate)
+
   const handlePostEntry = async () => {
     const {
       html,

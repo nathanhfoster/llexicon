@@ -34,7 +34,6 @@ import PrivacyPolicy from "./PrivacyPolicy"
 import RatingIcon from "./RatingIcon"
 import RatingStar from "./RatingStar"
 import ReactDatePicker from "./ReactDatePicker"
-import ReactRouter from "./ReactRouter"
 import SearchList from "./SearchList"
 import StarSearch from "./StarSearch"
 import TagsContainer from "./TagsContainer"
@@ -79,7 +78,6 @@ export {
   RatingIcon,
   RatingStar,
   ReactDatePicker,
-  ReactRouter,
   SearchList,
   StarSearch,
   TagsContainer,

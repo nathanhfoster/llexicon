@@ -11,7 +11,6 @@ import Persister from "./components/Persister"
 import { getReduxState } from "./redux/Persister/actions"
 import * as serviceWorker from "./serviceWorker"
 
-const ReactRouter = lazy(() => import("./components/ReactRouter"))
 const BackgroundImage = lazy(() => import("./components/BackgroundImage"))
 
 const { NODE_ENV } = process.env
@@ -24,11 +23,10 @@ ReactDOM.render(
     <Suspense fallback={<LoadingScreen />}>
       <Persister />
       <AlertNotifications />
-      <App />
       <BrowserRouter>
         <BackgroundImage />
         <NavBar />
-        <ReactRouter />
+        <App />
       </BrowserRouter>
     </Suspense>
   </Provider>,
