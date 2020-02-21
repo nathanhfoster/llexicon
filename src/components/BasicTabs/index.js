@@ -64,7 +64,7 @@ const BasicTabs = ({
           </NavItem>
         )
       }),
-    [activeTab]
+    [activeTab, tabs]
   )
 
   const renderTabs = useMemo(
@@ -79,7 +79,7 @@ const BasicTabs = ({
           </TabContent>
         )
       }),
-    [activeTab]
+    [activeTab, tabs]
   )
 
   return (

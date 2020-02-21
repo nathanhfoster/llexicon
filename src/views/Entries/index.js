@@ -34,12 +34,7 @@ const mapStateToProps = ({
     navBarHeight
   }
 }) => ({
-  entries: items
-    .filter(item => !item._shouldDelete)
-    .sort(
-      (a, b) =>
-        new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
-    ),
+  entries: items,
   TextEditor,
   nextEntryPage: next,
   entriesSearch: search,
@@ -64,6 +59,12 @@ const Entries = ({
   GetAllUserEntries,
   SetEditorState
 }) => {
+  const viewableEntries = entries
+    .filter(item => !item._shouldDelete)
+    .sort(
+      (a, b) =>
+        new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
+    )
   const history = useHistory()
   const { pathname } = useLocation()
 
@@ -72,7 +73,7 @@ const Entries = ({
   }
 
   if (TextEditor.latitude && TextEditor.longitude) {
-    entries.push({ ...TextEditor })
+    viewableEntries.push({ ...TextEditor })
   }
 
   const tabContainerHeight = 54
@@ -98,7 +99,7 @@ const Entries = ({
       visibleStartIndex,
       visibleStopIndex
     }) => {
-      const { length } = entries
+      const { length } = viewableEntries
       const bottomOfListIndex = length === 0 ? length : length - 1
       const reachedBottomOfList =
         bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
@@ -112,7 +113,7 @@ const Entries = ({
         GetEntries()
       }
     },
-    [entries.length]
+    [viewableEntries.length]
   )
 
   const GetEntries = () => {
@@ -162,7 +163,7 @@ const Entries = ({
       title: <i className="fas fa-columns"></i>,
       render: (
         <Row>
-          <EntryCards entries={entries} />
+          <EntryCards entries={viewableEntries} />
         </Row>
       ),
       onClickCallback: handleTabChange
@@ -175,7 +176,7 @@ const Entries = ({
         <Row>
           <EntriesDetailed
             height={detailedEntriesListHeight}
-            entries={entries}
+            entries={viewableEntries}
             itemSize={listItemHeight}
             onItemsRendered={handleItemsRendered}
           />
@@ -192,7 +193,7 @@ const Entries = ({
           <Row>
             <EntriesMinimal
               height={minimalEntriesListHeight}
-              entries={entries}
+              entries={viewableEntries}
               onItemsRendered={handleItemsRendered}
             />
           </Row>
@@ -367,7 +368,7 @@ const Entries = ({
                 filterPlaceholder: "<="
               }
             ]}
-            data={entries}
+            data={viewableEntries}
           />
         </Row>
       ),
@@ -382,7 +383,7 @@ const Entries = ({
           <BasicMap
             renderUserLocation
             height={viewPortHeight - 54}
-            locations={entries}
+            locations={viewableEntries}
             getAddressOnMarkerClick
             onChangeCallback={({ entryId, address, latitude, longitude }) => {
               if (!entryId) return

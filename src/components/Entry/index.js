@@ -21,6 +21,9 @@ const Entry = ({
   theme,
   history
 }) => {
+  const activeDate = new Date(
+    entry.date_created_by_author || entry._lastUpdated || 0
+  )
   const dispatch = useDispatch()
   const inputHeight = 48
   const numberOfInputs = 1
@@ -88,7 +91,7 @@ const Entry = ({
           <InputGroupAddon addonType="append">
             <InputGroupText className="p-0">
               <ReactDatePicker
-                selected={entry.date_created_by_author || entry._lastUpdated}
+                selected={activeDate}
                 onChange={handleDateChange}
               />
             </InputGroupText>
