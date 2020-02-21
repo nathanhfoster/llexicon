@@ -149,7 +149,7 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
               dropdownItem: true,
               route: SETTINGS_PREFERENCES,
               title: "PREFERENCES",
-              icon: <i class="fas fa-sliders-h NavBarImage" />
+              icon: <i className="fas fa-sliders-h NavBarImage" />
             },
             {
               dropdownItem: true,

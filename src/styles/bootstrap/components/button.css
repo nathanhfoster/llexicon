@@ -2,6 +2,18 @@
   box-shadow: 0 0 0 0.075rem var(--slate_grey) !important;
 }
 
+.btn-outline-accent {
+  color: var(--secondaryColor);
+  box-shadow: var(--primaryBoxShadow);
+}
+
+.btn-outline-accent:hover {
+  color: var(--secondaryColor);
+  background-color: var(--accentColor) !important;
+  border-color: var(--accentColor) !important;
+  box-shadow: var(--primaryBoxShadow);
+}
+
 .btn-accent {
   color: var(--secondaryColor);
   background-color: var(--accentColor) !important;
