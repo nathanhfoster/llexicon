@@ -43,7 +43,7 @@ const TablePaginator = ({
         <Col xs={3} className="p-0">
           <BasicDropDown
             list={pageList}
-            title={
+            value={
               <span>
                 <span className="Pagination">{currentPage + 1}</span>
                 <span> / </span>
@@ -56,7 +56,7 @@ const TablePaginator = ({
         <Col xs={3} className="p-0">
           <BasicDropDown
             list={pageSizes}
-            title={
+            value={
               <span>
                 <span>{dataLength}</span>
                 <span> / </span>
