@@ -70,9 +70,9 @@ const BasicTabs = ({
   const renderTabs = useMemo(
     () =>
       tabs.map(tab => {
-        const { tabId, render, mountTabWhenActive, className } = tab
+        const { tabId, render, mountTabOnlyWhenActive, className } = tab
         const shouldNotRender =
-          mountTabWhenActive === true && activeTab !== tabId
+          mountTabOnlyWhenActive === true && activeTab !== tabId
         return shouldNotRender ? null : (
           <TabContent key={tabId} activeTab={activeTab} className={className}>
             <TabPane tabId={tabId}>{render}</TabPane>
@@ -102,7 +102,7 @@ BasicTabs.propTypes = {
     PropTypes.shape({
       tabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
         .isRequired,
-      mountTabWhenActive: PropTypes.bool,
+      mountTabOnlyWhenActive: PropTypes.bool,
       title: PropTypes.oneOfType([
         PropTypes.string.isRequired,
         PropTypes.object
