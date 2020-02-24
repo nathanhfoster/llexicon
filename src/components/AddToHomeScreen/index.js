@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Fragment, memo } from "react"
+import React, { useState, useEffect, memo } from "react"
 import { connect as reduxConnect } from "react-redux"
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"
+import { Button } from "reactstrap"
 import { useAddToHomescreenPrompt } from "./prompt"
 import getBrowserIcon from "./getBrowserIcon"
 import "./styles.css"
@@ -19,22 +19,10 @@ const mapDispatchToProps = {}
 const AddToHomeScreenModal = ({
   isInStandalone,
   isOnMobileBrowser,
-  userAgent,
-  onClickCallback
+  userAgent
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const [isVisible, setVisibleState] = useState(false)
   const [isDisabled, setDisabledState] = useState(true)
-
-  const toggle = () => {
-    if (onClickCallback) onClickCallback()
-    setVisibleState(!isVisible)
-  }
-
-  const hide = () => {
-    if (onClickCallback) onClickCallback()
-    setVisibleState(false)
-  }
 
   const isInProduction = NODE_ENV !== "development"
   const canInstallOnMobile = !isInStandalone && isOnMobileBrowser
@@ -51,45 +39,11 @@ const AddToHomeScreenModal = ({
   const icon = getBrowserIcon(isOnMobileBrowser, userAgent)
 
   return (
-    <div>
-      {!isInStandalone && (
-        <Button
-          tag="div"
-          color="success"
-          className="InstallButton"
-          onClick={toggle}
-          disabled={isDisabled}
-        >
-          {icon} Install
-        </Button>
-      )}
-      <Modal isOpen={isVisible} toggle={toggle} className="ConfirmActionModal">
-        <ModalHeader toggle={toggle} className="Center">
-          Installation
-        </ModalHeader>
-        <ModalBody>
-          Would you like to install this app? Doing so will allow the following
-          features:
-          <li>Native App Interface</li>
-          <li>Offline Use</li>
-        </ModalBody>
-        <ModalFooter className="Center">
-          <Button
-            color="success"
-            onClick={() => {
-              promptToInstall()
-              hide()
-            }}
-            disabled={isDisabled}
-          >
-            {icon} Install
-          </Button>
-          <Button color="primary" onClick={hide}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
-    </div>
+    !isInStandalone && (
+      <Button color="success" onClick={promptToInstall} disabled={isDisabled}>
+        {icon} Install
+      </Button>
+    )
   )
 }
 
