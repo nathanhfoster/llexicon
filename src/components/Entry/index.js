@@ -15,8 +15,9 @@ import "./styles.css"
 const Entry = ({
   entry,
   containerHeight,
-  topToolbarHidden,
-  bottomToolbarHidden,
+  canToggleToolbars,
+  topToolbarIsOpen,
+  bottomToolbarIsOpen,
   shouldRedirectOnDelete,
   theme,
   history
@@ -68,8 +69,9 @@ const Entry = ({
     <Fragment>
       <Editor
         toolbarId={entry.id}
-        topToolbarHidden={topToolbarHidden}
-        bottomToolbarHidden={bottomToolbarHidden}
+        canToggleToolbars={canToggleToolbars}
+        topToolbarIsOpen={topToolbarIsOpen}
+        bottomToolbarIsOpen={bottomToolbarIsOpen}
         entry={entry}
         theme={theme}
         onChangeCallback={handleEditorChange}
@@ -123,21 +125,22 @@ const Entry = ({
 Entry.propTypes = {
   entry: PropTypes.object.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  bottomToolbarHidden: PropTypes.bool,
+  bottomToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,
   history: PropTypes.object,
   location: PropTypes.object,
   match: PropTypes.object,
   staticContext: PropTypes.any,
-  topToolbarHidden: PropTypes.bool,
+  topToolbarIsOpen: PropTypes.bool,
   shouldRedirectOnDelete: PropTypes.bool,
   shouldRedirectOnDelete: PropTypes.bool,
   theme: PropTypes.string
 }
 
 Entry.defaultProps = {
-  topToolbarHidden: false,
-  bottomToolbarHidden: false,
+  canToggleToolbars: true,
+  topToolbarIsOpen: true,
+  bottomToolbarIsOpen: true,
   shouldRedirectOnDelete: false,
   theme: "snow"
 }

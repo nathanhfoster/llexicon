@@ -1,5 +1,6 @@
-import React, { memo } from "react"
+import React, { memo, Fragment } from "react"
 import PropTypes from "prop-types"
+import { Collapse, Button } from "reactstrap"
 import Headers from "./QuillSelect/Headers"
 import Sizes from "./QuillSelect/Sizes"
 import QuillButtons from "./QuillButtons"
@@ -8,18 +9,18 @@ import Colors from "./QuillSelect/Colors"
 import Align from "./QuillSelect/Align"
 import Fonts from "./QuillSelect/Fonts"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../../redux/TextEditor/reducer"
-import deepEquals from "../../../helpers/deepEquals"
+import memoizeProps from "../../../helpers/memoizeProps"
 import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR
 
-const TopToolbar = ({ toolbarId, editorRef, onChangeCallback }) => {
+const TopToolbar = ({ toolbarId, editorRef, isOpen, onChangeCallback }) => {
   const handleUndo = () => editorRef.current.editor.history.undo()
   const handleRedo = () => editorRef.current.editor.history.redo()
   const handleClear = () => onChangeCallback({ html })
 
   return (
-    <div id={toolbarId}>
+    <Collapse id={toolbarId} isOpen={isOpen}>
       <span className="ql-formats">
         <Align />
         <Fonts />
@@ -42,17 +43,18 @@ const TopToolbar = ({ toolbarId, editorRef, onChangeCallback }) => {
           <i className="fas fa-times-circle" />
         </button>
       </span>
-    </div>
+    </Collapse>
   )
 }
 
 TopToolbar.propTypes = {
   toolbarId: PropTypes.PropTypes.string.isRequired,
   editorRef: PropTypes.object,
+  isOpen: PropTypes.bool.isRequired,
   onChangeCallback: PropTypes.func.isRequired
 }
 
 const isEqual = (prevProps, nextProps) =>
-  deepEquals(prevProps.editorRef, nextProps.editorRef)
+  memoizeProps(prevProps, nextProps, ["editorRef", "isOpen"])
 
 export default memo(TopToolbar, isEqual)

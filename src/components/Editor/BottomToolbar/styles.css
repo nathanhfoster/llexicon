@@ -4,6 +4,26 @@
     --bootmToolBarTagsHeight: 24px;
 }
 
+.ToggleBottomToolbarButton {
+    opacity: 0.1;
+    position: absolute;
+    left: 50%;
+}
+
+.ToggleBottomToolbarButton:hover {
+    opacity: 1;
+    z-index: 99;
+    color: var(--accentColor);
+}
+
+.BottomToolbarIsOpen {
+    bottom: calc(var(--bottomToolbarHeight));
+}
+
+.BottomToolbarIsClosed {
+    bottom: 0;
+}
+
 .BottomToolBar {
     height: var(--bottomToolbarHeight);
     opacity: var(--mainOpacity);
@@ -15,9 +35,7 @@
     color: var(--secondaryColor);
 }
 
-.BottomToolBar .row {
-
-}
+.BottomToolBar .row {}
 
 .BottomToolBar:focus-within, .BottomToolBar:hover {
     opacity: 1;

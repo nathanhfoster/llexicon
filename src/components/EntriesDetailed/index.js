@@ -18,7 +18,8 @@ const renderDetailedEntries = ({ data, index, style, isScrolling }) => {
       <Entry
         entry={entry}
         containerHeight={style.height}
-        bottomToolbarHidden
+        canToggleToolbars={false}
+        bottomToolbarIsOpen={false}
         theme="snow"
       />
     </Col>

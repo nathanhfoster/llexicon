@@ -1,3 +1,24 @@
+.ToggleTopToolbarButton {
+    opacity: 0.1;
+    position: absolute;
+    left: 50%;
+}
+
+.ToggleTopToolbarButton:hover {
+    opacity: 1;
+    z-index: 99;
+    color: var(--accentColor);
+}
+
+.TopToolbarIsOpen {
+    top: -8px;
+}
+
+.TopToolbarIsClosed {
+    top: -8px;
+    z-index: 99;
+}
+
 [id*='toolbar-'] {
     box-shadow: var(--primaryBoxShadow);
     background: var(--quinaryColor);
@@ -23,19 +44,19 @@
     color: var(--secondaryColor);
 }
 
-@media (max-width: 413px) {
+@media (max-width: 415px) {
     :root {
-        --topToolbarHeight: 112px;
+        --topToolbarHeight: 116px;
     }
 }
 
-@media (min-width: 414px) and (max-width: 533px) {
+@media (min-width: 416px) and (max-width: 767px) {
     :root {
-        --topToolbarHeight: 90px;
+        --topToolbarHeight: 94px;
     }
 }
 
-@media (min-width: 534px) and (max-width: 1199px) {
+@media (min-width: 768px) and (max-width: 1199px) {
     :root {
         --topToolbarHeight: 68px;
     }

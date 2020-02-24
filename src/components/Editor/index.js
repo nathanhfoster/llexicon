@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment, createRef } from "react"
 import PropTypes from "prop-types"
 import ReactQuill, { Quill } from "react-quill"
+import { Collapse } from "reactstrap"
 import ImageResize from "quill-image-resize-module-react"
 import "react-quill/dist/quill.snow.css"
 import "react-quill/dist/quill.bubble.css"
@@ -107,14 +108,14 @@ const THEMES = {
   BUBBLE: "bubble"
 }
 
-const getModules = (toolbarId, topToolbarHidden) => {
+const getModules = (toolbarId, topToolbarIsOpen) => {
   return {
     history: {
       delay: 2000,
       maxStack: 500,
       userOnly: false
     },
-    toolbar: topToolbarHidden ? "" : `#${toolbarId}`,
+    toolbar: topToolbarIsOpen ? `#${toolbarId}` : false,
     // toolbar: {
     //   container: [
     //     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -201,13 +202,15 @@ class Editor extends PureComponent {
   constructor(props) {
     super(props)
 
-    const { toolbarId, theme } = props
+    const { toolbarId, theme, topToolbarIsOpen, bottomToolbarIsOpen } = props
 
     this.editorRef = createRef()
 
     this.state = {
       quillId: toolbarId.toString(),
-      theme
+      theme,
+      topToolbarIsOpen,
+      bottomToolbarIsOpen
     }
   }
 
@@ -225,9 +228,9 @@ class Editor extends PureComponent {
       tags: PropTypes.arrayOf(
         PropTypes.shape({
           title: PropTypes.string.isRequired,
-          date_created: PropTypes.string.isRequired,
-          date_updated: PropTypes.string.isRequired,
-          authors: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired
+          date_created: PropTypes.string,
+          date_updated: PropTypes.string,
+          authors: PropTypes.arrayOf(PropTypes.number.isRequired)
         })
       ).isRequired,
       rating: PropTypes.number.isRequired,
@@ -242,17 +245,18 @@ class Editor extends PureComponent {
           name: PropTypes.string.isRequired,
           size: PropTypes.number.isRequired,
           url: PropTypes.string.isRequired,
-          date_created: PropTypes.string.isRequired,
-          date_updated: PropTypes.string.isRequired,
-          date_modified: PropTypes.string.isRequired
+          date_created: PropTypes.string,
+          date_updated: PropTypes.string,
+          date_modified: PropTypes.string
         })
       )
     }).isRequired,
     onChangeCallback: PropTypes.func,
     toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
-    topToolbarHidden: PropTypes.bool,
-    bottomToolbarHidden: PropTypes.bool,
+    canToggleToolbars: PropTypes.bool.isRequired,
+    topToolbarIsOpen: PropTypes.bool,
+    bottomToolbarIsOpen: PropTypes.bool,
 
     // Quill
     id: PropTypes.string,
@@ -285,34 +289,30 @@ class Editor extends PureComponent {
     width: "100%",
     toolbarId: 1,
     placeholder: "Today I have...",
-    topToolbarHidden: false,
-    bottomToolbarHidden: false,
+    canToggleToolbars: true,
+    topToolbarIsOpen: true,
+    bottomToolbarIsOpen: true,
     readOnly: false
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      entry,
-      topToolbarHidden,
-      bottomToolbarHidden,
-      onChangeCallback
-    } = nextProps
+    const { entry } = nextProps
+
+    const { topToolbarIsOpen, bottomToolbarIsOpen } = prevState
 
     const toolbarId = `toolbar-${nextProps.toolbarId}`
 
     const formats = getFormats(nextProps)
-    const modules = getModules(toolbarId, topToolbarHidden)
+    const modules = getModules(toolbarId, topToolbarIsOpen)
 
-    const editorHeight = bottomToolbarHidden
-      ? "calc(100% - var(--topToolbarHeight))"
-      : "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight))"
+    const editorHeight = bottomToolbarIsOpen
+      ? "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight))"
+      : "calc(100% - var(--topToolbarHeight))"
 
     return {
       toolbarId,
       entry,
-      topToolbarHidden,
       editorHeight,
-      bottomToolbarHidden,
       formats,
       modules
     }
@@ -329,6 +329,11 @@ class Editor extends PureComponent {
     onChangeCallback({ id: toolbarId, ...payload })
   }
 
+  toggleBottomToolbar = () =>
+    this.setState(currentState => ({
+      bottomToolbarIsOpen: !currentState.bottomToolbarIsOpen
+    }))
+
   render() {
     const { editorRef } = this
     const {
@@ -337,16 +342,17 @@ class Editor extends PureComponent {
       height,
       width,
       placeholder,
-      readOnly
+      readOnly,
+      canToggleToolbars
     } = this.props
     const {
       toolbarId,
       entry,
       theme,
       quillId,
-      topToolbarHidden,
+      topToolbarIsOpen,
       editorHeight,
-      bottomToolbarHidden,
+      bottomToolbarIsOpen,
       formats,
       modules
     } = this.state
@@ -355,13 +361,12 @@ class Editor extends PureComponent {
       <Fragment>
         {children}
         <div id="TextEditor" style={{ height, width }}>
-          {!topToolbarHidden && (
-            <TopToolbar
-              toolbarId={toolbarId}
-              editorRef={editorRef}
-              onChangeCallback={onChangeCallback}
-            />
-          )}
+          <TopToolbar
+            toolbarId={toolbarId}
+            editorRef={editorRef}
+            isOpen={topToolbarIsOpen}
+            onChangeCallback={onChangeCallback}
+          />
           <ReactQuill
             id={quillId}
             readOnly={readOnly}
@@ -376,14 +381,15 @@ class Editor extends PureComponent {
             onChange={this.handleEditorStateChange}
             placeholder={placeholder}
           />
-          {!bottomToolbarHidden && (
-            <BottomToolbar
-              entry={entry}
-              onChangeCallback={this.handleBottomToolBarOnChange}
-              id={this.props.toolbarId}
-              editorRef={editorRef}
-            />
-          )}
+          <BottomToolbar
+            entry={entry}
+            canToggleToolbars={canToggleToolbars}
+            isOpen={bottomToolbarIsOpen}
+            toggleBottomToolbar={this.toggleBottomToolbar}
+            onChangeCallback={this.handleBottomToolBarOnChange}
+            id={this.props.toolbarId}
+            editorRef={editorRef}
+          />
         </div>
       </Fragment>
     )

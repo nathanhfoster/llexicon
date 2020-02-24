@@ -1,6 +1,6 @@
-import React, { useMemo, memo } from "react"
+import React, { useMemo, memo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col } from "reactstrap"
+import { Collapse, Container, Row, Col, Button } from "reactstrap"
 import {
   LocationButtonModal,
   TagsButtonModal,
@@ -24,7 +24,15 @@ const renderButtonRows = buttons =>
     </Row>
   ))
 
-const BottomToolbar = ({ entry, editorRef, onChangeCallback, xs }) => {
+const BottomToolbar = ({
+  entry,
+  editorRef,
+  isOpen,
+  canToggleToolbars,
+  toggleBottomToolbar,
+  onChangeCallback,
+  xs
+}) => {
   const buttons = useMemo(
     () => [
       [
@@ -52,30 +60,48 @@ const BottomToolbar = ({ entry, editorRef, onChangeCallback, xs }) => {
   )
 
   return (
-    <Container fluid className="BottomToolBar">
-      <Row className="BottomToolBarTags">
-        <Col xs={12} className="pl-1 pr-1">
-          <TagsContainer tags={entry.tags} />
-        </Col>
-      </Row>
-      <Row className="BottomToolBarFiles">
-        <Col xs={12} className="p-1">
-          <EntryFilesCarousel
-            html={entry.html}
-            files={entry.EntryFiles}
-            onChangeCallback={onChangeCallback}
-            editorRef={editorRef}
+    <Fragment>
+      {canToggleToolbars && (
+        <div
+          className={`ToggleBottomToolbarButton ${
+            isOpen ? "BottomToolbarIsOpen" : "BottomToolbarIsClosed"
+          }`}
+        >
+          <i
+            className={`fas fa-angle-${isOpen ? "down" : "up"} fa-2x`}
+            onClick={toggleBottomToolbar}
           />
-        </Col>
-      </Row>
-      {renderButtonRows(buttons)}
-    </Container>
+        </div>
+      )}
+      <Collapse isOpen={isOpen}>
+        <Container fluid className="BottomToolBar">
+          <Row className="BottomToolBarTags">
+            <Col xs={12} className="pl-1 pr-1">
+              <TagsContainer tags={entry.tags} />
+            </Col>
+          </Row>
+          <Row className="BottomToolBarFiles">
+            <Col xs={12} className="p-1">
+              <EntryFilesCarousel
+                html={entry.html}
+                files={entry.EntryFiles}
+                onChangeCallback={onChangeCallback}
+                editorRef={editorRef}
+              />
+            </Col>
+          </Row>
+          {renderButtonRows(buttons)}
+        </Container>
+      </Collapse>
+    </Fragment>
   )
 }
 
 BottomToolbar.propTypes = {
   editorRef: PropTypes.object,
   entry: PropTypes.object.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  toggleBottomToolbar: PropTypes.func.isRequired,
   onChangeCallback: PropTypes.func.isRequired
 }
 
