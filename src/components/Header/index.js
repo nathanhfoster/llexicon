@@ -4,7 +4,7 @@ import "./styles.css"
 
 const Header = ({ children, className, filled, color, ...restOfProps }) => {
   const styles = {
-    backgroundColor: filled ? "var(--accentColor)" : "inherit",
+    backgroundColor: filled ? "var(--midNight)" : "inherit",
     color: filled ? "var(---secondaryColor)" : color,
     ...restOfProps
   }
