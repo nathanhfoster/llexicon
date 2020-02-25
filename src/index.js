@@ -11,14 +11,7 @@ import * as serviceWorker from "./serviceWorker"
 
 const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
 const Persister = lazy(() => import("./components/Persister"))
-const BackgroundImage = lazy(() => {
-  return new Promise(resolve =>
-    setTimeout(resolve, 1200)
-  ).then(
-    () => import("./components/BackgroundImage")
-    // : Promise.reject(new Error())
-  )
-})
+const BackgroundImage = lazy(() => import("./components/BackgroundImage"))
 
 const { NODE_ENV } = process.env
 

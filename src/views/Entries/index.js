@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback, useMemo, memo, lazy } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
-import { Row, Button, ButtonGroup } from "reactstrap"
+import { Row, Col, Button } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
 import Moment from "react-moment"
 import { BasicTabs, EntryCards } from "../../components"
@@ -130,9 +130,6 @@ const Entries = ({
     )
   }
 
-  const GetAllEntries = () =>
-    SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
-
   const handleTabChange = tabId => RouterPush(history, tabId)
 
   const tabs = [
@@ -198,15 +195,12 @@ const Entries = ({
               onItemsRendered={handleItemsRendered}
             />
           </Row>
-          <Row className="Center" tag={ButtonGroup}>
+          <Row className="Center">
             {nextEntryPage && (
-              <Button color="accent" onClick={GetEntries}>
+              <Col xs={12} tag={Button} color="accent" onClick={GetEntries}>
                 <i className="fas fa-cloud-download-alt" /> Load More
-              </Button>
+              </Col>
             )}
-            <Button color="accent" onClick={GetAllEntries}>
-              <i className="fas fa-cloud-download-alt" /> Load All
-            </Button>
           </Row>
         </Fragment>
       ),

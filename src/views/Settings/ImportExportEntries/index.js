@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from "reactstrap"
 import { ImportEntries } from "../../../components"
 import { connect as reduxConnect } from "react-redux"
 import { copyStringToClipboard } from "../../../helpers"
+import { SyncEntries, GetAllUserEntries } from "../../../redux/Entries/actions"
 import MomentJs from "moment"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
@@ -11,10 +12,19 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   filteredItems
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { SyncEntries, GetAllUserEntries }
 
-const ImportExportEntries = ({ items, filteredItems }) => {
+const ImportExportEntries = ({
+  items,
+  filteredItems,
+  SyncEntries,
+  GetAllUserEntries
+}) => {
   const entries = items.concat(filteredItems)
+
+  const GetAllEntries = () =>
+    SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
+    
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
@@ -58,11 +68,17 @@ const ImportExportEntries = ({ items, filteredItems }) => {
   return (
     <Container fluid>
       <Row>
+        <Col xs={12}>
+          <Button color="accent" onClick={GetAllEntries}>
+            <i className="fas fa-cloud-download-alt" /> Download and Sync All
+            Entries
+          </Button>
+        </Col>
         <Col xs={6}>
           <ImportEntries />
         </Col>
         <Col xs={6}>
-          <Button color="primary" onClick={handleExportEntries}>
+          <Button color="accent" onClick={handleExportEntries}>
             <i className="fas fa-clipboard" /> Export Entries
           </Button>
         </Col>

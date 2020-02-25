@@ -22,7 +22,6 @@ const Support = lazy(() => import("./views/Support"))
 const EntryDetail = lazy(() => import("./views/EntryDetail"))
 const PageNotFound = lazy(() => import("./views/PageNotFound"))
 
-
 const FIFTEEN_MINUTES = 1000 * 60 * 15
 
 const {

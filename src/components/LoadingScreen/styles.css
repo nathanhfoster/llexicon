@@ -20,7 +20,7 @@
 
 .LoadingScreenContainer .circle-mask {
   transform-origin: 50% 90%;
-  animation: scale 5s infinite ease-out;
+  animation: scale 3s infinite ease-out;
 }
 
 @keyframes scale {

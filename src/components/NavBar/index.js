@@ -5,6 +5,7 @@ import PropTypes from "prop-types"
 import "./styles.css"
 import {
   Collapse,
+  Button,
   Navbar,
   NavbarToggler,
   Nav,
@@ -48,7 +49,10 @@ const mapStateToProps = ({
   isInStandalone
 })
 
-const mapDispatchToProps = { UserLogout, GetUserEntriesByDate }
+const mapDispatchToProps = {
+  UserLogout,
+  GetUserEntriesByDate
+}
 
 const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
   const [collapsed, setCollapse] = useState(true)
@@ -220,7 +224,8 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
 
 Navbar.propTypes = {
   UserId: PropTypes.number,
-  UserLogout: PropTypes.func
+  UserLogout: PropTypes.func,
+  GetAllEntries: PropTypes.func
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(NavBar)
