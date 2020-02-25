@@ -7,7 +7,6 @@ import storeFactory from "./redux"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import { getReduxState } from "./redux/Persister/actions"
-import { getRandomInt } from "./helpers"
 import * as serviceWorker from "./serviceWorker"
 
 const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
