@@ -10,6 +10,7 @@
   position: absolute;
   z-index: 102;
   top: var(--navBarHeight);
+  bottom: 0;
   left: 0;
   right: 0;
 }
