@@ -49,7 +49,7 @@ const BasicDropDown = ({
         modifiers={{
           setMaxHeight: {
             enabled: true,
-            order: 890,
+            // order: 890,
             fn: data => ({
               ...data,
               styles: {
