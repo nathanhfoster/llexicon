@@ -418,6 +418,39 @@ const stripHtml = html => {
   return tmp.textContent || tmp.innerText || ""
 }
 
+const fuzzyMatch = (s, p, caseSensitive = false) => {
+  if (!caseSensitive) {
+    s = s.toUpperCase()
+    p = p.toUpperCase()
+  }
+  p = `*${p.split("").join("*")}*`
+  const m = s.length
+  const n = p.length
+  let i = 0
+  let j = 0
+  const stack = []
+  while (i < m) {
+    if (s[i] === p[j] || p[j] === "?") {
+      i += 1
+      j += 1
+    } else if (p[j] === "*") {
+      stack.push([i + 1, j])
+      j += 1
+    } else if (stack.length) {
+      ;[i, j] = stack.pop()
+    } else {
+      return false
+    }
+  }
+  while (j < n) {
+    if (p[j] !== "*") {
+      return false
+    }
+    j += 1
+  }
+  return true
+}
+
 export {
   DeepClone,
   getObjectLength,
@@ -456,5 +489,6 @@ export {
   throttled,
   copyStringToClipboard,
   cleanObject,
-  stripHtml
+  stripHtml,
+  fuzzyMatch
 }

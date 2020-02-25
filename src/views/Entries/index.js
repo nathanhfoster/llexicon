@@ -4,11 +4,10 @@ import PropTypes from "prop-types"
 import { Row, Button, ButtonGroup } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
 import Moment from "react-moment"
-import MomentJS from "moment"
 import { BasicTabs, EntryCards } from "../../components"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
-import { stripHtml } from "../../helpers"
+import { stripHtml, fuzzyMatch } from "../../helpers"
 import memoizeProps from "../../helpers/memoizeProps"
 import {
   SyncEntries,
@@ -243,18 +242,7 @@ const Entries = ({
                       new Date(a.date_created_by_author)
                     : new Date(a.date_created_by_author) -
                       new Date(b.date_created_by_author),
-                filter: searchValue => item => {
-                  if (searchValue) {
-                    const momentCreatedByAuthor = MomentJS(
-                      item.date_created_by_author
-                    )
-                    const momentOfSearchValue = MomentJS(searchValue)
-
-                    return momentCreatedByAuthor >= momentOfSearchValue
-                  } else {
-                    return true
-                  }
-                },
+                filter: "date",
                 filterPlaceholder: "Created"
               },
               {
@@ -272,18 +260,7 @@ const Entries = ({
                       new Date(a._lastUpdated || a.date_updated)
                     : new Date(a._lastUpdated || a.date_updated) -
                       new Date(b._lastUpdated || b.date_updated),
-                filter: searchValue => item => {
-                  if (searchValue) {
-                    const momentCreatedByAuthor = MomentJS(
-                      item._lastUpdated || item.date_updated
-                    )
-                    const momentOfSearchValue = MomentJS(searchValue)
-
-                    return momentCreatedByAuthor >= momentOfSearchValue
-                  } else {
-                    return true
-                  }
-                },
+                filter: "date",
                 filterPlaceholder: "Updated"
               },
               {
@@ -295,11 +272,7 @@ const Entries = ({
                     ? b.tags.join().localeCompare(a.tags.join())
                     : a.tags.join().localeCompare(b.tags.join()),
                 filter: searchValue => item =>
-                  item.tags
-                    .map(t => t.title)
-                    .join()
-                    .toUpperCase()
-                    .includes(searchValue.toUpperCase()),
+                  fuzzyMatch(item.tags.map(t => t.title).join(), searchValue),
                 render: item => <TagsContainer tags={item.tags} />
               },
 
@@ -307,7 +280,7 @@ const Entries = ({
                 title: <i className="fas fa-heading" />,
                 key: "title",
                 filter: searchValue => item =>
-                  item.title.toUpperCase().includes(searchValue.toUpperCase()),
+                  fuzzyMatch(item.title, searchValue),
                 width: 180
               },
               {
