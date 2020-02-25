@@ -9,9 +9,9 @@
   overflow-y: auto;
   position: absolute;
   z-index: 102;
+  top: var(--navBarHeight);
   left: 0;
   right: 0;
- /* background: rgba(0, 0, 0, 0.4); */
 }
 
 .Container {
