@@ -249,16 +249,22 @@ const DeleteEntry = id => dispatch =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
-const SearchUserEntries = search => async (dispatch, getState) => {
+const SearchUserEntries = search => (dispatch, getState) => {
+  dispatch({
+    type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
+    payload: [],
+    search
+  })
   const { id } = getState().User
-  await Axios()
+  return Axios()
     .post(`entries/${id}/search/`, qs.stringify({ search }))
-    .then(async res => {
+    .then(async ({ data }) => {
       await dispatch({
         type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-        payload: res.data,
+        payload: data,
         search
       })
+      return data
     })
     .catch(async e => {
       await dispatch({

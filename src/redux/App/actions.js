@@ -17,8 +17,7 @@ const CheckAppVersion = () => (dispatch, getState) => {
 
   return Axios()
     .get("versions/view/")
-    .then(res => {
-      const { date_created } = res.data
+    .then(({ data: { date_created } }) => {
       const latestAppVersion = new Date(date_created)
       const clientVersion = new Date(version)
       const clientNeedsUpdate = clientVersion - latestAppVersion < 0
@@ -47,8 +46,8 @@ const GetAppVersion = () => (dispatch, getState) => {
 
   return Axios()
     .post("versions/latest/", qs.stringify({ version }))
-    .then(res => {
-      dispatch({ type: AppActionTypes.SET_APP_VERSION, payload: res.data })
+    .then(({ data }) => {
+      dispatch({ type: AppActionTypes.SET_APP_VERSION, payload: data })
     })
     .catch(e => console.log(e))
 }

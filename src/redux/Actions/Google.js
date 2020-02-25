@@ -12,20 +12,22 @@ const GetAddress = (lat, lng, type = TYPES.LatLng) => {
     .get(
       `https://maps.googleapis.com/maps/api/geocode/json?${type}=${lat}, ${lng}&key=${REACT_APP_GOOGLE_LOCATION_API}`
     )
-    .then(res => {
-      const {
-        0: {
-          address_components,
-          formatted_address,
-          geometry: { location, location_type, viewport },
-          place_id,
-          plus_code,
-          types
+    .then(
+      ({
+        data: {
+          results: {
+            0: {
+              address_components,
+              formatted_address,
+              geometry: { location, location_type, viewport },
+              place_id,
+              plus_code,
+              types
+            }
+          }
         }
-      } = res.data.results
-
-      return formatted_address
-    })
+      }) => formatted_address
+    )
     .catch(e => console.log("GetAddress ERROR: ", e))
 }
 
