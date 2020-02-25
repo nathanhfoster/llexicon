@@ -24,6 +24,7 @@ import EntryMinimal from "./EntryMinimal"
 import FacebookGoogleLogin from "./FacebookGoogleLogin"
 import FileUpload from "./FileUpload"
 import Footer from "./Footer"
+import Header from "./Header"
 import ImportEntries from "./ImportEntries"
 import Loading from "./Loading"
 import LoadingScreen from "./LoadingScreen"
@@ -68,6 +69,7 @@ export {
   FacebookGoogleLogin,
   FileUpload,
   Footer,
+  Header,
   ImportEntries,
   Loading,
   LoadingScreen,
