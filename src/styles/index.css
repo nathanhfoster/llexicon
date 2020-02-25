@@ -1,7 +1,7 @@
-@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-@import "./base/index.css";
 @import "./variables/typography.css";
+@import "./variables/colors.css";
+@import "./base/index.css";
+@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Varela+Round&display=swap");
 @import "./fontawesome/css/all.css";
-@import "./variables/colors.css";
 @import "./bootstrap/index.css";
