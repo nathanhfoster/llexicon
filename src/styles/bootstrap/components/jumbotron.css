@@ -1,5 +1,5 @@
 .jumbotron {
-    background: var(--slate_grey);
+    background: var(--primaryColor);
     box-shadow: var(--primaryBoxShadow);
     margin: auto;
     padding: 2rem;

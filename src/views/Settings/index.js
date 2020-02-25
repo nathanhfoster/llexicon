@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { withRouter } from "react-router-dom"
-import { BasicTabs } from "../../components"
+import { BasicTabs, Header } from "../../components"
 import EntryStatistics from "./EntryStatistics"
 import { RouterPush, RouteMap } from "../../routes"
 import { Container, Row, Col } from "reactstrap"
@@ -60,11 +60,11 @@ const Settings = ({ history, location: { pathname } }) => {
   return (
     <Container className="Settings Container">
       <Row>
-        <Col xs={12}>
-          <h1 className="Center mt-2">
+        <Col xs={12} className="Center">
+          <Header color="var(--secondaryColor)">
             <i className="fa fa-cog mr-2" />
             SETTINGS
-          </h1>
+          </Header>
         </Col>
       </Row>
       <Row>

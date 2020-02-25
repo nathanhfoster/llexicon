@@ -1,7 +1,7 @@
 import React, { useMemo } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
-import { AddToHomeScreen, BasicCard, Footer } from "../../components"
+import { Container, Row, Col, ButtonGroup, Button, Jumbotron } from "reactstrap"
+import { AddToHomeScreen, BasicCard, Footer, Header } from "../../components"
 import { RouteMap, RouterPush } from "../../routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
@@ -128,11 +128,9 @@ const Home = ({ userId }) => {
           <LogoImage height={256} width={256} />
         </Col>
       </Row>
-      <Row className="Center">
+      <Row className="Center" tag={Jumbotron}>
         <Col xs={12}>
-          <h1>Astral Tree</h1>
-        </Col>
-        <Col xs={12}>
+          <Header color="var(--secondaryColor)">Astral Tree</Header>
           <h3>The first progressive web app journal</h3>
         </Col>
         <Col xs={12}>
@@ -147,7 +145,7 @@ const Home = ({ userId }) => {
           </ButtonGroup>
         </Col>
       </Row>
-      <Row>{renderFeatures(features)}</Row>
+      <Row>{renderFeatures}</Row>
       <hr style={{ height: 40 }} />
       <Footer />
     </Container>

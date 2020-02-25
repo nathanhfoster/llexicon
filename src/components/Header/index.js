@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import "./styles.css"
 
-const Header = ({ children, filled, color, ...restOfProps }) => {
+const Header = ({ children, className, filled, color, ...restOfProps }) => {
   const styles = {
     backgroundColor: filled ? "var(--accentColor)" : "inherit",
     color: filled ? "var(---secondaryColor)" : color,
@@ -10,7 +10,7 @@ const Header = ({ children, filled, color, ...restOfProps }) => {
   }
 
   return (
-    <div className="Header  p-2" style={styles}>
+    <div className={className} style={styles}>
       {children}
     </div>
   )
@@ -21,6 +21,7 @@ Header.propTypes = {
     PropTypes.number,
     PropTypes.object
   ]),
+  className: PropTypes.string.isRequired,
   filled: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,
   fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
@@ -28,6 +29,7 @@ Header.propTypes = {
 
 Header.defaultProps = {
   children: <h1>Header</h1>,
+  className: "Header p-2",
   filled: false,
   color: "var(--accentColor)",
   fontSize: "3em"
