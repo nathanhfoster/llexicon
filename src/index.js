@@ -14,7 +14,7 @@ const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
 const Persister = lazy(() => import("./components/Persister"))
 const BackgroundImage = lazy(() => {
   return new Promise(resolve =>
-    setTimeout(resolve, getRandomInt(600, 1800))
+    setTimeout(resolve, 1200)
   ).then(
     () => import("./components/BackgroundImage")
     // : Promise.reject(new Error())
