@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, memo } from "react"
+import React, { useEffect, useMemo, lazy, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
@@ -11,18 +11,17 @@ import {
   GetUserEntryTags
 } from "./redux/Entries/actions"
 import { RouteMap } from "./routes"
-import {
-  Account,
-  Home,
-  Settings,
-  Support,
-  EntryDetail,
-  Entries,
-  PageNotFound
-} from "./views"
+import { Home, Entries } from "./views"
 import { PrivacyPolicy } from "./components"
 import { RouterLinkPush } from "./routes"
 import memoizeProps from "./helpers/memoizeProps"
+
+const Account = lazy(() => import("./views/Account"))
+const Settings = lazy(() => import("./views/Settings"))
+const Support = lazy(() => import("./views/Support"))
+const EntryDetail = lazy(() => import("./views/EntryDetail"))
+const PageNotFound = lazy(() => import("./views/PageNotFound"))
+
 
 const FIFTEEN_MINUTES = 1000 * 60 * 15
 
