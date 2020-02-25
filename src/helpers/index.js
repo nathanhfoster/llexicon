@@ -418,12 +418,15 @@ const stripHtml = html => {
   return tmp.textContent || tmp.innerText || ""
 }
 
-const fuzzyMatch = (s, p, caseSensitive = false) => {
+const fuzzySearch = (s, p, caseSensitive = false, maxLength = 1000) => {
+  // s = s.substr(0, maxLength)
+  // p = p.substr(0, maxLength)
   if (!caseSensitive) {
     s = s.toUpperCase()
     p = p.toUpperCase()
   }
-  p = `*${p.split("").join("*")}*`
+  // p = p.replace(" ", "*")
+  // p = `*${p.split("").join("*")}*`
   const m = s.length
   const n = p.length
   let i = 0
@@ -490,5 +493,5 @@ export {
   copyStringToClipboard,
   cleanObject,
   stripHtml,
-  fuzzyMatch
+  fuzzySearch
 }

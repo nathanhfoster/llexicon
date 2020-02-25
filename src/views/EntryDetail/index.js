@@ -51,7 +51,6 @@ const EntryDetail = ({
             entry={entry}
             // containerHeight={entryContainerHeight}
             shouldRedirectOnDelete
-            bottomToolbarIsOpen={false}
           />
         </Col>
       </Row>

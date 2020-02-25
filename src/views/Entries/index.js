@@ -7,7 +7,7 @@ import Moment from "react-moment"
 import { BasicTabs, EntryCards } from "../../components"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
-import { stripHtml, fuzzyMatch } from "../../helpers"
+import { stripHtml, fuzzySearch } from "../../helpers"
 import memoizeProps from "../../helpers/memoizeProps"
 import {
   SyncEntries,
@@ -272,7 +272,7 @@ const Entries = ({
                     ? b.tags.join().localeCompare(a.tags.join())
                     : a.tags.join().localeCompare(b.tags.join()),
                 filter: searchValue => item =>
-                  fuzzyMatch(item.tags.map(t => t.title).join(), searchValue),
+                  fuzzySearch(item.tags.map(t => t.title).join(), searchValue),
                 render: item => <TagsContainer tags={item.tags} />
               },
 
@@ -280,7 +280,7 @@ const Entries = ({
                 title: <i className="fas fa-heading" />,
                 key: "title",
                 filter: searchValue => item =>
-                  fuzzyMatch(item.title, searchValue),
+                  fuzzySearch(item.title, searchValue),
                 width: 180
               },
               {
