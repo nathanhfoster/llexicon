@@ -93,7 +93,6 @@ const Window = (state = DEFAULT_STATE_WINDOW, action) => {
   switch (type) {
     case WindowActionTypes.SET_WINDOW:
       const windowProps = getWindowDimensions()
-      console.log(windowProps)
       return { ...state, ...windowProps }
     case AppActionTypes.SET_APP_VERSION:
       return { ...state, version: payload }

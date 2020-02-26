@@ -6,24 +6,16 @@ import { RouteMap } from "../../routes"
 import "./styles.css"
 
 const Footer = () => (
-  <Container
-    fluid
-    tag="footer"
-    className="MainFooter"
-    // onEntering={setStatus("Opening")}
-    // onEntered={setStatus("Opened")}
-    // onExiting={setStatus("Closing")}
-    // onExited={setStatus("Closed")}
-  >
-    <Row className="Center">
-      <Col>&copy; {new Date().getFullYear()} Nathan Foster</Col>
-    </Row>
+  <Container fluid tag="footer" className="MainFooter">
     <Row>
-      <Col>
+      <Col xs={12}>
         <Link to="/privacy-policy">
           <i className="fas fa-user-secret" /> Privacy policy
         </Link>
       </Col>
+    </Row>
+    <Row className="Center">
+      <Col xs={12}>&copy; {new Date().getFullYear()} Nathan Foster</Col>
     </Row>
   </Container>
 )
