@@ -2,10 +2,10 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import "./styles.css"
 
-const Header = ({ children, className, filled, color, ...restOfProps }) => {
+const Header = ({ children, className, fill, color, ...restOfProps }) => {
   const styles = {
-    backgroundColor: filled ? "var(--midNight)" : "inherit",
-    color: filled ? "var(---secondaryColor)" : color,
+    backgroundColor: fill,
+    color,
     ...restOfProps
   }
 
@@ -22,16 +22,16 @@ Header.propTypes = {
     PropTypes.object
   ]),
   className: PropTypes.string.isRequired,
-  filled: PropTypes.bool.isRequired,
+  fill: PropTypes.oneOfType([PropTypes.bool, PropTypes.string].isRequired),
   color: PropTypes.string.isRequired,
   fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 }
 
 Header.defaultProps = {
   children: <h1>Header</h1>,
-  className: "Header p-2",
-  filled: false,
-  color: "var(--accentColor)",
+  className: "Header Center",
+  fill: false,
+  color: "var(--secondaryColor)",
   fontSize: "3em"
 }
 

@@ -1,4 +1,4 @@
-import React, { lazy, useMemo } from "react"
+import React, { lazy, useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, ButtonGroup, Button, Jumbotron } from "reactstrap"
 import { BasicCard, Header, NewEntryButton } from "../../components"
@@ -26,16 +26,17 @@ const Home = ({ userId }) => {
   const history = useHistory()
   const features = [
     {
+      faIcon: "fas fa-download",
       title: "Installable",
       text:
         "Install this app to your device just like you would in an app store",
-      faIcon: "fas fa-download",
+
       button: <AddToHomeScreen />
     },
     {
+      faIcon: "fas fa-sync-alt",
       title: "Sync",
       text: "Automatically sync your entries across all devices",
-      faIcon: "fas fa-sync-alt",
       button: (
         <Button
           color="accent"
@@ -47,9 +48,9 @@ const Home = ({ userId }) => {
       )
     },
     {
+      header: <Bell className="AboutFeatureImage" />,
       title: "Notifications",
       text: "Daily motivation to journal your life",
-      header: <Bell className="AboutFeatureImage" />,
       button: (
         <Button
           color="accent"
@@ -60,9 +61,9 @@ const Home = ({ userId }) => {
       )
     },
     {
+      header: <WifiSlash className="AboutFeatureImage" />,
       title: "Offline",
       text: "Doesn't require an internet connection",
-      header: <WifiSlash className="AboutFeatureImage" />,
       button: (
         <Button
           color="accent"
@@ -73,9 +74,9 @@ const Home = ({ userId }) => {
       )
     },
     {
+      header: <UserHeadset className="AboutFeatureImage" />,
       title: "Support",
       text: "Open to feature suggestions, bug reports, or conversation!",
-      header: <UserHeadset className="AboutFeatureImage" />,
       button: (
         <Button
           color="accent"
@@ -87,30 +88,30 @@ const Home = ({ userId }) => {
     },
 
     {
+      faIcon: "fas fa-link",
       title: "Linkable",
-      text: "Share any public view you want with your friends and family",
-      faIcon: "fas fa-link"
+      text: "Share any public view you want with your friends and family"
       // button: <Button color="accent">Learn More</Button>
     },
     {
+      header: <PhoneLaptop className="AboutFeatureImage" />,
       title: "Responsive",
-      text: "UI fits the screen dimensions of any device",
-      header: <PhoneLaptop className="AboutFeatureImage" />
+      text: "UI fits the screen dimensions of any device"
     },
     {
+      header: <CloudDownload className="AboutFeatureImage" />,
       title: "Fresh",
-      text: "Always get the latest verision of the app",
-      header: <CloudDownload className="AboutFeatureImage" />
+      text: "Always get the latest verision of the app"
     },
     {
+      header: <Mobile className="AboutFeatureImage" />,
       title: "App-like",
-      text: "Looks and interacts like a native app",
-      header: <Mobile className="AboutFeatureImage" />
+      text: "Looks and interacts like a native app"
     },
     {
+      header: <ShieldCheck className="AboutFeatureImage" />,
       title: "Secure",
-      text: "Always served over HTTPS",
-      header: <ShieldCheck className="AboutFeatureImage" />
+      text: "Always served over HTTPS"
     }
   ]
 
@@ -118,7 +119,7 @@ const Home = ({ userId }) => {
     () =>
       features.map((feature, i) => (
         <Col key={i} xs={12} sm={6} md={4} className="pt-3 pt-sm-4">
-          <BasicCard cardHeaderClassName="Center" {...feature} />
+          <BasicCard {...feature} />
         </Col>
       )),
     [features]
@@ -127,17 +128,13 @@ const Home = ({ userId }) => {
   return (
     <Container tag="article" className="Home Container">
       <Row>
-        <Col xs={12} className="Center">
-          <LogoImage height={256} width={256} />
-        </Col>
-      </Row>
-      <Row className="Center" tag={Jumbotron}>
-        <Col xs={12}>
-          <Header color="var(--secondaryColor)">Astral Tree</Header>
-          <h3>The first progressive web app journal</h3>
-        </Col>
-        <Col xs={12}>
-          <NewEntryButton />
+        <Col xs={12} className="pt-3 pt-sm-4">
+          <BasicCard
+            header={<LogoImage height={256} width={256} />}
+            title={<Header>Astral Tree</Header>}
+            text={<h3>The first progressive web app journal</h3>}
+            button={<NewEntryButton />}
+          />
         </Col>
       </Row>
       <Row>{renderFeatures}</Row>

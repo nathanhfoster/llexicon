@@ -60,8 +60,8 @@ const Settings = ({ history, location: { pathname } }) => {
   return (
     <Container className="Settings Container">
       <Row>
-        <Col xs={12} className="Center">
-          <Header color="var(--secondaryColor)">
+        <Col xs={12} className="Center mt-3">
+          <Header>
             <i className="fa fa-cog mr-2" />
             SETTINGS
           </Header>

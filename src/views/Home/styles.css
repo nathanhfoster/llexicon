@@ -1,6 +1,4 @@
-.Home {
-
-}
+.Home {}
 
 .AboutFeatureIcon {
   font-size: 8em;
@@ -9,8 +7,4 @@
 .AboutFeatureImage {
   width: auto;
   height: 128px;
-}
-
-.AboutFeatureText {
-  height: 64px;
 }

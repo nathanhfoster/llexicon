@@ -13,21 +13,23 @@ import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
 
 const BasicCard = ({
+  header,
   title,
   text,
   faIcon,
-  header,
   button,
   cardClassName,
   cardHeaderClassName,
   cardBodyClassName,
+  cardTitleClassName,
+  cardTextClassName,
   onClickCallback
 }) => {
   const handleOnClickCallback = () => onClickCallback && onClickCallback()
   const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
   return (
     <Card
-      className={`BasicCard ${cardHoverStyles} ${cardClassName}`}
+      className={`${cardClassName} ${cardHoverStyles}`}
       onClick={handleOnClickCallback}
     >
       <CardHeader className={`BasicCardContainer ${cardHeaderClassName}`}>
@@ -39,12 +41,14 @@ const BasicCard = ({
       </CardHeader>
       <CardBody className={`BasicCardBodyContainer ${cardBodyClassName}`}>
         {typeof title === "string" ? (
-          <CardTitle className="BasicCardTitle Center">{title}</CardTitle>
+          <CardTitle className={`${cardTitleClassName} Center`}>
+            {title}
+          </CardTitle>
         ) : (
           title
         )}
         {text && (
-          <CardText className="AboutFeatureText Center">{text}</CardText>
+          <CardText className={`${cardTextClassName} Center`}>{text}</CardText>
         )}
         {button && <div className="Center">{button}</div>}
       </CardBody>
@@ -53,10 +57,10 @@ const BasicCard = ({
 }
 
 BasicCard.propTypes = {
+  header: PropTypes.object,
   title: PropTypes.string,
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   faIcon: PropTypes.string,
-  header: PropTypes.object,
   button: PropTypes.object,
   cardClassName: PropTypes.string,
   cardHeaderClassName: PropTypes.string,
@@ -64,9 +68,11 @@ BasicCard.propTypes = {
 }
 
 BasicCard.defaultProps = {
-  cardClassName: "",
-  cardHeaderClassName: "",
-  cardBodyClassName: ""
+  cardClassName: "BasicCard",
+  cardHeaderClassName: "Center",
+  cardBodyClassName: "",
+  cardTitleClassName: "BasicCardTitle",
+  cardTextClassName: "BasicCardText"
 }
 
 const isEqual = (prevProps, nextProps) =>

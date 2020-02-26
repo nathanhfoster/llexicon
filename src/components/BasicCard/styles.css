@@ -1,7 +1,7 @@
 .BasicCard {
   background: rgba(0, 0, 0, 0.4);
   border: 0;
-  height: 350px;
+  min-height: 350px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35);
 }
 
@@ -29,4 +29,8 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.BasicCardText {
+  height: 64px;
 }
