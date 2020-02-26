@@ -8,7 +8,7 @@ import "./styles.css"
 
 const renderSupportCards = supportCards =>
   supportCards.map((supportCard, i) => (
-    <Col key={i} md={4} sm={6} xs={12}>
+    <Col key={i} md={4} sm={6} xs={12} className="p-2">
       <BasicCard cardHeaderClassName="Center" {...supportCard} />
     </Col>
   ))

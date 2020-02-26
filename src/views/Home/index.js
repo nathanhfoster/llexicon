@@ -117,7 +117,7 @@ const Home = ({ userId }) => {
   const renderFeatures = useMemo(
     () =>
       features.map((feature, i) => (
-        <Col key={i} md={4} sm={6} xs={12} className="p-0 p-sm-1 p-md-2 p-lg-3">
+        <Col key={i} md={4} sm={6} xs={12} className="p-2">
           <BasicCard cardHeaderClassName="Center" {...feature} />
         </Col>
       )),
