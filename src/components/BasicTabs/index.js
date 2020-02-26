@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import {
   Container,
   Row,
+  Col,
   Nav,
   NavItem,
   NavLink,
@@ -88,7 +89,9 @@ const BasicTabs = ({
       className={`BasicTabs Container ${containerClassname}`}
     >
       <Row>
-        <Nav tabs>{renderNavItems}</Nav>
+        <Col tag={Nav} tabs xs={12}>
+          {renderNavItems}
+        </Col>
       </Row>
       {renderTabs}
     </Container>

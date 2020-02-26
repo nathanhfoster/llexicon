@@ -225,7 +225,9 @@ const Entries = ({
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-table" />,
       render: shouldRenderNewEntryButton ? (
-        <NewEntryButton />
+        <Row>
+          <NewEntryButton />
+        </Row>
       ) : (
         <Row>
           <BasicTable
