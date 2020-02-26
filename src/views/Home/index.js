@@ -1,7 +1,7 @@
-import React, { useMemo } from "react"
+import React, { lazy, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, ButtonGroup, Button, Jumbotron } from "reactstrap"
-import { AddToHomeScreen, BasicCard, Footer, Header } from "../../components"
+import { BasicCard, Header } from "../../components"
 import { RouteMap, RouterPush } from "../../routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
@@ -16,6 +16,9 @@ import {
   WifiSlash
 } from "../../images/SVG"
 import "./styles.css"
+
+const AddToHomeScreen = lazy(() => import("../../components/AddToHomeScreen"))
+const Footer = lazy(() => import("../../components/Footer"))
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 

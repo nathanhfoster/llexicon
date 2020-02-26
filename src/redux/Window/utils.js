@@ -99,7 +99,7 @@ const getNavigatorProps = ({
   // serviceWorker: { controller, oncontrollerchange, onmessage },
   storage,
   usb,
-  // userActivation: { hasBeenActive, isActive },
+
   userAgent,
   vendor,
   vendorSub
