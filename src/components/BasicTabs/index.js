@@ -84,10 +84,7 @@ const BasicTabs = ({
   )
 
   return (
-    <Container
-      fluid={fluid}
-      className={`BasicTabs Container ${containerClassname}`}
-    >
+    <Container fluid={fluid} className={`${containerClassname} Container`}>
       <Row>
         <Col tag={Nav} tabs xs={12}>
           {renderNavItems}
@@ -117,6 +114,7 @@ BasicTabs.propTypes = {
 }
 
 BasicTabs.defaultProps = {
+  containerClassname: "BasicTabs",
   fluid: false,
   tabs: [
     { tabId: 1, title: "1", render: <div>Tab 1</div> },
