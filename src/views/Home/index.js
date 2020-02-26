@@ -131,7 +131,7 @@ const Home = ({ userId }) => {
           <LogoImage height={256} width={256} />
         </Col>
       </Row>
-      <Row className="Center m-0 mb-sm-1 mb-md-2 mb-lg-3" tag={Jumbotron}>
+      <Row className="Center mb-2" tag={Jumbotron}>
         <Col xs={12}>
           <Header color="var(--secondaryColor)">Astral Tree</Header>
           <h3>The first progressive web app journal</h3>
