@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import { Row, Col, Button } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
 import Moment from "react-moment"
-import { BasicTabs, EntryCards } from "../../components"
+import { BasicTabs, EntryCards, NewEntryButton } from "../../components"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
 import { stripHtml, fuzzySearch } from "../../helpers"
@@ -65,6 +65,8 @@ const Entries = ({
         ),
     [entries]
   )
+
+  const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
 
   const history = useHistory()
   const { pathname } = useLocation()
@@ -161,7 +163,11 @@ const Entries = ({
       title: <i className="fas fa-columns"></i>,
       render: (
         <Row>
-          <EntryCards entries={viewableEntries} />
+          {shouldRenderNewEntryButton ? (
+            <NewEntryButton />
+          ) : (
+            <EntryCards entries={viewableEntries} />
+          )}
         </Row>
       ),
       onClickCallback: handleTabChange
@@ -172,12 +178,16 @@ const Entries = ({
       title: <i className="fas fa-newspaper" />,
       render: (
         <Row>
-          <EntriesDetailed
-            height={detailedEntriesListHeight}
-            entries={viewableEntries}
-            itemSize={listItemHeight}
-            onItemsRendered={handleItemsRendered}
-          />
+          {shouldRenderNewEntryButton ? (
+            <NewEntryButton />
+          ) : (
+            <EntriesDetailed
+              height={detailedEntriesListHeight}
+              entries={viewableEntries}
+              itemSize={listItemHeight}
+              onItemsRendered={handleItemsRendered}
+            />
+          )}
         </Row>
       ),
       onClickCallback: handleTabChange
@@ -186,7 +196,11 @@ const Entries = ({
       tabId: RouteMap.ENTRIES_MINIMAL,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-th-list" />,
-      render: (
+      render: shouldRenderNewEntryButton ? (
+        <Row>
+          <NewEntryButton />
+        </Row>
+      ) : (
         <Fragment>
           <Row>
             <EntriesMinimal
@@ -210,7 +224,9 @@ const Entries = ({
       tabId: RouteMap.ENTRIES_TABLE,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-table" />,
-      render: (
+      render: shouldRenderNewEntryButton ? (
+        <NewEntryButton />
+      ) : (
         <Row>
           <BasicTable
             sortable

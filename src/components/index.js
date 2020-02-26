@@ -29,6 +29,7 @@ import ImportEntries from "./ImportEntries"
 import Loading from "./Loading"
 import LoadingScreen from "./LoadingScreen"
 import NavBar from "./NavBar"
+import NewEntryButton from "./NewEntryButton"
 import PendingAction from "./PendingAction"
 import PrivacyPolicy from "./PrivacyPolicy"
 // import RadiusMap from "./RadiusMap"
@@ -74,6 +75,7 @@ export {
   Loading,
   LoadingScreen,
   NavBar,
+  NewEntryButton,
   PendingAction,
   PrivacyPolicy,
   // RadiusMap,

@@ -1,7 +1,7 @@
 import React, { lazy, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, ButtonGroup, Button, Jumbotron } from "reactstrap"
-import { BasicCard, Header } from "../../components"
+import { BasicCard, Header, NewEntryButton } from "../../components"
 import { RouteMap, RouterPush } from "../../routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
@@ -137,15 +137,7 @@ const Home = ({ userId }) => {
           <h3>The first progressive web app journal</h3>
         </Col>
         <Col xs={12}>
-          <ButtonGroup size="lg">
-            <Button
-              color="accent"
-              onClick={() => RouterPush(history, RouteMap.NEW_ENTRY)}
-            >
-              <i className="fas fa-feather-alt mr-1" />
-              New Entry
-            </Button>
-          </ButtonGroup>
+          <NewEntryButton />
         </Col>
       </Row>
       <Row>{renderFeatures}</Row>
