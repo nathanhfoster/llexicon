@@ -56,7 +56,13 @@ const BasicModal = ({
         centered
         onClosed={onCancelCallback}
       >
-        <ModalHeader toggle={toggle} className="Center">
+        <ModalHeader
+          toggle={toggle}
+          style={{
+            justifyContent:
+              typeof title === "string" ? "center" : "space-between"
+          }}
+        >
           {title}
         </ModalHeader>
         <ModalBody className={className}>{children}</ModalBody>

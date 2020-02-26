@@ -180,12 +180,11 @@ const GetUserEntriesByDate = date => (dispatch, getState) => {
     })
 }
 
-const PostReduxEntry = payload => dispatch => {
+const PostReduxEntry = payload => dispatch =>
   dispatch({
     type: EntriesActionTypes.ENTRY_SET,
     payload: { ...payload, _shouldPost: true }
   })
-}
 
 const ImportReduxEntry = payload => ({
   type: EntriesActionTypes.ENTRY_IMPORT,
@@ -195,8 +194,7 @@ const ImportReduxEntry = payload => ({
 const PostEntry = payload => dispatch =>
   Axios()
     .post(`entries/`, qs.stringify(payload))
-    .then(res => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({
         id: payload.id,
         type: EntriesActionTypes.ENTRY_POST,
@@ -330,6 +328,8 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       }
 
       dispatch(PostEntry(postPayload)).then(entry => {
+        if (!entry) return
+        console.log(entry)
         const {
           EntryFiles,
           author,
