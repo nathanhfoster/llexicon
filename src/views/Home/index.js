@@ -117,7 +117,7 @@ const Home = ({ userId }) => {
   const renderFeatures = useMemo(
     () =>
       features.map((feature, i) => (
-        <Col key={i} md={4} sm={6} xs={12} className="p-2">
+        <Col key={i} xs={12} sm={6} md={4} className="pt-3 pt-sm-4">
           <BasicCard cardHeaderClassName="Center" {...feature} />
         </Col>
       )),
@@ -125,13 +125,13 @@ const Home = ({ userId }) => {
   )
 
   return (
-    <Container tag="article" className="Home Container p-0">
+    <Container tag="article" className="Home Container">
       <Row>
         <Col xs={12} className="Center">
           <LogoImage height={256} width={256} />
         </Col>
       </Row>
-      <Row className="Center mb-2" tag={Jumbotron}>
+      <Row className="Center" tag={Jumbotron}>
         <Col xs={12}>
           <Header color="var(--secondaryColor)">Astral Tree</Header>
           <h3>The first progressive web app journal</h3>
