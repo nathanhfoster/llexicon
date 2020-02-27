@@ -11,7 +11,6 @@ import BasicSearchBar from "./BasicSearchBar"
 import BasicTable from "./BasicTable"
 import BasicTabs from "./BasicTabs"
 import ConfirmAction from "./ConfirmAction"
-import ReactCalendar from "./ReactCalendar"
 import Divider from "./Divider"
 import Editor from "./Editor"
 import EntriesDetailed from "./EntriesDetailed"
@@ -35,6 +34,7 @@ import PrivacyPolicy from "./PrivacyPolicy"
 // import RadiusMap from "./RadiusMap"
 import RatingIcon from "./RatingIcon"
 import RatingStar from "./RatingStar"
+import ReactCalendar from "./ReactCalendar"
 import ReactDatePicker from "./ReactDatePicker"
 import SearchList from "./SearchList"
 import StarSearch from "./StarSearch"
@@ -57,7 +57,6 @@ export {
   BasicTable,
   BasicTabs,
   ConfirmAction,
-  ReactCalendar,
   Divider,
   Editor,
   EntriesDetailed,
@@ -81,6 +80,7 @@ export {
   // RadiusMap,
   RatingIcon,
   RatingStar,
+  ReactCalendar,
   ReactDatePicker,
   SearchList,
   StarSearch,
