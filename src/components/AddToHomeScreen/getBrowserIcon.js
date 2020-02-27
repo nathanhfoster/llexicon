@@ -1,6 +1,7 @@
 import React from "react"
 
 const getBrowserIcon = (isOnMobileBrowser, browserUserAgent) => {
+  if (!browserUserAgent) return <div>No Browser Agent Detected</div>
   if (!isOnMobileBrowser) {
     if (browserUserAgent.includes("Chrome")) {
       return <i className="fab fa-chrome" />
@@ -31,7 +32,7 @@ const getBrowserIcon = (isOnMobileBrowser, browserUserAgent) => {
       return <i className="fab fa-windows" />
     }
   }
-  return <div>No Browser detected</div>
+  return <div>No Browser Detected</div>
 }
 
 export default getBrowserIcon

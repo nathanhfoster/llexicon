@@ -21,7 +21,6 @@ const AddToHomeScreenModal = ({
   prompt,
   promptToInstall
 }) => {
-  
   const [isDisabled, setDisabledState] = useState(true)
 
   useEffect(() => {
