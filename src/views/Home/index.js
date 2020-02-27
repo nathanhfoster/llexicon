@@ -1,7 +1,12 @@
-import React, { lazy, useMemo, Fragment } from "react"
+import React, { lazy, useMemo } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col, ButtonGroup, Button, Jumbotron } from "reactstrap"
-import { BasicCard, Header, NewEntryButton } from "../../components"
+import { Container, Row, Col, Button } from "reactstrap"
+import {
+  AddToHomeScreen,
+  BasicCard,
+  Header,
+  NewEntryButton
+} from "../../components"
 import { RouteMap, RouterPush } from "../../routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
@@ -17,7 +22,6 @@ import {
 } from "../../images/SVG"
 import "./styles.css"
 
-const AddToHomeScreen = lazy(() => import("../../components/AddToHomeScreen"))
 const Footer = lazy(() => import("../../components/Footer"))
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })

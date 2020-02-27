@@ -24,14 +24,8 @@ const AddToHomeScreenModal = ({
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [isDisabled, setDisabledState] = useState(true)
 
-  const isInProduction = NODE_ENV !== "development"
-  const canInstallOnMobile = !isInStandalone && isOnMobileBrowser
-  const canInstallOnDesktop = !isInStandalone && !isOnMobileBrowser
-  const canInstall =
-    isInProduction && (canInstallOnMobile || canInstallOnDesktop)
-
   useEffect(() => {
-    if (canInstall || prompt) {
+    if (prompt) {
       setDisabledState(false)
     }
   }, [prompt])
