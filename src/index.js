@@ -1,7 +1,7 @@
 import "./styles/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
-import { LoadingScreen, NavBar } from "./components"
+import { LoadingScreen } from "./components"
 import App from "./App"
 import storeFactory from "./redux"
 import { Provider } from "react-redux"
@@ -25,7 +25,6 @@ ReactDOM.render(
       <AlertNotifications />
       <BrowserRouter>
         <BackgroundImage />
-        <NavBar />
         <App />
       </BrowserRouter>
     </Suspense>

@@ -1,7 +1,15 @@
-import React, { useEffect, useMemo, lazy, memo } from "react"
+import React, {
+  useEffect,
+  useMemo,
+  lazy,
+  memo,
+  createElement,
+  Fragment
+} from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
+import { Fade } from "reactstrap"
 import { SetWindow, CheckAppVersion } from "./redux/App/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/Calendar"
@@ -12,9 +20,10 @@ import {
 } from "./redux/Entries/actions"
 import { RouteMap } from "./routes"
 import { Home, Entries } from "./views"
-import { PrivacyPolicy } from "./components"
+import { NavBar, PrivacyPolicy } from "./components"
 import { RouterLinkPush } from "./routes"
 import memoizeProps from "./helpers/memoizeProps"
+import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 
 const Account = lazy(() => import("./views/Account"))
 const Settings = lazy(() => import("./views/Settings"))
@@ -76,6 +85,7 @@ const App = ({
   match,
   navBarHeight
 }) => {
+  const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   useEffect(() => {
     const activeDate = new Date()
 
@@ -100,14 +110,19 @@ const App = ({
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const renderRedirectOrComponent = (shouldRedirect, route, Component) => {
+  const renderRedirectOrComponent = (shouldRedirect, route, component) => {
     return shouldRedirect
       ? () => <Redirect push to={RouterLinkPush(history, route)} />
-      : Component
+      : component
   }
 
   const routeItems = [
-    { path: [ROOT, HOME], component: Home },
+    {
+      path: [ROOT, HOME],
+      Render: Home,
+      renderProps: { prompt, promptToInstall },
+      useRouteProps: true
+    },
     {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
       component: renderRedirectOrComponent(User.token, NEW_ENTRY, Account)
@@ -146,19 +161,37 @@ const App = ({
   const renderRouteItems = useMemo(
     () =>
       routeItems.map((item, i) => {
-        const { path, component } = item
-        return <Route exact key={i} path={path} component={component} />
+        const { path, component, Render, renderProps, useRouteProps } = item
+        return Render ? (
+          <Route
+            exact
+            key={i}
+            path={path}
+            render={routeProps =>
+              useRouteProps ? (
+                <Render {...renderProps} {...routeProps} />
+              ) : (
+                <Render {...renderProps} />
+              )
+            }
+          />
+        ) : (
+          <Route exact key={i} path={path} component={component} />
+        )
       }),
     [routeItems]
   )
 
   return (
-    <div className="App RouteOverlay">
-      <Switch>
-        {renderRouteItems}
-        <Route component={PageNotFound} />
-      </Switch>
-    </div>
+    <Fragment>
+      <NavBar />
+      <div className="App RouteOverlay">
+        <Switch>
+          {renderRouteItems}
+          <Route component={PageNotFound} />
+        </Switch>
+      </div>
+    </Fragment>
   )
 }
 

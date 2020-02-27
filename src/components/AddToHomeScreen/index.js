@@ -1,10 +1,8 @@
 import React, { useState, useEffect, memo } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { Button } from "reactstrap"
-import { useAddToHomescreenPrompt } from "./prompt"
 import getBrowserIcon from "./getBrowserIcon"
 import "./styles.css"
-const { NODE_ENV } = process.env
 
 const mapStateToProps = ({
   Window: {
@@ -19,9 +17,11 @@ const mapDispatchToProps = {}
 const AddToHomeScreenModal = ({
   isInStandalone,
   isOnMobileBrowser,
-  userAgent
+  userAgent,
+  prompt,
+  promptToInstall
 }) => {
-  const [prompt, promptToInstall] = useAddToHomescreenPrompt()
+  
   const [isDisabled, setDisabledState] = useState(true)
 
   useEffect(() => {

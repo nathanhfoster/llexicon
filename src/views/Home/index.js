@@ -10,7 +10,6 @@ import {
 import { RouteMap, RouterPush } from "../../routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
-import { useHistory } from "react-router-dom"
 import {
   Bell,
   CloudDownload,
@@ -26,8 +25,7 @@ const Footer = lazy(() => import("../../components/Footer"))
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 
-const Home = ({ userId }) => {
-  const history = useHistory()
+const Home = ({ userId, history, prompt, promptToInstall }) => {
   const features = [
     {
       faIcon: "fas fa-download",
@@ -35,7 +33,9 @@ const Home = ({ userId }) => {
       text:
         "Install this app to your device just like you would in an app store",
 
-      button: <AddToHomeScreen />
+      button: (
+        <AddToHomeScreen prompt={prompt} promptToInstall={promptToInstall} />
+      )
     },
     {
       faIcon: "fas fa-sync-alt",
