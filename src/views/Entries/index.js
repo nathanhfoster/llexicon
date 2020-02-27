@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import { Row, Col, Button } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
 import Moment from "react-moment"
-import { BasicTabs, EntryCards, NewEntryButton } from "../../components"
+import { BasicTabs, ReactCalendar, NewEntryButton } from "../../components"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
 import { stripHtml, fuzzySearch } from "../../helpers"
@@ -17,7 +17,7 @@ import {
 import { SetEditorState } from "../../redux/TextEditor/actions"
 import "./styles.css"
 
-const ReactCalendar = lazy(() => import("../../components/ReactCalendar"))
+const EntryCards = lazy(() => import("../../components/EntryCards"))
 const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
 const EntriesDetailed = lazy(() => import("../../components/EntriesDetailed"))
 const BasicTable = lazy(() => import("../../components/BasicTable"))
