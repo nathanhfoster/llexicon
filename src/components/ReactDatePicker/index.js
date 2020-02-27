@@ -137,7 +137,7 @@ ReactDatePicker.propTypes = {
   showTimeSelectOnly: PropTypes.bool,
   showWeekNumbers: PropTypes.bool,
   showYearDropdown: PropTypes.bool,
-  startDate: PropTypes.oneOfType([PropTypes.instanceOf(Date)]),
+  startDate: PropTypes.instanceOf(Date),
   startOpen: PropTypes.bool,
   strictParsing: PropTypes.bool,
   tabIndex: PropTypes.number,

@@ -22,7 +22,7 @@ Header.propTypes = {
     PropTypes.object
   ]),
   className: PropTypes.string.isRequired,
-  fill: PropTypes.oneOfType([PropTypes.bool, PropTypes.string].isRequired),
+  fill: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   color: PropTypes.string.isRequired,
   fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 }
