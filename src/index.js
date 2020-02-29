@@ -1,11 +1,11 @@
 import "./styles/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
-import { LoadingScreen } from "./components"
 import App from "./App"
 import storeFactory from "./redux"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
+import { LoadingScreen } from "./components"
 import { getReduxState } from "./redux/Persister/actions"
 import * as serviceWorker from "./serviceWorker"
 

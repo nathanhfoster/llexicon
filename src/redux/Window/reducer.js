@@ -4,9 +4,9 @@ import { getWindowDimensions } from "./utils"
 
 const DEFAULT_STATE_WINDOW = {
   version: new Date(),
-  innerHeight: null,
-  innerWidth: null,
-  isMobile: null,
+  innerHeight: "100vh",
+  innerWidth: "100vw",
+  isMobile: false,
   screen: {
     availHeight: null,
     availLeft: null,
