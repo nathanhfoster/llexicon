@@ -28,11 +28,6 @@ const backgroundImageRouteMap = route => {
   }
 }
 
-const mapStateToProps = ({ Window: { innerHeight, innerWidth } }) => ({
-  innerHeight,
-  innerWidth
-})
-
 const BackgroundImage = () => {
   const { pathname } = useLocation()
   const background = backgroundImageRouteMap(pathname)

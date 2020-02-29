@@ -2,7 +2,7 @@ import React from "react"
 import { ViewPortContainer } from ".."
 import "./styles.css"
 
-const LoadingScreen = ({}) => {
+const LoadingScreen = () => {
   return (
     <ViewPortContainer className="LoadingScreenContainer">
       <svg x="0" y="0">
