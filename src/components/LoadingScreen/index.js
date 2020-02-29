@@ -1,17 +1,10 @@
 import React from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { ViewPortContainer } from ".."
 import "./styles.css"
 
-const mapStateToProps = ({ Window: { innerHeight, innerWidth } }) => ({
-  innerHeight,
-  innerWidth
-})
-
-const LoadingScreen = ({ innerHeight, innerWidth }) => {
-  const containerStyles = { height: innerHeight, width: innerWidth }
+const LoadingScreen = ({}) => {
   return (
-    <div className="LoadingScreenContainer" style={containerStyles}>
+    <ViewPortContainer className="LoadingScreenContainer">
       <svg x="0" y="0">
         <g clipPath="url(#clip-path)">
           <path
@@ -108,13 +101,8 @@ const LoadingScreen = ({ innerHeight, innerWidth }) => {
           />
         </clipPath>
       </svg>
-    </div>
+    </ViewPortContainer>
   )
 }
 
-LoadingScreen.propTypes = {
-  innerHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  innerWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-}
-
-export default reduxConnect(mapStateToProps)(LoadingScreen)
+export default LoadingScreen

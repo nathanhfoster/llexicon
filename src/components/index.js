@@ -42,6 +42,7 @@ import TagsContainer from "./TagsContainer"
 // import Templates from "./Templates"
 import UseDebounce from "./UseDebounce"
 import UseInterval from "./UseInterval"
+import ViewPortContainer from "./ViewPortContainer"
 
 export {
   AddToHomeScreen,
@@ -87,5 +88,6 @@ export {
   TagsContainer,
   // Templates,
   UseDebounce,
-  UseInterval
+  UseInterval,
+  ViewPortContainer
 }
