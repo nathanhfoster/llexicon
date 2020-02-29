@@ -2,18 +2,21 @@ import React from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 
-const mapStateToProps = ({ Window: { innerHeight, innerWidth } }) => ({
-  innerHeight,
-  innerWidth
+const mapStateToProps = ({ Window: { screen: {
+  availHeight,
+  availWidth} } }) => ({
+  height: availHeight,
+  width: availWidth
+ }
 })
 
 const ViewPortContainer = ({
-  innerHeight,
-  innerWidth,
+  height,
+  width,
   className,
   children
 }) => {
-  const containerStyles = { height: innerHeight, width: innerWidth }
+  const containerStyles = { height, width }
   return (
     <div className={className} style={containerStyles}>
       {children}
@@ -22,8 +25,8 @@ const ViewPortContainer = ({
 }
 
 ViewPortContainer.propTypes = {
-  innerHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  innerWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
 
 ViewPortContainer.defaultProps = {
