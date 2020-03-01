@@ -33,5 +33,5 @@
   "start_url": "/calendar",
   "scope": "/",
   "display": "standalone",
-  "orientation": "any"
+  "orientation": "portrait"
 }
