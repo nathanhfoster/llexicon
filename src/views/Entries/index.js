@@ -1,6 +1,7 @@
 import React, { Fragment, useCallback, useMemo, memo, lazy } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
+import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Row, Col, Button } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
 import Moment from "react-moment"
@@ -424,7 +425,7 @@ Entries.propTypes = {
   loaction: PropTypes.object,
   match: PropTypes.object,
   staticContext: PropTypes.any,
-  entries: PropTypes.arrayOf(PropTypes.object),
+  entries: EntriesPropTypes,
   TextEditor: PropTypes.object,
   nextEntryPage: PropTypes.string,
   entriesSearch: PropTypes.string,

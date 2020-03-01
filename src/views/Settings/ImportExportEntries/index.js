@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col, Button } from "reactstrap"
 import { ImportEntries } from "../../../components"
 import { connect as reduxConnect } from "react-redux"
@@ -24,7 +25,7 @@ const ImportExportEntries = ({
 
   const GetAllEntries = () =>
     SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
-    
+
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
@@ -88,8 +89,8 @@ const ImportExportEntries = ({
 }
 
 ImportExportEntries.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: EntriesPropTypes,
+  filteredItems: EntriesPropTypes
 }
 
 ImportExportEntries.defaultProps = {}

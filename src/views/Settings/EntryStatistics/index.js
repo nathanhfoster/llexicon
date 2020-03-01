@@ -1,5 +1,6 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
+import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import MomentJs from "moment"
@@ -188,8 +189,8 @@ const EntryStatistics = ({ items, filteredItems }) => {
 }
 
 EntryStatistics.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: EntriesPropTypes,
+  filteredItems: EntriesPropTypes
 }
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)

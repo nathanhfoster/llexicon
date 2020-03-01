@@ -32,8 +32,17 @@ const renderEntryCards = ([start, end], entries, history) =>
     } = entry
     const onClickCallback = () =>
       RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
+    const reducedHtml = html.slice(0, 1000)
     return (
-      <Col key={id} xl={3} lg={4} md={4} sm={6} xs={12} className="pl-3 pr-3">
+      <Col
+        key={id}
+        xl={3}
+        lg={4}
+        md={4}
+        sm={6}
+        xs={12}
+        className="pt-3 pt-sm-4"
+      >
         <BasicCard
           title={<EntryCardTitle title={title} />}
           text={
@@ -44,7 +53,9 @@ const renderEntryCards = ([start, end], entries, history) =>
               rating={rating}
             />
           }
-          header={<EntryCardHtml html={html} views={views} rating={rating} />}
+          header={
+            <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
+          }
           cardHeaderClassName="p-0"
           onClickCallback={onClickCallback}
         />

@@ -1,5 +1,6 @@
 import React, { PureComponent, Fragment, createRef } from "react"
 import PropTypes from "prop-types"
+import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import ReactQuill, { Quill } from "react-quill"
 import { Collapse } from "reactstrap"
 import ImageResize from "quill-image-resize-module-react"
@@ -217,40 +218,7 @@ class Editor extends PureComponent {
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    entry: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      clearedOn: PropTypes.string,
-      title: PropTypes.string.isRequired,
-      html: PropTypes.string.isRequired,
-      address: PropTypes.string.isRequired,
-      latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      tags: PropTypes.arrayOf(
-        PropTypes.shape({
-          title: PropTypes.string.isRequired,
-          date_created: PropTypes.string,
-          date_updated: PropTypes.string,
-          authors: PropTypes.arrayOf(PropTypes.number.isRequired)
-        })
-      ).isRequired,
-      rating: PropTypes.number.isRequired,
-      _lastUpdated: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.instanceOf(Date)
-      ]),
-      EntryFiles: PropTypes.arrayOf(
-        PropTypes.shape({
-          entry_id: PropTypes.number.isRequired,
-          file_type: PropTypes.string.isRequired,
-          name: PropTypes.string.isRequired,
-          size: PropTypes.number.isRequired,
-          url: PropTypes.string.isRequired,
-          date_created: PropTypes.string,
-          date_updated: PropTypes.string,
-          date_modified: PropTypes.string
-        })
-      )
-    }).isRequired,
+    entry: EntryPropTypes.isRequired,
     onChangeCallback: PropTypes.func,
     toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,

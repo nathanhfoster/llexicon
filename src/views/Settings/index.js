@@ -1,5 +1,6 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
+import { UserProps } from "../../redux/User/propTypes"
 import { withRouter } from "react-router-dom"
 import { BasicTabs, Header } from "../../components"
 import EntryStatistics from "./EntryStatistics"
@@ -77,7 +78,7 @@ const Settings = ({ history, location: { pathname } }) => {
 }
 
 Settings.propTypes = {
-  User: PropTypes.object.isRequired
+  User: UserProps
 }
 
 export default withRouter(memo(Settings))

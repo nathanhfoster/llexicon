@@ -2,6 +2,7 @@ import React, { memo } from "react"
 import { Badge, Col } from "reactstrap"
 import { BasicList } from "../"
 import PropTypes from "prop-types"
+import { EntryTagsProps } from "../../redux/Entries/propTypes"
 import "./styles.css"
 
 const TagsContainer = ({
@@ -74,7 +75,7 @@ const TagsContainer = ({
 }
 
 TagsContainer.propTypes = {
-  tags: PropTypes.array,
+  tags: EntryTagsProps,
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   flexWrap: PropTypes.oneOf(["wrap", "nowrap"]),
@@ -99,4 +100,5 @@ TagsContainer.defaultProps = {
   showTagIcon: true,
   tagContainerClassName: ""
 }
+
 export default memo(TagsContainer)

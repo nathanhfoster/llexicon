@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { UserProps } from "../../../redux/User/propTypes"
 import { Container, Row, Col, Media } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import Moment from "react-moment"
@@ -33,7 +34,7 @@ const AccountDetails = ({ User }) => {
   )
 }
 
-AccountDetails.propTypes = { User: PropTypes.object.isRequired }
+AccountDetails.propTypes = { User: UserProps.isRequired }
 
 AccountDetails.defaultProps = {}
 

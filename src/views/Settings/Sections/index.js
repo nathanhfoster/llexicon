@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
+import { UserProps } from "../../../redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { Form, FormGroup } from "reactstrap"
 import SettingInput from "./SettingInput"
@@ -110,7 +111,7 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
 }
 
 Sections.propTypes = {
-  User: PropTypes.object.isRequired,
+  User: UserProps.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   PostSettings: PropTypes.func.isRequired,
   SetSettings: PropTypes.func.isRequired

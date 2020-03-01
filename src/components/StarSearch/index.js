@@ -5,6 +5,7 @@ import { connect as reduxConnect } from "react-redux"
 import { Link } from "react-router-dom"
 import { RouteMap } from "../../routes"
 import { SearchUserEntries } from "../../redux/Entries/actions"
+import { DEFAULT_STATE_ENTRIES } from "../../redux/Entries/reducer"
 import UseDebounce from "../UseDebounce"
 import "./styles.css"
 
@@ -16,6 +17,7 @@ const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
 const mapDispatchToProps = { SearchUserEntries }
 
 const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
+  const isMounted = useRef(false)
   const previousPropSearch = useRef(search)
   const isTyping = useRef(false)
   const [searchValue, setSearch] = useState(search)
@@ -31,9 +33,15 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
   }
 
   useEffect(() => {
+    if (!isMounted.current) {
+      setSearch(DEFAULT_STATE_ENTRIES.search)
+      isMounted.current = true
+    }
+
     if (shouldDeriveStateFromProps) {
       setSearch(search)
     }
+
     return () => {
       isTyping.current = false
     }

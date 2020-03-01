@@ -1,6 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Media } from "reactstrap"
+import { EntryFilesProps } from "../../redux/Entries/propTypes"
 import "./styles.css"
 
 const EntryFilesCarousel = ({
@@ -92,7 +93,7 @@ const EntryFilesCarousel = ({
 
 EntryFilesCarousel.propTypes = {
   html: PropTypes.string.isRequired,
-  files: PropTypes.arrayOf(PropTypes.object).isRequired,
+  files: EntryFilesProps.isRequired,
   onChangeCallback: PropTypes.func.isRequired,
   editorRef: PropTypes.object.isRequired
 }

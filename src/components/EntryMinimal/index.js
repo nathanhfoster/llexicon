@@ -15,14 +15,14 @@ const EntryMinimal = ({
   html,
   date_created_by_author,
   _lastUpdated,
-  EntryFiles = [],
+  EntryFiles,
   author,
   date_create,
   date_updated,
   address,
   latitude,
   longitude,
-  tags = [],
+  tags,
   views,
   rating
 }) => {
@@ -45,15 +45,10 @@ const EntryMinimal = ({
           <Star size={14} animation={false} opacity={1} />
           <span className="ml-1">{title}</span>
         </Col>
-        <Col xs={6} className="EntryMinimalTime">
+        <Col xs={12} className="EntryMinimalTime">
           <i className="fas fa-calendar-day mr-1" />
           <Moment format="D MMM YY hh:mma">{date_created_by_author}</Moment>
         </Col>
-        <Col xs={6} className="EntryMinimalTime">
-          <i className="fas fa-pencil-alt mr-1" />
-          <Moment format="D MMM YY hh:mma">{date_updated}</Moment>
-        </Col>
-
         <Col xs={12} className="EntryMinimalDetail mt-1 mb-1">
           <i className="far fa-eye" /> <span className="mr-2">{views}</span>
           {showLocationIcon && (
@@ -64,7 +59,6 @@ const EntryMinimal = ({
           )}
           {showFileIcon && <i className="far fa-file-image mr-1" />}
         </Col>
-
         <Col xs={12}>
           <TagsContainer
             showTagIcon={false}

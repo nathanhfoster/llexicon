@@ -1,12 +1,6 @@
-import React, {
-  useEffect,
-  useMemo,
-  lazy,
-  memo,
-  createElement,
-  Fragment
-} from "react"
+import React, { useEffect, useMemo, lazy, memo, Fragment } from "react"
 import PropTypes from "prop-types"
+import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
 import { Fade } from "reactstrap"
@@ -196,7 +190,7 @@ const App = ({
 }
 
 App.propTypes = {
-  User: PropTypes.objectOf(PropTypes.any),
+  User: UserProps,
   navBarHeight: PropTypes.number.isRequired,
   SetWindow: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
