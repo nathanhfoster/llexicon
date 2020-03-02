@@ -21,12 +21,6 @@
   outline: 0;
 }
 
-.nav-item {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  line-height: var(--navBarImageHeight);
-}
-
 .navbar-nav .dropdown-menu {
   background: var(--slate_grey);
   border: 0;
