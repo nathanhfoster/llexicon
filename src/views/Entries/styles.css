@@ -1,5 +1,7 @@
-.Entries {
- 
+.Entries {}
+
+.EntryTabs .nav-link i {
+    font-size: 24px;
 }
 
 .MinimalEntryListToggle {

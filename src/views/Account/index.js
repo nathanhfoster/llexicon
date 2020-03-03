@@ -36,9 +36,7 @@ const Account = ({ history, location: { pathname } }) => {
     }
   ]
 
-  return (
-    <BasicTabs containerClassname="Account" activeTab={activeTab} tabs={tabs} />
-  )
+  return <BasicTabs className="Account" activeTab={activeTab} tabs={tabs} />
 }
 
 Account.propTypes = {

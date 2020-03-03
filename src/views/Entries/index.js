@@ -409,6 +409,7 @@ const Entries = ({
 
   return (
     <BasicTabs
+      className="EntryTabs"
       fluid={
         activeTab === RouteMap.CALENDAR ||
         activeTab === RouteMap.ENTRIES_TABLE ||

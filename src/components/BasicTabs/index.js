@@ -22,13 +22,7 @@ const getInitialState = (activeTab, defaultTab, tabs) => {
   return defaultTab || activeTab || firstTabId
 }
 
-const BasicTabs = ({
-  containerClassname,
-  defaultTab,
-  fluid,
-  tabs,
-  ...restOfProps
-}) => {
+const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
   const [activeTab, setState] = useState(
     getInitialState(restOfProps.activeTab, defaultTab, tabs)
   )
@@ -86,7 +80,7 @@ const BasicTabs = ({
   )
 
   return (
-    <Container fluid={fluid} className={`${containerClassname} Container`}>
+    <Container fluid={fluid} className={`${className} Container`}>
       <Row>
         <Col tag={Nav} tabs xs={12}>
           {renderNavItems}
@@ -98,7 +92,7 @@ const BasicTabs = ({
 }
 
 BasicTabs.propTypes = {
-  containerClassname: PropTypes.string,
+  className: PropTypes.string,
   defaultTab: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
@@ -116,7 +110,7 @@ BasicTabs.propTypes = {
 }
 
 BasicTabs.defaultProps = {
-  containerClassname: "BasicTabs",
+  className: "BasicTabs",
   fluid: false,
   tabs: [
     { tabId: 1, title: "1", render: <div>Tab 1</div> },
