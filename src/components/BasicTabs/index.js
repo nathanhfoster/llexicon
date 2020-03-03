@@ -47,7 +47,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
         return (
           <NavItem key={tabId}>
             <NavLink
-              className={`BasicTabsNavLink px-2 py-1 p-sm-3 py-sm-2 ${
+              className={`BasicTabsNavLink p-2 px-sm-3 py-sm-2 ${
                 onTab ? "active" : ""
               }`}
               onClick={() =>
