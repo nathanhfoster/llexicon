@@ -58,7 +58,7 @@ const BasicCard = ({
 
 BasicCard.propTypes = {
   header: PropTypes.object,
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   faIcon: PropTypes.string,
   button: PropTypes.object,

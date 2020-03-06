@@ -16,11 +16,7 @@ const Header = ({ children, className, fill, color, ...restOfProps }) => {
   )
 }
 Header.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.object
-  ]),
+  children: PropTypes.any,
   className: PropTypes.string.isRequired,
   fill: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   color: PropTypes.string.isRequired,

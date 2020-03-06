@@ -20,7 +20,7 @@ const NavItemLink = ({
   const renderNavLink = useMemo(
     () =>
       render || (
-        <NavItem key={title}>
+        <NavItem key={title} tag="div">
           <NavLink
             activeClassName="active"
             className="Navlink"

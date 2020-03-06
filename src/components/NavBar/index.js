@@ -184,7 +184,7 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
   const closeHamburgerMenu = () => setCollapse(true)
 
   const renderDropDownMenu = (key, icon, links) => (
-    <UncontrolledDropdown key={key} nav inNavbar>
+    <UncontrolledDropdown key={key} nav inNavbar tag="div">
       <DropdownToggle nav caret>
         {icon}
       </DropdownToggle>
