@@ -67,8 +67,13 @@ const Entries = ({
     GetUserEntries(1)
   }, [])
   const viewableEntries = useMemo(
-    () => entries.filter(item => !item._shouldDelete),
-    [entries]
+    () => entries
+       .filter(item => !item._shouldDelete)
+       .sort(	
+          (a, b) =>	
+            new Date(b.date_created_by_author) -	
+            new Date(a.date_created_by_author)	
+        ), [entries]
   )
 
   const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
