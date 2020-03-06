@@ -1,4 +1,11 @@
-import React, { Fragment, useCallback, useMemo, memo, lazy } from "react"
+import React, {
+  Fragment,
+  useEffect,
+  useCallback,
+  useMemo,
+  memo,
+  lazy
+} from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
@@ -56,10 +63,11 @@ const Entries = ({
   GetAllUserEntries,
   SetEditorState
 }) => {
+  useEffect(() => {
+    GetUserEntries(1)
+  }, [])
   const viewableEntries = useMemo(
-    () =>
-      entries
-        .filter(item => !item._shouldDelete),
+    () => entries.filter(item => !item._shouldDelete),
     [entries]
   )
 

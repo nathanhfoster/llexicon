@@ -5,7 +5,6 @@ import { DEFAULT_STATE_USER, User } from "./User/reducer"
 import { DEFAULT_STATE_TEXT_EDITOR, TextEditor } from "./TextEditor/reducer"
 import { DEFAULT_STATE_ENTRIES, Entries } from "./Entries/reducer"
 import { DEFAULT_STATE_WINDOW, Window } from "./Window/reducer"
-import { DEFAULT_STATE_PERSISTER, Persister } from "./Persister/reducer"
 
 const RootReducer = combineReducers({
   Alerts,
@@ -14,7 +13,6 @@ const RootReducer = combineReducers({
   TextEditor,
   Entries,
   Window,
-  Persister
 })
 
 export {
@@ -25,5 +23,4 @@ export {
   DEFAULT_STATE_TEXT_EDITOR,
   DEFAULT_STATE_ENTRIES,
   DEFAULT_STATE_WINDOW,
-  DEFAULT_STATE_PERSISTER
 }

@@ -1,16 +1,19 @@
-import { PersisterActionTypes } from "../Persister/types"
-import { getObjectLength, removeKeyOrValueFromObject } from "../../helpers"
+import {
+  getObjectLength,
+  removeKeyOrValueFromObject,
+  deepParseJson
+} from "../helpers"
 import {
   DEFAULT_STATE_ALERTS,
   DEFAULT_STATE_CALENDAR,
   DEFAULT_STATE_USER,
   DEFAULT_STATE_TEXT_EDITOR,
   DEFAULT_STATE_ENTRIES,
-  DEFAULT_STATE_WINDOW,
-  DEFAULT_STATE_PERSISTER
-} from "../RootReducer"
+  DEFAULT_STATE_WINDOW
+} from "./RootReducer"
 
 const LocalStorageReduxKey = "ReduxStore"
+const PersistedStorageReduxKey = `persist:${LocalStorageReduxKey}`
 const LocalStorageFilesKey = "Files"
 
 const cleanHtml = array =>
@@ -38,8 +41,7 @@ const saveState = (localStorageKey, value, dispatch) => {
         User,
         TextEditor: DEFAULT_STATE_TEXT_EDITOR,
         Entries: DEFAULT_STATE_ENTRIES,
-        Window,
-        Persister: DEFAULT_STATE_PERSISTER
+        Window
       }
 
       saveState(LocalStorageReduxKey, reduxStore, dispatch)
@@ -50,10 +52,10 @@ const saveState = (localStorageKey, value, dispatch) => {
 const getState = localStorageKey => {
   let state = {}
 
-  const localState = localStorage.getItem(localStorageKey)
+  const localStateString = localStorage.getItem(localStorageKey)
 
-  if (localState) {
-    state = JSON.parse(localState)
+  if (localStateString) {
+    state = deepParseJson(localStateString)
   } else {
     saveState(localStorageKey, state)
   }
@@ -104,12 +106,13 @@ const removeFileFromState = file => removeState(LocalStorageFilesKey, file)
 
 const getReduxState = () => getState(LocalStorageReduxKey)
 
+const getPersistedReduxStore = () => getState(PersistedStorageReduxKey)
+
 const saveReduxState = () => (dispatch, getState) =>
-  saveState(
-    LocalStorageReduxKey,
-    getState(),
-    dispatch({ type: PersisterActionTypes.REDUX_PERSIST })
-  )
+  saveState(LocalStorageReduxKey, getState())
+
+const persistReduxState = () => (dispatch, getState) =>
+  saveState(PersistedStorageReduxKey, getState())
 
 const removeReduxState = () => removeState(LocalStorageReduxKey)
 
@@ -139,15 +142,19 @@ const isQuotaExceeded = e => {
 }
 
 export {
+  LocalStorageReduxKey,
+  PersistedStorageReduxKey,
   clearLocalStorage,
   getFile,
   getFilesState,
   getFilesStateLength,
   getReduxState,
+  getPersistedReduxStore,
   saveFileState,
   appendFileToState,
   removeFilesFromState,
   removeFileFromState,
   saveReduxState,
+  persistReduxState,
   removeReduxState
 }

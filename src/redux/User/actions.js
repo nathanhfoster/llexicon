@@ -2,7 +2,7 @@ import { UserActionTypes } from "../User/types"
 import { AlertActionTypes } from "../Alerts/types"
 import { AppActionTypes } from "../App/types"
 import { Axios, AxiosForm, AxiosOffline } from "../Actions"
-import { saveReduxState } from "../Persister/actions"
+import { persistReduxState } from "../localState"
 import { GetUserEntries } from "../Entries/actions"
 import qs from "qs"
 
@@ -16,17 +16,18 @@ const ChangeUser = payload => ({ type: UserActionTypes.USER_SET, payload })
 const UserLogin = (payload, rememberMe) => async dispatch =>
   await Axios()
     .post("login/", qs.stringify(payload))
-    .then(({ data }) => {
+    .then(async ({ data }) => {
       const { id, token } = data
-      dispatch(RefreshPatchUser(token, id))
-      dispatch(SetUser(data))
-      dispatch(saveReduxState())
-      dispatch(GetUserEntries(1))
+      await dispatch(RefreshPatchUser(id))
+      await dispatch(SetUser(data))
+      await dispatch(persistReduxState())
+      await dispatch(GetUserEntries(1))
+
       return data
     })
     .catch(e => console.log("UserLogin: ", e.response))
 
-const RefreshPatchUser = (token, id) => (dispatch, getState) =>
+const RefreshPatchUser = id => dispatch =>
   Axios()
     .get(`users/${id}/refresh/`)
     .then(({ data }) => {

@@ -1,10 +1,10 @@
 import axios from "axios"
-import { getReduxState } from "../Persister/actions"
+import { getPersistedReduxStore } from "../localState"
 
 const { REACT_APP_API_URL } = process.env
 
 const getUser = () => {
-  const { User } = getReduxState()
+  const { User } = getPersistedReduxStore()
   if (!User) return { token: null, offline_mode: null }
   const {
     token,
@@ -48,7 +48,7 @@ const Axios = (responseType = "json") => {
 }
 
 const AxiosOffline = (responseType = "json") => {
-  const { token } = getReduxState().User
+  const { token } = getUser()
 
   return axios.create({
     withCredentials: token ? true : false,
@@ -66,7 +66,7 @@ const AxiosOffline = (responseType = "json") => {
 }
 
 const AxiosForm = payload => {
-  const { token } = getReduxState().User
+  const { token } = getUser()
   return axios.create({
     baseURL: REACT_APP_API_URL,
     // timeout: 25000,
