@@ -1,6 +1,6 @@
 @media (min-width: 768px) {
   :root {
-    --calendarTileHeight: calc((100vh - var(--navBarHeight) - 24px) / 6);
+    --calendarTileHeight: calc((100vh - var(--navBarHeight) - 64px - 24px) / 6);
   }
 }
 

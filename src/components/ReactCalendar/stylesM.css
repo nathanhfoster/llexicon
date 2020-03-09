@@ -1,20 +1,12 @@
 @media (max-width: 767px) {
   :root {
-    --calendarTileHeight: 7vh;
+    --calendarTileHeight: calc((7vh - calc(var(--inputHeight) / 6)));
   }
   .EventList {
     min-height: calc(var(--calendarTileHeight) * 6 + 86px);
   }
-  .react-calendar__month-view button {
-    height: var(--calendarTileHeight);
-    flex: 1 0 0;
-    position: relative;
-    opacity: var(--mainOpacity);
-    background: var(--quinaryColor);
-    border: 1px solid var(--dark_border);
-  }
   .react-calendar__month-view .react-calendar__tile abbr {
-    flex-grow : 1;
+    flex-grow: 1;
     position: relative;
     top: 2px;
     left: 0;
@@ -24,5 +16,4 @@
     align-items: center;
     justify-content: center;
   }
-
 }
