@@ -144,19 +144,19 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           ),
           links: [
             {
-              // dropdownItem: true,
+              dropdownItem: true,
               route: SETTINGS_PROFILE,
               title: "PROFILE",
               icon: <i className="fas fa-user-circle NavBarImage" />
             },
             {
-              // dropdownItem: true,
+              dropdownItem: true,
               route: SETTINGS_PREFERENCES,
               title: "PREFERENCES",
               icon: <i className="fas fa-sliders-h NavBarImage" />
             },
             {
-              // dropdownItem: true,
+              dropdownItem: true,
               route: SETTINGS_ENTRIES,
               title: "ENTRIES",
               icon: <i className="fas fa-book NavBarImage" />

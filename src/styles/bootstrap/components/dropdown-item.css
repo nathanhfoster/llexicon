@@ -1,6 +1,5 @@
-.dropdown-menu, .dropdown-item {
-  background-color: var(--quinaryColor);
-  color: var(--secondaryColor) !important;
+.dropdown-item.active, .dropdown-item:active {
+  background-color: inherit !important;
 }
 
 .dropdown-item:hover {

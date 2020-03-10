@@ -7,12 +7,6 @@
   background: var(--slate_grey);
 }
 
-
-
-.NavBar button.dropdown-item {
-  color: var(--primaryColor) !important;
-}
-
 @media (min-width: 768px) {
   .NavBar li {
     margin-top: auto;

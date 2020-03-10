@@ -1,11 +1,7 @@
-.BasicDropDown {
-  /* max-height: 250px;
-  overflow-y: auto; */
+.BasicDropDown .dropdown-menu, .BasicDropDown .dropdown-item {
+  background-color: var(--quinaryColor);
+  color: var(--secondaryColor) !important;
 }
-
-/* .BasicDropDown button {
-  color: white;
-} */
 
 .BasicDropDownToggle {
   width: 100%;
