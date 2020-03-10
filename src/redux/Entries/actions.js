@@ -329,7 +329,6 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
       dispatch(PostEntry(postPayload)).then(entry => {
         if (!entry) return
-        console.log(entry)
         const {
           EntryFiles,
           author,

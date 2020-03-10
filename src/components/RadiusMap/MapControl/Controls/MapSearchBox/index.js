@@ -23,7 +23,6 @@ const MapSearchBox = ({
     searchBox.addListener("places_changed", handlePlacesChange)
     searchBox.bindTo("bounds", map)
     return () => {
-      console.log("UNFdnfjs")
       mapApi.event.clearInstanceListeners(searchInput)
     }
   }, [])
