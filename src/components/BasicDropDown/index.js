@@ -13,7 +13,7 @@ const BasicDropDown = ({
   onClickCallback,
   direction,
   value,
-  containerClassName
+  className
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
@@ -40,7 +40,7 @@ const BasicDropDown = ({
       isOpen={dropdownOpen}
       toggle={toggle}
       direction={direction}
-      className={containerClassName}
+      className={className}
     >
       <DropdownToggle caret color="primary" className="BasicDropDownToggle">
         {value}
@@ -144,7 +144,7 @@ BasicDropDown.defaultProps = {
   list: [],
   direction: "down",
   value: "value",
-  containerClassName: "BasicDropDown"
+  className: "BasicDropDown"
 }
 
 export default memo(BasicDropDown)
