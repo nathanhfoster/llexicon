@@ -141,7 +141,7 @@ const isEqual = (prevProps, nextProps) =>
   memoizeProps(
     prevProps,
     nextProps,
-    ["html", "onChangeCallback", "xs", "editorRef", "items", "filteredItems"],
+    ["xs", "editorRef", "items", "filteredItems"],
     true
   )
 
