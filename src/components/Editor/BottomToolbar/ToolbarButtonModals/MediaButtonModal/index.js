@@ -83,9 +83,9 @@ const MediaButtonModal = ({
               <InputGroupAddon addonType="append">
                 <InputGroupText
                   tag={Button}
-                  className="p-0"
                 >
                   <BasicDropDown
+                    className="p-0"
                     value={type}
                     list={EMBEDED_TYPES}
                     onClickCallback={setType}
