@@ -7,8 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Input,
-  Button
+  Input
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -70,6 +69,7 @@ const MediaButtonModal = ({
       ButtonIcon="fas fa-photo-video"
       buttonTitle="Add Media"
       xs={xs}
+      onSaveCallback={handleAddUrl}
     >
       <Container fluid className="MediaButtonModal p-0">
         <Row className="p-2">
@@ -81,11 +81,9 @@ const MediaButtonModal = ({
               // method="post"
             >
               <InputGroupAddon addonType="append">
-                <InputGroupText
-                  tag={Button}
-                >
+                <InputGroupText className="p-0">
                   <BasicDropDown
-                    className="m-0"
+                    className="MediaDropDown"
                     value={type}
                     list={EMBEDED_TYPES}
                     onClickCallback={setType}
@@ -100,18 +98,6 @@ const MediaButtonModal = ({
                 value={url}
                 onChange={handleInputChange}
               />
-
-              <InputGroupAddon addonType="append" onClick={handleAddUrl}>
-                <InputGroupText
-                  tag={Button}
-                  color="primary"
-                  style={{ color: "white" }}
-                  disabled={addUrlDisabled}
-                  // type="submit"
-                >
-                  <i className="fas fa-save" style={{ fontSize: 20 }} />
-                </InputGroupText>
-              </InputGroupAddon>
             </InputGroup>
           </Col>
         </Row>

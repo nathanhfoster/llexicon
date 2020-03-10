@@ -59,7 +59,6 @@ const TagsButtonModal = ({
 
     if (!state.tagsAsString) {
       nextState = {
-        ...state,
         tagsAsString: validatedString(state.tagsAsString.concat(`${title} `)),
         typing: false
       }
@@ -67,19 +66,17 @@ const TagsButtonModal = ({
       let splitTagsAsStrings = state.tagsAsString.split(" ")
       splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${title} `
       nextState = {
-        ...state,
         tagsAsString: validatedString(splitTagsAsStrings.join(" ")),
         typing: false
       }
     } else {
       nextState = {
-        ...state,
         tagsAsString: validatedString(state.tagsAsString.concat(` ${title}`)),
         typing: false
       }
     }
 
-    setState(nextState)
+    setState({ ...state, ...nextState })
   }
 
   const handleTagsInputChange = e => {
@@ -101,9 +98,7 @@ const TagsButtonModal = ({
     onChangeCallback({ tags: newTags })
   }
 
-  const handleCancel = () => {
-    // setState({ ...state, tagsAsString: "" })
-  }
+  const handleCancel = () => setState(getInitialState(tags))
 
   return (
     <ToolbarModal

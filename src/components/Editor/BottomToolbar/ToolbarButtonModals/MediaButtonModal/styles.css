@@ -1,3 +1,8 @@
 .MediaButtonModal {
     height: 500px;
 }
+
+.MediaDropDown button{
+    margin: 0;
+    padding: calc(var(--inputHeight) / 4);
+}
