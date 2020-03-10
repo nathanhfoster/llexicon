@@ -83,10 +83,7 @@ const MediaButtonModal = ({
               <InputGroupAddon addonType="append">
                 <InputGroupText
                   tag={Button}
-                  color="primary"
-                  style={{ color: "white" }}
-                  disabled={addUrlDisabled}
-                  // type="submit"
+                  className="p-0"
                 >
                   <BasicDropDown
                     value={type}
