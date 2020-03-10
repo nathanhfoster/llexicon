@@ -85,7 +85,7 @@ const MediaButtonModal = ({
                   tag={Button}
                 >
                   <BasicDropDown
-                    className="p-0"
+                    className="m-0"
                     value={type}
                     list={EMBEDED_TYPES}
                     onClickCallback={setType}
