@@ -135,7 +135,11 @@ const filterMapArray = (array = [], uniqueKey = "id", props = false) => {
 
 const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e))
 
-const TopKFrequentStrings = (arrayOfObjs, prop, k) => {
+const TopKFrequentStrings = (
+  arrayOfObjs,
+  prop = "id",
+  k = arrayOfObjs.length
+) => {
   let map = new Map()
   for (let i = 0; i < arrayOfObjs.length; i++) {
     const s = arrayOfObjs[i][prop]

@@ -121,12 +121,12 @@ MediaButtonModal.propTypes = {
 }
 
 const isEqual = (prevProps, nextProps) =>
-  memoizeProps(
-    prevProps,
-    nextProps,
-    ["xs", "editorRef", "items", "filteredItems"],
-    true
-  )
+  memoizeProps(prevProps, nextProps, [
+    "xs",
+    "editorRef",
+    "items",
+    "filteredItems"
+  ])
 
 export default reduxConnect(
   mapStateToProps,

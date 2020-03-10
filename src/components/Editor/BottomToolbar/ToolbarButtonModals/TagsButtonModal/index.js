@@ -5,14 +5,18 @@ import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
-import { removeArrayDuplicates } from "../../../../../helpers"
+import {
+  removeArrayDuplicates,
+  TopKFrequentStrings
+} from "../../../../../helpers"
 import memoizeProps from "../../../../../helpers/memoizeProps"
+import { EntriesPropTypes } from "../../../../../redux/Entries/propTypes"
 import "./styles.css"
 
-const mapStateToProps = ({ User: { id }, Entries: { EntryTags } }) => ({
-  UserId: id,
-  EntryTags
-})
+const mapStateToProps = ({
+  User: { id },
+  Entries: { items, filteredItems, EntryTags }
+}) => ({ items, filteredItems, UserId: id, EntryTags })
 
 const mapDispatchToProps = { GetUserEntryTags }
 
@@ -32,11 +36,25 @@ const getInitialState = tags => ({
 const TagsButtonModal = ({
   UserId,
   GetUserEntryTags,
+  items,
+  filteredItems,
   EntryTags,
   tags,
   xs,
   onChangeCallback
 }) => {
+  const entryTags = Object.values(
+    items
+      .concat(filteredItems)
+      .map(entry => entry.tags)
+      .flat(1)
+      .concat(EntryTags)
+  )
+
+  let sortedTags = TopKFrequentStrings(entryTags, "title").map(title => ({
+    title
+  }))
+
   useEffect(() => {
     if (UserId) GetUserEntryTags()
   }, [])
@@ -49,7 +67,7 @@ const TagsButtonModal = ({
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
   if (typing && lastTagAsString) {
-    EntryTags = EntryTags.filter(entryTag =>
+    sortedTags = sortedTags.filter(entryTag =>
       entryTag.title.toUpperCase().includes(lastTagAsString.toUpperCase())
     )
   }
@@ -112,7 +130,7 @@ const TagsButtonModal = ({
       <Container className="TagsButtonModal Container">
         <Row>
           <TagsContainer
-            tags={EntryTags}
+            tags={sortedTags}
             height={200}
             flexWrap="wrap"
             onClickCallback={handleTagClick}
@@ -138,6 +156,8 @@ const TagsButtonModal = ({
 
 TagsButtonModal.propTypes = {
   UserId: PropTypes.number,
+  items: EntriesPropTypes,
+  filteredItems: EntriesPropTypes,
   EntryTags: PropTypes.arrayOf(PropTypes.object).isRequired,
   tags: PropTypes.arrayOf(PropTypes.object).isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
@@ -149,7 +169,14 @@ TagsButtonModal.defaultProps = {
 }
 
 const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, ["UserId", "EntryTags", "tags", "xs"])
+  memoizeProps(prevProps, nextProps, [
+    "UserId",
+    "items",
+    "filteredItems",
+    "EntryTags",
+    "tags",
+    "xs"
+  ])
 
 export default reduxConnect(
   mapStateToProps,
