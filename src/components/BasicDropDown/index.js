@@ -40,7 +40,7 @@ const BasicDropDown = ({
       isOpen={dropdownOpen}
       toggle={toggle}
       direction={direction}
-      className={className}
+      className={`BasicDropDown ${className}`}
     >
       <DropdownToggle caret color="primary" className="BasicDropDownToggle">
         {value}
@@ -143,8 +143,7 @@ BasicDropDown.propTypes = {
 BasicDropDown.defaultProps = {
   list: [],
   direction: "down",
-  value: "value",
-  className: "BasicDropDown"
+  value: "value"
 }
 
 export default memo(BasicDropDown)
