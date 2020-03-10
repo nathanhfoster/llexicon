@@ -17,13 +17,6 @@ const renderButtonColumns = columns =>
     return <Component key={i} xs={12 / columns.length} {...props} />
   })
 
-const renderButtonRows = buttons =>
-  buttons.map((columns, i) => (
-    <Row key={i} className="BottomToolButtonRow">
-      {renderButtonColumns(columns)}
-    </Row>
-  ))
-
 const BottomToolbar = ({
   entry,
   editorRef,
@@ -38,7 +31,7 @@ const BottomToolbar = ({
       [
         {
           Component: MediaButtonModal,
-          props: { html: entry.html, onChangeCallback, editorRef }
+          props: { onChangeCallback, editorRef }
         },
         {
           Component: TagsButtonModal,
@@ -57,6 +50,16 @@ const BottomToolbar = ({
       ]
     ],
     [entry]
+  )
+
+  const renderButtonRows = useMemo(
+    () =>
+      buttons.map((columns, i) => (
+        <Row key={i} className="BottomToolButtonRow">
+          {renderButtonColumns(columns)}
+        </Row>
+      )),
+    [buttons]
   )
 
   return (
@@ -90,7 +93,7 @@ const BottomToolbar = ({
               />
             </Col>
           </Row>
-          {renderButtonRows(buttons)}
+          {renderButtonRows}
         </Container>
       </Collapse>
     </Fragment>

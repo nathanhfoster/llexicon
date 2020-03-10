@@ -5,7 +5,6 @@ import { EntryFilesProps } from "../../redux/Entries/propTypes"
 import "./styles.css"
 
 const EntryFilesCarousel = ({
-  html,
   files,
   editorRef,
   overflowX,
@@ -46,19 +45,9 @@ const EntryFilesCarousel = ({
       }
     }
 
-    // editorRef.current.editor.insertText(
-    //   cursorIndex,
-    //   `<img src=${url} >`,
-    //   "bold",
-    //   true
-    // )
-
     const type = file_type.split("/")[0]
 
     editorRef.current.editor.insertEmbed(cursorIndex, type, url)
-
-    // const newHtml = `${html} <img src=${url} >`
-    // onChangeCallback({ html: newHtml })
   }
 
   const renderImageFiles = imageFiles => {
@@ -92,7 +81,6 @@ const EntryFilesCarousel = ({
 }
 
 EntryFilesCarousel.propTypes = {
-  html: PropTypes.string.isRequired,
   files: EntryFilesProps.isRequired,
   onChangeCallback: PropTypes.func.isRequired,
   editorRef: PropTypes.object.isRequired

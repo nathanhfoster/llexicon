@@ -30,7 +30,7 @@ const BasicDropDown = ({
           disabled={disabled}
           onClick={() => onClickCallback(id, value)}
         >
-          {value}
+          {value || id}
         </DropdownItem>
       )
     })
@@ -76,7 +76,7 @@ BasicDropDown.propTypes = {
         PropTypes.string,
         PropTypes.number,
         PropTypes.object
-      ]).isRequired,
+      ]),
       otherValue: PropTypes.any,
       header: PropTypes.bool,
       disabled: PropTypes.bool,

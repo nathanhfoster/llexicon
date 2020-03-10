@@ -13,6 +13,8 @@ import {
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import EntryFilesCarousel from "../../../../EntryFilesCarousel"
+import { BasicDropDown } from "../../../../"
+import memoizeProps from "../../../../../helpers/memoizeProps"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
@@ -22,8 +24,9 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
 
 const mapDispatchToProps = {}
 
+const EMBEDED_TYPES = [{ id: "Image" }, { id: "Video" }]
+
 const MediaButtonModal = ({
-  html,
   onChangeCallback,
   xs,
   editorRef,
@@ -31,6 +34,7 @@ const MediaButtonModal = ({
   filteredItems
 }) => {
   const [url, setUrl] = useState("")
+  const [type, setType] = useState(EMBEDED_TYPES[0].id)
 
   const AllEntryFiles = items
     .concat(filteredItems)
@@ -40,13 +44,9 @@ const MediaButtonModal = ({
 
   const addUrlDisabled = false
 
-  const findFileType = url => {
-    if (url.includes("youtube")) return "video"
-    return "image"
-  }
-
   const handleAddUrl = () => {
     let cursorIndex = 0
+    const lowerCaseType = type.toLowerCase()
 
     if (editorRef.current) {
       const selection = editorRef.current.getEditorSelection()
@@ -56,14 +56,12 @@ const MediaButtonModal = ({
       }
     }
 
-    const type = findFileType(url)
-
-    editorRef.current.editor.insertEmbed(cursorIndex, type, url)
+    editorRef.current.editor.insertEmbed(cursorIndex, lowerCaseType, url)
 
     setUrl("")
   }
 
-  const handleInputChange = ({ target: value }) => setUrl({ url: value })
+  const handleInputChange = ({ target: { value } }) => setUrl(value)
 
   return (
     <ToolbarModal
@@ -82,6 +80,21 @@ const MediaButtonModal = ({
               // onSubmit={handleAddUrl}
               // method="post"
             >
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  tag={Button}
+                  color="primary"
+                  style={{ color: "white" }}
+                  disabled={addUrlDisabled}
+                  // type="submit"
+                >
+                  <BasicDropDown
+                    value={type}
+                    list={EMBEDED_TYPES}
+                    onClickCallback={setType}
+                  />
+                </InputGroupText>
+              </InputGroupAddon>
               <Input
                 type="text"
                 name="url"
@@ -90,6 +103,7 @@ const MediaButtonModal = ({
                 value={url}
                 onChange={handleInputChange}
               />
+
               <InputGroupAddon addonType="append" onClick={handleAddUrl}>
                 <InputGroupText
                   tag={Button}
@@ -105,7 +119,6 @@ const MediaButtonModal = ({
           </Col>
         </Row>
         <EntryFilesCarousel
-          html={html}
           files={AllEntryFiles}
           onChangeCallback={onChangeCallback}
           editorRef={editorRef}
@@ -124,7 +137,15 @@ MediaButtonModal.propTypes = {
   filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
+const isEqual = (prevProps, nextProps) =>
+  memoizeProps(
+    prevProps,
+    nextProps,
+    ["html", "onChangeCallback", "xs", "editorRef", "items", "filteredItems"],
+    true
+  )
+
 export default reduxConnect(
   mapStateToProps,
   mapDispatchToProps
-)(memo(MediaButtonModal))
+)(memo(MediaButtonModal, isEqual))
