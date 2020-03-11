@@ -1,7 +1,11 @@
 :root {
-    --entryFoldersContainerHeight: calc(calc(66px + 0.5rem) * 2);
+    --entryFoldersContainerHeight: calc(calc(var(--inputHeight) + 0.5rem) * 3);
     --bottomToolbarFilesHeight: 80px;
     --bootmToolBarTagsHeight: 24px;
+}
+
+.EntryFolders {
+    height: calc(100vh - var(--navBarHeight));
 }
 
 .FolderBreadCrumbsContainer {
@@ -14,7 +18,7 @@
 }
 
 .EntryFolderCards {
-    height: calc(100vh - var(--navBarHeight) - calc(var(--inputHeight) * 2) - var(--entryFoldersContainerHeight));
+    height: calc(100vh - calc(var(--inputHeight) * 2) - 24px  - var(--entryFoldersContainerHeight));
     overflow-y: auto;
 }
 
