@@ -15,7 +15,7 @@ import Moment from "react-moment"
 import { BasicTabs, NewEntryButton } from "../../components"
 import NewEntry from "../NewEntry"
 import { useHistory, useLocation } from "react-router-dom"
-import { stripHtml, fuzzySearch } from "../../helpers"
+import { stripHtml } from "../../helpers"
 import memoizeProps from "../../helpers/memoizeProps"
 import {
   SyncEntries,
