@@ -18,6 +18,7 @@ import EntriesMinimal from "./EntriesMinimal"
 import Entry from "./Entry"
 import EntryCards from "./EntryCards"
 import EntryFilesCarousel from "./EntryFilesCarousel"
+import EntryFolders from "./EntryFolders"
 import EntryList from "./EntryList"
 import EntryMinimal from "./EntryMinimal"
 import FacebookGoogleLogin from "./FacebookGoogleLogin"
@@ -65,6 +66,7 @@ export {
   Entry,
   EntryCards,
   EntryFilesCarousel,
+  EntryFolders,
   EntryList,
   EntryMinimal,
   FacebookGoogleLogin,

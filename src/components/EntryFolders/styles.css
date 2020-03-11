@@ -1,0 +1,8 @@
+.EntryFolder {
+    background-color: var(--primaryColor);
+    transition: all 0.4s ease-in-out;
+}
+
+.EntryFolder:hover {
+    box-shadow: 0 0 8px 2px var(--accentColor);
+}

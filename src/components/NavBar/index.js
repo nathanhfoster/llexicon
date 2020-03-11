@@ -31,6 +31,7 @@ const {
   ENTRIES_TABLE,
   ENTRIES_MAP,
   ENTRIES_CARDS,
+  ENTRIES_FOLDERS,
   LOGIN,
   SETTINGS,
   SETTINGS_ENTRIES,
@@ -92,6 +93,12 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           route: ENTRIES_CARDS,
           title: "CARDS",
           icon: <i className="fas fa-columns NavBarImage" />
+        },
+        {
+          dropdownItem: true,
+          route: ENTRIES_FOLDERS,
+          title: "FOLDERS",
+          icon: <i className="fas fa-folder NavBarImage" />
         },
         {
           dropdownItem: true,

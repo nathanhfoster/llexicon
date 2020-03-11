@@ -44,6 +44,7 @@ const {
   ENTRIES,
   ENTRIES_MINIMAL,
   ENTRIES_CARDS,
+  ENTRIES_FOLDERS,
   ENTRIES_DETAILED,
   ENTRIES_TABLE,
   ENTRIES_MAP,
@@ -141,13 +142,15 @@ const App = ({
         NEW_ENTRY,
         CALENDAR,
         ENTRIES_CARDS,
+        ENTRIES_FOLDERS,
         ENTRIES_MINIMAL,
         ENTRIES_DETAILED,
         ENTRIES_TABLE,
         ENTRIES_MAP,
         NEW_ENTRY
       ],
-      component: Entries
+      Render: Entries,
+      useRouteProps: true
     },
     { path: [PRIVACY_POLICY], component: PrivacyPolicy }
   ]
@@ -158,7 +161,8 @@ const App = ({
         const { path, component, Render, renderProps, useRouteProps } = item
         return Render ? (
           <Route
-            exact
+            exact={true}
+            strict={false}
             key={i}
             path={path}
             render={routeProps =>

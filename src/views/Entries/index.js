@@ -14,8 +14,7 @@ import { RouteMap, RouterPush } from "../../routes"
 import Moment from "react-moment"
 import { BasicTabs, NewEntryButton } from "../../components"
 import NewEntry from "../NewEntry"
-import { useHistory, useLocation } from "react-router-dom"
-import { stripHtml, fuzzySearch } from "../../helpers"
+import { stripHtml } from "../../helpers"
 import memoizeProps from "../../helpers/memoizeProps"
 import {
   SyncEntries,
@@ -27,6 +26,7 @@ import "./styles.css"
 
 const ReactCalendar = lazy(() => import("../../components/ReactCalendar"))
 const EntryCards = lazy(() => import("../../components/EntryCards"))
+const EntryFolders = lazy(() => import("../../components/EntryFolders"))
 const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
 const EntriesDetailed = lazy(() => import("../../components/EntriesDetailed"))
 const BasicTable = lazy(() => import("../../components/BasicTable"))
@@ -61,8 +61,12 @@ const Entries = ({
   GetUserEntries,
   entriesSearch,
   GetAllUserEntries,
-  SetEditorState
+  SetEditorState,
+  history,
+  location,
+  match
 }) => {
+  const { pathname } = location
   useEffect(() => {
     GetUserEntries(1)
   }, [])
@@ -79,9 +83,6 @@ const Entries = ({
   )
 
   const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
-
-  const history = useHistory()
-  const { pathname } = useLocation()
 
   if (pathname === RouteMap.ENTRIES) {
     RouterPush(history, RouteMap.ENTRIES_MINIMAL)
@@ -310,6 +311,26 @@ const Entries = ({
       onClickCallback: handleTabChange
     },
     {
+      tabId: RouteMap.ENTRIES_FOLDERS,
+      mountTabOnlyWhenActive: true,
+      title: <i className="fas fa-folder" />,
+      render: (
+        <Row>
+          {shouldRenderNewEntryButton ? (
+            <NewEntryButton />
+          ) : (
+            <EntryFolders
+              entries={viewableEntries}
+              history={history}
+              location={location}
+              match={match}
+            />
+          )}
+        </Row>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
       tabId: RouteMap.ENTRIES_DETAILED,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-newspaper" />,
@@ -456,7 +477,10 @@ const isEqual = (prevProps, nextProps) =>
     "TextEditor",
     "nextEntryPage",
     "entriesSearch",
-    "viewPortHeight"
+    "viewPortHeight",
+    "history",
+    "location",
+    "match"
   ])
 
 export default reduxConnect(
