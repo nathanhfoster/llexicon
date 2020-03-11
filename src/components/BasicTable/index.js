@@ -107,7 +107,7 @@ const BasicTable = ({
         dark={dark}
         hover={onRowClick ? true : false}
         responsive={responsive}
-        className="BasicTable"
+        className="BasicTable m-0"
       >
         <TableHeader
           sortable={sortable}
