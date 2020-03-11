@@ -63,7 +63,7 @@ const renderEntryCards = ([start, end], entries, history) =>
     )
   })
 
-const EntryCards = ({ entries }) => {
+const EntryCards = ({ className, entries }) => {
   const [viewableEntries, setViewableEntries] = useState([
     0,
     ENTRIES_RENDER_OFFSET * 2
@@ -80,8 +80,9 @@ const EntryCards = ({ entries }) => {
       setViewableEntries([beginOffset, startOffset + ENTRIES_RENDER_OFFSET])
     }
   }
+
   return (
-    <Container className="EntryCards Container" onScroll={handleScroll}>
+    <Container className={`${className} Container`} onScroll={handleScroll}>
       <Row>{renderEntryCards(viewableEntries, entries, history)}</Row>
     </Container>
   )
@@ -89,6 +90,6 @@ const EntryCards = ({ entries }) => {
 
 EntryCards.propTypes = { entries: PropTypes.arrayOf(PropTypes.object) }
 
-EntryCards.defaultProps = {}
+EntryCards.defaultProps = { className: "EntryCards" }
 
 export default memo(EntryCards)

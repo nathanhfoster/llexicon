@@ -18,7 +18,8 @@ const TagsContainer = ({
   onClickCallback,
   hoverable,
   showTagIcon,
-  tagContainerClassName
+  tagContainerClassName,
+  columnProps
 }) => {
   if (flexWrap === "wrap") {
     overflowX = "auto"
@@ -61,7 +62,7 @@ const TagsContainer = ({
   }
 
   return (
-    <Col className="TagsContainer p-0" xs={12} style={styles}>
+    <Col className="TagsContainer p-0" {...columnProps} style={styles}>
       {children}
       {tags.length === 0 ? (
         <span>No tags...</span>
@@ -98,7 +99,8 @@ TagsContainer.defaultProps = {
   minimalView: false,
   hoverable: false,
   showTagIcon: true,
-  tagContainerClassName: ""
+  tagContainerClassName: "",
+  columnProps: { xs: 12 }
 }
 
 export default memo(TagsContainer)

@@ -14,7 +14,6 @@ const RouteMap = {
   ENTRIES_DETAILED: "/entries/detailed",
   ENTRIES_TABLE: "/entries/table",
   ENTRIES_MAP: "/entries/map",
-  ENTRIES_CARDS: "/entries/cards",
   ENTRIES_FOLDERS: "/entries/folders",
   LOGIN: "/login",
   SIGNUP: "/sign-up",

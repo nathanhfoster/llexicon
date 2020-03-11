@@ -30,7 +30,6 @@ const {
   ENTRIES_MINIMAL,
   ENTRIES_TABLE,
   ENTRIES_MAP,
-  ENTRIES_CARDS,
   ENTRIES_FOLDERS,
   LOGIN,
   SETTINGS,
@@ -87,12 +86,6 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           route: CALENDAR,
           title: "CALENDAR",
           icon: <i className="fas fa-calendar-alt NavBarImage" />
-        },
-        {
-          dropdownItem: true,
-          route: ENTRIES_CARDS,
-          title: "CARDS",
-          icon: <i className="fas fa-columns NavBarImage" />
         },
         {
           dropdownItem: true,

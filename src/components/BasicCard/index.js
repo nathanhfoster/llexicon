@@ -32,14 +32,20 @@ const BasicCard = ({
       className={`${cardClassName} ${cardHoverStyles}`}
       onClick={handleOnClickCallback}
     >
-      <CardHeader className={`BasicCardContainer ${cardHeaderClassName}`}>
+      <CardHeader
+        tag="div"
+        className={`BasicCardContainer ${cardHeaderClassName}`}
+      >
         {typeof faIcon === "string" ? (
           <i className={`AboutFeatureIcon ${faIcon}`} />
         ) : (
           header
         )}
       </CardHeader>
-      <CardBody className={`BasicCardBodyContainer ${cardBodyClassName}`}>
+      <CardBody
+        tag="div"
+        className={`BasicCardBodyContainer ${cardBodyClassName}`}
+      >
         {typeof title === "string" ? (
           <CardTitle className={`${cardTitleClassName} Center`}>
             {title}
@@ -48,7 +54,9 @@ const BasicCard = ({
           title
         )}
         {text && (
-          <CardText className={`${cardTextClassName} Center`}>{text}</CardText>
+          <CardText tag="div" className={`${cardTextClassName} Center`}>
+            {text}
+          </CardText>
         )}
         {button && <div className="Center">{button}</div>}
       </CardBody>

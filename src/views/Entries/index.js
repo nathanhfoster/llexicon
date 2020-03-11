@@ -296,21 +296,6 @@ const Entries = ({
       onClickCallback: handleTabChange
     },
     {
-      tabId: RouteMap.ENTRIES_CARDS,
-      mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-columns"></i>,
-      render: (
-        <Row>
-          {shouldRenderNewEntryButton ? (
-            <NewEntryButton />
-          ) : (
-            <EntryCards entries={viewableEntries} />
-          )}
-        </Row>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
       tabId: RouteMap.ENTRIES_FOLDERS,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-folder" />,

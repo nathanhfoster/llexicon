@@ -1,8 +1,32 @@
+:root {
+    --entryFoldersContainerHeight: calc(calc(66px + 0.5rem) * 2);
+    --bottomToolbarFilesHeight: 80px;
+    --bootmToolBarTagsHeight: 24px;
+}
+
+.FolderBreadCrumbsContainer {
+    height: var(--inputHeight);
+}
+
+.EntryFoldersContainer {
+    height: var(--entryFoldersContainerHeight);
+    overflow-y: auto;
+}
+
+.EntryFolderCards {
+    height: calc(100vh - var(--navBarHeight) - calc(var(--inputHeight) * 2) - var(--entryFoldersContainerHeight));
+    overflow-y: auto;
+}
+
 .EntryFolder {
-    background-color: var(--primaryColor);
+    height: var(--inputHeight);
+    width: 100%;
+}
+
+.EntryFolder {
     transition: all 0.4s ease-in-out;
 }
 
 .EntryFolder:hover {
-    box-shadow: 0 0 8px 2px var(--accentColor);
+    box-shadow: var(--primaryBoxShadow);
 }
