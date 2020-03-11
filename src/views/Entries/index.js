@@ -144,106 +144,7 @@ const Entries = ({
 
   const handleTabChange = tabId => RouterPush(history, tabId)
 
-  const tabs = [
-    {
-      tabId: RouteMap.NEW_ENTRY,
-      mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-feather-alt"></i>,
-      render: (
-        <Row>
-          <NewEntry />
-        </Row>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
-      tabId: RouteMap.CALENDAR,
-      mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-calendar-alt"></i>,
-      render: (
-        <Row>
-          <ReactCalendar />
-        </Row>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
-      tabId: RouteMap.ENTRIES_CARDS,
-      mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-columns"></i>,
-      render: (
-        <Row>
-          {shouldRenderNewEntryButton ? (
-            <NewEntryButton />
-          ) : (
-            <EntryCards entries={viewableEntries} />
-          )}
-        </Row>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
-      tabId: RouteMap.ENTRIES_DETAILED,
-      mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-newspaper" />,
-      render: (
-        <Row>
-          {shouldRenderNewEntryButton ? (
-            <NewEntryButton />
-          ) : (
-            <EntriesDetailed
-              height={detailedEntriesListHeight}
-              entries={viewableEntries}
-              itemSize={listItemHeight}
-              onItemsRendered={handleItemsRendered}
-            />
-          )}
-        </Row>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
-      tabId: RouteMap.ENTRIES_MINIMAL,
-      mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-th-list" />,
-      render: shouldRenderNewEntryButton ? (
-        <Row>
-          <NewEntryButton />
-        </Row>
-      ) : (
-        <Fragment>
-          <Row>
-            <EntriesMinimal
-              height={minimalEntriesListHeight}
-              entries={viewableEntries}
-              onItemsRendered={handleItemsRendered}
-            />
-          </Row>
-          <Row className="Center">
-            {nextEntryPage && (
-              <Col xs={12} tag={Button} color="accent" onClick={GetEntries}>
-                <i className="fas fa-cloud-download-alt" /> Load More
-              </Col>
-            )}
-          </Row>
-        </Fragment>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
-      tabId: RouteMap.ENTRIES_TABLE,
-      mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-table" />,
-      render: shouldRenderNewEntryButton ? (
-        <Row>
-          <NewEntryButton />
-        </Row>
-      ) : (
-        <Row>
-          <BasicTable
-            sortable
-            defaultSortKey="date_updated"
-            columns={[
+  const tableColumns = {[
               {
                 title: <i className="fas fa-calendar-day" />,
                 key: "date_created_by_author",
@@ -364,7 +265,108 @@ const Entries = ({
                   item.EntryFiles.length >= searchValue,
                 filterPlaceholder: "<="
               }
-            ]}
+            ]
+
+  const tabs = [
+    {
+      tabId: RouteMap.NEW_ENTRY,
+      mountTabOnlyWhenActive: true,
+      title: <i className="fas fa-feather-alt"></i>,
+      render: (
+        <Row>
+          <NewEntry />
+        </Row>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
+      tabId: RouteMap.CALENDAR,
+      mountTabOnlyWhenActive: true,
+      title: <i className="fas fa-calendar-alt"></i>,
+      render: (
+        <Row>
+          <ReactCalendar />
+        </Row>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
+      tabId: RouteMap.ENTRIES_CARDS,
+      mountTabOnlyWhenActive: true,
+      title: <i className="fas fa-columns"></i>,
+      render: (
+        <Row>
+          {shouldRenderNewEntryButton ? (
+            <NewEntryButton />
+          ) : (
+            <EntryCards entries={viewableEntries} />
+          )}
+        </Row>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
+      tabId: RouteMap.ENTRIES_DETAILED,
+      mountTabOnlyWhenActive: true,
+      title: <i className="fas fa-newspaper" />,
+      render: (
+        <Row>
+          {shouldRenderNewEntryButton ? (
+            <NewEntryButton />
+          ) : (
+            <EntriesDetailed
+              height={detailedEntriesListHeight}
+              entries={viewableEntries}
+              itemSize={listItemHeight}
+              onItemsRendered={handleItemsRendered}
+            />
+          )}
+        </Row>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
+      tabId: RouteMap.ENTRIES_MINIMAL,
+      mountTabOnlyWhenActive: true,
+      title: <i className="fas fa-th-list" />,
+      render: shouldRenderNewEntryButton ? (
+        <Row>
+          <NewEntryButton />
+        </Row>
+      ) : (
+        <Fragment>
+          <Row>
+            <EntriesMinimal
+              height={minimalEntriesListHeight}
+              entries={viewableEntries}
+              onItemsRendered={handleItemsRendered}
+            />
+          </Row>
+          <Row className="Center">
+            {nextEntryPage && (
+              <Col xs={12} tag={Button} color="accent" onClick={GetEntries}>
+                <i className="fas fa-cloud-download-alt" /> Load More
+              </Col>
+            )}
+          </Row>
+        </Fragment>
+      ),
+      onClickCallback: handleTabChange
+    },
+    {
+      tabId: RouteMap.ENTRIES_TABLE,
+      mountTabOnlyWhenActive: true,
+      title: <i className="fas fa-table" />,
+      render: shouldRenderNewEntryButton ? (
+        <Row>
+          <NewEntryButton />
+        </Row>
+      ) : (
+        <Row>
+          <BasicTable
+            sortable
+            defaultSortKey="date_updated"
+            columns={tableColumns}
             data={viewableEntries}
           />
         </Row>
