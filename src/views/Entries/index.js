@@ -14,10 +14,6 @@ import { RouteMap, RouterPush } from "../../routes"
 import Moment from "react-moment"
 import { BasicTabs, NewEntryButton } from "../../components"
 import NewEntry from "../NewEntry"
-<<<<<<< HEAD
-=======
-import { useHistory, useLocation } from "react-router-dom"
->>>>>>> master
 import { stripHtml } from "../../helpers"
 import memoizeProps from "../../helpers/memoizeProps"
 import {
