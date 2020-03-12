@@ -28,6 +28,7 @@
     min-height: calc(100vh - calc(var(--inputHeight) * 2) - 24px - var(--entryFoldersContainerMinHeight));
     max-height: calc(100vh - calc(var(--inputHeight) * 2) - 24px - var(--entryFoldersContainerMaxHeight));
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .EntryFolder {
