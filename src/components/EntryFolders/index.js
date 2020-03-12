@@ -38,8 +38,6 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
   const sortedTags = TopKFrequentStrings(filteredEntryTags, "title")
 
-  console.log(sortedTags)
-
   const renderFolderBreadCrumbs = () =>
     directoryPath.map((directory, i) => {
       const newDirectory = directoryPath.slice(0, i + 1).join("+")
