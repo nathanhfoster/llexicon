@@ -54,7 +54,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
         RouterPush(history, search.concat(`+${title}`))
 
       return (
-        <Col key={`${title}-${i}`} xs={4} md={3} lg={2} className="p-1">
+        <Col key={`${title}-${i}`} xs={4} md={3} lg={2} xl={1} className="p-1">
           <Button
             className="EntryFolder Center"
             onClick={handleOnClickCallback}
