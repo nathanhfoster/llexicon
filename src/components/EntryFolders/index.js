@@ -11,10 +11,11 @@ import {
 } from "reactstrap"
 import { NavLink } from "react-router-dom"
 import { RouterPush } from "../../routes"
-import { removeArrayDuplicates } from "../../helpers"
+import { TopKFrequentStrings } from "../../helpers"
 import "./styles.css"
 
 const EntryCards = lazy(() => import("../EntryCards"))
+const BasicDropDown = lazy(() => import("../BasicDropDown"))
 const BASE_FOLDER_DIRECTORY_URL = "folders?folder=All"
 
 const EntryFolders = ({ entries, history, location: { search } }) => {
@@ -30,12 +31,14 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
     )
   )
 
-  const filteredEntryTags = removeArrayDuplicates(
-    entryFilteredTags
-      .map(entry => entry.tags.map(t => t.title))
-      .flat(1)
-      .filter(title => !directoryTags.includes(title))
-  )
+  const filteredEntryTags = entryFilteredTags
+    .map(entry => entry.tags)
+    .flat(1)
+    .filter(tag => !directoryTags.includes(tag.title))
+
+  const sortedTags = TopKFrequentStrings(filteredEntryTags, "title")
+
+  console.log(sortedTags)
 
   const renderFolderBreadCrumbs = () =>
     directoryPath.map((directory, i) => {
@@ -49,7 +52,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
     })
 
   const renderFolders = () =>
-    filteredEntryTags.map((title, i) => {
+    sortedTags.map((title, i) => {
       const handleOnClickCallback = () =>
         RouterPush(history, search.concat(`+${title}`))
 
@@ -68,8 +71,17 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
   return (
     <Container fluid className="EntryFolders">
-      <Row tag={Breadcrumb} className="FolderBreadCrumbsContainer">
-        {renderFolderBreadCrumbs()}
+      <Row>
+        <Col
+          xs={10}
+          tag={Breadcrumb}
+          className="FolderBreadCrumbsContainer p-0"
+        >
+          {renderFolderBreadCrumbs()}
+        </Col>
+        <Col xs={2} className="p-0">
+          <BasicDropDown className="FolderBreadCrumbsContainer" />
+        </Col>
       </Row>
       <Row className="EntryFoldersContainer">{renderFolders()}</Row>
       <Row>

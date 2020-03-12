@@ -10,6 +10,12 @@
 
 .FolderBreadCrumbsContainer {
     height: var(--inputHeight);
+    overflow-y: auto;
+}
+
+.FolderBreadCrumbsContainer .breadcrumb{
+    height: var(--inputHeight);
+    overflow-y: auto;
 }
 
 .EntryFoldersContainer {

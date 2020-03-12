@@ -40,9 +40,13 @@ const BasicDropDown = ({
       isOpen={dropdownOpen}
       toggle={toggle}
       direction={direction}
-      className={`BasicDropDown ${className}`}
+      className={`BasicDropDown`}
     >
-      <DropdownToggle caret color="primary" className="BasicDropDownToggle">
+      <DropdownToggle
+        caret
+        color="primary"
+        className={`BasicDropDownToggle ${className}`}
+      >
         {value}
       </DropdownToggle>
       <DropdownMenu

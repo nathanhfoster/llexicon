@@ -148,8 +148,7 @@ const TopKFrequentStrings = (
   }
 
   const newArray = [...sortedMap(map).keys()].slice(0, k)
-  if (newArray.length == 1) return newArray[0]
-  else return newArray
+  return newArray
 }
 
 const getUrlImageBase64 = url =>
