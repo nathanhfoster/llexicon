@@ -39,9 +39,8 @@ const renderEntryCards = ([start, end], entries, history) =>
         xl={3}
         lg={4}
         md={4}
-        sm={6}
-        xs={12}
-        className="pt-3 pt-sm-4"
+        xs={6}
+        className="px-1 pt-2 px-sm-2 pt-sm-3"
       >
         <BasicCard
           title={<EntryCardTitle title={title} />}
