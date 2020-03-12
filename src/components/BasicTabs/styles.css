@@ -1,4 +1,6 @@
-.BasicTabs {}
+.BasicTabs {
+   overflow-x: hidden;
+}
 
 .BasicTabsNavLink {
     color: var(--secondaryColor) !important;
