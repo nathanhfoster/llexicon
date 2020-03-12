@@ -66,7 +66,7 @@ const BottomToolbar = ({
     <Fragment>
       {canToggleToolbars && (
         <div
-          className={`ToggleBottomToolbarButton ${
+          className={`ToggleBottomToolbarButton p-1 ${
             isOpen ? "BottomToolbarIsOpen" : "BottomToolbarIsClosed"
           }`}
         >
