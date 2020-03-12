@@ -80,7 +80,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
           {renderFolderBreadCrumbs()}
         </Col>
         <Col xs={2} className="p-0">
-          <BasicDropDown className="FolderBreadCrumbsContainer" />
+          <BasicDropDown className="FolderBasicDropDown" />
         </Col>
       </Row>
       <Row className="EntryFoldersContainer">{renderFolders()}</Row>

@@ -1,30 +1,32 @@
 :root {
-    --entryFoldersContainerHeight: calc(calc(var(--inputHeight) + 0.5rem) * 3);
+    --entryFoldersContainerMinHeight: calc(var(--inputHeight) + 0.5rem);
+    --entryFoldersContainerMaxHeight: calc(var(--entryFoldersContainerMinHeight) * 3);
     --bottomToolbarFilesHeight: 80px;
     --bootmToolBarTagsHeight: 24px;
 }
 
 .EntryFolders {
-    height: calc(100vh - var(--navBarHeight));
+    /* height: calc(100vh - var(--navBarHeight)); */
 }
 
-.FolderBreadCrumbsContainer {
+.FolderBreadCrumbsContainer .breadcrumb {
     height: var(--inputHeight);
     overflow-y: auto;
 }
 
-.FolderBreadCrumbsContainer .breadcrumb{
+.FolderBasicDropDown {
     height: var(--inputHeight);
-    overflow-y: auto;
 }
 
 .EntryFoldersContainer {
-    height: var(--entryFoldersContainerHeight);
+    min-height: var(--entryFoldersContainerMinHeight);
+    max-height: var(--entryFoldersContainerMaxHeight);
     overflow-y: auto;
 }
 
 .EntryFolderCards {
-    height: calc(100vh - calc(var(--inputHeight) * 2) - 24px  - var(--entryFoldersContainerHeight));
+    min-height: calc(100vh - calc(var(--inputHeight) * 2) - 24px - var(--entryFoldersContainerMinHeight));
+    max-height: calc(100vh - calc(var(--inputHeight) * 2) - 24px - var(--entryFoldersContainerMaxHeight));
     overflow-y: auto;
 }
 
