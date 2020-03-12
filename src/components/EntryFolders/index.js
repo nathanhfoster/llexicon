@@ -67,10 +67,8 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
       )
     })
 
-  const dropDownListSortList = [{ id: "Most Frequent" }]
-
   return (
-    <Container fluid className="EntryFolders">
+    <Container className="EntryFolders">
       <Row>
         <Col
           xs={12}
@@ -82,10 +80,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
       </Row>
       <Row className="EntryFoldersContainer">{renderFolders()}</Row>
       <Row>
-        <EntryCards
-          className="EntryFolderCards px-1"
-          entries={entryFilteredTags}
-        />
+        <EntryCards className="EntryFolderCards" entries={entryFilteredTags} />
       </Row>
     </Container>
   )
