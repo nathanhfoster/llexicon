@@ -4,7 +4,6 @@
 
 .EntryTabs .nav-link i {
     font-size: 24px;
-    height: calc(100vh - var(--navBarHeight));
 }
 
 .MinimalEntryListToggle {
