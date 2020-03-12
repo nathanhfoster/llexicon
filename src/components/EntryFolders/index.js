@@ -67,18 +67,17 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
       )
     })
 
+  const dropDownListSortList = [{ id: "Most Frequent" }]
+
   return (
     <Container fluid className="EntryFolders">
       <Row>
         <Col
-          xs={10}
+          xs={12}
           tag={Breadcrumb}
           className="FolderBreadCrumbsContainer p-0"
         >
           {renderFolderBreadCrumbs()}
-        </Col>
-        <Col xs={2} className="p-0">
-          <BasicDropDown className="FolderBasicDropDown" />
         </Col>
       </Row>
       <Row className="EntryFoldersContainer">{renderFolders()}</Row>
