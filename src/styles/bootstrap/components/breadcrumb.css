@@ -1,3 +1,4 @@
 .breadcrumb {
     background-color: var(--primaryColor);
+    margin-bottom: 0;
 }
