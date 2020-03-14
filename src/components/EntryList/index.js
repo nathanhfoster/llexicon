@@ -12,18 +12,14 @@ import TagsContainer from "../TagsContainer"
 import "./styles.css"
 
 const mapStateToProps = ({
-  Window: {
-    screen: { availHeight },
-    navBarHeight,
-    isMobile
-  }
+  Window: { innerHeight, navBarHeight, isMobile }
 }) => {
-  const calendarTileHeight = availHeight * 0.07 - 46 / 6
+  const calendarTileHeight = innerHeight * 0.07 - 46 / 6
   const calendarHeight = 64 + 24 + calendarTileHeight * 6
   return {
     listHeight: isMobile
-      ? availHeight - navBarHeight - calendarHeight - 64 + 10
-      : availHeight - navBarHeight
+      ? innerHeight - navBarHeight - calendarHeight - 64 + 10
+      : innerHeight - navBarHeight
   }
 }
 
