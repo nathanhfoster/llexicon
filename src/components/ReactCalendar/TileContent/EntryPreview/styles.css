@@ -29,6 +29,15 @@
     display: inline-block;
 }
 
+.eventTitle {
+    flex: 1;
+    font-weight: 500;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 2px), transparent calc(100% - 2px), transparent); */
+}
+
 .eventDate {
     font-size: 12px;
     font-weight: 300;
@@ -39,11 +48,3 @@
     text-align: right;
 }
 
-.eventTitle {
-    flex: 1;
-    font-weight: 500;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 2px), transparent calc(100% - 2px), transparent); */
-}

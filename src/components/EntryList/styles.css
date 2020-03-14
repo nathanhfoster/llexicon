@@ -1,9 +1,11 @@
 .listItem {
     background: rgba(0, 0, 0, 0.7);
-    padding: 6px;
-    height: 68px;
-    width: calc(100% + 10px);
+    width: calc(100% + 15px);
+    padding: 0 6px;
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .listItem:hover {

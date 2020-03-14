@@ -1,7 +1,7 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { ListGroup, ListGroupItem, Container, Row, Col } from "reactstrap"
+import { Row, Col } from "reactstrap"
 import { BasicList } from "../"
 import { withRouter } from "react-router-dom"
 import Moment from "react-moment"
@@ -51,9 +51,8 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
           return {
             id,
             value: (
-              <Row
+              <div
                 key={id}
-                tag={ListGroupItem}
                 onClick={() =>
                   RouterPush(
                     history,
@@ -62,37 +61,33 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
                 }
                 className="listItem"
               >
-                <Col xs={10} className="eventTitle">
+                <div className="eventTitle">
                   <Star size={8} color="White" animation={false} opacity={1} />
                   <span className="ml-1">{title || "No title"}</span>
-                </Col>
+                </div>
 
-                <Col className="eventDate p-0" xs={2}>
+                <div className="eventDate">
                   {showImageIcon && <i className="fas fa-image mr-1" />}
                   <Moment format="h:mma">{date_created_by_author}</Moment>
-                </Col>
+                </div>
 
-                <Col xs={12} className="pr-0">
-                  <TagsContainer tags={tags} />
-                </Col>
-              </Row>
+                <TagsContainer tags={tags} />
+              </div>
             )
           }
         }),
     [entriesWithinView, activeDate]
   )
 
-  const listStyles = { padding: "2px 0", color: "white" }
+  const listItemStyles = { padding: '2px 4px', color: "white" }
 
   return (
-    <Container fluid tag={ListGroup} className="List">
-      <BasicList
-        list={entries}
-        height={listHeight}
-        itemSize={72}
-        listItemStyles={listStyles}
-      />
-    </Container>
+    <BasicList
+      list={entries}
+      height={listHeight}
+      itemSize={72}
+      listItemStyles={listItemStyles}
+    />
   )
 }
 
