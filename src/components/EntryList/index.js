@@ -12,10 +12,20 @@ import TagsContainer from "../TagsContainer"
 import "./styles.css"
 
 const mapStateToProps = ({
-  Window: { innerHeight, navBarHeight, isMobile }
-}) => ({
-  listHeight: isMobile ? 330 : innerHeight - navBarHeight
-})
+  Window: {
+    screen: { availHeight },
+    navBarHeight,
+    isMobile
+  }
+}) => {
+  const calendarTileHeight = availHeight * 0.07 - 46 / 6
+  const calendarHeight = 64 + 24 + calendarTileHeight * 6
+  return {
+    listHeight: isMobile
+      ? availHeight - navBarHeight - calendarHeight - 64 + 10
+      : availHeight - navBarHeight
+  }
+}
 
 const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
   const entries = useMemo(

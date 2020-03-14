@@ -11,6 +11,7 @@ class BasicList extends PureComponent {
   }
 
   static propTypes = {
+    className: PropTypes.string,
     list: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.any.isRequired,
@@ -43,6 +44,7 @@ class BasicList extends PureComponent {
   }
 
   static defaultProps = {
+    className: "",
     maxHeight: 250,
     height: 250,
     width: "100%",
@@ -118,11 +120,19 @@ class BasicList extends PureComponent {
   }
 
   render() {
-    const { itemSize, listPosition, list, height, width, layout } = this.props
+    const {
+      className,
+      itemSize,
+      listPosition,
+      list,
+      height,
+      width,
+      layout
+    } = this.props
     return (
       <FixedSizeList
         ref={this.listRef}
-        className="basicListContainer fade-in"
+        className={`${className} basicListContainer fade-in`}
         style={{ position: listPosition, background: "transparent" }}
         height={height}
         width={width}

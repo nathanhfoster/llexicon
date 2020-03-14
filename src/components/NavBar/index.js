@@ -25,7 +25,7 @@ import Support from "../../views/Support"
 const {
   HOME,
   NEW_ENTRY,
-  CALENDAR,
+  ENTRIES_CALENDAR,
   ENTRIES_DETAILED,
   ENTRIES_MINIMAL,
   ENTRIES_TABLE,
@@ -83,7 +83,7 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
         },
         {
           dropdownItem: true,
-          route: CALENDAR,
+          route: ENTRIES_CALENDAR,
           title: "CALENDAR",
           icon: <i className="fas fa-calendar-alt NavBarImage" />
         },

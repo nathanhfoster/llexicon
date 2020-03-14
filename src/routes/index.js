@@ -7,7 +7,7 @@ const RouteMap = {
   SUPPORT: "/support",
   HOME: "/home",
   NEW_ENTRY: "/new-entry",
-  CALENDAR: "/calendar",
+  ENTRIES_CALENDAR: "/entries/calendar",
   ENTRY_DETAIL: "/entry/:entryId",
   ENTRIES: "/entries",
   ENTRIES_MINIMAL: "/entries/minimal",
@@ -84,9 +84,9 @@ const RouterGoBack = history => {
       state: { previousRoute }
     }
   } = history
-  const { CALENDAR } = RouteMap
+  const { ENTRIES_CALENDAR } = RouteMap
   if (previousRoute) return history.goBack()
-  else return RouterPush(history, CALENDAR)
+  else return RouterPush(history, ENTRIES_CALENDAR)
 }
 
 export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack }

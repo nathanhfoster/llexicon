@@ -285,7 +285,7 @@ const Entries = ({
       onClickCallback: handleTabChange
     },
     {
-      tabId: RouteMap.CALENDAR,
+      tabId: RouteMap.ENTRIES_CALENDAR,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-calendar-alt"></i>,
       render: (
@@ -431,7 +431,7 @@ const Entries = ({
     <BasicTabs
       className="EntryTabs"
       fluid={
-        activeTab === RouteMap.CALENDAR ||
+        activeTab === RouteMap.ENTRIES_CALENDAR ||
         activeTab === RouteMap.ENTRIES_TABLE ||
         activeTab === RouteMap.ENTRIES_MAP
       }
