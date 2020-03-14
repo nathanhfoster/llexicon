@@ -3,7 +3,7 @@
     --calendarTileHeight: calc((7vh - calc(var(--inputHeight) / 6)));
   }
   .EventList {
-    min-height: calc(var(--calendarTileHeight) * 6 + 86px);
+    min-height: calc(var(--calendarTileHeight) * 6 + 40px);
   }
   .react-calendar__month-view .react-calendar__tile abbr {
     flex-grow: 1;
