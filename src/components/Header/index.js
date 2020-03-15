@@ -26,7 +26,7 @@ Header.propTypes = {
 Header.defaultProps = {
   children: <h1>Header</h1>,
   className: "Header Center",
-  fill: false,
+  fill: "",
   color: "var(--secondaryColor)",
   fontSize: "2em"
 }
