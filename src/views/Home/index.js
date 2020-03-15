@@ -15,10 +15,15 @@ import "./styles.css"
 const HomeButtons = lazy(() => import("../../components/EntryNavButtons"))
 const Footer = lazy(() => import("../../components/Footer"))
 
-const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({ entries: items, userToken: token })
+const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
+  entries: items,
+  userToken: token
+})
 
 const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
-  const handleLearnMoreClick = () => RouterPush(history, RouteMap.ABOUT)
+  const handleOnClick = () =>
+    RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS"])
+
   return (
     <Container tag="article" className="Home Container">
       <Row className="mb-3">
@@ -26,12 +31,12 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
           <BasicCard
             header={<LogoImage height={256} width={256} />}
             title={<Header>Astral Tree</Header>}
-            text={!userToken && 
-               <Button
-                color="info"
-                onClick={handleLearnMoreClick}
-                >
-              Learn More
+            text={
+              <Button
+                color={!userToken ? "info" : "success"}
+                onClick={handleOnClick}
+              >
+                {!userToken ? "Learn More" : "Settings"}
               </Button>
             }
             button={<HomeButtons />}
