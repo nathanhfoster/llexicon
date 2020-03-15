@@ -1,5 +1,6 @@
 import React, { lazy, useMemo } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
 import {
   AddToHomeScreen,
@@ -8,15 +9,16 @@ import {
   Header
 } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
-import { connect as reduxConnect } from "react-redux"
+import { RouterPush, RouteMap } from "../../routes"
 import "./styles.css"
 
 const HomeButtons = lazy(() => import("../../components/EntryNavButtons"))
 const Footer = lazy(() => import("../../components/Footer"))
 
-const mapStateToProps = ({ Entries: { items } }) => ({ entries: items })
+const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({ entries: items, userToken: token })
 
-const Home = ({ entries, prompt, promptToInstall }) => {
+const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
+  const handleLearnMoreClick = () => RouterPush(history, RouteMap.ABOUT)
   return (
     <Container tag="article" className="Home Container">
       <Row className="mb-3">
@@ -24,11 +26,12 @@ const Home = ({ entries, prompt, promptToInstall }) => {
           <BasicCard
             header={<LogoImage height={256} width={256} />}
             title={<Header>Astral Tree</Header>}
-            text={
-              <AddToHomeScreen
-                prompt={prompt}
-                promptToInstall={promptToInstall}
-              />
+            text={userToken && 
+               <Button
+                onClick={handleLearnMoreClick}
+                >
+              Learn More
+              </Button>
             }
             button={<HomeButtons />}
           />
