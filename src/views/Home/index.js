@@ -28,7 +28,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
             title={<Header>Astral Tree</Header>}
             text={!userToken && 
                <Button
-                color="success"
+                color="info"
                 onClick={handleLearnMoreClick}
                 >
               Learn More
