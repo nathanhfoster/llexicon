@@ -57,7 +57,7 @@ NavItemLink.propTypes = {
   render: PropTypes.object
 }
 
-const isEqual = (prevProps, nextProps) => prevProps.title === nextProps.title
+const isEqual = (prevProps, nextProps) => prevProps.render === nextProps.render
 
 NavItemLink.defaultProps = { dropdownItem: false }
 
