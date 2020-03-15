@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { NavItem, NavLink, DropdownItem } from "reactstrap"
 import { NavLink as RouterNavLink, withRouter } from "react-router-dom"
 import { RouterLinkPush } from "../../../routes"
+import memoizeProps from "../../../helpers/memoizeProps"
 import "./styles.css"
 
 const NavItemLink = ({
@@ -37,7 +38,7 @@ const NavItemLink = ({
           </NavLink>
         </NavItem>
       ),
-    [render]
+    [title, render]
   )
 
   return dropdownItem ? (
@@ -57,8 +58,7 @@ NavItemLink.propTypes = {
   render: PropTypes.object
 }
 
-const isEqual = (prevProps, nextProps) => prevProps.render === nextProps.render
-
+const isEqual = (prevProps, nextProps) => memoizeProps(prevProps, nextProps, ['title','render'])
 NavItemLink.defaultProps = { dropdownItem: false }
 
 export default withRouter(memo(NavItemLink, isEqual))
