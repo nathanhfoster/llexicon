@@ -161,7 +161,7 @@ ReactDatePicker.propTypes = {
 }
 
 ReactDatePicker.defaultProps = {
-  calendarClassName: "DatePicker",
+  wrapperClassName: "DatePicker",
   todayButton: (
     <i className="fas fa-calendar-day NavBaDatePickerTodayButton"> Today</i>
   ),

@@ -1,16 +1,13 @@
 .DatePicker {
   /* background-color: red; */
-
 }
 
 .react-datepicker-wrapper {}
 
-.react-datepicker__input-container {
+.react-datepicker__input-container {}
 
-}
-
-.react-datepicker__input-container input {
-  min-width: 90px;
+.DatePicker input {
+  max-width: 100px;
   outline: 0;
   padding-left: 8px;
 }
@@ -28,7 +25,6 @@
   color: var(--tertiaryColor);
   cursor: pointer;
 }
-
 
 .react-datepicker__time-container--with-today-button {
   right: 0;
