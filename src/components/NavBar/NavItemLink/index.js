@@ -37,7 +37,7 @@ const NavItemLink = ({
           </NavLink>
         </NavItem>
       ),
-    [title]
+    [render]
   )
 
   return dropdownItem ? (
