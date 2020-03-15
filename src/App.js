@@ -13,7 +13,7 @@ import {
   GetUserEntryTags
 } from "./redux/Entries/actions"
 import { RouteMap } from "./routes"
-import { Home, Entries } from "./views"
+import { About, Home, Entries } from "./views"
 import { NavBar, PrivacyPolicy } from "./components"
 import { RouterLinkPush } from "./routes"
 import memoizeProps from "./helpers/memoizeProps"
@@ -28,6 +28,7 @@ const PageNotFound = lazy(() => import("./views/PageNotFound"))
 const FIFTEEN_MINUTES = 1000 * 60 * 15
 
 const {
+  ABOUT,
   HOME,
   ROOT,
   NEW_ENTRY,
@@ -112,14 +113,18 @@ const App = ({
 
   const routeItems = [
     {
-      path: [ROOT, HOME],
-      Render: Home,
+      path: [ABOUT],
+      Render: About,
       renderProps: { prompt, promptToInstall },
       useRouteProps: true
     },
     {
+      path: [ROOT, HOME],
+      Render: Home
+    },
+    {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
-      component: renderRedirectOrComponent(User.token, NEW_ENTRY, Account)
+      component: renderRedirectOrComponent(User.token, HOME, Account)
     },
     {
       path: [

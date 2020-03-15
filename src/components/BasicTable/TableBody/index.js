@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { ColumnsPropType, DataPropType } from "../props"
+import { ColumnsPropType, DataPropType } from "../propTypes"
 import "./styles.css"
 
 const renderTableRows = (columns, data, onRowClick) =>

@@ -16,7 +16,7 @@ const ColumnsPropType = PropTypes.arrayOf(
     sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["string"])]),
     filter: PropTypes.oneOfType([
       PropTypes.func,
-      PropTypes.oneOf(["string", "number"])
+      PropTypes.oneOf(["string", "number", "date"])
     ]),
     filterPlaceholder: PropTypes.string,
     onRowClick: PropTypes.func

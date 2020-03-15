@@ -15,6 +15,8 @@ import Divider from "./Divider"
 import Editor from "./Editor"
 import EntriesDetailed from "./EntriesDetailed"
 import EntriesMinimal from "./EntriesMinimal"
+import EntryNavButtons from "./EntryNavButtons"
+import EntriesTable from "./EntriesTable"
 import Entry from "./Entry"
 import EntryCards from "./EntryCards"
 import EntryFilesCarousel from "./EntryFilesCarousel"
@@ -63,6 +65,8 @@ export {
   Editor,
   EntriesDetailed,
   EntriesMinimal,
+  EntryNavButtons,
+  EntriesTable,
   Entry,
   EntryCards,
   EntryFilesCarousel,

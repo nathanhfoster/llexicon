@@ -1,3 +1,4 @@
+import About from "./About"
 import Account from "./Account"
 import Entries from "./Entries"
 import EntryDetail from "./EntryDetail"
@@ -8,6 +9,7 @@ import Settings from "./Settings"
 import Support from "./Support"
 
 export {
+  About,
   Account,
   Entries,
   EntryDetail,

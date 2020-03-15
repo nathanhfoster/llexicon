@@ -6,7 +6,7 @@ import TableBody from "./TableBody"
 import TableFooter from "./TableFooter"
 import TablePaginator from "./TablePaginator"
 import { tableSort, tableFilter } from "./functions"
-import { ColumnsPropType, DataPropType } from "./props"
+import { ColumnsPropType, DataPropType } from "./propTypes"
 import "./styles.css"
 
 const getInitialState = (columns, { defaultSortKey, pageSize, pageSizes }) => {

@@ -18,7 +18,7 @@ const Header = ({ children, className, fill, color, ...restOfProps }) => {
 Header.propTypes = {
   children: PropTypes.any,
   className: PropTypes.string.isRequired,
-  fill: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  fill: PropTypes.string,
   color: PropTypes.string.isRequired,
   fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 }
@@ -28,7 +28,7 @@ Header.defaultProps = {
   className: "Header Center",
   fill: false,
   color: "var(--secondaryColor)",
-  fontSize: "3em"
+  fontSize: "2em"
 }
 
 export default memo(Header)

@@ -23,6 +23,7 @@ import { Logo } from "../../images/AWS"
 import Support from "../../views/Support"
 
 const {
+  ABOUT,
   HOME,
   NEW_ENTRY,
   ENTRIES_CALENDAR,
@@ -39,6 +40,51 @@ const {
   SUPPORT,
   PRIVACY_POLICY
 } = RouteMap
+
+export const ENTRY_LINKS = [
+  {
+    dropdownItem: true,
+    route: NEW_ENTRY,
+    title: "NEW ENTRY",
+    icon: <i className="fas fa-feather-alt NavBarImage" />
+  },
+  {
+    dropdownItem: true,
+    route: ENTRIES_CALENDAR,
+    title: "CALENDAR",
+    icon: <i className="fas fa-calendar-alt NavBarImage" />
+  },
+  {
+    dropdownItem: true,
+    route: ENTRIES_FOLDERS,
+    title: "FOLDERS",
+    icon: <i className="fas fa-folder NavBarImage" />
+  },
+  {
+    dropdownItem: true,
+    route: ENTRIES_DETAILED,
+    title: "DETAILED",
+    icon: <i className="fas fa-newspaper NavBarImage" />
+  },
+  {
+    dropdownItem: true,
+    route: ENTRIES_MINIMAL,
+    title: "MINIMAL",
+    icon: <i className="fas fa-th-list NavBarImage" />
+  },
+  {
+    dropdownItem: true,
+    route: ENTRIES_TABLE,
+    title: "TABLE",
+    icon: <i className="fas fa-table NavBarImage" />
+  },
+  {
+    dropdownItem: true,
+    route: ENTRIES_MAP,
+    title: "MAP",
+    icon: <i className="fas fa-map-marked-alt NavBarImage" />
+  }
+]
 
 const mapStateToProps = ({
   User: { id },
@@ -74,50 +120,7 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           ENTRIES
         </span>
       ),
-      links: [
-        {
-          dropdownItem: true,
-          route: NEW_ENTRY,
-          title: "NEW ENTRY",
-          icon: <i className="fas fa-feather-alt NavBarImage" />
-        },
-        {
-          dropdownItem: true,
-          route: ENTRIES_CALENDAR,
-          title: "CALENDAR",
-          icon: <i className="fas fa-calendar-alt NavBarImage" />
-        },
-        {
-          dropdownItem: true,
-          route: ENTRIES_FOLDERS,
-          title: "FOLDERS",
-          icon: <i className="fas fa-folder NavBarImage" />
-        },
-        {
-          dropdownItem: true,
-          route: ENTRIES_DETAILED,
-          title: "DETAILED",
-          icon: <i className="fas fa-newspaper NavBarImage" />
-        },
-        {
-          dropdownItem: true,
-          route: ENTRIES_MINIMAL,
-          title: "MINIMAL",
-          icon: <i className="fas fa-th-list NavBarImage" />
-        },
-        {
-          dropdownItem: true,
-          route: ENTRIES_TABLE,
-          title: "TABLE",
-          icon: <i className="fas fa-table NavBarImage" />
-        },
-        {
-          dropdownItem: true,
-          route: ENTRIES_MAP,
-          title: "MAP",
-          icon: <i className="fas fa-map-marked-alt NavBarImage" />
-        }
-      ]
+      links: ENTRY_LINKS
     },
     {
       route: LOGIN,
@@ -174,6 +177,12 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           route: PRIVACY_POLICY,
           title: "PRIVACY POLICY",
           icon: <i className="fas fa-user-secret NavBarImage" />
+        },
+        {
+          dropdownItem: true,
+          route: ABOUT,
+          title: "ABOUT",
+          icon: <i className="fas fa-info-circle NavBarImage" />
         }
       ]
     }

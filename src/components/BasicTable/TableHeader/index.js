@@ -2,7 +2,7 @@ import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import { capitalizeFirstLetter } from "../../../helpers"
-import { ColumnsPropType } from "../props"
+import { ColumnsPropType } from "../propTypes"
 import "./styles.css"
 
 const TableHeader = ({
