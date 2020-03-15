@@ -11,7 +11,7 @@ const Footer = lazy(() => import("../../components/Footer"))
 
 const mapStateToProps = ({ Entries: { items } }) => ({ entries: items })
 
-const Home = ({ entries }) => {
+const Home = ({ entries, prompt, promptToInstall }) => {
   return (
     <Container tag="article" className="Home Container">
       <Row className="mb-3">
@@ -19,6 +19,7 @@ const Home = ({ entries }) => {
           <BasicCard
             header={<LogoImage height={256} width={256} />}
             title={<Header>Astral Tree</Header>}
+            text={<AddToHomeScreen prompt={prompt} promptToInstall={promptToInstall} />}
             button={<HomeButtons />}
           />
         </Col>
