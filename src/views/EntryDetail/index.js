@@ -25,6 +25,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = { GetUserEntryDetails, SyncEntries }
 
 const EntryDetail = ({
+  UserId,
   items,
   filteredItems,
   entryContainerHeight,
@@ -37,6 +38,8 @@ const EntryDetail = ({
     [entryId, items, filteredItems]
   )
 
+  const readOnly = UserId !== entry.author
+
   useEffect(() => {
     SyncEntries(
       () => new Promise(resolve => resolve(GetUserEntryDetails(entryId)))
@@ -48,6 +51,7 @@ const EntryDetail = ({
       <Row>
         <Col xs={12} className="EntryDetail p-0">
           <Entry
+            readOnly={readOnly}
             entry={entry}
             // containerHeight={entryContainerHeight}
             shouldRedirectOnDelete

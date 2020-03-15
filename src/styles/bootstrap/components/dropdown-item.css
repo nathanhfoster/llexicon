@@ -1,3 +1,11 @@
+.dropdown-item {
+  color: var(--secondaryColor);
+}
+
+.dropdown-item:hover {
+  color: var(--accentColor);
+}
+
 .dropdown-item.active, .dropdown-item:active {
   background-color: inherit !important;
 }

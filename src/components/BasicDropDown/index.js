@@ -19,7 +19,7 @@ const BasicDropDown = ({
 
   const toggle = () => setDropdownOpen(prevState => !prevState)
 
-  const renderList = list =>
+  const renderList = () =>
     list.map(l => {
       const { id, value, header, disabled, divider } = l
       return (
@@ -66,7 +66,7 @@ const BasicDropDown = ({
           }
         }}
       >
-        {renderList(list)}
+        {renderList()}
       </DropdownMenu>
     </Dropdown>
   )

@@ -18,6 +18,7 @@ const renderButtonColumns = columns =>
   })
 
 const BottomToolbar = ({
+  readOnly,
   entry,
   editorRef,
   isOpen,
@@ -101,6 +102,7 @@ const BottomToolbar = ({
 }
 
 BottomToolbar.propTypes = {
+  readOnly: PropTypes.bool,
   editorRef: PropTypes.object,
   entry: PropTypes.object.isRequired,
   isOpen: PropTypes.bool.isRequired,

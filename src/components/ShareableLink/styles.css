@@ -1,0 +1,9 @@
+.ShareableLink button:first-child {
+    background-color: var(--quinaryColor);
+    border: 0;
+    box-shadow: var(--primaryBoxShadow) !important;
+}
+
+.ShareableLink button:hover {
+    background-color: var(--accentColor);
+}

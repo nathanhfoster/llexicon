@@ -203,15 +203,23 @@ class Editor extends PureComponent {
   constructor(props) {
     super(props)
 
-    const { toolbarId, theme, topToolbarIsOpen, bottomToolbarIsOpen } = props
+    const {
+      toolbarId,
+      theme,
+      topToolbarIsOpen,
+      bottomToolbarIsOpen,
+      canToggleToolbars,
+      readOnly
+    } = props
 
     this.editorRef = createRef()
 
     this.state = {
       quillId: toolbarId.toString(),
       theme,
-      topToolbarIsOpen,
-      bottomToolbarIsOpen
+      topToolbarIsOpen: !readOnly && topToolbarIsOpen,
+      bottomToolbarIsOpen: !readOnly && bottomToolbarIsOpen,
+      canToggleToolbars: !readOnly && canToggleToolbars
     }
   }
 
@@ -310,8 +318,7 @@ class Editor extends PureComponent {
       height,
       width,
       placeholder,
-      readOnly,
-      canToggleToolbars
+      readOnly
     } = this.props
     const {
       toolbarId,
@@ -322,7 +329,8 @@ class Editor extends PureComponent {
       editorHeight,
       bottomToolbarIsOpen,
       formats,
-      modules
+      modules,
+      canToggleToolbars
     } = this.state
 
     return (

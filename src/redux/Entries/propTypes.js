@@ -26,6 +26,7 @@ const EntryFilesProps = PropTypes.arrayOf(EntryFileProps)
 const EntryRatingProps = PropTypes.oneOf([0, 1, 2, 3, 4, 5])
 
 const EntryPropTypes = PropTypes.shape({
+  author: PropTypes.number,
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps,
   EntryFiles: EntryFilesProps,
@@ -39,7 +40,7 @@ const EntryPropTypes = PropTypes.shape({
   address: PropTypes.string,
   latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  author: PropTypes.number
+  is_public: PropTypes.bool
 })
 
 const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)

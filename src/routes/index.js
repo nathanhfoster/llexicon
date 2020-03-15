@@ -39,7 +39,7 @@ const getHistoryState = (state, pathname, route) => {
 }
 
 const ValidateHistroy = history => {
-  if (!history || !history.location) {
+  if (!history || !history.location || !history.location.state) {
     return false
   }
   return true

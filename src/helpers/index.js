@@ -408,7 +408,7 @@ const copyStringToClipboard = str => {
 
 const cleanObject = obj => {
   for (const key in obj) {
-    if (!obj[key]) {
+    if (obj[key] === null || obj[key] === undefined) {
       delete obj[key]
     }
   }

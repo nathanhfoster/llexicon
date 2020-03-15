@@ -307,7 +307,8 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       _lastUpdated,
       address,
       latitude,
-      longitude
+      longitude,
+      is_public
     } = entries[i]
 
     if (_shouldDelete) {
@@ -324,7 +325,8 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         date_created_by_author,
         address,
         latitude,
-        longitude
+        longitude,
+        is_public
       }
 
       dispatch(PostEntry(postPayload)).then(entry => {
@@ -340,7 +342,8 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
           views,
           address,
           latitude,
-          longitude
+          longitude,
+          is_public
         } = entry
 
         const updateEntryPayload = { html, tags: JSON.stringify(tags) }
@@ -357,7 +360,8 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         rating,
         address,
         latitude,
-        longitude
+        longitude,
+        is_public
       }
       dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
     }
