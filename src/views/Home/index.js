@@ -26,8 +26,9 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
           <BasicCard
             header={<LogoImage height={256} width={256} />}
             title={<Header>Astral Tree</Header>}
-            text={userToken && 
+            text={!userToken && 
                <Button
+                color="success"
                 onClick={handleLearnMoreClick}
                 >
               Learn More
