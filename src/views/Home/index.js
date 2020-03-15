@@ -22,7 +22,7 @@ const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
 
 const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
   const handleOnClick = () =>
-    RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS"])
+    RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS_ENTRIES"])
 
   return (
     <Container tag="article" className="Home Container">
