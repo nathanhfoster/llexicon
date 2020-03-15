@@ -46,7 +46,6 @@ const ValidateHistroy = history => {
 }
 
 const RouterPush = (history, route) => {
-  console.log(history)
   if (!ValidateHistroy(history)) return {}
   let {
     location: { pathname, search, state }
