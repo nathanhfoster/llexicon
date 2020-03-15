@@ -38,7 +38,7 @@ const EntryDetail = ({
     [entryId, items, filteredItems]
   )
 
-  const readOnly = UserId !== entry.author
+  const readOnly = entry && UserId !== entry.author
 
   useEffect(() => {
     SyncEntries(

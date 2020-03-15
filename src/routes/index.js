@@ -39,13 +39,14 @@ const getHistoryState = (state, pathname, route) => {
 }
 
 const ValidateHistroy = history => {
-  if (!history || !history.location || !history.location.state) {
+  if (!history || !history.location) {
     return false
   }
   return true
 }
 
 const RouterPush = (history, route) => {
+  console.log(history)
   if (!ValidateHistroy(history)) return {}
   let {
     location: { pathname, search, state }

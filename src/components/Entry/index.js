@@ -112,34 +112,37 @@ const Entry = ({
               />
             </InputGroupText>
           </InputGroupAddon>
-          <InputGroupAddon addonType="append">
-            <InputGroupText
-              className="p-0"
-              tag={ShareableLink}
-              getUrlCallback={handleGetUrl}
-              onClickCallback={handleShare}
-              is_public={entry.is_public}
-            />
-          </InputGroupAddon>
           {!readOnly && (
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                className="p-0"
-                style={{ background: "var(--quinaryColor)" }}
-              >
-                <ConfirmAction
-                  buttonClassName="EntryInputDelete"
-                  onClickCallback={handleDelete}
-                  icon={
-                    <i
-                      className="fas fa-trash"
-                      style={{ color: "var(--danger)", fontSize: "1.5em" }}
-                    />
-                  }
-                  title={"Delete Entry"}
+            <Fragment>
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  className="p-0"
+                  tag={ShareableLink}
+                  getUrlCallback={handleGetUrl}
+                  onClickCallback={handleShare}
+                  is_public={entry.is_public}
                 />
-              </InputGroupText>
-            </InputGroupAddon>
+              </InputGroupAddon>
+
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  className="p-0"
+                  style={{ background: "var(--quinaryColor)" }}
+                >
+                  <ConfirmAction
+                    buttonClassName="EntryInputDelete"
+                    onClickCallback={handleDelete}
+                    icon={
+                      <i
+                        className="fas fa-trash"
+                        style={{ color: "var(--danger)", fontSize: "1.5em" }}
+                      />
+                    }
+                    title={"Delete Entry"}
+                  />
+                </InputGroupText>
+              </InputGroupAddon>
+            </Fragment>
           )}
         </InputGroup>
       </Editor>
