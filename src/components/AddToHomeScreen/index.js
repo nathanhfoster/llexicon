@@ -35,16 +35,14 @@ const AddToHomeScreenModal = ({
   const icon = getBrowserIcon(isOnMobileBrowser, userAgent)
 
   return (
-    !isInStandalone && (
       <Button
         style={styles}
         color="success"
         onClick={promptToInstall}
-        disabled={isDisabled}
+        disabled={isInStandalone || isDisabled}
       >
         {icon} Install
       </Button>
-    )
   )
 }
 
