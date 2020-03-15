@@ -1,7 +1,12 @@
 import React, { lazy, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
-import { AddToHomeScreen, BasicCard, EntriesTable, Header } from "../../components"
+import {
+  AddToHomeScreen,
+  BasicCard,
+  EntriesTable,
+  Header
+} from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
 import "./styles.css"
@@ -19,7 +24,12 @@ const Home = ({ entries, prompt, promptToInstall }) => {
           <BasicCard
             header={<LogoImage height={256} width={256} />}
             title={<Header>Astral Tree</Header>}
-            text={<AddToHomeScreen prompt={prompt} promptToInstall={promptToInstall} />}
+            text={
+              <AddToHomeScreen
+                prompt={prompt}
+                promptToInstall={promptToInstall}
+              />
+            }
             button={<HomeButtons />}
           />
         </Col>

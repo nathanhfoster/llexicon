@@ -12,9 +12,10 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  NavItem
 } from "reactstrap"
-import StarSearch from "../StarSearch"
+import { AddToHomeScreen, StarSearch } from "../"
 import { GetUserEntriesByDate } from "../../redux/Entries/actions"
 import { UserLogout } from "../../redux/User/actions"
 import Hamburger from "./Hamburger"
@@ -86,13 +87,9 @@ export const ENTRY_LINKS = [
   }
 ]
 
-const mapStateToProps = ({
-  User: { id },
-  Window: { isMobile, isInStandalone }
-}) => ({
+const mapStateToProps = ({ User: { id }, Window: { isMobile } }) => ({
   UserId: id,
-  isMobile,
-  isInStandalone
+  isMobile
 })
 
 const mapDispatchToProps = {
@@ -100,7 +97,7 @@ const mapDispatchToProps = {
   GetUserEntriesByDate
 }
 
-const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
+const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
   const [collapsed, setCollapse] = useState(true)
 
   const navLinks = [
@@ -183,6 +180,20 @@ const NavBar = ({ UserId, isInStandalone, isMobile, UserLogout }) => {
           route: ABOUT,
           title: "ABOUT",
           icon: <i className="fas fa-info-circle NavBarImage" />
+        },
+        {
+          render: (
+            <NavItem
+              key="AddToHomeScreen"
+              className="Center px-2 m-0"
+            >
+              <AddToHomeScreen
+                width="100%"
+                prompt={prompt}
+                promptToInstall={promptToInstall}
+              />
+            </NavItem>
+          )
         }
       ]
     }

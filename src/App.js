@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
-import { Fade } from "reactstrap"
 import { SetWindow, CheckAppVersion } from "./redux/App/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/Calendar"
@@ -81,7 +80,7 @@ const App = ({
   navBarHeight
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const addToHomeScreenProps = { prompt, prompToInstall }
+  const addToHomeScreenProps = { prompt, promptToInstall }
   useEffect(() => {
     const activeDate = new Date()
 
@@ -187,7 +186,7 @@ const App = ({
 
   return (
     <Fragment>
-      <NavBar { ...addToHomeScreenProps } />
+      <NavBar {...addToHomeScreenProps} />
       <div className="App RouteOverlay">
         <Switch>
           {renderRouteItems}
