@@ -121,7 +121,8 @@ const App = ({
     {
       path: [ROOT, HOME],
       Render: Home,
-      renderProps: addToHomeScreenProps
+      renderProps: addToHomeScreenProps,
+      useRouteProps: true
     },
     {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
