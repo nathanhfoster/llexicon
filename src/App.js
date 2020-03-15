@@ -81,6 +81,7 @@ const App = ({
   navBarHeight
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
+  const addToHomeScreenProps = { prompt, prompToInstall }
   useEffect(() => {
     const activeDate = new Date()
 
@@ -115,12 +116,13 @@ const App = ({
     {
       path: [ABOUT],
       Render: About,
-      renderProps: { prompt, promptToInstall },
+      renderProps: addToHomeScreenProps,
       useRouteProps: true
     },
     {
       path: [ROOT, HOME],
-      Render: Home
+      Render: Home,
+      renderProps: addToHomeScreenProps
     },
     {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
@@ -185,7 +187,7 @@ const App = ({
 
   return (
     <Fragment>
-      <NavBar />
+      <NavBar { ...addToHomeScreenProps } />
       <div className="App RouteOverlay">
         <Switch>
           {renderRouteItems}
