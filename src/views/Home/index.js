@@ -1,7 +1,7 @@
 import React, { lazy, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
-import { BasicCard, EntriesTable, Header } from "../../components"
+import { AddToHomeScreen, BasicCard, EntriesTable, Header } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
 import "./styles.css"
