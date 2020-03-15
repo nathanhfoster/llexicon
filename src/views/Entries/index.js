@@ -92,17 +92,12 @@ const Entries = ({
 
   const tabContainerHeight = 54
 
-  const loadButtonContainerHeight = 38
+  const minimalEntriesListHeight = viewPortHeight - tabContainerHeight
 
-  const minimalEntriesListHeight =
-    viewPortHeight - tabContainerHeight - loadButtonContainerHeight
+  let listItemHeight = minimalEntriesListHeight / 2
 
-  const detailedEntriesListHeight = viewPortHeight - tabContainerHeight
-
-  let listItemHeight = detailedEntriesListHeight / 2
-
-  if (detailedEntriesListHeight / 3 > listItemHeight)
-    listItemHeight = detailedEntriesListHeight / 3
+  if (minimalEntriesListHeight / 3 > listItemHeight)
+    listItemHeight = minimalEntriesListHeight / 3
 
   const activeTab = pathname
 
@@ -198,7 +193,7 @@ const Entries = ({
             <NewEntryButton />
           ) : (
             <EntriesDetailed
-              height={detailedEntriesListHeight}
+              height={minimalEntriesListHeight}
               entries={viewableEntries}
               itemSize={listItemHeight}
               onItemsRendered={handleItemsRendered}
@@ -217,7 +212,6 @@ const Entries = ({
           <NewEntryButton />
         </Row>
       ) : (
-        <Fragment>
           <Row>
             <EntriesMinimal
               height={minimalEntriesListHeight}
@@ -225,14 +219,6 @@ const Entries = ({
               onItemsRendered={handleItemsRendered}
             />
           </Row>
-          <Row className="Center">
-            {nextEntryPage && (
-              <Col xs={12} tag={Button} color="accent" onClick={GetEntries}>
-                <i className="fas fa-cloud-download-alt" /> Load More
-              </Col>
-            )}
-          </Row>
-        </Fragment>
       ),
       onClickCallback: handleTabChange
     },
