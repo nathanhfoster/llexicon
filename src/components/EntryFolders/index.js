@@ -15,7 +15,6 @@ import { TopKFrequentStrings } from "../../helpers"
 import "./styles.css"
 
 const EntryCards = lazy(() => import("../EntryCards"))
-const BasicDropDown = lazy(() => import("../BasicDropDown"))
 const BASE_FOLDER_DIRECTORY_URL = "folders?folder=All"
 
 const EntryFolders = ({ entries, history, location: { search } }) => {

@@ -11,17 +11,12 @@ import { BasicModal } from "../"
 import { copyStringToClipboard } from "../../helpers"
 import { RouteMap, RouterGoBack } from "../../routes"
 import { useDispatch } from "react-redux"
-import { SyncEntries } from "../../redux/Entries/actions"
+import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
 import "./styles.css"
-
-const getInitialState = ({}) => {
-  return { dropdownOpen: false, urlCOpied: false, showModal: false }
-}
 
 const EntryOptionsMenu = ({
   entryId,
   is_public,
-  onChangeCallback,
   history,
   shouldRedirectOnDelete
 }) => {
@@ -36,11 +31,14 @@ const EntryOptionsMenu = ({
   const { ENTRY_DETAIL } = RouteMap
   const url = `${origin}${ENTRY_DETAIL.replace(":entryId", entryId)}`
 
+  const handleEditorChange = ({ ...payload }) =>
+    dispatch(UpdateReduxEntry({ id: entryId, ...payload }))
+
   const handleDelete = () => {
     shouldRedirectOnDelete && RouterGoBack(history)
     setTimeout(async () => {
       await dispatch(
-        onChangeCallback({
+        handleEditorChange({
           id: entryId,
           _shouldDelete: true
         })
@@ -67,7 +65,7 @@ const EntryOptionsMenu = ({
           onClick={() => {
             copyStringToClipboard(url)
             setUrlCopied(true)
-            if (!is_public) onChangeCallback({ is_public: true })
+            if (!is_public) handleEditorChange({ is_public: true })
           }}
         >
           <i className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`} />
@@ -76,7 +74,7 @@ const EntryOptionsMenu = ({
         <DropdownItem
           onClick={() => {
             setUrlCopied(false)
-            onChangeCallback({ is_public: !is_public })
+            handleEditorChange({ is_public: !is_public })
           }}
         >
           <i className={`fas fa-lock${is_public ? "-open" : ""} mr-1`} />
@@ -112,8 +110,10 @@ const EntryOptionsMenu = ({
 }
 
 EntryOptionsMenu.propTypes = {
-  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  is_public: PropTypes.bool
+  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  is_public: PropTypes.bool.isRequired,
+  history: PropTypes.object,
+  shouldRedirectOnDelete: PropTypes.bool
 }
 
 EntryOptionsMenu.defaultProps = { getUrlCallback: () => "URL" }

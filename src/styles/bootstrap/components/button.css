@@ -3,7 +3,7 @@
 }
 
 .btn:active {
-  background-color: var(--quaternaryColor) !important;
+  background-color: var(--quaternaryColor);
 }
 
 .btn-outline-accent {

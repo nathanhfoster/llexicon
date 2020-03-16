@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useState, lazy, useMemo, memo } from "react"
 import { Container, Row, Col } from "reactstrap"
 import EntryCardHtml from "./EntryCardHtml"
 import EntryCardTitle from "./EntryCardTitle"
@@ -8,6 +8,8 @@ import { useHistory } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../routes"
 import PropTypes from "prop-types"
 import "./styles.css"
+
+const EntryOptionsMenu = lazy(() => import("../EntryOptionsMenu"))
 
 const ENTRIES_RENDER_OFFSET = 6
 
@@ -45,27 +47,55 @@ const EntryCards = ({ className, entries }) => {
         address,
         latitude,
         longitude,
+        is_public,
         author,
         _lastUpdated
       } = entry
       const onClickCallback = () =>
-        RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
+        RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", id))
       const reducedHtml = html.slice(0, 1000)
+
+      const cardHeader = (
+        <div>
+          <div
+            className="EntryOptionsMenuContainer"
+            onClick={e => e.stopPropagation()}
+          >
+            <EntryOptionsMenu entryId={id} is_public={is_public} />
+          </div>
+          <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
+        </div>
+      )
+
+      const cardTitle = <EntryCardTitle title={title} is_public={is_public} />
+
+      const cardText = (
+        <EntryCardText
+          tags={tags}
+          date_updated={date_updated}
+          views={views}
+          rating={rating}
+          is_public={is_public}
+        />
+      )
+
+      const memoProps = [
+        id,
+        tags,
+        date_updated,
+        views,
+        rating,
+        is_public,
+        reducedHtml
+      ]
+
       return (
         <Col key={id} xl={3} md={4} sm={6} xs={12} className="p-1 p-sm-2">
           <BasicCard
-            title={<EntryCardTitle title={title} />}
-            text={
-              <EntryCardText
-                tags={tags}
-                date_updated={date_updated}
-                views={views}
-                rating={rating}
-              />
-            }
-            header={
-              <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
-            }
+            memoProps={memoProps}
+            header={cardHeader}
+            title={cardTitle}
+            text={cardText}
             cardHeaderClassName="p-0"
             onClickCallback={onClickCallback}
           />
@@ -75,7 +105,7 @@ const EntryCards = ({ className, entries }) => {
 
   return (
     <Container className={`${className} Container`} onScroll={handleScroll}>
-      <Row>{renderEntryCards(viewableEntries, entries, history)}</Row>
+      <Row>{renderEntryCards()}</Row>
     </Container>
   )
 }
