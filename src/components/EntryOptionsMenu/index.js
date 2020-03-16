@@ -14,6 +14,10 @@ import { useDispatch } from "react-redux"
 import { SyncEntries } from "../../redux/Entries/actions"
 import "./styles.css"
 
+const getInitialState = ({}) => {
+  return { dropdownOpen: false, urlCOpied: false, showModal: false }
+}
+
 const EntryOptionsMenu = ({
   entryId,
   is_public,
@@ -25,7 +29,7 @@ const EntryOptionsMenu = ({
   const [dropdownOpen, setOpen] = useState(false)
   const [urlCopied, setUrlCopied] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const toggle = () => setOpen(!dropdownOpen)
+  const toggleDropdown = () => setOpen(!dropdownOpen)
   const toggleModal = () => setShowModal(!showModal)
 
   const { origin } = window.location
@@ -49,10 +53,10 @@ const EntryOptionsMenu = ({
     <ButtonDropdown
       className="EntryOptionsMenu"
       isOpen={dropdownOpen}
-      toggle={toggle}
+      toggle={toggleDropdown}
     >
       <DropdownToggle>
-        <i className="fas fa-ellipsis-v" />
+        <i className="fas fa-ellipsis-v" style={{ fontSize: 20 }} />
       </DropdownToggle>
       <DropdownMenu>
         <DropdownItem header>

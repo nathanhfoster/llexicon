@@ -1,5 +1,9 @@
-.btn, .btn-primary.focus, .btn-primary:focus, .btn-outline-primary.focus, .btn-outline-primary:focus {
+.btn, .btn:focus, .btn:active, .btn-primary.focus, .btn-primary:focus, .btn-outline-primary.focus, .btn-outline-primary:focus {
   box-shadow: 0 0 0 0.075rem var(--slate_grey) !important;
+}
+
+.btn:active {
+  background-color: var(--quaternaryColor) !important;
 }
 
 .btn-outline-accent {
