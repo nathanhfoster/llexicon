@@ -11,7 +11,7 @@ import {
   GetUserEntries,
   GetUserEntryTags
 } from "./redux/Entries/actions"
-import { RouteMap } from "./routes"
+import { RouteMap, RouterGoBack } from "./routes"
 import { About, Home, Entries } from "./views"
 import { NavBar, PrivacyPolicy } from "./components"
 import { RouterLinkPush } from "./routes"
@@ -105,10 +105,12 @@ const App = ({
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const renderRedirectOrComponent = (shouldRedirect, route, component) => {
-    return shouldRedirect
-      ? () => <Redirect push to={RouterLinkPush(history, route)} />
-      : component
+  const renderRedirectOrComponent = (shouldRedirect, component, route) => {
+    const directTo = () =>
+      route === "GoBack"
+        ? RouterGoBack(history)
+        : RouterLinkPush(history, route)
+    return shouldRedirect ? () => <Redirect push to={directTo} /> : component
   }
 
   const routeItems = [
@@ -126,7 +128,7 @@ const App = ({
     },
     {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
-      component: renderRedirectOrComponent(User.token, HOME, Account)
+      component: renderRedirectOrComponent(!!User.token, Account, "GoBack")
     },
     {
       path: [

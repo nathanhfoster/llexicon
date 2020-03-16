@@ -104,9 +104,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         ...handleFilterEntries(
-          state.items
-            .concat(state.filteredItems)
-            .filter(item => item.id !== id),
+          state.items.concat(state.filteredItems).filter(item => item.id != id),
           state.search
         )
       }

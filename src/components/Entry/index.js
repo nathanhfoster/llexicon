@@ -3,13 +3,10 @@ import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { useDispatch } from "react-redux"
 import { withRouter } from "react-router-dom"
-import { RouterGoBack } from "../../routes"
-import { Editor, ShareableLink } from "../../components"
+import { Editor, EntryOptionsMenu } from "../../components"
 import ReactDatePicker from "../ReactDatePicker"
-import ConfirmAction from "../ConfirmAction"
 import UseDebounce from "../UseDebounce"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
-import { RouteMap } from "../../routes"
 import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
 
@@ -54,29 +51,6 @@ const Entry = ({
   const handleTitleChange = ({ target: { value } }) =>
     dispatch(handleEditorChange({ id: entry.id, title: value }))
 
-  const handleDelete = () => {
-    shouldRedirectOnDelete && RouterGoBack(history)
-    setTimeout(async () => {
-      await dispatch(
-        handleEditorChange({
-          id: entry.id,
-          _shouldDelete: true
-        })
-      )
-      dispatch(SyncEntries())
-    }, 200)
-  }
-
-  const handleGetUrl = () => {
-    const { origin } = window.location
-    const { ENTRY_DETAIL } = RouteMap
-    const url = `${origin}${ENTRY_DETAIL.replace(":entryId", entry.id)}`
-    return url
-  }
-
-  const handleShare = is_public =>
-    handleEditorChange({ id: entry.id, is_public })
-
   return (
     <Fragment>
       <Editor
@@ -117,30 +91,13 @@ const Entry = ({
               <InputGroupAddon addonType="append">
                 <InputGroupText
                   className="p-0"
-                  tag={ShareableLink}
-                  getUrlCallback={handleGetUrl}
-                  onClickCallback={handleShare}
+                  tag={EntryOptionsMenu}
+                  onChangeCallback={handleEditorChange}
+                  entryId={entry.id}
                   is_public={entry.is_public}
+                  history={history}
+                  shouldRedirectOnDelete={shouldRedirectOnDelete}
                 />
-              </InputGroupAddon>
-
-              <InputGroupAddon addonType="append">
-                <InputGroupText
-                  className="p-0"
-                  style={{ background: "var(--quinaryColor)" }}
-                >
-                  <ConfirmAction
-                    buttonClassName="EntryInputDelete"
-                    onClickCallback={handleDelete}
-                    icon={
-                      <i
-                        className="fas fa-trash"
-                        style={{ color: "var(--danger)", fontSize: "1.5em" }}
-                      />
-                    }
-                    title={"Delete Entry"}
-                  />
-                </InputGroupText>
               </InputGroupAddon>
             </Fragment>
           )}
@@ -161,8 +118,6 @@ Entry.propTypes = {
   match: PropTypes.object,
   staticContext: PropTypes.any,
   topToolbarIsOpen: PropTypes.bool,
-  shouldRedirectOnDelete: PropTypes.bool,
-  shouldRedirectOnDelete: PropTypes.bool,
   theme: PropTypes.string
 }
 

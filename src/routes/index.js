@@ -75,7 +75,7 @@ const RouterLinkPush = (history, route) => {
 }
 
 const RouterGoBack = history => {
-  if (!ValidateHistroy(history)) return {}
+  if (!ValidateHistroy(history) || !history.location.state) return {}
   const {
     location: {
       hash,

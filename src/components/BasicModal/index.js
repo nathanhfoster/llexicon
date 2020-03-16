@@ -1,12 +1,15 @@
-import React, { useState, memo, Fragment, cloneElement } from "react"
+import React, { useEffect, useState, memo, Fragment, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./styles.css"
 
 const BasicModal = ({
+  show,
   title,
   onClickCallback,
+  confirmButtonTitle,
   onSaveCallback,
+  cancelButtonTitle,
   onCancelCallback,
   children,
   className,
@@ -16,13 +19,17 @@ const BasicModal = ({
   buttonTitle,
   footer
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(show)
+
+  useEffect(() => {
+    if (show !== isOpen) setIsOpen(show)
+  }, [show])
 
   const toggle = () => setIsOpen(!isOpen)
 
   return (
     <Fragment>
-      {button ? (
+      {button === false ? null : button ? (
         cloneElement(button, {
           ...button.props,
           disabled,
@@ -78,10 +85,10 @@ const BasicModal = ({
                 }}
                 disabled={saveDisabled}
               >
-                Save
+                {confirmButtonTitle}
               </Button>
               <Button color="danger" onClick={toggle}>
-                Cancel
+                {cancelButtonTitle}
               </Button>
             </Fragment>
           )}
@@ -108,6 +115,9 @@ BasicModal.propTypes = {
 }
 
 BasicModal.defaultProps = {
+  confirmButtonTitle: "Save",
+  cancelButtonTitle: "Cancel",
+  show: false,
   disabled: false,
   saveDisabled: false
 }

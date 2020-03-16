@@ -40,7 +40,7 @@ import RatingStar from "./RatingStar"
 import ReactCalendar from "./ReactCalendar"
 import ReactDatePicker from "./ReactDatePicker"
 import SearchList from "./SearchList"
-import ShareableLink from "./ShareableLink"
+import EntryOptionsMenu from "./EntryOptionsMenu"
 import StarSearch from "./StarSearch"
 import TagsContainer from "./TagsContainer"
 // import Templates from "./Templates"
@@ -91,7 +91,7 @@ export {
   ReactCalendar,
   ReactDatePicker,
   SearchList,
-  ShareableLink,
+  EntryOptionsMenu,
   StarSearch,
   TagsContainer,
   // Templates,

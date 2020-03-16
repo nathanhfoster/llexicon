@@ -100,7 +100,7 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetEntry = url => dispatch =>
+const GetEntry = (url, id) => dispatch =>
   Axios()
     .get(url)
     .then(res => {
@@ -111,16 +111,19 @@ const GetEntry = url => dispatch =>
       })
       return data
     })
-    .catch(e => {
-      const payload = JSON.parse(JSON.stringify(e.response))
+    .catch(({ response }) => {
+      const { status } = response
+      if (status === 401) {
+        dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
+      }
+      const payload = JSON.parse(JSON.stringify(response))
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
-const GetUserEntry = entryId => dispatch =>
-  dispatch(GetEntry(`/entries/${entryId}/`))
+const GetUserEntry = id => dispatch => dispatch(GetEntry(`/entries/${id}/`, id))
 
-const GetUserEntryDetails = entryId => dispatch =>
-  dispatch(GetEntry(`/entries/${entryId}/details/`))
+const GetUserEntryDetails = id => dispatch =>
+  dispatch(GetEntry(`/entries/${id}/details/`, id))
 
 const GetAllUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User

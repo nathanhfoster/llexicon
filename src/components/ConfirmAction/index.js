@@ -6,7 +6,7 @@ import "./styles.css"
 
 const ConfirmAction = ({
   onClickCallback,
-  buttonClassName,
+  className,
   disabled,
   icon,
   title
@@ -23,14 +23,16 @@ const ConfirmAction = ({
 
   return (
     <BasicModal
+      show={show}
       button={
         <Button
           disabled={disabled}
           color="inherit"
           onClick={toggleShow}
-          className={buttonClassName}
+          className={className}
         >
           {icon}
+          {title}
         </Button>
       }
       title={title}
@@ -56,9 +58,14 @@ ConfirmAction.propTypes = {
   onClickCallback: PropTypes.func.isRequired,
   title: PropTypes.string,
   icon: PropTypes.object,
-  buttonClassName: PropTypes.string
+
+  className: PropTypes.string
 }
 
-ConfirmAction.defaultProps = { show: false, disabled: false }
+ConfirmAction.defaultProps = {
+  show: false,
+  disabled: false,
+  icon: <i className="fas fa-trash mr-1" />
+}
 
 export default memo(ConfirmAction)

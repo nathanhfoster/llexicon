@@ -54,7 +54,7 @@ const EntryDetail = ({
             readOnly={readOnly}
             entry={entry}
             // containerHeight={entryContainerHeight}
-            shouldRedirectOnDelete
+            shouldRedirectOnDelete={true}
           />
         </Col>
       </Row>

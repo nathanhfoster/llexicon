@@ -20,15 +20,15 @@ const BasicDropDown = ({
   const toggle = () => setDropdownOpen(prevState => !prevState)
 
   const renderList = () =>
-    list.map(l => {
+    list.map((l, i) => {
       const { id, value, header, disabled, divider } = l
       return (
         <DropdownItem
-          key={id}
+          key={id || i}
           divider={divider}
           header={header}
           disabled={disabled}
-          onClick={() => onClickCallback(id, value)}
+          onClick={() => onClickCallback && onClickCallback(id, value)}
         >
           {value || id}
         </DropdownItem>
