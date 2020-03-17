@@ -272,7 +272,7 @@ class Editor extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { entry } = nextProps
+    const { entry, readOnly } = nextProps
 
     const { topToolbarIsOpen, bottomToolbarIsOpen } = prevState
 
@@ -281,7 +281,9 @@ class Editor extends PureComponent {
     const formats = getFormats(nextProps)
     const modules = getModules(toolbarId, topToolbarIsOpen)
 
-    const editorHeight = bottomToolbarIsOpen
+    const editorHeight = readOnly
+      ? "100%"
+      : bottomToolbarIsOpen
       ? "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight))"
       : "calc(100% - var(--topToolbarHeight))"
 
