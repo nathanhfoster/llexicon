@@ -106,10 +106,9 @@ const App = ({
   }, [])
 
   const renderRedirectOrComponent = (shouldRedirect, component, route) => {
-    const directTo = () =>
-      route === "GoBack"
-        ? RouterGoBack(history)
-        : RouterLinkPush(history, route)
+    if (shouldRedirect && route === "GoBack")
+      return () => RouterGoBack(history, true)
+    const directTo = () => RouterLinkPush(history, route)
     return shouldRedirect ? () => <Redirect push to={directTo} /> : component
   }
 

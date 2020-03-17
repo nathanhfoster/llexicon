@@ -17,7 +17,6 @@ const BasicCard = ({
   cardTextClassName,
   onClickCallback
 }) => {
-  console.log("render")
   const handleOnClickCallback = () => onClickCallback && onClickCallback()
   const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
   return (

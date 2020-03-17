@@ -109,7 +109,11 @@ BasicModal.propTypes = {
   className: PropTypes.string,
   disabled: PropTypes.bool,
   saveDisabled: PropTypes.bool,
-  button: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+  button: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.func,
+    PropTypes.bool
+  ]),
   buttonTitle: PropTypes.string,
   footer: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
 }

@@ -121,9 +121,13 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
     },
     {
       route: LOGIN,
-      title: UserId ? "LOGOUT" : "LOGIN",
       icon: (
-        <i className={`fas fa-sign-${UserId ? "out" : "in"}-alt NavBarImage`} />
+        <span className="NavBarLink">
+          <i
+            className={`fas fa-sign-${UserId ? "out" : "in"}-alt NavBarImage`}
+          />
+          {UserId ? "LOGOUT" : "LOGIN"}
+        </span>
       ),
       onClick: UserId ? UserLogout : null
     },
@@ -183,10 +187,7 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
         },
         {
           render: (
-            <NavItem
-              key="AddToHomeScreen"
-              className="Center px-2 m-0"
-            >
+            <NavItem key="AddToHomeScreen" className="Center px-2 m-0">
               <AddToHomeScreen
                 width="100%"
                 prompt={prompt}

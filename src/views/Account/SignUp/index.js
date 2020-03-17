@@ -12,7 +12,7 @@ const SignUp = () => {
     <Jumbotron className="LoginFormContainer">
       <BasicForm
         title="Sign Up"
-        onSubmit={payload => handleSignUp(payload)}
+        onSubmit={handleSignUp}
         submitLabel="Sign Up"
       />
       <FacebookGoogleLogin />

@@ -12,7 +12,7 @@ const Login = () => {
     <Jumbotron className="LoginFormContainer">
       <BasicForm
         title="Forgot password"
-        onSubmit={payload => handlePasswordReset(payload)}
+        onSubmit={handlePasswordReset}
         submitLabel="Request"
         inputs={[
           {

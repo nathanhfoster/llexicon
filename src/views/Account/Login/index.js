@@ -12,7 +12,7 @@ const Login = () => {
     <Jumbotron className="LoginFormContainer">
       <BasicForm
         title="Login"
-        onSubmit={payload => handleLogin(payload)}
+        onSubmit={handleLogin}
         submitLabel="Login"
         inputs={[
           {

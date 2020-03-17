@@ -1,3 +1,5 @@
+import React from "react"
+import { Redirect } from "react-router-dom"
 const RouteMap = {
   ROOT: "/",
   SETTINGS: "/settings",
@@ -74,7 +76,8 @@ const RouterLinkPush = (history, route) => {
   return newState
 }
 
-const RouterGoBack = history => {
+const RouterGoBack = (history, shouldRedirect = false) => {
+  let route = RouteMap.HOME
   if (!ValidateHistroy(history) || !history.location.state) return {}
   const {
     location: {
@@ -85,9 +88,12 @@ const RouterGoBack = history => {
       state: { previousRoute }
     }
   } = history
-  const { ENTRIES_CALENDAR } = RouteMap
-  if (previousRoute) return history.goBack()
-  else return RouterPush(history, ENTRIES_CALENDAR)
+
+  if (previousRoute) {
+    route = previousRoute
+    if (shouldRedirect) return <Redirect push to={route} />
+    else return RouterPush(history, route)
+  } else return history.goBack()
 }
 
 export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack }

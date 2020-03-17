@@ -1,9 +1,8 @@
-import React, { useState, useMemo, memo } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { NavItem, NavLink, DropdownItem } from "reactstrap"
 import { NavLink as RouterNavLink, withRouter } from "react-router-dom"
 import { RouterLinkPush } from "../../../routes"
-import memoizeProps from "../../../helpers/memoizeProps"
 import "./styles.css"
 
 const NavItemLink = ({
@@ -16,35 +15,31 @@ const NavItemLink = ({
   onClickCallback,
   render
 }) => {
-  const [reRender, forceUpdate] = useState(false)
+  const handleCLick = () => {
+    onClick && onClick()
+    onClickCallback && onClickCallback()
+  }
 
-  const renderNavLink = useMemo(
-    () =>
-      render || (
-        <NavItem key={title} tag={"div"}>
-          <NavLink
-            activeClassName="active"
-            className="Navlink"
-            tag={RouterNavLink}
-            to={RouterLinkPush(history, route)}
-            onClick={() => {
-              forceUpdate(!reRender)
-              onClick && onClick()
-              onClickCallback && onClickCallback()
-            }}
-          >
-            {icon}
-            <span className="NavBarLink">{title}</span>
-          </NavLink>
-        </NavItem>
-      ),
-    [title, render]
-  )
+  const renderNavLink = () =>
+    render || (
+      <NavItem key={title} tag={"div"}>
+        <NavLink
+          activeClassName="active"
+          className="Navlink"
+          tag={RouterNavLink}
+          to={RouterLinkPush(history, route)}
+          onClick={handleCLick}
+        >
+          {icon}
+          <span className="NavBarLink">{title}</span>
+        </NavLink>
+      </NavItem>
+    )
 
   return dropdownItem ? (
-    <DropdownItem className="Navlink">{renderNavLink}</DropdownItem>
+    <DropdownItem className="Navlink">{renderNavLink()}</DropdownItem>
   ) : (
-    renderNavLink
+    renderNavLink()
   )
 }
 
@@ -58,7 +53,6 @@ NavItemLink.propTypes = {
   render: PropTypes.object
 }
 
-const isEqual = (prevProps, nextProps) => memoizeProps(prevProps, nextProps, ['title','render'])
 NavItemLink.defaultProps = { dropdownItem: false }
 
-export default withRouter(memo(NavItemLink, isEqual))
+export default withRouter(memo(NavItemLink))
