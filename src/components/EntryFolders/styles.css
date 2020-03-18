@@ -10,7 +10,9 @@
 
 .FolderBreadCrumbsContainer .breadcrumb {
     height: var(--inputHeight);
+    background-color: rgba(0,0,0,0.5);
     overflow-y: auto;
+    box-shadow: var(--primaryBoxShadow);
 }
 
 .FolderBasicDropDown {
@@ -20,6 +22,9 @@
 .EntryFoldersContainer {
     max-height: var(--entryFoldersContainerMaxHeight);
     overflow-y: auto;
+    background-color: var(--midNight);
+
+    box-shadow: var(--primaryBoxShadow);
 }
 
 .EntryFolderCards {
