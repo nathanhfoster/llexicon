@@ -22,7 +22,7 @@
 .EntryFoldersContainer {
     max-height: var(--entryFoldersContainerMaxHeight);
     overflow-y: auto;
-    background-color: var(--midNight);
+    background-color: var(--primaryColor);
 
     box-shadow: var(--primaryBoxShadow);
 }
