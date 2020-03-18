@@ -13,11 +13,11 @@ const TablePaginator = ({
   handlePageChange,
   handlePageSizeChange
 }) => {
-  const pageList = new Array(totalPages)
+  const pageList = [{ header: true, value: "Page" }].concat(
+ new Array(totalPages)
     .fill()
-    .map((e, i) => ({ id: i, value: i + 1 }))
-    .unshift({ header: true, value: "Page" })
-
+    .map((e, i) => ({ value: i + 1 })))
+    
   const disabledLeftArrow = currentPage === 0
 
   const disabledRightArrow = currentPage + 1 === totalPages
