@@ -1,11 +1,16 @@
-import React, { useState, useEffect, useMemo, memo } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
+import { Col } from "reactstrap"
 
-const getInitialState = ({}) => {
-  return {}
-}
+const Scrollable = ({
+  className,
+  height,
+  width,
+  reachBottomCallback,
+  children
+}) => {
+  const styles = className ? {} : { height, width }
 
-const Scrollable = ({ reachBottomCallback }) => {
   const handleScroll = ({
     target: { scrollHeight, scrollTop, clientHeight }
   }) => {
@@ -18,11 +23,21 @@ const Scrollable = ({ reachBottomCallback }) => {
     }
   }
 
-  return <div className="Scrollable Container">Scrollable</div>
+  return (
+    <div className={className} style={styles} onScroll={handleScroll}>
+      {children}
+    </div>
+  )
 }
 
-Scrollable.propTypes = {}
+Scrollable.propTypes = {
+  className: PropTypes.string,
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  reachBottomCallback: PropTypes.func.isRequired,
+  children: PropTypes.any
+}
 
-Scrollable.defaultProps = {}
+Scrollable.defaultProps = { height: "100%", width: "100%" }
 
 export default memo(Scrollable)
