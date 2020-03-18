@@ -6,7 +6,7 @@ import "./styles.css"
 const EntryFolder = ({ title, onClickCallback }) => (
   <Button
     outline
-    className="EntryFolder Center p-0"
+    className="EntryFolder p-0"
     onClick={onClickCallback}
     color="accent"
   >

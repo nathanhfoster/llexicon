@@ -26,8 +26,6 @@ const EntryCards = ({ className, entries }) => {
   }) => {
     const reachedBottom = scrollHeight - scrollTop === clientHeight
 
-    console.log(reachedBottom)
-
     if (reachedBottom) {
       setViewableEntries([beginOffset, startOffset + ENTRIES_RENDER_OFFSET])
     }
@@ -92,13 +90,14 @@ const EntryCards = ({ className, entries }) => {
       ]
 
       return (
-        <Col key={id} xl={3} md={4} sm={6} xs={12} className="p-1 p-sm-2">
+        <Col key={id} xs={6} md={4} xl={3} className="p-1 p-sm-2">
           <BasicCard
             memoProps={memoProps}
             header={cardHeader}
             title={cardTitle}
             text={cardText}
-            cardHeaderClassName="p-0"
+            cardClassName="EntryCardContainer"
+            cardHeaderClassName="EntryCardHeader Overflow p-0"
             onClickCallback={onClickCallback}
           />
         </Col>

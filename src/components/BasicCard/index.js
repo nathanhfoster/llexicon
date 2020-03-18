@@ -21,7 +21,7 @@ const BasicCard = ({
   const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
   return (
     <Card
-      className={`${cardClassName} ${cardHoverStyles}`}
+      className={`BasicCard ${cardClassName} ${cardHoverStyles}`}
       onClick={handleOnClickCallback}
     >
       <CardHeader
@@ -69,7 +69,7 @@ BasicCard.propTypes = {
 }
 
 BasicCard.defaultProps = {
-  cardClassName: "BasicCard",
+  cardClassName: "",
   cardHeaderClassName: "Center",
   cardBodyClassName: "",
   cardTitleClassName: "BasicCardTitle Overflow",
