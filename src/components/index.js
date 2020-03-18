@@ -13,7 +13,6 @@ import BasicTabs from "./BasicTabs"
 import ConfirmAction from "./ConfirmAction"
 import Divider from "./Divider"
 import Editor from "./Editor"
-import EntriesDetailed from "./EntriesDetailed"
 import EntriesMinimal from "./EntriesMinimal"
 import EntryNavButtons from "./EntryNavButtons"
 import EntriesTable from "./EntriesTable"
@@ -64,7 +63,6 @@ export {
   ConfirmAction,
   Divider,
   Editor,
-  EntriesDetailed,
   EntriesMinimal,
   EntryNavButtons,
   EntriesTable,

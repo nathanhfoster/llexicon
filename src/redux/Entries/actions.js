@@ -113,7 +113,7 @@ const GetEntry = (url, id) => dispatch =>
     })
     .catch(({ response }) => {
       const { status } = response
-      if (status === 401) {
+      if (status === 401 || status === 404) {
         dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
       }
       const payload = JSON.parse(JSON.stringify(response))

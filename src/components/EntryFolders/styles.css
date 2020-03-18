@@ -1,6 +1,5 @@
 :root {
-    --entryFoldersContainerMinHeight: calc(var(--inputHeight) + 0.5rem);
-    --entryFoldersContainerMaxHeight: calc(var(--entryFoldersContainerMinHeight) * 3);
+    --entryFoldersContainerMaxHeight: calc(var(--inputHeight) * 3);
     --bottomToolbarFilesHeight: 80px;
     --bootmToolBarTagsHeight: 24px;
 }
@@ -19,13 +18,13 @@
 }
 
 .EntryFoldersContainer {
-    min-height: var(--entryFoldersContainerMinHeight);
     max-height: var(--entryFoldersContainerMaxHeight);
     overflow-y: auto;
 }
 
 .EntryFolderCards {
-    max-height: calc(100vh - calc(var(--inputHeight) * 2) - 24px - var(--entryFoldersContainerMaxHeight));
+    min-height: 0;
+    max-height: calc(100vh - var(--inputHeight) * 2 - 24px - var(--entryFoldersContainerMaxHeight));
     overflow-y: auto;
     overflow-x: hidden;
 }

@@ -14,7 +14,6 @@ const RouteMap = {
   ENTRY_DETAIL: "/entry/:entryId",
   ENTRIES: "/entries",
   ENTRIES_MINIMAL: "/entries/minimal",
-  ENTRIES_DETAILED: "/entries/detailed",
   ENTRIES_TABLE: "/entries/table",
   ENTRIES_MAP: "/entries/map",
   ENTRIES_FOLDERS: "/entries/folders",

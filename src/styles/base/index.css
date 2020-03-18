@@ -5,8 +5,7 @@
 }
 
 .RouteOverlay {
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   position: absolute;
   z-index: 102;
   top: var(--navBarHeight);
@@ -16,6 +15,8 @@
 }
 
 .Container {
+  height: 100%;
+  overflow-y: auto;
   touch-action: pan-x;
   touch-action: pan-y;
   color: var(--secondaryColor);

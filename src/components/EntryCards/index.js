@@ -26,6 +26,8 @@ const EntryCards = ({ className, entries }) => {
   }) => {
     const reachedBottom = scrollHeight - scrollTop === clientHeight
 
+    console.log(reachedBottom)
+
     if (reachedBottom) {
       setViewableEntries([beginOffset, startOffset + ENTRIES_RENDER_OFFSET])
     }

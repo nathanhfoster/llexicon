@@ -26,7 +26,6 @@ const ReactCalendar = lazy(() => import("../../components/ReactCalendar"))
 const EntryCards = lazy(() => import("../../components/EntryCards"))
 const EntryFolders = lazy(() => import("../../components/EntryFolders"))
 const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
-const EntriesDetailed = lazy(() => import("../../components/EntriesDetailed"))
 const BasicTable = lazy(() => import("../../components/BasicTable"))
 const BasicMap = lazy(() => import("../../components/BasicMap"))
 const TagsContainer = lazy(() => import("../../components/TagsContainer"))
@@ -90,14 +89,11 @@ const Entries = ({
     viewableEntries.push({ ...TextEditor })
   }
 
-  const tabContainerHeight = 54
+  const tabContainerHeight = 46
 
   const minimalEntriesListHeight = viewPortHeight - tabContainerHeight
 
   let listItemHeight = minimalEntriesListHeight / 2
-
-  if (minimalEntriesListHeight / 3 > listItemHeight)
-    listItemHeight = minimalEntriesListHeight / 3
 
   const activeTab = pathname
 
@@ -184,26 +180,6 @@ const Entries = ({
       onClickCallback: handleTabChange
     },
     {
-      tabId: RouteMap.ENTRIES_DETAILED,
-      mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-newspaper" />,
-      render: (
-        <Row>
-          {shouldRenderNewEntryButton ? (
-            <NewEntryButton />
-          ) : (
-            <EntriesDetailed
-              height={minimalEntriesListHeight}
-              entries={viewableEntries}
-              itemSize={listItemHeight}
-              onItemsRendered={handleItemsRendered}
-            />
-          )}
-        </Row>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
       tabId: RouteMap.ENTRIES_MINIMAL,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-th-list" />,
@@ -212,13 +188,13 @@ const Entries = ({
           <NewEntryButton />
         </Row>
       ) : (
-          <Row>
-            <EntriesMinimal
-              height={minimalEntriesListHeight}
-              entries={viewableEntries}
-              onItemsRendered={handleItemsRendered}
-            />
-          </Row>
+        <Row>
+          <EntriesMinimal
+            height={minimalEntriesListHeight}
+            entries={viewableEntries}
+            onItemsRendered={handleItemsRendered}
+          />
+        </Row>
       ),
       onClickCallback: handleTabChange
     },

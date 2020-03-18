@@ -28,7 +28,6 @@ const {
   HOME,
   NEW_ENTRY,
   ENTRIES_CALENDAR,
-  ENTRIES_DETAILED,
   ENTRIES_MINIMAL,
   ENTRIES_TABLE,
   ENTRIES_MAP,
@@ -60,12 +59,6 @@ export const ENTRY_LINKS = [
     route: ENTRIES_FOLDERS,
     title: "FOLDERS",
     icon: <i className="fas fa-folder NavBarImage" />
-  },
-  {
-    dropdownItem: true,
-    route: ENTRIES_DETAILED,
-    title: "DETAILED",
-    icon: <i className="fas fa-newspaper NavBarImage" />
   },
   {
     dropdownItem: true,
