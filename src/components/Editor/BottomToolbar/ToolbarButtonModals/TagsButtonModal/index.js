@@ -137,17 +137,17 @@ const TagsButtonModal = ({
             hoverable
           />
         </Row>
-        <Row className="mt-3">
-          <Col
-            tag={Input}
-            onChange={handleTagsInputChange}
-            type="text"
-            id="tagTitle"
-            name="tagTitle"
-            value={tagsAsString}
-            placeholder="Family Friends Health Vacation"
-            xs={12}
-          ></Col>
+        <Row className="my-1">
+          <Col className="px-1" xs={12}>
+            <Input
+              onChange={handleTagsInputChange}
+              type="text"
+              id="tagTitle"
+              name="tagTitle"
+              value={tagsAsString}
+              placeholder="Family Friends Health Vacation"
+            />
+          </Col>
         </Row>
       </Container>
     </ToolbarModal>

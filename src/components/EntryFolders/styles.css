@@ -1,5 +1,5 @@
 :root {
-    --entryFoldersContainerMaxHeight: calc(var(--inputHeight) * 3);
+    --entryFoldersContainerMaxHeight: calc(calc(var(--inputHeight) + 0.75rem) * 2);
     --bottomToolbarFilesHeight: 80px;
     --bootmToolBarTagsHeight: 24px;
 }
