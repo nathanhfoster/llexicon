@@ -7,13 +7,6 @@
     z-index: 1000;
 }
 
-.basicListItemValue {
-    flex-wrap: nowrap;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
 .FirstValue {
     flex-shrink: 1;
 }

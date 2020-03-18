@@ -1,0 +1,16 @@
+.EntryFolder {
+    width: 100%;
+    font-size: 1.5rem;
+}
+
+.EntryFolder {
+    transition: all 0.4s ease-in-out;
+}
+
+.EntryFolder:hover {
+    box-shadow: var(--primaryBoxShadow);
+}
+
+.EntryFolderTitle {
+    width: 100%;
+}

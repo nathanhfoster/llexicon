@@ -47,7 +47,7 @@ const EntryPreview = ({
         <span className="eventDate mr-1">
           <Moment format="h:mma">{date_created_by_author}</Moment>
         </span>
-        <span className="eventTitle">{title || "No title"}</span>
+        <span className="eventTitle Overflow">{title || "No title"}</span>
       </div>
     </div>
   ) : view == "month" ? (

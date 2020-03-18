@@ -72,7 +72,7 @@ BasicCard.defaultProps = {
   cardClassName: "BasicCard",
   cardHeaderClassName: "Center",
   cardBodyClassName: "",
-  cardTitleClassName: "BasicCardTitle",
+  cardTitleClassName: "BasicCardTitle Overflow",
   cardTextClassName: "BasicCardText"
 }
 

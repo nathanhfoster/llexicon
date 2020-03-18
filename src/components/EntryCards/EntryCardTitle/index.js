@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import "./styles.css"
 
 const EntryCardTitle = ({ title, is_public }) => (
-  <div className="EntryCardTitleContainer">
+  <div className="EntryCardTitleContainer Overflow">
     <i className={`fas fa-lock${is_public ? "-open" : ""} mr-1`} />
     <span className="EntryCardTitle">{title}</span>
   </div>

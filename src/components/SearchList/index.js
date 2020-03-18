@@ -227,7 +227,7 @@ class SearchList extends PureComponent {
           <div className="listSearchInputDropDown">
             <input
               ref={this.searchListRef}
-              className="listSearchInput"
+              className="listSearchInput Overflow"
               type="text"
               value={searchValue}
               placeholder={placeholder}

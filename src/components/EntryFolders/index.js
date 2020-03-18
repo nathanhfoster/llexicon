@@ -1,20 +1,14 @@
 import React, { useEffect, lazy, memo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
-import {
-  Container,
-  Row,
-  Col,
-  Breadcrumb,
-  BreadcrumbItem,
-  Button
-} from "reactstrap"
+import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap"
 import { NavLink } from "react-router-dom"
 import { RouterPush } from "../../routes"
 import { TopKFrequentStrings } from "../../helpers"
 import "./styles.css"
 
 const EntryCards = lazy(() => import("../EntryCards"))
+const EntryFolder = lazy(() => import("./EntryFolder"))
 const BASE_FOLDER_DIRECTORY_URL = "folders?folder=All"
 
 const EntryFolders = ({ entries, history, location: { search } }) => {
@@ -54,14 +48,8 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
         RouterPush(history, search.concat(`+${title}`))
 
       return (
-        <Col key={`${title}-${i}`} xs={4} md={3} lg={2} className="p-1">
-          <Button
-            className="EntryFolder Center"
-            onClick={handleOnClickCallback}
-            color="accent"
-          >
-            {title}
-          </Button>
+        <Col key={`${title}-${i}`} xs={4} sm={3} md={2} className="p-0">
+          <EntryFolder title={title} onClickCallback={handleOnClickCallback} />
         </Col>
       )
     })

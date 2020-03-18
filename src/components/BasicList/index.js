@@ -86,9 +86,9 @@ class BasicList extends PureComponent {
           value
         ) : (
           <Fragment>
-            <span className="basicListItemValue FirstValue">{value}</span>
+            <span className="Overflow FirstValue">{value}</span>
             {otherValue && (
-              <span className="basicListItemValue OtherValue">
+              <span className="Overflow OtherValue">
                 {otherValue}
               </span>
             )}

@@ -15,9 +15,6 @@
 .EntryMinimalDetail {
     font-size: 1.5em;
     font-weight: 900;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
     min-height: 21px;
 }
 

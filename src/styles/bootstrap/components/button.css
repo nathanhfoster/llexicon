@@ -8,6 +8,7 @@
 }
 
 .btn-outline-accent:hover {
+  color: var(--secondaryColor);
   background-color: var(--accentColor) !important;
   border-color: var(--accentColor) !important;
 }

@@ -28,16 +28,3 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
-
-.EntryFolder {
-    height: var(--inputHeight);
-    width: 100%;
-}
-
-.EntryFolder {
-    transition: all 0.4s ease-in-out;
-}
-
-.EntryFolder:hover {
-    box-shadow: var(--primaryBoxShadow);
-}

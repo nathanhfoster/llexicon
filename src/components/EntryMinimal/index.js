@@ -41,7 +41,7 @@ const EntryMinimal = ({
       }
     >
       <Row>
-        <Col xs={12} className="EntryMinimalDetail">
+        <Col xs={12} className="EntryMinimalDetail Overflow">
           <Star size={14} animation={false} opacity={1} />
           <span className="ml-1">{title}</span>
         </Col>
@@ -49,7 +49,7 @@ const EntryMinimal = ({
           <i className="fas fa-calendar-day mr-1" />
           <Moment format="D MMM YY hh:mma">{date_created_by_author}</Moment>
         </Col>
-        <Col xs={12} className="EntryMinimalDetail mt-1 mb-1">
+        <Col xs={12} className="EntryMinimalDetail Overflow mt-1 mb-1">
           <i className="far fa-eye" /> <span className="mr-2">{views}</span>
           {showLocationIcon && (
             <Fragment>

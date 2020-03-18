@@ -29,6 +29,13 @@
   justify-content: center;
 }
 
+.Overflow {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 body {
   background-repeat: no-repeat;
   overflow: hidden;
