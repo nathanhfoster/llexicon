@@ -16,6 +16,7 @@ const TablePaginator = ({
   const pageList = new Array(totalPages)
     .fill()
     .map((e, i) => ({ id: i, value: i + 1 }))
+    .unshift({ header: true, value: "Page" })
 
   const disabledLeftArrow = currentPage === 0
 
