@@ -97,6 +97,7 @@ const EntryCards = ({ className, entries }) => {
             title={cardTitle}
             text={cardText}
             cardClassName="EntryCardContainer"
+            cardBodyClassName="px-2 pt-0 pb-1"
             cardHeaderClassName="EntryCardHeader Overflow p-0"
             onClickCallback={onClickCallback}
           />
