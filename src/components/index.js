@@ -38,7 +38,6 @@ import RatingIcon from "./RatingIcon"
 import RatingStar from "./RatingStar"
 import ReactCalendar from "./ReactCalendar"
 import ReactDatePicker from "./ReactDatePicker"
-import Scrollable from "./Scrollable"
 import SearchList from "./SearchList"
 import EntryOptionsMenu from "./EntryOptionsMenu"
 import StarSearch from "./StarSearch"
@@ -89,7 +88,6 @@ export {
   RatingStar,
   ReactCalendar,
   ReactDatePicker,
-  Scrollable,
   SearchList,
   EntryOptionsMenu,
   StarSearch,

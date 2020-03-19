@@ -1,4 +1,4 @@
-import React, { useState, lazy, useMemo, memo } from "react"
+import React, { lazy, memo } from "react"
 import { Container, Row, Col } from "reactstrap"
 import EntryCardHtml from "./EntryCardHtml"
 import EntryCardTitle from "./EntryCardTitle"
@@ -11,28 +11,11 @@ import "./styles.css"
 
 const EntryOptionsMenu = lazy(() => import("../EntryOptionsMenu"))
 
-const ENTRIES_RENDER_OFFSET = 6
-
 const EntryCards = ({ className, entries }) => {
-  const [viewableEntries, setViewableEntries] = useState([
-    0,
-    ENTRIES_RENDER_OFFSET * 2
-  ])
-  const [beginOffset, startOffset] = viewableEntries
   const history = useHistory()
 
-  const handleScroll = ({
-    target: { scrollHeight, scrollTop, clientHeight }
-  }) => {
-    const reachedBottom = scrollHeight - scrollTop === clientHeight
-
-    if (reachedBottom) {
-      setViewableEntries([beginOffset, startOffset + ENTRIES_RENDER_OFFSET])
-    }
-  }
-
   const renderEntryCards = () =>
-    entries.slice(beginOffset, startOffset).map((entry, i) => {
+    entries.map((entry, i) => {
       const {
         id,
         tags,
@@ -106,7 +89,7 @@ const EntryCards = ({ className, entries }) => {
     })
 
   return (
-    <Container className={`${className} Container`} onScroll={handleScroll}>
+    <Container className={`${className} Container`}>
       <Row>{renderEntryCards()}</Row>
     </Container>
   )

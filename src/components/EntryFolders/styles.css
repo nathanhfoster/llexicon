@@ -1,16 +1,10 @@
-:root {
-    --entryFoldersContainerMaxHeight: calc(calc(var(--inputHeight) + 0.75rem) * 2);
-    --bottomToolbarFilesHeight: 80px;
-    --bootmToolBarTagsHeight: 24px;
-}
-
 .EntryFolders {
     /* height: calc(100vh - var(--navBarHeight)); */
 }
 
 .FolderBreadCrumbsContainer .breadcrumb {
     height: var(--inputHeight);
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     overflow-y: auto;
     box-shadow: var(--primaryBoxShadow);
 }
@@ -20,16 +14,9 @@
 }
 
 .EntryFoldersContainer {
-    max-height: var(--entryFoldersContainerMaxHeight);
-    overflow-y: auto;
-    background-color: var(--primaryColor);
-
+    background-color: var(--quinaryColor);
     box-shadow: var(--primaryBoxShadow);
-}
-
-.EntryFolderCards {
-    min-height: 0;
-    max-height: calc(100vh - var(--inputHeight) * 2 - 24px - var(--entryFoldersContainerMaxHeight));
+    max-height: calc(100vh - var(--navBarHeight) - 46px - 48px);
     overflow-y: auto;
     overflow-x: hidden;
 }
