@@ -20,8 +20,6 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit }) => {
     onSubmit(payload)
   }
 
-  console.log("render")
-
   const renderInputs = inputs =>
     inputs.map(input => {
       const { id, defaultValue, label, type, placeholder, check } = input

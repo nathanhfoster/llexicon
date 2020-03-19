@@ -6,8 +6,8 @@ import { RouterPush, RouteMap } from "../../routes"
 import Login from "./Login"
 import SignUp from "./SignUp"
 import ForgotPassword from "./ForgotPassword"
-
 import "./styles.css"
+
 const { LOGIN, SIGNUP, PASSWORD_RESET } = RouteMap
 
 const Account = ({ history, location: { pathname } }) => {
