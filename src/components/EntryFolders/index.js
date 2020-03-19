@@ -90,7 +90,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
           {renderFolderBreadCrumbs()}
         </Col>
       </Row>
-      <Row className="EntryFoldersContainer Container" onScroll={handleScroll}>
+      <Row className="EntryFoldersContainer Container pt-1" onScroll={handleScroll}>
         {renderFolders()}
         <EntryCards entries={viewableEntries} />
       </Row>
