@@ -89,7 +89,7 @@ const EntryCards = ({ className, entries }) => {
     })
 
   return (
-    <Container className={`${className} Container`}>
+    <Container className={className}>
       <Row>{renderEntryCards()}</Row>
     </Container>
   )
