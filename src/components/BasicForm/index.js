@@ -1,67 +1,49 @@
-import React, { useState, useMemo, memo } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Button, Form, FormGroup, Label, Input } from "reactstrap"
 
-const getInitialState = inputs => {
-  let state = {}
-  for (let i = 0, { length } = inputs; i < length; i++) {
-    const { id } = inputs[i]
-    state[id] = null
-  }
-  return state
-}
-
 const BasicForm = ({ title, inputs, submitLabel, onSubmit }) => {
-  const [state, setState] = useState(getInitialState(inputs))
-
   const handleSubmit = e => {
     e.preventDefault()
     let payload = {}
 
     for (let i = 0, { length } = inputs; i < length; i++) {
-      const { id, type } = e.target[i]
-      const value = state[id]
+      const { id, value, type, checked } = e.target[i]
       if (value) {
         payload[id] = value
       } else if (type === "radio") {
-        payload[id] = value
+        // console.log("RADIO: ", checked)
+        payload[id] = checked
       }
     }
 
     onSubmit(payload)
   }
 
-  const handleChange = ({ target: { id, value } }) =>
-    setState(prevState => ({ ...prevState, [id]: value }))
+  console.log("render")
 
-  const renderInputs = useMemo(
-    () =>
-      inputs.map(input => {
-        const { id, defaultValue, label, type, placeholder, check } = input
-        const value = state[id]
-        return (
-          <FormGroup check={check} key={id}>
-            <Label check={check} for={id}>
-              {label}
-            </Label>
-            <Input
-              id={id}
-              defaultValue={defaultValue}
-              onChange={handleChange}
-              value={value}
-              type={type}
-              placeholder={placeholder}
-            />
-          </FormGroup>
-        )
-      }),
-    [inputs]
-  )
+  const renderInputs = inputs =>
+    inputs.map(input => {
+      const { id, defaultValue, label, type, placeholder, check } = input
+      return (
+        <FormGroup check={check} key={id}>
+          <Label check={check} for={id}>
+            {label}
+          </Label>
+          <Input
+            defaultValue={defaultValue}
+            type={type}
+            id={id}
+            placeholder={placeholder}
+          />
+        </FormGroup>
+      )
+    })
 
   return (
     <Form onSubmit={handleSubmit} method="post">
       {title && <h2 className="Center">{title}</h2>}
-      {renderInputs}
+      {renderInputs(inputs)}
       <div className="Center">
         <Button color="accent" type="submit">
           {submitLabel}
@@ -78,7 +60,7 @@ BasicForm.propTypes = {
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       defaultValue: PropTypes.string,
       label: PropTypes.string,
-      type: PropTypes.oneOf(["email", "text", "password", "check"]),
+      type: PropTypes.string,
       placeholder: PropTypes.string,
       check: PropTypes.bool
     }).isRequired
