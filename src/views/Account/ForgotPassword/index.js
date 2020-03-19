@@ -1,36 +1,39 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { useDispatch } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
 import { PasswordReset } from "../../../redux/User/actions"
 
-const Login = () => {
+const ForgotPassword = () => {
   const dispatch = useDispatch()
   const handlePasswordReset = payload => dispatch(PasswordReset(payload))
+  const forgotPasswordInputs = useMemo(
+    () => [
+      {
+        label: "Email",
+        type: "email",
+        id: "email",
+        placeholder: "Email..."
+      }
+    ],
+    []
+  )
   return (
     <Jumbotron className="LoginFormContainer">
       <BasicForm
         title="Forgot password"
         onSubmit={handlePasswordReset}
         submitLabel="Request"
-        inputs={[
-          {
-            label: "Email",
-            type: "email",
-            name: "email",
-            id: "email",
-            placeholder: "Email..."
-          }
-        ]}
+        inputs={forgotPasswordInputs}
       />
       <FacebookGoogleLogin />
     </Jumbotron>
   )
 }
 
-Login.propTypes = {}
+ForgotPassword.propTypes = {}
 
-Login.defaultProps = {}
+ForgotPassword.defaultProps = {}
 
-export default memo(Login)
+export default memo(ForgotPassword)

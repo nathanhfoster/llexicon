@@ -19,28 +19,29 @@ const RatingButtonModal = props => {
 
   useEffect(() => {
     if (ratingChanged) {
-      setState({ ...state, rating: props.rating })
+      setState(prevState => ({ ...prevState, rating: props.rating }))
     }
   }, [props.rating])
 
   const handleClick = () => {}
 
-  const handleCancel = () => setState({ ...state, rating: props.rating })
+  const handleCancel = () =>
+    setState(prevState => ({ ...prevState, rating: props.rating }))
 
   const handleSave = () => onChangeCallback({ rating })
 
   const handleStarClicked = rating =>
-    setState({ ...state, rating, savedRating: true })
+    setState(prevState => ({ ...prevState, rating, savedRating: true }))
 
   const handleMouseEnter = rating => {
     if (!savedRating) {
-      setState({ ...state, rating })
+      setState(prevState => ({ ...prevState, rating }))
     }
   }
 
   const handleMouseLeave = leftRating => {
     if (leftRating !== state) {
-      setState({ ...state, savedRating: false })
+      setState(prevState => ({ ...prevState, savedRating: false }))
     }
   }
 

@@ -139,7 +139,7 @@ const DrawingManager = props => {
 
     newPolygon.boundary.push(newPolyline)
 
-    setState({ ...state, polygon: newPolygon })
+    setState(prevState => ({ ...prevState, polygon: newPolygon }))
   }
 
   const handleShouldCompletePolygon = (point, centerOfCircle) => {

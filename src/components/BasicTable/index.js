@@ -53,21 +53,21 @@ const BasicTable = ({
   } = state
 
   const handleSort = (sortKey, sort, sortUp) => {
-    setState({ ...state, sortKey, sort, sortUp })
+    setState(prevState => ({ ...prevState, sortKey, sort, sortUp }))
   }
 
   const handleFilter = (filterKey, searchValue, filter) => {
     let newFilterMap = { ...state.filterMap }
     newFilterMap[filterKey] = { searchValue, filter }
-    setState({ ...state, filterMap: newFilterMap })
+    setState(prevState => ({ ...prevState, filterMap: newFilterMap }))
   }
 
   const handlePageChange = currentPage => {
-    setState({ ...state, currentPage })
+    setState(prevState => ({ ...prevState, currentPage }))
   }
 
   const handlePageSizeChange = (id, pageSize) => {
-    setState({ ...state, pageSize, currentPage: 0 })
+    setState(prevState => ({ ...prevState, pageSize, currentPage: 0 }))
   }
 
   let sortedAndFilteredData = null

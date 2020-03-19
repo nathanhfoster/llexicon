@@ -94,7 +94,7 @@ const TagsButtonModal = ({
       }
     }
 
-    setState({ ...state, ...nextState })
+    setState(prevState => ({ ...prevState, ...nextState }))
   }
 
   const handleTagsInputChange = e => {
@@ -105,7 +105,11 @@ const TagsButtonModal = ({
     // Remove double spaces and periods
     const validatedTagsAsString = validatedString(string)
 
-    setState({ ...state, tagsAsString: validatedTagsAsString, typing: true })
+    setState(prevState => ({
+      ...prevState,
+      tagsAsString: validatedTagsAsString,
+      typing: true
+    }))
   }
 
   const handleSave = () => {

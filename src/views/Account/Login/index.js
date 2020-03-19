@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { useDispatch } from "react-redux"
 import { Jumbotron } from "reactstrap"
@@ -8,28 +8,32 @@ import { UserLogin } from "../../../redux/User/actions"
 const Login = () => {
   const dispatch = useDispatch()
   const handleLogin = payload => dispatch(UserLogin(payload))
+  const loginInputs = useMemo(
+    () => [
+      {
+        label: "Username",
+        type: "text",
+        name: "username",
+        id: "username",
+        placeholder: "Username..."
+      },
+      {
+        label: "Password",
+        type: "password",
+        name: "password",
+        id: "password",
+        placeholder: "Password..."
+      }
+    ],
+    []
+  )
   return (
     <Jumbotron className="LoginFormContainer">
       <BasicForm
         title="Login"
         onSubmit={handleLogin}
         submitLabel="Login"
-        inputs={[
-          {
-            label: "Username",
-            type: "text",
-            name: "username",
-            id: "username",
-            placeholder: "Username..."
-          },
-          {
-            label: "Password",
-            type: "password",
-            name: "password",
-            id: "password",
-            placeholder: "Password..."
-          }
-        ]}
+        inputs={loginInputs}
       />
       <FacebookGoogleLogin />
     </Jumbotron>
