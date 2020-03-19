@@ -5,6 +5,7 @@ import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap"
 import { NavLink } from "react-router-dom"
 import { RouterPush } from "../../routes"
 import { TopKFrequentStrings } from "../../helpers"
+import { FixedSizeGrid as Grid } from "react-window"
 import "./styles.css"
 
 const EntryCards = lazy(() => import("../EntryCards"))
@@ -89,7 +90,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
           {renderFolderBreadCrumbs()}
         </Col>
       </Row>
-      <Row className="EntryFoldersContainer" onScroll={handleScroll}>
+      <Row className="EntryFoldersContainer Container" onScroll={handleScroll}>
         {renderFolders()}
         <EntryCards entries={viewableEntries} />
       </Row>

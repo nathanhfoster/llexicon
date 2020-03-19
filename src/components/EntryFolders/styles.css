@@ -17,6 +17,4 @@
     background-color: var(--quinaryColor);
     box-shadow: var(--primaryBoxShadow);
     height: calc(100vh - var(--navBarHeight) - 46px - 48px);
-    overflow-y: auto;
-    overflow-x: hidden;
 }
