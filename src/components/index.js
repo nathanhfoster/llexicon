@@ -4,6 +4,7 @@ import BasicCard from "./BasicCard"
 import BasicCarousel from "./BasicCarousel"
 import BasicDropDown from "./BasicDropDown"
 import BasicForm from "./BasicForm"
+import BasicGrid from "./BasicGrid"
 import BasicList from "./BasicList"
 import BasicMap from "./BasicMap"
 import BasicModal from "./BasicModal"
@@ -54,6 +55,7 @@ export {
   BasicCarousel,
   BasicDropDown,
   BasicForm,
+  BasicGrid,
   BasicList,
   BasicMap,
   BasicModal,

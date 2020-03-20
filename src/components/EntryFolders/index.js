@@ -2,10 +2,10 @@ import React, { useEffect, useState, lazy, memo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap"
+import { BasicGrid } from "../BasicGrid"
 import { NavLink } from "react-router-dom"
 import { RouterPush } from "../../routes"
 import { TopKFrequentStrings } from "../../helpers"
-import { FixedSizeGrid as Grid } from "react-window"
 import "./styles.css"
 
 const EntryCards = lazy(() => import("../EntryCards"))
@@ -81,6 +81,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
   return (
     <Container className="EntryFolders">
+      {/* <BasicGrid /> */}
       <Row>
         <Col
           xs={12}
@@ -90,7 +91,10 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
           {renderFolderBreadCrumbs()}
         </Col>
       </Row>
-      <Row className="EntryFoldersContainer Container pt-1" onScroll={handleScroll}>
+      <Row
+        className="EntryFoldersContainer Container pt-1"
+        onScroll={handleScroll}
+      >
         {renderFolders()}
         <EntryCards entries={viewableEntries} />
       </Row>
