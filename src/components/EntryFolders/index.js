@@ -2,7 +2,7 @@ import React, { useEffect, useState, lazy, memo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap"
-import { BasicGrid } from "../BasicGrid"
+import { BasicGrid } from "../"
 import { NavLink } from "react-router-dom"
 import { RouterPush } from "../../routes"
 import { TopKFrequentStrings } from "../../helpers"
@@ -25,19 +25,6 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
   const [beginOffset, startOffset] = viewableEntriesRange
 
-  const handleScroll = ({
-    target: { scrollHeight, scrollTop, clientHeight }
-  }) => {
-    const reachedBottom = scrollHeight - scrollTop === clientHeight
-
-    if (reachedBottom) {
-      setViewableEntriesRange([
-        beginOffset,
-        startOffset + ENTRIES_RENDER_OFFSET
-      ])
-    }
-  }
-
   const directoryPath = search.replace("?folder=", "").split("+")
   const directoryTags = directoryPath.slice(1)
 
@@ -55,6 +42,22 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
   const viewableEntries = entryFilteredTags.slice(beginOffset, startOffset)
 
   const sortedTags = TopKFrequentStrings(filteredEntryTags, "title")
+
+  const handleScroll = ({
+    target: { scrollHeight, scrollTop, clientHeight }
+  }) => {
+    const scrollOffset = clientHeight / 8
+
+    const reachedBottom =
+      scrollHeight - scrollTop <= clientHeight + scrollOffset
+
+    if (reachedBottom) {
+      setViewableEntriesRange([
+        beginOffset,
+        startOffset + ENTRIES_RENDER_OFFSET
+      ])
+    }
+  }
 
   const renderFolderBreadCrumbs = () =>
     directoryPath.map((directory, i) => {
@@ -79,9 +82,41 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
       )
     })
 
+  // TODO
+
+  // const columnCount = 3
+
+  // let sortedTagsGrid = []
+
+  // for (let i = 0, { length } = sortedTags; i < length; i++) {
+  //   if (i % columnCount === 0) {
+  //     const sliceEnd = i + columnCount
+  //     const sectionToMap = sortedTags.slice(i, sliceEnd).map(title => {
+  //       const handleOnClickCallback = () =>
+  //         RouterPush(history, search.concat(`+${title}`))
+  //       return {
+  //         id: title,
+  //         render: (
+  //           <EntryFolder
+  //             title={title}
+  //             onClickCallback={handleOnClickCallback}
+  //           />
+  //         )
+  //       }
+  //     })
+  //     sortedTagsGrid.push(sectionToMap)
+  //   } else {
+  //   }
+  // }
+
   return (
     <Container className="EntryFolders">
-      {/* <BasicGrid /> */}
+      {/* <Row>
+        <Col tag="div" xs={12}>
+          <BasicGrid itemData={sortedTagsGrid} />
+        </Col>
+      </Row> */}
+
       <Row>
         <Col
           xs={12}
@@ -91,10 +126,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
           {renderFolderBreadCrumbs()}
         </Col>
       </Row>
-      <Row
-        className="EntryFoldersContainer Container pt-1"
-        onScroll={handleScroll}
-      >
+      <Row className="EntryFoldersContainer Container" onScroll={handleScroll}>
         {renderFolders()}
         <EntryCards entries={viewableEntries} />
       </Row>

@@ -1,52 +1,74 @@
-import React, { memo } from "react"
+import React, { useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Button, Form, FormGroup, Label, Input } from "reactstrap"
 
-const BasicForm = ({ title, inputs, submitLabel, onSubmit }) => {
+const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
+  if (onSubmit && onChange) {
+    throw "The onSubmit and onChange props are mutually exclusive. Please use only one."
+  }
+  const formRef = useRef()
+
   const handleSubmit = e => {
     e.preventDefault()
     let payload = {}
 
     for (let i = 0, { length } = inputs; i < length; i++) {
-      const { id, value, type, checked } = e.target[i]
+      const { id, value, type } = e.target[i]
       if (value) {
         payload[id] = value
       } else if (type === "radio") {
-        // console.log("RADIO: ", checked)
-        payload[id] = checked
+        payload[id] = value
       }
     }
 
-    onSubmit(payload)
+    onSubmit && onSubmit(payload)
+    onChange && onChange(payload)
   }
 
-  const renderInputs = inputs =>
-    inputs.map(input => {
-      const { id, defaultValue, label, type, placeholder, check } = input
-      return (
-        <FormGroup check={check} key={id}>
-          <Label check={check} for={id}>
-            {label}
-          </Label>
-          <Input
-            defaultValue={defaultValue}
-            type={type}
-            id={id}
-            placeholder={placeholder}
-          />
-        </FormGroup>
-      )
-    })
+  const handleChange = e => {
+    e.preventDefault()
+    onChange &&
+      formRef.current &&
+      formRef.current.dispatchEvent(new Event("submit"))
+  }
+
+  const renderInputs = useMemo(
+    () =>
+      inputs.map(input => {
+        const { id, defaultValue, label, type, placeholder, check } = input
+        return (
+          <FormGroup check={check} key={id}>
+            <Label check={check} for={id}>
+              {label}
+            </Label>
+            <Input
+              defaultValue={defaultValue}
+              type={type}
+              id={id}
+              placeholder={placeholder}
+            />
+          </FormGroup>
+        )
+      }),
+    [inputs]
+  )
 
   return (
-    <Form onSubmit={handleSubmit} method="post">
+    <Form
+      innerRef={formRef}
+      onSubmit={handleSubmit}
+      method="post"
+      onChange={handleChange}
+    >
       {title && <h2 className="Center">{title}</h2>}
-      {renderInputs(inputs)}
-      <div className="Center">
-        <Button color="accent" type="submit">
-          {submitLabel}
-        </Button>
-      </div>
+      {renderInputs}
+      {onSubmit && (
+        <div className="Center">
+          <Button color="accent" type="submit">
+            {submitLabel}
+          </Button>
+        </div>
+      )}
     </Form>
   )
 }
@@ -64,6 +86,7 @@ BasicForm.propTypes = {
     }).isRequired
   ),
   onSubmit: PropTypes.func,
+  onChange: PropTypes.func,
   submitLabel: PropTypes.string
 }
 
