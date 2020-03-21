@@ -46,7 +46,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
   const handleScroll = ({
     target: { scrollHeight, scrollTop, clientHeight }
   }) => {
-    const scrollOffset = clientHeight / 8
+    const scrollOffset = clientHeight / 4
 
     const reachedBottom =
       scrollHeight - scrollTop <= clientHeight + scrollOffset
