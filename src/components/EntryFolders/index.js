@@ -12,18 +12,18 @@ const EntryCards = lazy(() => import("../EntryCards"))
 const EntryFolder = lazy(() => import("./EntryFolder"))
 const BASE_FOLDER_DIRECTORY_URL = "folders?folder=All"
 const ENTRIES_RENDER_OFFSET = 6
+const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
 const EntryFolders = ({ entries, history, location: { search } }) => {
   useEffect(() => {
     if (!search) RouterPush(history, BASE_FOLDER_DIRECTORY_URL)
   }, [])
 
-  const [viewableEntriesRange, setViewableEntriesRange] = useState([
-    0,
-    ENTRIES_RENDER_OFFSET * 2
-  ])
+  const [viewableEntriesRange, setViewableEntriesRange] = useState(
+    DEFAULT_VIEWABLE_ENTRIES_RANGE
+  )
 
-  const [beginOffset, startOffset] = viewableEntriesRange
+  const [beginOffset, endOffset] = viewableEntriesRange
 
   const directoryPath = search.replace("?folder=", "").split("+")
   const directoryTags = directoryPath.slice(1)
@@ -39,7 +39,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
     .flat(1)
     .filter(tag => !directoryTags.includes(tag.title))
 
-  const viewableEntries = entryFilteredTags.slice(beginOffset, startOffset)
+  const viewableEntries = entryFilteredTags.slice(beginOffset, endOffset)
 
   const sortedTags = TopKFrequentStrings(filteredEntryTags, "title")
 
@@ -47,15 +47,14 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
     target: { scrollHeight, scrollTop, clientHeight }
   }) => {
     const scrollOffset = clientHeight / 4
+    const moreEntriesExist = viewableEntries.length < entryFilteredTags.length
 
     const reachedBottom =
+      moreEntriesExist &&
       scrollHeight - scrollTop <= clientHeight + scrollOffset
 
     if (reachedBottom) {
-      setViewableEntriesRange([
-        beginOffset,
-        startOffset + ENTRIES_RENDER_OFFSET
-      ])
+      setViewableEntriesRange([beginOffset, endOffset + ENTRIES_RENDER_OFFSET])
     }
   }
 
@@ -72,8 +71,10 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
   const renderFolders = () =>
     sortedTags.map((title, i) => {
-      const handleOnClickCallback = () =>
+      const handleOnClickCallback = () => {
         RouterPush(history, search.concat(`+${title}`))
+        setViewableEntriesRange(DEFAULT_VIEWABLE_ENTRIES_RANGE)
+      }
 
       return (
         <Col key={`${title}-${i}`} xs={4} sm={3} md={2} className="p-0">
