@@ -61,6 +61,7 @@ const MediaButtonModal = ({
   }
 
   const handleInputChange = ({ target: { value } }) => setUrl(value)
+  const handleModalCancel = () => setUrl("")
 
   return (
     <ToolbarModal
@@ -70,6 +71,7 @@ const MediaButtonModal = ({
       buttonTitle="Add Media"
       xs={xs}
       onSaveCallback={handleAddUrl}
+      onCancelCallback={handleModalCancel}
     >
       <Container fluid className="MediaButtonModal p-0">
         <Row className="p-2">
