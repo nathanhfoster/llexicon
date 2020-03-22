@@ -11,9 +11,10 @@ min-width: 767px = “If [device width] is greater than or equal to 767px, then 
 :root {
   --navBarImageHeight: 36px;
   --inputHeight: 48px;
+  --navBarHeight: 64px;
 }
 
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
   :root {
     --navBarHeight: 64px;
   }
@@ -23,7 +24,7 @@ min-width: 767px = “If [device width] is greater than or equal to 767px, then 
   :root {
     --navBarHeight: 68px;
   }
-}
+} */
 
 @media (min-width: 992px) {}
 

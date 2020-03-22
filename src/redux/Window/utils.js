@@ -127,7 +127,8 @@ const getWindowDimensions = () => {
     navigator: navigator ? getNavigatorProps(navigator) : {},
     performance,
     isMobile,
-    navBarHeight: isMobile ? 64 : 68,
+    // navBarHeight: isMobile ? 64 : 68,
+    navBarHeight: 64,
     isInStandalone: matchMedia("(display-mode: standalone)").matches,
     isOnMobileBrowser: isOnMobileBrowser(window.navigator.userAgent)
   }
