@@ -30,7 +30,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
   const entryFilteredTags = entries.filter(entry =>
     directoryTags.every(
-      tag => !!entry.tags.find(entryTag => entryTag.title === tag)
+      tag => entry.tags.some(entryTag => entryTag.title === tag)
     )
   )
 
