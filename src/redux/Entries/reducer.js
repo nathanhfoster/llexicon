@@ -101,10 +101,13 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         )
       }
     case EntriesActionTypes.ENTRY_DELETE:
+      const hasArrayOfIds = Array.isArray(payload)
+      const filterCondition = item =>
+        hasArrayOfIds ? payload.includes(item.id) : item.id != id
       return {
         ...state,
         ...handleFilterEntries(
-          state.items.concat(state.filteredItems).filter(item => item.id != id),
+          state.items.concat(state.filteredItems).filter(filterCondition),
           state.search
         )
       }

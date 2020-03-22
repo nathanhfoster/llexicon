@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { RouteMap, RouterLinkPush } from "../../routes"
+import { RouterGoBack } from "../../routes"
 import { withRouter, Link } from "react-router-dom"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import StarGenerator from "../../components/BackgroundImage/StarGenerator"
@@ -9,7 +9,7 @@ import Rocket from "../../components/BackgroundImage/Rocket"
 import Earth from "../../components/BackgroundImage/Earth"
 import Moon from "../../components/BackgroundImage/Moon"
 import Astronaut from "../../components/BackgroundImage/Astronaut"
-import FourOFOur from "../../components/BackgroundImage/FourOFour"
+import Four0Four from "../../components/BackgroundImage/Four0Four"
 import MoonUfo from "../../components/BackgroundImage/MoonUfo"
 import "./styles.css"
 
@@ -21,10 +21,10 @@ const PageNotFound = ({ history, title }) => (
       </div>
     </div>
     <div className="central-body">
-      <FourOFOur />
-      <Link to={RouterLinkPush(history, RouteMap.HOME)} className="btn-go-home">
-        GO BACK HOME
-      </Link>
+      <Four0Four />
+      <div onClick={() => RouterGoBack(history)} className="btn-go-home">
+        TAKE ME BACK
+      </div>
     </div>
     <BackgroundObjects>
       <Rocket />

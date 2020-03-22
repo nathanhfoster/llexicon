@@ -77,22 +77,23 @@ const RouterLinkPush = (history, route) => {
 
 const RouterGoBack = (history, shouldRedirect = false) => {
   let route = RouteMap.HOME
-  if (!ValidateHistroy(history) || !history.location.state) return {}
-  const {
-    location: {
-      hash,
-      key,
-      pathname,
-      search,
-      state: { previousRoute }
-    }
-  } = history
 
-  if (previousRoute) {
+  try {
+    const {
+      location: {
+        hash,
+        key,
+        pathname,
+        search,
+        state: { previousRoute }
+      }
+    } = history
     route = previousRoute
     if (shouldRedirect) return <Redirect push to={route} />
     else return RouterPush(history, route)
-  } else return history.goBack()
+  } catch {
+    return history.goBack()
+  }
 }
 
 export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack }

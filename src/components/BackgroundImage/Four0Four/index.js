@@ -8,8 +8,8 @@ const styles = ({}) => ({
   width: 300
 })
 
-const FourOFOur = props => (
+const Four0Four = props => (
   <img style={styles(props)} src="http://salehriaz.com/404Page/img/404.svg" />
 )
 
-export default memo(FourOFOur)
+export default memo(Four0Four)
