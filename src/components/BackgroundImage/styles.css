@@ -5,7 +5,10 @@
     /* background: radial-gradient(ellipse at bottom, #70376f, #6b376e, #66366d, #62366c, #5d356b, #59346a, #553469, #513368, #4c3267, #473265, #423164, #3d3062, #34495e); */
     /* background-image: linear-gradient(to right bottom, #ae7107, #a47c1e, #9b8633, #948e47, #8f955b, #979f6a, #9fa879, #a7b288, #bbc296, #d1d3a5, #e6e4b4, #fcf5c4); */
     position: absolute;
+    height: 100%;
+    width: 100%;
 }
+
 
 .BackgroundImage img {
     background-color: var(--secondaryColor);

@@ -1,10 +1,9 @@
 import React from "react"
-import { ViewPortContainer } from ".."
 import "./styles.css"
 
 const LoadingScreen = () => {
   return (
-    <ViewPortContainer className="LoadingScreenContainer">
+    <div className="LoadingScreenContainer">
       <svg x="0" y="0">
         <g clipPath="url(#clip-path)">
           <path
@@ -101,7 +100,7 @@ const LoadingScreen = () => {
           />
         </clipPath>
       </svg>
-    </ViewPortContainer>
+    </div>
   )
 }
 

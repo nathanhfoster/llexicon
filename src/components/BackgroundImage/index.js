@@ -1,7 +1,6 @@
 import React, { Fragment } from "react"
 import { useLocation } from "react-router-dom"
 import { RouteMap } from "../../routes"
-import { ViewPortContainer } from ".."
 import StarGenerator from "./StarGenerator"
 import BackgroundObjects from "./BackgroundObjects"
 import Rocket from "./Rocket"
@@ -36,10 +35,10 @@ const BackgroundImage = () => {
 
   return (
     <Fragment>
-      <ViewPortContainer className="BackgroundImage">
+      <div className="BackgroundImage">
         {/* <Media src={bgImage} /> */}
         <StarGenerator />
-      </ViewPortContainer>
+      </div>
       {background}
     </Fragment>
   )

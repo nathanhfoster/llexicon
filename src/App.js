@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, lazy, memo, Fragment } from "react"
+import React, { useEffect, useMemo, lazy, memo } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
@@ -19,6 +19,7 @@ import memoizeProps from "./helpers/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 
 const Account = lazy(() => import("./views/Account"))
+const BackgroundImage = lazy(() => import("./components/BackgroundImage"))
 const Settings = lazy(() => import("./views/Settings"))
 const Support = lazy(() => import("./views/Support"))
 const EntryDetail = lazy(() => import("./views/EntryDetail"))
@@ -185,15 +186,13 @@ const App = ({
   )
 
   return (
-    <Fragment>
+    <div className="App RouteOverlay">
       <NavBar {...addToHomeScreenProps} />
-      <div className="App RouteOverlay">
-        <Switch>
-          {renderRouteItems}
-          <Route component={PageNotFound} />
-        </Switch>
-      </div>
-    </Fragment>
+      <Switch>
+        {renderRouteItems}
+        <Route component={PageNotFound} />
+      </Switch>
+    </div>
   )
 }
 
