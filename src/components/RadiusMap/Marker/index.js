@@ -31,7 +31,7 @@ const Marker = props => {
 }
 
 Marker.propTypes = {
-  $dimensionKey: PropTypes.string,
+  $dimensionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   $geoService: PropTypes.object,
   $getDimensions: PropTypes.func,
   $onMouseAllow: PropTypes.func,
@@ -64,7 +64,7 @@ Marker.propTypes = {
   marketValue: PropTypes.number,
   parcelNumbers: PropTypes.array,
   siteType: PropTypes.string,
-  inGroup: PropTypes.bool,
+  inGroup: PropTypes.bool
 }
 
 Marker.defaultProps = { inGroup: false, zIndex: 1 }

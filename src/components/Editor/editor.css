@@ -17,6 +17,10 @@
     box-shadow: var(--primaryBoxShadow);
 }
 
+.ql-snow .ql-tooltip.ql-flip {
+    /* transform: translateY(4px); */
+}
+
 .ql-snow .ql-tooltip a {
     background-color: inherit !important;
 }

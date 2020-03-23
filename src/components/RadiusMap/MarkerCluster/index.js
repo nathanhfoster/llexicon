@@ -35,7 +35,7 @@ const MarkerCluster = ({
 }
 
 MarkerCluster.propTypes = {
-  $dimensionKey: PropTypes.string,
+  $dimensionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   $geoService: PropTypes.object,
   $getDimensions: PropTypes.func,
   $onMouseAllow: PropTypes.func,

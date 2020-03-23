@@ -104,7 +104,7 @@ const Stick = props => {
 }
 
 Stick.propTypes = {
-  $dimensionKey: PropTypes.string,
+  $dimensionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   clientName: PropTypes.string,
   shouldShowPreview: PropTypes.bool,
   inGroup: PropTypes.bool,

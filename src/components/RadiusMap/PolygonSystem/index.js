@@ -130,7 +130,7 @@ const PolygonSystem = ({
 }
 
 PolygonSystem.propTypes = {
-  $dimensionKey: PropTypes.string,
+  $dimensionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   $geoService: PropTypes.object,
   $getDimensions: PropTypes.func,
   $hover: PropTypes.bool,

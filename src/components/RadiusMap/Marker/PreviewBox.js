@@ -99,7 +99,7 @@ const PreviewBox = ({
 }
 
 PreviewBox.propTypes = {
-  $dimensionKey: PropTypes.string,
+  $dimensionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   clientName: PropTypes.string,
   siteDescription: PropTypes.string,
   score: PropTypes.number,
