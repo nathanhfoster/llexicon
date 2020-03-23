@@ -1,3 +1,5 @@
+import { isType } from "../../../helpers"
+
 const tableSort = (data, sort, sortKey, sortUp) => {
   //JSON.parse(JSON.stringify(data))
 
@@ -15,17 +17,17 @@ const tableSort = (data, sort, sortKey, sortUp) => {
 
       // console.log("valueType: ", valueType)
 
-      if (valueType === "string") {
+      if (valueType === isType.STRING) {
         return sortUp
           ? bValue.localeCompare(aValue)
           : aValue.localeCompare(bValue)
-      } else if (valueType === "number" || valueType === "boolean") {
+      } else if (valueType === isType.NUMBER || valueType === isType.BOOLEAN) {
         return sortUp ? bValue - aValue : aValue - bValue
       } else if (Array.isArray(aValue)) {
         return sortUp
           ? bValue.join().localeCompare(aValue.join())
           : aValue.join().localeCompare(bValue.join())
-      } else if (valueType === "object") {
+      } else if (valueType === isType.OBJECT) {
         // console.log(aValue)
         // console.log("OBJECT")
       }

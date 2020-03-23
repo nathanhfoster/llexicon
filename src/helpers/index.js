@@ -487,6 +487,18 @@ const deepParseJson = jsonString => {
   }
 }
 
+const isType = {
+  UNDEFINED: "undefined",
+  NULL: "object",
+  BOOLEAN: "boolean",
+  NUMBER: "number",
+  BIG_INT: "bigint",
+  STRING: "string",
+  SYMBOL: "symbol",
+  FUNCTION: "function",
+  OBJECT: "object"
+}
+
 export {
   DeepClone,
   getObjectLength,
@@ -527,5 +539,6 @@ export {
   cleanObject,
   stripHtml,
   fuzzySearch,
-  deepParseJson
+  deepParseJson,
+  isType
 }
