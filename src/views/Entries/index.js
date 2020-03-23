@@ -1,15 +1,8 @@
-import React, {
-  Fragment,
-  useEffect,
-  useCallback,
-  useMemo,
-  memo,
-  lazy
-} from "react"
+import React, { useEffect, useCallback, useMemo, memo, lazy } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
-import { Row, Col, Button } from "reactstrap"
+import { Row } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
 import { BasicTabs, NewEntryButton, EntriesTable } from "../../components"
 import NewEntry from "../NewEntry"
@@ -23,12 +16,9 @@ import { SetEditorState } from "../../redux/TextEditor/actions"
 import "./styles.css"
 
 const ReactCalendar = lazy(() => import("../../components/ReactCalendar"))
-const EntryCards = lazy(() => import("../../components/EntryCards"))
 const EntryFolders = lazy(() => import("../../components/EntryFolders"))
 const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
-const BasicTable = lazy(() => import("../../components/BasicTable"))
 const BasicMap = lazy(() => import("../../components/BasicMap"))
-const TagsContainer = lazy(() => import("../../components/TagsContainer"))
 
 const mapStateToProps = ({
   Entries: { items, next, search },
