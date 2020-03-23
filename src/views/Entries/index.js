@@ -173,6 +173,7 @@ const Entries = ({
               history={history}
               location={location}
               match={match}
+              GetEntries={GetEntries}
             />
           )}
         </Row>

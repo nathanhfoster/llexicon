@@ -133,7 +133,7 @@ const EntriesTable = ({ entries }) => {
       {
         title: <i className="fas fa-lock" />,
         key: "is_public",
-        width: 40,
+        width: 30,
         render: item => (
           <span className="Center">{item.is_public ? "Yes" : "No"}</span>
         )

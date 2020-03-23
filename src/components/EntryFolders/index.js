@@ -14,7 +14,12 @@ const BASE_FOLDER_DIRECTORY_URL = "folders?folder=All"
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
-const EntryFolders = ({ entries, history, location: { search } }) => {
+const EntryFolders = ({
+  entries,
+  history,
+  location: { search },
+  GetEntries
+}) => {
   useEffect(() => {
     if (!search) RouterPush(history, BASE_FOLDER_DIRECTORY_URL)
   }, [])
@@ -29,8 +34,8 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
   const directoryTags = directoryPath.slice(1)
 
   const entryFilteredTags = entries.filter(entry =>
-    directoryTags.every(
-      tag => entry.tags.some(entryTag => entryTag.title === tag)
+    directoryTags.every(tag =>
+      entry.tags.some(entryTag => entryTag.title === tag)
     )
   )
 
@@ -55,6 +60,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
     if (reachedBottom) {
       setViewableEntriesRange([beginOffset, endOffset + ENTRIES_RENDER_OFFSET])
+      GetEntries()
     }
   }
 
@@ -138,7 +144,8 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 EntryFolders.propTypes = {
   entries: EntriesPropTypes,
   history: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  GetEntries: PropTypes.func.isRequired
 }
 
 EntryFolders.defaultProps = {}
