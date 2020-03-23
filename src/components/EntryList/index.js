@@ -61,12 +61,12 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
                 }
                 className="listItem"
               >
-                <div className="eventTitle">
+                <div className="Overflow eventTitle">
                   <Star size={8} color="White" animation={false} opacity={1} />
                   <span className="ml-1">{title || "No title"}</span>
                 </div>
 
-                <div className="eventDate">
+                <div className="Overflow eventDate">
                   {showImageIcon && <i className="fas fa-image mr-1" />}
                   <Moment format="h:mma">{date_created_by_author}</Moment>
                 </div>
@@ -79,7 +79,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
     [entriesWithinView, activeDate]
   )
 
-  const listItemStyles = { padding: '2px 4px', color: "white" }
+  const listItemStyles = { padding: "2px 4px", color: "white" }
 
   return (
     <BasicList
