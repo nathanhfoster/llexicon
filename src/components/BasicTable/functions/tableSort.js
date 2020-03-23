@@ -1,5 +1,6 @@
 const tableSort = (data, sort, sortKey, sortUp) => {
   //JSON.parse(JSON.stringify(data))
+
   const sortedData = [...data].sort((a, b) => {
     if (sort) {
       return sort(a, b, sortUp)
@@ -18,7 +19,7 @@ const tableSort = (data, sort, sortKey, sortUp) => {
         return sortUp
           ? bValue.localeCompare(aValue)
           : aValue.localeCompare(bValue)
-      } else if (valueType === "number") {
+      } else if (valueType === "number" || valueType === "boolean") {
         return sortUp ? bValue - aValue : aValue - bValue
       } else if (Array.isArray(aValue)) {
         return sortUp

@@ -129,6 +129,14 @@ const EntriesTable = ({ entries }) => {
             : a.EntryFiles.length - b.EntryFiles.length,
         filter: searchValue => item => item.EntryFiles.length >= searchValue,
         filterPlaceholder: "<="
+      },
+      {
+        title: <i className="fas fa-lock" />,
+        key: "is_public",
+        width: 40,
+        render: item => (
+          <span className="Center">{item.is_public ? "Yes" : "No"}</span>
+        )
       }
     ],
     []
