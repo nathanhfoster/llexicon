@@ -14,12 +14,7 @@ const BASE_FOLDER_DIRECTORY_URL = "folders?folder=All"
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
-const EntryFolders = ({
-  entries,
-  history,
-  location: { search },
-  GetEntries
-}) => {
+const EntryFolders = ({ entries, history, location: { search } }) => {
   useEffect(() => {
     if (!search) RouterPush(history, BASE_FOLDER_DIRECTORY_URL)
   }, [])
@@ -60,7 +55,6 @@ const EntryFolders = ({
 
     if (reachedBottom) {
       setViewableEntriesRange([beginOffset, endOffset + ENTRIES_RENDER_OFFSET])
-      GetEntries()
     }
   }
 
@@ -144,8 +138,7 @@ const EntryFolders = ({
 EntryFolders.propTypes = {
   entries: EntriesPropTypes,
   history: PropTypes.object,
-  location: PropTypes.object,
-  GetEntries: PropTypes.func.isRequired
+  location: PropTypes.object
 }
 
 EntryFolders.defaultProps = {}
