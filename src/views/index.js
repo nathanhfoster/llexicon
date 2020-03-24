@@ -1,21 +1,9 @@
-import About from "./About"
-import Account from "./Account"
-import Entries from "./Entries"
-import EntryDetail from "./EntryDetail"
-import Home from "./Home"
-import NewEntry from "./NewEntry"
-import PageNotFound from "./PageNotFound"
-import Settings from "./Settings"
-import Support from "./Support"
-
-export {
-  About,
-  Account,
-  Entries,
-  EntryDetail,
-  Home,
-  NewEntry,
-  PageNotFound,
-  Settings,
-  Support
-}
+export { default as About } from "./About"
+export { default as Account } from "./Account"
+export { default as Entries } from "./Entries"
+export { default as EntryDetail } from "./EntryDetail"
+export { default as Home } from "./Home"
+export { default as NewEntry } from "./NewEntry"
+export { default as PageNotFound } from "./PageNotFound"
+export { default as Settings } from "./Settings"
+export { default as Support } from "./Support"

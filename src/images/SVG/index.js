@@ -1,21 +1,10 @@
-import Bell from "./Bell"
-import CloudDownload from "./CloudDownload"
-import ListOl from "./ListOl"
-import Mobile from "./Mobile"
-import MoneyBill from "./MoneyBill"
-import PhoneLaptop from "./PhoneLaptop"
-import ShieldCheck from "./ShieldCheck"
-import UserHeadset from "./UserHeadset"
-import WifiSlash from "./WifiSlash"
-
-export {
-  Bell,
-  CloudDownload,
-  ListOl,
-  Mobile,
-  MoneyBill,
-  PhoneLaptop,
-  ShieldCheck,
-  UserHeadset,
-  WifiSlash
-}
+export { default as Bell } from "./Bell"
+export { default as CloudDownload } from "./CloudDownload"
+export { default as HandShake } from "./HandShake"
+export { default as ListOl } from "./ListOl"
+export { default as Mobile } from "./Mobile"
+export { default as MoneyBill } from "./MoneyBill"
+export { default as PhoneLaptop } from "./PhoneLaptop"
+export { default as ShieldCheck } from "./ShieldCheck"
+export { default as UserHeadset } from "./UserHeadset"
+export { default as WifiSlash } from "./WifiSlash"

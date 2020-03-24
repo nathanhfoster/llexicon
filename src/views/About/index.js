@@ -123,7 +123,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
     () =>
       features.map((feature, i) => (
         <Col key={i} xs={12} sm={6} md={4} className="pt-3 pt-sm-4">
-          <BasicCard {...feature} />
+          <BasicCard {...feature} cardBodyClassName="AboutCardBody" />
         </Col>
       )),
     [features]

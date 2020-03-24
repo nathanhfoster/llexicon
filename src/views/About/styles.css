@@ -8,3 +8,7 @@
   width: auto;
   height: 128px;
 }
+
+.AboutCardBody {
+  min-height: 168px;
+}
