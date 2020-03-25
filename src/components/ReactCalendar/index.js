@@ -73,6 +73,9 @@ const ReactCalendar = ({
 
   const handleNewEntryClick = () => RouterPush(history, RouteMap.NEW_ENTRY)
 
+  const handleOnChange = activeStartDate =>
+    handleDateChange({ activeStartDate }, false)
+
   const handleOnClickDay = activeStartDate =>
     handleDateChange({ activeStartDate, view: "month" }, false)
 
@@ -144,7 +147,7 @@ const ReactCalendar = ({
               <i className="fas fa-chevron-circle-left CalendarNavigationButton" />
             }
             onActiveStartDateChange={handleDateChange}
-            onChange={handleDateChange}
+            onChange={handleOnChange}
             // onViewChange={}
             onClickDay={handleOnClickDay}
             // onClickWeekNumber={props => console.log("Week: ", props)}
