@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -36,6 +36,8 @@ const ReactCalendar = ({
     GetUserEntriesByDate(activeDate)
   }, [])
 
+  const previousActiveStartDate = useRef(activeDate)
+
   const calendarDate = MomentJS(activeDate)
 
   const entriesWithinView = useMemo(
@@ -50,16 +52,17 @@ const ReactCalendar = ({
     [entries]
   )
 
-  const handleDateChange = (
-    { activeStartDate, view },
-    shouldGetUserEntries = true
-  ) => {
+  const handleDateChange = ({ activeStartDate, view }) => {
     const now = new Date()
     const activeDate = new Date(activeStartDate)
     activeDate.setHours(now.getHours())
     activeDate.setMinutes(now.getMinutes())
     activeDate.setSeconds(now.getSeconds())
     activeDate.setMilliseconds(now.getMilliseconds())
+
+    const shouldGetUserEntries =
+      new Date(previousActiveStartDate.current).getMonth() !==
+      activeDate.getMonth()
 
     SetCalendar({ activeDate, view })
 
@@ -126,7 +129,9 @@ const ReactCalendar = ({
           {/* https://github.com/wojtekmaj/react-calendar#readme */}
           <Calendar
             //calendarType="ISO 8601"
+            defaultValue={activeDate}
             activeStartDate={activeDate} // fallback if value not set
+            defaultView="month"
             tileContent={props => (
               <TileContent
                 {...props}
@@ -137,6 +142,7 @@ const ReactCalendar = ({
             //tileClassName={tileHandler}
             // minDetail={"year"}
             showFixedNumberOfWeeks={true}
+            showNeighboringMonth={true}
             next2Label={null}
             prev2Label={null}
             nextLabel={
@@ -148,11 +154,11 @@ const ReactCalendar = ({
             onActiveStartDateChange={handleDateChange}
             onChange={handleOnChange}
             // onViewChange={}
-            onClickDay={handleOnClickDay}
+            // onClickDay={handleOnClickDay}
             // onClickWeekNumber={props => console.log("Week: ", props)}
-            onClickMonth={handleOnClickMonth}
-            onClickYear={handleOnClickYear}
-            onClickDecade={handleOnClickDecade}
+            // onClickMonth={handleOnClickMonth}
+            // onClickYear={handleOnClickYear}
+            // onClickDecade={handleOnClickDecade}
             // onViewChange={handleDateChange}
             // onDrillDown={}
             // onDrillUp={}
