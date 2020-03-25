@@ -6,7 +6,6 @@ import { GetUserEntriesByDate } from "../../../redux/Entries/actions"
 import { withRouter } from "react-router-dom"
 import EntryPreview from "./EntryPreview"
 import MomentJS from "moment"
-import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = (
@@ -98,9 +97,7 @@ TileContent.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired
 }
 
-const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
-
   
 export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(TileContent, isEqual))
+  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(TileContent))
 )
