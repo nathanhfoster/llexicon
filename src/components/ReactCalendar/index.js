@@ -67,8 +67,8 @@ const ReactCalendar = ({
   }
 
   const handleTodayClick = () => {
-    const activeDate = new Date()
-    SetCalendar({ activeDate })
+    const activeStartDate = new Date()
+    handleDateChange({ activeStartDate, view: "month" }, false)
   }
 
   const handleNewEntryClick = () => RouterPush(history, RouteMap.NEW_ENTRY)
@@ -126,8 +126,7 @@ const ReactCalendar = ({
           {/* https://github.com/wojtekmaj/react-calendar#readme */}
           <Calendar
             //calendarType="ISO 8601"
-            value={activeDate}
-            ativeStartDate={new Date()} // fallback if value not set
+            activeStartDate={activeDate} // fallback if value not set
             tileContent={props => (
               <TileContent
                 {...props}
