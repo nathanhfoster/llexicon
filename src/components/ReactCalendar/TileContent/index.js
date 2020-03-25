@@ -58,7 +58,7 @@ const TileContent = ({
   const handleTodayClick = () =>
     setTimeout(() => RouterPush(history, RouteMap.NEW_ENTRY), 10)
 
-  const renderEntryPreviews = entries =>
+  const renderEntryPreviews = () =>
     entries.map(entry => {
       const { id, ...restOfProps } = entry
 
@@ -87,7 +87,7 @@ const TileContent = ({
       )}
       {shouldRenderEntryPreview && (
         <div className="TileContentContainer">
-          {renderEntryPreviews(entries)}
+          {renderEntryPreviews()}
         </div>
       )}
     </Fragment>
@@ -98,29 +98,9 @@ TileContent.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired
 }
 
-const isEqual = (prevProps, nextProps) => {
-  const {
-    entries,
-    shouldRenderEntryPreview,
-    shouldRenderPlusButton
-  } = prevProps
+const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
 
-  const entriesAreEqual = deepEquals(entries, nextProps.entries)
-
-  const shouldRenderEntryPreviewAreEqual =
-    shouldRenderEntryPreview === nextProps.shouldRenderEntryPreview
-
-  const shouldRenderPlusButtonAreEqual =
-    shouldRenderPlusButton === nextProps.shouldRenderPlusButton
-
-  const equal =
-    entriesAreEqual &&
-    shouldRenderEntryPreviewAreEqual &&
-    shouldRenderPlusButtonAreEqual
-
-  return equal
-}
-
+  
 export default withRouter(
   reduxConnect(mapStateToProps, mapDispatchToProps)(memo(TileContent, isEqual))
 )
