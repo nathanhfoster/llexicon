@@ -120,6 +120,7 @@ const ReactCalendar = ({
           xs={{ size: 12, order: 1 }}
           className="p-0"
         >
+          {/* https://github.com/wojtekmaj/react-calendar#readme */}
           <Calendar
             //calendarType="ISO 8601"
             value={activeDate}
@@ -142,13 +143,17 @@ const ReactCalendar = ({
             prevLabel={
               <i className="fas fa-chevron-circle-left CalendarNavigationButton" />
             }
-            onChange={null}
-            onActiveDateChange={handleDateChange}
+            onActiveStartDateChange={handleDateChange}
+            onChange={handleDateChange}
+            // onViewChange={}
             onClickDay={handleOnClickDay}
             // onClickWeekNumber={props => console.log("Week: ", props)}
             onClickMonth={handleOnClickMonth}
             onClickYear={handleOnClickYear}
             onClickDecade={handleOnClickDecade}
+            // onViewChange={handleDateChange}
+            // onDrillDown={}
+            // onDrillUp={}
           />
         </Col>
       </Row>
