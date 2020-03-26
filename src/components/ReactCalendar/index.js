@@ -73,7 +73,7 @@ const ReactCalendar = ({
   const handleNewEntryClick = () => RouterPush(history, RouteMap.NEW_ENTRY)
 
   const handleOnChange = activeStartDate =>
-    handleDateChange({ activeStartDate }, false)
+    handleDateChange({ activeStartDate, view }, false)
 
   const handleOnClickDay = activeStartDate =>
     handleDateChange({ activeStartDate, view: "month" }, false)
@@ -137,7 +137,7 @@ const ReactCalendar = ({
             )}
             // tileClassName={tileHandler}
             // minDetail={"year"}
-            // showFixedNumberOfWeeks={true}
+            showFixedNumberOfWeeks={false}
             showNeighboringMonth={true}
             next2Label={null}
             prev2Label={null}
