@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react"
+import React, { useEffect, useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -11,6 +11,7 @@ import { SetCalendar } from "../../redux/Calendar/Calendar"
 import { GetUserEntriesByDate } from "../../redux/Entries/actions"
 import TileContent from "./TileContent"
 import EntryList from "../EntryList"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 import "./stylesM.css"
 
@@ -40,15 +41,17 @@ const ReactCalendar = ({
 
   const calendarDate = MomentJS(activeDate)
 
-  const entriesWithinView = useMemo(() =>
-    entries.filter(entry => {
+  const entriesWithinView = useMemo(
+    () =>
+      entries.filter(entry => {
         const { date_created_by_author, _shouldDelete } = entry
         const entryDate = MomentJS(date_created_by_author)
         const entryDateWithinView = entryDate.isSame(calendarDate, view)
 
         return !_shouldDelete && entryDateWithinView
-      }), [entries]
- )
+      }),
+    [activeDate, entries]
+  )
 
   const handleDateChange = ({ activeStartDate, view }) => {
     const now = new Date()
@@ -126,8 +129,9 @@ const ReactCalendar = ({
         >
           {/* https://github.com/wojtekmaj/react-calendar#readme */}
           <Calendar
-            //calendarType="ISO 8601"
+            // calendarType="ISO 8601"
             defaultValue={activeDate}
+            defaultActiveStartDate={activeDate}
             activeStartDate={activeDate} // fallback if value not set
             defaultView="month"
             tileContent={props => (
@@ -139,7 +143,7 @@ const ReactCalendar = ({
             )}
             // tileClassName={tileHandler}
             // minDetail={"year"}
-            showFixedNumberOfWeeks={false}
+            showFixedNumberOfWeeks={true}
             showNeighboringMonth={true}
             next2Label={null}
             prev2Label={null}
@@ -178,6 +182,8 @@ ReactCalendar.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired
 }
 
+const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps, true)
+
 export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(ReactCalendar)
+  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(ReactCalendar))
 )
