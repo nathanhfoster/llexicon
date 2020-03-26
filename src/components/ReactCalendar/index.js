@@ -41,6 +41,8 @@ const ReactCalendar = ({
 
   const calendarDate = MomentJS(activeDate)
 
+  const activeStartDate = calendarDate.startOf("month").toDate()
+
   const entriesWithinView = useMemo(
     () =>
       entries.filter(entry => {
@@ -130,9 +132,9 @@ const ReactCalendar = ({
           {/* https://github.com/wojtekmaj/react-calendar#readme */}
           <Calendar
             // calendarType="ISO 8601"
-            defaultValue={activeDate}
-            defaultActiveStartDate={activeDate}
-            activeStartDate={activeDate} // fallback if value not set
+            // defaultValue={activeDate}
+            // defaultActiveStartDate={activeDate}
+            activeStartDate={activeStartDate}
             defaultView="month"
             tileContent={props => (
               <TileContent
