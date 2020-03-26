@@ -40,13 +40,15 @@ const ReactCalendar = ({
 
   const calendarDate = MomentJS(activeDate)
 
-  const entriesWithinView = entries.filter(entry => {
+  const entriesWithinView = useMemo(() =>
+    entries.filter(entry => {
         const { date_created_by_author, _shouldDelete } = entry
         const entryDate = MomentJS(date_created_by_author)
         const entryDateWithinView = entryDate.isSame(calendarDate, view)
 
         return !_shouldDelete && entryDateWithinView
-      })
+      }), [entries]
+ )
 
   const handleDateChange = ({ activeStartDate, view }) => {
     const now = new Date()
