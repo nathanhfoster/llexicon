@@ -133,8 +133,9 @@ const ReactCalendar = ({
           <Calendar
             // calendarType="ISO 8601"
             // defaultValue={activeDate}
-            // defaultActiveStartDate={activeDate}
+            // defaultActiveStartDate={activeStartDate}
             activeStartDate={activeStartDate}
+            value={activeDate}
             defaultView="month"
             tileContent={props => (
               <TileContent
@@ -145,6 +146,7 @@ const ReactCalendar = ({
             )}
             // tileClassName={tileHandler}
             // minDetail={"year"}
+            showWeekNumbers={false}
             showFixedNumberOfWeeks={true}
             showNeighboringMonth={true}
             next2Label={null}
