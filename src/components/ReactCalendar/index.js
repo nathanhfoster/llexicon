@@ -139,9 +139,9 @@ const ReactCalendar = ({
                 entriesWithinView={entriesWithinView}
               />
             )}
-            //tileClassName={tileHandler}
+            // tileClassName={tileHandler}
             // minDetail={"year"}
-            showFixedNumberOfWeeks={true}
+            // showFixedNumberOfWeeks={true}
             showNeighboringMonth={true}
             next2Label={null}
             prev2Label={null}
