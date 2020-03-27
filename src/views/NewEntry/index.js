@@ -125,6 +125,7 @@ const NewEntry = ({
             <InputGroupAddon addonType="append" onClick={handlePostEntry}>
               <InputGroupText
                 tag={Button}
+                className="SaveButton"
                 color="primary"
                 disabled={postDisabled}
                 type="submit"

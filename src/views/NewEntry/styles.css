@@ -10,6 +10,6 @@
   background-color: var(--quinaryColor);
 }
 
-.NewEntry .btn:first-child {
+.SaveButton {
   box-shadow: var(--primaryBoxShadow) !important;
 }
