@@ -126,7 +126,6 @@ const NewEntry = ({
               <InputGroupText
                 tag={Button}
                 color="primary"
-                style={{ color: "white" }}
                 disabled={postDisabled}
                 type="submit"
               >

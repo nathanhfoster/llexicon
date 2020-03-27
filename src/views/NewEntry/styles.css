@@ -5,3 +5,11 @@
 .EditorContainer {
   height: calc(100vh - var(--navBarHeight) - var(--inputHeight));
 }
+
+.NewEntry .input-group-append {
+  background-color: var(--quinaryColor);
+}
+
+.NewEntry .btn {
+  box-shadow: var(--primaryBoxShadow) !important;
+}
