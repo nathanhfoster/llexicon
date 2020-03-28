@@ -6,6 +6,7 @@ import BackgroundObjects from "./BackgroundObjects"
 import Rocket from "./Rocket"
 import Earth from "./Earth"
 import Moon from "./Moon"
+import CrecentMoon from "./CrecentMoon"
 import "./styles.css"
 
 const RocketEarthMoon = () => (

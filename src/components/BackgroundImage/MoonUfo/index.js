@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import "./styles.css"
 
-const containerStyles = ({ top = 10, right = 10, spin = 27 }) => ({
+const containerStyles = ({ top, right, spin }) => ({
   width: 80,
   position: "absolute",
   top: `${top}%`,
@@ -22,6 +22,12 @@ MoonUfo.propTypes = {
   top: PropTypes.number,
   left: PropTypes.number,
   spin: PropTypes.number
+}
+
+MoonUfo.defaultProps = {
+  top: 10,
+  right: 10,
+  sping: 27
 }
 
 export default memo(MoonUfo)

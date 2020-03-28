@@ -5,7 +5,7 @@ import { getRandomInt } from "../../../helpers"
 import { StarColorGradients } from "../Star"
 import Star from "../Star"
 
-const StarGenerator = ({ length = 101, position = "inherit" }) => {
+const StarGenerator = ({ length, position }) => {
   let topPositions = new ArrayList({ ofFloats: true, length: 101 })
   let leftPositions = new ArrayList({ ofFloats: true, length: 101 })
   let stars = []
@@ -44,6 +44,11 @@ StarGenerator.propTypes = {
   opacity: PropTypes.number,
   marginLeft: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   marginRight: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+}
+
+StarGenerator.defaultProps = {
+  length: 101,
+  position: "inherit"
 }
 
 export default memo(StarGenerator)

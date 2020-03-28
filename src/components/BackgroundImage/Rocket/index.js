@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import "./styles.css"
 
-const styles = ({ top = 75, move = 200 }) => ({
+const styles = ({ top, move }) => ({
   width: 40,
   zIndex: 101,
   position: "absolute",
@@ -22,6 +22,11 @@ const Rocket = props => (
 Rocket.propTypes = {
   top: PropTypes.number,
   move: PropTypes.number
+}
+
+Rocket.defaultProps = {
+  top: 75,
+  move: 200
 }
 
 export default memo(Rocket)

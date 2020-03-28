@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import "../Earth/styles.css"
 
-const styles = ({ top = 12, left = 25, spin = 27 }) => ({
+const styles = ({ top, left, spin }) => ({
   width: 80,
   position: "absolute",
   top: `${top}%`,
@@ -23,6 +23,12 @@ Moon.propTypes = {
   top: PropTypes.number,
   left: PropTypes.number,
   spin: PropTypes.number
+}
+
+Moon.defaultProps = {
+  top: 12,
+  left: 25,
+  spin: 27
 }
 
 export default memo(Moon)
