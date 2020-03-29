@@ -66,7 +66,7 @@ const EntryFilesCarousel = ({
   }
 
   return (
-    <Container className="EntryFilesCarousel Container">
+    <Container className="EntryFilesCarousel">
       <Row>
         <Col
           xs={12}

@@ -19,19 +19,19 @@ const { NODE_ENV } = process.env
 // const ReduxStore = storeFactory(initialState)
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Suspense fallback={<LoadingScreen />}>
-          <AlertNotifications />
-          <BrowserRouter>
-            <BackgroundImage />
-            <App />
-          </BrowserRouter>
-        </Suspense>
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Suspense fallback={<LoadingScreen />}>
+        <AlertNotifications />
+        <BrowserRouter>
+          <BackgroundImage />
+          <App />
+        </BrowserRouter>
+      </Suspense>
+    </PersistGate>
+  </Provider>,
+  // </React.StrictMode>,
   document.getElementById("root")
 )
 

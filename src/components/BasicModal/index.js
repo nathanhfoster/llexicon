@@ -27,6 +27,16 @@ const BasicModal = ({
 
   const toggle = () => setIsOpen(!isOpen)
 
+  const handleConfirm = () => {
+    onSaveCallback && onSaveCallback()
+    toggle()
+  }
+
+  const handleCancel = () => {
+    onCancelCallback && onCancelCallback()
+    toggle()
+  }
+
   return (
     <Fragment>
       {button === false ? null : button ? (
@@ -79,15 +89,12 @@ const BasicModal = ({
               <Button
                 className="mr-1"
                 color="primary"
-                onClick={() => {
-                  onSaveCallback && onSaveCallback()
-                  toggle()
-                }}
+                onClick={handleConfirm}
                 disabled={saveDisabled}
               >
                 {confirmButtonTitle}
               </Button>
-              <Button color="danger" onClick={toggle}>
+              <Button color="danger" onClick={handleCancel}>
                 {cancelButtonTitle}
               </Button>
             </Fragment>
