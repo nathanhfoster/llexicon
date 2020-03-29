@@ -13,7 +13,7 @@ const RouteMap = {
   ENTRIES_CALENDAR: "/entries/calendar",
   ENTRY_DETAIL: "/entry/:entryId",
   ENTRIES: "/entries",
-  ENTRIES_MINIMAL: "/entries/minimal",
+  ENTRIES_LIST: "/entries/list",
   ENTRIES_TABLE: "/entries/table",
   ENTRIES_MAP: "/entries/map",
   ENTRIES_FOLDERS: "/entries/folders",

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, lazy, memo } from "react"
+import React, { useEffect, useMemo, lazy, memo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
@@ -43,7 +43,7 @@ const {
   ENTRIES_CALENDAR,
   ENTRY_DETAIL,
   ENTRIES,
-  ENTRIES_MINIMAL,
+  ENTRIES_LIST,
   ENTRIES_FOLDERS,
   ENTRIES_TABLE,
   ENTRIES_MAP,
@@ -149,7 +149,7 @@ const App = ({
         NEW_ENTRY,
         ENTRIES_CALENDAR,
         ENTRIES_FOLDERS,
-        ENTRIES_MINIMAL,
+        ENTRIES_LIST,
         ENTRIES_TABLE,
         ENTRIES_MAP,
         NEW_ENTRY
@@ -186,13 +186,15 @@ const App = ({
   )
 
   return (
-    <div className="App RouteOverlay">
+    <Fragment>
       <NavBar {...addToHomeScreenProps} />
-      <Switch>
-        {renderRouteItems}
-        <Route component={PageNotFound} />
-      </Switch>
-    </div>
+      <div className="App RouteOverlay">
+        <Switch>
+          {renderRouteItems}
+          <Route component={PageNotFound} />
+        </Switch>
+      </div>
+    </Fragment>
   )
 }
 

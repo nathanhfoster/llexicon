@@ -72,7 +72,7 @@ const Entries = ({
   const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
 
   if (pathname === RouteMap.ENTRIES) {
-    RouterPush(history, RouteMap.ENTRIES_MINIMAL)
+    RouterPush(history, RouteMap.ENTRIES_LIST)
   }
 
   if (TextEditor.latitude && TextEditor.longitude) {
@@ -170,7 +170,7 @@ const Entries = ({
       onClickCallback: handleTabChange
     },
     {
-      tabId: RouteMap.ENTRIES_MINIMAL,
+      tabId: RouteMap.ENTRIES_LIST,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-th-list" />,
       render: shouldRenderNewEntryButton ? (
