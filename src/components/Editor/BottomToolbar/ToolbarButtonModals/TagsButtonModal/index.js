@@ -10,7 +10,7 @@ import {
   TopKFrequentStrings
 } from "../../../../../helpers"
 import memoizeProps from "../../../../../helpers/memoizeProps"
-import { EntriesPropTypes } from "../../../../../redux/Entries/propTypes"
+import { EntriesPropTypes, EntryTagsProps } from "../../../../../redux/Entries/propTypes"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -162,8 +162,8 @@ TagsButtonModal.propTypes = {
   UserId: PropTypes.number,
   items: EntriesPropTypes,
   filteredItems: EntriesPropTypes,
-  EntryTags: PropTypes.arrayOf(PropTypes.object).isRequired,
-  tags: PropTypes.arrayOf(PropTypes.object).isRequired,
+  EntryTags: EntryTagsProps.isRequired,
+  tags: EntryTagsProps.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
   onChangeCallback: PropTypes.func.isRequired
 }

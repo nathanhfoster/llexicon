@@ -5,6 +5,7 @@ import { EntryFilesProps } from "../../redux/Entries/propTypes"
 import "./styles.css"
 
 const EntryFilesCarousel = ({
+  className,
   files,
   editorRef,
   overflowX,
@@ -66,7 +67,7 @@ const EntryFilesCarousel = ({
   }
 
   return (
-    <Container className="EntryFilesCarousel">
+    <Container className={className}>
       <Row>
         <Col
           xs={12}
@@ -87,6 +88,7 @@ EntryFilesCarousel.propTypes = {
 }
 
 EntryFilesCarousel.defaultProps = {
+  className: "EntryFilesCarousel",
   overflowX: "auto",
   overflowY: "hidden",
   whiteSpace: "nowrap"

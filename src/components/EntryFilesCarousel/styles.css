@@ -1,5 +1,6 @@
 .EntryFilesCarousel {
-   
+   height: 100%;
+   overflow: auto;
 }
 
 .EntryFilesCarouselImageContainer {
