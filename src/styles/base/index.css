@@ -7,7 +7,7 @@
 .RouteOverlay {
   overflow: hidden;
   position: absolute;
-  z-index: 102;
+  /* z-index: 102; */
   top: var(--navBarHeight);
   bottom: 0;
   left: 0;
