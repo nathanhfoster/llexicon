@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { EntryCards } from "../"
@@ -29,4 +29,12 @@ EntriesRandom.propTypes = {
   filteredItems: EntriesPropTypes
 }
 
-export default reduxConnect(mapStateToProps)(EntriesRandom)
+const isEqual = (prevProps, nextProps) => {
+const prevEntries = prevProps.items.concat(prevProps.filteredItems)
+const nextEntries = nextProps.items.concat(nextProps.filteredItems)
+const isEqual = prevEntries.length === nextEntries.length
+
+return isEqual
+}
+
+export default reduxConnect(mapStateToProps)(memo(EntriesRandom, isEqual))
