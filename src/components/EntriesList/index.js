@@ -38,6 +38,7 @@ const EntriesList = ({
   SyncEntries,
   GetUserEntries
 }) => {
+  const listLength = entries.length
   const GetEntries = useCallback(() => {
     if (entriesSearch || !nextEntryPage) {
       return
@@ -49,13 +50,13 @@ const EntriesList = ({
     SyncEntries(
       () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
     )
-  }, [entries.length])
+  }, [listLength])
   return (
     <BasicList
       height={height}
       width={width}
       list={entries}
-      itemCount={entries.length}
+      itemCount={listLength}
       itemSize={itemSize}
       onItemsRendered={onItemsRendered}
       render={renderMinimalEntries}
