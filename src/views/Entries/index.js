@@ -17,7 +17,7 @@ import "./styles.css"
 
 const ReactCalendar = lazy(() => import("../../components/ReactCalendar"))
 const EntryFolders = lazy(() => import("../../components/EntryFolders"))
-const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
+const EntriesList = lazy(() => import("../../components/EntriesList"))
 const BasicMap = lazy(() => import("../../components/BasicMap"))
 
 const mapStateToProps = ({
@@ -87,43 +87,6 @@ const Entries = ({
 
   const activeTab = pathname
 
-  const handleItemsRendered = useCallback(
-    ({
-      overscanStartIndex,
-      overscanStopIndex,
-      visibleStartIndex,
-      visibleStopIndex
-    }) => {
-      const { length } = viewableEntries
-      const bottomOfListIndex = length === 0 ? length : length - 1
-      const reachedBottomOfList =
-        bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
-
-      // console.log("overscanStopIndex: ", overscanStopIndex)
-      // console.log("visibleStopIndex: ", visibleStopIndex)
-      // console.log("reachedBottomOfList: ", reachedBottomOfList)
-      // console.log("---------------------------------------")
-
-      if (reachedBottomOfList) {
-        GetEntries()
-      }
-    },
-    [viewableEntries.length]
-  )
-
-  const GetEntries = () => {
-    if (entriesSearch || !nextEntryPage) {
-      return
-    }
-
-    const split = nextEntryPage.split(/\?page=(.*)/)
-    const pageNumber = split[1]
-
-    SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
-    )
-  }
-
   const handleTabChange = tabId => RouterPush(history, tabId)
 
   const tabs = [
@@ -179,10 +142,9 @@ const Entries = ({
         </Row>
       ) : (
         <Row>
-          <EntriesMinimal
+          <EntriesList
             height={minimalEntriesListHeight}
             entries={viewableEntries}
-            onItemsRendered={handleItemsRendered}
           />
         </Row>
       ),

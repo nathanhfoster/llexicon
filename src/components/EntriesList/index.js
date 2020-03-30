@@ -8,19 +8,13 @@ import deepEquals from "../../helpers/deepEquals"
 const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
   const entry = data[index]
   return (
-    <Col key={entry.id} xs={12} style={{ ...style, padding: '0.5rem 0.5rem 0 0.5rem' }} >
+    <Col key={entry.id} xs={12} style={style} className="px-0 py-1">
       <EntryMinimal {...entry} />
     </Col>
   )
 }
 
-const EntriesMinimal = ({
-  onItemsRendered,
-  height,
-  width,
-  itemSize,
-  entries
-}) => {
+const EntriesList = ({ onItemsRendered, height, width, itemSize, entries }) => {
   const minimalEntriesListRef = useRef()
 
   return (
@@ -38,14 +32,14 @@ const EntriesMinimal = ({
   )
 }
 
-EntriesMinimal.propTypes = {
+EntriesList.propTypes = {
   entries: PropTypes.arrayOf(PropTypes.object.isRequired),
   onItemsRendered: PropTypes.func,
   height: PropTypes.number.isRequired,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
 
-EntriesMinimal.defaultProps = {
+EntriesList.defaultProps = {
   height: 500,
   width: "100%",
   itemSize: 110
@@ -53,4 +47,4 @@ EntriesMinimal.defaultProps = {
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
 
-export default memo(EntriesMinimal, isEqual)
+export default memo(EntriesList, isEqual)

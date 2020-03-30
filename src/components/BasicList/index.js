@@ -88,9 +88,7 @@ class BasicList extends PureComponent {
           <Fragment>
             <span className="Overflow FirstValue">{value}</span>
             {otherValue && (
-              <span className="Overflow OtherValue">
-                {otherValue}
-              </span>
+              <span className="Overflow OtherValue">{otherValue}</span>
             )}
           </Fragment>
         )}
@@ -107,8 +105,8 @@ class BasicList extends PureComponent {
     const { onScrollToBottomOfListCallback, list } = this.props
 
     if (!onScrollToBottomOfListCallback) return
-    const listLength = list.length
-    const bottomOfListIndex = listLength === 0 ? listLength : listLength - 1
+    const { length } = list
+    const bottomOfListIndex = length === 0 ? length : length - 1
     const reachedBottomOfList =
       bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
     // console.log("overscanStopIndex: ", overscanStopIndex)
