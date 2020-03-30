@@ -58,7 +58,11 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
       <Row className="HomeRow">
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Rediscover this day</Header>
-          <Moment format="MMMM D, YYYY">{today}</Moment>
+        </Col>
+        <Col xs={12} className="p-0 mt-1">
+          <Header>
+            <Moment format="MMMM D, YYYY">{today}</Moment>
+          </Header>
         </Col>
         <EntriesRediscover />
       </Row>
