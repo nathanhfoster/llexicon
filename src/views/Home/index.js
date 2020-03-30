@@ -60,7 +60,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
           <Header fill="var(--quinaryColor)">Rediscover this day</Header>
         </Col>
         <Col xs={12} className="p-0 mt-1">
-          <Header>
+          <Header fontSize="1.5rem">
             <Moment format="MMMM D">{today}</Moment>
           </Header>
         </Col>
