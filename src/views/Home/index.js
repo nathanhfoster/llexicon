@@ -10,6 +10,7 @@ import {
 } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { RouterPush, RouteMap } from "../../routes"
+import Moment from "react-moment"
 import "./styles.css"
 
 const HomeButtons = lazy(() => import("../../components/EntryNavButtons"))
@@ -25,6 +26,7 @@ const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
 })
 
 const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
+  const today = new Date()
   const handleOnClick = () =>
     RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS_ENTRIES"])
 
@@ -56,6 +58,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
       <Row className="HomeRow">
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Rediscover this day</Header>
+          <Moment format="MMMM D, YYYY">{today}</Moment>
         </Col>
         <EntriesRediscover />
       </Row>
