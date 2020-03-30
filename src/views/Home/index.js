@@ -61,7 +61,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
         </Col>
         <Col xs={12} className="p-0 mt-1">
           <Header>
-            <Moment format="MMMM D, YYYY">{today}</Moment>
+            <Moment format="MMMM D">{today}</Moment>
           </Header>
         </Col>
         <EntriesRediscover />
