@@ -1,42 +1,76 @@
-import React, { useRef, memo } from "react"
+import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { Col } from "reactstrap"
-import { FixedSizeList } from "react-window"
-import EntryMinimal from "../EntryMinimal"
+import { BasicList, EntryMinimal } from "../"
+import { EntriesPropTypes } from "../../redux/Entries/propTypes"
+import { SyncEntries, GetUserEntries } from "../../redux/Entries/actions"
 import deepEquals from "../../helpers/deepEquals"
 
 const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
   const entry = data[index]
+
   return (
-    <Col key={entry.id} xs={12} style={style} className="px-0 py-1">
+    <Col key={entry.id} xs={12} className="px-0 py-1" style={style}>
       <EntryMinimal {...entry} />
     </Col>
   )
 }
 
-const EntriesList = ({ onItemsRendered, height, width, itemSize, entries }) => {
-  const minimalEntriesListRef = useRef()
+const mapStateToProps = ({ Entries: { next, search } }) => ({
+  nextEntryPage: next,
+  entriesSearch: search
+})
 
+const mapDispatchToProps = {
+  SyncEntries,
+  GetUserEntries
+}
+
+const EntriesList = ({
+  nextEntryPage,
+  entriesSearch,
+  onItemsRendered,
+  height,
+  width,
+  itemSize,
+  entries,
+  SyncEntries,
+  GetUserEntries
+}) => {
+  const GetEntries = useCallback(() => {
+    if (entriesSearch || !nextEntryPage) {
+      return
+    }
+
+    const split = nextEntryPage.split(/\?page=(.*)/)
+    const pageNumber = split[1]
+
+    SyncEntries(
+      () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
+    )
+  }, [entries.length])
   return (
-    <FixedSizeList
-      ref={minimalEntriesListRef}
+    <BasicList
       height={height}
       width={width}
-      itemData={entries}
+      list={entries}
       itemCount={entries.length}
       itemSize={itemSize}
       onItemsRendered={onItemsRendered}
-    >
-      {renderMinimalEntries}
-    </FixedSizeList>
+      render={renderMinimalEntries}
+      onScrollToBottomOfListCallback={GetEntries}
+    />
   )
 }
 
 EntriesList.propTypes = {
-  entries: PropTypes.arrayOf(PropTypes.object.isRequired),
+  entries: EntriesPropTypes,
   onItemsRendered: PropTypes.func,
   height: PropTypes.number.isRequired,
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  SyncEntries: PropTypes.func.isRequired,
+  GetUserEntries: PropTypes.func.isRequired
 }
 
 EntriesList.defaultProps = {
@@ -47,4 +81,7 @@ EntriesList.defaultProps = {
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
 
-export default memo(EntriesList, isEqual)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(memo(EntriesList, isEqual))

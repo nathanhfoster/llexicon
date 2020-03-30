@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback, useMemo, memo, lazy } from "react"
-import { connect as reduxConnect } from "react-redux"
+import React, { useEffect, useMemo, memo, lazy } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Row } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
