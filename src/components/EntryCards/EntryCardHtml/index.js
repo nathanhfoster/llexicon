@@ -12,7 +12,7 @@ const EntryCardHtml = ({ html, modules }) => (
   />
 )
 
-EntryCardHtml.propTypes = { entries: PropTypes.arrayOf(PropTypes.object) }
+EntryCardHtml.propTypes = { html: PropTypes.string, modules: PropTypes.object }
 
 EntryCardHtml.defaultProps = { modules: { toolbar: false } }
 

@@ -4,7 +4,8 @@ import { Axios, AxiosForm } from "../Actions"
 import {
   getFileFromBase64,
   htmlToArrayOfBase64,
-  cleanObject
+  cleanObject,
+  getRandomInt
 } from "../../helpers"
 import FormData from "form-data"
 import qs from "qs"

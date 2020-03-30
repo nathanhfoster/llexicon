@@ -142,8 +142,11 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
         </Col>
       </Row>
       <Row>{renderFeatures}</Row>
-      <hr style={{ height: 40 }} />
-      <Footer />
+      <Row className="mt-3 mt-sm-4">
+        <Col xs={12}>
+          <Footer />
+        </Col>
+      </Row>
     </Container>
   )
 }

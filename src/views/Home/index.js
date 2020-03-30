@@ -13,6 +13,10 @@ import { RouterPush, RouteMap } from "../../routes"
 import "./styles.css"
 
 const HomeButtons = lazy(() => import("../../components/EntryNavButtons"))
+const EntriesRandom = lazy(() => import("../../components/EntriesRandom"))
+const EntriesRediscover = lazy(() =>
+  import("../../components/EntriesRediscover")
+)
 const Footer = lazy(() => import("../../components/Footer"))
 
 const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
@@ -27,7 +31,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
   return (
     <Container tag="article" className="Home Container">
       <Row className="mb-3">
-        <Col xs={12} className="pt-3 pt-sm-4">
+        <Col xs={12} className="px-0 pt-3 pt-sm-4">
           <BasicCard
             header={<LogoImage height={256} width={256} />}
             title={<Header>Astral Tree</Header>}
@@ -43,16 +47,29 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col xs={12}>
-          <Header fill="var(--primaryColor)">Entries Table</Header>
+      <Row className="HomeRow">
+        <Col xs={12} className="p-0">
+          <Header fill="var(--quinaryColor)">Entries table</Header>
         </Col>
-        <Col xs={12}>
-          <EntriesTable entries={entries} />
+        <EntriesTable entries={entries} />
+      </Row>
+      <Row className="HomeRow">
+        <Col xs={12} className="p-0">
+          <Header fill="var(--quinaryColor)">Rediscover this day</Header>
+        </Col>
+        <EntriesRediscover />
+      </Row>
+      <Row className="HomeRow">
+        <Col xs={12} className="p-0">
+          <Header fill="var(--quinaryColor)">Random entries</Header>
+        </Col>
+        <EntriesRandom />
+      </Row>
+      <Row>
+        <Col xs={12} className="p-0">
+          <Footer />
         </Col>
       </Row>
-      <hr style={{ height: 40 }} />
-      <Footer />
     </Container>
   )
 }
