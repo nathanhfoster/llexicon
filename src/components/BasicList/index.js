@@ -14,11 +14,14 @@ class BasicList extends PureComponent {
     className: PropTypes.string,
     list: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.any.isRequired,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-          .isRequired,
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        value: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.object
+        ]),
         otherValue: PropTypes.any
-      }).isRequired
+      })
     ),
     render: PropTypes.func,
 
@@ -130,8 +133,7 @@ class BasicList extends PureComponent {
       render
     } = this.props
     const styles = {
-      position: render ? "relative" : listPosition,
-      background: "transparent"
+      position: render ? "relative" : listPosition
     }
     return (
       <FixedSizeList
