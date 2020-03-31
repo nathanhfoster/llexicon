@@ -49,13 +49,13 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
           />
         </Col>
       </Row>
-      <Row className="HomeRow">
+      <Row className="mb-3">
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Entries table</Header>
         </Col>
         <EntriesTable entries={entries} />
       </Row>
-      <Row className="HomeRow">
+      <Row className="HomeRow mb-3 pb-1">
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Rediscover this day</Header>
         </Col>
@@ -66,7 +66,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
         </Col>
         <EntriesRediscover />
       </Row>
-      <Row className="HomeRow">
+      <Row className="HomeRow mb-3 pb-1">
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Random entries</Header>
         </Col>
