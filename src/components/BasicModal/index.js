@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, Fragment, cloneElement } from "react"
+import React, { useState, memo, Fragment, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./styles.css"
@@ -7,35 +7,33 @@ const BasicModal = ({
   show,
   title,
   onClickCallback,
-  confirmButtonTitle,
   onSaveCallback,
-  cancelButtonTitle,
   onCancelCallback,
   children,
   className,
   disabled,
-  saveDisabled,
+  disabledSave,
   button,
   buttonTitle,
-  footer
+  footer,
+  saveButton,
+  cancelButton
 }) => {
   const [isOpen, setIsOpen] = useState(show)
 
-  useEffect(() => {
-    if (show !== isOpen) setIsOpen(show)
-  }, [show])
-
   const toggle = () => setIsOpen(!isOpen)
 
-  const handleConfirm = () => {
-    onSaveCallback && onSaveCallback()
-    toggle()
-  }
-
-  const handleCancel = () => {
+  const handleClose = () => {
     onCancelCallback && onCancelCallback()
     toggle()
   }
+
+  const handleSave = () => {
+    onSaveCallback && onSaveCallback()
+    handleClose()
+  }
+
+  const shouldShowModal = show !== undefined ? show : isOpen
 
   return (
     <Fragment>
@@ -66,7 +64,7 @@ const BasicModal = ({
         </Button>
       )}
       <Modal
-        isOpen={isOpen}
+        isOpen={shouldShowModal}
         toggle={toggle}
         className="BasicModal"
         size="lg"
@@ -86,17 +84,11 @@ const BasicModal = ({
         <ModalFooter className="Center">
           {footer || (
             <Fragment>
-              <Button
-                className="mr-1"
-                color="primary"
-                onClick={handleConfirm}
-                disabled={saveDisabled}
-              >
-                {confirmButtonTitle}
-              </Button>
-              <Button color="danger" onClick={handleCancel}>
-                {cancelButtonTitle}
-              </Button>
+              {cloneElement(cancelButton, { onClick: handleClose })}
+              {cloneElement(saveButton, {
+                disabled: disabledSave,
+                onClick: handleSave
+              })}
             </Fragment>
           )}
         </ModalFooter>
@@ -110,27 +102,28 @@ BasicModal.propTypes = {
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
-  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   buttonTitle: PropTypes.string,
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  saveDisabled: PropTypes.bool,
+  disabledSave: PropTypes.bool,
   button: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.func,
     PropTypes.bool
   ]),
-  buttonTitle: PropTypes.string,
   footer: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
 }
 
 BasicModal.defaultProps = {
-  confirmButtonTitle: "Save",
-  cancelButtonTitle: "Cancel",
-  show: false,
+  cancelButton: <Button color="danger">Cancel</Button>,
+  saveButton: (
+    <Button className="mr-1" color="primary">
+      Save
+    </Button>
+  ),
   disabled: false,
-  saveDisabled: false
+  disabledSave: false
 }
 
 export default memo(BasicModal)

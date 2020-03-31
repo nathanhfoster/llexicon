@@ -39,7 +39,7 @@ ToolbarModal.propTypes = {
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  saveDisabled: PropTypes.bool
+  disabledSave: PropTypes.bool
 }
 
 export default memo(ToolbarModal)

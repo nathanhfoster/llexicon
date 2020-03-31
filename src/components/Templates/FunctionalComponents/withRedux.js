@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
+
+const mapStateToProps = ({}) => ({})
+
+const mapDispatchToProps = {}
 
 const getInitialState = ({}) => {
   return {}
@@ -24,4 +29,4 @@ Template.propTypes = {}
 
 Template.defaultProps = {}
 
-export default memo(Template)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Template)
