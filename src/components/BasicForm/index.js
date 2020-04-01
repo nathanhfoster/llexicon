@@ -31,8 +31,12 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
           label,
           type,
           placeholder,
-          check,
-          required
+          required,
+          autoFocus,
+          error,
+          multiline,
+          rows,
+          className
         } = input
         return (
           <FormGroup check={check} key={id} row>
@@ -78,10 +82,15 @@ BasicForm.propTypes = {
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       defaultValue: PropTypes.string,
       label: PropTypes.string,
-      type: PropTypes.string,
+      type: PropTypes.oneOf(["email", "text", "password", "radio"]),
+      name: PropTypes.string,
       placeholder: PropTypes.string,
-      check: PropTypes.bool,
-      required: PropTypes.bool
+      required: PropTypes.bool,
+      autoFocus: PropTypes.bool,
+      error: PropTypes.bool,
+      multiline: PropTypes.bool,
+      rows: PropTypes.string,
+      className: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
     }).isRequired
   ),
   onSubmit: PropTypes.func,
