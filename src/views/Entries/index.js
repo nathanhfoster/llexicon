@@ -173,7 +173,7 @@ const Entries = ({
         <Row>
           <BasicMap
             renderUserLocation
-            height={viewPortHeight - 54}
+            height={viewPortHeight - 46}
             locations={viewableEntries}
             getAddressOnMarkerClick
             onChangeCallback={({ entryId, address, latitude, longitude }) => {
