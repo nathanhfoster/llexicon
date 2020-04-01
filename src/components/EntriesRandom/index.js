@@ -15,10 +15,12 @@ const EntriesRandom = ({ items, filteredItems }) => {
   const entries = items.concat(filteredItems)
   let randomEntries = []
 
-  for (let i = 0; i < NUMBER_OF_RANDOM_ENTRIES; i++) {
-    const randomIndex = getRandomInt(0, entries.length - 1)
-    const entry = entries[randomIndex]
-    randomEntries.push(entry)
+  if (entries.length > 0) {
+    for (let i = 0; i < NUMBER_OF_RANDOM_ENTRIES; i++) {
+      const randomIndex = getRandomInt(0, entries.length - 1)
+      const entry = entries[randomIndex]
+      randomEntries.push(entry)
+    }
   }
 
   return <EntryCards entries={randomEntries} />
