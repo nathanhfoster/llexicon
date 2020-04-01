@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { Editor, ReactDatePicker } from "../../components"
@@ -6,10 +6,12 @@ import {
   Container,
   Row,
   Col,
+  Form,
   InputGroup,
   Input,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
+  Button
 } from "reactstrap"
 import { SetCalendar } from "../../redux/Calendar/Calendar"
 import { PostReduxEntry, SyncEntries } from "../../redux/Entries/actions"
@@ -17,6 +19,7 @@ import {
   SetEditorState,
   ClearEditorState
 } from "../../redux/TextEditor/actions"
+import { DEFAULT_STATE_TEXT_EDITOR } from "../../redux/TextEditor/reducer"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -47,26 +50,42 @@ const NewEntry = ({
   SetEditorState,
   ClearEditorState
 }) => {
-  const shouldPostEntry = !!entry.title
+  const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
+
+  const postDisabled = editorStateHtmlIsBlank && !entry.title
 
   activeDate = new Date(activeDate)
 
-  useEffect(() => {
-    return async () => {
-      if (shouldPostEntry) {
-        const payload = {
-          id: `NewEntry-${entriesLength}`,
-          ...entry,
-          date_created_by_author: activeDate,
-          _shouldPost: true
-        }
+  const handlePostEntry = async () => {
+    const {
+      html,
+      title,
+      tags,
+      rating,
+      address,
+      latitude,
+      longitude,
+      EntryFiles
+    } = entry
 
-        await PostReduxEntry(payload)
-        SyncEntries()
-        ClearEditorState()
-      }
+    const payload = {
+      id: `NewEntry-${entriesLength}`,
+      title,
+      html,
+      tags,
+      rating,
+      address,
+      latitude,
+      longitude,
+      date_created_by_author: activeDate,
+      EntryFiles,
+      _shouldPost: true
     }
-  }, [shouldPostEntry])
+
+    await PostReduxEntry(payload)
+    SyncEntries()
+    ClearEditorState()
+  }
 
   const handleInputChange = ({ target: { id, value } }) =>
     SetEditorState({ [id]: value })
@@ -81,7 +100,12 @@ const NewEntry = ({
     <Container className="NewEntry Container">
       <Row>
         <Col xs={12} className="p-0">
-          <InputGroup className="EntryInput">
+          <InputGroup
+            tag={Form}
+            className="EntryInput"
+            onSubmit={handlePostEntry}
+            method="post"
+          >
             <Input
               type="text"
               name="title"
@@ -96,6 +120,17 @@ const NewEntry = ({
                   selected={activeDate}
                   onChange={handleChangeDateCreatedByAuthor}
                 />
+              </InputGroupText>
+            </InputGroupAddon>
+            <InputGroupAddon addonType="append" onClick={handlePostEntry}>
+              <InputGroupText
+                tag={Button}
+                className="SaveButton"
+                color="primary"
+                disabled={postDisabled}
+                type="submit"
+              >
+                <i className="fas fa-save" style={{ fontSize: 20 }} />
               </InputGroupText>
             </InputGroupAddon>
           </InputGroup>
