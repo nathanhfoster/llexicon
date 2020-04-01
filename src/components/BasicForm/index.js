@@ -28,6 +28,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
         const {
           id,
           defaultValue,
+          value,
           check,
           label,
           type,
@@ -46,6 +47,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
             </Label>
             <Input
               defaultValue={defaultValue}
+              value={value}
               type={type}
               id={id}
               placeholder={placeholder}
@@ -82,6 +84,7 @@ BasicForm.propTypes = {
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       defaultValue: PropTypes.string,
+      value: PropTypes.string,
       check: PropTypes.bool,
       label: PropTypes.string,
       type: PropTypes.oneOf(["email", "text", "password", "radio"]),
