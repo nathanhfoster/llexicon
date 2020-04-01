@@ -12,11 +12,17 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
 const EntriesRediscover = ({ items, filteredItems }) => {
   const today = MomentJs()
   const entries = items.concat(filteredItems)
-  const entriesOnThisDay = entries.filter(({ date_created_by_author }) => {
-    const entryDate = MomentJs(date_created_by_author)
-    const isOnThisDay = entryDate.dayOfYear() === today.dayOfYear()
-    return isOnThisDay
-  })
+  const entriesOnThisDay = entries
+    .filter(({ date_created_by_author }) => {
+      const entryDate = MomentJs(date_created_by_author)
+      const isOnThisDay = entryDate.dayOfYear() === today.dayOfYear()
+      return isOnThisDay
+    })
+    .sort((a, b) => {
+      const aDate = new Date(a._lastUpdated || a.date_updated)
+      const bDate = new Date(b._lastUpdated || b.date_updated)
+      return bDate - aDate
+    })
 
   return <EntryCards entries={entriesOnThisDay} />
 }

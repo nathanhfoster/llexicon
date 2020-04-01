@@ -43,7 +43,12 @@ const EntryPropTypes = PropTypes.shape({
   address: PropTypes.string,
   latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  is_public: PropTypes.bool
+  is_public: PropTypes.bool,
+
+  // Redux Only
+  _shouldDelete: PropTypes.bool,
+  _shouldPost: PropTypes.bool,
+  _lastUpdated: PropTypes.bool
 })
 
 const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)
