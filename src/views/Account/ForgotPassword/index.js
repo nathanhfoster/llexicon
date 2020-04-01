@@ -14,7 +14,8 @@ const ForgotPassword = () => {
         label: "Email",
         type: "email",
         id: "email",
-        placeholder: "Email..."
+        placeholder: "Email...",
+        required: true
       }
     ],
     []

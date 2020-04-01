@@ -1,7 +1,8 @@
 import React, { useMemo } from "react"
 import PropTypes from "prop-types"
-import { BasicForm } from "../../../components"
 import { connect as reduxConnect } from "react-redux"
+import { BasicForm } from "../../../components"
+import { Container, Row, Col } from "reactstrap"
 import { UpdateUser } from "../../../redux/User/actions"
 
 const mapStateToProps = ({ User }) => ({
@@ -61,12 +62,18 @@ const UpdateProfile = ({ User, UpdateUser }) => {
     []
   )
   return (
-    <BasicForm
-      title="Update Profile"
-      onSubmit={handleChangeUser}
-      submitLabel="Update"
-      inputs={updateProfileInputs}
-    />
+    <Container fluid className="m-1">
+      <Row>
+        <Col xs={12}>
+          <BasicForm
+            title="Update Profile"
+            onSubmit={handleChangeUser}
+            submitLabel="Update"
+            inputs={updateProfileInputs}
+          />
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

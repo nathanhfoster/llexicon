@@ -15,14 +15,16 @@ const Login = () => {
         type: "text",
         name: "username",
         id: "username",
-        placeholder: "Username..."
+        placeholder: "Username...",
+        required: true
       },
       {
         label: "Password",
         type: "password",
         name: "password",
         id: "password",
-        placeholder: "Password..."
+        placeholder: "Password...",
+        required: true
       }
     ],
     []

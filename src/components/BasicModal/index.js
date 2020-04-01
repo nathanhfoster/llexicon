@@ -84,11 +84,11 @@ const BasicModal = ({
         <ModalFooter className="Center">
           {footer || (
             <Fragment>
-              {cloneElement(cancelButton, { onClick: handleClose })}
               {cloneElement(saveButton, {
                 disabled: disabledSave,
                 onClick: handleSave
               })}
+              {cloneElement(cancelButton, { onClick: handleClose })}
             </Fragment>
           )}
         </ModalFooter>
