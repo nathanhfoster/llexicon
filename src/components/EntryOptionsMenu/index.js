@@ -85,6 +85,7 @@ const EntryOptionsMenu = ({
           <i className="fas fa-trash-alt mr-1" />
           Delete Entry
           <BasicModal
+            size="xs"
             button={false}
             show={showModal}
             title={"Delete Entry"}
