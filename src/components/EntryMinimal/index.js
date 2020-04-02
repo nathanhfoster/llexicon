@@ -60,12 +60,7 @@ const EntryMinimal = ({
           {showFileIcon && <i className="far fa-file-image mr-1" />}
         </Col>
         <Col xs={12}>
-          <TagsContainer
-            showTagIcon={false}
-            tags={tags}
-            fontSize="1.5em"
-            tagContainerClassName="mt-0 mb-0 mr-1"
-          >
+          <TagsContainer showTagIcon={false} tags={tags} fontSize="1.5em">
             <i className="fas fa-tags mr-1" />
           </TagsContainer>
         </Col>

@@ -6,7 +6,8 @@
 .TagContainer {
     background: var(--accentColor);
     padding: 0.25rem;
-    margin: 0.25rem;
+    /* top right bottom left */
+    margin: 0 0.25rem 0.25rem 0;
 }
 
 .TagContainer * {
