@@ -11,14 +11,14 @@
     width: 100%;
 }
 
+.ToggleBottomToolbarButton:hover {
+    opacity: 1;
+}
+
 .ToggleBottomToolbarButton i {
     -webkit-transition: -webkit-transform .2s ease-in-out;
     -ms-transition: -ms-transform .2s ease-in-out;
     transition: transform .2s ease-in-out;
-}
-
-.ToggleBottomToolbarButton:hover {
-    opacity: 1;
 }
 
 .BottomToolbarIsOpen i {
