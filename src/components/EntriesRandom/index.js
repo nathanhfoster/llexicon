@@ -12,13 +12,19 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
 })
 
 const EntriesRandom = ({ items, filteredItems }) => {
-  const entries = items.concat(filteredItems)
+
+  const viewableEntries = useMemo(
+    () =>
+      items.concat(filteredItems).filter(item => !item._shouldDelete),
+    [items, filteredItems]
+  )
+
   let randomEntries = []
 
   if (entries.length > 0) {
     for (let i = 0; i < NUMBER_OF_RANDOM_ENTRIES; i++) {
-      const randomIndex = getRandomInt(0, entries.length - 1)
-      const entry = entries[randomIndex]
+      const randomIndex = getRandomInt(0, viewableEntries.length - 1)
+      const entry = viewableEntries[randomIndex]
       randomEntries.push(entry)
     }
   }
