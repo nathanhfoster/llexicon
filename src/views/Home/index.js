@@ -24,7 +24,6 @@ const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
 })
 
 const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
-  const today = new Date()
   const handleOnClick = () =>
     RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS_ENTRIES"])
 
