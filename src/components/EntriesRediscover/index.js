@@ -9,21 +9,25 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   filteredItems
 })
 
-
 const EntriesRediscover = ({ items, filteredItems }) => {
   const today = MomentJs()
-  const entriesOnThisDay = useMemo(() => items.concat(filteredItems)
-    .filter(({ date_created_by_author, _shouldDelete }) => {
-      if(_shouldDelete) return true
-      const entryDate = MomentJs(date_created_by_author)
-      const isOnThisDay = entryDate.dayOfYear() === today.dayOfYear()
-      return isOnThisDay
-    })
-    .sort((a, b) => {
-      const aDate = new Date(a._lastUpdated || a.date_updated)
-      const bDate = new Date(b._lastUpdated || b.date_updated)
-      return bDate - aDate
-    }), [items, filteredItems])
+  const entriesOnThisDay = useMemo(
+    () =>
+      items
+        .concat(filteredItems)
+        .filter(({ date_created_by_author, _shouldDelete }) => {
+          if (_shouldDelete) return true
+          const entryDate = MomentJs(date_created_by_author)
+          const isOnThisDay = entryDate.dayOfYear() === today.dayOfYear()
+          return isOnThisDay
+        })
+        .sort((a, b) => {
+          const aDate = new Date(a._lastUpdated || a.date_updated)
+          const bDate = new Date(b._lastUpdated || b.date_updated)
+          return bDate - aDate
+        }),
+    [items, filteredItems]
+  )
 
   return <EntryCards entries={entriesOnThisDay} />
 }

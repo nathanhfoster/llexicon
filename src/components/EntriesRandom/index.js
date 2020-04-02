@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { EntryCards } from "../"
@@ -12,16 +12,14 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
 })
 
 const EntriesRandom = ({ items, filteredItems }) => {
-
   const viewableEntries = useMemo(
-    () =>
-      items.concat(filteredItems).filter(item => !item._shouldDelete),
+    () => items.concat(filteredItems).filter(item => !item._shouldDelete),
     [items, filteredItems]
   )
 
   let randomEntries = []
 
-  if (entries.length > 0) {
+  if (viewableEntries.length > 0) {
     for (let i = 0; i < NUMBER_OF_RANDOM_ENTRIES; i++) {
       const randomIndex = getRandomInt(0, viewableEntries.length - 1)
       const entry = viewableEntries[randomIndex]
