@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { EntryCards } from "../"
@@ -9,11 +9,12 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   filteredItems
 })
 
+
 const EntriesRediscover = ({ items, filteredItems }) => {
   const today = MomentJs()
-  const entries = items.concat(filteredItems)
-  const entriesOnThisDay = entries
-    .filter(({ date_created_by_author }) => {
+  const entriesOnThisDay = useMemo(() => items.concat(filteredItems)
+    .filter(({ date_created_by_author, _shouldDelete }) => {
+      if(_shouldDelete) return true
       const entryDate = MomentJs(date_created_by_author)
       const isOnThisDay = entryDate.dayOfYear() === today.dayOfYear()
       return isOnThisDay
@@ -22,7 +23,7 @@ const EntriesRediscover = ({ items, filteredItems }) => {
       const aDate = new Date(a._lastUpdated || a.date_updated)
       const bDate = new Date(b._lastUpdated || b.date_updated)
       return bDate - aDate
-    })
+    }), [items, filteredItems])
 
   return <EntryCards entries={entriesOnThisDay} />
 }
