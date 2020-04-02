@@ -11,8 +11,24 @@
     width: 100%;
 }
 
+.ToggleBottomToolbarButton i {
+    -webkit-transition: -webkit-transform .2s ease-in-out;
+    -ms-transition: -ms-transform .2s ease-in-out;
+    transition: transform .2s ease-in-out;
+}
+
 .ToggleBottomToolbarButton:hover {
     opacity: 1;
+}
+
+.BottomToolbarIsOpen i {
+    transform: rotate(0);
+    -webkit-transform: rotate(0);
+}
+
+.BottomToolbarIsClosed i {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
 }
 
 .BottomToolBar {

@@ -68,10 +68,12 @@ const BottomToolbar = ({
       {canToggleToolbars && (
         <Button
           color="inherit"
-          className={`ToggleBottomToolbarButton Center p-1`}
+          className={`ToggleBottomToolbarButton Center p-1 ${
+            isOpen ? "BottomToolbarIsOpen" : "BottomToolbarIsClosed"
+          }`}
           onClick={toggleBottomToolbar}
         >
-          <i className={`fas fa-angle-${isOpen ? "down" : "up"} fa-2x`} />
+          <i className={`fas fa-angle-down fa-2x`} />
         </Button>
       )}
       <Collapse isOpen={isOpen}>
