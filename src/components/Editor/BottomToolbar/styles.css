@@ -17,11 +17,11 @@
 }
 
 .BottomToolbarIsOpen {
-    bottom: calc(var(--bottomToolbarHeight));
+    bottom: calc(var(--bottomToolbarHeight) - var(--bottomToolbarFilesHeight) + var(--bootmToolBarTagsHeight));
 }
 
 .BottomToolbarIsClosed {
-    bottom: 0;
+    bottom: calc(var(--bootmToolBarTagsHeight) * -2);
 }
 
 .BottomToolBar {
