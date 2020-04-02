@@ -18,7 +18,6 @@ const EntriesRandom = lazy(() => import("../../components/EntriesRandom"))
 const EntriesRediscover = lazy(() =>
   import("../../components/EntriesRediscover")
 )
-const Footer = lazy(() => import("../../components/Footer"))
 
 const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
   entries: items,
@@ -66,16 +65,11 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
         </Col>
         <EntriesRediscover />
       </Row>
-      <Row className="HomeRow mb-3 pb-1">
+      <Row className="HomeRow pb-1">
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Random entries</Header>
         </Col>
         <EntriesRandom />
-      </Row>
-      <Row>
-        <Col xs={12} className="p-0">
-          <Footer />
-        </Col>
       </Row>
     </Container>
   )
