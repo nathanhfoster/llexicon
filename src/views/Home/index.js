@@ -29,6 +29,13 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
   const handleOnClick = () =>
     RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS_ENTRIES"])
 
+  const viewableEntries = useMemo(
+    () =>
+      entries
+        .filter(item => !item._shouldDelete),
+    [entries]
+  )
+
   return (
     <Container tag="article" className="Home Container">
       <Row className="mb-3">
@@ -52,7 +59,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Entries table</Header>
         </Col>
-        <EntriesTable entries={entries} />
+        <EntriesTable entries={viewableEntries} />
       </Row>
       <Row className="HomeRow mb-3 pb-1">
         <Col xs={12} className="p-0">
