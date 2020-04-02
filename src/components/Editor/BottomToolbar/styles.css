@@ -1,7 +1,7 @@
 :root {
-    --bottomToolbarHeight: 220px;
+    --bottomToolbarHeight: 224.81px;
     --bottomToolbarFilesHeight: 80px;
-    --bootmToolBarTagsHeight: 24px;
+    --bootmToolBarTagsHeight: 28.81px;
 }
 
 .ToggleBottomToolbarButton {
