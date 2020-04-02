@@ -1,7 +1,8 @@
-import React, { useMemo, memo } from "react"
+import React, { useMemo, memo, Fragment } from "react"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
-import { EntryCards } from "../"
+import { EntryCards, Header } from "../"
+import Moment from "react-moment"
 import MomentJs from "moment"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
@@ -29,7 +30,15 @@ const EntriesRediscover = ({ items, filteredItems }) => {
     [items, filteredItems]
   )
 
-  return <EntryCards entries={entriesOnThisDay} />
+  return (
+    <Fragment>
+      <Header fill="var(--quinaryColor)">Rediscover this day</Header>
+      <Header fontSize="1.5rem">
+        <Moment format="MMMM D">{today}</Moment>
+      </Header>
+      <EntryCards entries={entriesOnThisDay} />
+    </Fragment>
+  )
 }
 
 EntriesRediscover.propTypes = {

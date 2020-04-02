@@ -10,7 +10,6 @@ import {
 } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { RouterPush, RouteMap } from "../../routes"
-import Moment from "react-moment"
 import "./styles.css"
 
 const HomeButtons = lazy(() => import("../../components/EntryNavButtons"))
@@ -30,9 +29,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
     RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS_ENTRIES"])
 
   const viewableEntries = useMemo(
-    () =>
-      entries
-        .filter(item => !item._shouldDelete),
+    () => entries.filter(item => !item._shouldDelete),
     [entries]
   )
 
@@ -62,20 +59,9 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
         <EntriesTable entries={viewableEntries} />
       </Row>
       <Row className="HomeRow mb-3 pb-1">
-        <Col xs={12} className="p-0">
-          <Header fill="var(--quinaryColor)">Rediscover this day</Header>
-        </Col>
-        <Col xs={12} className="p-0 mt-1">
-          <Header fontSize="1.5rem">
-            <Moment format="MMMM D">{today}</Moment>
-          </Header>
-        </Col>
         <EntriesRediscover />
       </Row>
       <Row className="HomeRow pb-1">
-        <Col xs={12} className="p-0">
-          <Header fill="var(--quinaryColor)">Random entries</Header>
-        </Col>
         <EntriesRandom />
       </Row>
     </Container>

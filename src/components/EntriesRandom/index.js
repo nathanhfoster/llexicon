@@ -1,8 +1,10 @@
-import React, { useMemo, memo } from "react"
+import React, { useMemo, useState, memo, Fragment } from "react"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
-import { EntryCards } from "../"
+import { EntryCards, Header } from "../"
+import { ButtonGroup, Button } from "reactstrap"
 import { getRandomInt } from "../../helpers"
+import "./styles.css"
 
 const NUMBER_OF_RANDOM_ENTRIES = 4
 
@@ -12,9 +14,11 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
 })
 
 const EntriesRandom = ({ items, filteredItems }) => {
+  const [shouldRerender, forceUpdate] = useState(false)
+  const handleRefresh = () => forceUpdate(!shouldRerender)
   const viewableEntries = useMemo(
     () => items.concat(filteredItems).filter(item => !item._shouldDelete),
-    [items, filteredItems]
+    [items, filteredItems, shouldRerender]
   )
 
   let randomEntries = []
@@ -27,7 +31,19 @@ const EntriesRandom = ({ items, filteredItems }) => {
     }
   }
 
-  return <EntryCards entries={randomEntries} />
+  return (
+    <Fragment>
+      <Header fill="var(--quinaryColor)" display="inline-block">
+        Random entries
+        <ButtonGroup className="EntriesRandomRefreshButtonContainer">
+          <Button outline color="primary" onClick={handleRefresh}>
+            <i className="fas fa-sync-alt" />
+          </Button>
+        </ButtonGroup>
+      </Header>
+      <EntryCards entries={randomEntries} />
+    </Fragment>
+  )
 }
 
 EntriesRandom.propTypes = {

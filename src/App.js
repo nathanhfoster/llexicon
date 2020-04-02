@@ -116,13 +116,13 @@ const App = ({
     {
       path: [ABOUT],
       Render: About,
-      renderProps: addToHomeScreenProps,
+      props: addToHomeScreenProps,
       useRouteProps: true
     },
     {
       path: [ROOT, HOME],
       Render: Home,
-      renderProps: addToHomeScreenProps,
+      props: addToHomeScreenProps,
       useRouteProps: true
     },
     {
@@ -163,7 +163,7 @@ const App = ({
   const renderRouteItems = useMemo(
     () =>
       routeItems.map((item, i) => {
-        const { path, component, Render, renderProps, useRouteProps } = item
+        const { path, component, Render, props, useRouteProps } = item
         return Render ? (
           <Route
             exact={true}
@@ -172,9 +172,9 @@ const App = ({
             path={path}
             render={routeProps =>
               useRouteProps ? (
-                <Render {...renderProps} {...routeProps} />
+                <Render {...props} {...routeProps} />
               ) : (
-                <Render {...renderProps} />
+                <Render {...props} />
               )
             }
           />

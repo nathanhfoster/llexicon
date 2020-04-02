@@ -52,7 +52,7 @@
 
 .btn-outline-primary {
   border-color: var(--primaryColor) !important;
-  color: var(--primaryColor) !important;
+  /* color: var(--primaryColor) !important; */
 }
 
 .btn-outline-primary:hover {
