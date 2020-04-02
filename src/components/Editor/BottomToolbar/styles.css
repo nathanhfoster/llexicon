@@ -5,23 +5,14 @@
 }
 
 .ToggleBottomToolbarButton {
-    opacity: 0.1;
-    position: absolute;
-    left: 50%;
+    height: var(--inputHeight);
+    background-color: var(--primaryColor);
+    opacity: var(--mainOpacity);
+    width: 100%;
 }
 
 .ToggleBottomToolbarButton:hover {
     opacity: 1;
-    z-index: 99;
-    color: var(--accentColor);
-}
-
-.BottomToolbarIsOpen {
-    bottom: calc(var(--bottomToolbarHeight) - var(--bottomToolbarFilesHeight) + var(--bootmToolBarTagsHeight));
-}
-
-.BottomToolbarIsClosed {
-    bottom: calc(var(--bootmToolBarTagsHeight) * -2);
 }
 
 .BottomToolBar {
