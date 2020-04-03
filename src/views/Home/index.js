@@ -56,7 +56,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
       </Row>
       <Row className="mb-3">
         <Col xs={12} className="p-0">
-          <Header fill="var(--quinaryColor)">Entries Table</Header>
+          <Header fill="var(--accentColor)">Entries Table</Header>
         </Col>
         <EntriesTable entries={viewableEntries} />
       </Row>
