@@ -13,6 +13,9 @@ import { RouterPush, RouteMap } from "../../routes"
 import "./styles.css"
 
 const HomeButtons = lazy(() => import("../../components/EntryNavButtons"))
+const EntriesMostViewed = lazy(() =>
+  import("../../components/EntriesMostViewed")
+)
 const EntriesRandom = lazy(() => import("../../components/EntriesRandom"))
 const EntriesRediscover = lazy(() =>
   import("../../components/EntriesRediscover")
@@ -53,9 +56,12 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
       </Row>
       <Row className="mb-3">
         <Col xs={12} className="p-0">
-          <Header fill="var(--quinaryColor)">Entries table</Header>
+          <Header fill="var(--quinaryColor)">Entries Table</Header>
         </Col>
         <EntriesTable entries={viewableEntries} />
+      </Row>
+      <Row className="HomeRow mb-3 pb-1">
+        <EntriesMostViewed />
       </Row>
       <Row className="HomeRow mb-3 pb-1">
         <EntriesRediscover />

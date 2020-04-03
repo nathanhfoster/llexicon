@@ -34,7 +34,7 @@ const EntriesRandom = ({ items, filteredItems }) => {
   return (
     <Fragment>
       <Header fill="var(--quinaryColor)" display="inline-block">
-        Random entries
+        Random Entries
         <ButtonGroup className="EntriesRandomRefreshButtonContainer">
           <Button outline color="primary" onClick={handleRefresh}>
             <i className="fas fa-sync-alt" />
