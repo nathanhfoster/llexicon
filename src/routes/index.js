@@ -75,7 +75,15 @@ const RouterLinkPush = (history, route) => {
   return newState
 }
 
-const RouterGoBack = (history, shouldRedirect = false) => {
+const RouterGoBack = (
+  history,
+  shouldRedirect = false,
+  redirectRoutesToIgnore = [
+    RouteMap.LOGIN,
+    RouteMap.SIGNUP,
+    RouteMap.PASSWORD_RESET
+  ]
+) => {
   let route = RouteMap.HOME
 
   try {
@@ -85,11 +93,17 @@ const RouterGoBack = (history, shouldRedirect = false) => {
         key,
         pathname,
         search,
-        state: { previousRoute }
+        state: { previousRoute, pathHistory }
       }
     } = history
-    route = previousRoute
-    if (shouldRedirect) return <Redirect push to={route} />
+    if (pathHistory) {
+      const newRoute = pathHistory
+        .reverse()
+        .find(route => !redirectRoutesToIgnore.includes(route))
+      route = newRoute
+    }
+    if (shouldRedirect)
+      return <Redirect push to={RouterLinkPush(history, route)} />
     else return RouterPush(history, route)
   } catch {
     return history.goBack()

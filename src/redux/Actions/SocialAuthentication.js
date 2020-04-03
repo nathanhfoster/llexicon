@@ -19,7 +19,7 @@ const SocialAuthentication = payload => dispatch => {
       })
       return data
     })
-    .catch(e => console.log("SocialAuthentication: ", e.response))
+    .catch(e => console.log("SocialAuthentication: ", e))
 }
 
 export { SocialAuthentication }
