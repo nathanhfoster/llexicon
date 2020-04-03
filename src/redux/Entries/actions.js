@@ -21,22 +21,6 @@ const GetUserEntryTags = () => (dispatch, getState) => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const AddEntryTagAuthor = tagTitle => (dispatch, getState) => {
-  const { Entries } = getState()
-  return Axios()
-    .patch(`tags/${tagTitle}/add_author/`)
-    .then(res => {
-      const { data } = res
-      dispatch({
-        type: EntriesActionTypes.ENTRIES_SET_TAGS,
-        payload: Entries.map(entry =>
-          entry.title === data.title ? data : entry
-        )
-      })
-    })
-    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
-}
-
 const CreateEntryTag = payload => (dispatch, getState) => {
   const {
     User: { id },
@@ -386,7 +370,6 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 }
 
 export {
-  AddEntryTagAuthor,
   CreateEntryTag,
   GetUserEntryTags,
   GetUserEntry,
