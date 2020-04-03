@@ -57,9 +57,13 @@ const BasicTable = ({
   }
 
   const handleFilter = (filterKey, searchValue, filter) => {
-    let newFilterMap = { ...state.filterMap }
-    newFilterMap[filterKey] = { searchValue, filter }
-    setState(prevState => ({ ...prevState, filterMap: newFilterMap }))
+    setState(prevState => ({
+      ...prevState,
+      filterMap: {
+        ...prevState.filterMap,
+        [filterKey]: { searchValue, filter }
+      }
+    }))
   }
 
   const handlePageChange = currentPage => {
