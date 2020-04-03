@@ -48,7 +48,10 @@ const EntryPropTypes = PropTypes.shape({
   // Redux Only
   _shouldDelete: PropTypes.bool,
   _shouldPost: PropTypes.bool,
-  _lastUpdated: PropTypes.bool
+  _lastUpdated: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date)
+  ])
 })
 
 const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)

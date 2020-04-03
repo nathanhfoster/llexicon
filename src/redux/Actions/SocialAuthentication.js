@@ -10,7 +10,8 @@ const SocialAuthentication = payload => dispatch => {
       `social-authentications/${provider_id}/provider/`,
       qs.stringify(payload)
     )
-    .then(({ data: { id } }) => {
+    .then(({ data }) => {
+      const { id } = data
       dispatch(RefreshPatchUser(id))
       dispatch({
         type: UserActionTypes.USER_SET,
