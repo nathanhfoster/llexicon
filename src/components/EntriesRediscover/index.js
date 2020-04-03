@@ -32,7 +32,7 @@ const EntriesRediscover = ({ items, filteredItems }) => {
 
   return (
     <Fragment>
-      <Header fill="var(--quinaryColor)">Rediscover this day</Header>
+      <Header fill="var(--accentColor)">Rediscover this day</Header>
       <Header fontSize="1.5rem">
         <Moment format="MMMM D">{today}</Moment>
       </Header>
