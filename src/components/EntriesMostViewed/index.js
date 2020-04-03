@@ -22,7 +22,7 @@ const EntriesMostViewed = ({ items, filteredItems }) => {
 
   return (
     <Fragment>
-      <Header fill="var(--quinaryColor)">Most Viewed Entries</Header>
+      <Header fill="var(--accentColor)">Most Viewed Entries</Header>
       <EntryCards entries={entriesMostViewed} />
     </Fragment>
   )
