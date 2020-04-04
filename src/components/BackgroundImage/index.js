@@ -19,6 +19,8 @@ const RocketEarthMoon = () => (
 
 const backgroundImageRouteMap = route => {
   switch (route) {
+    case RouteMap.ROOT:
+      return RocketEarthMoon()
     case RouteMap.ABOUT:
       return RocketEarthMoon()
     case RouteMap.HOME:
