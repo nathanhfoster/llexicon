@@ -66,7 +66,6 @@ const Entry = ({
         <UseDebounce
           onChangeCallback={handleDebounce}
           value={entry}
-          delay={1600}
         />
         <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
           <Input
