@@ -24,6 +24,6 @@ const handleFilterEntries = (entries, search) => {
   }
 }
 
-const getJsonTags = (tags) => tags.filter(tag => !tag.title).map(({ title }) => title).join(",")
+const getJsonTags = (tags) => tags.filter(({ title }) => !title).map(({ title }) => title).join(",")
 
 export { handleFilterEntries, getJsonTags }
