@@ -93,7 +93,7 @@ const BottomToolbar = ({
               <i className={`fas fa-angle-down fa-2x`} />
             </Col>
             <Col xs={5} className="px-1">
-              <TagsContainer tags={entry.people} emptyString="No people..." />
+              <TagsContainer tags={entry.people} faIcon="fas fa-user" emptyString="No people..." />
             </Col>
           </Row>
         </Container>
