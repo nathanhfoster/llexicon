@@ -4,6 +4,7 @@ import { AppActionTypes } from "../App/types"
 import { Axios, AxiosForm, AxiosOffline } from "../Actions"
 import { persistReduxState } from "../localState"
 import { GetUserEntries } from "../Entries/actions"
+import { clearReduxStoreFromLocalStorage } from "../localState"
 import qs from "qs"
 
 const SetUser = (payload) => ({
@@ -217,6 +218,7 @@ const DeleteAccount = () => (dispatch, getState) => {
         type: AlertActionTypes.ALERTS_SET_MESSAGE,
         payload: { title: "Deleted", message: "Account" },
       })
+      clearReduxStoreFromLocalStorage()
     })
     .catch((e) => console.log("DeleteAccount: ", e.response))
 }

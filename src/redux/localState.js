@@ -1,7 +1,7 @@
 import {
   getObjectLength,
   removeKeyOrValueFromObject,
-  deepParseJson
+  deepParseJson,
 } from "../helpers"
 import {
   DEFAULT_STATE_ALERTS,
@@ -9,19 +9,19 @@ import {
   DEFAULT_STATE_USER,
   DEFAULT_STATE_TEXT_EDITOR,
   DEFAULT_STATE_ENTRIES,
-  DEFAULT_STATE_WINDOW
+  DEFAULT_STATE_WINDOW,
 } from "./RootReducer"
 
 const LocalStorageReduxKey = "ReduxStore"
 const PersistedStorageReduxKey = `persist:${LocalStorageReduxKey}`
 const LocalStorageFilesKey = "Files"
 
-const cleanHtml = array =>
+const cleanHtml = (array) =>
   array.map(
-    item =>
+    (item) =>
       (item = {
         ...item,
-        html: "<p></p>"
+        html: "<p></p>",
       })
   )
 
@@ -41,7 +41,7 @@ const saveState = (localStorageKey, value, dispatch) => {
         User,
         TextEditor: DEFAULT_STATE_TEXT_EDITOR,
         Entries: DEFAULT_STATE_ENTRIES,
-        Window
+        Window,
       }
 
       saveState(LocalStorageReduxKey, reduxStore, dispatch)
@@ -49,7 +49,7 @@ const saveState = (localStorageKey, value, dispatch) => {
   }
 }
 
-const getState = localStorageKey => {
+const getState = (localStorageKey) => {
   let state = {}
 
   const localStateString = localStorage.getItem(localStorageKey)
@@ -65,6 +65,9 @@ const getState = localStorageKey => {
 
 const clearLocalStorage = () => localStorage.clear()
 
+const clearReduxStoreFromLocalStorage = () =>
+  localStorage.removeItem(PersistedStorageReduxKey)
+
 const removeState = (localStorageKey, keyOrValueToRemove) => {
   if (keyOrValueToRemove) {
     const state = getState(localStorageKey)
@@ -75,9 +78,9 @@ const removeState = (localStorageKey, keyOrValueToRemove) => {
   }
 }
 
-const getBlob = key => getState(LocalStorageFilesKey)[key]
+const getBlob = (key) => getState(LocalStorageFilesKey)[key]
 
-const getFile = key => {
+const getFile = (key) => {
   // console.log("key: ", key)
   const state = getFilesState()
   // console.log("state: ", state)
@@ -90,7 +93,7 @@ const getFilesState = () => getState(LocalStorageFilesKey)
 
 const getFilesStateLength = () => getObjectLength(getFilesState())
 
-const saveFileState = files => saveState(LocalStorageFilesKey, files)
+const saveFileState = (files) => saveState(LocalStorageFilesKey, files)
 
 const appendFileToState = (key, imageBase64) => {
   let state = getState(LocalStorageFilesKey)
@@ -102,7 +105,7 @@ const appendFileToState = (key, imageBase64) => {
 
 const removeFilesFromState = () => removeState(LocalStorageFilesKey)
 
-const removeFileFromState = file => removeState(LocalStorageFilesKey, file)
+const removeFileFromState = (file) => removeState(LocalStorageFilesKey, file)
 
 const getReduxState = () => getState(LocalStorageReduxKey)
 
@@ -116,7 +119,7 @@ const persistReduxState = () => (dispatch, getState) =>
 
 const removeReduxState = () => removeState(LocalStorageReduxKey)
 
-const isQuotaExceeded = e => {
+const isQuotaExceeded = (e) => {
   let quotaExceeded = false
   if (e) {
     if (e.code) {
@@ -145,6 +148,7 @@ export {
   LocalStorageReduxKey,
   PersistedStorageReduxKey,
   clearLocalStorage,
+  clearReduxStoreFromLocalStorage,
   getFile,
   getFilesState,
   getFilesStateLength,
@@ -156,5 +160,5 @@ export {
   removeFileFromState,
   saveReduxState,
   persistReduxState,
-  removeReduxState
+  removeReduxState,
 }
