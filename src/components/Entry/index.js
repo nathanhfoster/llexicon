@@ -12,25 +12,18 @@ import "./styles.css"
 
 const Entry = ({
   entry,
-  containerHeight,
   canToggleToolbars,
   topToolbarIsOpen,
   bottomToolbarIsOpen,
   shouldRedirectOnDelete,
   theme,
   history,
-  readOnly
+  readOnly,
 }) => {
   const activeDate = new Date(
     entry.date_created_by_author || entry._lastUpdated || 0
   )
   const dispatch = useDispatch()
-  const inputHeight = 48
-  const numberOfInputs = 1
-  const inputOffset = inputHeight * numberOfInputs
-  const toolBarToggleButton = 44
-
-  const textEditorHeight = containerHeight - inputOffset
 
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 
@@ -39,12 +32,12 @@ const Entry = ({
   const handleEditorChange = ({ ...payload }) =>
     dispatch(UpdateReduxEntry({ id: entry.id, ...payload }))
 
-  const handleDateChange = date_created_by_author =>
+  const handleDateChange = (date_created_by_author) =>
     dispatch(
       handleEditorChange({
         id: entry.id,
         date_created_by_author,
-        _lastUpdated: date_created_by_author
+        _lastUpdated: date_created_by_author,
       })
     )
 
@@ -118,7 +111,7 @@ Entry.propTypes = {
   match: PropTypes.object,
   staticContext: PropTypes.any,
   topToolbarIsOpen: PropTypes.bool,
-  theme: PropTypes.string
+  theme: PropTypes.string,
 }
 
 Entry.defaultProps = {
@@ -127,7 +120,7 @@ Entry.defaultProps = {
   topToolbarIsOpen: true,
   bottomToolbarIsOpen: true,
   shouldRedirectOnDelete: false,
-  theme: "snow"
+  theme: "snow",
 }
 
 const isEqual = (prevProps, nextProps) =>

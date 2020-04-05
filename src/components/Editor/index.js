@@ -77,7 +77,7 @@ Size.whitelist = [
   "28px",
   "36px",
   "48px",
-  "72px"
+  "72px",
 ]
 
 const Font = Quill.import("formats/font")
@@ -90,7 +90,7 @@ Font.whitelist = [
   "courier-new",
   "georgia",
   "helvetica",
-  "lucida"
+  "lucida",
 ]
 
 Quill.register(Size, true)
@@ -106,7 +106,7 @@ Quill.register("formats/video", Video)
 const THEMES = {
   CORE: "core",
   SNOW: "snow",
-  BUBBLE: "bubble"
+  BUBBLE: "bubble",
 }
 
 const getModules = (toolbarId, topToolbarIsOpen) => {
@@ -114,7 +114,7 @@ const getModules = (toolbarId, topToolbarIsOpen) => {
     history: {
       delay: 2000,
       maxStack: 500,
-      userOnly: false
+      userOnly: false,
     },
     toolbar: topToolbarIsOpen ? `#${toolbarId}` : false,
     // toolbar: {
@@ -158,12 +158,12 @@ const getModules = (toolbarId, topToolbarIsOpen) => {
     // },
     clipboard: {
       // toggle to add extra line breaks when pasting HTML:
-      matchVisual: false
+      matchVisual: false,
     },
     imageResize: {
-      parchment: Quill.import("parchment")
+      parchment: Quill.import("parchment"),
       // See optional "config" below
-    }
+    },
     // imageDrop: {}
   }
 }
@@ -195,7 +195,7 @@ const getFormats = ({}) => {
     "height",
     "width",
     "style",
-    "size"
+    "size",
   ]
 }
 
@@ -209,7 +209,7 @@ class Editor extends PureComponent {
       topToolbarIsOpen,
       bottomToolbarIsOpen,
       canToggleToolbars,
-      readOnly
+      readOnly,
     } = props
 
     this.editorRef = createRef()
@@ -219,7 +219,7 @@ class Editor extends PureComponent {
       theme,
       topToolbarIsOpen: !readOnly && topToolbarIsOpen,
       bottomToolbarIsOpen: !readOnly && bottomToolbarIsOpen,
-      canToggleToolbars: !readOnly && canToggleToolbars
+      canToggleToolbars: !readOnly && canToggleToolbars,
     }
   }
 
@@ -255,7 +255,7 @@ class Editor extends PureComponent {
     onKeyUp: PropTypes.func,
     modules: PropTypes.object,
     formats: PropTypes.array,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   }
 
   static defaultProps = {
@@ -268,7 +268,7 @@ class Editor extends PureComponent {
     canToggleToolbars: true,
     topToolbarIsOpen: true,
     bottomToolbarIsOpen: true,
-    readOnly: false
+    readOnly: false,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -284,19 +284,19 @@ class Editor extends PureComponent {
     const editorHeight = readOnly
       ? "100%"
       : bottomToolbarIsOpen
-      ? "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight))"
-      : "calc(100% - var(--topToolbarHeight) )"
+      ? "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
+      : "calc(100% - var(--topToolbarHeight))"
 
     return {
       toolbarId,
       entry,
       editorHeight,
       formats,
-      modules
+      modules,
     }
   }
 
-  handleEditorStateChange = html => {
+  handleEditorStateChange = (html) => {
     const { onChangeCallback } = this.props
 
     onChangeCallback({ html })
@@ -308,8 +308,8 @@ class Editor extends PureComponent {
   }
 
   toggleBottomToolbar = () =>
-    this.setState(currentState => ({
-      bottomToolbarIsOpen: !currentState.bottomToolbarIsOpen
+    this.setState((currentState) => ({
+      bottomToolbarIsOpen: !currentState.bottomToolbarIsOpen,
     }))
 
   render() {
@@ -320,7 +320,7 @@ class Editor extends PureComponent {
       height,
       width,
       placeholder,
-      readOnly
+      readOnly,
     } = this.props
     const {
       toolbarId,
@@ -332,7 +332,7 @@ class Editor extends PureComponent {
       bottomToolbarIsOpen,
       formats,
       modules,
-      canToggleToolbars
+      canToggleToolbars,
     } = this.state
 
     return (
