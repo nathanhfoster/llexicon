@@ -13,6 +13,7 @@ const EntryOptionsMenu = lazy(() => import("../../EntryOptionsMenu"))
 const EntryCard = ({
   id,
   tags,
+  people,
   EntryFiles,
   title,
   html,
@@ -50,6 +51,7 @@ const EntryCard = ({
   const cardText = (
     <EntryCardText
       tags={tags}
+      people={people}
       date_created_by_author={date_created_by_author}
       date_updated={date_updated}
       views={views}
@@ -61,6 +63,7 @@ const EntryCard = ({
   const memoProps = [
     id,
     tags,
+    people,
     date_updated,
     views,
     rating,

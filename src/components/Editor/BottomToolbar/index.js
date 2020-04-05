@@ -6,13 +6,13 @@ import {
   TagsButtonModal,
   RatingButtonModal,
   MediaButtonModal,
-  PeopleButtonModal,
+  PeopleButtonModal
 } from "./ToolbarButtonModals"
 import TagsContainer from "../../TagsContainer"
 import EntryFilesCarousel from "../../EntryFilesCarousel"
 import "./styles.css"
 
-const renderButtonColumns = (columns) =>
+const renderButtonColumns = columns =>
   columns.map((ButtonModal, i) => {
     const { Component, props } = ButtonModal
     return <Component key={i} xs={12 / columns.length} {...props} />
@@ -26,34 +26,39 @@ const BottomToolbar = ({
   canToggleToolbars,
   toggleBottomToolbar,
   onChangeCallback,
-  xs,
+  xs
 }) => {
   const buttons = useMemo(
     () => [
       [
         {
           Component: MediaButtonModal,
-          props: { onChangeCallback, editorRef },
+          props: { onChangeCallback, editorRef }
         },
         {
           Component: RatingButtonModal,
-          props: { rating: entry.rating, onChangeCallback },
-        },
+          props: { rating: entry.rating, onChangeCallback }
+        }
       ],
       [
         {
           Component: TagsButtonModal,
-          props: { tags: entry.tags, onChangeCallback, xs },
+          props: { tags: entry.tags, onChangeCallback, xs }
         },
         {
           Component: PeopleButtonModal,
-          props: { people: entry.people, onChangeCallback, xs },
+          props: {
+            entryId: entry.id,
+            people: entry.people,
+            onChangeCallback,
+            xs
+          }
         },
         {
           Component: LocationButtonModal,
-          props: { entry, onChangeCallback, xs },
-        },
-      ],
+          props: { entry, onChangeCallback, xs }
+        }
+      ]
     ],
     [entry]
   )
@@ -71,23 +76,30 @@ const BottomToolbar = ({
   return (
     <Fragment>
       {canToggleToolbars && (
-        <Button
-          color="inherit"
-          className={`ToggleBottomToolbarButton Center p-1 ${
-            isOpen ? "BottomToolbarIsOpen" : "BottomToolbarIsClosed"
-          }`}
-          onClick={toggleBottomToolbar}
-        >
-          <i className={`fas fa-angle-down fa-2x`} />
-        </Button>
+        <Container fluid>
+          <Row className="BottomToolBarTags">
+            <Col xs={5} className="p-0">
+              <TagsContainer tags={entry.tags} />
+            </Col>
+            <Col
+              tag={Button}
+              xs={2}
+              color="inherit"
+              className={`ToggleBottomToolbarButton Center p-0 ${
+                isOpen ? "BottomToolbarIsOpen" : "BottomToolbarIsClosed"
+              }`}
+              onClick={toggleBottomToolbar}
+            >
+              <i className={`fas fa-angle-down fa-2x`} />
+            </Col>
+            <Col xs={5} className="px-1">
+              <TagsContainer tags={entry.people} emptyString="No people..." />
+            </Col>
+          </Row>
+        </Container>
       )}
       <Collapse isOpen={isOpen}>
         <Container fluid className="BottomToolBar">
-          <Row className="BottomToolBarTags">
-            <Col xs={12} className="pl-1 pr-1">
-              <TagsContainer tags={entry.tags} />
-            </Col>
-          </Row>
           <Row className="BottomToolBarFiles">
             <Col xs={12} className="p-1">
               <EntryFilesCarousel
@@ -111,7 +123,7 @@ BottomToolbar.propTypes = {
   entry: PropTypes.object.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleBottomToolbar: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChangeCallback: PropTypes.func.isRequired
 }
 
 export default memo(BottomToolbar)

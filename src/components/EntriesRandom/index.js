@@ -24,8 +24,11 @@ const EntriesRandom = ({ items, filteredItems }) => {
   let randomEntries = []
 
   if (viewableEntries.length > 0) {
+    let uniqueEntryIndices = new Array(viewableEntries.length)
+
     for (let i = 0; i < NUMBER_OF_RANDOM_ENTRIES; i++) {
-      const randomIndex = getRandomInt(0, viewableEntries.length - 1)
+      const randomIndex = getRandomInt(0, uniqueEntryIndices.length - 1)
+      uniqueEntryIndices.splice(randomIndex)
       const entry = viewableEntries[randomIndex]
       randomEntries.push(entry)
     }

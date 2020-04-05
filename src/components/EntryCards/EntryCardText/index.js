@@ -1,6 +1,9 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { EntryTagsProps } from "../../../redux/Entries/propTypes"
+import {
+  EntryTagsProps,
+  EntryPeopleProps
+} from "../../../redux/Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { RatingIcon, TagsContainer } from "../../"
 import Moment from "react-moment"
@@ -8,6 +11,7 @@ import "./styles.css"
 
 const EntryCardText = ({
   tags,
+  people,
   date_created_by_author,
   date_updated,
   views,
@@ -18,6 +22,15 @@ const EntryCardText = ({
       <Row>
         <Col xs={12} className="EntryCardTextTags p-0">
           <TagsContainer tags={tags} />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} className="EntryCardTextTags p-0">
+          <TagsContainer
+            tags={people}
+            emptyString="No people..."
+            faIcon="fas fa-user"
+          />
         </Col>
       </Row>
       <Row>
@@ -44,6 +57,7 @@ const EntryCardText = ({
 
 EntryCardText.propTypes = {
   tags: EntryTagsProps,
+  people: EntryPeopleProps,
   date_created_by_author: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.instanceOf(Date)

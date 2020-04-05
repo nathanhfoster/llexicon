@@ -8,7 +8,7 @@ import {
 
 const styles = {
   ...locationCircleStyle,
-  top: -(K_CIRCLE_SIZE + K_STICK_SIZE + 5),
+  top: -(K_CIRCLE_SIZE + K_STICK_SIZE),
   left: K_CIRCLE_SIZE / 2 + 7,
   padding: 4,
   fontSize: K_CIRCLE_SIZE / 3,

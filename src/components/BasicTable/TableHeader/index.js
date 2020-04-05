@@ -33,32 +33,35 @@ const TableHeader = ({
       return (
         <th
           key={key}
-          className={`BasicTableHeader ${sortable ? "HeaderHoverable" : ""} `}
-          style={{ width }}
+          className={`BasicTableHeader px-1 ${
+            sortable ? "HeaderHoverable" : ""
+          } `}
+          style={{ width: width || "auto" }}
           // title={title}
           onClick={sortable ? () => handleSortCallback(key, sort) : null}
         >
-          {titleFunction ? title(column) : title}
-          {sortable && showSort && (
-            <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
-          )}
+          <div className="ml-1">
+            {titleFunction ? title(column) : title}
+            {sortable && showSort && (
+              <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
+            )}
+          </div>
+
           {shouldRenderSortContainer && (
-            <div>
-              <Input
-                className="TableHeaderSortInput"
-                disabled={!filter}
-                onClick={e => e.stopPropagation()}
-                onChange={({ target: { value } }) =>
-                  filterCallback(dataIndex || key, value, filter)
-                }
-                placeholder={
-                  filter
-                    ? filterPlaceholder ||
-                      `${capitalizeFirstLetter(dataIndex || key)} filter`
-                    : null
-                }
-              />
-            </div>
+            <Input
+              className="TableHeaderSortInput"
+              disabled={!filter}
+              onClick={e => e.stopPropagation()}
+              onChange={({ target: { value } }) =>
+                filterCallback(dataIndex || key, value, filter)
+              }
+              placeholder={
+                filter
+                  ? filterPlaceholder ||
+                    `${capitalizeFirstLetter(dataIndex || key)} filter`
+                  : null
+              }
+            />
           )}
         </th>
       )

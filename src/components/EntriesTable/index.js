@@ -62,34 +62,58 @@ const EntriesTable = ({ entries }) => {
             : a.tags.join().localeCompare(b.tags.join()),
         filter: searchValue => item =>
           item.tags.some(t =>
-            t.title.toUpperCase().includes(searchValue.toUpperCase())
+            t.name.toUpperCase().includes(searchValue.toUpperCase())
           ),
+        filterPlaceholder: "Tags",
         render: item => <TagsContainer tags={item.tags} />
+      },
+      {
+        title: <i className="fas fa-users" />,
+        key: "people",
+        width: 110,
+        sort: (a, b, sortUp) =>
+          sortUp
+            ? b.people.join().localeCompare(a.people.join())
+            : a.people.join().localeCompare(b.people.join()),
+        filter: searchValue => item =>
+          item.people.some(t =>
+            t.name.toUpperCase().includes(searchValue.toUpperCase())
+          ),
+        filterPlaceholder: "People",
+        render: item => (
+          <TagsContainer
+            tags={item.people}
+            faIcon="fas fa-user"
+            emptyString="No People..."
+          />
+        )
       },
       {
         title: <i className="fas fa-heading" />,
         key: "title",
         width: 180,
-        filter: "string"
+        filter: "string",
+        filterPlaceholder: "Title"
       },
       {
         title: <i className="fas fa-keyboard" />,
         key: "html",
         width: 180,
-
-        render: item => stripHtml(item.html),
-        filter: "string"
+        filter: "string",
+        filterPlaceholder: "Body",
+        render: item => stripHtml(item.html)
       },
       {
         title: <i className="fas fa-map-marker-alt" />,
         key: "address",
         width: 180,
-        filter: "string"
+        filter: "string",
+        filterPlaceholder: "Address"
       },
       {
         title: <i className="far fa-eye" />,
         key: "views",
-        width: 60,
+        // width: 50,
         render: item => <span className="Center">{item.views}</span>,
         filter: "number",
         filterPlaceholder: "<="
@@ -97,7 +121,7 @@ const EntriesTable = ({ entries }) => {
       {
         title: <i className="fas fa-star" />,
         key: "rating",
-        width: 60,
+        // width: 50,
         render: item => <span className="ml-2">{item.rating}</span>,
         footer: items => {
           let validItems = 0
@@ -119,7 +143,7 @@ const EntriesTable = ({ entries }) => {
       {
         title: <i className="fas fa-photo-video" />,
         key: "EntryFiles",
-        width: 60,
+        // width: 60,
         render: item => (
           <span className="Center">{item.EntryFiles.length}</span>
         ),
@@ -133,7 +157,6 @@ const EntriesTable = ({ entries }) => {
       {
         title: <i className="fas fa-lock" />,
         key: "is_public",
-        width: 30,
         render: item => (
           <span className="Center">{item.is_public ? "Yes" : "No"}</span>
         )

@@ -24,7 +24,7 @@ const markerStyle = {
 
 const locationCircleStyle = {
   position: "absolute",
-  top: 0,
+  top: 8,
   left: 0,
   width: K_CIRCLE_SIZE,
   height: K_CIRCLE_SIZE,
@@ -65,7 +65,7 @@ const locationCircleStyleHover = {
 const locationStickStyle = {
   position: "absolute",
   left: K_CIRCLE_SIZE / 2 - 14,
-  top: K_CIRCLE_SIZE - 8,
+  top: K_CIRCLE_SIZE,
   width: 0,
   height: 0,
   border: "14px solid transparent",

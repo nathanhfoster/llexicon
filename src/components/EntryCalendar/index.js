@@ -25,7 +25,7 @@ const mapDispatchToProps = {
   GetUserEntriesByDate
 }
 
-const ReactCalendar = ({
+const EntryCalendar = ({
   entries,
   activeDate,
   view,
@@ -95,7 +95,7 @@ const ReactCalendar = ({
     handleDateChange({ activeStartDate, view: "decade" }, false)
 
   return (
-    <Container fluid className="ReactCalendar Container">
+    <Container fluid className="EntryCalendar Container">
       <Row>
         <Col
           className="EventList"
@@ -175,7 +175,7 @@ const ReactCalendar = ({
   )
 }
 
-ReactCalendar.propTypes = {
+EntryCalendar.propTypes = {
   entries: PropTypes.arrayOf(PropTypes.object).isRequired,
   activeDate: PropTypes.oneOfType([
     PropTypes.string,
@@ -189,5 +189,5 @@ ReactCalendar.propTypes = {
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps, true)
 
 export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(ReactCalendar))
+  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(EntryCalendar))
 )

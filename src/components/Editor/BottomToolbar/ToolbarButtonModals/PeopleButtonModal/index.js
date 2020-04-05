@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col, Input } from "reactstrap"
+import {
+  Container,
+  Row,
+  Col,
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  Button
+} from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
@@ -10,105 +19,77 @@ import { validatedString } from "../utlis"
 import memoizeProps from "../../../../../helpers/memoizeProps"
 import {
   EntriesPropTypes,
-  EntryPeopleProps,
+  EntryPeopleProps
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryPeople },
+  Entries: { items, filteredItems, EntryPeople }
 }) => ({ items, filteredItems, UserId: id, EntryPeople })
 
-const mapDispatchToProps = { GetUserEntryPeople }
+const mapDispatchToProps = {
+  GetUserEntryPeople
+}
 
-const getInitialState = (people) => ({
-  peopleAsString: people.map((person) => person.name).join(" "),
-  typing: false,
+const getInitialState = () => ({
+  personsName: "",
+  typing: false
 })
 
 const PeopleButtonModal = ({
   UserId,
   GetUserEntryPeople,
+
   items,
   filteredItems,
   EntryPeople,
+  entryId,
   people,
   xs,
-  onChangeCallback,
+  onChangeCallback
 }) => {
   useEffect(() => {
     if (UserId) GetUserEntryPeople()
   }, [])
 
-  const [state, setState] = useState(getInitialState(people))
+  const [state, setState] = useState(getInitialState())
+  const resetState = () => setState(getInitialState())
 
-  const { peopleAsString, typing } = state
-
-  const splitTagsAsString = peopleAsString.split(" ")
-  const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
+  const { personsName, typing } = state
 
   const entryPeople = useMemo(
     () =>
       Object.values(
         items
           .concat(filteredItems)
-          .map((entry) => entry.people)
+          .map(entry => entry.people)
           .flat(1)
           .concat(EntryPeople)
       ),
-    [items, filteredItems, EntryPeople, splitTagsAsString]
+    [items, filteredItems, EntryPeople, personsName, people]
   )
 
   let sortedPeople = useMemo(
     () =>
       TopKFrequentStrings(entryPeople, "name")
-        .filter((person) => {
-          if (
-            splitTagsAsString.length > 0 &&
-            splitTagsAsString.includes(person)
-          )
+        .filter(entryPersonName => {
+          if (personsName.length > 0 && personsName.includes(entryPersonName))
+            return false
+          else if (people.some(({ name }) => name == entryPersonName))
             return false
           else return true
         })
-        .map((name) => ({ name })),
+        .map(name => ({ name })),
     [entryPeople]
   )
 
-  if (typing && lastTagAsString) {
-    sortedPeople = sortedPeople.filter((entryPerson) =>
-      entryPerson.name.toUpperCase().includes(lastTagAsString.toUpperCase())
+  if (typing) {
+    sortedPeople = sortedPeople.filter(entryPerson =>
+      entryPerson.name.toUpperCase().includes(personsName.toUpperCase())
     )
   }
 
-  const handleTagClick = (name) => {
-    let nextState = {}
-
-    if (!state.peopleAsString) {
-      nextState = {
-        peopleAsString: validatedString(
-          state.peopleAsString.concat(`${name} `)
-        ),
-        typing: false,
-      }
-    } else if (state.typing) {
-      let splitTagsAsStrings = state.peopleAsString.split(" ")
-      splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${name} `
-      nextState = {
-        peopleAsString: validatedString(splitTagsAsStrings.join(" ")),
-        typing: false,
-      }
-    } else {
-      nextState = {
-        peopleAsString: validatedString(
-          state.peopleAsString.concat(` ${name}`)
-        ),
-        typing: false,
-      }
-    }
-
-    setState((prevState) => ({ ...prevState, ...nextState }))
-  }
-
-  const handleTagsInputChange = (e) => {
+  const handlePeopleInputChange = e => {
     const { value } = e.target
 
     // Replace commas
@@ -116,19 +97,39 @@ const PeopleButtonModal = ({
     // Remove double spaces and periods
     const validatedTagsAsString = validatedString(string)
 
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
-      peopleAsString: validatedTagsAsString,
-      typing: true,
+      personsName: validatedTagsAsString,
+      typing: true
     }))
   }
 
   const handleSave = () => {
-    const newTags = peopleAsString
-      .split(" ")
-      .filter((string) => string)
-      .map((person) => (person = { name: person }))
-    onChangeCallback({ people: newTags })
+    resetState()
+  }
+
+  const handleAddPerson = name => {
+    const payload = {
+      id: entryId,
+      people: people.concat({ name })
+    }
+
+    onChangeCallback(payload)
+
+    resetState()
+  }
+
+  const handleAddPersonName = () => handleAddPerson(personsName)
+
+  const handleRemovePerson = clickedName => {
+    const payload = {
+      id: entryId,
+      people: people.filter(({ name }) => name != clickedName)
+    }
+
+    onChangeCallback(payload)
+
+    resetState()
   }
 
   const handleCancel = () => setState(getInitialState(people))
@@ -148,21 +149,46 @@ const PeopleButtonModal = ({
             tags={sortedPeople}
             height={200}
             flexWrap="wrap"
-            onClickCallback={handleTagClick}
+            onClickCallback={handleAddPerson}
             hoverable
             emptyString="No people..."
+            faIcon="fas fa-user-plus"
           />
         </Row>
-        <Row className="my-1">
-          <Col className="px-1" xs={12}>
-            <Input
-              onChange={handleTagsInputChange}
-              type="text"
-              id="tagTitle"
-              name="tagTitle"
-              value={peopleAsString}
-              placeholder="Family Friends Health Vacation"
-            />
+        <Row className="mb-2">
+          <TagsContainer
+            tags={people}
+            // height={100}
+            flexWrap="wrap"
+            onClickCallback={handleRemovePerson}
+            hoverable
+            emptyString="No people..."
+            faIcon="fas fa-user-times"
+          />
+        </Row>
+        <Row>
+          <Col className="p-0" xs={12}>
+            <InputGroup className="EntryInput">
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  tag={Button}
+                  className="SaveButton"
+                  color="primary"
+                  disabled={!personsName}
+                  onClick={handleAddPersonName}
+                >
+                  <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                onChange={handlePeopleInputChange}
+                type="text"
+                id="tagTitle"
+                name="tagTitle"
+                value={personsName}
+                placeholder="John Doe, Jane Doe"
+              />
+            </InputGroup>
           </Col>
         </Row>
       </Container>
@@ -175,13 +201,14 @@ PeopleButtonModal.propTypes = {
   items: EntriesPropTypes,
   filteredItems: EntriesPropTypes,
   EntryPeople: EntryPeopleProps.isRequired,
+  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   people: EntryPeopleProps.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChangeCallback: PropTypes.func.isRequired
 }
 
 PeopleButtonModal.defaultProps = {
-  people: [],
+  people: []
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -190,8 +217,9 @@ const isEqual = (prevProps, nextProps) =>
     "items",
     "filteredItems",
     "EntryPeople",
+    "entryId",
     "people",
-    "xs",
+    "xs"
   ])
 
 export default reduxConnect(

@@ -4,7 +4,7 @@ import moment from "moment"
 import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from "./styles"
 import { TagsContainer } from "../../../components"
 
-const HEIGHT = 100
+const HEIGHT = 140
 const WIDTH = 200
 
 const rootStyles = {
@@ -61,6 +61,7 @@ const PreviewBox = ({
   _lastUpdated,
   address,
   tags,
+  people,
   ...rest
 }) => {
   const [styles, setStyles] = useState(rootStyles)
@@ -81,9 +82,18 @@ const PreviewBox = ({
     <div style={styles}>
       <div>{title}</div>
       <div>{address}</div>
-      {tags && (
+      {tags.length > 0 && (
         <div>
           <TagsContainer tags={tags} />
+        </div>
+      )}
+      {people.length > 0 && (
+        <div>
+          <TagsContainer
+            tags={people}
+            faIcon="fas fa-user"
+            emptyString="No people..."
+          />
         </div>
       )}
       <div style={lineStyle}>

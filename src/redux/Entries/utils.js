@@ -24,12 +24,10 @@ const handleFilterEntries = (entries, search) => {
   }
 }
 
-const getJsonTagsOrPeople = (tags) =>
+const getJsonTagsOrPeople = tags =>
   tags
     .filter(({ name }) => name)
     .map(({ name }) => name)
     .join(",")
 
 export { handleFilterEntries, getJsonTagsOrPeople }
-
-export { handleFilterEntries, getJsonTags, getJsonPeople }

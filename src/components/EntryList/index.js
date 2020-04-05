@@ -1,5 +1,6 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
+import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { BasicList } from "../"
 import { withRouter } from "react-router-dom"
@@ -18,7 +19,7 @@ const mapStateToProps = ({
   return {
     listHeight: isMobile
       ? innerHeight - navBarHeight - calendarHeight - 64 + 10
-      : innerHeight - navBarHeight
+      : innerHeight - navBarHeight - 64 - 4
   }
 }
 
@@ -38,6 +39,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
             id,
             author,
             tags,
+            people,
             title,
             html,
             date_created,
@@ -71,6 +73,11 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
                 </div>
 
                 <TagsContainer tags={tags} />
+                <TagsContainer
+                  tags={people}
+                  emptyString="No people..."
+                  faIcon="fas fa-user"
+                />
               </div>
             )
           }
@@ -84,7 +91,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
     <BasicList
       list={entries}
       height={listHeight}
-      itemSize={72}
+      itemSize={92}
       listItemStyles={listItemStyles}
     />
   )
@@ -95,7 +102,7 @@ EntryList.propTypes = {
     PropTypes.string,
     PropTypes.instanceOf(Date)
   ]).isRequired,
-  entriesWithinView: PropTypes.arrayOf(PropTypes.object)
+  entriesWithinView: EntriesPropTypes
 }
 
 export default reduxConnect(mapStateToProps)(withRouter(memo(EntryList)))

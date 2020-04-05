@@ -20,6 +20,7 @@ const TagsContainer = ({
   tagContainerClassName,
   columnProps,
   emptyString,
+  faIcon
 }) => {
   if (flexWrap === "wrap") {
     overflowX = "auto"
@@ -34,7 +35,7 @@ const TagsContainer = ({
     flexStart: "space-around",
     overflowX,
     overflowY,
-    fontSize,
+    fontSize
   }
 
   const renderTags = () =>
@@ -46,7 +47,7 @@ const TagsContainer = ({
         }`}
         onClick={onClickCallback ? () => onClickCallback(name) : null}
       >
-        {showTagIcon && <i className="fas fa-tag" style={{ marginRight: 2 }} />}
+        {showTagIcon && <i className={faIcon} style={{ marginRight: 4 }} />}
         <span className="TagTitle">{name}</span>
       </Badge>
     ))
@@ -65,7 +66,7 @@ const TagsContainer = ({
     <Col className="TagsContainer p-0" {...columnProps} style={styles}>
       {children}
       {tags.length === 0 ? (
-        <span>{emptyString}</span>
+        <span className="p-1">{emptyString}</span>
       ) : minimalView ? (
         renderMinimalTags()
       ) : (
@@ -88,6 +89,7 @@ TagsContainer.propTypes = {
   showTagIcon: PropTypes.bool,
   tagContainerClassName: PropTypes.string,
   emptyString: PropTypes.string,
+  faIcon: PropTypes.string
 }
 
 TagsContainer.defaultProps = {
@@ -103,6 +105,7 @@ TagsContainer.defaultProps = {
   tagContainerClassName: "",
   columnProps: { xs: 12 },
   emptyString: "No tags...",
+  faIcon: "fas fa-tag"
 }
 
 export default memo(TagsContainer)

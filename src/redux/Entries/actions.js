@@ -25,14 +25,14 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`people/${id}/view/`)
-    .then((res) => {
+    .then(res => {
       const { data } = res
       dispatch({ type: EntriesActionTypes.ENTRIES_SET_PEOPLE, payload: data })
     })
-    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
+    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const CreateEntryTag = (payload) => (dispatch, getState) => {
+const CreateEntryTag = payload => (dispatch, getState) => {
   const {
     User: { id },
     Entries
@@ -349,7 +349,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         const updateEntryPayload = {
           html,
           tags: getJsonTagsOrPeople(tags),
-          people: getJsonTagsOrPeople(people),
+          people: getJsonTagsOrPeople(people)
         }
         dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })

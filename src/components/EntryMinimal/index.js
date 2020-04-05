@@ -1,5 +1,5 @@
 import React, { Fragment, memo } from "react"
-import PropTypes from "prop-types"
+import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { Badge, Container, Row, Col } from "reactstrap"
 import { useHistory } from "react-router-dom"
 import { RouteMap, RouterPush } from "../../routes"
@@ -23,6 +23,7 @@ const EntryMinimal = ({
   latitude,
   longitude,
   tags,
+  people,
   views,
   rating
 }) => {
@@ -64,20 +65,21 @@ const EntryMinimal = ({
             <i className="fas fa-tags mr-1" />
           </TagsContainer>
         </Col>
+        <Col xs={12}>
+          <TagsContainer
+            showTagIcon={false}
+            tags={people}
+            fontSize="1.5em"
+            emptyString="No people..."
+          >
+            <i className="fas fa-users mr-1" />
+          </TagsContainer>
+        </Col>
       </Row>
     </Container>
   )
 }
 
-EntryMinimal.propTypes = {
-  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  title: PropTypes.string,
-  html: PropTypes.string,
-  date_created_by_author: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.instanceOf(Date)
-  ]),
-  EntryFiles: PropTypes.arrayOf(PropTypes.object)
-}
+EntryMinimal.propTypes = EntryPropTypes
 
 export default memo(EntryMinimal)

@@ -1,61 +1,64 @@
 :root {
-    --bottomToolbarHeight: 224.81px;
-    --bottomToolbarFilesHeight: 80px;
-    --bootmToolBarTagsHeight: 28.81px;
+  --bottomToolbarHeight: 240px;
+  --bottomToolbarFilesHeight: 120px;
+  --bottomToolBarToggleContainerHeight: 30px;
 }
 
 .ToggleBottomToolbarButton {
-    height: var(--inputHeight);
-    background-color: var(--primaryColor);
-    opacity: var(--mainOpacity);
-    width: 100%;
+  background: transparent !important;
+  opacity: var(--mainOpacity);
+  width: 100%;
 }
 
 .ToggleBottomToolbarButton:hover {
-    opacity: 1;
+  opacity: 1;
 }
 
 .ToggleBottomToolbarButton i {
-    -webkit-transition: -webkit-transform .2s ease-in-out;
-    -ms-transition: -ms-transform .2s ease-in-out;
-    transition: transform .2s ease-in-out;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  -ms-transition: -ms-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .BottomToolbarIsOpen i {
-    transform: rotate(0);
-    -webkit-transform: rotate(0);
+  transform: rotate(0);
+  -webkit-transform: rotate(0);
 }
 
 .BottomToolbarIsClosed i {
-    transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
 }
 
 .BottomToolBar {
-    height: var(--bottomToolbarHeight);
-    opacity: var(--mainOpacity);
-    color: var(--secondaryColor);
-    background: var(--slate_grey)
+  height: var(--bottomToolbarHeight);
+  opacity: var(--mainOpacity);
+  color: var(--secondaryColor);
+  background: var(--slate_grey);
 }
 
 .BottomToolBar i {
-    color: var(--secondaryColor);
+  color: var(--secondaryColor);
 }
 
-.BottomToolBar .row {}
-
-.BottomToolBar:focus-within, .BottomToolBar:hover {
-    opacity: 1;
+.BottomToolBar .row {
 }
 
-.BottomToolBarTags {
-    height: var(--bootmToolBarTagsHeight);
+.BottomToolBar:focus-within,
+.BottomToolBar:hover {
+  opacity: 1;
+}
+
+.BottomToolBarTags,
+.BottomToolBarTags .btn {
+  background-color: var(--primaryColor);
+  height: var(--bottomToolBarToggleContainerHeight);
 }
 
 .BottomToolBarFiles {
-    height: var(--bottomToolbarFilesHeight);
+  height: var(--bottomToolbarFilesHeight);
 }
 
 .BottomToolButtonRow {
-    height: calc((100% - var(--bottomToolbarFilesHeight) - var(--bootmToolBarTagsHeight)) / 2);
+  height: calc(calc(100% - var(--bottomToolbarFilesHeight)) / 2);
 }

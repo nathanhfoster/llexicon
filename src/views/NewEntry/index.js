@@ -66,28 +66,10 @@ const NewEntry = ({
     SetCalendar({ activeDate })
 
   const handlePostEntry = async () => {
-    const {
-      html,
-      title,
-      tags,
-      rating,
-      address,
-      latitude,
-      longitude,
-      EntryFiles
-    } = entry
-
     const payload = {
+      ...entry,
       id: `NewEntry-${entriesLength}`,
-      title,
-      html,
-      tags,
-      rating,
-      address,
-      latitude,
-      longitude,
       date_created_by_author: activeDate,
-      EntryFiles,
       _shouldPost: true
     }
 

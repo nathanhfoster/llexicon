@@ -10,6 +10,7 @@ const DEFAULT_STATE_TEXT_EDITOR = {
   latitude: null,
   longitude: null,
   tags: [],
+  people: [],
   rating: 0,
   _lastUpdated: "",
   EntryFiles: []

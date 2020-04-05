@@ -15,16 +15,18 @@ import {
 import { SetEditorState } from "../../redux/TextEditor/actions"
 import "./styles.css"
 
-const ReactCalendar = lazy(() => import("../../components/ReactCalendar"))
+const EntryCalendar = lazy(() => import("../../components/EntryCalendar"))
 const EntryFolders = lazy(() => import("../../components/EntryFolders"))
 const EntriesList = lazy(() => import("../../components/EntriesList"))
 const BasicMap = lazy(() => import("../../components/BasicMap"))
 
 const mapStateToProps = ({
+  User: { id },
   Entries: { items, next, search },
   TextEditor,
   Window: { innerHeight, navBarHeight }
 }) => ({
+  userId: id,
   entries: items,
   TextEditor,
   nextEntryPage: next,
@@ -40,6 +42,7 @@ const mapDispatchToProps = {
 }
 
 const Entries = ({
+  userId,
   entries,
   TextEditor,
   nextEntryPage,
@@ -55,7 +58,7 @@ const Entries = ({
 }) => {
   const { pathname } = location
   useEffect(() => {
-    GetUserEntries(1)
+    if (userId) GetUserEntries(1)
   }, [])
   const viewableEntries = useMemo(
     () =>
@@ -83,8 +86,6 @@ const Entries = ({
 
   const minimalEntriesListHeight = viewPortHeight - tabContainerHeight
 
-  let listItemHeight = minimalEntriesListHeight / 2
-
   const activeTab = pathname
 
   const handleTabChange = tabId => RouterPush(history, tabId)
@@ -107,7 +108,7 @@ const Entries = ({
       title: <i className="fas fa-calendar-alt"></i>,
       render: (
         <Row>
-          <ReactCalendar />
+          <EntryCalendar />
         </Row>
       ),
       onClickCallback: handleTabChange
@@ -228,6 +229,7 @@ Entries.propTypes = {
   loaction: PropTypes.object,
   match: PropTypes.object,
   staticContext: PropTypes.any,
+  userId: PropTypes.number,
   entries: EntriesPropTypes,
   TextEditor: PropTypes.object,
   nextEntryPage: PropTypes.string,
