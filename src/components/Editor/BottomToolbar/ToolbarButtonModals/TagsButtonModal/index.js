@@ -6,7 +6,7 @@ import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
 import { TopKFrequentStrings } from "../../../../../helpers"
-import { validatedString } from "../utlis"
+import { validatedTagString } from "../utlis"
 import memoizeProps from "../../../../../helpers/memoizeProps"
 import {
   EntriesPropTypes,
@@ -81,19 +81,19 @@ const TagsButtonModal = ({
 
     if (!state.tagsAsString) {
       nextState = {
-        tagsAsString: validatedString(state.tagsAsString.concat(`${name} `)),
+        tagsAsString: validatedTagString(state.tagsAsString.concat(`${name} `)),
         typing: false,
       }
     } else if (state.typing) {
       let splitTagsAsStrings = state.tagsAsString.split(" ")
       splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${name} `
       nextState = {
-        tagsAsString: validatedString(splitTagsAsStrings.join(" ")),
+        tagsAsString: validatedTagString(splitTagsAsStrings.join(" ")),
         typing: false,
       }
     } else {
       nextState = {
-        tagsAsString: validatedString(state.tagsAsString.concat(` ${name}`)),
+        tagsAsString: validatedTagString(state.tagsAsString.concat(` ${name}`)),
         typing: false,
       }
     }
@@ -107,7 +107,7 @@ const TagsButtonModal = ({
     // Replace commas
     const string = value.replace(",", " ")
     // Remove double spaces and periods
-    const validatedTagsAsString = validatedString(string)
+    const validatedTagsAsString = validatedTagString(string)
 
     setState((prevState) => ({
       ...prevState,

@@ -1,10 +1,18 @@
 import { removeArrayDuplicates } from "../../../../helpers"
-const validatedString = s => {
-  const validatedString = s.replace(/[^A-Z0-9]+/gi, " ")
-  const filteredString = removeArrayDuplicates(validatedString.split(" ")).join(
+const validatedTagString = (s) => {
+  const validatedTagString = s.replace(/[^A-Z0-9]+/gi, " ")
+  const validatedTagStringSplit = validatedTagString.split(" ")
+  const filteredString = removeArrayDuplicates(validatedTagStringSplit).join(
     " "
   )
   return filteredString
 }
 
-export { validatedString }
+const validatedPeopleString = (splitPeopleAsString) => {
+  const filteredString = removeArrayDuplicates(
+    splitPeopleAsString
+  ).map((name) => ({ name }))
+  return filteredString
+}
+
+export { validatedTagString, validatedPeopleString }

@@ -14,9 +14,12 @@ import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
-import { TopKFrequentStrings } from "../../../../../helpers"
-import { validatedString } from "../utlis"
+import {
+  TopKFrequentStrings,
+  removeAttributeDuplicates,
+} from "../../../../../helpers"
 import memoizeProps from "../../../../../helpers/memoizeProps"
+import { validatedPeopleString } from "../utlis"
 import {
   EntriesPropTypes,
   EntryPeopleProps,
@@ -57,6 +60,9 @@ const PeopleButtonModal = ({
 
   const { personsName, typing } = state
 
+  const splitPeopleAsString = personsName.replace(", ", ",").split(",")
+  const lastPeopleAsString = splitPeopleAsString[splitPeopleAsString.length - 1]
+
   const entryPeople = useMemo(
     () =>
       Object.values(
@@ -66,14 +72,24 @@ const PeopleButtonModal = ({
           .flat(1)
           .concat(EntryPeople)
       ),
-    [items, filteredItems, EntryPeople, personsName, people]
+    [
+      items,
+      filteredItems,
+      EntryPeople,
+      personsName,
+      people,
+      splitPeopleAsString,
+    ]
   )
 
   let sortedPeople = useMemo(
     () =>
       TopKFrequentStrings(entryPeople, "name")
         .filter((entryPersonName) => {
-          if (personsName.length > 0 && personsName.includes(entryPersonName))
+          if (
+            splitPeopleAsString.length > 0 &&
+            splitPeopleAsString.includes(entryPersonName)
+          )
             return false
           else if (people.some(({ name }) => name == entryPersonName))
             return false
@@ -83,29 +99,20 @@ const PeopleButtonModal = ({
     [entryPeople]
   )
 
-  if (typing) {
+  if (typing && lastPeopleAsString) {
     sortedPeople = sortedPeople.filter((entryPerson) =>
-      entryPerson.name.toUpperCase().includes(personsName.toUpperCase())
+      entryPerson.name.toUpperCase().includes(lastPeopleAsString.toUpperCase())
     )
   }
 
   const handlePeopleInputChange = (e) => {
     const { value } = e.target
 
-    // Replace commas
-    const string = value.replace(",", " ")
-    // Remove double spaces and periods
-    const validatedTagsAsString = validatedString(string)
-
     setState((prevState) => ({
       ...prevState,
-      personsName: validatedTagsAsString,
+      personsName: value,
       typing: true,
     }))
-  }
-
-  const handleSave = () => {
-    resetState()
   }
 
   const handleAddPerson = (name) => {
@@ -119,7 +126,22 @@ const PeopleButtonModal = ({
     resetState()
   }
 
-  const handleAddPersonName = () => handleAddPerson(personsName)
+  const handleSavePeople = () => {
+    const peopleFromString = validatedPeopleString(splitPeopleAsString)
+    const newPeople = removeAttributeDuplicates(
+      people.concat(peopleFromString),
+      "name"
+    )
+
+    const payload = {
+      id: entryId,
+      people: newPeople,
+    }
+
+    onChangeCallback(payload)
+
+    resetState()
+  }
 
   const handleRemovePerson = (clickedName) => {
     const payload = {
@@ -128,8 +150,6 @@ const PeopleButtonModal = ({
     }
 
     onChangeCallback(payload)
-
-    resetState()
   }
 
   const handleCancel = () => setState(getInitialState(people))
@@ -137,7 +157,7 @@ const PeopleButtonModal = ({
   return (
     <ToolbarModal
       title="Add People"
-      onSaveCallback={handleSave}
+      onSaveCallback={handleSavePeople}
       onCancelCallback={handleCancel}
       ButtonIcon="fas fa-users"
       button="Add People"
@@ -174,7 +194,7 @@ const PeopleButtonModal = ({
                 className="SaveButton"
                 color="primary"
                 disabled={!personsName}
-                onClick={handleAddPersonName}
+                onClick={handleAddPerson}
               >
                 <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
               </InputGroupText>
