@@ -1,13 +1,22 @@
 import PropTypes from "prop-types"
 
 const EntryTagProps = PropTypes.shape({
-  title: PropTypes.string,
+  name: PropTypes.string,
   date_created: PropTypes.string,
   date_updated: PropTypes.string,
-  authors: PropTypes.arrayOf(PropTypes.number)
+  authors: PropTypes.arrayOf(PropTypes.number),
 })
 
 const EntryTagsProps = PropTypes.arrayOf(EntryTagProps)
+
+const EntryPersonProps = PropTypes.shape({
+  name: PropTypes.string,
+  date_created: PropTypes.string,
+  date_updated: PropTypes.string,
+  authors: PropTypes.arrayOf(PropTypes.number),
+})
+
+const EntryPeopleProps = PropTypes.arrayOf(EntryPersonProps)
 
 const EntryFileProps = PropTypes.shape({
   id: PropTypes.number,
@@ -18,7 +27,7 @@ const EntryFileProps = PropTypes.shape({
   date_created: PropTypes.string,
   date_updated: PropTypes.string,
   date_modified: PropTypes.string,
-  entry_id: PropTypes.number
+  entry_id: PropTypes.number,
 })
 
 const EntryFilesProps = PropTypes.arrayOf(EntryFileProps)
@@ -29,13 +38,14 @@ const EntryPropTypes = PropTypes.shape({
   author: PropTypes.number,
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps,
+  people: EntryPeopleProps,
   EntryFiles: EntryFilesProps,
   title: PropTypes.string,
   html: PropTypes.string,
   date_created: PropTypes.string,
   date_created_by_author: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.instanceOf(Date)
+    PropTypes.instanceOf(Date),
   ]),
   date_updated: PropTypes.string,
   views: PropTypes.number,
@@ -50,8 +60,8 @@ const EntryPropTypes = PropTypes.shape({
   _shouldPost: PropTypes.bool,
   _lastUpdated: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.instanceOf(Date)
-  ])
+    PropTypes.instanceOf(Date),
+  ]),
 })
 
 const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)
@@ -59,9 +69,11 @@ const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)
 export {
   EntryTagProps,
   EntryTagsProps,
+  EntryPersonProps,
+  EntryPeopleProps,
   EntryFileProps,
   EntryFilesProps,
   EntryRatingProps,
   EntryPropTypes,
-  EntriesPropTypes
+  EntriesPropTypes,
 }

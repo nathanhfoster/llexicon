@@ -1,11 +1,5 @@
-import TagsButtonModal from "./TagsButtonModal"
-import LocationButtonModal from "./LocationButtonModal"
-import RatingButtonModal from "./RatingButtonModal"
-import MediaButtonModal from "./MediaButtonModal"
-
-export {
-  LocationButtonModal,
-  TagsButtonModal,
-  RatingButtonModal,
-  MediaButtonModal
-}
+export { default as LocationButtonModal } from "./LocationButtonModal"
+export { default as RatingButtonModal } from "./RatingButtonModal"
+export { default as MediaButtonModal } from "./MediaButtonModal"
+export { default as PeopleButtonModal } from "./PeopleButtonModal"
+export { default as TagsButtonModal } from "./TagsButtonModal"

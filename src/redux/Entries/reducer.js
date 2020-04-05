@@ -12,7 +12,8 @@ const DEFAULT_STATE_ENTRIES = {
   isPending: false,
   error: null,
   search: "",
-  EntryTags: []
+  EntryTags: [],
+  EntryPeople: [],
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
@@ -20,6 +21,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   switch (type) {
     case EntriesActionTypes.ENTRIES_SET_TAGS:
       return { ...state, EntryTags: payload }
+    case EntriesActionTypes.ENTRIES_SET_PEOPLE:
+      return { ...state, EntryPeople: payload }
     case EntriesActionTypes.ENTRIES_SEARCH_FILTER:
       return {
         ...state,
@@ -27,7 +30,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           mergeJson(state.items.concat(state.filteredItems), payload),
           search
         ),
-        search
+        search,
       }
     case EntriesActionTypes.ENTRIES_PENDING:
       return { ...state, isPending: true }
@@ -39,7 +42,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         items: mergeJson(state.items, payload),
-        error: DEFAULT_STATE_ENTRIES.error
+        error: DEFAULT_STATE_ENTRIES.error,
       }
     case EntriesActionTypes.ENTRIES_SET:
       const { count, next, previous, results } = payload
@@ -51,7 +54,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), results),
           state.search
-        )
+        ),
       }
     case EntriesActionTypes.ENTRIES_SET_BY_DATE:
       return {
@@ -59,7 +62,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), payload),
           state.search
-        )
+        ),
       }
     case EntriesActionTypes.ENTRY_SET:
       return {
@@ -67,7 +70,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), [payload]),
           state.search
-        )
+        ),
       }
     case EntriesActionTypes.ENTRY_POST:
       return {
@@ -77,9 +80,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...handleFilterEntries(
           state.items
             .concat(state.filteredItems)
-            .map(item => (item.id === id ? payload : item)),
+            .map((item) => (item.id === id ? payload : item)),
           state.search
-        )
+        ),
       }
     case EntriesActionTypes.ENTRY_UPDATE:
       return {
@@ -87,28 +90,28 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
         ...handleFilterEntries(
-          state.items.concat(state.filteredItems).map(item =>
+          state.items.concat(state.filteredItems).map((item) =>
             item.id === id
               ? {
                   ...item,
                   ...payload,
-                  _lastUpdated
+                  _lastUpdated,
                 }
               : item
           ),
           state.search
-        )
+        ),
       }
     case EntriesActionTypes.ENTRY_DELETE:
       const hasArrayOfIds = Array.isArray(payload)
-      const filterCondition = item =>
+      const filterCondition = (item) =>
         hasArrayOfIds ? payload.includes(item.id) : item.id != id
       return {
         ...state,
         ...handleFilterEntries(
           state.items.concat(state.filteredItems).filter(filterCondition),
           state.search
-        )
+        ),
       }
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ENTRIES
