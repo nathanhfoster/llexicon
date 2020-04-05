@@ -1,7 +1,6 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { Row, Col } from "reactstrap"
 import { BasicList } from "../"
 import { withRouter } from "react-router-dom"
 import Moment from "react-moment"

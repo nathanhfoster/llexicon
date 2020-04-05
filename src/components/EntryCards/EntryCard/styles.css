@@ -1,6 +1,11 @@
-.EntryCards {
+.EntryCardContainer {
     height: 100%;
 }
+
+.EntryCardHeader {
+    height: 124px;
+}
+
 
 .EntryOptionsMenuContainer {
     opacity: 0.05;
@@ -12,12 +17,4 @@
 
 .EntryOptionsMenuContainer:hover {
     opacity: 1;
-}
-
-.EntryCardContainer {
-    height: 100%;
-}
-
-.EntryCardHeader {
-    height: 108px;
 }

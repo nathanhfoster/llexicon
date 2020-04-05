@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
+import { Container, Row, Col } from "reactstrap"
 
 const getInitialState = ({}) => {
   return {}
@@ -10,7 +11,13 @@ const Template = props => {
 
   const {} = state
 
-  return <div className="Template Container">Template</div>
+  return (
+    <Container className="Template Container">
+      <Row>
+        <Col xs={12}>Template</Col>
+      </Row>
+    </Container>
+  )
 }
 
 Template.propTypes = {}

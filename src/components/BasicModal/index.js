@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, Fragment, cloneElement } from "react"
+import React, { useState, memo, Fragment, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./styles.css"
@@ -7,25 +7,34 @@ const BasicModal = ({
   show,
   title,
   onClickCallback,
-  confirmButtonTitle,
   onSaveCallback,
-  cancelButtonTitle,
   onCancelCallback,
   children,
   className,
   disabled,
-  saveDisabled,
+  disabledSave,
   button,
   buttonTitle,
-  footer
+  footer,
+  saveButton,
+  cancelButton,
+  size
 }) => {
-  const [isOpen, setIsOpen] = useState(show)
-
-  useEffect(() => {
-    if (show !== isOpen) setIsOpen(show)
-  }, [show])
+  const [isOpen, setIsOpen] = useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
+
+  const handleClose = () => {
+    onCancelCallback && onCancelCallback()
+    toggle()
+  }
+
+  const handleSave = () => {
+    onSaveCallback && onSaveCallback()
+    handleClose()
+  }
+
+  const shouldShowModal = show !== undefined ? show : isOpen
 
   return (
     <Fragment>
@@ -36,6 +45,7 @@ const BasicModal = ({
           onClick: () => {
             const { onClick } = button.props
             onClick && onClick()
+            onClickCallback && onClickCallback()
             toggle()
           },
           onClickCallback: () => {
@@ -56,10 +66,10 @@ const BasicModal = ({
         </Button>
       )}
       <Modal
-        isOpen={isOpen}
+        isOpen={shouldShowModal}
         toggle={toggle}
         className="BasicModal"
-        size="lg"
+        size={size}
         centered
         onClosed={onCancelCallback}
       >
@@ -76,20 +86,11 @@ const BasicModal = ({
         <ModalFooter className="Center">
           {footer || (
             <Fragment>
-              <Button
-                className="mr-1"
-                color="primary"
-                onClick={() => {
-                  onSaveCallback && onSaveCallback()
-                  toggle()
-                }}
-                disabled={saveDisabled}
-              >
-                {confirmButtonTitle}
-              </Button>
-              <Button color="danger" onClick={toggle}>
-                {cancelButtonTitle}
-              </Button>
+              {cloneElement(saveButton, {
+                disabled: disabledSave,
+                onClick: handleSave
+              })}
+              {cloneElement(cancelButton, { onClick: handleClose })}
             </Fragment>
           )}
         </ModalFooter>
@@ -103,27 +104,81 @@ BasicModal.propTypes = {
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
-  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   buttonTitle: PropTypes.string,
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  saveDisabled: PropTypes.bool,
+  disabledSave: PropTypes.bool,
   button: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.func,
     PropTypes.bool
   ]),
-  buttonTitle: PropTypes.string,
-  footer: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+  footer: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+
+  // reasctrap Modal Props https://reactstrap.github.io/components/modals/
+  // boolean to control the state of the popover
+  isOpen: PropTypes.bool,
+  autoFocus: PropTypes.bool,
+  // if modal should be centered vertically in viewport
+  centered: PropTypes.bool,
+  // corresponds to bootstrap's modal sizes, ie. 'lg' or 'sm'
+  size: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
+  // callback for toggling isOpen in the controlling component
+  toggle: PropTypes.func,
+  role: PropTypes.string, // defaults to "dialog"
+  // used to reference the ID of the title element in the modal
+  labelledBy: PropTypes.string,
+  keyboard: PropTypes.bool,
+  // control backdrop, see http://v4-alpha.getbootstrap.com/components/modal/#options
+  backdrop: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(["static"])]),
+  // if body of modal should be scrollable when content is long
+  scrollable: PropTypes.bool,
+  // allows for a node/component to exist next to the modal (outside of it). Useful for external close buttons
+  // external: PropTypes.node,
+  // called on componentDidMount
+  onEnter: PropTypes.func,
+  // called on componentWillUnmount
+  onExit: PropTypes.func,
+  // called when done transitioning in
+  onOpened: PropTypes.func,
+  // called when done transitioning out
+  onClosed: PropTypes.func,
+  className: PropTypes.string,
+  wrapClassName: PropTypes.string,
+  modalClassName: PropTypes.string,
+  backdropClassName: PropTypes.string,
+  contentClassName: PropTypes.string,
+  // boolean to control whether the fade transition occurs (default: true)
+  fade: PropTypes.bool,
+  cssModule: PropTypes.object,
+  // zIndex defaults to 1000.
+  zIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  // backdropTransition - controls backdrop transition
+  // timeout is 150ms by default to match bootstrap
+  // see Fade for more details
+  backdropTransition: PropTypes.object,
+  // modalTransition - controls modal transition
+  // timeout is 300ms by default to match bootstrap
+  // see Fade for more details
+  modalTransition: PropTypes.object,
+  innerRef: PropTypes.object,
+  // if modal should be destructed/removed from DOM after closing
+  unmountOnClose: PropTypes.bool, // defaults to true
+  // if the element which triggered the modal to open should focused after the modal closes (see example somewhere below)
+  returnFocusAfterClose: PropTypes.bool // defaults to true
 }
 
 BasicModal.defaultProps = {
-  confirmButtonTitle: "Save",
-  cancelButtonTitle: "Cancel",
-  show: false,
+  cancelButton: <Button color="danger">Cancel</Button>,
+  saveButton: (
+    <Button className="mr-1" color="primary">
+      Save
+    </Button>
+  ),
   disabled: false,
-  saveDisabled: false
+  disabledSave: false,
+  size: "lg"
 }
 
 export default memo(BasicModal)

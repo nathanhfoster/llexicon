@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback, useMemo, memo, lazy } from "react"
-import { connect as reduxConnect } from "react-redux"
+import React, { useEffect, useMemo, memo, lazy } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Row } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
@@ -17,7 +17,7 @@ import "./styles.css"
 
 const ReactCalendar = lazy(() => import("../../components/ReactCalendar"))
 const EntryFolders = lazy(() => import("../../components/EntryFolders"))
-const EntriesMinimal = lazy(() => import("../../components/EntriesMinimal"))
+const EntriesList = lazy(() => import("../../components/EntriesList"))
 const BasicMap = lazy(() => import("../../components/BasicMap"))
 
 const mapStateToProps = ({
@@ -72,7 +72,7 @@ const Entries = ({
   const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
 
   if (pathname === RouteMap.ENTRIES) {
-    RouterPush(history, RouteMap.ENTRIES_MINIMAL)
+    RouterPush(history, RouteMap.ENTRIES_LIST)
   }
 
   if (TextEditor.latitude && TextEditor.longitude) {
@@ -86,43 +86,6 @@ const Entries = ({
   let listItemHeight = minimalEntriesListHeight / 2
 
   const activeTab = pathname
-
-  const handleItemsRendered = useCallback(
-    ({
-      overscanStartIndex,
-      overscanStopIndex,
-      visibleStartIndex,
-      visibleStopIndex
-    }) => {
-      const { length } = viewableEntries
-      const bottomOfListIndex = length === 0 ? length : length - 1
-      const reachedBottomOfList =
-        bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
-
-      // console.log("overscanStopIndex: ", overscanStopIndex)
-      // console.log("visibleStopIndex: ", visibleStopIndex)
-      // console.log("reachedBottomOfList: ", reachedBottomOfList)
-      // console.log("---------------------------------------")
-
-      if (reachedBottomOfList) {
-        GetEntries()
-      }
-    },
-    [viewableEntries.length]
-  )
-
-  const GetEntries = () => {
-    if (entriesSearch || !nextEntryPage) {
-      return
-    }
-
-    const split = nextEntryPage.split(/\?page=(.*)/)
-    const pageNumber = split[1]
-
-    SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
-    )
-  }
 
   const handleTabChange = tabId => RouterPush(history, tabId)
 
@@ -170,7 +133,7 @@ const Entries = ({
       onClickCallback: handleTabChange
     },
     {
-      tabId: RouteMap.ENTRIES_MINIMAL,
+      tabId: RouteMap.ENTRIES_LIST,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-th-list" />,
       render: shouldRenderNewEntryButton ? (
@@ -179,10 +142,9 @@ const Entries = ({
         </Row>
       ) : (
         <Row>
-          <EntriesMinimal
+          <EntriesList
             height={minimalEntriesListHeight}
             entries={viewableEntries}
-            onItemsRendered={handleItemsRendered}
           />
         </Row>
       ),
@@ -211,7 +173,7 @@ const Entries = ({
         <Row>
           <BasicMap
             renderUserLocation
-            height={viewPortHeight - 54}
+            height={viewPortHeight - 46}
             locations={viewableEntries}
             getAddressOnMarkerClick
             onChangeCallback={({ entryId, address, latitude, longitude }) => {

@@ -1,8 +1,8 @@
 import React, { memo } from "react"
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types"
 import "./styles.css"
 
-const containerStyles = ({ top = 60, right = 20, move = 50 }) => ({
+const containerStyles = ({ top, right, move }) => ({
   zIndex: 101,
   position: "absolute",
   top: `${top}%`,
@@ -11,7 +11,7 @@ const containerStyles = ({ top = 60, right = 20, move = 50 }) => ({
   animation: `move-astronaut ${move}s infinite linear both alternate`
 })
 
-const astronautStyles = ({ rotate = 200 }) => ({
+const astronautStyles = ({ rotate }) => ({
   width: 140,
   animation: `rotate-astronaut ${rotate}s infinite linear both alternate`
 })
@@ -29,6 +29,13 @@ Astronaut.propTypes = {
   top: PropTypes.number,
   right: PropTypes.number,
   move: PropTypes.number
+}
+
+Astronaut.defaultProps = {
+  top: 60,
+  right: 20,
+  move: 50,
+  rotate: 200
 }
 
 export default memo(Astronaut)

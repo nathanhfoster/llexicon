@@ -1,1 +1,14 @@
+@import "./fade-in.css";
+@import "./fade-out.css";
 @import "./spin.css";
+.fade-in {
+    -webkit-animation: fade-in 0.4s linear forwards;
+    animation: fade-in 0.4s linear forwards;
+    opacity: 0;
+}
+
+.fade-out {
+    -webkit-animation: fade-out 0.4s linear forwards;
+    animation: fade-out 0.4s linear forwards;
+    opacity: 0;
+}

@@ -1,10 +1,12 @@
 .NavBar {
   font-weight: bold;
   width: 100%;
-  z-index: 103;
   box-shadow: var(--primaryBoxShadow);
   text-align: center !important;
   background: var(--slate_grey);
+  position: absolute;
+  z-index: 103;
+  top: 0;
 }
 
 @media (min-width: 768px) {

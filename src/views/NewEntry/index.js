@@ -56,6 +56,15 @@ const NewEntry = ({
 
   activeDate = new Date(activeDate)
 
+  const handleInputChange = ({ target: { id, value } }) =>
+    SetEditorState({ [id]: value })
+
+  const handleTextEditorChange = ({ ...payload }) =>
+    SetEditorState({ ...payload })
+
+  const handleChangeDateCreatedByAuthor = activeDate =>
+    SetCalendar({ activeDate })
+
   const handlePostEntry = async () => {
     const {
       html,
@@ -85,16 +94,8 @@ const NewEntry = ({
     await PostReduxEntry(payload)
     SyncEntries()
     ClearEditorState()
+    handleChangeDateCreatedByAuthor(new Date())
   }
-
-  const handleInputChange = ({ target: { id, value } }) =>
-    SetEditorState({ [id]: value })
-
-  const handleTextEditorChange = ({ ...payload }) =>
-    SetEditorState({ ...payload })
-
-  const handleChangeDateCreatedByAuthor = activeDate =>
-    SetCalendar({ activeDate })
 
   return (
     <Container className="NewEntry Container">
@@ -125,8 +126,8 @@ const NewEntry = ({
             <InputGroupAddon addonType="append" onClick={handlePostEntry}>
               <InputGroupText
                 tag={Button}
+                className="SaveButton"
                 color="primary"
-                style={{ color: "white" }}
                 disabled={postDisabled}
                 type="submit"
               >

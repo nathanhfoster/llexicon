@@ -14,12 +14,16 @@ class BasicList extends PureComponent {
     className: PropTypes.string,
     list: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.any.isRequired,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-          .isRequired,
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        value: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+          PropTypes.object
+        ]),
         otherValue: PropTypes.any
-      }).isRequired
+      })
     ),
+    render: PropTypes.func,
 
     maxHeight: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
@@ -88,9 +92,7 @@ class BasicList extends PureComponent {
           <Fragment>
             <span className="Overflow FirstValue">{value}</span>
             {otherValue && (
-              <span className="Overflow OtherValue">
-                {otherValue}
-              </span>
+              <span className="Overflow OtherValue">{otherValue}</span>
             )}
           </Fragment>
         )}
@@ -107,8 +109,8 @@ class BasicList extends PureComponent {
     const { onScrollToBottomOfListCallback, list } = this.props
 
     if (!onScrollToBottomOfListCallback) return
-    const listLength = list.length
-    const bottomOfListIndex = listLength === 0 ? listLength : listLength - 1
+    const { length } = list
+    const bottomOfListIndex = length === 0 ? length : length - 1
     const reachedBottomOfList =
       bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
     // console.log("overscanStopIndex: ", overscanStopIndex)
@@ -127,13 +129,17 @@ class BasicList extends PureComponent {
       list,
       height,
       width,
-      layout
+      layout,
+      render
     } = this.props
+    const styles = {
+      position: render ? "relative" : listPosition
+    }
     return (
       <FixedSizeList
         ref={this.listRef}
         className={`${className} basicListContainer fade-in`}
-        style={{ position: listPosition, background: "transparent" }}
+        style={styles}
         height={height}
         width={width}
         itemData={list}
@@ -142,7 +148,7 @@ class BasicList extends PureComponent {
         onItemsRendered={this.handleItemsRendered}
         layout={layout}
       >
-        {this.renderList}
+        {render || this.renderList}
       </FixedSizeList>
     )
   }

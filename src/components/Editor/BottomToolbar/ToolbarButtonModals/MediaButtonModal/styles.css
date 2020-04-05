@@ -1,8 +1,12 @@
 .MediaButtonModal {
-    height: 500px;
+    height: calc(100% - var(--inputHeight));
 }
 
-.MediaDropDown button{
+.MediaDropDown button {
     height: var(--inputHeight);
     border: 0;
+}
+
+.MediaEntryFilesCarousel {
+    height: 400px;
 }

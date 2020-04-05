@@ -129,7 +129,11 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
       </Row>
       <Row className="EntryFoldersContainer Container" onScroll={handleScroll}>
         {renderFolders()}
-        <EntryCards entries={viewableEntries} />
+        <Container className="EntryCards">
+          <Row>
+            <EntryCards entries={viewableEntries} />
+          </Row>
+        </Container>
       </Row>
     </Container>
   )

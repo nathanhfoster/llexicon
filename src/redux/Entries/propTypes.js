@@ -33,14 +33,25 @@ const EntryPropTypes = PropTypes.shape({
   title: PropTypes.string,
   html: PropTypes.string,
   date_created: PropTypes.string,
-  date_created_by_author: PropTypes.string,
+  date_created_by_author: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date)
+  ]),
   date_updated: PropTypes.string,
   views: PropTypes.number,
   rating: EntryRatingProps,
   address: PropTypes.string,
   latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  is_public: PropTypes.bool
+  is_public: PropTypes.bool,
+
+  // Redux Only
+  _shouldDelete: PropTypes.bool,
+  _shouldPost: PropTypes.bool,
+  _lastUpdated: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date)
+  ])
 })
 
 const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)

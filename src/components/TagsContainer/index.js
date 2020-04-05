@@ -1,6 +1,5 @@
 import React, { memo } from "react"
 import { Badge, Col } from "reactstrap"
-import { BasicList } from "../"
 import PropTypes from "prop-types"
 import { EntryTagsProps } from "../../redux/Entries/propTypes"
 import "./styles.css"
@@ -41,7 +40,7 @@ const TagsContainer = ({
     tags.map(({ title }, i) => (
       <Badge
         key={title}
-        className={`TagContainer ${tagContainerClassName} ${
+        className={`TagContainer fade-in ${tagContainerClassName} ${
           hoverable ? "TagContainerHover" : ""
         }`}
         onClick={onClickCallback ? () => onClickCallback(title) : null}

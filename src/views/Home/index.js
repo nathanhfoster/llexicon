@@ -13,7 +13,13 @@ import { RouterPush, RouteMap } from "../../routes"
 import "./styles.css"
 
 const HomeButtons = lazy(() => import("../../components/EntryNavButtons"))
-const Footer = lazy(() => import("../../components/Footer"))
+const EntriesMostViewed = lazy(() =>
+  import("../../components/EntriesMostViewed")
+)
+const EntriesRandom = lazy(() => import("../../components/EntriesRandom"))
+const EntriesRediscover = lazy(() =>
+  import("../../components/EntriesRediscover")
+)
 
 const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
   entries: items,
@@ -24,10 +30,15 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
   const handleOnClick = () =>
     RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS_ENTRIES"])
 
+  const viewableEntries = useMemo(
+    () => entries.filter(item => !item._shouldDelete),
+    [entries]
+  )
+
   return (
     <Container tag="article" className="Home Container">
       <Row className="mb-3">
-        <Col xs={12} className="pt-3 pt-sm-4">
+        <Col xs={12} className="px-0 pt-3 pt-sm-4">
           <BasicCard
             header={<LogoImage height={256} width={256} />}
             title={<Header>Astral Tree</Header>}
@@ -43,16 +54,21 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col xs={12}>
-          <Header fill="var(--primaryColor)">Entries Table</Header>
+      <Row className="mb-3">
+        <Col xs={12} className="p-0">
+          <Header fill="var(--accentColor)">Entries Table</Header>
         </Col>
-        <Col xs={12}>
-          <EntriesTable entries={entries} />
-        </Col>
+        <EntriesTable entries={viewableEntries} />
       </Row>
-      <hr style={{ height: 40 }} />
-      <Footer />
+      <Row className="HomeRow mb-3 pb-1">
+        <EntriesMostViewed />
+      </Row>
+      <Row className="HomeRow mb-3 pb-1">
+        <EntriesRediscover />
+      </Row>
+      <Row className="HomeRow pb-1">
+        <EntriesRandom />
+      </Row>
     </Container>
   )
 }

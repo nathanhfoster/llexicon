@@ -42,11 +42,7 @@ const BasicDropDown = ({
       direction={direction}
       className={`BasicDropDown ${className}`}
     >
-      <DropdownToggle
-        caret
-        color="primary"
-        className={`BasicDropDownToggle`}
-      >
+      <DropdownToggle caret color="primary" className={`BasicDropDownToggle`}>
         {value}
       </DropdownToggle>
       <DropdownMenu
@@ -75,7 +71,7 @@ const BasicDropDown = ({
 BasicDropDown.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.any.isRequired,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,

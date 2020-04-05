@@ -66,16 +66,15 @@ const BottomToolbar = ({
   return (
     <Fragment>
       {canToggleToolbars && (
-        <div
-          className={`ToggleBottomToolbarButton p-1 ${
+        <Button
+          color="inherit"
+          className={`ToggleBottomToolbarButton Center p-1 ${
             isOpen ? "BottomToolbarIsOpen" : "BottomToolbarIsClosed"
           }`}
+          onClick={toggleBottomToolbar}
         >
-          <i
-            className={`fas fa-angle-${isOpen ? "down" : "up"} fa-2x`}
-            onClick={toggleBottomToolbar}
-          />
-        </div>
+          <i className={`fas fa-angle-down fa-2x`} />
+        </Button>
       )}
       <Collapse isOpen={isOpen}>
         <Container fluid className="BottomToolBar">

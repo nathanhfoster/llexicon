@@ -6,14 +6,8 @@
 .TagContainer {
     background: var(--accentColor);
     padding: 0.25rem;
-}
-
-.TagContainer:first-child {
-    margin-right: 0.25rem;
-}
-
-.TagContainer:not(:first-child) {
-    margin: 0.25rem;
+    /* top right bottom left */
+    margin: 0.25rem 0.25rem 0.25rem 0;
 }
 
 .TagContainer * {
@@ -22,8 +16,6 @@
 }
 
 .TagTitle {}
-
-
 
 .TagContainerHover:hover {
     background: var(--dark_border);

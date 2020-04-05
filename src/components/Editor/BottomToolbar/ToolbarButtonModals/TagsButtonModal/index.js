@@ -1,16 +1,17 @@
-import React, { useState, useEffect, memo } from "react"
+import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
-import {
-  removeArrayDuplicates,
-  TopKFrequentStrings
-} from "../../../../../helpers"
+import { TopKFrequentStrings } from "../../../../../helpers"
+import { validatedString } from "./utlis"
 import memoizeProps from "../../../../../helpers/memoizeProps"
-import { EntriesPropTypes } from "../../../../../redux/Entries/propTypes"
+import {
+  EntriesPropTypes,
+  EntryTagsProps
+} from "../../../../../redux/Entries/propTypes"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -19,14 +20,6 @@ const mapStateToProps = ({
 }) => ({ items, filteredItems, UserId: id, EntryTags })
 
 const mapDispatchToProps = { GetUserEntryTags }
-
-const validatedString = s => {
-  const validatedString = s.replace(/[^A-Z0-9]+/gi, " ")
-  const filteredString = removeArrayDuplicates(validatedString.split(" ")).join(
-    " "
-  )
-  return filteredString
-}
 
 const getInitialState = tags => ({
   tagsAsString: tags.map(tag => tag.title).join(" "),
@@ -43,18 +36,6 @@ const TagsButtonModal = ({
   xs,
   onChangeCallback
 }) => {
-  const entryTags = Object.values(
-    items
-      .concat(filteredItems)
-      .map(entry => entry.tags)
-      .flat(1)
-      .concat(EntryTags)
-  )
-
-  let sortedTags = TopKFrequentStrings(entryTags, "title").map(title => ({
-    title
-  }))
-
   useEffect(() => {
     if (UserId) GetUserEntryTags()
   }, [])
@@ -65,6 +46,30 @@ const TagsButtonModal = ({
 
   const splitTagsAsString = tagsAsString.split(" ")
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
+
+  const entryTags = useMemo(
+    () =>
+      Object.values(
+        items
+          .concat(filteredItems)
+          .map(entry => entry.tags)
+          .flat(1)
+          .concat(EntryTags)
+      ),
+    [items, filteredItems, EntryTags, splitTagsAsString]
+  )
+
+  let sortedTags = useMemo(
+    () =>
+      TopKFrequentStrings(entryTags, "title")
+        .filter(tag => {
+          if (splitTagsAsString.length > 0 && splitTagsAsString.includes(tag))
+            return false
+          else return true
+        })
+        .map(title => ({ title })),
+    [entryTags]
+  )
 
   if (typing && lastTagAsString) {
     sortedTags = sortedTags.filter(entryTag =>
@@ -162,8 +167,8 @@ TagsButtonModal.propTypes = {
   UserId: PropTypes.number,
   items: EntriesPropTypes,
   filteredItems: EntriesPropTypes,
-  EntryTags: PropTypes.arrayOf(PropTypes.object).isRequired,
-  tags: PropTypes.arrayOf(PropTypes.object).isRequired,
+  EntryTags: EntryTagsProps.isRequired,
+  tags: EntryTagsProps.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
   onChangeCallback: PropTypes.func.isRequired
 }

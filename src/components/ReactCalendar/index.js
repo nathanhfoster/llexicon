@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect, useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -11,6 +11,7 @@ import { SetCalendar } from "../../redux/Calendar/Calendar"
 import { GetUserEntriesByDate } from "../../redux/Entries/actions"
 import TileContent from "./TileContent"
 import EntryList from "../EntryList"
+import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 import "./stylesM.css"
 
@@ -36,7 +37,11 @@ const ReactCalendar = ({
     GetUserEntriesByDate(activeDate)
   }, [])
 
+  const previousActiveStartDate = useRef(activeDate)
+
   const calendarDate = MomentJS(activeDate)
+
+  const activeStartDate = calendarDate.startOf("month").toDate()
 
   const entriesWithinView = useMemo(
     () =>
@@ -47,13 +52,10 @@ const ReactCalendar = ({
 
         return !_shouldDelete && entryDateWithinView
       }),
-    [entries]
+    [activeDate, entries]
   )
 
-  const handleDateChange = (
-    { activeStartDate, view },
-    shouldGetUserEntries = true
-  ) => {
+  const handleDateChange = ({ activeStartDate, view }) => {
     const now = new Date()
     const activeDate = new Date(activeStartDate)
     activeDate.setHours(now.getHours())
@@ -61,17 +63,24 @@ const ReactCalendar = ({
     activeDate.setSeconds(now.getSeconds())
     activeDate.setMilliseconds(now.getMilliseconds())
 
+    const shouldGetUserEntries =
+      new Date(previousActiveStartDate.current).getMonth() !==
+      activeDate.getMonth()
+
     SetCalendar({ activeDate, view })
 
     if (shouldGetUserEntries) GetUserEntriesByDate(activeStartDate)
   }
 
   const handleTodayClick = () => {
-    const activeDate = new Date()
-    SetCalendar({ activeDate })
+    const activeStartDate = new Date()
+    handleDateChange({ activeStartDate, view: "month" }, false)
   }
 
   const handleNewEntryClick = () => RouterPush(history, RouteMap.NEW_ENTRY)
+
+  const handleOnChange = activeStartDate =>
+    handleDateChange({ activeStartDate, view }, false)
 
   const handleOnClickDay = activeStartDate =>
     handleDateChange({ activeStartDate, view: "month" }, false)
@@ -120,10 +129,14 @@ const ReactCalendar = ({
           xs={{ size: 12, order: 1 }}
           className="p-0"
         >
+          {/* https://github.com/wojtekmaj/react-calendar#readme */}
           <Calendar
-            //calendarType="ISO 8601"
+            // calendarType="ISO 8601"
+            // defaultValue={activeDate}
+            // defaultActiveStartDate={activeStartDate}
+            activeStartDate={activeStartDate}
             value={activeDate}
-            ativeStartDate={new Date()} // fallback if value not set
+            defaultView="month"
             tileContent={props => (
               <TileContent
                 {...props}
@@ -131,9 +144,11 @@ const ReactCalendar = ({
                 entriesWithinView={entriesWithinView}
               />
             )}
-            //tileClassName={tileHandler}
+            // tileClassName={tileHandler}
             // minDetail={"year"}
+            showWeekNumbers={false}
             showFixedNumberOfWeeks={true}
+            showNeighboringMonth={true}
             next2Label={null}
             prev2Label={null}
             nextLabel={
@@ -142,13 +157,17 @@ const ReactCalendar = ({
             prevLabel={
               <i className="fas fa-chevron-circle-left CalendarNavigationButton" />
             }
-            onChange={null}
-            onActiveDateChange={handleDateChange}
-            onClickDay={handleOnClickDay}
+            onActiveStartDateChange={handleDateChange}
+            onChange={handleOnChange}
+            // onViewChange={}
+            // onClickDay={handleOnClickDay}
             // onClickWeekNumber={props => console.log("Week: ", props)}
-            onClickMonth={handleOnClickMonth}
-            onClickYear={handleOnClickYear}
-            onClickDecade={handleOnClickDecade}
+            // onClickMonth={handleOnClickMonth}
+            // onClickYear={handleOnClickYear}
+            // onClickDecade={handleOnClickDecade}
+            // onViewChange={handleDateChange}
+            // onDrillDown={}
+            // onDrillUp={}
           />
         </Col>
       </Row>
@@ -167,6 +186,8 @@ ReactCalendar.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired
 }
 
+const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps, true)
+
 export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(ReactCalendar)
+  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(ReactCalendar))
 )

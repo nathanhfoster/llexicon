@@ -104,6 +104,7 @@ const MediaButtonModal = ({
           </Col>
         </Row>
         <EntryFilesCarousel
+          className="MediaEntryFilesCarousel"
           files={AllEntryFiles}
           onChangeCallback={onChangeCallback}
           editorRef={editorRef}

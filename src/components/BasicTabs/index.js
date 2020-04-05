@@ -70,9 +70,9 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
         const { tabId, render, mountTabOnlyWhenActive, className } = tab
         const shouldNotRender =
           mountTabOnlyWhenActive === true && activeTab !== tabId
-        return shouldNotRender ? null : (
+        return (
           <TabContent key={tabId} activeTab={activeTab} className={className}>
-            <TabPane tabId={tabId}>{render}</TabPane>
+            <TabPane tabId={tabId}>{shouldNotRender ? null : render}</TabPane>
           </TabContent>
         )
       }),

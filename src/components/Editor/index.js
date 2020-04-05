@@ -284,8 +284,8 @@ class Editor extends PureComponent {
     const editorHeight = readOnly
       ? "100%"
       : bottomToolbarIsOpen
-      ? "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight))"
-      : "calc(100% - var(--topToolbarHeight))"
+      ? "calc(100% - var(--topToolbarHeight) - var(--inputHeight) - var(--bottomToolbarHeight))"
+      : "calc(100% - var(--topToolbarHeight) - var(--inputHeight))"
 
     return {
       toolbarId,

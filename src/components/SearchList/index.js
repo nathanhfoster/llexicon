@@ -8,6 +8,7 @@ import {
   getTextWidth,
   mergeLists
 } from "./functions"
+import { Input, Label } from "reactstrap"
 
 import "./styles.css"
 
@@ -58,7 +59,7 @@ class SearchList extends PureComponent {
     cacheList: PropTypes.bool,
 
     placeholder: PropTypes.string,
-    helperText: PropTypes.string,
+    label: PropTypes.string,
     maxHeight: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -199,7 +200,7 @@ class SearchList extends PureComponent {
   render() {
     const {
       placeholder,
-      helperText,
+      label,
       itemSize,
       onChangeCallbackDebounceDelay,
       onChangeCallback,
@@ -225,8 +226,14 @@ class SearchList extends PureComponent {
         )}
         <div className="listSearchContainer">
           <div className="listSearchInputDropDown">
-            <input
+            {label && (
+              <Label className="listSearchHelper" for="SearchListInput">
+                {label}
+              </Label>
+            )}
+            <Input
               ref={this.searchListRef}
+              id="SearchListInput"
               className="listSearchInput Overflow"
               type="text"
               value={searchValue}
@@ -285,7 +292,6 @@ class SearchList extends PureComponent {
                 </div>
               </div>
             ))}
-          {helperText && <p className="listSearchHelper">{helperText}</p>}
         </div>
       </Fragment>
     )

@@ -20,7 +20,6 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   switch (type) {
     case EntriesActionTypes.ENTRIES_SET_TAGS:
       return { ...state, EntryTags: payload }
-
     case EntriesActionTypes.ENTRIES_SEARCH_FILTER:
       return {
         ...state,

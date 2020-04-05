@@ -1,7 +1,7 @@
 .BasicCard {
   background: rgba(0, 0, 0, 0.4);
   border: 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35);
+  /* box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.4); */
 }
 
 .BasicCardHover {

@@ -1,27 +1,34 @@
 :root {
-    --bottomToolbarHeight: 220px;
+    --bottomToolbarHeight: 224.81px;
     --bottomToolbarFilesHeight: 80px;
-    --bootmToolBarTagsHeight: 24px;
+    --bootmToolBarTagsHeight: 28.81px;
 }
 
 .ToggleBottomToolbarButton {
-    opacity: 0.1;
-    position: absolute;
-    left: 50%;
+    height: var(--inputHeight);
+    background-color: var(--primaryColor);
+    opacity: var(--mainOpacity);
+    width: 100%;
 }
 
 .ToggleBottomToolbarButton:hover {
     opacity: 1;
-    z-index: 99;
-    color: var(--accentColor);
 }
 
-.BottomToolbarIsOpen {
-    bottom: calc(var(--bottomToolbarHeight));
+.ToggleBottomToolbarButton i {
+    -webkit-transition: -webkit-transform .2s ease-in-out;
+    -ms-transition: -ms-transform .2s ease-in-out;
+    transition: transform .2s ease-in-out;
 }
 
-.BottomToolbarIsClosed {
-    bottom: 0;
+.BottomToolbarIsOpen i {
+    transform: rotate(0);
+    -webkit-transform: rotate(0);
+}
+
+.BottomToolbarIsClosed i {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
 }
 
 .BottomToolBar {

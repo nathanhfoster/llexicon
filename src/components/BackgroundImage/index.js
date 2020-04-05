@@ -6,6 +6,7 @@ import BackgroundObjects from "./BackgroundObjects"
 import Rocket from "./Rocket"
 import Earth from "./Earth"
 import Moon from "./Moon"
+import CrecentMoon from "./CrecentMoon"
 import "./styles.css"
 
 const RocketEarthMoon = () => (
@@ -18,6 +19,8 @@ const RocketEarthMoon = () => (
 
 const backgroundImageRouteMap = route => {
   switch (route) {
+    case RouteMap.ROOT:
+      return RocketEarthMoon()
     case RouteMap.ABOUT:
       return RocketEarthMoon()
     case RouteMap.HOME:

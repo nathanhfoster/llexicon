@@ -53,7 +53,7 @@ const FacebookGoogleLogin = () => {
         scope,
         session_state,
         token_type
-      },
+      }
       // w3: { Eea, Paa, U3, ig, ofa, wea }
     } = response
 

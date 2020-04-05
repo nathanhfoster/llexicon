@@ -1,11 +1,18 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
+import { EntryTagsProps } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { RatingIcon, TagsContainer } from "../../"
 import Moment from "react-moment"
 import "./styles.css"
 
-const EntryCardText = ({ tags, date_updated, views, rating }) => {
+const EntryCardText = ({
+  tags,
+  date_created_by_author,
+  date_updated,
+  views,
+  rating
+}) => {
   return (
     <Container className="EntryCardText Container">
       <Row>
@@ -23,6 +30,10 @@ const EntryCardText = ({ tags, date_updated, views, rating }) => {
       </Row>
       <Row>
         <Col xs={12} className="EntryCardTextLeftColumn p-0">
+          <i className="fas fa-calendar-day mr-1" />
+          <Moment fromNow>{date_created_by_author}</Moment>
+        </Col>
+        <Col xs={12} className="EntryCardTextLeftColumn p-0">
           <i className="fas fa-pencil-alt mr-1" />
           <Moment fromNow>{date_updated}</Moment>
         </Col>
@@ -32,7 +43,11 @@ const EntryCardText = ({ tags, date_updated, views, rating }) => {
 }
 
 EntryCardText.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.object),
+  tags: EntryTagsProps,
+  date_created_by_author: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date)
+  ]),
   date_updated: PropTypes.string,
   views: PropTypes.number,
   rating: PropTypes.number

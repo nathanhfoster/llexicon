@@ -11,15 +11,15 @@ const SocialAuthentication = payload => dispatch => {
       qs.stringify(payload)
     )
     .then(({ data }) => {
-      const { token, id } = data
-      dispatch(RefreshPatchUser(token, id))
+      const { id } = data
+      dispatch(RefreshPatchUser(id))
       dispatch({
         type: UserActionTypes.USER_SET,
         payload: data
       })
       return data
     })
-    .catch(e => console.log("SocialAuthentication: ", e.response))
+    .catch(e => console.log("SocialAuthentication: ", e))
 }
 
 export { SocialAuthentication }
