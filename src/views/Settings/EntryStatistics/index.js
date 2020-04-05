@@ -1,15 +1,14 @@
 import React, { Fragment, memo } from "react"
-import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import MomentJs from "moment"
-import "./styles.css"
 import deepEquals from "../../../helpers/deepEquals"
+import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
-  filteredItems
+  filteredItems,
 })
 
 const EntryStatistics = ({ items, filteredItems }) => {
@@ -19,6 +18,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
   let charCount = 0
   let wordCount = 0
   let tagCountMap = {}
+  let peopleCountMap = {}
   let viewCount = 0
 
   const entries = items.concat(filteredItems)
@@ -34,6 +34,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
     const {
       id,
       tags,
+      people,
       EntryFiles,
       title,
       html,
@@ -46,7 +47,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
       address,
       latitude,
       longitude,
-      author
+      author,
     } = entries[i]
     if (rating !== 0) {
       sumRating += rating
@@ -78,9 +79,14 @@ const EntryStatistics = ({ items, filteredItems }) => {
       maximumWordsInAnEntry = currentWordCount
 
     for (let j = 0, l = tags.length; j < l; j++) {
-      const { title } = tags[j]
+      const { name } = tags[j]
 
-      tagCountMap[title] = tagCountMap[title] + 1 || 1
+      tagCountMap[name] = tagCountMap[name] + 1 || 1
+    }
+
+    for (let k = 0, len = people.length; k < len; k++) {
+      const { name } = people[k]
+      peopleCountMap[name] = peopleCountMap[name] + 1 || 1
     }
   }
 
@@ -106,13 +112,13 @@ const EntryStatistics = ({ items, filteredItems }) => {
     { title: "Days", value: averageDaysUpdatingEntries },
     { title: "Weeks", value: averageWeeksUpdatingEntries },
     { title: "Months", value: averageMonthsUpdatingEntries },
-    { title: "Years", value: averageYearsUpdatingEntries }
+    { title: "Years", value: averageYearsUpdatingEntries },
   ]
 
   const entryAverages = [
     { title: "Rating", value: averageRating },
     { title: "Words / entry", value: averageWordsPerEntry },
-    { title: "Time Writing Entries", value: averageTimesUpdatingEntries }
+    { title: "Time Writing Entries", value: averageTimesUpdatingEntries },
   ]
 
   const entryCounts = [
@@ -121,7 +127,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
     { title: "Characters", value: charCount },
     { title: "Words", value: wordCount },
     { title: "Minimum words / entry", value: minimumWordsInAnEntry },
-    { title: "Maximum words / entry", value: maximumWordsInAnEntry }
+    { title: "Maximum words / entry", value: maximumWordsInAnEntry },
   ]
 
   const renderEntryStats = (stats, fixedValue = 3) =>
@@ -133,20 +139,29 @@ const EntryStatistics = ({ items, filteredItems }) => {
             <Col xs={12}>
               <span className="HomeSubHeader">{title}</span>
             </Col>
-            {value.map(v => renderStat(i, v, fixedValue))}
+            {value.map((v) => renderStat(i, v, fixedValue))}
           </Fragment>
         )
       }
       return renderStat(i, stat, fixedValue)
     })
 
-  const renderTagCounts = tagCountMap =>
+  const renderTagCounts = () =>
     Object.keys(tagCountMap)
       .sort((a, b) => tagCountMap[b] - tagCountMap[a])
-      .map((title, i) => {
-        const value = tagCountMap[title]
+      .map((name, i) => {
+        const value = tagCountMap[name]
 
-        return renderStat(i, { title, value })
+        return renderStat(i, { title: name, value })
+      })
+
+  const renderPeopleCounts = () =>
+    Object.keys(peopleCountMap)
+      .sort((a, b) => peopleCountMap[b] - peopleCountMap[a])
+      .map((name, i) => {
+        const value = peopleCountMap[name]
+
+        return renderStat(i, { title: name, value })
       })
 
   const renderStat = (key, { title, value }, fixedValue = 0) => (
@@ -163,26 +178,29 @@ const EntryStatistics = ({ items, filteredItems }) => {
           <h1>Entry Statistics</h1>
         </Col>
       </Row>
-
       <Row className="StatContainer">
         <Col xs={12}>
           <span className="HomeSubHeader">Average</span>
         </Col>
         {renderEntryStats(entryAverages)}
       </Row>
-
       <Row className="StatContainer">
         <Col xs={12}>
           <span className="HomeSubHeader">Count</span>
         </Col>
         {renderEntryStats(entryCounts, 0)}
       </Row>
-
       <Row className="StatContainer">
         <Col xs={12}>
           <span className="HomeSubHeader">Tags</span>
         </Col>
-        {renderTagCounts(tagCountMap)}
+        {renderTagCounts()}
+      </Row>
+      <Row className="StatContainer">
+        <Col xs={12}>
+          <span className="HomeSubHeader">People</span>
+        </Col>
+        {renderPeopleCounts()}
       </Row>
     </Container>
   )
@@ -190,7 +208,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
 
 EntryStatistics.propTypes = {
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes
+  filteredItems: EntriesPropTypes,
 }
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
