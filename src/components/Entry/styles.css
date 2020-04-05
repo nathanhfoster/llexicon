@@ -2,7 +2,6 @@
   outline: 0px;
   border: 0;
   background: inherit;
-  box-shadow: var(--primaryBoxShadow);
   z-index: 3;
 }
 

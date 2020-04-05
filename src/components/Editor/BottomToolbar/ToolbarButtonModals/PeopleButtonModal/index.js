@@ -144,7 +144,7 @@ const PeopleButtonModal = ({
       xs={xs}
     >
       <Container className="PeopleButtonModal Container">
-        <Row>
+        <Row className="TagAndPeopleContainer">
           <TagsContainer
             tags={sortedPeople}
             height={200}
@@ -155,7 +155,7 @@ const PeopleButtonModal = ({
             faIcon="fas fa-user-plus"
           />
         </Row>
-        <Row className="mb-2">
+        <Row className="TagAndPeopleContainer mt-2 mb-1">
           <TagsContainer
             tags={people}
             // height={100}
@@ -167,28 +167,24 @@ const PeopleButtonModal = ({
           />
         </Row>
         <Row>
-          <Col className="p-0" xs={12}>
-            <InputGroup className="EntryInput">
-              <InputGroupAddon addonType="append">
-                <InputGroupText
-                  tag={Button}
-                  className="SaveButton"
-                  color="primary"
-                  disabled={!personsName}
-                  onClick={handleAddPersonName}
-                >
-                  <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input
-                onChange={handlePeopleInputChange}
-                type="text"
-                id="tagTitle"
-                name="tagTitle"
-                value={personsName}
-                placeholder="John Doe, Jane Doe"
-              />
-            </InputGroup>
+          <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
+            <InputGroupAddon addonType="append">
+              <InputGroupText
+                tag={Button}
+                className="SaveButton"
+                color="primary"
+                disabled={!personsName}
+                onClick={handleAddPersonName}
+              >
+                <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
+              </InputGroupText>
+            </InputGroupAddon>
+            <Input
+              onChange={handlePeopleInputChange}
+              type="text"
+              value={personsName}
+              placeholder="John Doe, Jane Doe"
+            />
           </Col>
         </Row>
       </Container>

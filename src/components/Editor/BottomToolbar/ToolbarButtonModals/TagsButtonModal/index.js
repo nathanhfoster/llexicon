@@ -136,7 +136,7 @@ const TagsButtonModal = ({
       xs={xs}
     >
       <Container className="TagsButtonModal Container">
-        <Row className="mb-2">
+        <Row className="TagAndPeopleContainer mb-2">
           <TagsContainer
             tags={sortedTags}
             height={200}
@@ -146,12 +146,10 @@ const TagsButtonModal = ({
           />
         </Row>
         <Row>
-          <Col className="p-0" xs={12}>
+          <Col className="p-1" xs={12}>
             <Input
               onChange={handleTagsInputChange}
               type="text"
-              id="tagTitle"
-              name="tagTitle"
               value={tagsAsString}
               placeholder="Family Friends Health Vacation"
             />
