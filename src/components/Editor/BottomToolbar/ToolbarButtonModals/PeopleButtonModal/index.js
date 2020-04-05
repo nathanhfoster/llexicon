@@ -171,7 +171,7 @@ const PeopleButtonModal = ({
             flexWrap="wrap"
             onClickCallback={handleAddPerson}
             hoverable
-            emptyString="No people..."
+            emptyString="No people found..."
             faIcon="fas fa-user-plus"
           />
         </Row>
@@ -182,7 +182,7 @@ const PeopleButtonModal = ({
             flexWrap="wrap"
             onClickCallback={handleRemovePerson}
             hoverable
-            emptyString="No people..."
+            emptyString="No people added..."
             faIcon="fas fa-user-times"
           />
         </Row>

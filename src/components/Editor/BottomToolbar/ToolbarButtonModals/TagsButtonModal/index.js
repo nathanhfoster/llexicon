@@ -143,6 +143,7 @@ const TagsButtonModal = ({
             flexWrap="wrap"
             onClickCallback={handleTagClick}
             hoverable
+            emptyString="No tags found..."
           />
         </Row>
         <Row>
