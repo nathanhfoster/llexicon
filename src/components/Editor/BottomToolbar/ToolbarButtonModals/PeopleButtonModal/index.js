@@ -194,7 +194,7 @@ const PeopleButtonModal = ({
                 className="SaveButton"
                 color="primary"
                 disabled={!personsName}
-                onClick={handleAddPerson}
+                onClick={handleSavePeople}
               >
                 <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
               </InputGroupText>
