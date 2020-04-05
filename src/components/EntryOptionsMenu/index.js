@@ -94,7 +94,7 @@ const EntryOptionsMenu = ({
                 <Button color="danger" onClick={handleDelete}>
                   Confirm
                 </Button>
-                <Button color="primary" onClick={toggleModal}>
+                <Button color="success" onClick={toggleModal}>
                   Cancel
                 </Button>
               </Fragment>

@@ -82,7 +82,7 @@ const BasicModal = ({
           {title}
         </ModalHeader>
         <ModalBody className={className}>{children}</ModalBody>
-        <ModalFooter className="Center">
+        <ModalFooter style={{ justifyContent: "center" }}>
           {footer || (
             <Fragment>
               {cloneElement(saveButton, {
@@ -171,7 +171,7 @@ BasicModal.propTypes = {
 BasicModal.defaultProps = {
   cancelButton: <Button color="danger">Cancel</Button>,
   saveButton: (
-    <Button className="mr-1" color="primary">
+    <Button className="mr-1" color="success">
       Save
     </Button>
   ),
