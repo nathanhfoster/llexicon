@@ -6,7 +6,7 @@ import {
   AddToHomeScreen,
   BasicCard,
   EntriesTable,
-  Header
+  Header,
 } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { RouterPush, RouteMap } from "../../routes"
@@ -23,7 +23,7 @@ const EntriesRediscover = lazy(() =>
 
 const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
   entries: items,
-  userToken: token
+  userToken: token,
 })
 
 const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
@@ -31,7 +31,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
     RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS_ENTRIES"])
 
   const viewableEntries = useMemo(
-    () => entries.filter(item => !item._shouldDelete),
+    () => entries.filter((item) => !item._shouldDelete),
     [entries]
   )
 
@@ -61,10 +61,10 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
         <EntriesTable entries={viewableEntries} />
       </Row>
       <Row className="HomeRow mb-3 pb-1">
-        <EntriesMostViewed />
+        <EntriesRediscover />
       </Row>
       <Row className="HomeRow mb-3 pb-1">
-        <EntriesRediscover />
+        <EntriesMostViewed />
       </Row>
       <Row className="HomeRow pb-1">
         <EntriesRandom />
@@ -74,7 +74,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
 }
 
 Home.propTypes = {
-  userId: PropTypes.number
+  userId: PropTypes.number,
 }
 
 export default reduxConnect(mapStateToProps)(Home)
