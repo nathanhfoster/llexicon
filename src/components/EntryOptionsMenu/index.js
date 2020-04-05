@@ -59,7 +59,7 @@ const EntryOptionsMenu = ({
       <DropdownMenu>
         <DropdownItem header>
           <i className="fas fa-share mr-1" />
-          {url}
+          <span>{url}</span>
         </DropdownItem>
         <DropdownItem
           onClick={() => {
@@ -69,7 +69,7 @@ const EntryOptionsMenu = ({
           }}
         >
           <i className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`} />
-          Copy
+          Copy and make public
         </DropdownItem>
         <DropdownItem
           onClick={() => {
