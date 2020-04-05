@@ -8,7 +8,7 @@ import {
   Input,
   InputGroupAddon,
   InputGroupText,
-  Button
+  Button,
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -19,21 +19,21 @@ import { validatedString } from "../utlis"
 import memoizeProps from "../../../../../helpers/memoizeProps"
 import {
   EntriesPropTypes,
-  EntryPeopleProps
+  EntryPeopleProps,
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryPeople }
+  Entries: { items, filteredItems, EntryPeople },
 }) => ({ items, filteredItems, UserId: id, EntryPeople })
 
 const mapDispatchToProps = {
-  GetUserEntryPeople
+  GetUserEntryPeople,
 }
 
 const getInitialState = () => ({
   personsName: "",
-  typing: false
+  typing: false,
 })
 
 const PeopleButtonModal = ({
@@ -46,7 +46,7 @@ const PeopleButtonModal = ({
   entryId,
   people,
   xs,
-  onChangeCallback
+  onChangeCallback,
 }) => {
   useEffect(() => {
     if (UserId) GetUserEntryPeople()
@@ -62,7 +62,7 @@ const PeopleButtonModal = ({
       Object.values(
         items
           .concat(filteredItems)
-          .map(entry => entry.people)
+          .map((entry) => entry.people)
           .flat(1)
           .concat(EntryPeople)
       ),
@@ -72,24 +72,24 @@ const PeopleButtonModal = ({
   let sortedPeople = useMemo(
     () =>
       TopKFrequentStrings(entryPeople, "name")
-        .filter(entryPersonName => {
+        .filter((entryPersonName) => {
           if (personsName.length > 0 && personsName.includes(entryPersonName))
             return false
           else if (people.some(({ name }) => name == entryPersonName))
             return false
           else return true
         })
-        .map(name => ({ name })),
+        .map((name) => ({ name })),
     [entryPeople]
   )
 
   if (typing) {
-    sortedPeople = sortedPeople.filter(entryPerson =>
+    sortedPeople = sortedPeople.filter((entryPerson) =>
       entryPerson.name.toUpperCase().includes(personsName.toUpperCase())
     )
   }
 
-  const handlePeopleInputChange = e => {
+  const handlePeopleInputChange = (e) => {
     const { value } = e.target
 
     // Replace commas
@@ -97,10 +97,10 @@ const PeopleButtonModal = ({
     // Remove double spaces and periods
     const validatedTagsAsString = validatedString(string)
 
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       personsName: validatedTagsAsString,
-      typing: true
+      typing: true,
     }))
   }
 
@@ -108,10 +108,10 @@ const PeopleButtonModal = ({
     resetState()
   }
 
-  const handleAddPerson = name => {
+  const handleAddPerson = (name) => {
     const payload = {
       id: entryId,
-      people: people.concat({ name })
+      people: people.concat({ name }),
     }
 
     onChangeCallback(payload)
@@ -121,10 +121,10 @@ const PeopleButtonModal = ({
 
   const handleAddPersonName = () => handleAddPerson(personsName)
 
-  const handleRemovePerson = clickedName => {
+  const handleRemovePerson = (clickedName) => {
     const payload = {
       id: entryId,
-      people: people.filter(({ name }) => name != clickedName)
+      people: people.filter(({ name }) => name != clickedName),
     }
 
     onChangeCallback(payload)
@@ -140,7 +140,7 @@ const PeopleButtonModal = ({
       onSaveCallback={handleSave}
       onCancelCallback={handleCancel}
       ButtonIcon="fas fa-users"
-      buttonTitle="Add People"
+      button="Add People"
       xs={xs}
     >
       <Container className="PeopleButtonModal Container">
@@ -204,11 +204,11 @@ PeopleButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   people: EntryPeopleProps.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 PeopleButtonModal.defaultProps = {
-  people: []
+  people: [],
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -219,7 +219,7 @@ const isEqual = (prevProps, nextProps) =>
     "EntryPeople",
     "entryId",
     "people",
-    "xs"
+    "xs",
   ])
 
 export default reduxConnect(

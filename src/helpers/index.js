@@ -1,8 +1,8 @@
 import { lazy } from "react"
 
-const DeepClone = arrayOrObj => JSON.parse(JSON.stringify(arrayOrObj))
+const DeepClone = (arrayOrObj) => JSON.parse(JSON.stringify(arrayOrObj))
 
-const getObjectLength = obj => Object.keys(obj).length
+const getObjectLength = (obj) => Object.keys(obj).length
 
 const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min
@@ -11,9 +11,9 @@ const getRandomFloat = (min, max, fix = 3) =>
   (Math.random() * (min - max) + max).toFixed(fix)
 
 const arrayToObject = (arr, keyField) =>
-  Object.assign({}, ...arr.map(item => ({ [item[keyField]]: item })))
+  Object.assign({}, ...arr.map((item) => ({ [item[keyField]]: item })))
 
-const objectToArray = obj => Object.keys(obj).map(key => obj[key])
+const objectToArray = (obj) => Object.keys(obj).map((key) => obj[key])
 
 const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
   // console.log("removeKeyOrValueFromObject: ", keyOrValueToRemove)
@@ -26,7 +26,7 @@ const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
   } else if (isValue) {
     newObj = {}
 
-    Object.keys(newObj).forEach(key => {
+    Object.keys(newObj).forEach((key) => {
       if (newObj[key] !== keyOrValueToRemove) newObj[key] = newObj[key]
     })
 
@@ -38,16 +38,16 @@ const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
 const isEquivalent = (obj1, obj2) =>
   JSON.stringify(obj1) === JSON.stringify(obj2)
 
-const isOnline = last_login =>
+const isOnline = (last_login) =>
   new Date() - new Date(last_login) <= 1000 * 60 * 5
 
 const findMaxInt = (arrayOfObjs, prop) =>
-  Math.max(...arrayOfObjs.map(e => e[prop]))
+  Math.max(...arrayOfObjs.map((e) => e[prop]))
 
-const sortedMap = map =>
+const sortedMap = (map) =>
   new Map([...map.entries()].sort().sort((a, b) => b[1] - a[1]))
 
-const removeArrayDuplicates = array => [...new Set(array)]
+const removeArrayDuplicates = (array) => [...new Set(array)]
 
 const removeAttributeDuplicates = (array, objAttr = "id") => {
   let map = new Map()
@@ -96,7 +96,7 @@ const filterMapArray = (array = [], uniqueKey = "id", props = false) => {
 
     if (!props) {
       // console.log("Filter but don't map")
-      const filteredArray = array.filter(item => {
+      const filteredArray = array.filter((item) => {
         if (!duplicateMap[item[uniqueKey]]) {
           duplicateMap[item[uniqueKey]] = true
           return false
@@ -126,14 +126,14 @@ const filterMapArray = (array = [], uniqueKey = "id", props = false) => {
     }
   } else if (props) {
     // console.log("Don't filter but map")
-    const mappedArray = array.map(item => (item = mapObject(item, props)))
+    const mappedArray = array.map((item) => (item = mapObject(item, props)))
     return mappedArray
   }
 
   return array
 }
 
-const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e))
+const isSubset = (arr1, arr2) => arr2.every((e) => arr1.includes(e))
 
 const TopKFrequentStrings = (
   arrayOfObjs,
@@ -151,11 +151,11 @@ const TopKFrequentStrings = (
   return newArray
 }
 
-const getUrlImageBase64 = url =>
+const getUrlImageBase64 = (url) =>
   fetch(url)
-    .then(response => response.blob())
+    .then((response) => response.blob())
     .then(
-      blob =>
+      (blob) =>
         new Promise((resolve, reject) => {
           const reader = new FileReader()
           reader.onloadend = () => resolve(reader.result)
@@ -175,16 +175,16 @@ const getCanvasImageBase64 = (img, outputFormat = "image/jpeg", quality = 1) =>
     resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""))
   })
 
-const getImageBase64 = image =>
+const getImageBase64 = (image) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
     if (!image) reject(image)
     reader.readAsDataURL(image)
     reader.onload = () => resolve(reader.result)
-    reader.onerror = error => reject(error)
+    reader.onerror = (error) => reject(error)
   })
 
-const htmlToArrayOfBase64 = html => {
+const htmlToArrayOfBase64 = (html) => {
   const [first, ...data] = html.split("data:")
   const arrayOfBase64 = data.reduce((result, e) => {
     const url = `data:${e.split('"')[0]}`
@@ -226,12 +226,12 @@ const isDecodable = (str, opts) => {
 }
 
 const htmlToArrayOfFiles = (html, filename) =>
-  htmlToArrayOfBase64(html).map(base64 => {
+  htmlToArrayOfBase64(html).map((base64) => {
     const file = getFileFromBase64(base64, filename)
     return file
   })
 
-const getImageBlob = image =>
+const getImageBlob = (image) =>
   new Promise((resolve, reject) => resolve(window.URL.createObjectURL(image)))
 
 const getFileFromBase64 = (dataurl, filename) => {
@@ -247,13 +247,13 @@ const getFileFromBase64 = (dataurl, filename) => {
   return new File([u8arr], `${filename}.${type}`, { type: mime })
 }
 
-const joinStrings = objectArray => {
+const joinStrings = (objectArray) => {
   if (!objectArray || objectArray.length < 1) {
     return objectArray
   }
   if (Array.isArray(objectArray)) {
     return objectArray
-      .map(i =>
+      .map((i) =>
         typeof i.value === "number" ? i.value : i.value.replace("|", "")
       )
       .join("|")
@@ -264,11 +264,11 @@ const joinStrings = objectArray => {
   return objectArray
 }
 
-const splitStrings = value => {
+const splitStrings = (value) => {
   if (!value) return value
   switch (typeof value) {
     case "string":
-      return value.split("|").map(i => (i = { value: i, label: i }))
+      return value.split("|").map((i) => (i = { value: i, label: i }))
     case "number":
       return { value, label: value }
     default:
@@ -314,14 +314,14 @@ const mergeJson = (reduxData, newData) => {
   return objectToArray(mergeMap)
 }
 
-const importTextFileEntries = files => {}
+const importTextFileEntries = (files) => {}
 
-const readmultifiles = e => {
+const readmultifiles = (e) => {
   const files = e.currentTarget.files
-  Object.keys(files).forEach(i => {
+  Object.keys(files).forEach((i) => {
     const file = files[i]
     const reader = new FileReader()
-    reader.onload = e => {
+    reader.onload = (e) => {
       const { result } = reader
       //server call for uploading or reading the files one-by-one
       //by using 'reader.result' or 'file'
@@ -333,7 +333,7 @@ const readmultifiles = e => {
 
 const lazyLoadWithTimeOut = (min, max, componentPath) =>
   lazy(() => {
-    return new Promise(resolve =>
+    return new Promise((resolve) =>
       setTimeout(resolve, getRandomInt(min, max))
     ).then(
       () =>
@@ -363,14 +363,14 @@ const addDynamicScript = (scriptId, url, callback = null) => {
   if (existingScript && callback) callback()
 }
 
-const capitalizeFirstLetter = string => {
+const capitalizeFirstLetter = (string) => {
   if (typeof string === "string" || string instanceof String)
     return `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 }
 
 const debounce = (func, delay = 400) => {
   let debounceTimer
-  return function(...args) {
+  return function (...args) {
     const context = this
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => func.apply(context, args), delay)
@@ -379,7 +379,7 @@ const debounce = (func, delay = 400) => {
 
 const throttled = (func, delay = 1000) => {
   let lastCall = 0
-  return function(...args) {
+  return function (...args) {
     const now = new Date().getTime()
     if (now - lastCall < delay) {
       return
@@ -389,7 +389,7 @@ const throttled = (func, delay = 1000) => {
   }
 }
 
-const copyStringToClipboard = str => {
+const copyStringToClipboard = (str) => {
   // Create new element
   var el = document.createElement("textarea")
   // Set value (string to be copied)
@@ -406,16 +406,18 @@ const copyStringToClipboard = str => {
   document.body.removeChild(el)
 }
 
-const cleanObject = obj => {
+const cleanObject = (obj, truthyCheck = false) => {
   for (const key in obj) {
-    if (obj[key] === null || obj[key] === undefined) {
+    if (truthyCheck && !obj[key]) {
+      delete obj[key]
+    } else if (obj[key] === null || obj[key] === undefined) {
       delete obj[key]
     }
   }
   return obj
 }
 
-const stripHtml = html => {
+const stripHtml = (html) => {
   var tmp = document.createElement("DIV")
   tmp.innerHTML = html
   return tmp.textContent || tmp.innerText || ""
@@ -457,7 +459,7 @@ const fuzzySearch = (s, p, caseSensitive = false, maxLength = 1000) => {
   return true
 }
 
-const deepParseJson = jsonString => {
+const deepParseJson = (jsonString) => {
   // if not stringified json rather a simple string value then JSON.parse will throw error
   // otherwise continue recursion
   if (typeof jsonString === "string") {
@@ -473,7 +475,7 @@ const deepParseJson = jsonString => {
     }
   } else if (Array.isArray(jsonString)) {
     // if an array is received, map over the array and deepParse each value
-    return jsonString.map(val => deepParseJson(val))
+    return jsonString.map((val) => deepParseJson(val))
   } else if (typeof jsonString === "object" && jsonString !== null) {
     // if an object is received then deepParse each element in the object
     // typeof null returns 'object' too, so we have to eliminate that
@@ -496,7 +498,7 @@ const isType = {
   STRING: "string",
   SYMBOL: "symbol",
   FUNCTION: "function",
-  OBJECT: "object"
+  OBJECT: "object",
 }
 
 export {
@@ -540,5 +542,5 @@ export {
   stripHtml,
   fuzzySearch,
   deepParseJson,
-  isType
+  isType,
 }

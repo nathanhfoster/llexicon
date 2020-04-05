@@ -14,11 +14,10 @@ const BasicModal = ({
   disabled,
   disabledSave,
   button,
-  buttonTitle,
   footer,
   saveButton,
   cancelButton,
-  size
+  size,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -38,7 +37,18 @@ const BasicModal = ({
 
   return (
     <Fragment>
-      {button === false ? null : button ? (
+      {button === false ? null : typeof button === "string" ? (
+        <Button
+          color="primary"
+          disabled={disabled}
+          onClick={() => {
+            onClickCallback && onClickCallback()
+            toggle()
+          }}
+        >
+          {button}
+        </Button>
+      ) : (
         cloneElement(button, {
           ...button.props,
           disabled,
@@ -51,19 +61,8 @@ const BasicModal = ({
           onClickCallback: () => {
             onClickCallback && onClickCallback()
             toggle()
-          }
+          },
         })
-      ) : (
-        <Button
-          color="primary"
-          disabled={disabled}
-          onClick={() => {
-            onClickCallback && onClickCallback()
-            toggle()
-          }}
-        >
-          {buttonTitle}
-        </Button>
       )}
       <Modal
         isOpen={shouldShowModal}
@@ -77,7 +76,7 @@ const BasicModal = ({
           toggle={toggle}
           style={{
             justifyContent:
-              typeof title === "string" ? "center" : "space-between"
+              typeof title === "string" ? "center" : "space-between",
           }}
         >
           {title}
@@ -88,7 +87,7 @@ const BasicModal = ({
             <Fragment>
               {cloneElement(saveButton, {
                 disabled: disabledSave,
-                onClick: handleSave
+                onClick: handleSave,
               })}
               {cloneElement(cancelButton, { onClick: handleClose })}
             </Fragment>
@@ -104,7 +103,7 @@ BasicModal.propTypes = {
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
-  buttonTitle: PropTypes.string,
+  button: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
@@ -112,7 +111,7 @@ BasicModal.propTypes = {
   button: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.func,
-    PropTypes.bool
+    PropTypes.bool,
   ]),
   footer: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 
@@ -166,7 +165,7 @@ BasicModal.propTypes = {
   // if modal should be destructed/removed from DOM after closing
   unmountOnClose: PropTypes.bool, // defaults to true
   // if the element which triggered the modal to open should focused after the modal closes (see example somewhere below)
-  returnFocusAfterClose: PropTypes.bool // defaults to true
+  returnFocusAfterClose: PropTypes.bool, // defaults to true
 }
 
 BasicModal.defaultProps = {
@@ -178,7 +177,7 @@ BasicModal.defaultProps = {
   ),
   disabled: false,
   disabledSave: false,
-  size: "lg"
+  size: "lg",
 }
 
 export default memo(BasicModal)

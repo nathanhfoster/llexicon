@@ -6,14 +6,14 @@ import { persistReduxState } from "../localState"
 import { GetUserEntries } from "../Entries/actions"
 import qs from "qs"
 
-const SetUser = payload => ({
+const SetUser = (payload) => ({
   type: UserActionTypes.USER_SET,
-  payload
+  payload,
 })
 
-const ChangeUser = payload => ({ type: UserActionTypes.USER_SET, payload })
+const ChangeUser = (payload) => ({ type: UserActionTypes.USER_SET, payload })
 
-const UserLogin = (payload, rememberMe) => async dispatch =>
+const UserLogin = (payload, rememberMe) => async (dispatch) =>
   await Axios()
     .post("login/", qs.stringify(payload))
     .then(async ({ data }) => {
@@ -25,36 +25,36 @@ const UserLogin = (payload, rememberMe) => async dispatch =>
 
       return data
     })
-    .catch(e => console.log("UserLogin: ", e.response))
+    .catch((e) => console.log("UserLogin: ", e.response))
 
-const RefreshPatchUser = id => dispatch =>
+const RefreshPatchUser = (id) => (dispatch) =>
   Axios()
     .get(`users/${id}/refresh/`)
     .then(({ data }) => {
       dispatch({
         type: UserActionTypes.USER_SET,
-        payload: data
+        payload: data,
       })
       return data
     })
-    .catch(e =>
+    .catch((e) =>
       e.response && e.response.status == 401
         ? dispatch({
             type: AppActionTypes.REDUX_RESET,
-            payload: null
+            payload: null,
           })
         : console.log(e)
     )
 
 const UserLogout = () => ({ type: AppActionTypes.REDUX_RESET })
 
-const CreateUser = (payload, rememberMe) => dispatch =>
+const CreateUser = (payload, rememberMe) => (dispatch) =>
   Axios()
     .post("users/", qs.stringify(payload))
-    .then(res => dispatch(UserLogin(payload, rememberMe)))
-    .catch(e => console.log("CreateUser: ", e.response))
+    .then((res) => dispatch(UserLogin(payload, rememberMe)))
+    .catch((e) => console.log("CreateUser: ", e.response))
 
-const UpdateUser = payload => (dispatch, getState) => {
+const UpdateUser = (payload) => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .patch(`users/${id}/`, qs.stringify(payload))
@@ -62,14 +62,14 @@ const UpdateUser = payload => (dispatch, getState) => {
       dispatch({ type: UserActionTypes.USER_SET, payload: data })
       dispatch({
         type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Updated", message: "Profile" }
+        payload: { title: "Updated", message: "Profile" },
       })
       return data
     })
-    .catch(e => console.log("UpdateUser ERROR: ", e))
+    .catch((e) => console.log("UpdateUser ERROR: ", e))
 }
 
-const UpdateProfile = payload => (dispatch, getState) => {
+const UpdateProfile = (payload) => (dispatch, getState) => {
   const { id } = getState().User
   // await dispatch({ type: USER_UPDATE_LOADING })
   return AxiosForm(payload)
@@ -77,14 +77,14 @@ const UpdateProfile = payload => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch({
         type: UserActionTypes.USER_SET,
-        payload: data
+        payload: data,
       })
       return data
     })
-    .catch(e => console.log("UpdateProfile: ", e.response))
+    .catch((e) => console.log("UpdateProfile: ", e.response))
 }
 
-const SetUserLocation = position => dispatch => {
+const SetUserLocation = (position) => (dispatch) => {
   if (!position) {
     return dispatch({ type: UserActionTypes.USER_RESET_LOCATION })
   }
@@ -96,9 +96,9 @@ const SetUserLocation = position => dispatch => {
       heading,
       latitude,
       longitude,
-      speed
+      speed,
     },
-    timestamp
+    timestamp,
   } = position
 
   dispatch({
@@ -111,24 +111,24 @@ const SetUserLocation = position => dispatch => {
       latitude,
       longitude,
       speed,
-      timestamp
-    }
+      timestamp,
+    },
   })
 }
 
-const GetUserLocation = () => dispatch => {
+const GetUserLocation = () => (dispatch) => {
   const { geolocation } = navigator
   return geolocation.getCurrentPosition(
-    position => {
+    (position) => {
       //console.log("GetUserLocation:", position)
       dispatch(SetUserLocation(position))
     },
-    error => console.log("GetUserLocation ERROR: ", error),
+    (error) => console.log("GetUserLocation ERROR: ", error),
     { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 }
   )
 }
 
-const WatchUserLocation = watchId => dispatch => {
+const WatchUserLocation = (watchId) => (dispatch) => {
   const { geolocation } = navigator
   if (watchId) {
     dispatch(SetUserLocation(null))
@@ -136,29 +136,29 @@ const WatchUserLocation = watchId => dispatch => {
   }
 
   return geolocation.watchPosition(
-    position => {
+    (position) => {
       // console.log("WatchUserLocation:", position)
       dispatch(SetUserLocation(position))
     },
-    error => console.log("WatchUserLocation ERROR: ", error),
+    (error) => console.log("WatchUserLocation ERROR: ", error),
     { enableHighAccuracy: true, timeout: 3000, maximumAge: 10000 }
   )
 }
 
-const PasswordReset = payload => dispatch =>
+const PasswordReset = (payload) => (dispatch) =>
   Axios()
     .post("rest-auth/password/reset/", qs.stringify(payload))
     .then(({ data: { detail } }) => {
       dispatch({
         type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Password Reset", message: detail }
+        payload: { title: "Password Reset", message: detail },
       })
     })
-    .catch(e => {
+    .catch((e) => {
       console.log(JSON.parse(JSON.stringify(e)))
       dispatch({
         type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Password Reset", message: "ERROR" }
+        payload: { title: "Password Reset", message: "ERROR" },
       })
     })
 
@@ -169,26 +169,26 @@ const GetUserSettings = () => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch({
         type: UserActionTypes.USER_SET_SETTINGS,
-        payload: data
+        payload: data,
       })
       return data
     })
-    .catch(e => console.log(e))
+    .catch((e) => console.log(e))
 }
 
-const PostSettings = payload => dispatch => {
+const PostSettings = (payload) => (dispatch) => {
   return AxiosOffline()
     .post(`user/settings/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch({
         type: UserActionTypes.USER_SET_SETTINGS,
-        payload: data
+        payload: data,
       })
       return data
     })
-    .catch(e => console.log("PostSettings: ", e.response))
+    .catch((e) => console.log("PostSettings: ", e.response))
 }
-const SetSettings = payload => (dispatch, getState) => {
+const SetSettings = (payload) => (dispatch, getState) => {
   const { id } = getState().User.Settings
 
   return AxiosOffline()
@@ -196,15 +196,29 @@ const SetSettings = payload => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch({
         type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Updated", message: "Setting" }
+        payload: { title: "Updated", message: "Setting" },
       })
       dispatch({
         type: UserActionTypes.USER_SET_SETTINGS,
-        payload: data
+        payload: data,
       })
       return data
     })
-    .catch(e => console.log("SetSettings: ", e.response))
+    .catch((e) => console.log("SetSettings: ", e.response))
+}
+
+const DeleteAccount = () => (dispatch, getState) => {
+  const { id } = getState().User
+  return Axios()
+    .delete(`users/${id}/`)
+    .then((res) => {
+      dispatch(UserLogout())
+      dispatch({
+        type: AlertActionTypes.ALERTS_SET_MESSAGE,
+        payload: { title: "Deleted", message: "Account" },
+      })
+    })
+    .catch((e) => console.log("DeleteAccount: ", e.response))
 }
 
 export {
@@ -222,5 +236,6 @@ export {
   PasswordReset,
   GetUserSettings,
   PostSettings,
-  SetSettings
+  SetSettings,
+  DeleteAccount,
 }

@@ -10,19 +10,19 @@ import { validatedString } from "../utlis"
 import memoizeProps from "../../../../../helpers/memoizeProps"
 import {
   EntriesPropTypes,
-  EntryTagsProps
+  EntryTagsProps,
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryTags }
+  Entries: { items, filteredItems, EntryTags },
 }) => ({ items, filteredItems, UserId: id, EntryTags })
 
 const mapDispatchToProps = { GetUserEntryTags }
 
-const getInitialState = tags => ({
-  tagsAsString: tags.map(tag => tag.name).join(" "),
-  typing: false
+const getInitialState = (tags) => ({
+  tagsAsString: tags.map((tag) => tag.name).join(" "),
+  typing: false,
 })
 
 const TagsButtonModal = ({
@@ -33,7 +33,7 @@ const TagsButtonModal = ({
   EntryTags,
   tags,
   xs,
-  onChangeCallback
+  onChangeCallback,
 }) => {
   useEffect(() => {
     if (UserId) GetUserEntryTags()
@@ -51,7 +51,7 @@ const TagsButtonModal = ({
       Object.values(
         items
           .concat(filteredItems)
-          .map(entry => entry.tags)
+          .map((entry) => entry.tags)
           .flat(1)
           .concat(EntryTags)
       ),
@@ -61,47 +61,47 @@ const TagsButtonModal = ({
   let sortedTags = useMemo(
     () =>
       TopKFrequentStrings(entryTags, "name")
-        .filter(tag => {
+        .filter((tag) => {
           if (splitTagsAsString.length > 0 && splitTagsAsString.includes(tag))
             return false
           else return true
         })
-        .map(name => ({ name })),
+        .map((name) => ({ name })),
     [entryTags]
   )
 
   if (typing && lastTagAsString) {
-    sortedTags = sortedTags.filter(entryTag =>
+    sortedTags = sortedTags.filter((entryTag) =>
       entryTag.name.toUpperCase().includes(lastTagAsString.toUpperCase())
     )
   }
 
-  const handleTagClick = name => {
+  const handleTagClick = (name) => {
     let nextState = {}
 
     if (!state.tagsAsString) {
       nextState = {
         tagsAsString: validatedString(state.tagsAsString.concat(`${name} `)),
-        typing: false
+        typing: false,
       }
     } else if (state.typing) {
       let splitTagsAsStrings = state.tagsAsString.split(" ")
       splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${name} `
       nextState = {
         tagsAsString: validatedString(splitTagsAsStrings.join(" ")),
-        typing: false
+        typing: false,
       }
     } else {
       nextState = {
         tagsAsString: validatedString(state.tagsAsString.concat(` ${name}`)),
-        typing: false
+        typing: false,
       }
     }
 
-    setState(prevState => ({ ...prevState, ...nextState }))
+    setState((prevState) => ({ ...prevState, ...nextState }))
   }
 
-  const handleTagsInputChange = e => {
+  const handleTagsInputChange = (e) => {
     const { value } = e.target
 
     // Replace commas
@@ -109,18 +109,18 @@ const TagsButtonModal = ({
     // Remove double spaces and periods
     const validatedTagsAsString = validatedString(string)
 
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       tagsAsString: validatedTagsAsString,
-      typing: true
+      typing: true,
     }))
   }
 
   const handleSave = () => {
     const newTags = tagsAsString
       .split(" ")
-      .filter(string => string)
-      .map(tag => (tag = { name: tag }))
+      .filter((string) => string)
+      .map((tag) => (tag = { name: tag }))
     onChangeCallback({ tags: newTags })
   }
 
@@ -132,7 +132,7 @@ const TagsButtonModal = ({
       onSaveCallback={handleSave}
       onCancelCallback={handleCancel}
       ButtonIcon="fas fa-tags"
-      buttonTitle="Add Tags"
+      button="Add Tags"
       xs={xs}
     >
       <Container className="TagsButtonModal Container">
@@ -169,11 +169,11 @@ TagsButtonModal.propTypes = {
   EntryTags: EntryTagsProps.isRequired,
   tags: EntryTagsProps.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 TagsButtonModal.defaultProps = {
-  tags: []
+  tags: [],
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -183,7 +183,7 @@ const isEqual = (prevProps, nextProps) =>
     "filteredItems",
     "EntryTags",
     "tags",
-    "xs"
+    "xs",
   ])
 
 export default reduxConnect(

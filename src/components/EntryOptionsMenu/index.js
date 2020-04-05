@@ -5,9 +5,9 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Button
+  Button,
 } from "reactstrap"
-import { BasicModal } from "../"
+import { BasicModal, ConfirmAction } from "../"
 import { copyStringToClipboard } from "../../helpers"
 import { RouteMap, RouterGoBack } from "../../routes"
 import { useDispatch } from "react-redux"
@@ -18,7 +18,7 @@ const EntryOptionsMenu = ({
   entryId,
   is_public,
   history,
-  shouldRedirectOnDelete
+  shouldRedirectOnDelete,
 }) => {
   const dispatch = useDispatch()
   const [dropdownOpen, setOpen] = useState(false)
@@ -40,7 +40,7 @@ const EntryOptionsMenu = ({
       await dispatch(
         handleEditorChange({
           id: entryId,
-          _shouldDelete: true
+          _shouldDelete: true,
         })
       )
       dispatch(SyncEntries())
@@ -114,7 +114,7 @@ EntryOptionsMenu.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   is_public: PropTypes.bool.isRequired,
   history: PropTypes.object,
-  shouldRedirectOnDelete: PropTypes.bool
+  shouldRedirectOnDelete: PropTypes.bool,
 }
 
 EntryOptionsMenu.defaultProps = { getUrlCallback: () => "URL" }

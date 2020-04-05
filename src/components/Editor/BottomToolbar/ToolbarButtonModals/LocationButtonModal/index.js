@@ -17,7 +17,7 @@ const LocationButtonModal = ({
   UserLocation,
   xs,
   onChangeCallback,
-  WatchUserLocation
+  WatchUserLocation,
 }) => {
   let watchId = useRef(null)
 
@@ -42,8 +42,8 @@ const LocationButtonModal = ({
     const { address, latitude, longitude } = entry
     if (!address && latitude && longitude) {
       GetAddress(latitude, longitude)
-        .then(address => onChangeCallback({ latitude, longitude, address }))
-        .catch(e => onChangeCallback({ latitude, longitude }))
+        .then((address) => onChangeCallback({ latitude, longitude, address }))
+        .catch((e) => onChangeCallback({ latitude, longitude }))
     }
     handleCancel()
   }
@@ -62,7 +62,7 @@ const LocationButtonModal = ({
       onCancelCallback={handleCancel}
       onSaveCallback={handleSave}
       ButtonIcon="fas fa-map-marker-alt"
-      buttonTitle="Add Location"
+      button="Add Location"
       xs={xs}
       disabledSave={!UserLocation.latitude || !UserLocation.longitude}
     >
@@ -83,7 +83,7 @@ LocationButtonModal.propTypes = {
   xs: PropTypes.number,
   entry: PropTypes.object.isRequired,
   onChangeCallback: PropTypes.func.isRequired,
-  WatchUserLocation: PropTypes.func.isRequired
+  WatchUserLocation: PropTypes.func.isRequired,
 }
 
 export default reduxConnect(

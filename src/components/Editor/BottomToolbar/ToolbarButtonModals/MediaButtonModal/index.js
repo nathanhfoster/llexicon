@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Input
+  Input,
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -18,7 +18,7 @@ import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
-  filteredItems
+  filteredItems,
 })
 
 const mapDispatchToProps = {}
@@ -30,14 +30,14 @@ const MediaButtonModal = ({
   xs,
   editorRef,
   items,
-  filteredItems
+  filteredItems,
 }) => {
   const [url, setUrl] = useState("")
   const [type, setType] = useState(EMBEDED_TYPES[0].id)
 
   const AllEntryFiles = items
     .concat(filteredItems)
-    .map(item => item.EntryFiles)
+    .map((item) => item.EntryFiles)
     .flat(1)
     .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
 
@@ -68,7 +68,7 @@ const MediaButtonModal = ({
       className="p-0"
       title="Add Media"
       ButtonIcon="fas fa-photo-video"
-      buttonTitle="Add Media"
+      button="Add Media"
       xs={xs}
       onSaveCallback={handleAddUrl}
       onCancelCallback={handleModalCancel}
@@ -120,7 +120,7 @@ const MediaButtonModal = ({
 MediaButtonModal.propTypes = {
   editorRef: PropTypes.object.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired
+  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -128,7 +128,7 @@ const isEqual = (prevProps, nextProps) =>
     "xs",
     "editorRef",
     "items",
-    "filteredItems"
+    "filteredItems",
   ])
 
 export default reduxConnect(

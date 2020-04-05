@@ -1,20 +1,25 @@
-import React, { useMemo } from "react"
+import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { BasicForm } from "../../../components"
+import { BasicForm, ConfirmAction } from "../../../components"
 import { Container, Row, Col } from "reactstrap"
-import { UpdateUser } from "../../../redux/User/actions"
+import { UpdateUser, DeleteAccount } from "../../../redux/User/actions"
+import { cleanObject } from "../../../helpers"
 
 const mapStateToProps = ({ User }) => ({
-  User
+  User,
 })
 
 const mapDispatchToProps = {
-  UpdateUser
+  UpdateUser,
+  DeleteAccount,
 }
 
-const UpdateProfile = ({ User, UpdateUser }) => {
-  const handleChangeUser = payload => UpdateUser(payload)
+const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
+  const handleChangeUser = useCallback((payload) => {
+    UpdateUser(cleanObject(payload, true))
+  }, [])
+  const handleDeleteAccount = useCallback(() => DeleteAccount(), [])
   const updateProfileInputs = useMemo(
     () => [
       {
@@ -22,35 +27,35 @@ const UpdateProfile = ({ User, UpdateUser }) => {
         type: "text",
         id: "username",
         placeholder: "Username...",
-        defaultValue: User.username
+        defaultValue: User.username,
       },
       {
         label: "email",
         type: "email",
         id: "email",
         placeholder: "Email...",
-        defaultValue: User.email
+        defaultValue: User.email,
       },
       {
         label: "First name",
         type: "text",
         id: "first_name",
         placeholder: "First Name...",
-        defaultValue: User.first_name
+        defaultValue: User.first_name,
       },
       {
         label: "Last name",
         type: "text",
         id: "last_name",
         placeholder: "Last name...",
-        defaultValue: User.last_name
+        defaultValue: User.last_name,
       },
       {
         label: "Password",
         type: "password",
         id: "password",
-        placeholder: "Password..."
-      }
+        placeholder: "Password...",
+      },
       // {
       //   label: "Opt in",
       //   type: "radio",
@@ -70,6 +75,15 @@ const UpdateProfile = ({ User, UpdateUser }) => {
             onSubmit={handleChangeUser}
             submitLabel="Update"
             inputs={updateProfileInputs}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12}>
+          <ConfirmAction
+            title="Delete Account"
+            message="Are you sure you want to delete your account? Everything will be erased."
+            onConfirm={handleDeleteAccount}
           />
         </Col>
       </Row>

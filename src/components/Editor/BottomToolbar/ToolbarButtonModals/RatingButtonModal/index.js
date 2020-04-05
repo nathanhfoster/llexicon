@@ -8,7 +8,7 @@ import "./styles.css"
 
 const getInitialState = ({ rating }) => ({ rating, savedRating: false })
 
-const RatingButtonModal = props => {
+const RatingButtonModal = (props) => {
   const { xs, onChangeCallback } = props
   const [state, setState] = useState(getInitialState(props))
   const { rating, savedRating } = state
@@ -19,29 +19,29 @@ const RatingButtonModal = props => {
 
   useEffect(() => {
     if (ratingChanged) {
-      setState(prevState => ({ ...prevState, rating: props.rating }))
+      setState((prevState) => ({ ...prevState, rating: props.rating }))
     }
   }, [props.rating])
 
   const handleClick = () => {}
 
   const handleCancel = () =>
-    setState(prevState => ({ ...prevState, rating: props.rating }))
+    setState((prevState) => ({ ...prevState, rating: props.rating }))
 
   const handleSave = () => onChangeCallback({ rating })
 
-  const handleStarClicked = rating =>
-    setState(prevState => ({ ...prevState, rating, savedRating: true }))
+  const handleStarClicked = (rating) =>
+    setState((prevState) => ({ ...prevState, rating, savedRating: true }))
 
-  const handleMouseEnter = rating => {
+  const handleMouseEnter = (rating) => {
     if (!savedRating) {
-      setState(prevState => ({ ...prevState, rating }))
+      setState((prevState) => ({ ...prevState, rating }))
     }
   }
 
-  const handleMouseLeave = leftRating => {
+  const handleMouseLeave = (leftRating) => {
     if (leftRating !== state) {
-      setState(prevState => ({ ...prevState, savedRating: false }))
+      setState((prevState) => ({ ...prevState, savedRating: false }))
     }
   }
 
@@ -72,7 +72,7 @@ const RatingButtonModal = props => {
       onCancelCallback={handleCancel}
       onSaveCallback={handleSave}
       ButtonIcon={<RatingIcon rating={rating} />}
-      buttonTitle="Add Rating"
+      button="Add Rating"
       xs={xs}
     >
       <Container fluid className="RatingButtonModal p-0">
@@ -84,7 +84,7 @@ const RatingButtonModal = props => {
 
 RatingButtonModal.propTypes = {
   rating: PropTypes.number.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 export default memo(RatingButtonModal)

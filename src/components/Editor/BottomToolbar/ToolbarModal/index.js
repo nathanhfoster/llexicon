@@ -5,7 +5,7 @@ import BasicModal from "../../../BasicModal"
 
 const ToolbarModal = ({
   ButtonIcon,
-  buttonTitle,
+  button,
   xs,
   children,
   disabled = false,
@@ -18,7 +18,7 @@ const ToolbarModal = ({
       <ToolbarButton
         xs={xs}
         ButtonIcon={ButtonIcon}
-        title={buttonTitle}
+        title={button}
         disabled={disabled}
       >
         {Component && <Component />}
@@ -35,11 +35,11 @@ ToolbarModal.propTypes = {
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
   ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  buttonTitle: PropTypes.string,
+  button: PropTypes.string,
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  disabledSave: PropTypes.bool
+  disabledSave: PropTypes.bool,
 }
 
 export default memo(ToolbarModal)
