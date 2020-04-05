@@ -119,8 +119,8 @@ const TagsButtonModal = ({
   const handleSave = () => {
     const newTags = tagsAsString
       .split(" ")
-      .filter((string) => string)
-      .map((tag) => (tag = { name: tag }))
+      .filter((name) => name)
+      .map((name) => ({ name }))
     onChangeCallback({ tags: newTags })
   }
 

@@ -9,9 +9,9 @@ const validatedTagString = (s) => {
 }
 
 const validatedPeopleString = (splitPeopleAsString) => {
-  const filteredString = removeArrayDuplicates(
-    splitPeopleAsString
-  ).map((name) => ({ name }))
+  const filteredString = removeArrayDuplicates(splitPeopleAsString)
+    .filter((name) => name)
+    .map((name) => ({ name }))
   return filteredString
 }
 
