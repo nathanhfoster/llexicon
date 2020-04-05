@@ -5,13 +5,14 @@ import {
   LocationButtonModal,
   TagsButtonModal,
   RatingButtonModal,
-  MediaButtonModal
+  MediaButtonModal,
+  PeopleButtonModal,
 } from "./ToolbarButtonModals"
 import TagsContainer from "../../TagsContainer"
 import EntryFilesCarousel from "../../EntryFilesCarousel"
 import "./styles.css"
 
-const renderButtonColumns = columns =>
+const renderButtonColumns = (columns) =>
   columns.map((ButtonModal, i) => {
     const { Component, props } = ButtonModal
     return <Component key={i} xs={12 / columns.length} {...props} />
@@ -25,30 +26,34 @@ const BottomToolbar = ({
   canToggleToolbars,
   toggleBottomToolbar,
   onChangeCallback,
-  xs
+  xs,
 }) => {
   const buttons = useMemo(
     () => [
       [
         {
           Component: MediaButtonModal,
-          props: { onChangeCallback, editorRef }
-        },
-        {
-          Component: TagsButtonModal,
-          props: { tags: entry.tags, onChangeCallback }
+          props: { onChangeCallback, editorRef },
         },
         {
           Component: RatingButtonModal,
-          props: { rating: entry.rating, onChangeCallback }
-        }
+          props: { rating: entry.rating, onChangeCallback },
+        },
       ],
       [
         {
+          Component: TagsButtonModal,
+          props: { tags: entry.tags, onChangeCallback, xs },
+        },
+        {
+          Component: PeopleButtonModal,
+          props: { people: entry.people, onChangeCallback, xs },
+        },
+        {
           Component: LocationButtonModal,
-          props: { entry, onChangeCallback, xs }
-        }
-      ]
+          props: { entry, onChangeCallback, xs },
+        },
+      ],
     ],
     [entry]
   )
@@ -106,7 +111,7 @@ BottomToolbar.propTypes = {
   entry: PropTypes.object.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleBottomToolbar: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 export default memo(BottomToolbar)

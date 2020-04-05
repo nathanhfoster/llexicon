@@ -9,7 +9,8 @@ import { SetCalendar } from "./redux/Calendar/Calendar"
 import {
   SyncEntries,
   GetUserEntries,
-  GetUserEntryTags
+  GetUserEntryTags,
+  GetUserEntryPeople,
 } from "./redux/Entries/actions"
 import { RouteMap, RouterGoBack } from "./routes"
 import { About, Home, Entries } from "./views"
@@ -47,12 +48,12 @@ const {
   ENTRIES_FOLDERS,
   ENTRIES_TABLE,
   ENTRIES_MAP,
-  PRIVACY_POLICY
+  PRIVACY_POLICY,
 } = RouteMap
 
 const mapStateToProps = ({ User, Window: { navBarHeight } }) => ({
   User,
-  navBarHeight
+  navBarHeight,
 })
 
 const mapDispatchToProps = {
@@ -62,7 +63,8 @@ const mapDispatchToProps = {
   SetCalendar,
   SyncEntries,
   GetUserEntries,
-  GetUserEntryTags
+  GetUserEntryTags,
+  GetUserEntryPeople,
 }
 
 const App = ({
@@ -74,10 +76,11 @@ const App = ({
   SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
+  GetUserEntryPeople,
   history,
   location,
   match,
-  navBarHeight
+  navBarHeight,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const addToHomeScreenProps = { prompt, promptToInstall }
@@ -97,9 +100,10 @@ const App = ({
     handleResize()
 
     if (User.id) {
-      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
+      SyncEntries(() => new Promise((resolve) => resolve(GetUserEntries(1))))
       GetUserSettings()
       GetUserEntryTags()
+      GetUserEntryPeople()
     }
 
     return () => window.removeEventListener("resize", handleResize)
@@ -117,30 +121,30 @@ const App = ({
       path: [ABOUT],
       Render: About,
       props: addToHomeScreenProps,
-      useRouteProps: true
+      useRouteProps: true,
     },
     {
       path: [ROOT, HOME],
       Render: Home,
       props: addToHomeScreenProps,
-      useRouteProps: true
+      useRouteProps: true,
     },
     {
       path: [LOGIN, SIGNUP, PASSWORD_RESET],
-      component: renderRedirectOrComponent(!!User.token, Account, "GoBack")
+      component: renderRedirectOrComponent(!!User.token, Account, "GoBack"),
     },
     {
       path: [
         SETTINGS,
         SETTINGS_ENTRIES,
         SETTINGS_PREFERENCES,
-        SETTINGS_PROFILE
+        SETTINGS_PROFILE,
       ],
-      component: Settings
+      component: Settings,
     },
     {
       path: [SUPPORT],
-      component: Support
+      component: Support,
     },
     { path: [ENTRY_DETAIL], component: EntryDetail },
     {
@@ -152,12 +156,12 @@ const App = ({
         ENTRIES_LIST,
         ENTRIES_TABLE,
         ENTRIES_MAP,
-        NEW_ENTRY
+        NEW_ENTRY,
       ],
       Render: Entries,
-      useRouteProps: true
+      useRouteProps: true,
     },
-    { path: [PRIVACY_POLICY], component: PrivacyPolicy }
+    { path: [PRIVACY_POLICY], component: PrivacyPolicy },
   ]
 
   const renderRouteItems = useMemo(
@@ -170,7 +174,7 @@ const App = ({
             strict={false}
             key={i}
             path={path}
-            render={routeProps =>
+            render={(routeProps) =>
               useRouteProps ? (
                 <Render {...props} {...routeProps} />
               ) : (
@@ -205,14 +209,14 @@ App.propTypes = {
   GetUserSettings: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
-  GetUserEntries: PropTypes.func.isRequired
+  GetUserEntries: PropTypes.func.isRequired,
 }
 
 const isEqual = (prevProps, nextProps) =>
   memoizeProps(prevProps, nextProps, [
     "User",
     "routeOverlayHeight",
-    "navBarHeight"
+    "navBarHeight",
   ])
 
 export default withRouter(

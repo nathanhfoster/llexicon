@@ -18,7 +18,8 @@ const TagsContainer = ({
   hoverable,
   showTagIcon,
   tagContainerClassName,
-  columnProps
+  columnProps,
+  emptyString,
 }) => {
   if (flexWrap === "wrap") {
     overflowX = "auto"
@@ -33,27 +34,27 @@ const TagsContainer = ({
     flexStart: "space-around",
     overflowX,
     overflowY,
-    fontSize
+    fontSize,
   }
 
   const renderTags = () =>
-    tags.map(({ title }, i) => (
+    tags.map(({ name }, i) => (
       <Badge
-        key={title}
+        key={name}
         className={`TagContainer fade-in ${tagContainerClassName} ${
           hoverable ? "TagContainerHover" : ""
         }`}
-        onClick={onClickCallback ? () => onClickCallback(title) : null}
+        onClick={onClickCallback ? () => onClickCallback(name) : null}
       >
         {showTagIcon && <i className="fas fa-tag" style={{ marginRight: 2 }} />}
-        <span className="TagTitle">{title}</span>
+        <span className="TagTitle">{name}</span>
       </Badge>
     ))
 
   const renderMinimalTags = () => {
     const initialString = "| "
     const mininmalString = tags.reduce(
-      (mininmalString, tag) => mininmalString + `${tag.title} | `,
+      (mininmalString, tag) => mininmalString + `${tag.name} | `,
       initialString
     )
     if (mininmalString === initialString) return null
@@ -64,7 +65,7 @@ const TagsContainer = ({
     <Col className="TagsContainer p-0" {...columnProps} style={styles}>
       {children}
       {tags.length === 0 ? (
-        <span>No tags...</span>
+        <span>{emptyString}</span>
       ) : minimalView ? (
         renderMinimalTags()
       ) : (
@@ -85,7 +86,8 @@ TagsContainer.propTypes = {
   minimalView: PropTypes.bool,
   hoverable: PropTypes.bool,
   showTagIcon: PropTypes.bool,
-  tagContainerClassName: PropTypes.string
+  tagContainerClassName: PropTypes.string,
+  emptyString: PropTypes.string,
 }
 
 TagsContainer.defaultProps = {
@@ -99,7 +101,8 @@ TagsContainer.defaultProps = {
   hoverable: false,
   showTagIcon: true,
   tagContainerClassName: "",
-  columnProps: { xs: 12 }
+  columnProps: { xs: 12 },
+  emptyString: "No tags...",
 }
 
 export default memo(TagsContainer)

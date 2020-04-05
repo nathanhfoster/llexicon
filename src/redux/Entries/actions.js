@@ -6,7 +6,7 @@ import {
   htmlToArrayOfBase64,
   cleanObject,
 } from "../../helpers"
-import { getJsonTags } from "./utils"
+import { getJsonTagsOrPeople } from "./utils"
 import FormData from "form-data"
 import qs from "qs"
 
@@ -17,6 +17,17 @@ const GetUserEntryTags = () => (dispatch, getState) => {
     .then((res) => {
       const { data } = res
       dispatch({ type: EntriesActionTypes.ENTRIES_SET_TAGS, payload: data })
+    })
+    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
+}
+
+const GetUserEntryPeople = () => (dispatch, getState) => {
+  const { id } = getState().User
+  return Axios()
+    .get(`people/${id}/view/`)
+    .then((res) => {
+      const { data } = res
+      dispatch({ type: EntriesActionTypes.ENTRIES_SET_PEOPLE, payload: data })
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -337,7 +348,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
 
         const updateEntryPayload = {
           html,
-          tags: getJsonTags(tags),
+          tags: getJsonTagsOrPeople(tags),
         }
         dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })
@@ -348,7 +359,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         title,
         date_created_by_author,
         html,
-        tags: getJsonTags(tags),
+        tags: getJsonTagsOrPeople(tags),
         rating,
         address,
         latitude,
@@ -376,6 +387,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
 export {
   CreateEntryTag,
   GetUserEntryTags,
+  GetUserEntryPeople,
   GetUserEntry,
   GetUserEntryDetails,
   GetAllUserEntries,
