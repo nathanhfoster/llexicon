@@ -25,7 +25,7 @@ const EntryMinimal = ({
   tags,
   people,
   views,
-  rating
+  rating,
 }) => {
   const history = useHistory()
 
@@ -42,15 +42,18 @@ const EntryMinimal = ({
       }
     >
       <Row>
-        <Col xs={12} className="EntryMinimalDetail Overflow">
+        <Col xs={12} className="EntryMinimalDetail Overflow mb-1">
           <Star size={14} animation={false} opacity={1} />
           <span className="ml-1">{title}</span>
         </Col>
-        <Col xs={12} className="EntryMinimalTime">
-          <i className="fas fa-calendar-day mr-1" />
-          <Moment format="D MMM YY hh:mma">{date_created_by_author}</Moment>
+        <Col xs={12} className="EntryMinimalTime mb-2">
+          <i
+            className="fas fa-calendar-day mr-1"
+            style={{ fontSize: "1.25rem" }}
+          />
+          <Moment format="D MMMM YYYY hh:mma">{date_created_by_author}</Moment>
         </Col>
-        <Col xs={12} className="EntryMinimalDetail Overflow mt-1 mb-1">
+        <Col xs={12} className="EntryMinimalDetail Overflow">
           <i className="far fa-eye" /> <span className="mr-2">{views}</span>
           {showLocationIcon && (
             <Fragment>

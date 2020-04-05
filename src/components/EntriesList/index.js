@@ -77,7 +77,7 @@ EntriesList.propTypes = {
 EntriesList.defaultProps = {
   height: 500,
   width: "100%",
-  itemSize: 140
+  itemSize: 150
 }
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
