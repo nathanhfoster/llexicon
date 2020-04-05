@@ -15,12 +15,12 @@ const EntriesTable = ({ entries }) => {
         title: <i className="fas fa-calendar-day" />,
         key: "date_created_by_author",
         width: 100,
-        onRowClick: item =>
+        onRowClick: (item) =>
           RouterPush(
             history,
             RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
           ),
-        render: item => (
+        render: (item) => (
           <Moment format="D MMM YY hh:mma">
             {item.date_created_by_author}
           </Moment>
@@ -32,13 +32,13 @@ const EntriesTable = ({ entries }) => {
             : new Date(a.date_created_by_author) -
               new Date(b.date_created_by_author),
         filter: "date",
-        filterPlaceholder: "Created"
+        filterPlaceholder: "Created",
       },
       {
         title: <i className="fas fa-pencil-alt" />,
         key: "date_updated",
         width: 130,
-        render: item => (
+        render: (item) => (
           <Moment format="D MMM YY hh:mma">
             {item._lastUpdated || item.date_updated}
           </Moment>
@@ -50,7 +50,23 @@ const EntriesTable = ({ entries }) => {
             : new Date(a._lastUpdated || a.date_updated) -
               new Date(b._lastUpdated || b.date_updated),
         filter: "date",
-        filterPlaceholder: "Updated"
+        filterPlaceholder: "Updated",
+      },
+
+      {
+        title: <i className="fas fa-heading" />,
+        key: "title",
+        width: 180,
+        filter: "string",
+        filterPlaceholder: "Title",
+      },
+      {
+        title: <i className="fas fa-keyboard" />,
+        key: "html",
+        width: 180,
+        filter: "string",
+        filterPlaceholder: "Body",
+        render: (item) => stripHtml(item.html),
       },
       {
         title: <i className="fas fa-tags" />,
@@ -60,12 +76,12 @@ const EntriesTable = ({ entries }) => {
           sortUp
             ? b.tags.join().localeCompare(a.tags.join())
             : a.tags.join().localeCompare(b.tags.join()),
-        filter: searchValue => item =>
-          item.tags.some(t =>
+        filter: (searchValue) => (item) =>
+          item.tags.some((t) =>
             t.name.toUpperCase().includes(searchValue.toUpperCase())
           ),
         filterPlaceholder: "Tags",
-        render: item => <TagsContainer tags={item.tags} />
+        render: (item) => <TagsContainer tags={item.tags} />,
       },
       {
         title: <i className="fas fa-users" />,
@@ -75,55 +91,40 @@ const EntriesTable = ({ entries }) => {
           sortUp
             ? b.people.join().localeCompare(a.people.join())
             : a.people.join().localeCompare(b.people.join()),
-        filter: searchValue => item =>
-          item.people.some(t =>
+        filter: (searchValue) => (item) =>
+          item.people.some((t) =>
             t.name.toUpperCase().includes(searchValue.toUpperCase())
           ),
         filterPlaceholder: "People",
-        render: item => (
+        render: (item) => (
           <TagsContainer
             tags={item.people}
             faIcon="fas fa-user"
             emptyString="No People..."
           />
-        )
-      },
-      {
-        title: <i className="fas fa-heading" />,
-        key: "title",
-        width: 180,
-        filter: "string",
-        filterPlaceholder: "Title"
-      },
-      {
-        title: <i className="fas fa-keyboard" />,
-        key: "html",
-        width: 180,
-        filter: "string",
-        filterPlaceholder: "Body",
-        render: item => stripHtml(item.html)
+        ),
       },
       {
         title: <i className="fas fa-map-marker-alt" />,
         key: "address",
         width: 180,
         filter: "string",
-        filterPlaceholder: "Address"
+        filterPlaceholder: "Address",
       },
       {
         title: <i className="far fa-eye" />,
         key: "views",
         // width: 50,
-        render: item => <span className="Center">{item.views}</span>,
+        render: (item) => <span className="Center">{item.views}</span>,
         filter: "number",
-        filterPlaceholder: "<="
+        filterPlaceholder: "<=",
       },
       {
         title: <i className="fas fa-star" />,
         key: "rating",
         // width: 50,
-        render: item => <span className="ml-2">{item.rating}</span>,
-        footer: items => {
+        render: (item) => <span className="ml-2">{item.rating}</span>,
+        footer: (items) => {
           let validItems = 0
           const ratingSum = items.reduce((count, item) => {
             const { rating } = item
@@ -138,29 +139,30 @@ const EntriesTable = ({ entries }) => {
           return <span>{averageRating > 0 ? averageRating : 0}</span>
         },
         filter: "number",
-        filterPlaceholder: "<="
+        filterPlaceholder: "<=",
       },
       {
         title: <i className="fas fa-photo-video" />,
         key: "EntryFiles",
         // width: 60,
-        render: item => (
+        render: (item) => (
           <span className="Center">{item.EntryFiles.length}</span>
         ),
         sort: (a, b, sortUp) =>
           sortUp
             ? b.EntryFiles.length - a.EntryFiles.length
             : a.EntryFiles.length - b.EntryFiles.length,
-        filter: searchValue => item => item.EntryFiles.length >= searchValue,
-        filterPlaceholder: "<="
+        filter: (searchValue) => (item) =>
+          item.EntryFiles.length >= searchValue,
+        filterPlaceholder: "<=",
       },
       {
         title: <i className="fas fa-lock" />,
         key: "is_public",
-        render: item => (
+        render: (item) => (
           <span className="Center">{item.is_public ? "Yes" : "No"}</span>
-        )
-      }
+        ),
+      },
     ],
     []
   )
