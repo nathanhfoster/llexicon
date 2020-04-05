@@ -3,10 +3,10 @@ const handleFilterEntries = (entries, search) => {
   const searchValue = search.toUpperCase()
   let cachedFilteredEntries = []
 
-  const filteredEntries = entries.filter((item) => {
+  const filteredEntries = entries.filter(item => {
     const { title, html, tags, address } = item
     if (
-      tags.map((tag) => tag.title.toUpperCase()).includes(searchValue) ||
+      tags.map(tag => tag.title.toUpperCase()).includes(searchValue) ||
       title.toUpperCase().includes(searchValue) ||
       html.toUpperCase().includes(searchValue) ||
       address.toUpperCase().includes(searchValue)
@@ -20,7 +20,7 @@ const handleFilterEntries = (entries, search) => {
 
   return {
     filteredItems: cachedFilteredEntries,
-    items: filteredEntries,
+    items: filteredEntries
   }
 }
 
@@ -31,3 +31,5 @@ const getJsonTagsOrPeople = (tags) =>
     .join(",")
 
 export { handleFilterEntries, getJsonTagsOrPeople }
+
+export { handleFilterEntries, getJsonTags, getJsonPeople }

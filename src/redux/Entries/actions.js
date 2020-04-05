@@ -4,7 +4,7 @@ import { Axios, AxiosForm } from "../Actions"
 import {
   getFileFromBase64,
   htmlToArrayOfBase64,
-  cleanObject,
+  cleanObject
 } from "../../helpers"
 import { getJsonTagsOrPeople } from "./utils"
 import FormData from "form-data"
@@ -14,11 +14,11 @@ const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`tags/${id}/view/`)
-    .then((res) => {
+    .then(res => {
       const { data } = res
       dispatch({ type: EntriesActionTypes.ENTRIES_SET_TAGS, payload: data })
     })
-    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
+    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
 const GetUserEntryPeople = () => (dispatch, getState) => {
@@ -35,22 +35,22 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
 const CreateEntryTag = (payload) => (dispatch, getState) => {
   const {
     User: { id },
-    Entries,
+    Entries
   } = getState()
   const newPayload = { ...payload, authors: id }
   return Axios()
     .post(`tags/`, qs.stringify(newPayload))
-    .then((res) => {
+    .then(res => {
       const { data } = res
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET_TAGS,
-        payload: Entries.concat(data),
+        payload: Entries.concat(data)
       })
     })
-    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
+    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
+const ParseBase64 = (entry_id, updateEntryPayload) => dispatch => {
   const { html } = updateEntryPayload
   const base64s = htmlToArrayOfBase64(html)
   if (base64s.length === 0) {
@@ -62,15 +62,15 @@ const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
     const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
     dispatch(AwsUpload(entry_id, file, base64, html))
   }
-  return new Promise((resolve) =>
+  return new Promise(resolve =>
     dispatch({
       type: AlertActionTypes.ALERTS_SET_MESSAGE,
-      payload: { title: "Synced", message: "Files" },
+      payload: { title: "Synced", message: "Files" }
     })
   )
 }
 
-const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
+const AwsUpload = (entry_id, file, base64, html) => dispatch => {
   const { lastModified, lastModifiedDate, name, size, type } = file
   let payload = new FormData()
   payload.append("entry_id", entry_id)
@@ -84,26 +84,26 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
 
   return AxiosForm(payload)
     .post(`/files/`, payload)
-    .then((res) => {
+    .then(res => {
       const { data } = res
       const updateEntryPayload = {
-        html: html.replace(base64, data.url),
+        html: html.replace(base64, data.url)
       }
       // console.log("updateEntryPayload: ", updateEntryPayload)
       dispatch(UpdateEntry(entry_id, updateEntryPayload))
       return data
     })
-    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
+    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetEntry = (url, id) => (dispatch) =>
+const GetEntry = (url, id) => dispatch =>
   Axios()
     .get(url)
-    .then((res) => {
+    .then(res => {
       const { data } = res
       dispatch({
         type: EntriesActionTypes.ENTRY_SET,
-        payload: data,
+        payload: data
       })
       return data
     })
@@ -116,142 +116,141 @@ const GetEntry = (url, id) => (dispatch) =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
-const GetUserEntry = (id) => (dispatch) =>
-  dispatch(GetEntry(`/entries/${id}/`, id))
+const GetUserEntry = id => dispatch => dispatch(GetEntry(`/entries/${id}/`, id))
 
-const GetUserEntryDetails = (id) => (dispatch) =>
+const GetUserEntryDetails = id => dispatch =>
   dispatch(GetEntry(`/entries/${id}/details/`, id))
 
 const GetAllUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/view/`)
-    .then((res) => {
+    .then(res => {
       const { data } = res
       dispatch({
         type: EntriesActionTypes.ENTRY_IMPORT,
-        payload: data,
+        payload: data
       })
       return data
     })
-    .catch((e) => {
+    .catch(e => {
       console.log(e)
       // const payload = JSON.parse(JSON.stringify(e.response))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
 
-const GetUserEntries = (pageNumber) => (dispatch, getState) => {
+const GetUserEntries = pageNumber => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/page/?page=${pageNumber}`)
-    .then((res) => {
+    .then(res => {
       const { data } = res
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET,
-        payload: data,
+        payload: data
       })
       return data
     })
-    .catch((e) => {
+    .catch(e => {
       console.log(e)
       // const payload = JSON.parse(JSON.stringify(e.response))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
 
-const GetUserEntriesByDate = (date) => (dispatch, getState) => {
+const GetUserEntriesByDate = date => (dispatch, getState) => {
   const { id } = getState().User
   if (!id) return
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify({ date }))
-    .then((res) => {
+    .then(res => {
       const { data } = res
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET_BY_DATE,
-        payload: data,
+        payload: data
       })
       return data
     })
-    .catch((e) => {
+    .catch(e => {
       console.log(e)
       // const payload = JSON.parse(JSON.stringify(e))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
 
-const PostReduxEntry = (payload) => (dispatch) =>
+const PostReduxEntry = payload => dispatch =>
   dispatch({
     type: EntriesActionTypes.ENTRY_SET,
-    payload: { ...payload, _shouldPost: true },
+    payload: { ...payload, _shouldPost: true }
   })
 
-const ImportReduxEntry = (payload) => ({
+const ImportReduxEntry = payload => ({
   type: EntriesActionTypes.ENTRY_IMPORT,
-  payload,
+  payload
 })
 
-const PostEntry = (payload) => (dispatch) =>
+const PostEntry = payload => dispatch =>
   Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch({
         id: payload.id,
         type: EntriesActionTypes.ENTRY_POST,
-        payload: data,
+        payload: data
       })
       return data
     })
-    .catch((e) => {
+    .catch(e => {
       const error = JSON.parse(JSON.stringify(e))
       console.log(error)
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload: error })
     })
 
-const UpdateReduxEntry = (payload) => ({
+const UpdateReduxEntry = payload => ({
   type: EntriesActionTypes.ENTRY_UPDATE,
   id: payload.id,
   payload,
-  _lastUpdated: new Date(),
+  _lastUpdated: new Date()
 })
 
-const UpdateEntry = (id, payload) => (dispatch) =>
+const UpdateEntry = (id, payload) => dispatch =>
   Axios()
-    .patch(`/entries/${id}/update_with_tags/`, qs.stringify(payload))
-    .then((res) => {
+    .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
+    .then(res => {
       const { data } = res
       dispatch({
         type: EntriesActionTypes.ENTRY_UPDATE,
         id,
         payload: data,
-        _lastUpdated: null,
+        _lastUpdated: null
       })
       return data
     })
-    .catch((e) => {
+    .catch(e => {
       const payload = JSON.parse(JSON.stringify(e.response))
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
-const DeleteEntry = (id) => (dispatch) =>
+const DeleteEntry = id => dispatch =>
   Axios()
     .delete(`/entries/${id}/`)
-    .then((res) => {
+    .then(res => {
       dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
       return res
     })
-    .catch((e) => {
+    .catch(e => {
       const error = JSON.parse(JSON.stringify(e))
       console.log(error)
       const payload = error.response
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
-const SearchUserEntries = (search) => (dispatch, getState) => {
+const SearchUserEntries = search => (dispatch, getState) => {
   dispatch({
     type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
     payload: [],
-    search,
+    search
   })
   const { id } = getState().User
   return Axios()
@@ -260,25 +259,25 @@ const SearchUserEntries = (search) => (dispatch, getState) => {
       await dispatch({
         type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
         payload: data,
-        search,
+        search
       })
       return data
     })
-    .catch(async (e) => {
+    .catch(async e => {
       await dispatch({
         type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
         payload: [],
-        search,
+        search
       })
       const error = JSON.parse(JSON.stringify(e))
       console.log(error)
     })
 }
 
-const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
+const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User,
-    Entries: { items, filteredItems, isPending },
+    Entries: { items, filteredItems, isPending }
   } = getState()
 
   // if (isPending) return
@@ -297,6 +296,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
       title,
       html,
       tags,
+      people,
       rating,
       date_created,
       date_created_by_author,
@@ -308,7 +308,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
       address,
       latitude,
       longitude,
-      is_public,
+      is_public
     } = entries[i]
 
     if (_shouldDelete) {
@@ -326,10 +326,10 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         address,
         latitude,
         longitude,
-        is_public,
+        is_public
       }
 
-      dispatch(PostEntry(postPayload)).then((entry) => {
+      dispatch(PostEntry(postPayload)).then(entry => {
         if (!entry) return
         const {
           EntryFiles,
@@ -343,12 +343,13 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
           address,
           latitude,
           longitude,
-          is_public,
+          is_public
         } = entry
 
         const updateEntryPayload = {
           html,
           tags: getJsonTagsOrPeople(tags),
+          people: getJsonTagsOrPeople(people),
         }
         dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })
@@ -360,11 +361,12 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         date_created_by_author,
         html,
         tags: getJsonTagsOrPeople(tags),
+        people: getJsonTagsOrPeople(people),
         rating,
         address,
         latitude,
         longitude,
-        is_public,
+        is_public
       }
       dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
     }
@@ -377,7 +379,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
   if (synced) {
     dispatch({
       type: AlertActionTypes.ALERTS_SET_MESSAGE,
-      payload: { title: "Synced", message: "Entries" },
+      payload: { title: "Synced", message: "Entries" }
     })
   }
 
@@ -400,5 +402,5 @@ export {
   UpdateEntry,
   DeleteEntry,
   SearchUserEntries,
-  SyncEntries,
+  SyncEntries
 }
