@@ -13,7 +13,7 @@ const getRandomFloat = (min, max, fix = 3) =>
 const arrayToObject = (arr, keyField) =>
   Object.assign({}, ...arr.map((item) => ({ [item[keyField]]: item })))
 
-const objectToArray = (obj) => Object.keys(obj).map((key) => obj[key])
+const objectToArray = (obj) => Object.values(obj)
 
 const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
   // console.log("removeKeyOrValueFromObject: ", keyOrValueToRemove)
@@ -295,12 +295,12 @@ const getMostRecent = (reduxData, newData) => {
 }
 
 const mergeJson = (reduxData, newData) => {
-  // console.log(newData, reduxData)
   // Order matters. You want to merge the reduxData into the newData
   const allData = reduxData.concat(newData)
   let mergeMap = {}
 
-  for (const item of allData) {
+  for (let i = 0, { length } = allData; i < length; i++) {
+    const item = allData[i]
     const { id } = item
 
     if (!mergeMap[id]) {

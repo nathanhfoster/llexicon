@@ -3,14 +3,20 @@ const handleFilterEntries = (entries, search) => {
   const searchValue = search.toUpperCase()
   let cachedFilteredEntries = []
 
+  const tagOrPeopleMatch = (tagsOrPeople) =>
+    tagsOrPeople.some(({ name }) => name.toUpperCase().includes(searchValue))
+
+  const stringMatch = (string) => string.toUpperCase().includes(searchValue)
+
   const filteredEntries = entries.filter((item) => {
     const { title, html, tags, people, address } = item
+
     if (
-      tags.map((tag) => tag.name.toUpperCase()).includes(searchValue) ||
-      people.map((person) => person.name.toUpperCase()).includes(searchValue) ||
-      title.toUpperCase().includes(searchValue) ||
-      html.toUpperCase().includes(searchValue) ||
-      address.toUpperCase().includes(searchValue)
+      tagOrPeopleMatch(tags) ||
+      tagOrPeopleMatch(people) ||
+      stringMatch(title) ||
+      stringMatch(html) ||
+      stringMatch(address)
     ) {
       return true
     } else {

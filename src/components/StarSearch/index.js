@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -11,23 +11,22 @@ import "./styles.css"
 
 const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
   isMobile,
-  search
+  search,
 })
 
 const mapDispatchToProps = { SearchUserEntries }
 
 const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
   const isMounted = useRef(false)
-  const previousPropSearch = useRef(search)
   const isTyping = useRef(false)
   const [searchValue, setSearch] = useState(search)
 
-  const shouldDeriveStateFromProps =
-    !isTyping.current &&
-    previousPropSearch.current !== search &&
-    search !== searchValue
+  const handleSearch = useCallback(
+    (searchValue) => SearchUserEntries(searchValue),
+    []
+  )
 
-  const handleSearch = ({ target: { value } }) => {
+  const handleSeachOnChange = ({ target: { value } }) => {
     isTyping.current = true
     setSearch(value)
   }
@@ -36,10 +35,6 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
     if (!isMounted.current) {
       setSearch(DEFAULT_STATE_ENTRIES.search)
       isMounted.current = true
-    }
-
-    if (shouldDeriveStateFromProps) {
-      setSearch(search)
     }
 
     return () => {
@@ -61,14 +56,14 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
         </InputGroupText>
       </InputGroupAddon>
 
+      <UseDebounce onChangeCallback={handleSearch} value={searchValue} />
       <Input
         value={searchValue}
         placeholder="Search the stars..."
         className="p-0"
-        onChange={handleSearch}
+        onChange={handleSeachOnChange}
         // style={{ outline: "red" }}
       />
-      <UseDebounce onChangeCallback={SearchUserEntries} value={searchValue} />
     </InputGroup>
   )
 }
@@ -76,7 +71,7 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
 StarSearch.propTypes = {
   search: PropTypes.string,
   isMobile: PropTypes.bool,
-  SearchUserEntries: PropTypes.func.isRequired
+  SearchUserEntries: PropTypes.func.isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(StarSearch)
