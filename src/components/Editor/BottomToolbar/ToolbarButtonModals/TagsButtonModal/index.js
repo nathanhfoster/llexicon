@@ -6,7 +6,7 @@ import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
 import { TopKFrequentStrings } from "../../../../../helpers"
-import { validatedTagString } from "../utlis"
+import { validatedTagString, validateTagOrPeopleString } from "../utlis"
 import memoizeProps from "../../../../../helpers/memoizeProps"
 import {
   EntriesPropTypes,
@@ -117,10 +117,8 @@ const TagsButtonModal = ({
   }
 
   const handleSave = () => {
-    const newTags = tagsAsString
-      .split(" ")
-      .filter((name) => name)
-      .map((name) => ({ name }))
+    const newTags = validateTagOrPeopleString(tagsAsString.split(" "))
+
     onChangeCallback({ tags: newTags })
   }
 

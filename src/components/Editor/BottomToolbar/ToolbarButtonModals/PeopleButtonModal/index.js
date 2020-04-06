@@ -19,7 +19,7 @@ import {
   removeAttributeDuplicates,
 } from "../../../../../helpers"
 import memoizeProps from "../../../../../helpers/memoizeProps"
-import { validatedPeopleString } from "../utlis"
+import { validateTagOrPeopleString } from "../utlis"
 import {
   EntriesPropTypes,
   EntryPeopleProps,
@@ -34,31 +34,37 @@ const mapDispatchToProps = {
   GetUserEntryPeople,
 }
 
-const getInitialState = () => ({
+const getInitialState = ({ people }) => ({
   personsName: "",
   typing: false,
+  people,
 })
 
 const PeopleButtonModal = ({
   UserId,
   GetUserEntryPeople,
-
   items,
   filteredItems,
   EntryPeople,
   entryId,
-  people,
   xs,
   onChangeCallback,
+  ...restOfProps
 }) => {
   useEffect(() => {
     if (UserId) GetUserEntryPeople()
   }, [])
 
-  const [state, setState] = useState(getInitialState())
-  const resetState = () => setState(getInitialState())
+  const [state, setState] = useState(getInitialState(restOfProps))
+  const resetState = () => setState(getInitialState(restOfProps))
+  const handlePeopleChange = (people) =>
+    setState((prevState) => ({ ...prevState, people }))
 
-  const { personsName, typing } = state
+  useEffect(() => {
+    handlePeopleChange(restOfProps.people)
+  }, [restOfProps.people])
+
+  const { people, personsName, typing } = state
 
   const splitPeopleAsString = personsName.replace(", ", ",").split(",")
   const lastPeopleAsString = splitPeopleAsString[splitPeopleAsString.length - 1]
@@ -115,19 +121,8 @@ const PeopleButtonModal = ({
     }))
   }
 
-  const handleAddPerson = (name) => {
-    const payload = {
-      id: entryId,
-      people: people.concat({ name }),
-    }
-
-    onChangeCallback(payload)
-
-    resetState()
-  }
-
   const handleSavePeople = () => {
-    const peopleFromString = validatedPeopleString(splitPeopleAsString)
+    const peopleFromString = validateTagOrPeopleString(splitPeopleAsString)
     const newPeople = removeAttributeDuplicates(
       people.concat(peopleFromString),
       "name"
@@ -143,16 +138,19 @@ const PeopleButtonModal = ({
     resetState()
   }
 
-  const handleRemovePerson = (clickedName) => {
-    const payload = {
-      id: entryId,
-      people: people.filter(({ name }) => name != clickedName),
-    }
+  const handleAddPerson = (name) => {
+    const newPeople = people.concat({ name })
 
-    onChangeCallback(payload)
+    handlePeopleChange(newPeople)
   }
 
-  const handleCancel = () => setState(getInitialState(people))
+  const handleRemovePerson = (clickedName) => {
+    const filteredPeople = people.filter(({ name }) => name != clickedName)
+
+    handlePeopleChange(filteredPeople)
+  }
+
+  const handleCancel = () => setState(getInitialState(restOfProps))
 
   return (
     <ToolbarModal
