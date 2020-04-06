@@ -114,7 +114,7 @@ const EntriesTable = ({ entries }) => {
       {
         title: <i className="far fa-eye" />,
         key: "views",
-        // width: 50,
+        width: 50,
         render: (item) => <span className="Center">{item.views}</span>,
         filter: "number",
         filterPlaceholder: "<=",
@@ -122,7 +122,7 @@ const EntriesTable = ({ entries }) => {
       {
         title: <i className="fas fa-star" />,
         key: "rating",
-        // width: 50,
+        width: 50,
         render: (item) => <span className="ml-2">{item.rating}</span>,
         footer: (items) => {
           let validItems = 0
@@ -144,7 +144,7 @@ const EntriesTable = ({ entries }) => {
       {
         title: <i className="fas fa-photo-video" />,
         key: "EntryFiles",
-        // width: 60,
+        width: 50,
         render: (item) => (
           <span className="Center">{item.EntryFiles.length}</span>
         ),
@@ -159,6 +159,7 @@ const EntriesTable = ({ entries }) => {
       {
         title: <i className="fas fa-lock" />,
         key: "is_public",
+        width: 40,
         render: (item) => (
           <span className="Center">{item.is_public ? "Yes" : "No"}</span>
         ),

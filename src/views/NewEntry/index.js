@@ -11,13 +11,13 @@ import {
   Input,
   InputGroupAddon,
   InputGroupText,
-  Button
+  Button,
 } from "reactstrap"
 import { SetCalendar } from "../../redux/Calendar/Calendar"
 import { PostReduxEntry, SyncEntries } from "../../redux/Entries/actions"
 import {
   SetEditorState,
-  ClearEditorState
+  ClearEditorState,
 } from "../../redux/TextEditor/actions"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../redux/TextEditor/reducer"
 import "./styles.css"
@@ -25,11 +25,11 @@ import "./styles.css"
 const mapStateToProps = ({
   Calendar: { activeDate },
   TextEditor,
-  Entries: { items }
+  Entries: { items },
 }) => ({
   entry: TextEditor,
   activeDate,
-  entriesLength: items.length
+  entriesLength: items.length,
 })
 
 const mapDispatchToProps = {
@@ -37,7 +37,7 @@ const mapDispatchToProps = {
   PostReduxEntry,
   SyncEntries,
   SetEditorState,
-  ClearEditorState
+  ClearEditorState,
 }
 
 const NewEntry = ({
@@ -48,7 +48,7 @@ const NewEntry = ({
   PostReduxEntry,
   SyncEntries,
   SetEditorState,
-  ClearEditorState
+  ClearEditorState,
 }) => {
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
@@ -62,7 +62,7 @@ const NewEntry = ({
   const handleTextEditorChange = ({ ...payload }) =>
     SetEditorState({ ...payload })
 
-  const handleChangeDateCreatedByAuthor = activeDate =>
+  const handleChangeDateCreatedByAuthor = (activeDate) =>
     SetCalendar({ activeDate })
 
   const handlePostEntry = async () => {
@@ -70,7 +70,7 @@ const NewEntry = ({
       ...entry,
       id: `NewEntry-${entriesLength}`,
       date_created_by_author: activeDate,
-      _shouldPost: true
+      _shouldPost: true,
     }
 
     await PostReduxEntry(payload)
@@ -85,7 +85,7 @@ const NewEntry = ({
         <Col xs={12} className="p-0">
           <InputGroup
             tag={Form}
-            className="EntryInput"
+            className="EntryInput EntryInputTitle"
             onSubmit={handlePostEntry}
             method="post"
           >
@@ -135,7 +135,7 @@ NewEntry.propTypes = {
   ClearEditorState: PropTypes.func.isRequired,
   PostReduxEntry: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
-  entriesLength: PropTypes.number.isRequired
+  entriesLength: PropTypes.number.isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(NewEntry)

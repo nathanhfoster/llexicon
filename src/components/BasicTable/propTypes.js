@@ -6,20 +6,20 @@ const ColumnsPropType = PropTypes.arrayOf(
       PropTypes.string,
       PropTypes.number,
       PropTypes.object,
-      PropTypes.func
+      PropTypes.func,
     ]),
     dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     render: PropTypes.func,
     footer: PropTypes.func,
     sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["string"])]),
     filter: PropTypes.oneOfType([
       PropTypes.func,
-      PropTypes.oneOf(["string", "number", "date"])
+      PropTypes.oneOf(["string", "number", "date"]),
     ]),
     filterPlaceholder: PropTypes.string,
-    onRowClick: PropTypes.func
+    onRowClick: PropTypes.func,
   })
 )
 

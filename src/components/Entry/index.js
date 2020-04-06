@@ -61,7 +61,7 @@ const Entry = ({
           value={entry}
           delay={3200}
         />
-        <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput">
+        <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput EntryInputTitle">
           <Input
             type="text"
             name="title"

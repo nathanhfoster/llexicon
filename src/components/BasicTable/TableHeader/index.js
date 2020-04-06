@@ -11,12 +11,12 @@ const TableHeader = ({
   sortCallback,
   sortable,
   sortKey,
-  filterCallback
+  filterCallback,
 }) => {
   const handleSortCallback = (key, sort) => sortCallback(key, sort, !sortUp)
 
   const renderColumnHeaders = useMemo(() => {
-    const shouldRenderSortContainer = columns.find(c => c.filter)
+    const shouldRenderSortContainer = columns.find((c) => c.filter)
     return columns.map((column, i) => {
       const {
         title,
@@ -26,7 +26,7 @@ const TableHeader = ({
         render,
         sort,
         filter,
-        filterPlaceholder
+        filterPlaceholder,
       } = column
       const titleFunction = typeof title === "function"
       const showSort = sortKey === key
@@ -36,8 +36,8 @@ const TableHeader = ({
           className={`BasicTableHeader px-1 ${
             sortable ? "HeaderHoverable" : ""
           } `}
-          style={{ width: width || "auto" }}
-          // title={title}
+          style={{ width }}
+          title={typeof title === "string" ? title : key}
           onClick={sortable ? () => handleSortCallback(key, sort) : null}
         >
           <div className="ml-1">
@@ -51,7 +51,7 @@ const TableHeader = ({
             <Input
               className="TableHeaderSortInput"
               disabled={!filter}
-              onClick={e => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
               onChange={({ target: { value } }) =>
                 filterCallback(dataIndex || key, value, filter)
               }
@@ -81,7 +81,7 @@ TableHeader.propTypes = {
   filterCallback: PropTypes.func.isRequired,
   columns: ColumnsPropType,
   sortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  sortUp: PropTypes.bool
+  sortUp: PropTypes.bool,
 }
 
 export default memo(TableHeader)
