@@ -1,7 +1,6 @@
 .EntryOptionsMenu button:first-child {
     background-color: var(--quinaryColor);
     border: 0;
-    box-shadow: var(--primaryBoxShadow) !important;
 }
 
 .EntryOptionsMenu button:first-child:hover {
