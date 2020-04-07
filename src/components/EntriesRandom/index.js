@@ -10,26 +10,26 @@ const NUMBER_OF_RANDOM_ENTRIES = 4
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
-  filteredItems
+  filteredItems,
 })
 
 const EntriesRandom = ({ items, filteredItems }) => {
   const [shouldRerender, forceUpdate] = useState(false)
   const handleRefresh = () => forceUpdate(!shouldRerender)
   const viewableEntries = useMemo(
-    () => items.concat(filteredItems).filter(item => !item._shouldDelete),
+    () => items.concat(filteredItems).filter((item) => !item._shouldDelete),
     [items, filteredItems, shouldRerender]
   )
 
   let randomEntries = []
 
   if (viewableEntries.length > 0) {
-    let uniqueEntryIndices = new Array(viewableEntries.length)
+    let uniqueEntryIndices = [...viewableEntries]
 
     for (let i = 0; i < NUMBER_OF_RANDOM_ENTRIES; i++) {
       const randomIndex = getRandomInt(0, uniqueEntryIndices.length - 1)
-      uniqueEntryIndices.splice(randomIndex)
-      const entry = viewableEntries[randomIndex]
+      uniqueEntryIndices.splice(randomIndex, 1)
+      const entry = uniqueEntryIndices[randomIndex]
       randomEntries.push(entry)
     }
   }
@@ -51,7 +51,7 @@ const EntriesRandom = ({ items, filteredItems }) => {
 
 EntriesRandom.propTypes = {
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes
+  filteredItems: EntriesPropTypes,
 }
 
 const isEqual = (prevProps, nextProps) => {
