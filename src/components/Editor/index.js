@@ -2,7 +2,6 @@ import React, { PureComponent, Fragment, createRef } from "react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import ReactQuill, { Quill } from "react-quill"
-import { Collapse } from "reactstrap"
 import ImageResize from "quill-image-resize-module-react"
 import "react-quill/dist/quill.snow.css"
 import "react-quill/dist/quill.bubble.css"
@@ -17,15 +16,24 @@ const BlockEmbed = Quill.import("blots/block/embed")
 
 class Video extends BlockEmbed {
   static create(value) {
-    let node = super.create(value)
-    let iframe = document.createElement("iframe")
-    iframe.setAttribute("frameborder", "0")
-    iframe.setAttribute("allowfullscreen", true)
+    const editorRef = document.getElementById("TextEditor")
 
-    // iframe.setAttribute("height", 320)
-    // iframe.setAttribute("width", "100%")
+    let iFrameHeight = "auto"
+    let iFrameWidth = "100%"
 
-    // console.log(document.getElementById("TextEditor").offsetWidth)
+    if (editorRef) {
+      const editorContainerRef = editorRef.children[1].children[0]
+      const { offsetHeight, offsetWidth } = editorContainerRef
+
+      if (offsetHeight > 0) {
+        iFrameHeight = `${offsetHeight}px`
+      }
+      if (offsetWidth > 0) {
+        // iFrameWidth = `${offsetWidth}px`
+      }
+    }
+
+    // console.log(iFrameHeight, iFrameWidth)
 
     if (value.includes("watch?v=")) {
       value = value.replace("watch?v=", "embed/")
@@ -38,6 +46,14 @@ class Video extends BlockEmbed {
     if (value.includes("youtu.be/")) {
       value = value.replace("youtu.be/", "youtube.com/embed/")
     }
+
+    let node = super.create(value)
+    let iframe = document.createElement("iframe")
+    iframe.setAttribute("frameborder", "0")
+    iframe.setAttribute("allowfullscreen", true)
+
+    iframe.setAttribute("height", iFrameHeight)
+    iframe.setAttribute("width", iFrameWidth)
 
     iframe.setAttribute("src", value)
     node.appendChild(iframe)
