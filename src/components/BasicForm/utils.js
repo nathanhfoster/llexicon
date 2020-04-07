@@ -1,4 +1,4 @@
-const getFormPayload = elements => {
+const getFormPayload = (elements) => {
   let payload = {}
 
   for (let i = 0, { length } = elements; i < length; i++) {
@@ -6,7 +6,7 @@ const getFormPayload = elements => {
 
     if (id) {
       payload[id] = value
-    } else if (type === "radio") {
+    } else if (type === "checkbox" || type === "radio") {
       payload[id] = check
     }
   }

@@ -6,7 +6,7 @@ import { getFormPayload } from "./utils"
 const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
   const formRef = useRef()
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     if (!onSubmit) return
 
@@ -14,7 +14,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
     onSubmit(payload)
   }
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     e.preventDefault()
     if (!onChange) return
 
@@ -24,7 +24,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
 
   const renderInputs = useMemo(
     () =>
-      inputs.map(input => {
+      inputs.map((input) => {
         const {
           id,
           defaultValue,
@@ -34,14 +34,16 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
           type,
           placeholder,
           required,
+          disabled,
           autoFocus,
           error,
           multiline,
           rows,
-          className
+          className,
         } = input
+        const isCheckOrRadio = check || type === "radio"
         return (
-          <FormGroup check={check} key={id} row>
+          <FormGroup check={isCheckOrRadio} key={id} row>
             <Label check={check} for={id}>
               {`${label} ${required ? "*" : ""}`}
             </Label>
@@ -51,6 +53,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
               type={type}
               id={id}
               placeholder={placeholder}
+              disabled={disabled}
             />
           </FormGroup>
         )
@@ -87,20 +90,21 @@ BasicForm.propTypes = {
       value: PropTypes.string,
       check: PropTypes.bool,
       label: PropTypes.string,
-      type: PropTypes.oneOf(["email", "text", "password", "radio"]),
+      type: PropTypes.oneOf(["email", "text", "password", "checkbox", "radio"]),
       name: PropTypes.string,
       placeholder: PropTypes.string,
       required: PropTypes.bool,
+      disabled: PropTypes.bool,
       autoFocus: PropTypes.bool,
       error: PropTypes.bool,
       multiline: PropTypes.bool,
       rows: PropTypes.string,
-      className: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+      className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     }).isRequired
   ),
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,
-  submitLabel: PropTypes.string
+  submitLabel: PropTypes.string,
 }
 
 BasicForm.defaultProps = {
@@ -110,23 +114,26 @@ BasicForm.defaultProps = {
       type: "text",
       id: "username",
       placeholder: "Username...",
-      required: true
+      required: true,
+      disabled: false,
     },
     {
       label: "Email",
       type: "email",
       id: "email",
       placeholder: "Email...",
-      required: true
+      required: true,
+      disabled: false,
     },
     {
       label: "Password",
       type: "password",
       id: "password",
       placeholder: "Password...",
-      required: true
-    }
+      required: true,
+      disabled: false,
+    },
   ],
-  submitLabel: "Submit"
+  submitLabel: "Submit",
 }
 export default memo(BasicForm)

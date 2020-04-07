@@ -28,6 +28,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
         id: "username",
         placeholder: "Username...",
         defaultValue: User.username,
+        disabled: !User.id,
       },
       {
         label: "email",
@@ -35,6 +36,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
         id: "email",
         placeholder: "Email...",
         defaultValue: User.email,
+        disabled: !User.id,
       },
       {
         label: "First name",
@@ -42,6 +44,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
         id: "first_name",
         placeholder: "First Name...",
         defaultValue: User.first_name,
+        disabled: !User.id,
       },
       {
         label: "Last name",
@@ -49,22 +52,25 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
         id: "last_name",
         placeholder: "Last name...",
         defaultValue: User.last_name,
+        disabled: !User.id,
       },
       {
         label: "Password",
         type: "password",
         id: "password",
         placeholder: "Password...",
+        disabled: !User.id,
       },
       // {
       //   label: "Opt in",
       //   type: "radio",
       //   name: "opt_in",
       //   id: "opt_in",
-      //   placeholder: "Opt in?"
-      // }
+      //   placeholder: "Opt in?",
+      //   disabled: !User.id,
+      // },
     ],
-    []
+    [User]
   )
   return (
     <Container fluid className="m-1">
