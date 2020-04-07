@@ -223,6 +223,11 @@ const DeleteAccount = () => (dispatch, getState) => {
     .catch((e) => console.log("DeleteAccount: ", e.response))
 }
 
+const SearchForUsers = (search) =>
+  Axios.get(`/users?search=${search}/`)
+    .then(({ data }) => {})
+    .catch((e) => console.log("SearchForUsers: ", e.response))
+
 export {
   SetUser,
   ChangeUser,
