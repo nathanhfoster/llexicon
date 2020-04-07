@@ -122,26 +122,28 @@ const PeopleButtonModal = ({
   }
 
   const handleSavePeople = () => {
+    const payload = {
+      id: entryId,
+      people,
+    }
+
+    onChangeCallback(payload)
+    resetState()
+  }
+
+  const handleCreatePerson = () => {
     const peopleFromString = validateTagOrPeopleString(splitPeopleAsString)
     const newPeople = removeAttributeDuplicates(
       people.concat(peopleFromString),
       "name"
     )
-
-    const payload = {
-      id: entryId,
-      people: newPeople,
-    }
-
-    onChangeCallback(payload)
-
-    resetState()
+    handlePeopleChange(newPeople)
   }
 
   const handleAddPerson = (name) => {
     const newPeople = people.concat({ name })
-
     handlePeopleChange(newPeople)
+    resetState()
   }
 
   const handleRemovePerson = (clickedName) => {
@@ -192,7 +194,7 @@ const PeopleButtonModal = ({
                 className="SaveButton"
                 color="primary"
                 disabled={!personsName}
-                onClick={handleSavePeople}
+                onClick={handleCreatePerson}
               >
                 <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
               </InputGroupText>
