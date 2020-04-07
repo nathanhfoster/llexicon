@@ -245,4 +245,5 @@ export {
   PostSettings,
   SetSettings,
   DeleteAccount,
+  SearchForUsers,
 }
