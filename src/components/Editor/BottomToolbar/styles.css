@@ -54,7 +54,6 @@
 .BottomToolBarTags .btn {
   background-color: var(--primaryColor);
   height: var(--bottomToolBarToggleContainerHeight);
-  box-shadow: var(--primaryBoxShadow);
   z-index: 2;
 }
 

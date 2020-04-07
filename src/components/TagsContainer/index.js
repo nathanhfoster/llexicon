@@ -9,6 +9,7 @@ const TagsContainer = ({
   tags,
   minimalView,
   height,
+  maxHeight,
   fontSize,
   flexWrap,
   alignItems,
@@ -20,7 +21,7 @@ const TagsContainer = ({
   tagContainerClassName,
   columnProps,
   emptyString,
-  faIcon
+  faIcon,
 }) => {
   if (flexWrap === "wrap") {
     overflowX = "auto"
@@ -29,13 +30,14 @@ const TagsContainer = ({
 
   const styles = {
     height,
+    maxHeight,
     flexWrap,
     alignItems,
     alignContent: "flex-start",
     flexStart: "space-around",
     overflowX,
     overflowY,
-    fontSize
+    fontSize,
   }
 
   const renderTags = () =>
@@ -79,6 +81,7 @@ const TagsContainer = ({
 TagsContainer.propTypes = {
   tags: EntryTagsProps,
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  maxHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   flexWrap: PropTypes.oneOf(["wrap", "nowrap"]),
   overflowX: PropTypes.string,
@@ -89,11 +92,12 @@ TagsContainer.propTypes = {
   showTagIcon: PropTypes.bool,
   tagContainerClassName: PropTypes.string,
   emptyString: PropTypes.string,
-  faIcon: PropTypes.string
+  faIcon: PropTypes.string,
 }
 
 TagsContainer.defaultProps = {
   height: "auto",
+  maxHeight: "auto",
   fontSize: "inherit",
   flexWrap: "nowrap",
   alignItems: "center",
@@ -105,7 +109,7 @@ TagsContainer.defaultProps = {
   tagContainerClassName: "",
   columnProps: { xs: 12 },
   emptyString: "No tags...",
-  faIcon: "fas fa-tag"
+  faIcon: "fas fa-tag",
 }
 
 export default memo(TagsContainer)

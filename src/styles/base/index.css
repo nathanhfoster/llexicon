@@ -46,7 +46,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a, a:hover {
+a,
+a:hover {
   outline: none !important;
   text-decoration: none !important;
 }
@@ -74,7 +75,9 @@ a, a:hover {
   text-align: center;
 }
 
-input[type=text], input[type=email], input[type=password] {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
   min-height: var(--inputHeight);
   padding: 0.5rem !important;
   border: inherit;
@@ -129,4 +132,14 @@ input[type="file"] {
 ::-webkit-scrollbar-thumb {
   background: var(--grey);
   border-radius: 6px;
+}
+
+.add-plus::after {
+  content: "+";
+  padding-left: 1px;
+}
+
+.add-minus::after {
+  content: "-";
+  padding-left: 1px;
 }

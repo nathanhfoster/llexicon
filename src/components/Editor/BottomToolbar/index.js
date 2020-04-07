@@ -37,13 +37,13 @@ const BottomToolbar = ({
         },
         {
           Component: RatingButtonModal,
-          props: { rating: entry.rating, onChangeCallback },
+          props: { rating: entry.rating, onChangeCallback, xs },
         },
       ],
       [
         {
           Component: TagsButtonModal,
-          props: { tags: entry.tags, onChangeCallback, xs },
+          props: { entryId: entry.id, tags: entry.tags, onChangeCallback, xs },
         },
         {
           Component: PeopleButtonModal,

@@ -1,13 +1,25 @@
 import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col, Input } from "reactstrap"
+import {
+  Container,
+  Row,
+  Col,
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  Button,
+} from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
 import TagsContainer from "../../../../TagsContainer"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
-import { TopKFrequentStrings } from "../../../../../helpers"
-import { validatedTagString, validateTagOrPeopleString } from "../utlis"
+import {
+  TopKFrequentStrings,
+  removeAttributeDuplicates,
+} from "../../../../../helpers"
 import memoizeProps from "../../../../../helpers/memoizeProps"
+import { validateTagOrPeopleString, validatedTagString } from "../utlis"
 import {
   EntriesPropTypes,
   EntryTagsProps,
@@ -18,14 +30,13 @@ const mapStateToProps = ({
   Entries: { items, filteredItems, EntryTags },
 }) => ({ items, filteredItems, UserId: id, EntryTags })
 
-const mapDispatchToProps = { GetUserEntryTags }
+const mapDispatchToProps = {
+  GetUserEntryTags,
+}
 
-const getInitialState = (tags) => ({
-  tagsAsString: tags
-    .map((tag) => tag.name)
-    .join(",")
-    .concat(","),
-  typing: false,
+const getInitialState = ({ tags }) => ({
+  personsName: "",
+  tags,
 })
 
 const TagsButtonModal = ({
@@ -34,17 +45,26 @@ const TagsButtonModal = ({
   items,
   filteredItems,
   EntryTags,
-  tags,
+  entryId,
   xs,
   onChangeCallback,
+  ...restOfProps
 }) => {
   useEffect(() => {
     if (UserId) GetUserEntryTags()
   }, [])
 
-  const [{ tagsAsString, typing }, setState] = useState(getInitialState(tags))
+  const [{ tags, personsName }, setState] = useState(
+    getInitialState(restOfProps)
+  )
 
-  const splitTagsAsString = tagsAsString.split(",")
+  const resetState = () => setState(getInitialState(restOfProps))
+
+  useEffect(() => {
+    setState((prevState) => ({ ...prevState, tags: restOfProps.tags }))
+  }, [restOfProps.tags])
+
+  const splitTagsAsString = personsName.split(",")
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
   const entryTags = useMemo(
@@ -56,48 +76,31 @@ const TagsButtonModal = ({
           .flat(1)
           .concat(EntryTags)
       ),
-    [items, filteredItems, EntryTags, splitTagsAsString]
+    [items, filteredItems, EntryTags, personsName, tags, splitTagsAsString]
   )
 
   const sortedTags = useMemo(
     () =>
       TopKFrequentStrings(entryTags, "name")
-        .filter((name) => {
-          if (!lastTagAsString) return true
-          else if (name.toUpperCase() == lastTagAsString.toUpperCase())
+        .filter((entryPersonName) => {
+          if (tags.some(({ name }) => name == entryPersonName)) return false
+          else if (!lastTagAsString) return true
+          else if (
+            entryPersonName.toUpperCase() == lastTagAsString.toUpperCase()
+          )
             return true
-          else if (name.toUpperCase().includes(lastTagAsString.toUpperCase()))
+          else if (
+            entryPersonName
+              .toUpperCase()
+              .includes(lastTagAsString.toUpperCase())
+          )
             return true
           else return false
         })
+
         .map((name) => ({ name })),
     [entryTags]
   )
-
-  const handleTagAdd = (name) => {
-    setState((prevState) => {
-      let nextState = {}
-      if (!tagsAsString) {
-        nextState = {
-          tagsAsString: validatedTagString(tagsAsString.concat(`${name},`)),
-          typing: false,
-        }
-      } else if (typing) {
-        let splitTagsAsStrings = tagsAsString.split(",")
-        splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${name},`
-        nextState = {
-          tagsAsString: validatedTagString(splitTagsAsStrings.join(",")),
-          typing: false,
-        }
-      } else {
-        nextState = {
-          tagsAsString: validatedTagString(tagsAsString.concat(`,${name},`)),
-          typing: false,
-        }
-      }
-      return { ...prevState, ...nextState }
-    })
-  }
 
   const handleTagsInputChange = (e) => {
     const { value } = e.target
@@ -106,45 +109,103 @@ const TagsButtonModal = ({
 
     setState((prevState) => ({
       ...prevState,
-      tagsAsString: validatedTagsAsString,
-      typing: true,
+      personsName: validatedTagsAsString,
     }))
   }
 
-  const handleSave = () => {
-    const newTags = validateTagOrPeopleString(tagsAsString.split(","))
+  const handleSaveTags = () => {
+    const payload = {
+      id: entryId,
+      tags,
+    }
 
-    onChangeCallback({ tags: newTags })
+    onChangeCallback(payload)
+    resetState()
   }
 
-  const handleCancel = () => setState(getInitialState(tags))
+  const handleAddTag = (clickedName) => {
+    setState((prevState) => {
+      const newTags = prevState.tags.concat({ name: clickedName })
+      return {
+        ...prevState,
+        tags: newTags,
+      }
+    })
+  }
+
+  const handleRemoveTag = (clickedName) => {
+    setState((prevState) => {
+      const filteredTags = prevState.tags.filter(
+        ({ name }) => name != clickedName
+      )
+      return { ...prevState, tags: filteredTags }
+    })
+  }
+
+  const handleCreateTag = () => {
+    setState((prevState) => {
+      const tagsFromString = validateTagOrPeopleString(splitTagsAsString)
+      const newTags = removeAttributeDuplicates(
+        prevState.tags.concat(tagsFromString),
+        "name"
+      )
+
+      return {
+        ...getInitialState(prevState),
+        tags: newTags,
+      }
+    })
+  }
 
   return (
     <ToolbarModal
       title="Add Tags"
-      onSaveCallback={handleSave}
-      onCancelCallback={handleCancel}
+      onSaveCallback={handleSaveTags}
+      onCancelCallback={resetState}
       ButtonIcon="fas fa-tags"
       button="Add Tags"
       xs={xs}
     >
       <Container className="TagsButtonModal Container">
-        <Row className="TagAndPeopleContainer mb-2">
+        <Row className="TagAndPeopleContainer">
           <TagsContainer
             tags={sortedTags}
-            height={200}
+            maxHeight={150}
             flexWrap="wrap"
-            onClickCallback={handleTagAdd}
+            onClickCallback={handleAddTag}
             hoverable
             emptyString="No tags found..."
+            faIcon="fas fa-tag add-plus"
+          />
+        </Row>
+        <Row className="TagAndPeopleContainer mt-2 mb-1">
+          <TagsContainer
+            tags={tags}
+            maxHeight={150}
+            flexWrap="wrap"
+            onClickCallback={handleRemoveTag}
+            hoverable
+            emptyString="No tags added..."
+            faIcon="fas fa-tag add-minus"
           />
         </Row>
         <Row>
-          <Col className="p-1" xs={12}>
+          <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
+            <InputGroupAddon addonType="append">
+              <InputGroupText
+                tag={Button}
+                className="SaveButton"
+                color="primary"
+                disabled={!personsName}
+                onClick={handleCreateTag}
+              >
+                <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
+              </InputGroupText>
+            </InputGroupAddon>
             <Input
               onChange={handleTagsInputChange}
               type="text"
-              value={tagsAsString}
+              value={personsName}
               placeholder="Family,Friends,Health,Vacation"
             />
           </Col>
@@ -159,6 +220,7 @@ TagsButtonModal.propTypes = {
   items: EntriesPropTypes,
   filteredItems: EntriesPropTypes,
   EntryTags: EntryTagsProps.isRequired,
+  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
   onChangeCallback: PropTypes.func.isRequired,
@@ -174,6 +236,7 @@ const isEqual = (prevProps, nextProps) =>
     "items",
     "filteredItems",
     "EntryTags",
+    "entryId",
     "tags",
     "xs",
   ])
