@@ -489,6 +489,12 @@ const deepParseJson = (jsonString) => {
   }
 }
 
+const replaceAll = (str, mapObj) => {
+  var re = new RegExp(Object.keys(mapObj).join("|"), "gi")
+
+  return str.replace(re, (matched) => mapObj[matched.toLowerCase()])
+}
+
 const isType = {
   UNDEFINED: "undefined",
   NULL: "object",
@@ -542,5 +548,6 @@ export {
   stripHtml,
   fuzzySearch,
   deepParseJson,
+  replaceAll,
   isType,
 }

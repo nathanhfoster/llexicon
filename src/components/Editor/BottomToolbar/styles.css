@@ -5,7 +5,6 @@
 }
 
 .ToggleBottomToolbarButton {
-  background: transparent !important;
   opacity: var(--mainOpacity);
   width: 100%;
 }
@@ -49,10 +48,20 @@
   opacity: 1;
 }
 
+.BottomToolBarTags {}
+
 .BottomToolBarTags,
 .BottomToolBarTags .btn {
   background-color: var(--primaryColor);
   height: var(--bottomToolBarToggleContainerHeight);
+  box-shadow: var(--primaryBoxShadow);
+  z-index: 2;
+}
+
+.BottomToolBarTags .TagContainer {
+  padding: calc(calc(var(--bottomToolBarToggleContainerHeight) - 0.25rem) / 4);
+  box-shadow: var(--primaryBoxShadow);
+  z-index: 2;
 }
 
 .BottomToolBarFiles {

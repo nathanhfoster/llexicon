@@ -6,13 +6,13 @@ import {
   TagsButtonModal,
   RatingButtonModal,
   MediaButtonModal,
-  PeopleButtonModal
+  PeopleButtonModal,
 } from "./ToolbarButtonModals"
 import TagsContainer from "../../TagsContainer"
 import EntryFilesCarousel from "../../EntryFilesCarousel"
 import "./styles.css"
 
-const renderButtonColumns = columns =>
+const renderButtonColumns = (columns) =>
   columns.map((ButtonModal, i) => {
     const { Component, props } = ButtonModal
     return <Component key={i} xs={12 / columns.length} {...props} />
@@ -26,24 +26,24 @@ const BottomToolbar = ({
   canToggleToolbars,
   toggleBottomToolbar,
   onChangeCallback,
-  xs
+  xs,
 }) => {
   const buttons = useMemo(
     () => [
       [
         {
           Component: MediaButtonModal,
-          props: { onChangeCallback, editorRef }
+          props: { onChangeCallback, editorRef },
         },
         {
           Component: RatingButtonModal,
-          props: { rating: entry.rating, onChangeCallback }
-        }
+          props: { rating: entry.rating, onChangeCallback },
+        },
       ],
       [
         {
           Component: TagsButtonModal,
-          props: { tags: entry.tags, onChangeCallback, xs }
+          props: { tags: entry.tags, onChangeCallback, xs },
         },
         {
           Component: PeopleButtonModal,
@@ -51,14 +51,14 @@ const BottomToolbar = ({
             entryId: entry.id,
             people: entry.people,
             onChangeCallback,
-            xs
-          }
+            xs,
+          },
         },
         {
           Component: LocationButtonModal,
-          props: { entry, onChangeCallback, xs }
-        }
-      ]
+          props: { entry, onChangeCallback, xs },
+        },
+      ],
     ],
     [entry]
   )
@@ -77,8 +77,8 @@ const BottomToolbar = ({
     <Fragment>
       {canToggleToolbars && (
         <Container fluid>
-          <Row className="BottomToolBarTags">
-            <Col xs={5} className="p-0">
+          <Row className="BottomToolBarTags px-1">
+            <Col xs={5} className="BottomToolBarTagContainer p-0">
               <TagsContainer tags={entry.tags} />
             </Col>
             <Col
@@ -92,8 +92,12 @@ const BottomToolbar = ({
             >
               <i className={`fas fa-angle-down fa-2x`} />
             </Col>
-            <Col xs={5} className="px-1">
-              <TagsContainer tags={entry.people} faIcon="fas fa-user" emptyString="No people..." />
+            <Col xs={5} className="p-0">
+              <TagsContainer
+                tags={entry.people}
+                faIcon="fas fa-user"
+                emptyString="No people..."
+              />
             </Col>
           </Row>
         </Container>
@@ -123,7 +127,7 @@ BottomToolbar.propTypes = {
   entry: PropTypes.object.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleBottomToolbar: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 export default memo(BottomToolbar)

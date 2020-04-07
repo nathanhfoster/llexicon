@@ -21,7 +21,10 @@ const mapStateToProps = ({
 const mapDispatchToProps = { GetUserEntryTags }
 
 const getInitialState = (tags) => ({
-  tagsAsString: tags.map((tag) => tag.name).join(" "),
+  tagsAsString: tags
+    .map((tag) => tag.name)
+    .join(",")
+    .concat(","),
   typing: false,
 })
 
@@ -39,11 +42,9 @@ const TagsButtonModal = ({
     if (UserId) GetUserEntryTags()
   }, [])
 
-  const [state, setState] = useState(getInitialState(tags))
+  const [{ tagsAsString, typing }, setState] = useState(getInitialState(tags))
 
-  const { tagsAsString, typing } = state
-
-  const splitTagsAsString = tagsAsString.split(" ")
+  const splitTagsAsString = tagsAsString.split(",")
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
   const entryTags = useMemo(
@@ -58,56 +59,50 @@ const TagsButtonModal = ({
     [items, filteredItems, EntryTags, splitTagsAsString]
   )
 
-  let sortedTags = useMemo(
+  const sortedTags = useMemo(
     () =>
       TopKFrequentStrings(entryTags, "name")
-        .filter((tag) => {
-          if (splitTagsAsString.length > 0 && splitTagsAsString.includes(tag))
-            return false
-          else return true
+        .filter((name) => {
+          if (!lastTagAsString) return true
+          else if (name.toUpperCase() == lastTagAsString.toUpperCase())
+            return true
+          else if (name.toUpperCase().includes(lastTagAsString.toUpperCase()))
+            return true
+          else return false
         })
         .map((name) => ({ name })),
     [entryTags]
   )
 
-  if (typing && lastTagAsString) {
-    sortedTags = sortedTags.filter((entryTag) =>
-      entryTag.name.toUpperCase().includes(lastTagAsString.toUpperCase())
-    )
-  }
-
-  const handleTagClick = (name) => {
-    let nextState = {}
-
-    if (!state.tagsAsString) {
-      nextState = {
-        tagsAsString: validatedTagString(state.tagsAsString.concat(`${name} `)),
-        typing: false,
+  const handleTagAdd = (name) => {
+    setState((prevState) => {
+      let nextState = {}
+      if (!tagsAsString) {
+        nextState = {
+          tagsAsString: validatedTagString(tagsAsString.concat(`${name},`)),
+          typing: false,
+        }
+      } else if (typing) {
+        let splitTagsAsStrings = tagsAsString.split(",")
+        splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${name},`
+        nextState = {
+          tagsAsString: validatedTagString(splitTagsAsStrings.join(",")),
+          typing: false,
+        }
+      } else {
+        nextState = {
+          tagsAsString: validatedTagString(tagsAsString.concat(`,${name},`)),
+          typing: false,
+        }
       }
-    } else if (state.typing) {
-      let splitTagsAsStrings = state.tagsAsString.split(" ")
-      splitTagsAsStrings[splitTagsAsStrings.length - 1] = `${name} `
-      nextState = {
-        tagsAsString: validatedTagString(splitTagsAsStrings.join(" ")),
-        typing: false,
-      }
-    } else {
-      nextState = {
-        tagsAsString: validatedTagString(state.tagsAsString.concat(` ${name}`)),
-        typing: false,
-      }
-    }
-
-    setState((prevState) => ({ ...prevState, ...nextState }))
+      return { ...prevState, ...nextState }
+    })
   }
 
   const handleTagsInputChange = (e) => {
     const { value } = e.target
 
-    // Replace commas
-    const string = value.replace(",", " ")
-    // Remove double spaces and periods
-    const validatedTagsAsString = validatedTagString(string)
+    const validatedTagsAsString = validatedTagString(value)
 
     setState((prevState) => ({
       ...prevState,
@@ -117,7 +112,7 @@ const TagsButtonModal = ({
   }
 
   const handleSave = () => {
-    const newTags = validateTagOrPeopleString(tagsAsString.split(" "))
+    const newTags = validateTagOrPeopleString(tagsAsString.split(","))
 
     onChangeCallback({ tags: newTags })
   }
@@ -139,7 +134,7 @@ const TagsButtonModal = ({
             tags={sortedTags}
             height={200}
             flexWrap="wrap"
-            onClickCallback={handleTagClick}
+            onClickCallback={handleTagAdd}
             hoverable
             emptyString="No tags found..."
           />
@@ -150,7 +145,7 @@ const TagsButtonModal = ({
               onChange={handleTagsInputChange}
               type="text"
               value={tagsAsString}
-              placeholder="Family Friends Health Vacation"
+              placeholder="Family,Friends,Health,Vacation"
             />
           </Col>
         </Row>

@@ -19,7 +19,7 @@ import {
   removeAttributeDuplicates,
 } from "../../../../../helpers"
 import memoizeProps from "../../../../../helpers/memoizeProps"
-import { validateTagOrPeopleString } from "../utlis"
+import { validateTagOrPeopleString, validatedPersonNameString } from "../utlis"
 import {
   EntriesPropTypes,
   EntryPeopleProps,
@@ -36,7 +36,6 @@ const mapDispatchToProps = {
 
 const getInitialState = ({ people }) => ({
   personsName: "",
-  typing: false,
   people,
 })
 
@@ -55,7 +54,7 @@ const PeopleButtonModal = ({
     if (UserId) GetUserEntryPeople()
   }, [])
 
-  const [{ people, personsName, typing }, setState] = useState(
+  const [{ people, personsName }, setState] = useState(
     getInitialState(restOfProps)
   )
 
@@ -65,10 +64,7 @@ const PeopleButtonModal = ({
     setState((prevState) => ({ ...prevState, people: restOfProps.people }))
   }, [restOfProps.people])
 
-  const splitPeopleAsString = personsName
-    .replace(", ", ",")
-    .split(",")
-    .map((name) => name.trim())
+  const splitPeopleAsString = personsName.split(",")
   const lastPeopleAsString = splitPeopleAsString[splitPeopleAsString.length - 1]
 
   const entryPeople = useMemo(
@@ -90,36 +86,37 @@ const PeopleButtonModal = ({
     ]
   )
 
-  let sortedPeople = useMemo(
+  const sortedPeople = useMemo(
     () =>
       TopKFrequentStrings(entryPeople, "name")
         .filter((entryPersonName) => {
-          if (
-            splitPeopleAsString.length > 0 &&
-            splitPeopleAsString.includes(entryPersonName)
+          if (people.some(({ name }) => name == entryPersonName)) return false
+          else if (!lastPeopleAsString) return true
+          else if (
+            entryPersonName.toUpperCase() == lastPeopleAsString.toUpperCase()
           )
-            return false
-          else if (people.some(({ name }) => name == entryPersonName))
-            return false
-          else return true
+            return true
+          else if (
+            entryPersonName
+              .toUpperCase()
+              .includes(lastPeopleAsString.toUpperCase())
+          )
+            return true
+          else return false
         })
+
         .map((name) => ({ name })),
     [entryPeople]
   )
 
-  if (typing && lastPeopleAsString) {
-    sortedPeople = sortedPeople.filter((entryPerson) =>
-      entryPerson.name.toUpperCase().includes(lastPeopleAsString.toUpperCase())
-    )
-  }
-
   const handlePeopleInputChange = (e) => {
     const { value } = e.target
 
+    const validatedTagsAsString = validatedPersonNameString(value)
+
     setState((prevState) => ({
       ...prevState,
-      personsName: value,
-      typing: true,
+      personsName: validatedTagsAsString,
     }))
   }
 
@@ -216,7 +213,7 @@ const PeopleButtonModal = ({
               onChange={handlePeopleInputChange}
               type="text"
               value={personsName}
-              placeholder="John Doe, Jane Doe"
+              placeholder="John Doe,Jane Doe"
             />
           </Col>
         </Row>
