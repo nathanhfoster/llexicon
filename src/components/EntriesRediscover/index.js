@@ -11,14 +11,14 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
 })
 
 const EntriesRediscover = ({ items, filteredItems }) => {
-  const today = MomentJs()
+  const today = MomentJs().local()
   const entriesOnThisDay = useMemo(
     () =>
       items
         .concat(filteredItems)
         .filter(({ date_created_by_author, _shouldDelete }) => {
           if (_shouldDelete) return true
-          const entryDate = MomentJs(date_created_by_author)
+          const entryDate = MomentJs(date_created_by_author).local()
           const isOnThisDay = entryDate.dayOfYear() === today.dayOfYear()
           return isOnThisDay
         })
