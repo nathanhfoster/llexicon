@@ -192,12 +192,12 @@ const App = ({
   return (
     <Fragment>
       <NavBar {...addToHomeScreenProps} />
-      <div className="App RouteOverlay">
+      <main className="App RouteOverlay">
         <Switch>
           {renderRouteItems}
           <Route component={PageNotFound} />
         </Switch>
-      </div>
+      </main>
     </Fragment>
   )
 }
