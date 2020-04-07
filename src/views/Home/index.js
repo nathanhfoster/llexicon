@@ -12,7 +12,7 @@ import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { RouterPush, RouteMap } from "../../routes"
 import "./styles.css"
 
-const HomeButtons = lazy(() => import("../../components/EntryNavButtons"))
+const EntryNavButtons = lazy(() => import("../../components/EntryNavButtons"))
 const EntriesMostViewed = lazy(() =>
   import("../../components/EntriesMostViewed")
 )
@@ -50,7 +50,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
                 {!userToken ? "Learn More" : "Settings"}
               </Button>
             }
-            button={<HomeButtons />}
+            button={<EntryNavButtons />}
           />
         </Col>
       </Row>
