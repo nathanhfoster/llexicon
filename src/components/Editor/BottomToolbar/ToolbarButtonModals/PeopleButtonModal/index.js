@@ -133,9 +133,15 @@ const PeopleButtonModal = ({
   const handleAddPerson = (clickedName) => {
     setState((prevState) => {
       const newPeople = prevState.people.concat({ name: clickedName })
+      const removeLastPerson = prevState.personsName.split(",").slice(0, -1)
+
+      const newPersonsName = removeLastPerson
+        // .concat(`${clickedName},`)
+        .join(",")
       return {
         ...prevState,
         people: newPeople,
+        personsName: newPersonsName,
       }
     })
   }

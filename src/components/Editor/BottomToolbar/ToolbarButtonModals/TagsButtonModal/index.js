@@ -35,7 +35,7 @@ const mapDispatchToProps = {
 }
 
 const getInitialState = ({ tags }) => ({
-  personsName: "",
+  tagName: "",
   tags,
 })
 
@@ -54,9 +54,7 @@ const TagsButtonModal = ({
     if (UserId) GetUserEntryTags()
   }, [])
 
-  const [{ tags, personsName }, setState] = useState(
-    getInitialState(restOfProps)
-  )
+  const [{ tags, tagName }, setState] = useState(getInitialState(restOfProps))
 
   const resetState = () => setState(getInitialState(restOfProps))
 
@@ -64,7 +62,7 @@ const TagsButtonModal = ({
     setState((prevState) => ({ ...prevState, tags: restOfProps.tags }))
   }, [restOfProps.tags])
 
-  const splitTagsAsString = personsName.split(",")
+  const splitTagsAsString = tagName.split(",")
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
   const entryTags = useMemo(
@@ -76,7 +74,7 @@ const TagsButtonModal = ({
           .flat(1)
           .concat(EntryTags)
       ),
-    [items, filteredItems, EntryTags, personsName, tags, splitTagsAsString]
+    [items, filteredItems, EntryTags, tagName, tags, splitTagsAsString]
   )
 
   const sortedTags = useMemo(
@@ -109,7 +107,7 @@ const TagsButtonModal = ({
 
     setState((prevState) => ({
       ...prevState,
-      personsName: validatedTagsAsString,
+      tagName: validatedTagsAsString,
     }))
   }
 
@@ -126,9 +124,16 @@ const TagsButtonModal = ({
   const handleAddTag = (clickedName) => {
     setState((prevState) => {
       const newTags = prevState.tags.concat({ name: clickedName })
+      const removeLastTag = prevState.tagName.split(",").slice(0, -1)
+
+      const newTagName = removeLastTag
+        // .concat(`${clickedName},`)
+        .join(",")
+
       return {
         ...prevState,
         tags: newTags,
+        tagName: newTagName,
       }
     })
   }
@@ -196,7 +201,7 @@ const TagsButtonModal = ({
                 tag={Button}
                 className="SaveButton"
                 color="primary"
-                disabled={!personsName}
+                disabled={!tagName}
                 onClick={handleCreateTag}
               >
                 <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
@@ -205,7 +210,7 @@ const TagsButtonModal = ({
             <Input
               onChange={handleTagsInputChange}
               type="text"
-              value={personsName}
+              value={tagName}
               placeholder="Family,Friends,Health,Vacation"
             />
           </Col>
