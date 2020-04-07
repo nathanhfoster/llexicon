@@ -55,18 +55,20 @@ const PeopleButtonModal = ({
     if (UserId) GetUserEntryPeople()
   }, [])
 
-  const [state, setState] = useState(getInitialState(restOfProps))
+  const [{ people, personsName, typing }, setState] = useState(
+    getInitialState(restOfProps)
+  )
+
   const resetState = () => setState(getInitialState(restOfProps))
-  const handlePeopleChange = (people) =>
-    setState((prevState) => ({ ...prevState, people }))
 
   useEffect(() => {
-    handlePeopleChange(restOfProps.people)
+    setState((prevState) => ({ ...prevState, people: restOfProps.people }))
   }, [restOfProps.people])
 
-  const { people, personsName, typing } = state
-
-  const splitPeopleAsString = personsName.replace(", ", ",").split(",")
+  const splitPeopleAsString = personsName
+    .replace(", ", ",")
+    .split(",")
+    .map((name) => name.trim())
   const lastPeopleAsString = splitPeopleAsString[splitPeopleAsString.length - 1]
 
   const entryPeople = useMemo(
@@ -131,34 +133,45 @@ const PeopleButtonModal = ({
     resetState()
   }
 
-  const handleCreatePerson = () => {
-    const peopleFromString = validateTagOrPeopleString(splitPeopleAsString)
-    const newPeople = removeAttributeDuplicates(
-      people.concat(peopleFromString),
-      "name"
-    )
-    handlePeopleChange(newPeople)
+  const handleCreatePeople = () => {
+    setState((prevState) => {
+      const peopleFromString = validateTagOrPeopleString(splitPeopleAsString)
+      const newPeople = removeAttributeDuplicates(
+        prevState.people.concat(peopleFromString),
+        "name"
+      )
+
+      return {
+        ...getInitialState(prevState),
+        people: newPeople,
+      }
+    })
   }
 
-  const handleAddPerson = (name) => {
-    const newPeople = people.concat({ name })
-    handlePeopleChange(newPeople)
-    resetState()
+  const handleAddPerson = (clickedName) => {
+    setState((prevState) => {
+      const newPeople = prevState.people.concat({ name: clickedName })
+      return {
+        ...prevState,
+        people: newPeople,
+      }
+    })
   }
 
   const handleRemovePerson = (clickedName) => {
-    const filteredPeople = people.filter(({ name }) => name != clickedName)
-
-    handlePeopleChange(filteredPeople)
+    setState((prevState) => {
+      const filteredPeople = prevState.people.filter(
+        ({ name }) => name != clickedName
+      )
+      return { ...prevState, people: filteredPeople }
+    })
   }
-
-  const handleCancel = () => setState(getInitialState(restOfProps))
 
   return (
     <ToolbarModal
       title="Add People"
       onSaveCallback={handleSavePeople}
-      onCancelCallback={handleCancel}
+      onCancelCallback={resetState}
       ButtonIcon="fas fa-users"
       button="Add People"
       xs={xs}
@@ -194,7 +207,7 @@ const PeopleButtonModal = ({
                 className="SaveButton"
                 color="primary"
                 disabled={!personsName}
-                onClick={handleCreatePerson}
+                onClick={handleCreatePeople}
               >
                 <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
               </InputGroupText>
