@@ -84,6 +84,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
             title="Delete Account"
             message="Are you sure you want to delete your account? Everything will be erased."
             onConfirm={handleDeleteAccount}
+            disabled={!User.id}
           />
         </Col>
       </Row>

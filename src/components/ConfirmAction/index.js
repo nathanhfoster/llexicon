@@ -10,6 +10,7 @@ const ConfirmAction = ({
   onConfirm,
   onCancel,
   size,
+  disabled,
 }) => {
   const handleConfirm = () => {
     onConfirm && onConfirm()
@@ -26,6 +27,7 @@ const ConfirmAction = ({
       title={title}
       onSaveCallback={handleConfirm}
       onCancelCallback={handleCancel}
+      disabled={disabled}
       saveButton={<Button color="danger">Confirm</Button>}
       cancelButton={<Button color="primary">Cancel</Button>}
     >
@@ -52,6 +54,7 @@ ConfirmAction.defaultProps = {
   ),
   message: "Are you sure you want to delete complete this action?",
   size: "lg",
+  disabled: false,
 }
 
 export default memo(ConfirmAction)

@@ -133,21 +133,6 @@ const PeopleButtonModal = ({
     resetState()
   }
 
-  const handleCreatePeople = () => {
-    setState((prevState) => {
-      const peopleFromString = validateTagOrPeopleString(splitPeopleAsString)
-      const newPeople = removeAttributeDuplicates(
-        prevState.people.concat(peopleFromString),
-        "name"
-      )
-
-      return {
-        ...getInitialState(prevState),
-        people: newPeople,
-      }
-    })
-  }
-
   const handleAddPerson = (clickedName) => {
     setState((prevState) => {
       const newPeople = prevState.people.concat({ name: clickedName })
@@ -164,6 +149,21 @@ const PeopleButtonModal = ({
         ({ name }) => name != clickedName
       )
       return { ...prevState, people: filteredPeople }
+    })
+  }
+
+  const handleCreatePeople = () => {
+    setState((prevState) => {
+      const peopleFromString = validateTagOrPeopleString(splitPeopleAsString)
+      const newPeople = removeAttributeDuplicates(
+        prevState.people.concat(peopleFromString),
+        "name"
+      )
+
+      return {
+        ...getInitialState(prevState),
+        people: newPeople,
+      }
     })
   }
 
