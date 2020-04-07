@@ -19,10 +19,10 @@ const popperPlacementPositions = {
   RIGHT_START: "right-start",
   TOP: "top",
   TOP_END: "top-end",
-  TOP_START: "top-start"
+  TOP_START: "top-start",
 }
 
-const ReactDatePicker = props => <DatePicker {...props} />
+const ReactDatePicker = (props) => <DatePicker {...props} />
 
 ReactDatePicker.propTypes = {
   adjustDateOnChange: PropTypes.bool,
@@ -32,7 +32,7 @@ ReactDatePicker.propTypes = {
   calendarClassName: PropTypes.string,
   calendarContainer: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.arrayOf(PropTypes.object)
+    PropTypes.arrayOf(PropTypes.object),
   ]),
   children: PropTypes.object,
   className: PropTypes.string,
@@ -43,7 +43,7 @@ ReactDatePicker.propTypes = {
   dateFormatCalendar: PropTypes.string,
   dayClassName: PropTypes.oneOfType([
     PropTypes.instanceOf(Date),
-    PropTypes.string
+    PropTypes.string,
   ]),
   disabled: PropTypes.bool,
   disabledKeyboardNavigation: PropTypes.bool,
@@ -58,7 +58,7 @@ ReactDatePicker.propTypes = {
   formatWeekNumber: PropTypes.oneOfType([
     PropTypes.instanceOf(Date),
     PropTypes.string,
-    PropTypes.number
+    PropTypes.number,
   ]),
   highlightDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   id: PropTypes.string,
@@ -95,7 +95,7 @@ ReactDatePicker.propTypes = {
   popperClassName: PropTypes.string,
   popperContainer: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.arrayOf(PropTypes.object)
+    PropTypes.arrayOf(PropTypes.object),
   ]),
   // popperModifiers?: Popper.Modifiers;
   popperPlacement: PropTypes.string,
@@ -112,14 +112,14 @@ ReactDatePicker.propTypes = {
       decreaseMonth: PropTypes.func,
       increaseMonth: PropTypes.func,
       prevMonthButtonDisabled: PropTypes.bool,
-      nextMonthButtonDisabled: PropTypes.bool
+      nextMonthButtonDisabled: PropTypes.bool,
     }),
-    PropTypes.object
+    PropTypes.object,
   ]),
   renderDayContents: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.instanceOf(Date),
-    PropTypes.object
+    PropTypes.object,
   ]),
   required: PropTypes.bool,
   scrollableMonthYearDropdown: PropTypes.bool,
@@ -157,7 +157,7 @@ ReactDatePicker.propTypes = {
   showTimeInput: PropTypes.bool,
   inlineFocusSelectedMonth: PropTypes.bool,
   onDayMouseEnter: PropTypes.func,
-  onMonthMouseLeave: PropTypes.func
+  onMonthMouseLeave: PropTypes.func,
 }
 
 ReactDatePicker.defaultProps = {
@@ -166,7 +166,7 @@ ReactDatePicker.defaultProps = {
     <i className="fas fa-calendar-day NavBaDatePickerTodayButton"> Today</i>
   ),
   popperClassName: "DatePickerPopper",
-  popperPlacement: popperPlacementPositions.AUTO_LEFT,
+  popperPlacement: popperPlacementPositions.BOTTOM_END,
   // popperModifiers:{{
   //   offset: {
   //     enabled: true,
@@ -180,11 +180,11 @@ ReactDatePicker.defaultProps = {
   // }},
   showPopperArrow: false,
   selected: new Date(),
-  onChange: date => console.log(date),
+  onChange: (date) => console.log(date),
   showTimeSelect: true,
   timeFormat: "hh:mm a",
   timeIntervals: 1,
-  timeCaption: "time"
+  timeCaption: "time",
 }
 
 export default memo(ReactDatePicker)

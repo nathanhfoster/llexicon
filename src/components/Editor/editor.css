@@ -36,3 +36,9 @@
 .ql-editor ul>li.ql-indent-3::before {
     content: '\25A1';
 }
+
+.ql-editor .ql-video  {
+    display: flex;
+    justify-content: center;
+    flex-grow: auto;
+}

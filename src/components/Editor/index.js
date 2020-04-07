@@ -28,6 +28,7 @@ class Video extends BlockEmbed {
 
       if (offsetHeight > 0) {
         iFrameHeight = `${offsetHeight}px`
+        iFrameWidth = `${offsetHeight * (16 / 9)}px`
       }
       if (offsetWidth > 0) {
         // iFrameWidth = `${offsetWidth}px`
