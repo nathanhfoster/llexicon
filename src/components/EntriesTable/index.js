@@ -12,48 +12,6 @@ const EntriesTable = ({ entries }) => {
   const tableColumns = useMemo(
     () => [
       {
-        title: <i className="fas fa-calendar-day" />,
-        key: "date_created_by_author",
-        width: 100,
-        onRowClick: (item) =>
-          RouterPush(
-            history,
-            RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
-          ),
-        render: (item) => (
-          <Moment format="D MMM YY hh:mma">
-            {item.date_created_by_author}
-          </Moment>
-        ),
-        sort: (a, b, sortUp) =>
-          sortUp
-            ? new Date(b.date_created_by_author) -
-              new Date(a.date_created_by_author)
-            : new Date(a.date_created_by_author) -
-              new Date(b.date_created_by_author),
-        filter: "date",
-        filterPlaceholder: "Created",
-      },
-      {
-        title: <i className="fas fa-pencil-alt" />,
-        key: "date_updated",
-        width: 130,
-        render: (item) => (
-          <Moment format="D MMM YY hh:mma">
-            {item._lastUpdated || item.date_updated}
-          </Moment>
-        ),
-        sort: (a, b, sortUp) =>
-          sortUp
-            ? new Date(b._lastUpdated || b.date_updated) -
-              new Date(a._lastUpdated || a.date_updated)
-            : new Date(a._lastUpdated || a.date_updated) -
-              new Date(b._lastUpdated || b.date_updated),
-        filter: "date",
-        filterPlaceholder: "Updated",
-      },
-
-      {
         title: <i className="fas fa-heading" />,
         key: "title",
         width: 180,
@@ -110,6 +68,47 @@ const EntriesTable = ({ entries }) => {
         width: 180,
         filter: "string",
         filterPlaceholder: "Address",
+      },
+      {
+        title: <i className="fas fa-calendar-day" />,
+        key: "date_created_by_author",
+        width: 100,
+        onRowClick: (item) =>
+          RouterPush(
+            history,
+            RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
+          ),
+        render: (item) => (
+          <Moment format="D MMM YY hh:mma">
+            {item.date_created_by_author}
+          </Moment>
+        ),
+        sort: (a, b, sortUp) =>
+          sortUp
+            ? new Date(b.date_created_by_author) -
+              new Date(a.date_created_by_author)
+            : new Date(a.date_created_by_author) -
+              new Date(b.date_created_by_author),
+        filter: "date",
+        filterPlaceholder: "Created",
+      },
+      {
+        title: <i className="fas fa-pencil-alt" />,
+        key: "date_updated",
+        width: 130,
+        render: (item) => (
+          <Moment format="D MMM YY hh:mma">
+            {item._lastUpdated || item.date_updated}
+          </Moment>
+        ),
+        sort: (a, b, sortUp) =>
+          sortUp
+            ? new Date(b._lastUpdated || b.date_updated) -
+              new Date(a._lastUpdated || a.date_updated)
+            : new Date(a._lastUpdated || a.date_updated) -
+              new Date(b._lastUpdated || b.date_updated),
+        filter: "date",
+        filterPlaceholder: "Updated",
       },
       {
         title: <i className="far fa-eye" />,
