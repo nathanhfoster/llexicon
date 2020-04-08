@@ -29,7 +29,9 @@ const BottomToolbar = ({
   xs,
 }) => {
   // editorRef.current.focus()
-  const editorSelection = editorRef.current.getEditorSelection()
+  const editorSelection = editorRef.current
+    ? editorRef.current.getEditorSelection()
+    : null
   const buttons = useMemo(
     () => [
       [
@@ -113,6 +115,7 @@ const BottomToolbar = ({
                 files={entry.EntryFiles}
                 onChangeCallback={onChangeCallback}
                 editorRef={editorRef}
+                editorSelection={editorSelection}
               />
             </Col>
           </Row>

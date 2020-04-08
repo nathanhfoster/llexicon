@@ -49,9 +49,8 @@ const MediaButtonModal = ({
     const lowerCaseType = type.toLowerCase()
 
     if (editorRef.current) {
-      const selection = editorSelection
-      if (selection) {
-        const { index, length } = selection
+      if (editorSelection) {
+        const { index, length } = editorSelection
         cursorIndex = index
       }
     }
@@ -110,6 +109,7 @@ const MediaButtonModal = ({
           files={AllEntryFiles}
           onChangeCallback={onChangeCallback}
           editorRef={editorRef}
+          editorSelection={editorSelection}
           overflowX="hidden"
           overflowY="auto"
           whiteSpace="wrap"

@@ -8,10 +8,11 @@ const EntryFilesCarousel = ({
   className,
   files,
   editorRef,
+  editorSelection,
   overflowX,
   overflowY,
   whiteSpace,
-  onChangeCallback
+  onChangeCallback,
 }) => {
   let imageFiles = []
 
@@ -26,7 +27,7 @@ const EntryFilesCarousel = ({
         id,
         name,
         size,
-        url
+        url,
       } = file
       // console.log(file_type)
       if (file_type.includes("image")) {
@@ -39,9 +40,8 @@ const EntryFilesCarousel = ({
     let cursorIndex = 0
 
     if (editorRef.current) {
-      const selection = editorRef.current.getEditorSelection()
-      if (selection) {
-        const { index, length } = selection
+      if (editorSelection) {
+        const { index, length } = editorSelection
         cursorIndex = index
       }
     }
@@ -51,7 +51,7 @@ const EntryFilesCarousel = ({
     editorRef.current.editor.insertEmbed(cursorIndex, type, url)
   }
 
-  const renderImageFiles = imageFiles => {
+  const renderImageFiles = (imageFiles) => {
     return imageFiles.map((image, i) => {
       const { url, name, file_type } = image
       return (
@@ -84,14 +84,14 @@ const EntryFilesCarousel = ({
 EntryFilesCarousel.propTypes = {
   files: EntryFilesProps.isRequired,
   onChangeCallback: PropTypes.func.isRequired,
-  editorRef: PropTypes.object.isRequired
+  editorRef: PropTypes.object.isRequired,
 }
 
 EntryFilesCarousel.defaultProps = {
   className: "EntryFilesCarousel",
   overflowX: "auto",
   overflowY: "hidden",
-  whiteSpace: "nowrap"
+  whiteSpace: "nowrap",
 }
 
 export default memo(EntryFilesCarousel)
