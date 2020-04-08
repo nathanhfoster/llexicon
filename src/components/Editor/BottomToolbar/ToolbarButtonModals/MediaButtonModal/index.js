@@ -29,6 +29,7 @@ const MediaButtonModal = ({
   onChangeCallback,
   xs,
   editorRef,
+  editorSelection,
   items,
   filteredItems,
 }) => {
@@ -48,14 +49,14 @@ const MediaButtonModal = ({
     const lowerCaseType = type.toLowerCase()
 
     if (editorRef.current) {
-      const selection = editorRef.current.getEditorSelection()
+      const selection = editorSelection
       if (selection) {
         const { index, length } = selection
         cursorIndex = index
       }
     }
 
-    editorRef.current.editor.insertEmbed(cursorIndex, lowerCaseType, url)
+    editorRef.current.getEditor().insertEmbed(cursorIndex, lowerCaseType, url)
 
     setUrl("")
   }
@@ -72,6 +73,7 @@ const MediaButtonModal = ({
       xs={xs}
       onSaveCallback={handleAddUrl}
       onCancelCallback={handleModalCancel}
+      disabledSave={addUrlDisabled}
     >
       <Container fluid className="MediaButtonModal p-0">
         <Row className="p-2">
@@ -127,6 +129,7 @@ const isEqual = (prevProps, nextProps) =>
   memoizeProps(prevProps, nextProps, [
     "xs",
     "editorRef",
+    "editorSelection",
     "items",
     "filteredItems",
   ])

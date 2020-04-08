@@ -28,12 +28,14 @@ const BottomToolbar = ({
   onChangeCallback,
   xs,
 }) => {
+  // editorRef.current.focus()
+  const editorSelection = editorRef.current.getEditorSelection()
   const buttons = useMemo(
     () => [
       [
         {
           Component: MediaButtonModal,
-          props: { onChangeCallback, editorRef },
+          props: { onChangeCallback, editorRef, editorSelection },
         },
         {
           Component: RatingButtonModal,
@@ -60,7 +62,7 @@ const BottomToolbar = ({
         },
       ],
     ],
-    [entry]
+    [entry, editorRef, editorSelection]
   )
 
   const renderButtonRows = useMemo(
