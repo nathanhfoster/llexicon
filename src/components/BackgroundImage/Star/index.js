@@ -12,7 +12,7 @@ export const StarColorGradients = {
   White: `#f5f5f5, #ffffff`,
   YellowishWhite: `#f1c40f, #ffffff`,
   PaleYellowOrange: `#f1c40f, #e67e22`,
-  LightOrangeRed: `#f39c12, #e74c3c`
+  LightOrangeRed: `#f39c12, #e74c3c`,
 }
 
 const StarColorGradientsList = objectToArray(StarColorGradients)
@@ -30,9 +30,10 @@ const styles = ({
   opacity = getRandomFloat(0.1, 1),
   zIndex,
   marginLeft,
-  marginRight
+  marginRight,
 }) => {
-  const randomSize = getRandomInt(1, 6)
+  const randomSize = getRandomFloat(1, 4)
+
   const randomGradientIndex = getRandomInt(0, StarColorGradientsList.length - 1)
   const randomZIndex = getRandomInt(0, 100)
   if (typeof top === "string" && !top.includes("px")) top = `${top}%`
@@ -53,17 +54,17 @@ const styles = ({
         ? StarColorGradients[color]
         : StarColorGradientsList[randomGradientIndex]
     })`,
-    width: size || randomSize,
-    height: size || randomSize,
+    width: `${size || randomSize}px`,
+    height: `${size || randomSize}px`,
     willChange: "opacity",
     opacity,
     zIndex: zIndex || randomZIndex,
     marginLeft,
-    marginRight
+    marginRight,
   }
 }
 
-const Star = props => <div style={styles(props)} />
+const Star = (props) => <div style={styles(props)} />
 
 Star.propTypes = {
   position: PropTypes.string,
@@ -77,14 +78,14 @@ Star.propTypes = {
   color: PropTypes.oneOf(Object.keys(StarColorGradients)),
   opacity: PropTypes.number,
   marginLeft: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  marginRight: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  marginRight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 Star.defaultProps = {
   position: "inherit",
   display: "inline-block",
   marginLeft: 0,
-  marginRight: 0
+  marginRight: 0,
 }
 
 export default memo(Star)

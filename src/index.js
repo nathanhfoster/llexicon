@@ -11,7 +11,6 @@ import * as serviceWorker from "./serviceWorker"
 const { store, persistor } = storeFactory()
 
 const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
-const BackgroundImage = lazy(() => import("./components/BackgroundImage"))
 
 const { NODE_ENV } = process.env
 
@@ -25,7 +24,6 @@ ReactDOM.render(
       <Suspense fallback={<LoadingScreen />}>
         <AlertNotifications />
         <BrowserRouter>
-          <BackgroundImage />
           <App />
         </BrowserRouter>
       </Suspense>

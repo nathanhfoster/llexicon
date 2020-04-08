@@ -1,5 +1,7 @@
 import React, { Fragment } from "react"
-import { useLocation } from "react-router-dom"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
+import { withRouter } from "react-router-dom"
 import { RouteMap } from "../../routes"
 import StarGenerator from "./StarGenerator"
 import BackgroundObjects from "./BackgroundObjects"
@@ -17,7 +19,7 @@ const RocketEarthMoon = () => (
   </BackgroundObjects>
 )
 
-const backgroundImageRouteMap = route => {
+const backgroundImageRouteMap = (route) => {
   switch (route) {
     case RouteMap.ROOT:
       return RocketEarthMoon()
@@ -32,19 +34,22 @@ const backgroundImageRouteMap = route => {
   }
 }
 
-const BackgroundImage = () => {
-  const { pathname } = useLocation()
+const mapStateToProps = ({ Window: { innerHeight, innerWidth } }) => ({
+  starLength: Math.ceil((innerHeight + innerWidth) / 5),
+})
+
+const BackgroundImage = ({ location: { pathname }, starLength }) => {
   const background = backgroundImageRouteMap(pathname)
 
   return (
     <Fragment>
       <div className="BackgroundImage">
         {/* <Media src={bgImage} /> */}
-        <StarGenerator />
+        <StarGenerator length={starLength} />
       </div>
       {background}
     </Fragment>
   )
 }
 
-export default BackgroundImage
+export default withRouter(reduxConnect(mapStateToProps)(BackgroundImage))

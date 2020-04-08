@@ -1,0 +1,12 @@
+#Canvas {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+#Canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #111;
+}

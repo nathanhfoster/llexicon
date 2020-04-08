@@ -2,16 +2,16 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import "../Earth/styles.css"
 
-const styles = ({ top, left, spin }) => ({
+const styles = ({ top, left, spin, zIndex }) => ({
   width: 80,
   position: "absolute",
   top: `${top}%`,
   left: `${left}%`,
-  zIndex: 101,
-  animation: `spin-earth ${spin}s infinite linear both`
+  animation: `spin-earth ${spin}s infinite linear both`,
+  zIndex,
 })
 
-const Moon = props => (
+const Moon = (props) => (
   <img
     alt="Moon"
     style={styles(props)}
@@ -22,13 +22,14 @@ const Moon = props => (
 Moon.propTypes = {
   top: PropTypes.number,
   left: PropTypes.number,
-  spin: PropTypes.number
+  spin: PropTypes.number,
 }
 
 Moon.defaultProps = {
   top: 12,
   left: 25,
-  spin: 27
+  spin: 27,
+  zIndex: -1,
 }
 
 export default memo(Moon)

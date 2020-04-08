@@ -21,7 +21,7 @@ const StarGenerator = ({ length, position }) => {
       top: randomTop,
       left: randomLeft,
       animation: percentChance ? animation : false,
-      position
+      position,
     }
 
     stars.push(<Star key={i} {...props} />)
@@ -43,12 +43,12 @@ StarGenerator.propTypes = {
   color: PropTypes.oneOf(Object.keys(StarColorGradients)),
   opacity: PropTypes.number,
   marginLeft: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  marginRight: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  marginRight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 StarGenerator.defaultProps = {
-  length: 101,
-  position: "inherit"
+  length: 201,
+  position: "inherit",
 }
 
 export default memo(StarGenerator)

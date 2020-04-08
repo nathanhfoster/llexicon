@@ -1,4 +1,4 @@
-import { getRandomInt, getRandomFloat } from "../helpers"
+import { getRandomInt } from "../helpers"
 
 class ArrayList {
   constructor({ ofNumbers, ofFloats, length }) {
@@ -12,9 +12,9 @@ class ArrayList {
     }
   }
 
-  splice = index => this.arrayList.splice(index, 1)
+  splice = (index) => this.arrayList.splice(index, 1)
 
-  push = element => this.arrayList.push(element)
+  push = (element) => this.arrayList.push(element)
 
   getRandomIndex = () => {
     const randomIndex = getRandomInt(0, this.arrayList.length - 1)
