@@ -20,12 +20,12 @@ const Entry = ({
   history,
   readOnly,
 }) => {
-  const activeDate = new Date(
+  const activeDate = Date(
     entry.date_created_by_author || entry._lastUpdated || 0
   )
   const dispatch = useDispatch()
 
-  entry.date_created_by_author = new Date(entry.date_created_by_author)
+  entry.date_created_by_author = Date(entry.date_created_by_author)
 
   const handleDebounce = () => dispatch(SyncEntries())
 
@@ -61,7 +61,10 @@ const Entry = ({
           value={entry}
           delay={3200}
         />
-        <InputGroup key={`EntryTitle-${entry.id}`} className="EntryInput EntryInputTitle">
+        <InputGroup
+          key={`EntryTitle-${entry.id}`}
+          className="EntryInput EntryInputTitle"
+        >
           <Input
             type="text"
             name="title"

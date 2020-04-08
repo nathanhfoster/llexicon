@@ -11,18 +11,17 @@ import { SetCalendar } from "../../redux/Calendar/Calendar"
 import { GetUserEntriesByDate } from "../../redux/Entries/actions"
 import TileContent from "./TileContent"
 import EntryList from "../EntryList"
-import deepEquals from "../../helpers/deepEquals"
 import "./styles.css"
 import "./stylesM.css"
 
 const mapStateToProps = ({
   Calendar: { activeDate, view },
-  Entries: { items }
+  Entries: { items },
 }) => ({ entries: items, activeDate, view })
 
 const mapDispatchToProps = {
   SetCalendar,
-  GetUserEntriesByDate
+  GetUserEntriesByDate,
 }
 
 const EntryCalendar = ({
@@ -31,7 +30,7 @@ const EntryCalendar = ({
   view,
   SetCalendar,
   GetUserEntriesByDate,
-  history
+  history,
 }) => {
   useEffect(() => {
     GetUserEntriesByDate(activeDate)
@@ -45,7 +44,7 @@ const EntryCalendar = ({
 
   const entriesWithinView = useMemo(
     () =>
-      entries.filter(entry => {
+      entries.filter((entry) => {
         const { date_created_by_author, _shouldDelete } = entry
         const entryDate = MomentJS(date_created_by_author)
         const entryDateWithinView = entryDate.isSame(calendarDate, view)
@@ -79,19 +78,19 @@ const EntryCalendar = ({
 
   const handleNewEntryClick = () => RouterPush(history, RouteMap.NEW_ENTRY)
 
-  const handleOnChange = activeStartDate =>
+  const handleOnChange = (activeStartDate) =>
     handleDateChange({ activeStartDate, view }, false)
 
-  const handleOnClickDay = activeStartDate =>
+  const handleOnClickDay = (activeStartDate) =>
     handleDateChange({ activeStartDate, view: "month" }, false)
 
-  const handleOnClickMonth = activeStartDate =>
+  const handleOnClickMonth = (activeStartDate) =>
     handleDateChange({ activeStartDate, view: "month" }, false)
 
-  const handleOnClickYear = activeStartDate =>
+  const handleOnClickYear = (activeStartDate) =>
     handleDateChange({ activeStartDate, view: "year" }, false)
 
-  const handleOnClickDecade = activeStartDate =>
+  const handleOnClickDecade = (activeStartDate) =>
     handleDateChange({ activeStartDate, view: "decade" }, false)
 
   return (
@@ -137,7 +136,7 @@ const EntryCalendar = ({
             activeStartDate={activeStartDate}
             value={activeDate}
             defaultView="month"
-            tileContent={props => (
+            tileContent={(props) => (
               <TileContent
                 {...props}
                 activeDate={activeDate}
@@ -179,15 +178,13 @@ EntryCalendar.propTypes = {
   entries: PropTypes.arrayOf(PropTypes.object).isRequired,
   activeDate: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.instanceOf(Date)
+    PropTypes.instanceOf(Date),
   ]).isRequired,
   view: PropTypes.string.isRequired,
   SetCalendar: PropTypes.func.isRequired,
-  GetUserEntriesByDate: PropTypes.func.isRequired
+  GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps, true)
-
 export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(EntryCalendar))
+  reduxConnect(mapStateToProps, mapDispatchToProps)(EntryCalendar)
 )
