@@ -20,12 +20,12 @@ const Entry = ({
   history,
   readOnly,
 }) => {
-  const activeDate = Date(
+  const activeDate = new Date(
     entry.date_created_by_author || entry._lastUpdated || 0
   )
   const dispatch = useDispatch()
 
-  entry.date_created_by_author = Date(entry.date_created_by_author)
+  entry.date_created_by_author = new Date(entry.date_created_by_author)
 
   const handleDebounce = () => dispatch(SyncEntries())
 
