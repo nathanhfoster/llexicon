@@ -98,7 +98,7 @@ const MediaButtonModal = ({
                 type="text"
                 name="url"
                 id="url"
-                placeholder="Embeded"
+                placeholder="https://astraltree.s3.us-east-2.amazonaws.com/media/Logo.png"
                 value={url}
                 onChange={handleInputChange}
               />
