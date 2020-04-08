@@ -4,14 +4,12 @@ const BasicFormProps = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   inputs: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+      name: PropTypes.string.isRequired,
       defaultValue: PropTypes.string,
       value: PropTypes.string,
       check: PropTypes.bool,
       label: PropTypes.string,
       type: PropTypes.oneOf(["email", "text", "password", "checkbox", "radio"]),
-      name: PropTypes.string,
       placeholder: PropTypes.string,
       required: PropTypes.bool,
       disabled: PropTypes.bool,
