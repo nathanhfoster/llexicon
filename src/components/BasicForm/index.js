@@ -71,7 +71,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
       method="post"
       onChange={handleChange}
     >
-      {title && <h2 className="Center">{title}</h2>}
+      {typeof title === "object" ? title : <h2 className="Center">{title}</h2>}
       {renderInputs}
       {onSubmit && (
         <div className="Center">

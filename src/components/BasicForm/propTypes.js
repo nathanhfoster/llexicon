@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 
 const BasicFormProps = {
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   inputs: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
