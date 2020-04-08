@@ -303,8 +303,8 @@ class Editor extends PureComponent {
       ? "100%"
       : bottomToolbarIsOpen
       ? "calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
-      : "calc(100% - var(--bottomToolBarToggleContainerHeight))"
-
+      : "calc(100% - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
+   
     return {
       toolbarId,
       entry,
