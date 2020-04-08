@@ -29,9 +29,10 @@ const BottomToolbar = ({
   xs,
 }) => {
   // editorRef.current.focus()
-  const editorSelection = editorRef.current
-    ? editorRef.current.getEditorSelection()
-    : null
+  const editorSelection =
+    editorRef && editorRef.current
+      ? editorRef.current.getEditorSelection()
+      : null
   const buttons = useMemo(
     () => [
       [
