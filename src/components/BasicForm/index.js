@@ -2,6 +2,7 @@ import React, { useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Button, Form, FormGroup, Label, Input } from "reactstrap"
 import { getFormPayload } from "./utils"
+import { BasicFormProps } from "./propTypes"
 
 const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
   const formRef = useRef()
@@ -24,9 +25,9 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
 
   const renderInputs = useMemo(
     () =>
-      inputs.map((input) => {
+      inputs.map((input, i) => {
         const {
-          id,
+          name,
           defaultValue,
           value,
           check,
@@ -42,6 +43,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
           className,
         } = input
         const isCheckOrRadio = check || type === "radio"
+        const id = `${name}-${i}`
         return (
           <FormGroup check={isCheckOrRadio} key={id} row>
             <Label check={check} for={id}>
@@ -52,6 +54,7 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
               value={value}
               type={type}
               id={id}
+              name={name}
               placeholder={placeholder}
               disabled={disabled}
             />
@@ -81,38 +84,14 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
   )
 }
 
-BasicForm.propTypes = {
-  title: PropTypes.string,
-  inputs: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      defaultValue: PropTypes.string,
-      value: PropTypes.string,
-      check: PropTypes.bool,
-      label: PropTypes.string,
-      type: PropTypes.oneOf(["email", "text", "password", "checkbox", "radio"]),
-      name: PropTypes.string,
-      placeholder: PropTypes.string,
-      required: PropTypes.bool,
-      disabled: PropTypes.bool,
-      autoFocus: PropTypes.bool,
-      error: PropTypes.bool,
-      multiline: PropTypes.bool,
-      rows: PropTypes.string,
-      className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    }).isRequired
-  ),
-  onSubmit: PropTypes.func,
-  onChange: PropTypes.func,
-  submitLabel: PropTypes.string,
-}
+BasicForm.propTypes = BasicFormProps
 
 BasicForm.defaultProps = {
   inputs: [
     {
       label: "Username",
       type: "text",
-      id: "username",
+      name: "username",
       placeholder: "Username...",
       required: true,
       disabled: false,
@@ -120,7 +99,7 @@ BasicForm.defaultProps = {
     {
       label: "Email",
       type: "email",
-      id: "email",
+      name: "email",
       placeholder: "Email...",
       required: true,
       disabled: false,
@@ -128,7 +107,7 @@ BasicForm.defaultProps = {
     {
       label: "Password",
       type: "password",
-      id: "password",
+      name: "password",
       placeholder: "Password...",
       required: true,
       disabled: false,

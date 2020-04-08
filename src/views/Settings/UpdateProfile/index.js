@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
+import { UserProps } from "../../../redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { BasicForm, ConfirmAction } from "../../../components"
 import { Container, Row, Col } from "reactstrap"
@@ -20,12 +21,12 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
     UpdateUser(cleanObject(payload, true))
   }, [])
   const handleDeleteAccount = useCallback(() => DeleteAccount(), [])
-  const updateProfileInputs = useMemo(
+  const inputs = useMemo(
     () => [
       {
         label: "Username",
         type: "text",
-        id: "username",
+        name: "username",
         placeholder: "Username...",
         defaultValue: User.username,
         disabled: !User.id,
@@ -33,7 +34,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
       {
         label: "email",
         type: "email",
-        id: "email",
+        name: "email",
         placeholder: "Email...",
         defaultValue: User.email,
         disabled: !User.id,
@@ -41,7 +42,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
       {
         label: "First name",
         type: "text",
-        id: "first_name",
+        name: "first_name",
         placeholder: "First Name...",
         defaultValue: User.first_name,
         disabled: !User.id,
@@ -49,7 +50,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
       {
         label: "Last name",
         type: "text",
-        id: "last_name",
+        name: "last_name",
         placeholder: "Last name...",
         defaultValue: User.last_name,
         disabled: !User.id,
@@ -57,7 +58,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
       {
         label: "Password",
         type: "password",
-        id: "password",
+        name: "password",
         placeholder: "Password...",
         disabled: !User.id,
       },
@@ -65,7 +66,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
       //   label: "Opt in",
       //   type: "radio",
       //   name: "opt_in",
-      //   id: "opt_in",
+      //   name: "opt_in",
       //   placeholder: "Opt in?",
       //   disabled: !User.id,
       // },
@@ -80,7 +81,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
             title="Update Profile"
             onSubmit={handleChangeUser}
             submitLabel="Update"
-            inputs={updateProfileInputs}
+            inputs={inputs}
           />
         </Col>
       </Row>
@@ -98,7 +99,11 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
   )
 }
 
-UpdateProfile.propTypes = { UpdateUser: PropTypes.func.isRequired }
+UpdateProfile.propTypes = {
+  User: UserProps,
+  UpdateUser: PropTypes.func.isRequired,
+  DeleteAccount: PropTypes.func.isRequired,
+}
 
 UpdateProfile.defaultProps = {}
 

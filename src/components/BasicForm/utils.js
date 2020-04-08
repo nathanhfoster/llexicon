@@ -2,12 +2,12 @@ const getFormPayload = (elements) => {
   let payload = {}
 
   for (let i = 0, { length } = elements; i < length; i++) {
-    const { id, value, type, check } = elements[i]
+    const { id, name, value, type, check } = elements[i]
 
-    if (id) {
-      payload[id] = value
+    if (name) {
+      payload[name] = value
     } else if (type === "checkbox" || type === "radio") {
-      payload[id] = check
+      payload[name] = check
     }
   }
 

@@ -33,7 +33,7 @@ const Axios = (responseType = "json") => {
   const { token, offline_mode } = getUser()
   if (offline_mode) return axios.create({ baseURL: "https://offline_mode" })
   return axios.create({
-    withCredentials: token ? true : false,
+    withCredentials: true,
     baseURL: REACT_APP_API_URL,
     //timeout: 25000,
     crossDomain: true,

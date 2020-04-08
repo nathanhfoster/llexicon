@@ -1,49 +1,46 @@
-import React, { useMemo, memo } from "react"
-import PropTypes from "prop-types"
+import React, { memo } from "react"
+import { BasicFormProps } from "../../../components/BasicForm/propTypes"
 import { useDispatch } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
 import { UserLogin } from "../../../redux/User/actions"
 
-const Login = () => {
+const Login = ({ inputs }) => {
   const dispatch = useDispatch()
-  const handleLogin = payload => dispatch(UserLogin(payload))
-  const loginInputs = useMemo(
-    () => [
-      {
-        label: "Username",
-        type: "text",
-        name: "username",
-        id: "username",
-        placeholder: "Username...",
-        required: true
-      },
-      {
-        label: "Password",
-        type: "password",
-        name: "password",
-        id: "password",
-        placeholder: "Password...",
-        required: true
-      }
-    ],
-    []
-  )
+  const handleLogin = (payload) => dispatch(UserLogin(payload))
+
   return (
     <Jumbotron className="LoginFormContainer">
       <BasicForm
         title="Login"
         onSubmit={handleLogin}
         submitLabel="Login"
-        inputs={loginInputs}
+        inputs={inputs}
       />
       <FacebookGoogleLogin />
     </Jumbotron>
   )
 }
 
-Login.propTypes = {}
+Login.propTypes = { inputs: BasicFormProps }
 
-Login.defaultProps = {}
+Login.defaultProps = {
+  inputs: [
+    {
+      label: "Username",
+      type: "text",
+      name: "username",
+      placeholder: "Username...",
+      required: true,
+    },
+    {
+      label: "Password",
+      type: "password",
+      name: "password",
+      placeholder: "Password...",
+      required: true,
+    },
+  ],
+}
 
 export default memo(Login)
