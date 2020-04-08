@@ -30,7 +30,9 @@ const EntriesRandom = ({ items, filteredItems }) => {
       const randomIndex = getRandomInt(0, uniqueEntryIndices.length - 1)
       uniqueEntryIndices.splice(randomIndex, 1)
       const entry = uniqueEntryIndices[randomIndex]
-      randomEntries.push(entry)
+      if (entry && entry.id) {
+        randomEntries.push(entry)
+      }
     }
   }
 
