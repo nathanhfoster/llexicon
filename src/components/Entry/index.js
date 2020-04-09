@@ -71,6 +71,7 @@ const Entry = ({
           placeholder="Entry title..."
           value={entry.title}
           onChange={handleTitleChange}
+          disabled={readOnly}
         />
         <InputGroupAddon addonType="append">
           <InputGroupText className="p-0">
