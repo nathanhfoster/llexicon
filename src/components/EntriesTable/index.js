@@ -133,7 +133,7 @@ const EntriesTable = ({ entries }) => {
             }
             return count
           }, 0)
-          const averageRating = (ratingSum / validItems).toFixed(3)
+          const averageRating = (ratingSum / validItems).toFixed(1)
 
           return <span>{averageRating > 0 ? averageRating : 0}</span>
         },
