@@ -8,17 +8,17 @@ import SettingInput from "./SettingInput"
 import {
   GetUserSettings,
   PostSettings,
-  SetSettings
+  SetSettings,
 } from "../../../redux/User/actions"
 
 const mapStateToProps = ({ User }) => ({
-  User
+  User,
 })
 
 const mapDispatchToProps = {
   GetUserSettings,
   PostSettings,
-  SetSettings
+  SetSettings,
 }
 
 const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
@@ -27,10 +27,10 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
   }, [])
 
   const {
-    Settings: { show_footer, offline_mode, push_messages }
+    Settings: { show_animated_background, offline_mode, push_messages },
   } = User
 
-  const handleOnClick = settingKey => {
+  const handleOnClick = (settingKey) => {
     const { id, token, Settings } = User
 
     const value = Settings[settingKey]
@@ -38,10 +38,10 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
     !Settings.id
       ? PostSettings({
           user: id,
-          [settingKey]: !value
+          [settingKey]: !value,
         })
       : SetSettings({
-          [settingKey]: !value
+          [settingKey]: !value,
         })
   }
 
@@ -54,14 +54,14 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
       ),
       inputs: [
         {
-          settingKey: "show_footer",
+          settingKey: "show_animated_background",
           disabled: !User.id,
-          checked: show_footer,
+          checked: show_animated_background,
           onClickCallback: handleOnClick,
-          title: "Show footer",
-          tooltipTitle: "Toggles the view of the footer"
-        }
-      ]
+          title: "Show animated background",
+          tooltipTitle: "Toggles showing the the animated background",
+        },
+      ],
     },
     {
       title: (
@@ -76,7 +76,7 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
           checked: offline_mode,
           onClickCallback: handleOnClick,
           title: "Offline mode",
-          tooltipTitle: "Disconnect from the stars"
+          tooltipTitle: "Disconnect from the stars",
         },
         {
           settingKey: "push_messages",
@@ -84,14 +84,14 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
           checked: push_messages,
           onClickCallback: handleOnClick,
           title: "Push Messages",
-          tooltipTitle: "Toggles frequent fetches of messages"
-        }
-      ]
-    }
+          tooltipTitle: "Toggles frequent fetches of messages",
+        },
+      ],
+    },
   ]
 
-  const renderInputs = inputs =>
-    inputs.map(input => <SettingInput key={input.settingKey} {...input} />)
+  const renderInputs = (inputs) =>
+    inputs.map((input) => <SettingInput key={input.settingKey} {...input} />)
 
   const renderSections = useMemo(
     () =>
@@ -114,7 +114,7 @@ Sections.propTypes = {
   User: UserProps.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   PostSettings: PropTypes.func.isRequired,
-  SetSettings: PropTypes.func.isRequired
+  SetSettings: PropTypes.func.isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(Sections)

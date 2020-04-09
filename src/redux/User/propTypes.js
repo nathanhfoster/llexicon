@@ -9,7 +9,7 @@ const SocialAuthenticationProps = PropTypes.shape({
   expires_at: PropTypes.string,
   name: PropTypes.string,
   email: PropTypes.string,
-  picture: PropTypes.string
+  picture: PropTypes.string,
 })
 const SocialAuthenticationsProps = PropTypes.arrayOf(SocialAuthenticationProps)
 
@@ -20,11 +20,11 @@ const userPermissionProps = PropTypes.number
 const userPermissionsProps = PropTypes.arrayOf(userPermissionProps)
 
 const settingsProps = PropTypes.shape({
-  show_footer: PropTypes.bool,
+  show_animated_background: PropTypes.bool,
   push_messages: PropTypes.bool,
   offline_mode: PropTypes.bool,
   id: PropTypes.number,
-  user: PropTypes.number
+  user: PropTypes.number,
 })
 
 const UserProps = PropTypes.shape({
@@ -47,7 +47,7 @@ const UserProps = PropTypes.shape({
   Settings: settingsProps,
   facebook_id: PropTypes.string,
   google_id: PropTypes.string,
-  uploaded_picture: PropTypes.string
+  uploaded_picture: PropTypes.string,
 })
 
 export {
@@ -58,5 +58,5 @@ export {
   userPermissionProps,
   userPermissionsProps,
   settingsProps,
-  UserProps
+  UserProps,
 }

@@ -7,7 +7,7 @@ const NUMBER_OF_MOST_VIEWED_ENTRIES = 4
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
-  filteredItems
+  filteredItems,
 })
 
 const EntriesMostViewed = ({ items, filteredItems }) => {
@@ -22,7 +22,7 @@ const EntriesMostViewed = ({ items, filteredItems }) => {
 
   return (
     <Fragment>
-      <Header fill="var(--accentColor)">Most Viewed Entries</Header>
+      <Header fill="var(--quinaryColor)">Most Viewed Entries</Header>
       <EntryCards entries={entriesMostViewed} />
     </Fragment>
   )
@@ -30,7 +30,7 @@ const EntriesMostViewed = ({ items, filteredItems }) => {
 
 EntriesMostViewed.propTypes = {
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes
+  filteredItems: EntriesPropTypes,
 }
 
 const isEqual = (prevProps, nextProps) => {

@@ -45,61 +45,59 @@ const Entry = ({
     dispatch(handleEditorChange({ id: entry.id, title: value }))
 
   return (
-    <Fragment>
-      <Editor
-        readOnly={readOnly}
-        toolbarId={entry.id}
-        canToggleToolbars={canToggleToolbars}
-        topToolbarIsOpen={topToolbarIsOpen}
-        bottomToolbarIsOpen={bottomToolbarIsOpen}
-        entry={entry}
-        theme={theme}
-        onChangeCallback={handleEditorChange}
+    <Editor
+      readOnly={readOnly}
+      toolbarId={entry.id}
+      canToggleToolbars={canToggleToolbars}
+      topToolbarIsOpen={topToolbarIsOpen}
+      bottomToolbarIsOpen={bottomToolbarIsOpen}
+      entry={entry}
+      theme={theme}
+      onChangeCallback={handleEditorChange}
+    >
+      <UseDebounce
+        onChangeCallback={handleDebounce}
+        value={entry}
+        delay={3200}
+      />
+      <InputGroup
+        key={`EntryTitle-${entry.id}`}
+        className="EntryInput EntryInputTitle"
       >
-        <UseDebounce
-          onChangeCallback={handleDebounce}
-          value={entry}
-          delay={3200}
+        <Input
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Entry title..."
+          value={entry.title}
+          onChange={handleTitleChange}
         />
-        <InputGroup
-          key={`EntryTitle-${entry.id}`}
-          className="EntryInput EntryInputTitle"
-        >
-          <Input
-            type="text"
-            name="title"
-            id="title"
-            placeholder="Entry title..."
-            value={entry.title}
-            onChange={handleTitleChange}
-          />
-          <InputGroupAddon addonType="append">
-            <InputGroupText className="p-0">
-              <ReactDatePicker
-                readOnly={readOnly}
-                selected={activeDate}
-                onChange={handleDateChange}
+        <InputGroupAddon addonType="append">
+          <InputGroupText className="p-0">
+            <ReactDatePicker
+              readOnly={readOnly}
+              selected={activeDate}
+              onChange={handleDateChange}
+            />
+          </InputGroupText>
+        </InputGroupAddon>
+        {!readOnly && (
+          <Fragment>
+            <InputGroupAddon addonType="append">
+              <InputGroupText
+                className="p-0"
+                tag={EntryOptionsMenu}
+                onChangeCallback={handleEditorChange}
+                entryId={entry.id}
+                is_public={entry.is_public}
+                history={history}
+                shouldRedirectOnDelete={shouldRedirectOnDelete}
               />
-            </InputGroupText>
-          </InputGroupAddon>
-          {!readOnly && (
-            <Fragment>
-              <InputGroupAddon addonType="append">
-                <InputGroupText
-                  className="p-0"
-                  tag={EntryOptionsMenu}
-                  onChangeCallback={handleEditorChange}
-                  entryId={entry.id}
-                  is_public={entry.is_public}
-                  history={history}
-                  shouldRedirectOnDelete={shouldRedirectOnDelete}
-                />
-              </InputGroupAddon>
-            </Fragment>
-          )}
-        </InputGroup>
-      </Editor>
-    </Fragment>
+            </InputGroupAddon>
+          </Fragment>
+        )}
+      </InputGroup>
+    </Editor>
   )
 }
 

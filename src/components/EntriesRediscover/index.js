@@ -7,7 +7,7 @@ import MomentJs from "moment"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
-  filteredItems
+  filteredItems,
 })
 
 const EntriesRediscover = ({ items, filteredItems }) => {
@@ -32,7 +32,7 @@ const EntriesRediscover = ({ items, filteredItems }) => {
 
   return (
     <Fragment>
-      <Header fill="var(--accentColor)">Rediscover this day</Header>
+      <Header fill="var(--quinaryColor)">Rediscover this day</Header>
       <Header fontSize="1.5rem">
         <Moment format="MMMM D">{today}</Moment>
       </Header>
@@ -43,7 +43,7 @@ const EntriesRediscover = ({ items, filteredItems }) => {
 
 EntriesRediscover.propTypes = {
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes
+  filteredItems: EntriesPropTypes,
 }
 
 const isEqual = (prevProps, nextProps) => {

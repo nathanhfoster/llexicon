@@ -10,7 +10,7 @@ import memoizeProps from "../../helpers/memoizeProps"
 import {
   SyncEntries,
   GetAllUserEntries,
-  GetUserEntries
+  GetUserEntries,
 } from "../../redux/Entries/actions"
 import { SetEditorState } from "../../redux/TextEditor/actions"
 import "./styles.css"
@@ -24,21 +24,21 @@ const mapStateToProps = ({
   User: { id },
   Entries: { items, next, search },
   TextEditor,
-  Window: { innerHeight, navBarHeight }
+  Window: { innerHeight, navBarHeight },
 }) => ({
   userId: id,
   entries: items,
   TextEditor,
   nextEntryPage: next,
   entriesSearch: search,
-  viewPortHeight: innerHeight - navBarHeight
+  viewPortHeight: innerHeight - navBarHeight,
 })
 
 const mapDispatchToProps = {
   SyncEntries,
   GetAllUserEntries,
   GetUserEntries,
-  SetEditorState
+  SetEditorState,
 }
 
 const Entries = ({
@@ -54,7 +54,7 @@ const Entries = ({
   SetEditorState,
   history,
   location,
-  match
+  match,
 }) => {
   const { pathname } = location
   useEffect(() => {
@@ -63,7 +63,7 @@ const Entries = ({
   const viewableEntries = useMemo(
     () =>
       entries
-        .filter(item => !item._shouldDelete)
+        .filter((item) => !item._shouldDelete)
         .sort(
           (a, b) =>
             new Date(b.date_created_by_author) -
@@ -88,35 +88,38 @@ const Entries = ({
 
   const activeTab = pathname
 
-  const handleTabChange = tabId => RouterPush(history, tabId)
+  const handleTabChange = (tabId) => RouterPush(history, tabId)
 
   const tabs = [
     {
       tabId: RouteMap.NEW_ENTRY,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-feather-alt"></i>,
+      className: "fade-in",
       render: (
         <Row>
           <NewEntry />
         </Row>
       ),
-      onClickCallback: handleTabChange
+      onClickCallback: handleTabChange,
     },
     {
       tabId: RouteMap.ENTRIES_CALENDAR,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-calendar-alt"></i>,
+      className: "fade-in",
       render: (
         <Row>
           <EntryCalendar />
         </Row>
       ),
-      onClickCallback: handleTabChange
+      onClickCallback: handleTabChange,
     },
     {
       tabId: RouteMap.ENTRIES_FOLDERS,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-folder" />,
+      className: "fade-in",
       render: (
         <Row>
           {shouldRenderNewEntryButton ? (
@@ -131,12 +134,13 @@ const Entries = ({
           )}
         </Row>
       ),
-      onClickCallback: handleTabChange
+      onClickCallback: handleTabChange,
     },
     {
       tabId: RouteMap.ENTRIES_LIST,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-th-list" />,
+      className: "fade-in",
       render: shouldRenderNewEntryButton ? (
         <Row>
           <NewEntryButton />
@@ -149,12 +153,13 @@ const Entries = ({
           />
         </Row>
       ),
-      onClickCallback: handleTabChange
+      onClickCallback: handleTabChange,
     },
     {
       tabId: RouteMap.ENTRIES_TABLE,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-table" />,
+      className: "fade-in",
       render: shouldRenderNewEntryButton ? (
         <Row>
           <NewEntryButton />
@@ -164,12 +169,13 @@ const Entries = ({
           <EntriesTable entries={viewableEntries} />
         </Row>
       ),
-      onClickCallback: handleTabChange
+      onClickCallback: handleTabChange,
     },
     {
       tabId: RouteMap.ENTRIES_MAP,
       mountTabOnlyWhenActive: true,
       title: <i className="fas fa-map-marked-alt" />,
+      className: "fade-in",
       render: (
         <Row>
           <BasicMap
@@ -185,7 +191,7 @@ const Entries = ({
                   title: "",
                   address,
                   latitude,
-                  longitude
+                  longitude,
                 })
               } else if (entryId === "MyLocation") {
                 SetEditorState({
@@ -193,7 +199,7 @@ const Entries = ({
                   title: "",
                   address,
                   latitude,
-                  longitude
+                  longitude,
                 })
                 return RouterPush(history, RouteMap.NEW_ENTRY)
               } else {
@@ -206,8 +212,8 @@ const Entries = ({
           />
         </Row>
       ),
-      onClickCallback: handleTabChange
-    }
+      onClickCallback: handleTabChange,
+    },
   ]
 
   return (
@@ -237,7 +243,7 @@ Entries.propTypes = {
   SyncEntries: PropTypes.func.isRequired,
   GetAllUserEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
-  SetEditorState: PropTypes.func.isRequired
+  SetEditorState: PropTypes.func.isRequired,
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -249,7 +255,7 @@ const isEqual = (prevProps, nextProps) =>
     "viewPortHeight",
     "history",
     "location",
-    "match"
+    "match",
   ])
 
 export default reduxConnect(

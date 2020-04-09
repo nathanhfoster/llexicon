@@ -2,17 +2,13 @@ import React, { lazy, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
-import {
-  AddToHomeScreen,
-  BasicCard,
-  EntriesTable,
-  Header,
-} from "../../components"
+import { AddToHomeScreen, BasicCard, Header } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { RouterPush, RouteMap } from "../../routes"
 import "./styles.css"
 
 const EntryNavButtons = lazy(() => import("../../components/EntryNavButtons"))
+const EntriesTable = lazy(() => import("../../components/EntriesTable"))
 const EntriesMostViewed = lazy(() =>
   import("../../components/EntriesMostViewed")
 )
@@ -56,7 +52,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
       </Row>
       <Row className="mb-3">
         <Col xs={12} className="p-0">
-          <Header fill="var(--accentColor)">Entries Table</Header>
+          <Header fill="var(--quinaryColor)">Entries Table</Header>
         </Col>
         <EntriesTable entries={viewableEntries} />
       </Row>

@@ -34,20 +34,30 @@ const backgroundImageRouteMap = (route) => {
   }
 }
 
-const mapStateToProps = ({ Window: { innerHeight, innerWidth } }) => ({
+const mapStateToProps = ({
+  User: {
+    Settings: { show_animated_background },
+  },
+  Window: { innerHeight, innerWidth },
+}) => ({
+  show_animated_background,
   starLength: Math.ceil((innerHeight + innerWidth) / 5),
 })
 
-const BackgroundImage = ({ location: { pathname }, starLength }) => {
+const BackgroundImage = ({
+  show_animated_background,
+  starLength,
+  location: { pathname },
+}) => {
   const background = backgroundImageRouteMap(pathname)
 
   return (
     <Fragment>
       <div className="BackgroundImage">
         {/* <Media src={bgImage} /> */}
-        <StarGenerator length={starLength} />
+        {show_animated_background && <StarGenerator length={starLength} />}
       </div>
-      {background}
+      {show_animated_background && background}
     </Fragment>
   )
 }

@@ -8,7 +8,7 @@ import {
   NavItem,
   NavLink,
   TabContent,
-  TabPane
+  TabPane,
 } from "reactstrap"
 import "./styles.css"
 
@@ -37,11 +37,11 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     }
   }, [restOfProps.activeTab])
 
-  const handleTabChanged = activeTab => setState(activeTab)
+  const handleTabChanged = (activeTab) => setState(activeTab)
 
   const renderNavItems = useMemo(
     () =>
-      tabs.map(tab => {
+      tabs.map((tab) => {
         const { tabId, title, onClickCallback } = tab
         const onTab = activeTab === tabId
         return (
@@ -66,13 +66,17 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
 
   const renderTabs = useMemo(
     () =>
-      tabs.map(tab => {
+      tabs.map((tab) => {
         const { tabId, render, mountTabOnlyWhenActive, className } = tab
         const shouldNotRender =
           mountTabOnlyWhenActive === true && activeTab !== tabId
         return (
-          <TabContent key={tabId} activeTab={activeTab} className={className}>
-            <TabPane tabId={tabId}>{shouldNotRender ? null : render}</TabPane>
+          <TabContent key={tabId} activeTab={activeTab}>
+            {shouldNotRender ? null : (
+              <TabPane tabId={tabId} className={className}>
+                {render}
+              </TabPane>
+            )}
           </TabContent>
         )
       }),
@@ -101,12 +105,12 @@ BasicTabs.propTypes = {
       mountTabOnlyWhenActive: PropTypes.bool,
       title: PropTypes.oneOfType([
         PropTypes.string.isRequired,
-        PropTypes.object
+        PropTypes.object,
       ]),
       render: PropTypes.object.isRequired,
-      onClickCallback: PropTypes.func
+      onClickCallback: PropTypes.func,
     }).isRequired
-  )
+  ),
 }
 
 BasicTabs.defaultProps = {
@@ -115,8 +119,8 @@ BasicTabs.defaultProps = {
   tabs: [
     { tabId: 1, title: "1", render: <div>Tab 1</div> },
     { tabId: 2, title: "2", render: <div>Tab 2</div> },
-    { tabId: 3, title: "3", render: <div>Tab 3</div> }
-  ]
+    { tabId: 3, title: "3", render: <div>Tab 3</div> },
+  ],
 }
 
 export default memo(BasicTabs)

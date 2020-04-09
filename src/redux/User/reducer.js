@@ -19,9 +19,9 @@ const DEFAULT_STATE_USER = {
   groups: [],
   user_permissions: [],
   Settings: {
-    show_footer: false,
+    show_animated_background: false,
     push_messages: false,
-    offline_mode: false
+    offline_mode: false,
   },
   location: {
     accuracy: null,
@@ -31,8 +31,8 @@ const DEFAULT_STATE_USER = {
     latitude: null,
     longitude: null,
     speed: null,
-    timestamp: null
-  }
+    timestamp: null,
+  },
 }
 
 const User = (state = DEFAULT_STATE_USER, action) => {
@@ -44,7 +44,7 @@ const User = (state = DEFAULT_STATE_USER, action) => {
         ...payload,
         updating: false,
         updated: true,
-        error: null
+        error: null,
       }
     case UserActionTypes.USER_SET_LOCATION:
       return { ...state, location: { ...state.location, ...payload } }
@@ -53,7 +53,7 @@ const User = (state = DEFAULT_STATE_USER, action) => {
     case UserActionTypes.USER_SET_SETTINGS:
       return {
         ...state,
-        Settings: { ...state.Settings, ...payload }
+        Settings: { ...state.Settings, ...payload },
       }
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_USER
