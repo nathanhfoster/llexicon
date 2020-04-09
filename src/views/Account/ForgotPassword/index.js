@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import { BasicFormProps } from "../../../components/BasicForm/propTypes"
+import { BasicFormInputsProps } from "../../../components/BasicForm/propTypes"
 import { useDispatch } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
@@ -22,7 +22,7 @@ const ForgotPassword = ({ inputs }) => {
   )
 }
 
-ForgotPassword.propTypes = { inputs: BasicFormProps }
+ForgotPassword.propTypes = { inputs: BasicFormInputsProps }
 
 ForgotPassword.defaultProps = {
   inputs: [

@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect, memo } from "react"
+import React, { useState, useRef, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
-import RatingStar from "../../../../RatingStar"
-import RatingIcon from "../../../../RatingIcon"
+import { RatingStar, RatingIcon } from "../../../../"
 import "./styles.css"
 
 const getInitialState = ({ rating }) => ({ rating, savedRating: false })
@@ -26,7 +25,11 @@ const RatingButtonModal = (props) => {
   const handleClick = () => {}
 
   const handleCancel = () =>
-    setState((prevState) => ({ ...prevState, rating: props.rating }))
+    setState((prevState) => ({
+      ...prevState,
+      rating: props.rating,
+      savedRating: false,
+    }))
 
   const handleSave = () => onChangeCallback({ rating })
 
@@ -40,12 +43,12 @@ const RatingButtonModal = (props) => {
   }
 
   const handleMouseLeave = (leftRating) => {
-    if (leftRating !== state) {
+    if (leftRating !== rating) {
       setState((prevState) => ({ ...prevState, savedRating: false }))
     }
   }
 
-  const renderRating = () => {
+  const renderRating = useMemo(() => {
     let stars = []
 
     for (let i = 1; i <= 5; i++) {
@@ -62,7 +65,7 @@ const RatingButtonModal = (props) => {
     }
 
     return stars
-  }
+  }, [rating])
 
   return (
     <ToolbarModal
@@ -76,7 +79,7 @@ const RatingButtonModal = (props) => {
       xs={xs}
     >
       <Container fluid className="RatingButtonModal p-0">
-        {renderRating()}
+        {renderRating}
       </Container>
     </ToolbarModal>
   )

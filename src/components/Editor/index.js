@@ -304,7 +304,7 @@ class Editor extends PureComponent {
       : bottomToolbarIsOpen
       ? "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
       : "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
-   
+
     return {
       toolbarId,
       entry,
