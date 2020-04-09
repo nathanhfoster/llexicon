@@ -40,7 +40,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
   const viewableEntries = entryFilteredTags.slice(beginOffset, endOffset)
 
-  const sortedTags = TopKFrequentStrings(filteredEntryTags, "title")
+  const sortedTags = TopKFrequentStrings(filteredEntryTags, "name")
 
   const handleScroll = ({
     target: { scrollHeight, scrollTop, clientHeight },
