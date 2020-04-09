@@ -29,9 +29,8 @@ const EntriesRandom = ({ items, filteredItems }) => {
     for (let i = 0; i < NUMBER_OF_RANDOM_ENTRIES; i++) {
       const randomIndex = getRandomInt(0, uniqueEntryIndices.length - 1)
       const [entry] = uniqueEntryIndices.splice(randomIndex, 1)
-      if (entry && entry.id) {
-        randomEntries.push(entry)
-      }
+      
+      randomEntries.push(entry)
     }
   }
 
