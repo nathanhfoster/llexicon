@@ -1,27 +1,29 @@
 @import "./editor.css";
 .Editor {
-    box-shadow: var(--primaryBoxShadow);
-    border-radius: 2px;
-    opacity: var(--mainOpacity);
-    letter-spacing: 0.4px;
-    color: var(--secondaryColor);
-    background: var(--quinaryColor);
-    transition: opacity 0.4s;
-    -webkit-transition: opacity 0.4s;
-    opacity: var(--mainOpacity);
-    min-height: 120px;
-    /* height: calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight)); */
-    /* height: calc(100% - var(--topToolbarHeight)); */
+  box-shadow: var(--primaryBoxShadow);
+  border-radius: 2px;
+  opacity: var(--mainOpacity);
+  letter-spacing: 0.4px;
+  color: var(--secondaryColor);
+  background: var(--quinaryColor);
+  transition: opacity 0.4s;
+  -webkit-transition: opacity 0.4s;
+  opacity: var(--mainOpacity);
+  min-height: 120px;
+  /* max-height: calc(100vh - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight)); */
+  /* height: calc(100% - var(--topToolbarHeight) - var(--bottomToolbarHeight)); */
+  /* height: calc(100% - var(--topToolbarHeight)); */
 }
 
 .Editor:focus-within {
-    opacity: 1;
+  opacity: 1;
 }
 
 .ql-container.ql-snow {
-    border: 0;
+  border: 0;
 }
 
-.Editor *, ql-container.ql-snow * {
-    background: var(--quinaryColor) !important;
+.Editor *,
+ql-container.ql-snow * {
+  background: var(--quinaryColor) !important;
 }

@@ -1,4 +1,5 @@
 import { stringMatch } from "../../helpers"
+
 const listFilter = (listItem, searchValue) => {
   const { id, value } = listItem
 

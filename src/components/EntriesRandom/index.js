@@ -6,8 +6,6 @@ import { ButtonGroup, Button } from "reactstrap"
 import { getRandomInt } from "../../helpers"
 import "./styles.css"
 
-const NUMBER_OF_RANDOM_ENTRIES = 4
-
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
   filteredItems,
@@ -23,15 +21,16 @@ const EntriesRandom = ({ items, filteredItems }) => {
 
   let randomEntries = []
 
-  if (viewableEntries.length > 0) {
-    let uniqueEntryIndices = [...viewableEntries]
+  const numberOfRandomEntries =
+    viewableEntries.length < 4 ? viewableEntries.length : 4
 
-    for (let i = 0; i < NUMBER_OF_RANDOM_ENTRIES; i++) {
-      const randomIndex = getRandomInt(0, uniqueEntryIndices.length - 1)
-      const [entry] = uniqueEntryIndices.splice(randomIndex, 1)
-      
-      randomEntries.push(entry)
-    }
+  let uniqueEntryIndices = [...viewableEntries]
+
+  for (let i = 0; i < numberOfRandomEntries; i++) {
+    const randomIndex = getRandomInt(0, uniqueEntryIndices.length - 1)
+    const [entry] = uniqueEntryIndices.splice(randomIndex, 1)
+
+    randomEntries.push(entry)
   }
 
   return (
