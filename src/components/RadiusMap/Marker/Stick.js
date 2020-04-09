@@ -10,7 +10,7 @@ import {
   locationCircleStyleHover,
   locationStickStyle,
   locationStickStyleHover,
-  locationStickStyleShadow
+  locationStickStyleShadow,
 } from "./styles"
 
 import { DEFAULT_POLYGON_MIN_ZOOM } from "../constants"
@@ -21,7 +21,7 @@ const infoClick = ({
   lat,
   lng,
   getAddressOnMarkerClick,
-  history
+  history,
 }) => {
   if ($dimensionKey === "NewEntry") {
     RouterPush(history, RouteMap.NEW_ENTRY)
@@ -29,27 +29,27 @@ const infoClick = ({
     return onChangeCallback({
       entryId: $dimensionKey,
       latitude: lat,
-      longitude: lng
+      longitude: lng,
     })
   } else {
     GetAddress(lat, lng)
-      .then(address =>
+      .then((address) =>
         onChangeCallback({
           entryId: $dimensionKey,
           latitude: lat,
           longitude: lng,
-          address
+          address,
         })
       )
-      .catch(e => onChangeCallback({ latitude: lat, longitude: lng }))
+      .catch((e) => onChangeCallback({ latitude: lat, longitude: lng }))
   }
 }
 
 const zoomStyle = {
-  fontSize: 14
+  fontSize: 14,
 }
 
-const ClientNameCharacter = props => {
+const ClientNameCharacter = (props) => {
   const { $dimensionKey, renderUserLocation } = props
   const className =
     $dimensionKey === "NewEntry"
@@ -58,16 +58,14 @@ const ClientNameCharacter = props => {
       ? "fas fa-user-circle"
       : "fas fa-circle"
   const style = {
-    fontSize: renderUserLocation ? "inherit" : K_CIRCLE_SIZE / 2
+    fontSize: renderUserLocation ? "inherit" : K_CIRCLE_SIZE / 2,
   }
   return (
     <i className={className} style={style} onClick={() => infoClick(props)} />
   )
-  // if (!clientName) clientName = 'P'
-  // return <span style={clientNameCharacterStyle}>{clientName.charAt(0).toUpperCase()}</span>
 }
 
-const Zoom = props => {
+const Zoom = (props) => {
   const { $dimensionKey, renderUserLocation } = props
   const className =
     $dimensionKey === "NewEntry"
@@ -82,7 +80,7 @@ const Zoom = props => {
   )
 }
 
-const Stick = props => {
+const Stick = (props) => {
   const history = useHistory()
   const { shouldShowPreview, inGroup, zoom } = props
   let text = ClientNameCharacter({ ...props, history })
@@ -110,7 +108,7 @@ Stick.propTypes = {
   inGroup: PropTypes.bool,
   center: PropTypes.arrayOf(PropTypes.number.isRequired),
   renderUserLocation: PropTypes.bool,
-  getAddressOnMarkerClick: PropTypes.bool.isRequired
+  getAddressOnMarkerClick: PropTypes.bool.isRequired,
 }
 
 export default memo(Stick)

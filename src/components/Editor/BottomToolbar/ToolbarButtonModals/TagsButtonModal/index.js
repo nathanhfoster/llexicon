@@ -17,6 +17,7 @@ import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,
   removeAttributeDuplicates,
+  stringMatch,
 } from "../../../../../helpers"
 import memoizeProps from "../../../../../helpers/memoizeProps"
 import { validateTagOrPeopleString, validatedTagString } from "../utlis"
@@ -83,16 +84,8 @@ const TagsButtonModal = ({
         .filter((entryPersonName) => {
           if (tags.some(({ name }) => name == entryPersonName)) return false
           else if (!lastTagAsString) return true
-          else if (
-            entryPersonName.toUpperCase() == lastTagAsString.toUpperCase()
-          )
-            return true
-          else if (
-            entryPersonName
-              .toUpperCase()
-              .includes(lastTagAsString.toUpperCase())
-          )
-            return true
+          else if (stringMatch(entryPersonName, lastTagAsString)) return true
+          else if (stringMatch(entryPersonName, lastTagAsString)) return true
           else return false
         })
 

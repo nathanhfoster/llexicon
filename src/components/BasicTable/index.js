@@ -7,12 +7,13 @@ import TableFooter from "./TableFooter"
 import TablePaginator from "./TablePaginator"
 import { tableSort, tableFilter } from "./functions"
 import { ColumnsPropType, DataPropType } from "./propTypes"
+import { stringMatch } from "../../helpers"
 import "./styles.css"
 
 const getInitialState = (columns, { defaultSortKey, pageSize, pageSizes }) => {
-  const { sort } = columns.find(c => (c.dataIndex || c.key) == defaultSortKey)
+  const { sort } = columns.find((c) => (c.dataIndex || c.key) == defaultSortKey)
 
-  const firstRowClickFound = columns.find(column => column.onRowClick)
+  const firstRowClickFound = columns.find((column) => column.onRowClick)
 
   return {
     sortKey: defaultSortKey,
@@ -24,7 +25,7 @@ const getInitialState = (columns, { defaultSortKey, pageSize, pageSizes }) => {
     pageSize,
     pageSizes: [{ id: 0, header: true, value: "Page Sizes" }].concat(
       pageSizes.map((value, i) => ({ id: i + 1, value }))
-    )
+    ),
   }
 }
 
@@ -49,29 +50,29 @@ const BasicTable = ({
     currentPage,
     pageSize,
     pageSizes,
-    filterMap
+    filterMap,
   } = state
 
   const handleSort = (sortKey, sort, sortUp) => {
-    setState(prevState => ({ ...prevState, sortKey, sort, sortUp }))
+    setState((prevState) => ({ ...prevState, sortKey, sort, sortUp }))
   }
 
   const handleFilter = (filterKey, searchValue, filter) => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       filterMap: {
         ...prevState.filterMap,
-        [filterKey]: { searchValue, filter }
-      }
+        [filterKey]: { searchValue, filter },
+      },
     }))
   }
 
-  const handlePageChange = currentPage => {
-    setState(prevState => ({ ...prevState, currentPage }))
+  const handlePageChange = (currentPage) => {
+    setState((prevState) => ({ ...prevState, currentPage }))
   }
 
   const handlePageSizeChange = (id, pageSize) => {
-    setState(prevState => ({ ...prevState, pageSize, currentPage: 0 }))
+    setState((prevState) => ({ ...prevState, pageSize, currentPage: 0 }))
   }
 
   let sortedAndFilteredData = null
@@ -81,7 +82,7 @@ const BasicTable = ({
   }
 
   const hasFilters = Object.keys(filterMap).find(
-    key => filterMap[key].searchValue
+    (key) => filterMap[key].searchValue
   )
 
   if (hasFilters) {
@@ -165,8 +166,8 @@ BasicTable.propTypes = {
   innerRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.string,
-    PropTypes.object
-  ])
+    PropTypes.object,
+  ]),
 }
 
 BasicTable.defaultProps = {
@@ -183,34 +184,34 @@ BasicTable.defaultProps = {
       title: "#",
       dataIndex: "id",
       key: "id",
-      width: 25
+      width: 25,
     },
     {
       title: "First Name",
       dataIndex: "first_name",
       key: "first_name",
       width: 100,
-      filter: "string"
+      filter: "string",
     },
     {
       title: "Last Name",
       dataIndex: "last_name",
       key: "last_name",
       width: 200,
-      filter: "string"
+      filter: "string",
     },
     {
       title: "Username",
       dataIndex: "user_name",
       key: "user_name",
-      render: item => <a href="#">{`Delete ${item.user_name}`}</a>,
+      render: (item) => <a href="#">{`Delete ${item.user_name}`}</a>,
       sort: (a, b, sortUp) =>
         sortUp
           ? b.user_name.localeCompare(a.user_name)
           : a.user_name.localeCompare(b.user_name),
-      filter: searchValue => item =>
-        item.user_name.toUpperCase().includes(searchValue.toUpperCase())
-    }
+      filter: (searchValue) => (item) =>
+        stringMatch(item.user_name, searchValue),
+    },
   ],
   data: new Array(25).fill().map(
     (e, i) =>
@@ -218,8 +219,8 @@ BasicTable.defaultProps = {
         id: i,
         first_name: `first_name${i}`,
         last_name: `last_name${i}`,
-        user_name: `user_name${i}`
+        user_name: `user_name${i}`,
       })
-  )
+  ),
 }
 export default memo(BasicTable)

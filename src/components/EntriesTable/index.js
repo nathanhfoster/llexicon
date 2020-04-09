@@ -1,11 +1,11 @@
 import React, { useMemo, memo } from "react"
-import PropTypes from "prop-types"
 import { stripHtml } from "../../helpers"
 import { RouteMap, RouterPush } from "../../routes"
 import { useHistory } from "react-router-dom"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable } from "../"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
+import { stringMatch } from "../../helpers"
 
 const EntriesTable = ({ entries }) => {
   const history = useHistory()
@@ -35,9 +35,7 @@ const EntriesTable = ({ entries }) => {
             ? b.tags.join().localeCompare(a.tags.join())
             : a.tags.join().localeCompare(b.tags.join()),
         filter: (searchValue) => (item) =>
-          item.tags.some((t) =>
-            t.name.toUpperCase().includes(searchValue.toUpperCase())
-          ),
+          item.tags.some((t) => stringMatch(t.name, searchValue)),
         filterPlaceholder: "Tags",
         render: (item) => <TagsContainer tags={item.tags} />,
       },
@@ -50,9 +48,7 @@ const EntriesTable = ({ entries }) => {
             ? b.people.join().localeCompare(a.people.join())
             : a.people.join().localeCompare(b.people.join()),
         filter: (searchValue) => (item) =>
-          item.people.some((t) =>
-            t.name.toUpperCase().includes(searchValue.toUpperCase())
-          ),
+          item.people.some((t) => stringMatch(t.name, searchValue)),
         filterPlaceholder: "People",
         render: (item) => (
           <TagsContainer

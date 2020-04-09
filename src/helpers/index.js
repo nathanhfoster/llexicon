@@ -495,6 +495,12 @@ const replaceAll = (str, mapObj) => {
   return str.replace(re, (matched) => mapObj[matched.toLowerCase()])
 }
 
+const stringMatch = (s1, s2, caseSensitive = false) => {
+  const flags = caseSensitive ? "g" : "gi"
+  const regexMatch = new RegExp(s2, flags)
+  return s1.match(regexMatch)
+}
+
 const isType = {
   UNDEFINED: "undefined",
   NULL: "object",
@@ -549,5 +555,6 @@ export {
   fuzzySearch,
   deepParseJson,
   replaceAll,
+  stringMatch,
   isType,
 }

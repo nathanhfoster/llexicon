@@ -17,6 +17,7 @@ import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,
   removeAttributeDuplicates,
+  stringMatch,
 } from "../../../../../helpers"
 import memoizeProps from "../../../../../helpers/memoizeProps"
 import { validateTagOrPeopleString, validatedPersonNameString } from "../utlis"
@@ -92,16 +93,8 @@ const PeopleButtonModal = ({
         .filter((entryPersonName) => {
           if (people.some(({ name }) => name == entryPersonName)) return false
           else if (!lastPeopleAsString) return true
-          else if (
-            entryPersonName.toUpperCase() == lastPeopleAsString.toUpperCase()
-          )
-            return true
-          else if (
-            entryPersonName
-              .toUpperCase()
-              .includes(lastPeopleAsString.toUpperCase())
-          )
-            return true
+          else if (stringMatch(entryPersonName, lastPeopleAsString)) return true
+          else if (stringMatch(entryPersonName, lastPeopleAsString)) return true
           else return false
         })
 

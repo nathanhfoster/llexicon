@@ -1,12 +1,11 @@
+import { stringMatch } from "../../helpers"
+
 const handleFilterEntries = (entries, search) => {
   if (!search) return { items: entries, filteredItems: [] }
-  const searchValue = search.toUpperCase()
   let cachedFilteredEntries = []
 
   const tagOrPeopleMatch = (tagsOrPeople) =>
-    tagsOrPeople.some(({ name }) => name.toUpperCase().includes(searchValue))
-
-  const stringMatch = (string) => string.toUpperCase().includes(searchValue)
+    tagsOrPeople.some(({ name }) => stringMatch(name, search))
 
   const filteredEntries = entries.filter((item) => {
     const { title, html, tags, people, address } = item
@@ -14,9 +13,9 @@ const handleFilterEntries = (entries, search) => {
     if (
       tagOrPeopleMatch(tags) ||
       tagOrPeopleMatch(people) ||
-      stringMatch(title) ||
-      stringMatch(html) ||
-      stringMatch(address)
+      stringMatch(title, search) ||
+      stringMatch(html, search) ||
+      stringMatch(address, search)
     ) {
       return true
     } else {
