@@ -28,15 +28,13 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
   const directoryTags = directoryPath.slice(1)
 
   const entryFilteredTags = entries.filter((entry) =>
-    directoryTags.every((tag) =>
-      entry.tags.some((entryTag) => entryTag.title === tag)
-    )
+    directoryTags.every((tag) => entry.tags.some(({ name }) => name === tag))
   )
 
   const filteredEntryTags = entryFilteredTags
     .map((entry) => entry.tags)
     .flat(1)
-    .filter((tag) => !directoryTags.includes(tag.title))
+    .filter(({ name }) => !directoryTags.includes(name))
 
   const viewableEntries = entryFilteredTags.slice(beginOffset, endOffset)
 
@@ -69,15 +67,15 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
     })
 
   const renderFolders = () =>
-    sortedTags.map((title, i) => {
+    sortedTags.map((name, i) => {
       const handleOnClickCallback = () => {
-        RouterPush(history, search.concat(`+${title}`))
+        RouterPush(history, search.concat(`+${name}`))
         setViewableEntriesRange(DEFAULT_VIEWABLE_ENTRIES_RANGE)
       }
 
       return (
-        <Col key={`${title}-${i}`} xs={4} sm={3} md={2} className="p-0">
-          <EntryFolder title={title} onClickCallback={handleOnClickCallback} />
+        <Col key={`${name}-${i}`} xs={4} sm={3} md={2} className="p-0">
+          <EntryFolder title={name} onClickCallback={handleOnClickCallback} />
         </Col>
       )
     })
