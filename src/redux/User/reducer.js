@@ -19,7 +19,7 @@ const DEFAULT_STATE_USER = {
   groups: [],
   user_permissions: [],
   Settings: {
-    show_animated_background: false,
+    show_animated_background: true,
     push_messages: false,
     offline_mode: false,
   },
