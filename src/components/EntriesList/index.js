@@ -11,7 +11,7 @@ const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
   const entry = data[index]
 
   return (
-    <Col key={entry.id} xs={12} className="px-0 py-1" style={style}>
+    <Col key={entry.id} xs={12} className="fade-in px-0 py-1" style={style}>
       <EntryMinimal {...entry} />
     </Col>
   )
@@ -19,12 +19,12 @@ const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
 
 const mapStateToProps = ({ Entries: { next, search } }) => ({
   nextEntryPage: next,
-  entriesSearch: search
+  entriesSearch: search,
 })
 
 const mapDispatchToProps = {
   SyncEntries,
-  GetUserEntries
+  GetUserEntries,
 }
 
 const EntriesList = ({
@@ -36,7 +36,7 @@ const EntriesList = ({
   itemSize,
   entries,
   SyncEntries,
-  GetUserEntries
+  GetUserEntries,
 }) => {
   const listLength = entries.length
   const GetEntries = useCallback(() => {
@@ -48,7 +48,7 @@ const EntriesList = ({
     const pageNumber = split[1]
 
     SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntries(pageNumber)))
+      () => new Promise((resolve) => resolve(GetUserEntries(pageNumber)))
     )
   }, [listLength])
   return (
@@ -71,13 +71,13 @@ EntriesList.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   SyncEntries: PropTypes.func.isRequired,
-  GetUserEntries: PropTypes.func.isRequired
+  GetUserEntries: PropTypes.func.isRequired,
 }
 
 EntriesList.defaultProps = {
   height: 500,
   width: "100%",
-  itemSize: 150
+  itemSize: 150,
 }
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)

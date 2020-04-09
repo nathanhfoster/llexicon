@@ -27,7 +27,8 @@ class RecenterZoomButton extends PureComponent {
   handleOnClick = ({
     panTo,
     UserLocation: { latitude, longitude },
-    WatchUserLocation
+    WatchUserLocation,
+    onChangeCallback
   }) => {
     if (!this.watchId) {
       this.watchId = WatchUserLocation()

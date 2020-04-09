@@ -64,7 +64,7 @@ const LocationButtonModal = ({
       ButtonIcon="fas fa-map-marker-alt"
       button="Add Location"
       xs={xs}
-      disabledSave={!UserLocation.latitude || !UserLocation.longitude}
+      disabledSave={!(entry.latitude || entry.longitude)}
     >
       <Container fluid className="LocationButtonModal p-0">
         <BasicMap

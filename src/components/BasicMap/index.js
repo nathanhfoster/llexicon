@@ -7,7 +7,7 @@ import Marker from "../RadiusMap/Marker"
 import { WatchUserLocation } from "../../redux/User/actions"
 import {
   DEFAULT_MAP_OPTIONS,
-  GOOGLE_MAP_CONTROL_POSITIONS
+  GOOGLE_MAP_CONTROL_POSITIONS,
 } from "../RadiusMap/constants"
 import MapControl from "../RadiusMap/MapControl"
 import fitCoordsToBounds from "../RadiusMap/functions/fitCoordsToBounds"
@@ -31,7 +31,7 @@ class BasicMap extends PureComponent {
     this.state = {
       center: defaultCenter,
       mapApiLoaded: false,
-      zoom
+      zoom,
     }
   }
 
@@ -44,7 +44,7 @@ class BasicMap extends PureComponent {
     onChangeCallback: PropTypes.func.isRequired,
     locations: PropTypes.arrayOf(PropTypes.object),
     getAddressOnMarkerClick: PropTypes.bool.isRequired,
-    entry: PropTypes.object
+    entry: PropTypes.object,
   }
 
   static defaultProps = {
@@ -53,18 +53,18 @@ class BasicMap extends PureComponent {
     width: "100%",
     defaultCenter: {
       lat: 39.8097343,
-      lng: -98.5556199
+      lng: -98.5556199,
     },
     center: {
       lat: 39.8097343,
-      lng: -98.5556199
+      lng: -98.5556199,
     },
     defaultZoom: 18,
     zoom: 18,
     options: DEFAULT_MAP_OPTIONS,
     locations: [],
     getAddressOnMarkerClick: false,
-    entry: {}
+    entry: {},
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -80,7 +80,7 @@ class BasicMap extends PureComponent {
       markerClusters = createClusters(formattedLocations, {
         center,
         bounds,
-        zoom
+        zoom,
       })
     }
 
@@ -106,7 +106,7 @@ class BasicMap extends PureComponent {
       shouldRenderEntryLocation,
       shouldRenderUserLocation,
       markerClusters,
-      formattedLocations
+      formattedLocations,
     }
   }
 
@@ -140,7 +140,7 @@ class BasicMap extends PureComponent {
     this.setState({
       mapApiLoaded: true,
       mapInstance: map,
-      mapApi: maps
+      mapApi: maps,
     })
     this.handleFitCoordsToBounds(map, maps)
   }
@@ -153,7 +153,7 @@ class BasicMap extends PureComponent {
     const {
       UserLocation,
       entry: { latitude, longitude },
-      formattedLocations
+      formattedLocations,
     } = this.state
     if (latitude && longitude) {
       coords.push({ lat: latitude, lng: longitude })
@@ -181,37 +181,39 @@ class BasicMap extends PureComponent {
   panTo = ({
     center = this.state.center,
     zoom = this.state.zoom,
-    bounds = this.state.bounds
+    bounds = this.state.bounds,
   }) => {
     this.setState({ center, zoom, bounds })
   }
 
   getMapControls = () => {
+    const { onChangeCallback, WatchUserLocation } = this.props
+    const { UserLocation } = this.state
     const mapControls = [
       {
         controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
-        props: { width: "calc(100% - 48px)" },
+        props: { width: "calc(100% - 48px)", onChangeCallback },
         items: [
           {
-            Component: MapSearchBox
-          }
-        ]
+            Component: MapSearchBox,
+          },
+        ],
       },
       {
         controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
-        props: { width: "auto" },
+        props: { width: "auto", UserLocation, WatchUserLocation },
         items: [
           {
-            Component: RecenterZoomButton
-          }
-        ]
-      }
+            Component: RecenterZoomButton,
+          },
+        ],
+      },
     ]
 
     return mapControls
   }
 
-  renderControls = controls => {
+  renderControls = (controls) => {
     const { mapInstance, mapApi } = this.state
     if (!mapInstance) return null
     return controls.map((control, i) => {
@@ -225,7 +227,6 @@ class BasicMap extends PureComponent {
           panTo={({ center, zoom, bounds }) =>
             this.panTo({ center, zoom, bounds })
           }
-          {...this.props}
           {...props}
         >
           {items.map((control, j) => {
@@ -237,10 +238,10 @@ class BasicMap extends PureComponent {
     })
   }
 
-  renderMarkerClusters = markerClusters => {
+  renderMarkerClusters = (markerClusters) => {
     const { onChangeCallback, getAddressOnMarkerClick } = this.props
     const { zoom } = this.state
-    return markerClusters.map(item => {
+    return markerClusters.map((item) => {
       const { id, numPoints, points, ...props } = item
       if (numPoints === 1) {
         const { id, ...props } = points[0]
@@ -277,7 +278,7 @@ class BasicMap extends PureComponent {
       options,
       onChangeCallback,
       getAddressOnMarkerClick,
-      children
+      children,
     } = this.props
     const {
       entry,
@@ -287,7 +288,7 @@ class BasicMap extends PureComponent {
       UserLocation,
       shouldRenderEntryLocation,
       shouldRenderUserLocation,
-      markerClusters
+      markerClusters,
     } = this.state
     const mapControls = this.getMapControls()
 

@@ -1,5 +1,9 @@
 import React, { useEffect, useState, memo } from "react"
 import PropTypes from "prop-types"
+import {
+  EntryTagsProps,
+  EntryPeopleProps,
+} from "../../../redux/Entries/propTypes"
 import moment from "moment"
 import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from "./styles"
 import { TagsContainer } from "../../../components"
@@ -23,7 +27,7 @@ const rootStyles = {
   backgroundColor: "white",
   color: "black",
   boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-  borderRadius: 4
+  borderRadius: 4,
 }
 
 const mountedStyles = { ...rootStyles, ...K_POP_UP_ANIMATION }
@@ -34,22 +38,22 @@ const lineStyle = {
   width: "calc(100% - 12px)",
   borderTop: "1px solid #808080",
   position: "absolute",
-  bottom: 0
+  bottom: 0,
 }
 
 const column = {
   position: "absolute",
-  bottom: "calc(50% - 4px)"
+  bottom: "calc(50% - 4px)",
 }
 
 const leftColumn = {
   ...column,
-  left: 0
+  left: 0,
 }
 
 const rightColumn = {
   ...column,
-  right: 0
+  right: 0,
 }
 
 const PreviewBox = ({
@@ -82,13 +86,10 @@ const PreviewBox = ({
     <div style={styles}>
       <div>{title}</div>
       <div>{address}</div>
-      {tags.length > 0 && (
+
+      {$dimensionKey !== "MyLocation" && (
         <div>
           <TagsContainer tags={tags} />
-        </div>
-      )}
-      {people.length > 0 && (
-        <div>
           <TagsContainer
             tags={people}
             faIcon="fas fa-user"
@@ -96,6 +97,7 @@ const PreviewBox = ({
           />
         </div>
       )}
+
       <div style={lineStyle}>
         <div style={leftColumn}>
           <i>Date</i>
@@ -113,7 +115,14 @@ PreviewBox.propTypes = {
   clientName: PropTypes.string,
   siteDescription: PropTypes.string,
   score: PropTypes.number,
-  lastActivity: PropTypes.string
+  lastActivity: PropTypes.string,
+  tags: EntryTagsProps,
+  people: EntryPeopleProps,
+}
+
+PreviewBox.defaultPropts = {
+  tags: [],
+  people: [],
 }
 
 export default memo(PreviewBox)

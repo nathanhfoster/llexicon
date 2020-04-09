@@ -29,8 +29,8 @@ const Entry = ({
 
   const handleDebounce = () => dispatch(SyncEntries())
 
-  const handleEditorChange = ({ ...payload }) =>
-    dispatch(UpdateReduxEntry({ id: entry.id, ...payload }))
+  const handleTitleChange = ({ target: { value } }) =>
+    dispatch(handleEditorChange({ id: entry.id, title: value }))
 
   const handleDateChange = (date_created_by_author) =>
     dispatch(
@@ -41,8 +41,8 @@ const Entry = ({
       })
     )
 
-  const handleTitleChange = ({ target: { value } }) =>
-    dispatch(handleEditorChange({ id: entry.id, title: value }))
+  const handleEditorChange = ({ ...payload }) =>
+    dispatch(UpdateReduxEntry({ id: entry.id, ...payload }))
 
   return (
     <Editor

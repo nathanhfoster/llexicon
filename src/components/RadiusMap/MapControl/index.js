@@ -10,18 +10,15 @@ class MapControl extends Component {
     controlPosition: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
     children: PropTypes.any.isRequired,
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }
 
   static defaultProps = { width: "100%" }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return memoizeProps(this.props, nextProps, [
-      "item",
-      "map",
-      "mapApi",
-      "children"
-    ])
+    const mapChanged = !this.props.map && nextProps.map
+    const mapApiChanged = !this.props.mapApi && nextProps.mapApi
+    return mapChanged || mapApiChanged
   }
 
   componentDidMount() {
@@ -41,7 +38,7 @@ class MapControl extends Component {
 
   renderChildren = (children, props) =>
     Array.isArray(children)
-      ? children.map(child => cloneElement(child, { ...props }))
+      ? children.map((child) => cloneElement(child, { ...props }))
       : cloneElement(children, { ...props })
 
   _render() {
@@ -53,7 +50,7 @@ class MapControl extends Component {
       <div
         className="mapControl"
         style={{ width }}
-        ref={el => {
+        ref={(el) => {
           if (!this.renderedOnce) {
             this.el = el
             props.map.controls[controlPosition].push(el)
@@ -61,7 +58,7 @@ class MapControl extends Component {
             this.el.innerHTML = ""
             ;[].slice
               .call(el.childNodes)
-              .forEach(child => this.el.appendChild(child))
+              .forEach((child) => this.el.appendChild(child))
           }
           this.renderedOnce = true
         }}

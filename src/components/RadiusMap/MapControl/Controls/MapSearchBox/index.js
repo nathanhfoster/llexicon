@@ -1,34 +1,31 @@
 import React, { useEffect, useRef, memo } from "react"
 import PropTypes from "prop-types"
-import deepEquals from "../../../../../helpers/deepEquals"
 import fitCoordsToBounds from "../../../functions/fitCoordsToBounds"
 import "./styles.css"
 
 const MapSearchBox = ({
   map,
   mapApi,
-  setMapCenterBoundsZoom,
   onChangeCallback,
-  getAddressOnMarkerClick,
-  UserLocation,
-  locations,
   panTo,
-  zoom
+  $geoService,
+  $onMouseAllow,
+  $prerender,
 }) => {
-  let searchBox = useRef()
-  let searchInput = useRef()
+  let searchBoxRef = useRef()
+  let searchInputRef = useRef()
 
   useEffect(() => {
-    searchBox = new mapApi.places.SearchBox(searchInput)
-    searchBox.addListener("places_changed", handlePlacesChange)
-    searchBox.bindTo("bounds", map)
+    searchBoxRef.current = new mapApi.places.SearchBox(searchInputRef.current)
+    searchBoxRef.current.addListener("places_changed", handlePlacesChange)
+    searchBoxRef.current.bindTo("bounds", map)
     return () => {
-      mapApi.event.clearInstanceListeners(searchInput)
+      mapApi.event.clearInstanceListeners(searchInputRef.current)
     }
   }, [])
 
   const handlePlacesChange = () => {
-    const selected = searchBox.getPlaces()
+    const selected = searchBoxRef.current.getPlaces()
     const { 0: place } = selected
     if (!place || !place.geometry) return
     const {
@@ -47,29 +44,13 @@ const MapSearchBox = ({
       types,
       url,
       utc_offset_minutes,
-      vicinity
+      vicinity,
     } = place
 
     const { location, viewport } = geometry
     const { lat, lng } = location
 
     const bounds = new mapApi.LatLngBounds()
-
-    if (types.includes("country")) {
-      zoom = 4
-    } else if (
-      types.includes("administrative_area_level_1") ||
-      types.includes("administrative_area_level_2") ||
-      types.includes("administrative_area_level_3") ||
-      types.includes("locality") ||
-      types.includes("sublocality") ||
-      types.includes("political") ||
-      types.includes("postal_code")
-    ) {
-      zoom = 13
-    } else {
-      zoom = 17
-    }
 
     if (viewport) {
       bounds.union(viewport)
@@ -81,18 +62,13 @@ const MapSearchBox = ({
 
     const newPosition = { lat: lat(), lng: lng() }
 
-    const userLocation = {
-      lat: UserLocation.latitude,
-      lng: UserLocation.longitude
-    }
-
     // console.log(formatted_address)
 
     onChangeCallback({
       entryId: "NewEntry",
       latitude: newPosition.lat,
       longitude: newPosition.lng,
-      address: formatted_address
+      address: formatted_address,
     })
 
     const center = Object.values(newPosition)
@@ -123,11 +99,11 @@ const MapSearchBox = ({
     // }
 
     // fitCoordsToBounds(map, mapApi, coords)
-    searchInput.blur()
+    searchInputRef.current.blur()
   }
 
   const clearSearchBox = () => {
-    searchInput.value = ""
+    searchInputRef.current.value = ""
   }
 
   const selectSearchBox = ({ target }) => target.select()
@@ -135,15 +111,26 @@ const MapSearchBox = ({
   return (
     <div className="mapBoxSearchBoxContainer">
       <input
-        ref={ref => (searchInput = ref)}
+        ref={searchInputRef}
         className="mapBoxSearchBoxInput"
         type="text"
         onFocus={selectSearchBox}
+        // onBlur={(e) => e.preventDefault()}
         placeholder="Enter a location"
         // onChange={handleInputChange}
       />
     </div>
   )
+}
+
+MapSearchBox.propTypes = {
+  map: PropTypes.object.isRequired,
+  mapApi: PropTypes.object.isRequired,
+  onChangeCallback: PropTypes.func.isRequired,
+  panTo: PropTypes.func.isRequired,
+  $geoService: PropTypes.object,
+  $onMouseAllow: PropTypes.func,
+  $prerender: PropTypes.bool,
 }
 
 export default memo(MapSearchBox)
