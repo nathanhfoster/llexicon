@@ -6,7 +6,7 @@ import { BasicList } from "../"
 import { withRouter } from "react-router-dom"
 import Moment from "react-moment"
 import MomentJS from "moment"
-import { RouterPush, RouteMap } from "../../routes"
+import { GoToEntryDetail } from "../../routes"
 import Star from "../BackgroundImage/Star"
 import TagsContainer from "../TagsContainer"
 import "./styles.css"
@@ -54,12 +54,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
             value: (
               <div
                 key={id}
-                onClick={() =>
-                  RouterPush(
-                    history,
-                    RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
-                  )
-                }
+                onClick={() => GoToEntryDetail(id, history)}
                 className="listItem"
               >
                 <div className="Overflow eventTitle">
