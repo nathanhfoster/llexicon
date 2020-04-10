@@ -27,37 +27,57 @@ const EntryCard = ({
   longitude,
   is_public,
   author,
-  _lastUpdated
+  _lastUpdated,
 }) => {
   const history = useHistory()
-  const onClickCallback = useCallback(() => GoToEntryDetail(id, history), [id, history])
+  const onClickCallback = useCallback(() => GoToEntryDetail(id, history), [
+    id,
+    history,
+  ])
   const reducedHtml = html.slice(0, 1000)
 
-  const cardHeader = useMemo(() => (
-    <div>
-      <div
-        className="EntryOptionsMenuContainer"
-        onClick={e => e.stopPropagation()}
-      >
-        <EntryOptionsMenu entryId={id} is_public={is_public} />
+  const cardHeader = useMemo(
+    () => (
+      <div>
+        <div
+          className="EntryOptionsMenuContainer"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <EntryOptionsMenu entryId={id} is_public={is_public} />
+        </div>
+        <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
       </div>
-      <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
-    </div>
-  ), [id, is_public, reducedHtml, views, rating])
+    ),
+    [id, is_public, reducedHtml, views, rating]
+  )
 
-  const cardTitle = useMemo(() => <EntryCardTitle title={title} is_public={is_public} />, [title, is_public])
+  const cardTitle = useMemo(
+    () => <EntryCardTitle title={title} is_public={is_public} />,
+    [title, is_public]
+  )
 
-  const cardText = useMemo(() => (
-    <EntryCardText
-      tags={tags}
-      people={people}
-      date_created_by_author={date_created_by_author}
-      date_updated={date_updated}
-      views={views}
-      rating={rating}
-      is_public={is_public}
-    />
-  ), [tags, people, date_created_by_author, date_updated, views, rating, is_public])
+  const cardText = useMemo(
+    () => (
+      <EntryCardText
+        tags={tags}
+        people={people}
+        date_created_by_author={date_created_by_author}
+        date_updated={date_updated}
+        views={views}
+        rating={rating}
+        is_public={is_public}
+      />
+    ),
+    [
+      tags,
+      people,
+      date_created_by_author,
+      date_updated,
+      views,
+      rating,
+      is_public,
+    ]
+  )
 
   const memoProps = [
     id,
@@ -67,7 +87,7 @@ const EntryCard = ({
     views,
     rating,
     is_public,
-    reducedHtml
+    reducedHtml,
   ]
 
   return (

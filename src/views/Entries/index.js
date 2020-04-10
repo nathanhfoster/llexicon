@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Row } from "reactstrap"
-import { RouteMap, RouterPush } from "../../routes"
+import { RouteMap, RouterPush, GoToEntryDetail } from "../../routes"
 import { BasicTabs, NewEntryButton, EntriesTable } from "../../components"
 import NewEntry from "../NewEntry"
 import memoizeProps from "../../helpers/memoizeProps"
@@ -203,10 +203,7 @@ const Entries = ({
                 })
                 return RouterPush(history, RouteMap.NEW_ENTRY)
               } else {
-                return RouterPush(
-                  history,
-                  RouteMap.ENTRY_DETAIL.replace(":entryId", `${entryId}`)
-                )
+                return GoToEntryDetail(entryId, history)
               }
             }}
           />

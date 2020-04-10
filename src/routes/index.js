@@ -20,26 +20,26 @@ const RouteMap = {
   LOGIN: "/login",
   SIGNUP: "/sign-up",
   PASSWORD_RESET: "/password-reset",
-  PRIVACY_POLICY: "/privacy-policy"
+  PRIVACY_POLICY: "/privacy-policy",
 }
 
 const getHistoryState = (state, pathname, route) => {
   if (!state) {
     state = {
       previousRoute: pathname,
-      pathHistory: [pathname]
+      pathHistory: [pathname],
     }
   } else {
     state = {
       previousRoute: pathname,
-      pathHistory: state.pathHistory.concat(pathname)
+      pathHistory: state.pathHistory.concat(pathname),
     }
   }
 
   return state
 }
 
-const ValidateHistroy = history => {
+const ValidateHistroy = (history) => {
   if (!history || !history.location) {
     return false
   }
@@ -49,7 +49,7 @@ const ValidateHistroy = history => {
 const RouterPush = (history, route) => {
   if (!ValidateHistroy(history)) return {}
   let {
-    location: { pathname, search, state }
+    location: { pathname, search, state },
   } = history
 
   const newState = getHistoryState(state, pathname, route)
@@ -62,12 +62,12 @@ const RouterPush = (history, route) => {
 const RouterLinkPush = (history, route) => {
   if (!ValidateHistroy(history)) return {}
   let {
-    location: { pathname, search, state }
+    location: { pathname, search, state },
   } = history
 
   const newState = {
     pathname: route,
-    state: getHistoryState(state, pathname, route)
+    state: getHistoryState(state, pathname, route),
   }
 
   // console.log("RouterLinkPush: ", route, newState)
@@ -81,7 +81,7 @@ const RouterGoBack = (
   redirectRoutesToIgnore = [
     RouteMap.LOGIN,
     RouteMap.SIGNUP,
-    RouteMap.PASSWORD_RESET
+    RouteMap.PASSWORD_RESET,
   ]
 ) => {
   let route = RouteMap.HOME
@@ -93,13 +93,13 @@ const RouterGoBack = (
         key,
         pathname,
         search,
-        state: { previousRoute, pathHistory }
-      }
+        state: { previousRoute, pathHistory },
+      },
     } = history
     if (pathHistory) {
       const newRoute = pathHistory
         .reverse()
-        .find(route => !redirectRoutesToIgnore.includes(route))
+        .find((route) => !redirectRoutesToIgnore.includes(route))
       route = newRoute
     }
     if (shouldRedirect)
@@ -110,6 +110,16 @@ const RouterGoBack = (
   }
 }
 
-const GoToEntryDetail = (id, history) => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
+const GetEntryDetailUrl = (id) => RouteMap.ENTRY_DETAIL.replace(":entryId", id)
 
-export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack, GoToEntryDetail }
+const GoToEntryDetail = (id, history) =>
+  RouterPush(history, GetEntryDetailUrl(id))
+
+export {
+  RouteMap,
+  RouterPush,
+  RouterLinkPush,
+  RouterGoBack,
+  GetEntryDetailUrl,
+  GoToEntryDetail,
+}

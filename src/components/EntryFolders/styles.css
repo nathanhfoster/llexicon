@@ -1,23 +1,21 @@
 .EntryFolders {
-    height: 100%;
-    /* height: calc(100vh - var(--navBarHeight)); */
+  height: 100%;
+  /* height: calc(100vh - var(--navBarHeight)); */
 }
 
 .FolderBreadCrumbsContainer .breadcrumb {
-    height: var(--inputHeight);
-    background-color: var(--quinaryColor);
-    overflow-y: auto;
-    box-shadow: var(--primaryBoxShadow);
+  height: var(--inputHeight);
+  background-color: var(--quinaryColor);
+  overflow-y: auto;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .FolderBasicDropDown {
-    height: var(--inputHeight);
+  height: var(--inputHeight);
 }
 
 .EntryFoldersContainer {
-    background-color: rgba(0, 0, 0, 0.5);
-    box-shadow: var(--primaryBoxShadow);
-    max-height: calc(100vh - var(--navBarHeight) - 46px - 48px);
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: var(--primaryBoxShadow);
+  max-height: calc(100vh - var(--navBarHeight) - 46px - 48px);
 }
-
-

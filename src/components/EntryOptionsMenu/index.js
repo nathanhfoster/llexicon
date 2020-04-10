@@ -9,7 +9,7 @@ import {
 } from "reactstrap"
 import { BasicModal, ConfirmAction } from "../"
 import { copyStringToClipboard } from "../../helpers"
-import { RouteMap, RouterGoBack } from "../../routes"
+import { RouterGoBack, GetEntryDetailUrl } from "../../routes"
 import { useDispatch } from "react-redux"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
 import "./styles.css"
@@ -28,8 +28,7 @@ const EntryOptionsMenu = ({
   const toggleModal = () => setShowModal(!showModal)
 
   const { origin } = window.location
-  const { ENTRY_DETAIL } = RouteMap
-  const url = `${origin}${ENTRY_DETAIL.replace(":entryId", entryId)}`
+  const url = `${origin}${GetEntryDetailUrl(entryId)}`
 
   const handleEditorChange = ({ ...payload }) =>
     dispatch(UpdateReduxEntry({ id: entryId, ...payload }))

@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { RouteMap, RouterPush } from "../../../../routes"
+import { GoToEntryDetail } from "../../../../routes"
 import Moment from "react-moment"
 import Star from "../../../BackgroundImage/Star"
 import "./styles.css"
@@ -22,17 +22,12 @@ const EntryPreview = ({
   date_created_by_author,
   date_updated,
   views,
-  history
+  history,
 }) =>
   view == "month" && !isMobile ? (
     <div className="TileContent">
       <div
-        onClick={() =>
-          RouterPush(
-            history,
-            RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`)
-          )
-        }
+        onClick={() => GoToEntryDetail(id, history)}
         className="hasEventsContainer"
         data-for={`${id}`}
         data-tip={id}
@@ -65,10 +60,10 @@ EntryPreview.propTypes = {
   date_created: PropTypes.string,
   date_created_by_author: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.instanceOf(Date)
+    PropTypes.instanceOf(Date),
   ]),
   date_updated: PropTypes.string,
-  views: PropTypes.number
+  views: PropTypes.number,
 }
 
 export default reduxConnect(mapStateToProps)(memo(EntryPreview))

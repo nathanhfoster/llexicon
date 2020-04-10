@@ -2,7 +2,7 @@ import React, { Fragment, memo } from "react"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { Badge, Container, Row, Col } from "reactstrap"
 import { useHistory } from "react-router-dom"
-import { RouteMap, RouterPush } from "../../routes"
+import { GoToEntryDetail } from "../../routes"
 import Moment from "react-moment"
 import Star from "../BackgroundImage/Star"
 import TagsContainer from "../TagsContainer"
@@ -37,9 +37,7 @@ const EntryMinimal = ({
       fluid
       tag={Badge}
       className="EntryMinimal p-2"
-      onClick={() =>
-        RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
-      }
+      onClick={() => GoToEntryDetail(id, history)}
     >
       <Row>
         <Col xs={12} className="EntryMinimalDetail Overflow mb-1">

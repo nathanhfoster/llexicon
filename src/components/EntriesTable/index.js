@@ -1,6 +1,6 @@
 import React, { useMemo, memo } from "react"
 import { stripHtml } from "../../helpers"
-import { RouteMap, RouterPush } from "../../routes"
+import { GoToEntryDetail } from "../../routes"
 import { useHistory } from "react-router-dom"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable } from "../"
@@ -69,11 +69,7 @@ const EntriesTable = ({ entries }) => {
         title: <i className="fas fa-calendar-day" />,
         key: "date_created_by_author",
         width: 100,
-        onRowClick: (item) =>
-          RouterPush(
-            history,
-            RouteMap.ENTRY_DETAIL.replace(":entryId", `${item.id}`)
-          ),
+        onRowClick: (item) => GoToEntryDetail(item.id, history),
         render: (item) => (
           <Moment format="D MMM YY hh:mma">
             {item.date_created_by_author}
