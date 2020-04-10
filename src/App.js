@@ -146,7 +146,7 @@ const App = ({
       path: [SUPPORT],
       component: Support,
     },
-    { path: [ENTRY_DETAIL], component: EntryDetail },
+    { path: [ENTRY_DETAIL], component: EntryDetail, useRouteProps: true },
     {
       path: [
         ENTRIES,

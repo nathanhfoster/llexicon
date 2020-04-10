@@ -3,23 +3,14 @@ import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import { connect as reduxConnect } from "react-redux"
-import { useParams } from "react-router-dom"
 import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
 import PageNotFound from "../PageNotFound"
 import "./styles.css"
 
-const mapStateToProps = ({
-  User,
-  Entries: { items, filteredItems },
-  Window: {
-    isMobile,
-    screen: { availHeight }
-  }
-}) => ({
+const mapStateToProps = ({ User, Entries: { items, filteredItems } }) => ({
   UserId: User.id,
   items,
   filteredItems,
-  entryContainerHeight: availHeight - (isMobile ? 46 : 68) - 48
 })
 
 const mapDispatchToProps = { GetUserEntryDetails, SyncEntries }
@@ -28,13 +19,14 @@ const EntryDetail = ({
   UserId,
   items,
   filteredItems,
-  entryContainerHeight,
   SyncEntries,
-  GetUserEntryDetails
+  GetUserEntryDetails,
+  match: {
+    params: { entryId },
+  },
 }) => {
-  const { entryId } = useParams()
   const entry = useMemo(
-    () => items.concat(filteredItems).find(entry => entry.id == entryId),
+    () => items.concat(filteredItems).find((entry) => entry.id == entryId),
     [entryId, items, filteredItems]
   )
 
@@ -42,7 +34,7 @@ const EntryDetail = ({
 
   useEffect(() => {
     SyncEntries(
-      () => new Promise(resolve => resolve(GetUserEntryDetails(entryId)))
+      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
     )
   }, [])
 
@@ -53,14 +45,15 @@ const EntryDetail = ({
           <Entry
             readOnly={readOnly}
             entry={entry}
-            // containerHeight={entryContainerHeight}
             shouldRedirectOnDelete={true}
           />
         </Col>
       </Row>
     </Container>
   ) : (
-    <PageNotFound title={"Entry Not Found"} />
+    <PageNotFound
+      title={"Entry Not Found. It is either deleted or no longer public."}
+    />
   )
 }
 
@@ -69,7 +62,7 @@ EntryDetail.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired
+  SyncEntries: PropTypes.func.isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)
