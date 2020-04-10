@@ -495,9 +495,13 @@ const replaceAll = (str, mapObj) => {
   return str.replace(re, (matched) => mapObj[matched.toLowerCase()])
 }
 
+const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") // $& means the whole matched string
+
 const stringMatch = (s1, s2, caseSensitive = false) => {
   const flags = caseSensitive ? "g" : "gi"
-  const regexMatch = new RegExp(s2, flags)
+  const cleanString = escapeRegExp(s2)
+
+  const regexMatch = new RegExp(cleanString, flags)
   return s1.match(regexMatch)
 }
 

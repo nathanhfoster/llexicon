@@ -1,9 +1,8 @@
 import React, { useMemo, memo } from "react"
-import PropTypes from "prop-types"
 import { ColumnsPropType, DataPropType } from "../propTypes"
 import "./styles.css"
 
-const TableFooter = ({ columns, sortedAndFilteredData, onRowClick }) => {
+const TableFooter = ({ columns, sortedAndFilteredData }) => {
   const shouldRender = useMemo(() => columns.some((column) => column.footer))
 
   const renderTableRows = useMemo(
@@ -30,7 +29,6 @@ const TableFooter = ({ columns, sortedAndFilteredData, onRowClick }) => {
 }
 
 TableFooter.propTypes = {
-  onRowClick: PropTypes.func,
   columns: ColumnsPropType,
   sortedAndFilteredData: DataPropType,
 }

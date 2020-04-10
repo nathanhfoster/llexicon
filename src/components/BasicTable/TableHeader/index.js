@@ -7,14 +7,11 @@ import "./styles.css"
 
 const TableHeader = ({
   columns,
-  sortUp,
   sortCallback,
   sortable,
-  sortKey,
+  sortMap,
   filterCallback,
 }) => {
-  const handleSortCallback = (key, sort) => sortCallback(key, sort, !sortUp)
-
   const renderColumnHeaders = useMemo(() => {
     const shouldRenderSortContainer = columns.find((c) => c.filter)
     return columns.map((column, i) => {
@@ -29,7 +26,16 @@ const TableHeader = ({
         filterPlaceholder,
       } = column
       const titleFunction = typeof title === "function"
-      const showSort = sortKey === key
+      const { sortUp } = sortMap[key] ? sortMap[key] : {}
+      const shouldShowSortIcon = sortUp !== undefined
+      // console.log(sort)
+      const handleSort = () => {
+        if (sortUp === false) {
+          sortCallback(key, undefined, sort)
+        } else {
+          sortCallback(key, !sortUp, sort)
+        }
+      }
       return (
         <th
           key={key}
@@ -38,11 +44,11 @@ const TableHeader = ({
           } `}
           style={{ width }}
           title={typeof title === "string" ? title : key}
-          onClick={sortable ? () => handleSortCallback(key, sort) : null}
+          onClick={sortable ? handleSort : null}
         >
           <div className="ml-1">
             {titleFunction ? title(column) : title}
-            {sortable && showSort && (
+            {sortable && shouldShowSortIcon && (
               <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
             )}
           </div>
@@ -66,7 +72,7 @@ const TableHeader = ({
         </th>
       )
     })
-  }, [columns, sortKey, sortUp])
+  }, [columns, sortMap])
 
   return (
     <thead>
@@ -80,8 +86,7 @@ TableHeader.propTypes = {
   sortCallback: PropTypes.func.isRequired,
   filterCallback: PropTypes.func.isRequired,
   columns: ColumnsPropType,
-  sortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  sortUp: PropTypes.bool,
+  sortMap: PropTypes.object.isRequired,
 }
 
 export default memo(TableHeader)

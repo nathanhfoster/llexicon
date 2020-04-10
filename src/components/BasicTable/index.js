@@ -1,25 +1,35 @@
-import React, { Fragment, useState, memo } from "react"
+import React, {
+  Fragment,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  memo,
+} from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import TableHeader from "./TableHeader"
 import TableBody from "./TableBody"
 import TableFooter from "./TableFooter"
 import TablePaginator from "./TablePaginator"
-import { tableSort, tableFilter } from "./functions"
+import { tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./propTypes"
 import { stringMatch } from "../../helpers"
 import "./styles.css"
 
-const getInitialState = (columns, { defaultSortKey, pageSize, pageSizes }) => {
+const getInitialState = (
+  columns,
+  { defaultSortKey, pageSize, pageSizes, sortMap, filterMap }
+) => {
   const { sort } = columns.find((c) => (c.dataIndex || c.key) == defaultSortKey)
 
   const firstRowClickFound = columns.find((column) => column.onRowClick)
 
   return {
-    sortKey: defaultSortKey,
-    sortUp: defaultSortKey ? true : false,
-    sort,
-    filterMap: {},
+    sortMap: defaultSortKey
+      ? { [defaultSortKey]: { sortUp: true, sort } }
+      : sortMap,
+    filterMap,
     onRowClick: firstRowClickFound && firstRowClickFound.onRowClick,
     currentPage: 0,
     pageSize,
@@ -38,34 +48,48 @@ const BasicTable = ({
   responsive,
   sortable,
   columns,
+  onSortCallback,
+  onFilterCallback,
   ...restOfProps
 }) => {
-  const [state, setState] = useState(getInitialState(columns, restOfProps))
+  const mounted = useRef(false)
+  const [
+    { onRowClick, currentPage, pageSize, pageSizes, sortMap, filterMap },
+    setState,
+  ] = useState(getInitialState(columns, restOfProps))
 
-  const {
-    sortKey,
-    sortUp,
-    sort,
-    onRowClick,
-    currentPage,
-    pageSize,
-    pageSizes,
-    filterMap,
-  } = state
+  const handleSort = useCallback((sortKey, sortUp, sort) => {
+    if (onSortCallback) onSortCallback(sortKey, sort, sortUp)
+    else
+      setState((prevState) => ({
+        ...prevState,
+        sortMap: { ...prevState.sortMap, [sortKey]: { sortUp, sort } },
+      }))
+  }, [])
 
-  const handleSort = (sortKey, sort, sortUp) => {
-    setState((prevState) => ({ ...prevState, sortKey, sort, sortUp }))
-  }
+  const handleFilter = useCallback((filterKey, searchValue, filter) => {
+    if (onFilterCallback) onFilterCallback(filterKey, searchValue, filter)
+    else
+      setState((prevState) => ({
+        ...prevState,
+        filterMap: {
+          ...prevState.filterMap,
+          [filterKey]: { searchValue, filter },
+        },
+      }))
+  }, [])
 
-  const handleFilter = (filterKey, searchValue, filter) => {
-    setState((prevState) => ({
-      ...prevState,
-      filterMap: {
-        ...prevState.filterMap,
-        [filterKey]: { searchValue, filter },
-      },
-    }))
-  }
+  useEffect(() => {
+    if (mounted.current) {
+      console.log("USE")
+      setState((prevState) => ({
+        ...prevState,
+        sortMap: restOfProps.sortMap,
+        filterMap: restOfProps.filterMap,
+      }))
+    }
+    mounted.current = true
+  }, [restOfProps.sortMap, restOfProps.filterMap])
 
   const handlePageChange = (currentPage) => {
     setState((prevState) => ({ ...prevState, currentPage }))
@@ -77,8 +101,10 @@ const BasicTable = ({
 
   let sortedAndFilteredData = null
 
-  if (sortKey) {
-    sortedAndFilteredData = tableSort(data, sort, sortKey, sortUp)
+  const hasSorting = Object.keys(sortMap).find((key) => sortMap[key].sort)
+
+  if (hasSorting) {
+    sortedAndFilteredData = tableSort(data, sortMap)
   }
 
   const hasFilters = Object.keys(filterMap).find(
@@ -119,14 +145,9 @@ const BasicTable = ({
           sortCallback={handleSort}
           filterCallback={handleFilter}
           columns={columns}
-          sortKey={sortKey}
-          sortUp={sortUp}
+          sortMap={sortMap}
         />
-        <TableBody
-          onRowClick={onRowClick}
-          columns={columns}
-          data={slicedData}
-        />
+        <TableBody columns={columns} data={slicedData} />
         <TableFooter
           onRowClick={onRowClick}
           columns={columns}
@@ -150,6 +171,8 @@ BasicTable.propTypes = {
   sortable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
   data: DataPropType,
+  onSortCallback: PropTypes.func,
+  onFilterCallback: PropTypes.func,
   // reactstrap Table
   tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   size: PropTypes.string,
@@ -161,6 +184,8 @@ BasicTable.propTypes = {
   responsive: PropTypes.bool,
   pageSize: PropTypes.number.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+  sortMap: PropTypes.object.isRequired,
+  filterMap: PropTypes.object.isRequired,
   defaultSortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   // Custom ref handler that will be assigned to the "ref" of the inner <table> element
   innerRef: PropTypes.oneOfType([
@@ -179,6 +204,8 @@ BasicTable.defaultProps = {
   responsive: true,
   pageSize: 10,
   pageSizes: [5, 10, 15, 20, 25, 50, 100],
+  sortMap: {},
+  filterMap: {},
   columns: [
     {
       title: "#",
