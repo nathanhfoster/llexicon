@@ -1,4 +1,6 @@
-import React, { useMemo, memo } from "react"
+import React, { useMemo, useCallback } from "react"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { stripHtml } from "../../helpers"
 import { GoToEntryDetail } from "../../routes"
 import { useHistory } from "react-router-dom"
@@ -6,9 +8,48 @@ import Moment from "react-moment"
 import { TagsContainer, BasicTable } from "../"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { stringMatch } from "../../helpers"
+import {
+  SetEntriesSortMap,
+  SetEntriesFilterMap,
+} from "../../redux/Entries/actions"
 
-const EntriesTable = ({ entries }) => {
+const mapStateToProps = ({
+  Entries: { items, filteredItems, sortMap, filterMap },
+}) => ({
+  items,
+  filteredItems,
+  sortMap,
+  filterMap,
+})
+
+const mapDispatchToProps = { SetEntriesSortMap, SetEntriesFilterMap }
+
+const EntriesTable = ({
+  items,
+  filteredItems,
+  sortMap,
+  filterMap,
+  SetEntriesSortMap,
+  SetEntriesFilterMap,
+}) => {
   const history = useHistory()
+
+  const viewableEntries = useMemo(
+    () => items.concat(filteredItems).filter((item) => !item._shouldDelete),
+    [items, filteredItems]
+  )
+
+  const handleSortCallback = useCallback(
+    (sortKey, sortUp, sort) => SetEntriesSortMap(sortKey, sortUp, sort),
+    []
+  )
+
+  const handleFilterCallback = useCallback(
+    (filterKey, searchValue, filter) =>
+      SetEntriesFilterMap(filterKey, searchValue, filter),
+    []
+  )
+
   const tableColumns = useMemo(
     () => [
       {
@@ -163,13 +204,22 @@ const EntriesTable = ({ entries }) => {
       sortable
       defaultSortKey="date_updated"
       columns={tableColumns}
-      data={entries}
+      data={viewableEntries}
+      sortMap={sortMap}
+      filterMap={filterMap}
+      onSortCallback={handleSortCallback}
+      onFilterCallback={handleFilterCallback}
     />
   )
 }
 
-EntriesTable.propTypes = { entries: EntriesPropTypes }
+EntriesTable.propTypes = {
+  items: EntriesPropTypes,
+  filteredItems: EntriesPropTypes,
+  sortMap: PropTypes.object,
+  filterMap: PropTypes.object,
+  SetEntriesSortMap: PropTypes.func.isRequired,
+  SetEntriesFilterMap: PropTypes.func.isRequired,
+}
 
-EntriesTable.defaultProps = { entries: [] }
-
-export default memo(EntriesTable)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesTable)

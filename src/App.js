@@ -11,7 +11,9 @@ import {
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  ResetEntriesSortAndFilterMaps,
 } from "./redux/Entries/actions"
+import { DEFAULT_STATE_ENTRIES } from "./redux/Entries/reducer"
 import { RouteMap, RouterGoBack } from "./routes"
 import { About, Home, Entries } from "./views"
 import { NavBar, PrivacyPolicy } from "./components"
@@ -65,6 +67,7 @@ const mapDispatchToProps = {
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  ResetEntriesSortAndFilterMaps,
 }
 
 const App = ({
@@ -77,6 +80,7 @@ const App = ({
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  ResetEntriesSortAndFilterMaps,
   history,
   location,
   match,
@@ -88,6 +92,8 @@ const App = ({
     const activeDate = new Date()
 
     SetCalendar({ activeDate })
+
+    ResetEntriesSortAndFilterMaps()
 
     CheckAppVersion()
 
@@ -208,9 +214,14 @@ App.propTypes = {
   navBarHeight: PropTypes.number.isRequired,
   SetWindow: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
+  CheckAppVersion: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
+  GetUserEntryTags: PropTypes.func.isRequired,
+  GetUserEntryPeople: PropTypes.func.isRequired,
+  ResetEntriesSortAndFilterMaps: PropTypes.func.isRequired,
+  SetWindow: PropTypes.func.isRequired,
 }
 
 const isEqual = (prevProps, nextProps) =>

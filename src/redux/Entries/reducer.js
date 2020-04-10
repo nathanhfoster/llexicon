@@ -14,6 +14,18 @@ const DEFAULT_STATE_ENTRIES = {
   search: "",
   EntryTags: [],
   EntryPeople: [],
+  sortMap: {
+    date_updated: {
+      sortUp: true,
+      sort: (a, b, sortUp) =>
+        sortUp
+          ? new Date(b._lastUpdated || b.date_updated) -
+            new Date(a._lastUpdated || a.date_updated)
+          : new Date(a._lastUpdated || a.date_updated) -
+            new Date(b._lastUpdated || b.date_updated),
+    },
+  },
+  filterMap: {},
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
@@ -112,6 +124,27 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.items.concat(state.filteredItems).filter(filterCondition),
           state.search
         ),
+      }
+    case EntriesActionTypes.ENTRIES_RESET_SORT_AND_FILTER_MAP:
+      return {
+        ...state,
+        sortMap: DEFAULT_STATE_ENTRIES.sortMap,
+        filterMap: DEFAULT_STATE_ENTRIES.filterMap,
+      }
+    case EntriesActionTypes.ENTRIES_SET_SORT_MAP:
+      const { sortKey, sortUp, sort } = payload
+      return {
+        ...state,
+        sortMap: { ...state.sortMap, [sortKey]: { sortUp, sort } },
+      }
+    case EntriesActionTypes.ENTRIES_SET_FILTER_MAP:
+      const { filterKey, searchValue, filter } = payload
+      return {
+        ...state,
+        filterMap: {
+          ...state.filterMap,
+          [filterKey]: { searchValue, filter },
+        },
       }
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ENTRIES

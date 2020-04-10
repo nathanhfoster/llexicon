@@ -81,7 +81,6 @@ const BasicTable = ({
 
   useEffect(() => {
     if (mounted.current) {
-      console.log("USE")
       setState((prevState) => ({
         ...prevState,
         sortMap: restOfProps.sortMap,
@@ -99,7 +98,7 @@ const BasicTable = ({
     setState((prevState) => ({ ...prevState, pageSize, currentPage: 0 }))
   }
 
-  let sortedAndFilteredData = null
+  let sortedAndFilteredData = [...data]
 
   const hasSorting = Object.keys(sortMap).find((key) => sortMap[key].sort)
 
@@ -107,9 +106,7 @@ const BasicTable = ({
     sortedAndFilteredData = tableSort(data, sortMap)
   }
 
-  const hasFilters = Object.keys(filterMap).find(
-    (key) => filterMap[key].searchValue
-  )
+  const hasFilters = Object.keys(filterMap).find((key) => filterMap[key].filter)
 
   if (hasFilters) {
     if (sortedAndFilteredData) {
@@ -146,8 +143,13 @@ const BasicTable = ({
           filterCallback={handleFilter}
           columns={columns}
           sortMap={sortMap}
+          filterMap={filterMap}
         />
-        <TableBody columns={columns} data={slicedData} />
+        <TableBody
+          columns={columns}
+          data={slicedData}
+          onRowClick={onRowClick}
+        />
         <TableFooter
           onRowClick={onRowClick}
           columns={columns}
@@ -173,6 +175,8 @@ BasicTable.propTypes = {
   data: DataPropType,
   onSortCallback: PropTypes.func,
   onFilterCallback: PropTypes.func,
+  sortMap: PropTypes.object.isRequired,
+  filterMap: PropTypes.object.isRequired,
   // reactstrap Table
   tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   size: PropTypes.string,
@@ -184,8 +188,6 @@ BasicTable.propTypes = {
   responsive: PropTypes.bool,
   pageSize: PropTypes.number.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-  sortMap: PropTypes.object.isRequired,
-  filterMap: PropTypes.object.isRequired,
   defaultSortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   // Custom ref handler that will be assigned to the "ref" of the inner <table> element
   innerRef: PropTypes.oneOfType([

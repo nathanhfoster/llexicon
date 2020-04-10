@@ -10,6 +10,7 @@ const TableHeader = ({
   sortCallback,
   sortable,
   sortMap,
+  filterMap,
   filterCallback,
 }) => {
   const renderColumnHeaders = useMemo(() => {
@@ -27,6 +28,7 @@ const TableHeader = ({
       } = column
       const titleFunction = typeof title === "function"
       const { sortUp } = sortMap[key] ? sortMap[key] : {}
+      const { searchValue } = filterMap[key] ? filterMap[key] : {}
       const shouldShowSortIcon = sortUp !== undefined
       // console.log(sort)
       const handleSort = () => {
@@ -56,6 +58,7 @@ const TableHeader = ({
           {shouldRenderSortContainer && (
             <Input
               className="TableHeaderSortInput"
+              // defaultChecked={searchValue}
               disabled={!filter}
               onClick={(e) => e.stopPropagation()}
               onChange={({ target: { value } }) =>
@@ -87,6 +90,7 @@ TableHeader.propTypes = {
   filterCallback: PropTypes.func.isRequired,
   columns: ColumnsPropType,
   sortMap: PropTypes.object.isRequired,
+  filterMap: PropTypes.object.isRequired,
 }
 
 export default memo(TableHeader)

@@ -166,7 +166,7 @@ const Entries = ({
         </Row>
       ) : (
         <Row>
-          <EntriesTable entries={viewableEntries} />
+          <EntriesTable />
         </Row>
       ),
       onClickCallback: handleTabChange,

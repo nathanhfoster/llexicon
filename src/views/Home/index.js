@@ -54,7 +54,7 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Entries Table</Header>
         </Col>
-        <EntriesTable entries={viewableEntries} />
+        <EntriesTable />
       </Row>
       <Row className="HomeRow mb-3 pb-1">
         <EntriesRediscover />
