@@ -1,7 +1,7 @@
-import React, { lazy, memo } from "react"
+import React, { useCallback, lazy, memo } from "react"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { useHistory } from "react-router-dom"
-import { RouteMap, RouterPush } from "../../../routes"
+import { GoToEntryDetail } from "../../../routes"
 import { BasicCard } from "../../"
 import EntryCardHtml from "../EntryCardHtml"
 import EntryCardTitle from "../EntryCardTitle"
@@ -30,8 +30,7 @@ const EntryCard = ({
   _lastUpdated
 }) => {
   const history = useHistory()
-  const onClickCallback = () =>
-    RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", id))
+  const onClickCallback = useCallback(() => GoToEntryDetail(id, history), [id, history])
   const reducedHtml = html.slice(0, 1000)
 
   const cardHeader = (
