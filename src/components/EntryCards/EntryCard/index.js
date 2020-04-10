@@ -1,4 +1,4 @@
-import React, { useCallback, lazy, memo } from "react"
+import React, { useCallback, useMemo, lazy, memo } from "react"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { useHistory } from "react-router-dom"
 import { GoToEntryDetail } from "../../../routes"
@@ -33,7 +33,7 @@ const EntryCard = ({
   const onClickCallback = useCallback(() => GoToEntryDetail(id, history), [id, history])
   const reducedHtml = html.slice(0, 1000)
 
-  const cardHeader = (
+  const cardHeader = useMemo(() => (
     <div>
       <div
         className="EntryOptionsMenuContainer"
@@ -43,11 +43,11 @@ const EntryCard = ({
       </div>
       <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
     </div>
-  )
+  ), [id, is_public, reducedHtml, views, rating])
 
-  const cardTitle = <EntryCardTitle title={title} is_public={is_public} />
+  const cardTitle = useMemo(() => <EntryCardTitle title={title} is_public={is_public} />, [title, is_public])
 
-  const cardText = (
+  const cardText = useMemo(() => (
     <EntryCardText
       tags={tags}
       people={people}
@@ -57,7 +57,7 @@ const EntryCard = ({
       rating={rating}
       is_public={is_public}
     />
-  )
+  ), [tags, people, date_created_by_author, date_updated, views, rating, is_public])
 
   const memoProps = [
     id,
