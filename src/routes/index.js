@@ -110,4 +110,6 @@ const RouterGoBack = (
   }
 }
 
-export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack }
+const GoToEntryDetail = (id, history) => RouterPush(history, RouteMap.ENTRY_DETAIL.replace(":entryId", `${id}`))
+
+export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack, GoToEntryDetail }
