@@ -50,7 +50,7 @@ const EntriesList = ({
     SyncEntries(
       () => new Promise((resolve) => resolve(GetUserEntries(pageNumber)))
     )
-  }, [listLength])
+  }, [entries)
   return (
     <BasicList
       height={height}
