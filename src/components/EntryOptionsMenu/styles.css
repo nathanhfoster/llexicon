@@ -1,8 +1,17 @@
-.EntryOptionsMenu button:first-child {
-    background-color: var(--quinaryColor);
-    border: 0;
+.EntryOptionsMenu {
+  box-shadow: none;
 }
 
-.EntryOptionsMenu button:first-child:hover {
-    background-color: var(--accentColor);
+.EntryOptionsMenu button:first-child {
+  background-color: var(--quinaryColor);
+  border: 0;
+}
+
+.EntryOptionsMenu button:first-child:hover,
+.EntryOptionsMenu button:first-child:active {
+  background-color: var(--primaryColor) !important;
+}
+
+.EntryOptionsMenu .dropdown-menu {
+  box-shadow: var(--primaryBoxShadow);
 }

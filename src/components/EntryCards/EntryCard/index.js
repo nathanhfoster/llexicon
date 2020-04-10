@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, lazy, memo } from "react"
+import React, { useCallback, useMemo, lazy, memo, Fragment } from "react"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { useHistory } from "react-router-dom"
 import { GoToEntryDetail } from "../../../routes"
@@ -38,7 +38,7 @@ const EntryCard = ({
 
   const cardHeader = useMemo(
     () => (
-      <div>
+      <Fragment>
         <div
           className="EntryOptionsMenuContainer"
           onClick={(e) => e.stopPropagation()}
@@ -46,7 +46,7 @@ const EntryCard = ({
           <EntryOptionsMenu entryId={id} is_public={is_public} />
         </div>
         <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
-      </div>
+      </Fragment>
     ),
     [id, is_public, reducedHtml, views, rating]
   )
