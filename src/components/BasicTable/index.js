@@ -37,7 +37,7 @@ const getInitialState = (columns, { pageSize, pageSizes }) => {
   return {
     sortList,
     filterList,
-    onRowClick: firstRowClickFound && firstRowClickFound.onRowClick,
+    onRowClick: firstRowClickFound,
     currentPage: 0,
     pageSize,
     pageSizes: [{ id: 0, header: true, value: "Page Sizes" }].concat(
