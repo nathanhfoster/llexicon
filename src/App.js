@@ -13,7 +13,6 @@ import {
   GetUserEntryPeople,
   ResetEntriesSortAndFilterMaps,
 } from "./redux/Entries/actions"
-import { DEFAULT_STATE_ENTRIES } from "./redux/Entries/reducer"
 import { RouteMap, RouterGoBack } from "./routes"
 import { About, Home, Entries } from "./views"
 import { NavBar, PrivacyPolicy } from "./components"
@@ -53,10 +52,7 @@ const {
   PRIVACY_POLICY,
 } = RouteMap
 
-const mapStateToProps = ({ User, Window: { navBarHeight } }) => ({
-  User,
-  navBarHeight,
-})
+const mapStateToProps = ({ User }) => ({ User })
 
 const mapDispatchToProps = {
   SetWindow,
@@ -84,7 +80,6 @@ const App = ({
   history,
   location,
   match,
-  navBarHeight,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const addToHomeScreenProps = { prompt, promptToInstall }
@@ -92,7 +87,6 @@ const App = ({
     const activeDate = new Date()
 
     SetCalendar({ activeDate })
-
     ResetEntriesSortAndFilterMaps()
 
     CheckAppVersion()
@@ -211,7 +205,6 @@ const App = ({
 
 App.propTypes = {
   User: UserProps,
-  navBarHeight: PropTypes.number.isRequired,
   SetWindow: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   CheckAppVersion: PropTypes.func.isRequired,
@@ -225,11 +218,7 @@ App.propTypes = {
 }
 
 const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, [
-    "User",
-    "routeOverlayHeight",
-    "navBarHeight",
-  ])
+  memoizeProps(prevProps, nextProps, ["User"])
 
 export default withRouter(
   reduxConnect(mapStateToProps, mapDispatchToProps)(memo(App, isEqual))

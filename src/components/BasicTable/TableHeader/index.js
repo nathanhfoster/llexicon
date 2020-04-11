@@ -25,17 +25,18 @@ const TableHeader = ({
         sort,
         filter,
         filterPlaceholder,
+        defaultSortValue,
+        defaultFilterValue,
       } = column
       const titleFunction = typeof title === "function"
-      const { sortUp } = sortMap[key] ? sortMap[key] : {}
-      const { searchValue } = filterMap[key] ? filterMap[key] : {}
+      const { sortUp } = sortMap[key]
       const shouldShowSortIcon = sortUp !== undefined
-      // console.log(sort)
+
       const handleSort = () => {
         if (sortUp === false) {
-          sortCallback(key, undefined, sort)
+          sortCallback(key, null)
         } else {
-          sortCallback(key, !sortUp, sort)
+          sortCallback(key, !sortUp)
         }
       }
       return (
@@ -58,11 +59,11 @@ const TableHeader = ({
           {shouldRenderSortContainer && (
             <Input
               className="TableHeaderSortInput"
-              // defaultChecked={searchValue}
+              defaultValue={defaultFilterValue}
               disabled={!filter}
               onClick={(e) => e.stopPropagation()}
               onChange={({ target: { value } }) =>
-                filterCallback(dataIndex || key, value, filter)
+                filterCallback(dataIndex || key, value)
               }
               placeholder={
                 filter

@@ -391,14 +391,14 @@ const ResetEntriesSortAndFilterMaps = () => ({
   type: EntriesActionTypes.ENTRIES_RESET_SORT_AND_FILTER_MAP,
 })
 
-const SetEntriesSortMap = (sortKey, sortUp, sort) => ({
+const SetEntriesSortMap = (sortKey, sortUp) => ({
   type: EntriesActionTypes.ENTRIES_SET_SORT_MAP,
-  payload: { sortKey, sortUp, sort },
+  payload: { sortKey, sortUp },
 })
 
-const SetEntriesFilterMap = (filterKey, searchValue, filter) => ({
+const SetEntriesFilterMap = (filterKey, searchValue) => ({
   type: EntriesActionTypes.ENTRIES_SET_FILTER_MAP,
-  payload: { filterKey, searchValue, filter },
+  payload: { filterKey, searchValue },
 })
 
 export {

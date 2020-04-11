@@ -14,10 +14,12 @@ const ColumnsPropType = PropTypes.arrayOf(
     render: PropTypes.func,
     footer: PropTypes.func,
     sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["string"])]),
+    defaultSortValue: PropTypes.bool,
     filter: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.oneOf(["string", "number", "date"]),
     ]),
+    defaultFilterValue: PropTypes.string,
     filterPlaceholder: PropTypes.string,
     onRowClick: PropTypes.func,
   })

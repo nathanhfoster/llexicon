@@ -22,7 +22,10 @@ const mapStateToProps = ({
   filterMap,
 })
 
-const mapDispatchToProps = { SetEntriesSortMap, SetEntriesFilterMap }
+const mapDispatchToProps = {
+  SetEntriesSortMap,
+  SetEntriesFilterMap,
+}
 
 const EntriesTable = ({
   items,
@@ -40,13 +43,12 @@ const EntriesTable = ({
   )
 
   const handleSortCallback = useCallback(
-    (sortKey, sortUp, sort) => SetEntriesSortMap(sortKey, sortUp, sort),
+    (sortKey, sortUp) => SetEntriesSortMap(sortKey, sortUp),
     []
   )
 
   const handleFilterCallback = useCallback(
-    (filterKey, searchValue, filter) =>
-      SetEntriesFilterMap(filterKey, searchValue, filter),
+    (filterKey, searchValue) => SetEntriesFilterMap(filterKey, searchValue),
     []
   )
 
@@ -58,13 +60,17 @@ const EntriesTable = ({
         width: 180,
         filter: "string",
         filterPlaceholder: "Title",
+        defaultSortValue: sortMap.title,
+        defaultFilterValue: filterMap.title,
       },
       {
         title: <i className="fas fa-keyboard" />,
         key: "html",
         width: 180,
+        defaultSortValue: sortMap.html,
         filter: "string",
         filterPlaceholder: "Body",
+        defaultFilterValue: filterMap.html,
         render: (item) => stripHtml(item.html),
       },
       {
@@ -75,8 +81,10 @@ const EntriesTable = ({
           sortUp
             ? b.tags.join().localeCompare(a.tags.join())
             : a.tags.join().localeCompare(b.tags.join()),
+        defaultSortValue: sortMap.tags,
         filter: (searchValue) => (item) =>
           item.tags.some((t) => stringMatch(t.name, searchValue)),
+        defaultFilterValue: filterMap.tags,
         filterPlaceholder: "Tags",
         render: (item) => <TagsContainer tags={item.tags} />,
       },
@@ -88,8 +96,10 @@ const EntriesTable = ({
           sortUp
             ? b.people.join().localeCompare(a.people.join())
             : a.people.join().localeCompare(b.people.join()),
+        defaultSortValue: sortMap.people,
         filter: (searchValue) => (item) =>
           item.people.some((t) => stringMatch(t.name, searchValue)),
+        defaultFilterValue: filterMap.people,
         filterPlaceholder: "People",
         render: (item) => (
           <TagsContainer
@@ -103,8 +113,10 @@ const EntriesTable = ({
         title: <i className="fas fa-map-marker-alt" />,
         key: "address",
         width: 180,
+        defaultSortValue: sortMap.address,
         filter: "string",
         filterPlaceholder: "Address",
+        defaultFilterValue: filterMap.address,
       },
       {
         title: <i className="fas fa-calendar-day" />,
@@ -122,8 +134,10 @@ const EntriesTable = ({
               new Date(a.date_created_by_author)
             : new Date(a.date_created_by_author) -
               new Date(b.date_created_by_author),
+        defaultSortValue: sortMap.date_created_by_author,
         filter: "date",
         filterPlaceholder: "Created",
+        defaultFilterValue: filterMap.date_created_by_author,
       },
       {
         title: <i className="fas fa-pencil-alt" />,
@@ -140,16 +154,21 @@ const EntriesTable = ({
               new Date(a._lastUpdated || a.date_updated)
             : new Date(a._lastUpdated || a.date_updated) -
               new Date(b._lastUpdated || b.date_updated),
+        defaultSortValue: sortMap.date_updated,
         filter: "date",
         filterPlaceholder: "Updated",
+        defaultFilterValue: filterMap.date_updated,
       },
+
       {
         title: <i className="far fa-eye" />,
         key: "views",
         width: 50,
         render: (item) => <span className="Center">{item.views}</span>,
+        defaultSortValue: sortMap.views,
         filter: "number",
         filterPlaceholder: "<=",
+        defaultFilterValue: filterMap.views,
       },
       {
         title: <i className="fas fa-star" />,
@@ -170,8 +189,10 @@ const EntriesTable = ({
 
           return <span>{averageRating > 0 ? averageRating : 0}</span>
         },
+        defaultSortValue: sortMap.rating,
         filter: "number",
         filterPlaceholder: "<=",
+        defaultFilterValue: filterMap.rating,
       },
       {
         title: <i className="fas fa-photo-video" />,
@@ -184,9 +205,11 @@ const EntriesTable = ({
           sortUp
             ? b.EntryFiles.length - a.EntryFiles.length
             : a.EntryFiles.length - b.EntryFiles.length,
+        defaultSortValue: sortMap.EntryFiles,
         filter: (searchValue) => (item) =>
           item.EntryFiles.length >= searchValue,
         filterPlaceholder: "<=",
+        defaultFilterValue: filterMap.EntryFiles,
       },
       {
         title: <i className="fas fa-lock" />,
@@ -195,6 +218,8 @@ const EntriesTable = ({
         render: (item) => (
           <span className="Center">{item.is_public ? "Yes" : "No"}</span>
         ),
+        defaultSortValue: sortMap.is_public,
+        defaultFilterValue: filterMap.is_public,
       },
     ],
     []
@@ -202,11 +227,8 @@ const EntriesTable = ({
   return (
     <BasicTable
       sortable
-      defaultSortKey="date_updated"
       columns={tableColumns}
       data={viewableEntries}
-      sortMap={sortMap}
-      filterMap={filterMap}
       onSortCallback={handleSortCallback}
       onFilterCallback={handleFilterCallback}
     />

@@ -4,7 +4,9 @@ const tableSort = (data, sortMap) => {
   Object.keys(sortMap).forEach((sortKey) => {
     const { sortUp, sort } = sortMap[sortKey]
 
-    if (sort) {
+    const shouldCallColumnSort = !!sort
+
+    if (shouldCallColumnSort) {
       data = data.sort((a, b) => sort(a, b, sortUp))
     } else {
       data = data.sort((a, b) => {

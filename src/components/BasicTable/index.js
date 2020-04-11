@@ -1,11 +1,4 @@
-import React, {
-  Fragment,
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  memo,
-} from "react"
+import React, { Fragment, useState, useCallback, memo } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import TableHeader from "./TableHeader"
@@ -19,16 +12,30 @@ import "./styles.css"
 
 const getInitialState = (
   columns,
-  { defaultSortKey, pageSize, pageSizes, sortMap, filterMap }
+  { pageSize, pageSizes, sortMap, filterMap }
 ) => {
-  const { sort } = columns.find((c) => (c.dataIndex || c.key) == defaultSortKey)
+  for (let i = 0, { length } = columns; i < length; i++) {
+    const {
+      dataIndex,
+      key,
+      sort,
+      filter,
+      defaultSortValue,
+      defaultFilterValue,
+    } = columns[i]
+    const uniqueKey = dataIndex || key
+
+    sortMap[uniqueKey] = {
+      sortUp: defaultSortValue,
+      sort,
+    }
+    filterMap[uniqueKey] = { searchValue: defaultFilterValue || "", filter }
+  }
 
   const firstRowClickFound = columns.find((column) => column.onRowClick)
 
   return {
-    sortMap: defaultSortKey
-      ? { [defaultSortKey]: { sortUp: true, sort } }
-      : sortMap,
+    sortMap,
     filterMap,
     onRowClick: firstRowClickFound && firstRowClickFound.onRowClick,
     currentPage: 0,
@@ -52,43 +59,37 @@ const BasicTable = ({
   onFilterCallback,
   ...restOfProps
 }) => {
-  const mounted = useRef(false)
   const [
     { onRowClick, currentPage, pageSize, pageSizes, sortMap, filterMap },
     setState,
   ] = useState(getInitialState(columns, restOfProps))
 
-  const handleSort = useCallback((sortKey, sortUp, sort) => {
-    if (onSortCallback) onSortCallback(sortKey, sort, sortUp)
-    else
-      setState((prevState) => ({
-        ...prevState,
-        sortMap: { ...prevState.sortMap, [sortKey]: { sortUp, sort } },
-      }))
+  console.log("sortMap: ", sortMap)
+  // console.log("filterMap: ", filterMap)
+
+  const handleSort = useCallback((sortKey, sortUp) => {
+    onSortCallback && onSortCallback(sortKey, sortUp)
+
+    setState((prevState) => ({
+      ...prevState,
+      sortMap: {
+        ...prevState.sortMap,
+        [sortKey]: { ...prevState.sortMap[sortKey], sortUp },
+      },
+    }))
   }, [])
 
-  const handleFilter = useCallback((filterKey, searchValue, filter) => {
-    if (onFilterCallback) onFilterCallback(filterKey, searchValue, filter)
-    else
-      setState((prevState) => ({
-        ...prevState,
-        filterMap: {
-          ...prevState.filterMap,
-          [filterKey]: { searchValue, filter },
-        },
-      }))
-  }, [])
+  const handleFilter = useCallback((filterKey, searchValue) => {
+    onFilterCallback && onFilterCallback(filterKey, searchValue)
 
-  useEffect(() => {
-    if (mounted.current) {
-      setState((prevState) => ({
-        ...prevState,
-        sortMap: restOfProps.sortMap,
-        filterMap: restOfProps.filterMap,
-      }))
-    }
-    mounted.current = true
-  }, [restOfProps.sortMap, restOfProps.filterMap])
+    setState((prevState) => ({
+      ...prevState,
+      filterMap: {
+        ...prevState.filterMap,
+        [filterKey]: { ...prevState.filterMap[filterKey], searchValue },
+      },
+    }))
+  }, [])
 
   const handlePageChange = (currentPage) => {
     setState((prevState) => ({ ...prevState, currentPage }))
@@ -100,13 +101,17 @@ const BasicTable = ({
 
   let sortedAndFilteredData = [...data]
 
-  const hasSorting = Object.keys(sortMap).find((key) => sortMap[key].sort)
+  const hasSorting = Object.keys(sortMap).find(
+    (key) => sortMap[key].sortUp !== undefined
+  )
 
   if (hasSorting) {
     sortedAndFilteredData = tableSort(data, sortMap)
   }
 
-  const hasFilters = Object.keys(filterMap).find((key) => filterMap[key].filter)
+  const hasFilters = Object.keys(filterMap).find(
+    (key) => filterMap[key].searchValue
+  )
 
   if (hasFilters) {
     if (sortedAndFilteredData) {
@@ -175,8 +180,9 @@ BasicTable.propTypes = {
   data: DataPropType,
   onSortCallback: PropTypes.func,
   onFilterCallback: PropTypes.func,
-  sortMap: PropTypes.object.isRequired,
-  filterMap: PropTypes.object.isRequired,
+  sortMap: PropTypes.shape({ sortUp: PropTypes.oneOf([false, true, null]) })
+    .isRequired,
+  filterMap: PropTypes.shape({ searchValue: PropTypes.string }).isRequired,
   // reactstrap Table
   tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   size: PropTypes.string,
@@ -188,7 +194,6 @@ BasicTable.propTypes = {
   responsive: PropTypes.bool,
   pageSize: PropTypes.number.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-  defaultSortKey: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   // Custom ref handler that will be assigned to the "ref" of the inner <table> element
   innerRef: PropTypes.oneOfType([
     PropTypes.func,
