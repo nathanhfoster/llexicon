@@ -8,8 +8,8 @@ const TableBody = ({ columns, data, onRowClick }) => {
     () =>
       data.map((item, i) => {
         const [firstColumn, ...restOfColumns] = columns
-        const { title, dataIndex, key, width = "auto", render } = firstColumn
-        const firstItemIndexOrKeyValue = item[dataIndex || key]
+        const { title,  key, width = "auto", render } = firstColumn
+        const firstItemIndexOrKeyValue = item[key]
 
         return (
           <tr key={i} onClick={onRowClick ? () => onRowClick(item) : null}>
@@ -17,8 +17,8 @@ const TableBody = ({ columns, data, onRowClick }) => {
               {render ? render(item) : firstItemIndexOrKeyValue}
             </th>
             {restOfColumns.map((c, j) => {
-              const { title, dataIndex, key, width = "auto", render } = c
-              const itemValue = item[dataIndex || key]
+              const { title,  key, width = "auto", render } = c
+              const itemValue = item[ key]
               return <td key={j}>{render ? render(item) : itemValue}</td>
             })}
           </tr>

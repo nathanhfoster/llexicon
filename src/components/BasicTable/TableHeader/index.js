@@ -9,15 +9,20 @@ const TableHeader = ({
   columns,
   sortCallback,
   sortable,
-  sortMap,
+  sortList,
   filterCallback,
 }) => {
+  const sortMap = sortList.reduce((map, item) => {
+    const { key, ...restOfItem } = item
+    map[key] = restOfItem
+    return map
+  }, {})
+
   const renderColumnHeaders = useMemo(() => {
     const shouldRenderSortContainer = columns.find((c) => c.filter)
     return columns.map((column, i) => {
       const {
         title,
-        dataIndex,
         key,
         width,
         render,
@@ -26,9 +31,10 @@ const TableHeader = ({
         filterPlaceholder,
         defaultSortValue,
         defaultFilterValue,
+        filterValue,
       } = column
       const titleFunction = typeof title === "function"
-      const { sortUp } = sortMap[key] ? sortMap[key] : {}
+      const { sortUp } = sortMap[key]
       const shouldShowSortIcon = typeof sortUp === isType.BOOLEAN
 
       const handleSort = () => {
@@ -62,13 +68,10 @@ const TableHeader = ({
               defaultValue={defaultFilterValue}
               disabled={!filter}
               onClick={(e) => e.stopPropagation()}
-              onChange={({ target: { value } }) =>
-                filterCallback(dataIndex || key, value)
-              }
+              onChange={({ target: { value } }) => filterCallback(key, value)}
               placeholder={
                 filter
-                  ? filterPlaceholder ||
-                    `${capitalizeFirstLetter(dataIndex || key)} filter`
+                  ? filterPlaceholder || `${capitalizeFirstLetter(key)} filter`
                   : null
               }
             />
@@ -76,7 +79,7 @@ const TableHeader = ({
         </th>
       )
     })
-  }, [columns, sortMap])
+  }, [columns, sortList])
 
   return (
     <thead>
@@ -90,7 +93,12 @@ TableHeader.propTypes = {
   sortCallback: PropTypes.func.isRequired,
   filterCallback: PropTypes.func.isRequired,
   columns: ColumnsPropType,
-  sortMap: PropTypes.object.isRequired,
+  sortList: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      sortUp: PropTypes.oneOf([false, true, null]),
+    })
+  ).isRequired,
 }
 
 export default memo(TableHeader)

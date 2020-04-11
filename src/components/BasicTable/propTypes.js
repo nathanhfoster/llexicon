@@ -8,7 +8,6 @@ const ColumnsPropType = PropTypes.arrayOf(
       PropTypes.object,
       PropTypes.func,
     ]),
-    dataIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     render: PropTypes.func,

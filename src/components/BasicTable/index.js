@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useCallback, memo } from "react"
-import PropTypes from "prop-types"
+import PropTypes, { shape } from "prop-types"
 import { Table } from "reactstrap"
 import TableHeader from "./TableHeader"
 import TableBody from "./TableBody"
@@ -10,34 +10,33 @@ import { ColumnsPropType, DataPropType } from "./propTypes"
 import { stringMatch } from "../../helpers"
 import "./styles.css"
 
-const getInitialState = (
-  columns,
-  { pageSize, pageSizes, sortMap, filterMap }
-) => {
+const getInitialState = (columns, { pageSize, pageSizes }) => {
+  let sortList = []
+  let filterList = []
+  let firstRowClickFound = null
+
   for (let i = 0, { length } = columns; i < length; i++) {
     const {
-      dataIndex,
       key,
       sort,
       filter,
       defaultSortValue,
       defaultFilterValue,
+      onRowClick,
     } = columns[i]
-    const uniqueKey = dataIndex || key
 
-    sortMap[uniqueKey] = {
-      sortUp: defaultSortValue,
-      sort,
-    }
+    if (!firstRowClickFound && onRowClick) firstRowClickFound = onRowClick
 
-    filterMap[uniqueKey] = { searchValue: defaultFilterValue || "", filter }
+    const sortItem = { key, sortUp: defaultSortValue, sort }
+    sortList.push(sortItem)
+
+    const filterItem = { key, filterValue: defaultFilterValue || "", filter }
+    filterList.push(filterItem)
   }
 
-  const firstRowClickFound = columns.find((column) => column.onRowClick)
-
   return {
-    sortMap,
-    filterMap,
+    sortList,
+    filterList,
     onRowClick: firstRowClickFound && firstRowClickFound.onRowClick,
     currentPage: 0,
     pageSize,
@@ -61,35 +60,51 @@ const BasicTable = ({
   ...propsUsedToDeriveState
 }) => {
   const [
-    { onRowClick, currentPage, pageSize, pageSizes, sortMap, filterMap },
+    { onRowClick, currentPage, pageSize, pageSizes, sortList, filterList },
     setState,
   ] = useState(getInitialState(columns, propsUsedToDeriveState))
 
-  // console.log("sortMap: ", sortMap)
-  // console.log("filterMap: ", filterMap)
+  // console.log("sortList: ", sortList)
+  // console.log("filterList: ", filterList)
 
   const handleSort = useCallback((sortKey, sortUp) => {
     onSortCallback && onSortCallback(sortKey, sortUp)
 
-    setState((prevState) => ({
-      ...prevState,
-      sortMap: {
-        ...prevState.sortMap,
-        [sortKey]: { ...prevState.sortMap[sortKey], sortUp },
-      },
-    }))
+    setState((prevState) => {
+      let tempItem
+      const newSortList = prevState.sortList
+        .filter((item) => {
+          if (item.key == sortKey) {
+            tempItem = { ...item, sortUp }
+            return false
+          } else return true
+        })
+        .concat(tempItem)
+      return {
+        ...prevState,
+        sortList: newSortList,
+      }
+    })
   }, [])
 
-  const handleFilter = useCallback((filterKey, searchValue) => {
-    onFilterCallback && onFilterCallback(filterKey, searchValue)
+  const handleFilter = useCallback((filterKey, filterValue) => {
+    onFilterCallback && onFilterCallback(filterKey, filterValue)
 
-    setState((prevState) => ({
-      ...prevState,
-      filterMap: {
-        ...prevState.filterMap,
-        [filterKey]: { ...prevState.filterMap[filterKey], searchValue },
-      },
-    }))
+    setState((prevState) => {
+      let tempItem
+      const newFilterList = prevState.filterList
+        .filter((item) => {
+          if (item.key == filterKey) {
+            tempItem = { ...item, filterValue }
+            return false
+          } else return true
+        })
+        .concat(tempItem)
+      return {
+        ...prevState,
+        filterList: newFilterList,
+      }
+    })
   }, [])
 
   const handlePageChange = (currentPage) => {
@@ -100,27 +115,9 @@ const BasicTable = ({
     setState((prevState) => ({ ...prevState, pageSize, currentPage: 0 }))
   }
 
-  let sortedAndFilteredData = [...data]
+  const sortedData = tableSort([...data], sortList)
 
-  const hasSorting = Object.keys(sortMap).find(
-    (key) => sortMap[key] && sortMap[key].sortUp !== undefined
-  )
-
-  if (hasSorting) {
-    sortedAndFilteredData = tableSort(sortedAndFilteredData, sortMap)
-  }
-
-  const hasFilters = Object.keys(filterMap).find(
-    (key) => filterMap[key] && filterMap[key].searchValue
-  )
-
-  if (hasFilters) {
-    if (sortedAndFilteredData.length > 0) {
-      sortedAndFilteredData = tableFilter(sortedAndFilteredData, filterMap)
-    } else {
-      sortedAndFilteredData = tableFilter(sortedAndFilteredData, filterMap)
-    }
-  }
+  const sortedAndFilteredData = tableFilter(sortedData, filterList)
 
   const sliceStart = currentPage * pageSize
 
@@ -148,7 +145,7 @@ const BasicTable = ({
           sortCallback={handleSort}
           filterCallback={handleFilter}
           columns={columns}
-          sortMap={sortMap}
+          sortList={sortList}
         />
         <TableBody
           columns={columns}
@@ -180,9 +177,6 @@ BasicTable.propTypes = {
   data: DataPropType,
   onSortCallback: PropTypes.func,
   onFilterCallback: PropTypes.func,
-  sortMap: PropTypes.shape({ sortUp: PropTypes.oneOf([false, true, null]) })
-    .isRequired,
-  filterMap: PropTypes.shape({ searchValue: PropTypes.string }).isRequired,
   // reactstrap Table
   tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   size: PropTypes.string,
@@ -211,40 +205,36 @@ BasicTable.defaultProps = {
   responsive: true,
   pageSize: 10,
   pageSizes: [5, 10, 15, 20, 25, 50, 100],
-  sortMap: {},
-  filterMap: {},
+  sortList: [],
+  sortList: [],
   columns: [
     {
       title: "#",
-      dataIndex: "id",
       key: "id",
       width: 25,
     },
     {
       title: "First Name",
-      dataIndex: "first_name",
       key: "first_name",
       width: 100,
       filter: "string",
     },
     {
       title: "Last Name",
-      dataIndex: "last_name",
       key: "last_name",
       width: 200,
       filter: "string",
     },
     {
       title: "Username",
-      dataIndex: "user_name",
       key: "user_name",
       render: (item) => <a href="#">{`Delete ${item.user_name}`}</a>,
       sort: (a, b, sortUp) =>
         sortUp
           ? b.user_name.localeCompare(a.user_name)
           : a.user_name.localeCompare(b.user_name),
-      filter: (searchValue) => (item) =>
-        stringMatch(item.user_name, searchValue),
+      filter: (filterValue) => (item) =>
+        stringMatch(item.user_name, filterValue),
     },
   ],
   data: new Array(25).fill().map(
