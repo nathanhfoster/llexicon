@@ -10,7 +10,6 @@ const TableHeader = ({
   sortCallback,
   sortable,
   sortMap,
-  filterMap,
   filterCallback,
 }) => {
   const renderColumnHeaders = useMemo(() => {
@@ -91,7 +90,6 @@ TableHeader.propTypes = {
   filterCallback: PropTypes.func.isRequired,
   columns: ColumnsPropType,
   sortMap: PropTypes.object.isRequired,
-  filterMap: PropTypes.object.isRequired,
 }
 
 export default memo(TableHeader)

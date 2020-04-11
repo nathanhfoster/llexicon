@@ -57,14 +57,14 @@ const BasicTable = ({
   columns,
   onSortCallback,
   onFilterCallback,
-  ...restOfProps
+  ...propsUsedToDeriveState
 }) => {
   const [
     { onRowClick, currentPage, pageSize, pageSizes, sortMap, filterMap },
     setState,
-  ] = useState(getInitialState(columns, restOfProps))
+  ] = useState(getInitialState(columns, propsUsedToDeriveState))
 
-  console.log("sortMap: ", sortMap)
+  // console.log("sortMap: ", sortMap)
   // console.log("filterMap: ", filterMap)
 
   const handleSort = useCallback((sortKey, sortUp) => {
@@ -148,7 +148,6 @@ const BasicTable = ({
           filterCallback={handleFilter}
           columns={columns}
           sortMap={sortMap}
-          filterMap={filterMap}
         />
         <TableBody
           columns={columns}
