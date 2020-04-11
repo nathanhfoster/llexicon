@@ -1,17 +1,17 @@
 import { isType } from "../../../helpers"
 
 const tableSort = (data, sortMap) => {
+  // console.log(sortMap)
   Object.keys(sortMap).forEach((sortKey) => {
     const { sortUp, sort } = sortMap[sortKey]
 
+    const shouldSort = typeof sortUp !== isType.UNDEFINED
+
     // console.log(sortUp, sort)
 
-    const shouldCallColumnSort = !!sort
-
-    if (shouldCallColumnSort) {
-      console.log(sortUp, sort)
+    if (shouldSort && sort) {
       data = data.sort((a, b) => sort(a, b, sortUp))
-    } else {
+    } else if (shouldSort) {
       data = data.sort((a, b) => {
         const aValue = a[sortKey]
         const bValue = b[sortKey]

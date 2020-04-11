@@ -1,9 +1,10 @@
 import MomentJS from "moment"
-import { stringMatch } from "../../../helpers"
+import { stringMatch, isType } from "../../../helpers"
 
 const tableFilter = (data, filterMap) => {
   Object.keys(filterMap).forEach((filterKey) => {
     const { searchValue, filter } = filterMap[filterKey]
+    if (!searchValue) return
 
     if (filter instanceof Function || typeof filter === "function") {
       data = data.filter(filter(searchValue))

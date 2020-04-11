@@ -29,6 +29,7 @@ const getInitialState = (
       sortUp: defaultSortValue,
       sort,
     }
+
     filterMap[uniqueKey] = { searchValue: defaultFilterValue || "", filter }
   }
 
@@ -102,22 +103,22 @@ const BasicTable = ({
   let sortedAndFilteredData = [...data]
 
   const hasSorting = Object.keys(sortMap).find(
-    (key) => sortMap[key].sortUp !== undefined
+    (key) => sortMap[key] && sortMap[key].sortUp !== undefined
   )
 
   if (hasSorting) {
-    sortedAndFilteredData = tableSort(data, sortMap)
+    sortedAndFilteredData = tableSort(sortedAndFilteredData, sortMap)
   }
 
   const hasFilters = Object.keys(filterMap).find(
-    (key) => filterMap[key].searchValue
+    (key) => filterMap[key] && filterMap[key].searchValue
   )
 
   if (hasFilters) {
-    if (sortedAndFilteredData) {
+    if (sortedAndFilteredData.length > 0) {
       sortedAndFilteredData = tableFilter(sortedAndFilteredData, filterMap)
     } else {
-      sortedAndFilteredData = tableFilter(data, filterMap)
+      sortedAndFilteredData = tableFilter(sortedAndFilteredData, filterMap)
     }
   }
 

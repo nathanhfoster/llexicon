@@ -1,7 +1,7 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Input } from "reactstrap"
-import { capitalizeFirstLetter } from "../../../helpers"
+import { capitalizeFirstLetter, isType } from "../../../helpers"
 import { ColumnsPropType } from "../propTypes"
 import "./styles.css"
 
@@ -28,8 +28,8 @@ const TableHeader = ({
         defaultFilterValue,
       } = column
       const titleFunction = typeof title === "function"
-      const { sortUp } = sortMap[key]
-      const shouldShowSortIcon = sortUp !== undefined
+      const { sortUp } = sortMap[key] ? sortMap[key] : {}
+      const shouldShowSortIcon = typeof sortUp === isType.BOOLEAN
 
       const handleSort = () => {
         if (sortUp === false) {
@@ -38,6 +38,7 @@ const TableHeader = ({
           sortCallback(key, !sortUp)
         }
       }
+
       return (
         <th
           key={key}
