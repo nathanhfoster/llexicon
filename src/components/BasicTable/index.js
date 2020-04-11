@@ -1,11 +1,11 @@
 import React, { Fragment, useState, useCallback, memo } from "react"
-import PropTypes, { shape } from "prop-types"
+import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import TableHeader from "./TableHeader"
 import TableBody from "./TableBody"
 import TableFooter from "./TableFooter"
 import TablePaginator from "./TablePaginator"
-import { tableSort, tableFilter } from "./utils"
+import { filterSort, tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./propTypes"
 import { stringMatch } from "../../helpers"
 import "./styles.css"
@@ -71,15 +71,10 @@ const BasicTable = ({
     onSortCallback && onSortCallback(sortKey, sortUp)
 
     setState((prevState) => {
-      let tempItem
-      const newSortList = prevState.sortList
-        .filter((item) => {
-          if (item.key == sortKey) {
-            tempItem = { ...item, sortUp }
-            return false
-          } else return true
-        })
-        .concat(tempItem)
+      const newSortList = filterSort(prevState.sortList, sortKey, {
+        sortUp,
+      })
+
       return {
         ...prevState,
         sortList: newSortList,
@@ -91,15 +86,9 @@ const BasicTable = ({
     onFilterCallback && onFilterCallback(filterKey, filterValue)
 
     setState((prevState) => {
-      let tempItem
-      const newFilterList = prevState.filterList
-        .filter((item) => {
-          if (item.key == filterKey) {
-            tempItem = { ...item, filterValue }
-            return false
-          } else return true
-        })
-        .concat(tempItem)
+      const newFilterList = filterSort(prevState.filterList, filterKey, {
+        filterValue,
+      })
       return {
         ...prevState,
         filterList: newFilterList,

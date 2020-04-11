@@ -1,4 +1,5 @@
+import filterSort from './filterSort'
 import tableSort from "./tableSort"
 import tableFilter from "./tableFilter"
 
-export { tableSort, tableFilter }
+export { filterSort,tableSort, tableFilter }
