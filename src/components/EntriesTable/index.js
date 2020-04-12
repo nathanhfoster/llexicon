@@ -13,11 +13,8 @@ import {
   SetEntriesFilterMap,
 } from "../../redux/Entries/actions"
 
-const mapStateToProps = ({
-  Entries: { items, filteredItems, sortMap, filterMap },
-}) => ({
+const mapStateToProps = ({ Entries: { items, sortMap, filterMap } }) => ({
   items,
-  filteredItems,
   sortMap,
   filterMap,
 })
@@ -29,7 +26,6 @@ const mapDispatchToProps = {
 
 const EntriesTable = ({
   items,
-  filteredItems,
   sortMap,
   filterMap,
   SetEntriesSortMap,
@@ -38,8 +34,8 @@ const EntriesTable = ({
   const history = useHistory()
 
   const viewableEntries = useMemo(
-    () => items.concat(filteredItems).filter((item) => !item._shouldDelete),
-    [items, filteredItems]
+    () => items.filter((item) => !item._shouldDelete),
+    [items]
   )
 
   const handleSortCallback = useCallback(
@@ -237,7 +233,6 @@ const EntriesTable = ({
 
 EntriesTable.propTypes = {
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
   sortMap: PropTypes.object,
   filterMap: PropTypes.object,
   SetEntriesSortMap: PropTypes.func.isRequired,

@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useCallback, memo } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
-import TableHeader from "./TableHeader"
+import TableHeaders from "./TableHeaders"
 import TableBody from "./TableBody"
-import TableFooter from "./TableFooter"
+import TableFooters from "./TableFooters"
 import TablePaginator from "./TablePaginator"
 import { filterSort, tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./propTypes"
@@ -129,7 +129,7 @@ const BasicTable = ({
         responsive={responsive}
         className="BasicTable m-0"
       >
-        <TableHeader
+        <TableHeaders
           sortable={sortable}
           sortCallback={handleSort}
           filterCallback={handleFilter}
@@ -141,7 +141,7 @@ const BasicTable = ({
           data={slicedData}
           onRowClick={onRowClick}
         />
-        <TableFooter
+        <TableFooters
           onRowClick={onRowClick}
           columns={columns}
           sortedAndFilteredData={sortedAndFilteredData}

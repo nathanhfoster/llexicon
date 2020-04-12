@@ -1,27 +1,26 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { ColumnsPropType, DataPropType } from "../propTypes"
-import "./styles.css"
+import TableRow from "./TableRow"
+
 
 const TableBody = ({ columns, data, onRowClick }) => {
   const renderTableRows = useMemo(
     () =>
       data.map((item, i) => {
         const [firstColumn, ...restOfColumns] = columns
-        const { title,  key, width = "auto", render } = firstColumn
+        const { title, key, width = "auto", render } = firstColumn
         const firstItemIndexOrKeyValue = item[key]
 
         return (
-          <tr key={i} onClick={onRowClick ? () => onRowClick(item) : null}>
-            <th scope="row" style={{ fontWeight: "normal" }}>
-              {render ? render(item) : firstItemIndexOrKeyValue}
-            </th>
-            {restOfColumns.map((c, j) => {
-              const { title,  key, width = "auto", render } = c
-              const itemValue = item[ key]
-              return <td key={j}>{render ? render(item) : itemValue}</td>
-            })}
-          </tr>
+          <TableRow
+            key={i}
+            onRowClick={onRowClick}
+            item={item}
+            render={render}
+            firstItemIndexOrKeyValue={firstItemIndexOrKeyValue}
+            restOfColumns={restOfColumns}
+          />
         )
       }),
     [columns, data]
