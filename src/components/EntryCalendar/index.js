@@ -50,7 +50,7 @@ const EntryCalendar = ({
         const entryDateWithinView = entryDate.isSame(calendarDate, view)
 
         return !_shouldDelete && entryDateWithinView
-      }),
+      }).sort((a, b) => new Date(b.date_created_by_author) - new Date(a.date_created_by_author)),
     [activeDate, entries]
   )
 
