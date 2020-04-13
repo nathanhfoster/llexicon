@@ -44,13 +44,19 @@ const EntryCalendar = ({
 
   const entriesWithinView = useMemo(
     () =>
-      entries.filter((entry) => {
-        const { date_created_by_author, _shouldDelete } = entry
-        const entryDate = MomentJS(date_created_by_author)
-        const entryDateWithinView = entryDate.isSame(calendarDate, view)
+      entries
+        .filter((entry) => {
+          const { date_created_by_author, _shouldDelete } = entry
+          const entryDate = MomentJS(date_created_by_author)
+          const entryDateWithinView = entryDate.isSame(calendarDate, view)
 
-        return !_shouldDelete && entryDateWithinView
-      }).sort((a, b) => new Date(b.date_created_by_author) - new Date(a.date_created_by_author)),
+          return !_shouldDelete && entryDateWithinView
+        })
+        .sort(
+          (a, b) =>
+            new Date(a.date_created_by_author) -
+            new Date(b.date_created_by_author)
+        ),
     [activeDate, entries]
   )
 
