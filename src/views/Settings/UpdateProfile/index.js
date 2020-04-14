@@ -4,8 +4,13 @@ import { UserProps } from "../../../redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { BasicForm, ConfirmAction } from "../../../components"
-import { Container, Row, Col, Button } from "reactstrap"
-import { UpdateUser, DeleteAccount } from "../../../redux/User/actions"
+import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
+import {
+  UpdateUser,
+  DeleteAccount,
+  UserLogout,
+} from "../../../redux/User/actions"
+import { clearReduxStoreFromLocalStorage } from "../../../redux/localState"
 import { cleanObject } from "../../../helpers"
 import { RouteMap, RouterPush } from "../../../routes"
 
@@ -16,14 +21,19 @@ const mapStateToProps = ({ User }) => ({
 const mapDispatchToProps = {
   UpdateUser,
   DeleteAccount,
+  UserLogout,
 }
 
-const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
+const UpdateProfile = ({ User, UpdateUser, DeleteAccount, UserLogout }) => {
   const history = useHistory()
   const handleChangeUser = useCallback((payload) => {
     UpdateUser(cleanObject(payload, true))
   }, [])
   const handleDeleteAccount = useCallback(() => DeleteAccount(), [])
+  const handleClearCache = useCallback(() => {
+    clearReduxStoreFromLocalStorage()
+    UserLogout()
+  }, [])
   const handleSignUp = useCallback(() => {
     RouterPush(history, RouteMap.SIGNUP)
   }, [history])
@@ -100,7 +110,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
             button={
               <Button color="danger">
                 <i className="fas fa-trash-alt mr-1" />
-                Delete Account
+                Delete Account and Clear Cache
               </Button>
             }
           />
@@ -108,9 +118,21 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
       </Row>
     </Container>
   ) : (
-    <Button color="accent" onClick={handleSignUp}>
-      Sign Up
-    </Button>
+    <ButtonGroup>
+      <Button color="accent" onClick={handleSignUp}>
+        Sign Up
+      </Button>
+      <ConfirmAction
+        message="Are you sure you want to delete your account? Everything will be erased."
+        onConfirm={handleClearCache}
+        button={
+          <Button color="danger">
+            <i className="fas fa-trash-alt mr-1" />
+            Clear Cache
+          </Button>
+        }
+      />
+    </ButtonGroup>
   )
 }
 
@@ -118,6 +140,7 @@ UpdateProfile.propTypes = {
   User: UserProps,
   UpdateUser: PropTypes.func.isRequired,
   DeleteAccount: PropTypes.func.isRequired,
+  UserLogout: PropTypes.func.isRequired,
 }
 
 UpdateProfile.defaultProps = {}

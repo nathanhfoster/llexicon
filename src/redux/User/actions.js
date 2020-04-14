@@ -213,12 +213,12 @@ const DeleteAccount = () => (dispatch, getState) => {
   return Axios()
     .delete(`users/${id}/`)
     .then((res) => {
-      dispatch(UserLogout())
       dispatch({
         type: AlertActionTypes.ALERTS_SET_MESSAGE,
         payload: { title: "Deleted", message: "Account" },
       })
       clearReduxStoreFromLocalStorage()
+      dispatch(UserLogout())
     })
     .catch((e) => console.log("DeleteAccount: ", e.response))
 }
