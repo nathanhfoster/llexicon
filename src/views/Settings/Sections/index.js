@@ -8,7 +8,7 @@ import SettingInput from "./SettingInput"
 import {
   GetUserSettings,
   PostSettings,
-  SetSettings,
+  UpdateSettings,
 } from "../../../redux/User/actions"
 
 const mapStateToProps = ({ User }) => ({
@@ -18,10 +18,10 @@ const mapStateToProps = ({ User }) => ({
 const mapDispatchToProps = {
   GetUserSettings,
   PostSettings,
-  SetSettings,
+  UpdateSettings,
 }
 
-const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
+const Sections = ({ User, GetUserSettings, PostSettings, UpdateSettings }) => {
   useEffect(() => {
     if (User.token) GetUserSettings()
   }, [])
@@ -41,7 +41,7 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
             user: id,
             [settingKey]: !value,
           })
-        : SetSettings({
+        : UpdateSettings({
             [settingKey]: !value,
           })
     },
@@ -114,7 +114,7 @@ Sections.propTypes = {
   User: UserProps.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   PostSettings: PropTypes.func.isRequired,
-  SetSettings: PropTypes.func.isRequired,
+  UpdateSettings: PropTypes.func.isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(Sections)

@@ -6,6 +6,7 @@ import { persistReduxState } from "../localState"
 import { GetUserEntries } from "../Entries/actions"
 import { clearReduxStoreFromLocalStorage } from "../localState"
 import qs from "qs"
+import ReactGA from "react-ga"
 
 const SetUser = (payload) => ({
   type: UserActionTypes.USER_SET,
@@ -15,7 +16,7 @@ const SetUser = (payload) => ({
 const ChangeUser = (payload) => ({ type: UserActionTypes.USER_SET, payload })
 
 const UserLogin = (payload, rememberMe) => async (dispatch) =>
-  await Axios()
+  await AxiosOffline()
     .post("login/", qs.stringify(payload))
     .then(async ({ data }) => {
       const { id, token } = data
@@ -23,18 +24,25 @@ const UserLogin = (payload, rememberMe) => async (dispatch) =>
       await dispatch(SetUser(data))
       await dispatch(persistReduxState())
       await dispatch(GetUserEntries(1))
-
+      ReactGA.event({
+        category: "Login",
+        action: "User logged in!",
+      })
       return data
     })
     .catch((e) => console.log("UserLogin: ", e.response))
 
 const RefreshPatchUser = (id) => (dispatch) =>
-  Axios()
+  AxiosOffline()
     .get(`users/${id}/refresh/`)
     .then(({ data }) => {
       dispatch({
         type: UserActionTypes.USER_SET,
         payload: data,
+      })
+      ReactGA.event({
+        category: "Refresh Patch User",
+        action: "User refreshed their login",
       })
       return data
     })
@@ -50,9 +58,15 @@ const RefreshPatchUser = (id) => (dispatch) =>
 const UserLogout = () => ({ type: AppActionTypes.REDUX_RESET })
 
 const CreateUser = (payload, rememberMe) => (dispatch) =>
-  Axios()
+  AxiosOffline()
     .post("users/", qs.stringify(payload))
-    .then((res) => dispatch(UserLogin(payload, rememberMe)))
+    .then((res) => {
+      dispatch(UserLogin(payload, rememberMe))
+      ReactGA.event({
+        category: "Sign Up",
+        action: "User signed up!",
+      })
+    })
     .catch((e) => console.log("CreateUser: ", e.response))
 
 const UpdateUser = (payload) => (dispatch, getState) => {
@@ -64,6 +78,10 @@ const UpdateUser = (payload) => (dispatch, getState) => {
       dispatch({
         type: AlertActionTypes.ALERTS_SET_MESSAGE,
         payload: { title: "Updated", message: "Profile" },
+      })
+      ReactGA.event({
+        category: "Update User",
+        action: "User updated their account",
       })
       return data
     })
@@ -79,6 +97,10 @@ const UpdateProfile = (payload) => (dispatch, getState) => {
       dispatch({
         type: UserActionTypes.USER_SET,
         payload: data,
+      })
+      ReactGA.event({
+        category: "Update Profile",
+        action: "User updated their profile",
       })
       return data
     })
@@ -123,6 +145,10 @@ const GetUserLocation = () => (dispatch) => {
     (position) => {
       //console.log("GetUserLocation:", position)
       dispatch(SetUserLocation(position))
+      ReactGA.event({
+        category: "Get User Location",
+        action: "User is using the getCurrentPosition API!",
+      })
     },
     (error) => console.log("GetUserLocation ERROR: ", error),
     { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 }
@@ -140,6 +166,10 @@ const WatchUserLocation = (watchId) => (dispatch) => {
     (position) => {
       // console.log("WatchUserLocation:", position)
       dispatch(SetUserLocation(position))
+      ReactGA.event({
+        category: "Watch User Location",
+        action: "User is using the watchPosition API!",
+      })
     },
     (error) => console.log("WatchUserLocation ERROR: ", error),
     { enableHighAccuracy: true, timeout: 3000, maximumAge: 10000 }
@@ -147,12 +177,16 @@ const WatchUserLocation = (watchId) => (dispatch) => {
 }
 
 const PasswordReset = (payload) => (dispatch) =>
-  Axios()
+  AxiosOffline()
     .post("rest-auth/password/reset/", qs.stringify(payload))
     .then(({ data: { detail } }) => {
       dispatch({
         type: AlertActionTypes.ALERTS_SET_MESSAGE,
         payload: { title: "Password Reset", message: detail },
+      })
+      ReactGA.event({
+        category: "Password Reset",
+        action: "User requested a password reset!",
       })
     })
     .catch((e) => {
@@ -189,11 +223,15 @@ const PostSettings = (payload) => (dispatch) => {
         type: UserActionTypes.USER_SET_SETTINGS,
         payload: data,
       })
+      ReactGA.event({
+        category: "Post Settings",
+        action: "User posted a new setting!",
+      })
       return data
     })
     .catch((e) => console.log("PostSettings: ", e.response))
 }
-const SetSettings = (payload) => (dispatch, getState) => {
+const UpdateSettings = (payload) => (dispatch, getState) => {
   const { id } = getState().User.Settings
   dispatch({
     type: UserActionTypes.USER_SET_SETTINGS,
@@ -211,14 +249,18 @@ const SetSettings = (payload) => (dispatch, getState) => {
         type: UserActionTypes.USER_SET_SETTINGS,
         payload: data,
       })
+      ReactGA.event({
+        category: "Update Settings",
+        action: "User updated a setting!",
+      })
       return data
     })
-    .catch((e) => console.log("SetSettings: ", e.response))
+    .catch((e) => console.log("UpdateSettings: ", e.response))
 }
 
 const DeleteAccount = () => (dispatch, getState) => {
   const { id } = getState().User
-  return Axios()
+  return AxiosOffline()
     .delete(`users/${id}/`)
     .then((res) => {
       dispatch({
@@ -227,6 +269,10 @@ const DeleteAccount = () => (dispatch, getState) => {
       })
       clearReduxStoreFromLocalStorage()
       dispatch(UserLogout())
+      ReactGA.event({
+        category: "Delete Account",
+        action: "User deleted their account!",
+      })
     })
     .catch((e) => console.log("DeleteAccount: ", e.response))
 }
@@ -251,7 +297,7 @@ export {
   PasswordReset,
   GetUserSettings,
   PostSettings,
-  SetSettings,
+  UpdateSettings,
   DeleteAccount,
   SearchForUsers,
 }

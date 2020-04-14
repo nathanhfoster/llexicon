@@ -162,7 +162,6 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
 
 const GetUserEntriesByDate = (date) => (dispatch, getState) => {
   const { id } = getState().User
-  if (!id) return
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify({ date }))
     .then((res) => {

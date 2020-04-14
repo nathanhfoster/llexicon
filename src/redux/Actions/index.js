@@ -8,30 +8,34 @@ const getUser = () => {
   if (!User) return { token: null, offline_mode: null }
   const {
     token,
-    Settings: { offline_mode }
+    Settings: { offline_mode },
   } = User
   return { token, offline_mode }
 }
 
 const base = {
-  Accept: "application/json"
+  Accept: "application/json",
 }
 
 const baseHeaders = {
   ...base,
   "Cache-Control": "no-cache",
-  "Content-Type": "application/x-www-form-urlencoded"
+  "Content-Type": "application/x-www-form-urlencoded",
 }
 
-const baseFormHeaders = payload => ({
+const baseFormHeaders = (payload) => ({
   ...base,
   "Accept-Language": "en-US,en;q=0.8",
-  "Content-Type": `multipart/form-data; boundary=${payload._boundary}`
+  "Content-Type": `multipart/form-data; boundary=${payload._boundary}`,
 })
+
+const isNotLoggedInAxios = () => {
+  return axios.create({ baseURL: "https://offline_mode" })
+}
 
 const Axios = (responseType = "json") => {
   const { token, offline_mode } = getUser()
-  if (offline_mode) return axios.create({ baseURL: "https://offline_mode" })
+  if (!token || offline_mode) return isNotLoggedInAxios()
   return axios.create({
     withCredentials: true,
     baseURL: REACT_APP_API_URL,
@@ -41,9 +45,9 @@ const Axios = (responseType = "json") => {
     headers: token
       ? {
           Authorization: `Token ${token}`,
-          ...baseHeaders
+          ...baseHeaders,
         }
-      : baseHeaders
+      : baseHeaders,
   })
 }
 
@@ -59,13 +63,13 @@ const AxiosOffline = (responseType = "json") => {
     headers: token
       ? {
           Authorization: `Token ${token}`,
-          ...baseHeaders
+          ...baseHeaders,
         }
-      : baseHeaders
+      : baseHeaders,
   })
 }
 
-const AxiosForm = payload => {
+const AxiosForm = (payload) => {
   const { token } = getUser()
   return axios.create({
     baseURL: REACT_APP_API_URL,
@@ -73,9 +77,9 @@ const AxiosForm = payload => {
     headers: token
       ? {
           Authorization: `Token ${token}`,
-          ...baseFormHeaders(payload)
+          ...baseFormHeaders(payload),
         }
-      : baseFormHeaders(payload)
+      : baseFormHeaders(payload),
   })
 }
 
@@ -89,16 +93,16 @@ const AxiosData = (token, payload) => {
     headers: token
       ? {
           Authorization: `Token ${token}`,
-          ...baseHeaders
+          ...baseHeaders,
         }
       : baseHeaders,
-    data: payload
+    data: payload,
   })
 }
 
 // dispatchActions is an array of actions that will be
 // recursively called using .then promise since an action that => or returns Axios() is a promise.
-const Sync = dispatchActions => async dispatch => {
+const Sync = (dispatchActions) => async (dispatch) => {
   // console.log("Sync: ", dispatchActions)
   if (!Array.isArray(dispatchActions)) return await dispatch(dispatchActions)
   if (dispatchActions.length === 0) return
@@ -109,7 +113,7 @@ const Sync = dispatchActions => async dispatch => {
 
   await dispatch(firstAction)
     .then(async () => await dispatch(Sync(restOfActions)))
-    .catch(e => {
+    .catch((e) => {
       console.log(JSON.parse(JSON.stringify(e)))
       return
     })
