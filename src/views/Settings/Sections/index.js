@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "../../../redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
@@ -30,20 +30,23 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
     Settings: { show_animated_background, offline_mode, push_messages },
   } = User
 
-  const handleOnClick = (settingKey) => {
-    const { id, token, Settings } = User
+  const handleOnClick = useCallback(
+    (settingKey) => {
+      const { id, token, Settings } = User
 
-    const value = Settings[settingKey]
+      const value = Settings[settingKey]
 
-    !Settings.id
-      ? PostSettings({
-          user: id,
-          [settingKey]: !value,
-        })
-      : SetSettings({
-          [settingKey]: !value,
-        })
-  }
+      !Settings.id
+        ? PostSettings({
+            user: id,
+            [settingKey]: !value,
+          })
+        : SetSettings({
+            [settingKey]: !value,
+          })
+    },
+    [User]
+  )
 
   const sections = [
     {
@@ -55,7 +58,6 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
       inputs: [
         {
           settingKey: "show_animated_background",
-          disabled: !User.id,
           checked: show_animated_background,
           onClickCallback: handleOnClick,
           title: "Show animated background",
@@ -72,7 +74,6 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
       inputs: [
         {
           settingKey: "offline_mode",
-          disabled: !User.id,
           checked: offline_mode,
           onClickCallback: handleOnClick,
           title: "Offline mode",
@@ -80,7 +81,6 @@ const Sections = ({ User, GetUserSettings, PostSettings, SetSettings }) => {
         },
         {
           settingKey: "push_messages",
-          disabled: !User.id,
           checked: push_messages,
           onClickCallback: handleOnClick,
           title: "Push Messages",

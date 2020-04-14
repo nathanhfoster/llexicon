@@ -178,6 +178,10 @@ const GetUserSettings = () => (dispatch, getState) => {
 }
 
 const PostSettings = (payload) => (dispatch) => {
+  dispatch({
+    type: UserActionTypes.USER_SET_SETTINGS,
+    payload,
+  })
   return AxiosOffline()
     .post(`user/settings/`, qs.stringify(payload))
     .then(({ data }) => {
@@ -191,6 +195,10 @@ const PostSettings = (payload) => (dispatch) => {
 }
 const SetSettings = (payload) => (dispatch, getState) => {
   const { id } = getState().User.Settings
+  dispatch({
+    type: UserActionTypes.USER_SET_SETTINGS,
+    payload,
+  })
 
   return AxiosOffline()
     .patch(`user/settings/${id}/`, qs.stringify(payload))

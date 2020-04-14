@@ -123,7 +123,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount, UserLogout }) => {
         Sign Up
       </Button>
       <ConfirmAction
-        message="Are you sure you want to delete your account? Everything will be erased."
+        message="Are you sure you want to clear your cache? Everything will be erased."
         onConfirm={handleClearCache}
         button={
           <Button color="danger">

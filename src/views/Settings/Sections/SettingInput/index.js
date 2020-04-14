@@ -8,7 +8,7 @@ const SettingInput = ({
   onClickCallback,
   title,
   tooltipTitle,
-  checked
+  checked,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -41,13 +41,17 @@ const SettingInput = ({
   )
 }
 
-SettingInput.defaultProps = {
+SettingInput.propTypes = {
   settingKey: PropTypes.string,
   disabled: PropTypes.bool,
   checked: PropTypes.bool,
   onClickCallback: PropTypes.func,
   title: PropTypes.string,
-  tooltipTitle: PropTypes.string
+  tooltipTitle: PropTypes.string,
+}
+
+SettingInput.defaultProps = {
+  disabled: false,
 }
 
 export default memo(SettingInput)
