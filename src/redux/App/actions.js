@@ -3,13 +3,14 @@ import { AppActionTypes } from "../App/types"
 import { AlertActionTypes } from "../Alerts/types"
 import { Axios } from "../Actions"
 import qs from "qs"
+import ReactGA from "react-ga"
 
-const SetWindow = payload => ({
+const SetWindow = (payload) => ({
   type: WindowActionTypes.SET_WINDOW,
-  payload
+  payload,
 })
 
-const ResetRedux = () => dispatch =>
+const ResetRedux = () => (dispatch) =>
   dispatch({ type: AppActionTypes.REDUX_RESET })
 
 const CheckAppVersion = () => (dispatch, getState) => {
@@ -26,17 +27,22 @@ const CheckAppVersion = () => (dispatch, getState) => {
           type: AlertActionTypes.ALERTS_SET_MESSAGE,
           payload: {
             title: "App Update",
-            message: "There is a new version of the app!"
-          }
+            message: "There is a new version of the app!",
+          },
+        })
+        ReactGA.event({
+          category: "Check App Version",
+          action: "User has an outdated version of the app!",
+          value: version,
         })
       }
     })
-    .catch(e => console.log(e))
+    .catch((e) => console.log(e))
 }
 
-const SetAppVersion = date_created => ({
+const SetAppVersion = (date_created) => ({
   type: AppActionTypes.SET_APP_VERSION,
-  payload: date_created
+  payload: date_created,
 })
 
 const GetAppVersion = () => (dispatch, getState) => {
@@ -48,8 +54,13 @@ const GetAppVersion = () => (dispatch, getState) => {
     .post("versions/latest/", qs.stringify({ version }))
     .then(({ data }) => {
       dispatch({ type: AppActionTypes.SET_APP_VERSION, payload: data })
+      ReactGA.event({
+        category: "Get App Version",
+        action: "User got the app version!",
+        value: version,
+      })
     })
-    .catch(e => console.log(e))
+    .catch((e) => console.log(e))
 }
 
 export { SetWindow, ResetRedux, CheckAppVersion, SetAppVersion, GetAppVersion }

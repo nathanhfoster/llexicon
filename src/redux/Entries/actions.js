@@ -9,6 +9,7 @@ import {
 import { getJsonTagsOrPeople } from "./utils"
 import FormData from "form-data"
 import qs from "qs"
+import ReactGA from "react-ga"
 
 const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -17,6 +18,11 @@ const GetUserEntryTags = () => (dispatch, getState) => {
     .then((res) => {
       const { data } = res
       dispatch({ type: EntriesActionTypes.ENTRIES_SET_TAGS, payload: data })
+      ReactGA.event({
+        category: "Get User Entry Tags",
+        action: "User got their entry tags!",
+        value: id,
+      })
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -28,6 +34,11 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
     .then((res) => {
       const { data } = res
       dispatch({ type: EntriesActionTypes.ENTRIES_SET_PEOPLE, payload: data })
+      ReactGA.event({
+        category: "Get User Entry People",
+        action: "User got their entry people!",
+        value: id,
+      })
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -45,6 +56,11 @@ const CreateEntryTag = (payload) => (dispatch, getState) => {
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET_TAGS,
         payload: Entries.concat(data),
+      })
+      ReactGA.event({
+        category: "Create Entry Tag",
+        action: "User created a entry tag!",
+        value: id,
       })
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
@@ -91,6 +107,10 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
       }
       // console.log("updateEntryPayload: ", updateEntryPayload)
       dispatch(UpdateEntry(entry_id, updateEntryPayload))
+      ReactGA.event({
+        category: "Aws Upload",
+        action: "User created a EntryFile in Aws",
+      })
       return data
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
@@ -104,6 +124,11 @@ const GetEntry = (url, id) => (dispatch) =>
       dispatch({
         type: EntriesActionTypes.ENTRY_SET,
         payload: data,
+      })
+      ReactGA.event({
+        category: "Get Entry",
+        action: "User is looking at entry!",
+        value: id,
       })
       return data
     })
@@ -132,6 +157,11 @@ const GetAllUserEntries = () => (dispatch, getState) => {
         type: EntriesActionTypes.ENTRY_IMPORT,
         payload: data,
       })
+      ReactGA.event({
+        category: "Get All User Entries",
+        action: "User is got all their entries!",
+        value: id,
+      })
       return data
     })
     .catch((e) => {
@@ -151,7 +181,13 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
         type: EntriesActionTypes.ENTRIES_SET,
         payload: data,
       })
-      return data
+      ReactGA.event({
+        category: "Get User Entries Page",
+        action: "User got a entry page!",
+        label: pageNumber,
+        value: id,
+      })
+      return pageNumber
     })
     .catch((e) => {
       console.log(e)
@@ -169,6 +205,12 @@ const GetUserEntriesByDate = (date) => (dispatch, getState) => {
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET_BY_DATE,
         payload: data,
+      })
+      ReactGA.event({
+        category: "Get User Entries By Date",
+        action: "User got a entry page!",
+        label: date,
+        value: id,
       })
       return data
     })
@@ -199,6 +241,11 @@ const PostEntry = (payload) => (dispatch) =>
         type: EntriesActionTypes.ENTRY_POST,
         payload: data,
       })
+      ReactGA.event({
+        category: "Post Entry",
+        action: "User posted a new entry!",
+        value: data.id,
+      })
       return data
     })
     .catch((e) => {
@@ -217,13 +264,17 @@ const UpdateReduxEntry = (payload) => ({
 const UpdateEntry = (id, payload) => (dispatch) =>
   Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({
         type: EntriesActionTypes.ENTRY_UPDATE,
         id,
         payload: data,
         _lastUpdated: null,
+      })
+      ReactGA.event({
+        category: "Update Entry",
+        action: "User updated a new entry!",
+        value: data.id,
       })
       return data
     })
@@ -237,6 +288,11 @@ const DeleteEntry = (id) => (dispatch) =>
     .delete(`/entries/${id}/`)
     .then((res) => {
       dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
+      ReactGA.event({
+        category: "Delete Entry",
+        action: "User deleted a new entry!",
+        value: id,
+      })
       return res
     })
     .catch((e) => {
@@ -260,6 +316,11 @@ const SearchUserEntries = (search) => (dispatch, getState) => {
         type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
         payload: data,
         search,
+      })
+      ReactGA.event({
+        category: "Search User Entries",
+        action: "User searched for entries!",
+        value: search,
       })
       return data
     })

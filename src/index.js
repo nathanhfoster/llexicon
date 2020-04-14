@@ -3,6 +3,7 @@ import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import storeFactory from "./redux"
+import { getUserClientId } from "./redux/localState"
 import { Provider } from "react-redux"
 import { BrowserRouter, Router } from "react-router-dom"
 import { createBrowserHistory } from "history"
@@ -19,21 +20,26 @@ const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
-ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID)
+const inDevelopmentMode = NODE_ENV === "development"
+
+const { userId, appVersion, userIdUsernameEmail } = getUserClientId()
+
+ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
+  debug: inDevelopmentMode,
+  // titleCase: false,
+  // dimension14: "userIdUsernameEmail",
+  gaOptions: {
+    userId,
+    appVersion,
+    userIdUsernameEmail,
+  },
+})
 // Initialize google analytics page view tracking
 history.listen((location) => {
-  const {
-    User: { id, username, email },
-    Window: {
-      navigator: { appVersion },
-    },
-  } = store.getState()
-
-  const userId = `${id}-${username}-${email}`
-  const clientId = appVersion
+  const { userId, appVersion, userIdUsernameEmail } = getUserClientId()
   const page = location.pathname
 
-  ReactGA.set({ userId, clientId, page }) // Update the user's current page
+  ReactGA.set({ userId, appVersion, userIdUsernameEmail, page }) // Update the user's current page
   ReactGA.pageview(page) // Record a pageview for the given page
 })
 
@@ -56,7 +62,7 @@ ReactDOM.render(
   document.getElementById("root")
 )
 
-if (NODE_ENV === "development") {
+if (inDevelopmentMode) {
   serviceWorker.unregister()
 } else {
   serviceWorker.register()

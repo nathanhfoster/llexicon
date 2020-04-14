@@ -144,6 +144,21 @@ const isQuotaExceeded = (e) => {
   return quotaExceeded
 }
 
+const getUserClientId = () => {
+  const {
+    User: { id, username, email },
+    Window: {
+      navigator: { appVersion },
+    },
+  } = getPersistedReduxStore()
+
+  const userId = id
+  const clientId = appVersion
+  const userIdUsernameEmail = `${id}-${username}-${email}`
+
+  return { userId, appVersion, userIdUsernameEmail }
+}
+
 export {
   LocalStorageReduxKey,
   PersistedStorageReduxKey,
@@ -161,4 +176,5 @@ export {
   saveReduxState,
   persistReduxState,
   removeReduxState,
+  getUserClientId,
 }
