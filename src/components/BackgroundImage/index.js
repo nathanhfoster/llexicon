@@ -41,7 +41,7 @@ const mapStateToProps = ({
   Window: { innerHeight, innerWidth },
 }) => ({
   show_animated_background,
-  starLength: Math.ceil((innerHeight + innerWidth) / 5),
+  starLength: Math.ceil((innerHeight + innerWidth) / 10),
 })
 
 const BackgroundImage = ({

@@ -1,30 +1,36 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { Container, Row, Col, Button } from "reactstrap"
+import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import { ImportEntries } from "../../../components"
 import { connect as reduxConnect } from "react-redux"
 import { copyStringToClipboard } from "../../../helpers"
 import { SyncEntries, GetAllUserEntries } from "../../../redux/Entries/actions"
 import MomentJs from "moment"
 
-const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
+const mapStateToProps = ({
+  User: { id },
+  Entries: { items, filteredItems },
+}) => ({
+  userIsLoggedIn: !!id,
   items,
-  filteredItems
+  filteredItems,
 })
 
 const mapDispatchToProps = { SyncEntries, GetAllUserEntries }
 
 const ImportExportEntries = ({
+  userIsLoggedIn,
   items,
   filteredItems,
   SyncEntries,
-  GetAllUserEntries
+  GetAllUserEntries,
 }) => {
   const entries = items.concat(filteredItems)
+  const totalEntries = entries.length
 
   const GetAllEntries = () =>
-    SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntries())))
+    SyncEntries(() => new Promise((resolve) => resolve(GetAllUserEntries())))
 
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
@@ -39,7 +45,7 @@ const ImportExportEntries = ({
         date_updated,
         views,
         latitude,
-        longitude
+        longitude,
       } = entry
       const dateFormat = "YYYY-MM-DD hh:mm:ss"
 
@@ -47,7 +53,7 @@ const ImportExportEntries = ({
         id,
         author,
         tags: tags.reduce(
-          (entryString, entry) => (entryString += `${entry.title},`),
+          (entryString, entry) => (entryString += `${entry.name},`),
           ""
         ),
         title,
@@ -59,41 +65,51 @@ const ImportExportEntries = ({
         date_updated: MomentJs(date_updated).format(dateFormat),
         views,
         latitude,
-        longitude
+        longitude,
       }
     })
     copyStringToClipboard(JSON.stringify(formattedEntries))
-    alert("Entries copied to clipboard.")
+    alert("Entries copied to clipboard as a JSON.")
   }
 
   return (
     <Container fluid>
-      <Row>
-        <Col xs={12}>
-          <Button color="accent" onClick={GetAllEntries}>
+      <Row className="py-2">
+        <Col xs={12} tag={ButtonGroup} className="p-0">
+          <Button
+            color="accent"
+            onClick={GetAllEntries}
+            disabled={!userIsLoggedIn}
+          >
             <i className="fas fa-cloud-download-alt" /> Download and Sync All
             Entries
           </Button>
-        </Col>
-        <Col xs={6}>
-          <ImportEntries />
-        </Col>
-        <Col xs={6}>
-          <Button color="accent" onClick={handleExportEntries}>
+          <Button color="accent" onClick={handleExportEntries} disabled>
+            <i className="fas fa-download" /> Import Entries
+          </Button>
+          <Button
+            color="accent"
+            onClick={handleExportEntries}
+            disabled={totalEntries === 0}
+          >
             <i className="fas fa-clipboard" /> Export Entries
           </Button>
         </Col>
+        {/* <Col xs={6}>
+          <ImportEntries />
+        </Col> */}
       </Row>
     </Container>
   )
 }
 
 ImportExportEntries.propTypes = {
+  userIsLoggedIn: PropTypes.bool.isRequired,
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes
+  filteredItems: EntriesPropTypes,
 }
 
-ImportExportEntries.defaultProps = {}
+ImportExportEntries.defaultProps = { userIsLoggedIn: false }
 
 export default reduxConnect(
   mapStateToProps,

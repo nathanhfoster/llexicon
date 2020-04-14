@@ -4,8 +4,8 @@ import { Container, Row, Col, Button } from "reactstrap"
 import {
   AddToHomeScreen,
   BasicCard,
-  EntryNavButtons,
-  Header
+  Header,
+  NewEntryButton,
 } from "../../components"
 import { RouteMap, RouterPush } from "../../routes"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
@@ -17,7 +17,7 @@ import {
   PhoneLaptop,
   ShieldCheck,
   UserHeadset,
-  WifiSlash
+  WifiSlash,
 } from "../../images/SVG"
 import "./styles.css"
 
@@ -35,7 +35,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
 
       button: (
         <AddToHomeScreen prompt={prompt} promptToInstall={promptToInstall} />
-      )
+      ),
     },
     {
       faIcon: "fas fa-sync-alt",
@@ -49,7 +49,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
         >
           Sign Up
         </Button>
-      )
+      ),
     },
     {
       header: <Bell className="AboutFeatureImage" />,
@@ -62,7 +62,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
         >
           Comming Soon
         </Button>
-      )
+      ),
     },
     {
       header: <WifiSlash className="AboutFeatureImage" />,
@@ -75,7 +75,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
         >
           Go Offline
         </Button>
-      )
+      ),
     },
     {
       header: <UserHeadset className="AboutFeatureImage" />,
@@ -88,35 +88,35 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
         >
           Support Page
         </Button>
-      )
+      ),
     },
 
     {
       faIcon: "fas fa-link",
       title: "Linkable",
-      text: "Share any public view you want with your friends and family"
+      text: "Share any public view you want with your friends and family",
       // button: <Button color="accent">Learn More</Button>
     },
     {
       header: <PhoneLaptop className="AboutFeatureImage" />,
       title: "Responsive",
-      text: "UI fits the screen dimensions of any device"
+      text: "UI fits the screen dimensions of any device",
     },
     {
       header: <CloudDownload className="AboutFeatureImage" />,
       title: "Fresh",
-      text: "Always get the latest verision of the app"
+      text: "Always get the latest verision of the app",
     },
     {
       header: <Mobile className="AboutFeatureImage" />,
       title: "App-like",
-      text: "Looks and interacts like a native app"
+      text: "Looks and interacts like a native app",
     },
     {
       header: <ShieldCheck className="AboutFeatureImage" />,
       title: "Secure",
-      text: "Always served over HTTPS"
-    }
+      text: "Always served over HTTPS",
+    },
   ]
 
   const renderFeatures = useMemo(
@@ -129,15 +129,33 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
     [features]
   )
 
+  const homeCardHeader = useMemo(
+    () => <LogoImage height={256} width={256} />,
+    []
+  )
+
+  const homeCardTitle = useMemo(() => <Header>Astral Tree</Header>, [])
+
+  const homeCardText = useMemo(
+    () => (
+      <div>
+        <h3>The first progressive web app journal</h3>
+      </div>
+    ),
+    []
+  )
+
+  const homeCardButton = useMemo(() => <NewEntryButton />, [])
+
   return (
     <Container tag="article" className="About Container">
       <Row>
         <Col xs={12} className="pt-3 pt-sm-4">
           <BasicCard
-            header={<LogoImage height={256} width={256} />}
-            title={<Header>Astral Tree</Header>}
-            text={<h3>The first progressive web app journal</h3>}
-            button={<EntryNavButtons />}
+            header={homeCardHeader}
+            title={homeCardTitle}
+            text={homeCardText}
+            button={homeCardButton}
           />
         </Col>
       </Row>
@@ -152,7 +170,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
 }
 
 About.propTypes = {
-  userId: PropTypes.number
+  userId: PropTypes.number,
 }
 
 export default reduxConnect(mapStateToProps)(About)

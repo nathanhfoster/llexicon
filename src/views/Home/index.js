@@ -1,4 +1,4 @@
-import React, { lazy, useMemo } from "react"
+import React, { useMemo, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
@@ -17,18 +17,33 @@ const EntriesRediscover = lazy(() =>
   import("../../components/EntriesRediscover")
 )
 
-const mapStateToProps = ({ User: { token }, Entries: { items } }) => ({
-  entries: items,
-  userToken: token,
+const mapStateToProps = ({ User: { id } }) => ({
+  userIsLoggedIn: !!id,
 })
 
-const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
-  const handleOnClick = () =>
-    RouterPush(history, RouteMap[!userToken ? "ABOUT" : "SETTINGS_ENTRIES"])
+const Home = ({ userIsLoggedIn, prompt, promptToInstall, history }) => {
+  const homeCardHeader = useMemo(
+    () => <LogoImage height={256} width={256} />,
+    []
+  )
 
-  const viewableEntries = useMemo(
-    () => entries.filter((item) => !item._shouldDelete),
-    [entries]
+  const homeCardTitle = useMemo(() => <Header>Astral Tree</Header>, [])
+
+  const homeCardText = useMemo(
+    () => (
+      <Button
+        color={!userIsLoggedIn ? "info" : "success"}
+        onClick={() =>
+          RouterPush(
+            history,
+            !userIsLoggedIn ? RouteMap.ABOUT : RouteMap.SETTINGS_ENTRIES
+          )
+        }
+      >
+        {!userIsLoggedIn ? "Learn More" : "Settings"}
+      </Button>
+    ),
+    [userIsLoggedIn]
   )
 
   return (
@@ -36,16 +51,9 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
       <Row className="mb-3">
         <Col xs={12} className="px-0 pt-3 pt-sm-4">
           <BasicCard
-            header={<LogoImage height={256} width={256} />}
-            title={<Header>Astral Tree</Header>}
-            text={
-              <Button
-                color={!userToken ? "info" : "success"}
-                onClick={handleOnClick}
-              >
-                {!userToken ? "Learn More" : "Settings"}
-              </Button>
-            }
+            header={homeCardHeader}
+            title={homeCardTitle}
+            text={homeCardText}
             button={<EntryNavButtons />}
           />
         </Col>
@@ -70,7 +78,9 @@ const Home = ({ entries, userToken, prompt, promptToInstall, history }) => {
 }
 
 Home.propTypes = {
-  userId: PropTypes.number,
+  userIsLoggedIn: PropTypes.bool.isRequired,
 }
+
+Home.defaultProps = { userIsLoggedIn: false }
 
 export default reduxConnect(mapStateToProps)(Home)

@@ -16,35 +16,16 @@ const {
   SETTINGS,
   SETTINGS_ENTRIES,
   SETTINGS_PREFERENCES,
-  SETTINGS_PROFILE
+  SETTINGS_PROFILE,
 } = RouteMap
 
 const Settings = ({ history, location: { pathname } }) => {
   if (pathname === SETTINGS) RouterPush(history, SETTINGS_ENTRIES)
   const activeTab = pathname
 
-  const handleTabChange = tabId => RouterPush(history, tabId)
+  const handleTabChange = (tabId) => RouterPush(history, tabId)
 
   const tabs = [
-    {
-      tabId: SETTINGS_PROFILE,
-      title: "Profile",
-      className: "mt-2",
-      render: (
-        <Fragment>
-          <AccountDetails />
-          <UpdateProfile />
-        </Fragment>
-      ),
-      onClickCallback: handleTabChange
-    },
-    {
-      tabId: SETTINGS_PREFERENCES,
-      title: "Preferences",
-      className: "mt-2",
-      render: <Sections />,
-      onClickCallback: handleTabChange
-    },
     {
       tabId: SETTINGS_ENTRIES,
       title: "Entries",
@@ -55,8 +36,27 @@ const Settings = ({ history, location: { pathname } }) => {
           <EntryStatistics />
         </Fragment>
       ),
-      onClickCallback: handleTabChange
-    }
+      onClickCallback: handleTabChange,
+    },
+    {
+      tabId: SETTINGS_PROFILE,
+      title: "Profile",
+      className: "mt-2",
+      render: (
+        <Fragment>
+          <AccountDetails />
+          <UpdateProfile />
+        </Fragment>
+      ),
+      onClickCallback: handleTabChange,
+    },
+    {
+      tabId: SETTINGS_PREFERENCES,
+      title: "Preferences",
+      className: "mt-2",
+      render: <Sections />,
+      onClickCallback: handleTabChange,
+    },
   ]
   return (
     <Container className="Settings Container">
@@ -78,7 +78,7 @@ const Settings = ({ history, location: { pathname } }) => {
 }
 
 Settings.propTypes = {
-  User: UserProps
+  User: UserProps,
 }
 
 export default withRouter(memo(Settings))

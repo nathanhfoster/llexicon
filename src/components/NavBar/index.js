@@ -13,7 +13,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavItem
+  NavItem,
 } from "reactstrap"
 import { AddToHomeScreen, StarSearch } from "../"
 import { GetUserEntriesByDate } from "../../redux/Entries/actions"
@@ -38,7 +38,7 @@ const {
   SETTINGS_PREFERENCES,
   SETTINGS_PROFILE,
   SUPPORT,
-  PRIVACY_POLICY
+  PRIVACY_POLICY,
 } = RouteMap
 
 export const ENTRY_LINKS = [
@@ -46,48 +46,48 @@ export const ENTRY_LINKS = [
     dropdownItem: true,
     route: NEW_ENTRY,
     title: "NEW ENTRY",
-    icon: <i className="fas fa-feather-alt NavBarImage" />
+    icon: <i className="fas fa-feather-alt NavBarImage" />,
   },
   {
     dropdownItem: true,
     route: ENTRIES_CALENDAR,
     title: "CALENDAR",
-    icon: <i className="fas fa-calendar-alt NavBarImage" />
+    icon: <i className="fas fa-calendar-alt NavBarImage" />,
   },
   {
     dropdownItem: true,
     route: ENTRIES_FOLDERS,
     title: "FOLDERS",
-    icon: <i className="fas fa-folder NavBarImage" />
+    icon: <i className="fas fa-folder NavBarImage" />,
   },
   {
     dropdownItem: true,
     route: ENTRIES_LIST,
     title: "LIST",
-    icon: <i className="fas fa-th-list NavBarImage" />
+    icon: <i className="fas fa-th-list NavBarImage" />,
   },
   {
     dropdownItem: true,
     route: ENTRIES_TABLE,
     title: "TABLE",
-    icon: <i className="fas fa-table NavBarImage" />
+    icon: <i className="fas fa-table NavBarImage" />,
   },
   {
     dropdownItem: true,
     route: ENTRIES_MAP,
     title: "MAP",
-    icon: <i className="fas fa-map-marked-alt NavBarImage" />
-  }
+    icon: <i className="fas fa-map-marked-alt NavBarImage" />,
+  },
 ]
 
 const mapStateToProps = ({ User: { id }, Window: { isMobile } }) => ({
   UserId: id,
-  isMobile
+  isMobile,
 })
 
 const mapDispatchToProps = {
   UserLogout,
-  GetUserEntriesByDate
+  GetUserEntriesByDate,
 }
 
 const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
@@ -101,7 +101,7 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
           <i className="fas fa-home NavBarImage" />
           HOME
         </span>
-      )
+      ),
     },
     {
       icon: (
@@ -110,7 +110,7 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
           ENTRIES
         </span>
       ),
-      links: ENTRY_LINKS
+      links: ENTRY_LINKS,
     },
     {
       route: LOGIN,
@@ -122,7 +122,7 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
           {UserId ? "LOGOUT" : "LOGIN"}
         </span>
       ),
-      onClick: UserId ? UserLogout : null
+      onClick: UserId ? UserLogout : null,
     },
 
     {
@@ -142,41 +142,41 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
           links: [
             {
               dropdownItem: true,
+              route: SETTINGS_ENTRIES,
+              title: "ENTRIES",
+              icon: <i className="fas fa-book NavBarImage" />,
+            },
+            {
+              dropdownItem: true,
               route: SETTINGS_PROFILE,
               title: "PROFILE",
-              icon: <i className="fas fa-user-circle NavBarImage" />
+              icon: <i className="fas fa-user-circle NavBarImage" />,
             },
             {
               dropdownItem: true,
               route: SETTINGS_PREFERENCES,
               title: "PREFERENCES",
-              icon: <i className="fas fa-sliders-h NavBarImage" />
+              icon: <i className="fas fa-sliders-h NavBarImage" />,
             },
-            {
-              dropdownItem: true,
-              route: SETTINGS_ENTRIES,
-              title: "ENTRIES",
-              icon: <i className="fas fa-book NavBarImage" />
-            }
-          ]
+          ],
         },
         {
           dropdownItem: true,
           route: SUPPORT,
           title: "SUPPORT",
-          icon: <i className="fas fa-satellite NavBarImage" />
+          icon: <i className="fas fa-satellite NavBarImage" />,
         },
         {
           dropdownItem: true,
           route: PRIVACY_POLICY,
           title: "PRIVACY POLICY",
-          icon: <i className="fas fa-user-secret NavBarImage" />
+          icon: <i className="fas fa-user-secret NavBarImage" />,
         },
         {
           dropdownItem: true,
           route: ABOUT,
           title: "ABOUT",
-          icon: <i className="fas fa-info-circle NavBarImage" />
+          icon: <i className="fas fa-info-circle NavBarImage" />,
         },
         {
           render: (
@@ -187,10 +187,10 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
                 promptToInstall={promptToInstall}
               />
             </NavItem>
-          )
-        }
-      ]
-    }
+          ),
+        },
+      ],
+    },
   ]
 
   const toggleHamburgerMenu = () => setCollapse(!collapsed)
@@ -206,7 +206,7 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
     </UncontrolledDropdown>
   )
 
-  const renderNavLinks = navLinks =>
+  const renderNavLinks = (navLinks) =>
     navLinks.map((link, i) =>
       link.links ? (
         renderDropDownMenu(`Dropdown-${i}`, link.icon, link.links)
@@ -239,7 +239,7 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
 Navbar.propTypes = {
   UserId: PropTypes.number,
   UserLogout: PropTypes.func,
-  GetAllEntries: PropTypes.func
+  GetAllEntries: PropTypes.func,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(NavBar)

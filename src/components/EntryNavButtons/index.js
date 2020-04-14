@@ -5,26 +5,25 @@ import { RouterPush } from "../../routes"
 import { useHistory } from "react-router-dom"
 import { ENTRY_LINKS } from "../NavBar"
 
-const EntryNavButtons = () => {
+const EntryNavButtons = ({ size }) => {
   const history = useHistory()
 
   const renderButtons = () =>
     ENTRY_LINKS.map(({ route, icon }, i) => (
-      <Button
-        key={i}
-        color="accent"
-        className="px-3 py-2"
-        onClick={() => RouterPush(history, route)}
-      >
+      <Button key={i} color="accent" onClick={() => RouterPush(history, route)}>
         {icon}
       </Button>
     ))
 
-  return <ButtonGroup>{renderButtons()}</ButtonGroup>
+  return (
+    <ButtonGroup aria-label="Navigation" size={size}>
+      {renderButtons()}
+    </ButtonGroup>
+  )
 }
 
-EntryNavButtons.propTypes = {}
+EntryNavButtons.propTypes = { size: PropTypes.string }
 
-EntryNavButtons.defaultProps = {}
+EntryNavButtons.defaultProps = { size: "mod" }
 
 export default memo(EntryNavButtons)

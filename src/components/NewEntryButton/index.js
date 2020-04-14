@@ -12,7 +12,7 @@ const NewEntryButton = () => {
       onClick={() => RouterPush(history, RouteMap.NEW_ENTRY)}
     >
       <i className="fas fa-feather-alt mr-1" />
-      New Entry
+      Create a new journal entry
     </Button>
   )
 }

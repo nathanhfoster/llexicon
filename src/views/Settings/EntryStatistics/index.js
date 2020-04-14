@@ -92,33 +92,31 @@ const EntryStatistics = ({ items, filteredItems }) => {
 
   const averageRating = sumRating / validRatedEntries
   const averageWordsPerEntry = wordCount / totalEntries
-  const averageMillisecondsUpdatingEntries = Math.abs(
-    sumRatingTimeUpdatingEntries / totalEntries
-  )
-  const averageSecondsUpdatingEntries =
-    averageMillisecondsUpdatingEntries / 1000
-  const averageMinutesUpdatingEntries = averageSecondsUpdatingEntries / 60
-  const averageHoursUpdatingEntries = averageMinutesUpdatingEntries / 60
-  const averageDaysUpdatingEntries = averageHoursUpdatingEntries / 24
-  const averageWeeksUpdatingEntries = averageDaysUpdatingEntries / 7
-  const averageMonthsUpdatingEntries = averageWeeksUpdatingEntries / 4.34524
-  const averageYearsUpdatingEntries = averageMonthsUpdatingEntries / 12
 
-  const averageTimesUpdatingEntries = [
-    // { title: "Milliseconds", value: averageMillisecondsUpdatingEntries },
-    { title: "Seconds", value: averageSecondsUpdatingEntries },
-    { title: "Minutes", value: averageMinutesUpdatingEntries },
-    { title: "Hours", value: averageHoursUpdatingEntries },
-    { title: "Days", value: averageDaysUpdatingEntries },
-    { title: "Weeks", value: averageWeeksUpdatingEntries },
-    { title: "Months", value: averageMonthsUpdatingEntries },
-    { title: "Years", value: averageYearsUpdatingEntries },
-  ]
+  // const averageMillisecondsUpdatingEntries = Math.abs(sumRatingTimeUpdatingEntries / totalEntries)
+  // const averageSecondsUpdatingEntries = averageMillisecondsUpdatingEntries / 1000
+  // const averageMinutesUpdatingEntries = averageSecondsUpdatingEntries / 60
+  // const averageHoursUpdatingEntries = averageMinutesUpdatingEntries / 60
+  // const averageDaysUpdatingEntries = averageHoursUpdatingEntries / 24
+  // const averageWeeksUpdatingEntries = averageDaysUpdatingEntries / 7
+  // const averageMonthsUpdatingEntries = averageWeeksUpdatingEntries / 4.34524
+  // const averageYearsUpdatingEntries = averageMonthsUpdatingEntries / 12
+
+  // const averageTimesUpdatingEntries = [
+  //   { title: "Milliseconds", value: averageMillisecondsUpdatingEntries },
+  //   { title: "Seconds", value: averageSecondsUpdatingEntries },
+  //   { title: "Minutes", value: averageMinutesUpdatingEntries },
+  //   { title: "Hours", value: averageHoursUpdatingEntries },
+  //   { title: "Days", value: averageDaysUpdatingEntries },
+  //   { title: "Weeks", value: averageWeeksUpdatingEntries },
+  //   { title: "Months", value: averageMonthsUpdatingEntries },
+  //   { title: "Years", value: averageYearsUpdatingEntries },
+  // ]
 
   const entryAverages = [
     { title: "Rating", value: averageRating },
     { title: "Words / entry", value: averageWordsPerEntry },
-    { title: "Time Writing Entries", value: averageTimesUpdatingEntries },
+    // { title: "Time Writing Entries", value: averageTimesUpdatingEntries },
   ]
 
   const entryCounts = [

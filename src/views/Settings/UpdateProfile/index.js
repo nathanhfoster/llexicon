@@ -2,10 +2,12 @@ import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "../../../redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
+import { useHistory } from "react-router-dom"
 import { BasicForm, ConfirmAction } from "../../../components"
-import { Container, Row, Col } from "reactstrap"
+import { Container, Row, Col, Button } from "reactstrap"
 import { UpdateUser, DeleteAccount } from "../../../redux/User/actions"
 import { cleanObject } from "../../../helpers"
+import { RouteMap, RouterPush } from "../../../routes"
 
 const mapStateToProps = ({ User }) => ({
   User,
@@ -17,10 +19,14 @@ const mapDispatchToProps = {
 }
 
 const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
+  const history = useHistory()
   const handleChangeUser = useCallback((payload) => {
     UpdateUser(cleanObject(payload, true))
   }, [])
   const handleDeleteAccount = useCallback(() => DeleteAccount(), [])
+  const handleSignUp = useCallback(() => {
+    RouterPush(history, RouteMap.SIGNUP)
+  }, [history])
   const inputs = useMemo(
     () => [
       {
@@ -73,9 +79,9 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
     ],
     [User]
   )
-  return (
-    <Container fluid className="m-1">
-      <Row>
+  return User.id ? (
+    <Container>
+      <Row className="mb-3">
         <Col xs={12}>
           <BasicForm
             title="Update Profile"
@@ -86,16 +92,25 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
         </Col>
       </Row>
       <Row>
-        <Col xs={12}>
+        <Col xs={12} className="Center">
           <ConfirmAction
-            title="Delete Account"
             message="Are you sure you want to delete your account? Everything will be erased."
             onConfirm={handleDeleteAccount}
             disabled={!User.id}
+            button={
+              <Button color="danger">
+                <i className="fas fa-trash-alt mr-1" />
+                Delete Account
+              </Button>
+            }
           />
         </Col>
       </Row>
     </Container>
+  ) : (
+    <Button color="accent" onClick={handleSignUp}>
+      Sign Up
+    </Button>
   )
 }
 
