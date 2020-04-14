@@ -19,7 +19,7 @@ const EntriesRediscover = ({ items, filteredItems }) => {
         .filter(({ date_created_by_author, _shouldDelete }) => {
           if (_shouldDelete) return true
           const entryDate = MomentJs(date_created_by_author).local()
-          const isOnThisDay = entryDate.dayOfYear() === today.dayOfYear()
+          const isOnThisDay = entryDate.dayOfYear() - 1 === today.dayOfYear()
           return isOnThisDay
         })
         .sort((a, b) => {
