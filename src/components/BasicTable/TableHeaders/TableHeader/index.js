@@ -1,4 +1,4 @@
-import React, { useCallback, useState, memo, Fragment } from "react"
+import React, { useCallback, useState, memo } from "react"
 import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import { UseDebounce } from "../../../"
@@ -29,7 +29,6 @@ const TableHeader = ({
   const headerTitle = typeof title === isType.STRING ? title : headerKey
   const titleFunction = typeof title === isType.FUNCTION
   const shouldShowSortIcon = typeof sortUp === isType.BOOLEAN
-  const shouldRenderSortContainer = !!filter
 
   return (
     <th
@@ -44,9 +43,6 @@ const TableHeader = ({
           <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
         )}
       </div>
-
-      {shouldRenderSortContainer && (
-        <Fragment>
           <UseDebounce onChangeCallback={handleDebounce} value={filterValue} />
           <Input
             className="TableHeaderSortInput"
@@ -61,8 +57,6 @@ const TableHeader = ({
                 : null
             }
           />
-        </Fragment>
-      )}
     </th>
   )
 }
