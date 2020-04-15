@@ -8,7 +8,7 @@ const MoneyBill = ({ className }) => (
     data-prefix="fad"
     data-icon="money-bill"
     role="img"
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     viewBox="0 0 640 512"
     className={className}
   >
@@ -28,7 +28,7 @@ const MoneyBill = ({ className }) => (
 )
 
 MoneyBill.defaultProps = {
-  className: "DefaultSvgClassName"
+  className: "DefaultSvgClassName",
 }
 
 export default memo(MoneyBill)

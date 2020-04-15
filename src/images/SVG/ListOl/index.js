@@ -8,7 +8,7 @@ const ListOl = ({ className }) => (
     data-prefix="fad"
     data-icon="list-ol"
     role="img"
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
     className={className}
   >
@@ -28,7 +28,7 @@ const ListOl = ({ className }) => (
 )
 
 ListOl.defaultProps = {
-  className: "DefaultSvgClassName"
+  className: "DefaultSvgClassName",
 }
 
 export default memo(ListOl)

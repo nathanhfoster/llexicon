@@ -129,7 +129,7 @@ BasicModal.propTypes = {
   // used to reference the ID of the title element in the modal
   labelledBy: PropTypes.string,
   keyboard: PropTypes.bool,
-  // control backdrop, see http://v4-alpha.getbootstrap.com/components/modal/#options
+  // control backdrop, see https://v4-alpha.getbootstrap.com/components/modal/#options
   backdrop: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(["static"])]),
   // if body of modal should be scrollable when content is long
   scrollable: PropTypes.bool,

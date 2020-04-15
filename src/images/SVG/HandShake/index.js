@@ -8,7 +8,7 @@ const HandShake = ({ className }) => (
     data-prefix="fad"
     data-icon="handshake-alt"
     role="img"
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     viewBox="0 0 640 512"
     className={className}
   >
@@ -28,7 +28,7 @@ const HandShake = ({ className }) => (
 )
 
 HandShake.defaultProps = {
-  className: "DefaultSvgClassName"
+  className: "DefaultSvgClassName",
 }
 
 export default memo(HandShake)

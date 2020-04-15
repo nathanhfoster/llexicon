@@ -8,7 +8,7 @@ const CloudDownload = ({ className }) => (
     data-prefix="fad"
     data-icon="cloud-download-alt"
     role="img"
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     viewBox="0 0 640 512"
     className={className}
   >
@@ -28,7 +28,7 @@ const CloudDownload = ({ className }) => (
 )
 
 CloudDownload.defaultProps = {
-  className: "DefaultSvgClass"
+  className: "DefaultSvgClass",
 }
 
 export default memo(CloudDownload)

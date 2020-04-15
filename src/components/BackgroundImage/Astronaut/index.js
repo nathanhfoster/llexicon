@@ -20,7 +20,7 @@ const Astronaut = (props) => (
   <div style={containerStyles(props)}>
     <img
       style={astronautStyles(props)}
-      src="http://salehriaz.com/404Page/img/astronaut.svg"
+      src="https://salehriaz.com/404Page/img/astronaut.svg"
     />
   </div>
 )

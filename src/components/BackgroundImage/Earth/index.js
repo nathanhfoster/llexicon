@@ -16,7 +16,7 @@ const Earth = (props) => (
     alt="Earth"
     style={styles(props)}
     // className="spinEarthOnHover"
-    src="http://salehriaz.com/404Page/img/earth.svg"
+    src="https://salehriaz.com/404Page/img/earth.svg"
   />
 )
 
