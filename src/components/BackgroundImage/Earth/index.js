@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
+import {earth} from '../../../images/AWS'
 import "./styles.css"
 
 const styles = ({ top, left, spin, zIndex }) => ({
@@ -16,7 +17,7 @@ const Earth = (props) => (
     alt="Earth"
     style={styles(props)}
     // className="spinEarthOnHover"
-    src="https://salehriaz.com/404Page/img/earth.svg"
+    src={earth}
   />
 )
 

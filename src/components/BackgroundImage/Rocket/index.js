@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
+import { rocket } from "../../../images/AWS"
 import "./styles.css"
 
 const styles = ({ top, move, zIndex }) => ({
@@ -13,12 +14,7 @@ const styles = ({ top, move, zIndex }) => ({
   zIndex,
 })
 
-const Rocket = (props) => (
-  <img
-    style={styles(props)}
-    src="https://salehriaz.com/404Page/img/rocket.svg"
-  />
-)
+const Rocket = (props) => <img style={styles(props)} src={rocket} />
 
 Rocket.propTypes = {
   top: PropTypes.number,

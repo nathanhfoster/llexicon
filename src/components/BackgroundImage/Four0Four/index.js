@@ -1,4 +1,5 @@
 import React, { memo } from "react"
+import { fourOfour } from "../../../images/AWS"
 import "./styles.css"
 
 const styles = ({}) => ({
@@ -8,8 +9,6 @@ const styles = ({}) => ({
   width: 300,
 })
 
-const Four0Four = (props) => (
-  <img style={styles(props)} src="https://salehriaz.com/404Page/img/404.svg" />
-)
+const Four0Four = (props) => <img style={styles(props)} src={fourOfour} />
 
 export default memo(Four0Four)

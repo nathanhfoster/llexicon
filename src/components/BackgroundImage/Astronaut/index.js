@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
+import { astronaut } from "../../../images/AWS"
 import "./styles.css"
 
 const containerStyles = ({ top, right, move, zIndex }) => ({
@@ -18,10 +19,7 @@ const astronautStyles = ({ rotate }) => ({
 
 const Astronaut = (props) => (
   <div style={containerStyles(props)}>
-    <img
-      style={astronautStyles(props)}
-      src="https://salehriaz.com/404Page/img/astronaut.svg"
-    />
+    <img style={astronautStyles(props)} src={astronaut} />
   </div>
 )
 
@@ -36,7 +34,7 @@ Astronaut.defaultProps = {
   right: 20,
   move: 50,
   rotate: 200,
-  zIndex: -1,
+  zIndex: 0,
 }
 
 export default memo(Astronaut)

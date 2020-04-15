@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
+import { moon } from "../../../images/AWS"
 import "../Earth/styles.css"
 
 const styles = ({ top, left, spin, zIndex }) => ({
@@ -11,13 +12,7 @@ const styles = ({ top, left, spin, zIndex }) => ({
   zIndex,
 })
 
-const Moon = (props) => (
-  <img
-    alt="Moon"
-    style={styles(props)}
-    src="https://salehriaz.com/404Page/img/moon.svg"
-  />
-)
+const Moon = (props) => <img alt="Moon" style={styles(props)} src={moon} />
 
 Moon.propTypes = {
   top: PropTypes.number,
