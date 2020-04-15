@@ -127,8 +127,7 @@ const GetEntry = (url, id) => (dispatch) =>
       })
       return data
     })
-    .catch(({ response }) => {
-      const { status } = response
+    .catch(({ response, status }) => {
       if (status === 401 || status === 404) {
         dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
       }

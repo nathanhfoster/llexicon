@@ -35,7 +35,7 @@ const isNotLoggedInAxios = () => {
 
 const Axios = (responseType = "json") => {
   const { token, offline_mode } = getUser()
-  if (!token || offline_mode) return isNotLoggedInAxios()
+  if (offline_mode) return isNotLoggedInAxios()
   return axios.create({
     withCredentials: true,
     baseURL: REACT_APP_API_URL,
