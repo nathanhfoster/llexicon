@@ -15,8 +15,7 @@ const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`tags/${id}/view/`)
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({ type: EntriesActionTypes.ENTRIES_SET_TAGS, payload: data })
       ReactGA.event({
         category: "Get User Entry Tags",
@@ -31,8 +30,7 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`people/${id}/view/`)
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({ type: EntriesActionTypes.ENTRIES_SET_PEOPLE, payload: data })
       ReactGA.event({
         category: "Get User Entry People",
@@ -51,8 +49,7 @@ const CreateEntryTag = (payload) => (dispatch, getState) => {
   const newPayload = { ...payload, authors: id }
   return Axios()
     .post(`tags/`, qs.stringify(newPayload))
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET_TAGS,
         payload: Entries.concat(data),
@@ -100,8 +97,7 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
 
   return AxiosForm(payload)
     .post(`/files/`, payload)
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       const updateEntryPayload = {
         html: html.replace(base64, data.url),
       }
@@ -119,8 +115,7 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
 const GetEntry = (url, id) => (dispatch) =>
   Axios()
     .get(url)
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({
         type: EntriesActionTypes.ENTRY_SET,
         payload: data,
@@ -151,8 +146,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/view/`)
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({
         type: EntriesActionTypes.ENTRY_IMPORT,
         payload: data,
@@ -175,8 +169,7 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/page/?page=${pageNumber}`)
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET,
         payload: data,
@@ -189,8 +182,8 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
       })
       return pageNumber
     })
-    .catch((e) => {
-      console.log(e)
+    .catch(({ response }) => {
+      console.log(response)
       // const payload = JSON.parse(JSON.stringify(e.response))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
@@ -200,8 +193,7 @@ const GetUserEntriesByDate = (date) => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify({ date }))
-    .then((res) => {
-      const { data } = res
+    .then(({ data }) => {
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET_BY_DATE,
         payload: data,
@@ -214,8 +206,8 @@ const GetUserEntriesByDate = (date) => (dispatch, getState) => {
       })
       return data
     })
-    .catch((e) => {
-      console.log(e)
+    .catch(({ response }) => {
+      console.log(response)
       // const payload = JSON.parse(JSON.stringify(e))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })

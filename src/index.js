@@ -39,9 +39,19 @@ history.listen((location) => {
   const { userId, appVersion, userIdUsernameEmail } = getUserClientId()
   const page = location.pathname
 
+  // ReactGA.set({ dimension1: "test" })
+  // ReactGA.pageview(page, { dimension1: "test" }) // Record a pageview for the given page
+
   ReactGA.set({ userId, appVersion, userIdUsernameEmail, page }) // Update the user's current page
   ReactGA.pageview(page) // Record a pageview for the given page
 })
+
+// ReactGA.ga((tracker) => {
+
+//   ReactGA.set({ dimension1: profileId });
+
+//   ReactGA.pageview(pageName, { dimension1: profileId });
+// })
 
 // const initialState = getReduxState()
 // const ReduxStore = storeFactory(initialState)
