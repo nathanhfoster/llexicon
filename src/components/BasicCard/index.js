@@ -1,7 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Card, CardHeader, CardText, CardBody, CardTitle } from "reactstrap"
-import memoizeProps from "../../helpers/memoizeProps"
 import "./styles.css"
 
 const BasicCard = ({
@@ -15,7 +14,7 @@ const BasicCard = ({
   cardBodyClassName,
   cardTitleClassName,
   cardTextClassName,
-  onClickCallback
+  onClickCallback,
 }) => {
   const handleOnClickCallback = () => onClickCallback && onClickCallback()
   const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
@@ -57,7 +56,6 @@ const BasicCard = ({
 }
 
 BasicCard.propTypes = {
-  memoProps: PropTypes.arrayOf(PropTypes.any),
   header: PropTypes.object,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
@@ -65,7 +63,7 @@ BasicCard.propTypes = {
   button: PropTypes.object,
   cardClassName: PropTypes.string,
   cardHeaderClassName: PropTypes.string,
-  onClickCallback: PropTypes.func
+  onClickCallback: PropTypes.func,
 }
 
 BasicCard.defaultProps = {
@@ -73,19 +71,7 @@ BasicCard.defaultProps = {
   cardHeaderClassName: "Center",
   cardBodyClassName: "",
   cardTitleClassName: "BasicCardTitle Overflow",
-  cardTextClassName: "BasicCardText"
+  cardTextClassName: "BasicCardText",
 }
 
-const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, [
-    "memoProps",
-    "text",
-    "title",
-    // "header",
-    "faIcon",
-    "button",
-    "cardClassName",
-    "cardHeaderClassName"
-  ])
-
-export default memo(BasicCard, isEqual)
+export default memo(BasicCard)

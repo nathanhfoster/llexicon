@@ -46,6 +46,8 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall, history }) => {
     [userIsLoggedIn]
   )
 
+  const homeCardButton = useMemo(() => <EntryNavButtons />, [])
+
   return (
     <Container tag="article" className="Home Container">
       <Row className="mb-3">
@@ -54,7 +56,7 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall, history }) => {
             header={homeCardHeader}
             title={homeCardTitle}
             text={homeCardText}
-            button={<EntryNavButtons />}
+            button={homeCardButton}
           />
         </Col>
       </Row>

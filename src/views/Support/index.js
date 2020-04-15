@@ -1,17 +1,10 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Button } from "reactstrap"
 import { BasicCard } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { UserHeadset } from "../../images/SVG"
 import "./styles.css"
-
-const renderSupportCards = supportCards =>
-  supportCards.map((supportCard, i) => (
-    <Col key={i} md={4} sm={6} xs={12} className="p-2">
-      <BasicCard cardHeaderClassName="Center" {...supportCard} />
-    </Col>
-  ))
 
 const Support = () => {
   const supportCards = [
@@ -29,9 +22,19 @@ const Support = () => {
         >
           nateinthegame@gmail.com
         </Button>
-      )
-    }
+      ),
+    },
   ]
+
+  const renderSupportCards = useMemo(
+    () =>
+      supportCards.map((supportCard, i) => (
+        <Col key={i} md={4} sm={6} xs={12} className="p-2">
+          <BasicCard cardHeaderClassName="Center" {...supportCard} />
+        </Col>
+      )),
+    []
+  )
   return (
     <Container tag="article" className="Support Container">
       <Row>
@@ -44,7 +47,7 @@ const Support = () => {
           <h1>Support</h1>
         </Col>
       </Row>
-      <Row>{renderSupportCards(supportCards)}</Row>
+      <Row>{renderSupportCards}</Row>
     </Container>
   )
 }

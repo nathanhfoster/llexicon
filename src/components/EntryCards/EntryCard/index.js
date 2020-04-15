@@ -79,20 +79,8 @@ const EntryCard = ({
     ]
   )
 
-  const memoProps = [
-    id,
-    tags,
-    people,
-    date_updated,
-    views,
-    rating,
-    is_public,
-    reducedHtml,
-  ]
-
   return (
     <BasicCard
-      memoProps={memoProps}
       header={cardHeader}
       title={cardTitle}
       text={cardText}
