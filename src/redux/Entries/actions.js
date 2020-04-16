@@ -106,6 +106,7 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
       ReactGA.event({
         category: "Aws Upload",
         action: "User created a EntryFile in Aws",
+        value: data.url
       })
       return data
     })
