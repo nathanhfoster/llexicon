@@ -21,9 +21,7 @@ const EntryDetail = ({
   filteredItems,
   SyncEntries,
   GetUserEntryDetails,
-  match: {
-    params: { entryId },
-  },
+  entryId,
 }) => {
   const entry = useMemo(
     () => items.concat(filteredItems).find((entry) => entry.id == entryId),
@@ -63,6 +61,7 @@ EntryDetail.propTypes = {
   filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
+  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)

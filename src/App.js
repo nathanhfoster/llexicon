@@ -126,16 +126,16 @@ const App = ({
             exact={true}
             strict={false}
             path={[ABOUT]}
-            render={(routeProps) => (
-              <About {...addToHomeScreenProps} {...routeProps} />
+            render={({ history }) => (
+              <About {...addToHomeScreenProps} history={history} />
             )}
           />
           <Route
             exact={true}
             strict={false}
             path={[ROOT, HOME]}
-            render={(routeProps) => (
-              <Home {...addToHomeScreenProps} {...routeProps} />
+            render={({ history }) => (
+              <Home {...addToHomeScreenProps} history={history} />
             )}
           />
           <Route
@@ -162,7 +162,11 @@ const App = ({
             exact={true}
             strict={false}
             path={[ENTRY_DETAIL]}
-            render={(routeProps) => <EntryDetail {...routeProps} />}
+            render={({
+              match: {
+                params: { entryId },
+              },
+            }) => <EntryDetail entryId={entryId} />}
           />
           <Route
             exact={true}
