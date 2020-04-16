@@ -14,6 +14,9 @@ const mapDispatchToProps = { WatchUserLocation }
 
 const LocationButtonModal = ({
   entry,
+  address,
+  latitude,
+  longitude,
   UserLocation,
   xs,
   onChangeCallback,

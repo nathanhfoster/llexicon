@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import ToolbarButton from "../ToolbarButton"
 import BasicModal from "../../../BasicModal"
@@ -11,10 +11,9 @@ const ToolbarModal = ({
   disabled = false,
   Component,
   ...restOfProps
-}) => (
-  <BasicModal
-    {...restOfProps}
-    button={
+}) => {
+  const modalButton = useMemo(
+    () => (
       <ToolbarButton
         xs={xs}
         ButtonIcon={ButtonIcon}
@@ -23,11 +22,15 @@ const ToolbarModal = ({
       >
         {Component && <Component />}
       </ToolbarButton>
-    }
-  >
-    {children}
-  </BasicModal>
-)
+    ),
+    [Component, children]
+  )
+  return (
+    <BasicModal {...restOfProps} button={modalButton}>
+      {children}
+    </BasicModal>
+  )
+}
 
 ToolbarModal.propTypes = {
   title: PropTypes.string,

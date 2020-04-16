@@ -15,6 +15,7 @@ import MapSearchBox from "../RadiusMap/MapControl/Controls/MapSearchBox"
 import RecenterZoomButton from "../RadiusMap/MapControl/Controls/Buttons/RecenterZoomButton"
 import createClusters from "./functions/createClusters"
 import formatLocations from "./functions/formatLocations"
+import { EntryPropTypes } from "../../redux/Entries/propTypes"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
@@ -44,7 +45,7 @@ class BasicMap extends PureComponent {
     onChangeCallback: PropTypes.func.isRequired,
     locations: PropTypes.arrayOf(PropTypes.object),
     getAddressOnMarkerClick: PropTypes.bool.isRequired,
-    entry: PropTypes.object,
+    entry: EntryPropTypes,
   }
 
   static defaultProps = {

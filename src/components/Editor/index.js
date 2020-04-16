@@ -10,6 +10,7 @@ import TopToolbar from "./TopToolbar"
 import ImageResize from "quill-image-resize-module-react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
+import deepEquals from "../../helpers/deepEquals"
 
 const BottomToolbar = lazy(() => import("./BottomToolbar"))
 
@@ -186,36 +187,34 @@ const getModules = (toolbarId, topToolbarIsOpen) => {
   }
 }
 
-const getFormats = ({}) => {
-  return [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "color",
-    "background",
-    "font",
-    "code",
-    "size",
-    "script",
-    "align",
-    "direction",
-    "code-block",
-    "image",
-    "video",
-    "alt",
-    "height",
-    "width",
-    "style",
-    "size",
-  ]
-}
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "color",
+  "background",
+  "font",
+  "code",
+  "size",
+  "script",
+  "align",
+  "direction",
+  "code-block",
+  "image",
+  "video",
+  "alt",
+  "height",
+  "width",
+  "style",
+  "size",
+]
 
 class Editor extends PureComponent {
   constructor(props) {
@@ -231,13 +230,17 @@ class Editor extends PureComponent {
     } = props
 
     this.editorRef = createRef()
+    const newToolbarId = `toolbar-${toolbarId}`
+    const modules = getModules(newToolbarId, topToolbarIsOpen)
 
     this.state = {
       quillId: toolbarId.toString(),
+      toolbarId: newToolbarId,
       theme,
       topToolbarIsOpen: !readOnly && topToolbarIsOpen,
       bottomToolbarIsOpen: !readOnly && bottomToolbarIsOpen,
       canToggleToolbars: !readOnly && canToggleToolbars,
+      modules,
     }
   }
 
@@ -294,24 +297,27 @@ class Editor extends PureComponent {
 
     const { topToolbarIsOpen, bottomToolbarIsOpen } = prevState
 
-    const toolbarId = `toolbar-${nextProps.toolbarId}`
-
-    const formats = getFormats(nextProps)
-    const modules = getModules(toolbarId, topToolbarIsOpen)
-
     const editorHeight = readOnly
       ? "100%"
       : bottomToolbarIsOpen
       ? "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
       : "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
 
-    return {
-      toolbarId,
+    const nextState = {
       entry,
       editorHeight,
-      formats,
-      modules,
     }
+
+    const previousState = {
+      entry: prevState.entry,
+      editorHeight: prevState.editorHeight,
+    }
+
+    if (!deepEquals(previousState, nextState)) {
+      return nextState
+    }
+
+    return null
   }
 
   handleEditorStateChange = (html) => {
@@ -348,7 +354,6 @@ class Editor extends PureComponent {
       topToolbarIsOpen,
       editorHeight,
       bottomToolbarIsOpen,
-      formats,
       modules,
       canToggleToolbars,
     } = this.state

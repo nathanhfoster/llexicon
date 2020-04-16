@@ -67,6 +67,8 @@ const RatingButtonModal = (props) => {
     return stars
   }, [rating])
 
+  const ButtonIcon = useMemo(() => <RatingIcon rating={rating} />, [rating])
+
   return (
     <ToolbarModal
       className="Center p-0"
@@ -74,7 +76,7 @@ const RatingButtonModal = (props) => {
       onClickCallback={handleClick}
       onCancelCallback={handleCancel}
       onSaveCallback={handleSave}
-      ButtonIcon={<RatingIcon rating={rating} />}
+      ButtonIcon={ButtonIcon}
       button="Add Rating"
       xs={xs}
     >
