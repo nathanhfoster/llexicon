@@ -60,7 +60,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
           color="accent"
           onClick={() => RouterPush(history, RouteMap.SETTINGS)}
         >
-          Comming Soon
+          Coming Soon
         </Button>
       ),
     },
