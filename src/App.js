@@ -116,86 +116,70 @@ const App = ({
     return shouldRedirect ? () => <Redirect push to={directTo} /> : component
   }
 
-  const routeItems = [
-    {
-      path: [ABOUT],
-      Render: About,
-      props: addToHomeScreenProps,
-      useRouteProps: true,
-    },
-    {
-      path: [ROOT, HOME],
-      Render: Home,
-      props: addToHomeScreenProps,
-      useRouteProps: true,
-    },
-    {
-      path: [LOGIN, SIGNUP, PASSWORD_RESET],
-      component: renderRedirectOrComponent(!!User.token, Account, "GoBack"),
-    },
-    {
-      path: [
-        SETTINGS,
-        SETTINGS_ENTRIES,
-        SETTINGS_PREFERENCES,
-        SETTINGS_PROFILE,
-      ],
-      component: Settings,
-    },
-    {
-      path: [SUPPORT],
-      component: Support,
-    },
-    { path: [ENTRY_DETAIL], component: EntryDetail, useRouteProps: true },
-    {
-      path: [
-        ENTRIES,
-        NEW_ENTRY,
-        ENTRIES_CALENDAR,
-        ENTRIES_FOLDERS,
-        ENTRIES_LIST,
-        ENTRIES_TABLE,
-        ENTRIES_MAP,
-        NEW_ENTRY,
-      ],
-      Render: Entries,
-      useRouteProps: true,
-    },
-    { path: [PRIVACY_POLICY], component: PrivacyPolicy },
-  ]
-
-  const renderRouteItems = useMemo(
-    () =>
-      routeItems.map((item, i) => {
-        const { path, component, Render, props, useRouteProps } = item
-        return Render ? (
-          <Route
-            exact={true}
-            strict={false}
-            key={i}
-            path={path}
-            render={(routeProps) =>
-              useRouteProps ? (
-                <Render {...props} {...routeProps} />
-              ) : (
-                <Render {...props} />
-              )
-            }
-          />
-        ) : (
-          <Route exact key={i} path={path} component={component} />
-        )
-      }),
-    [routeItems]
-  )
-
   return (
     <Fragment>
       <NavBar {...addToHomeScreenProps} />
       <main className="App RouteOverlay">
         <BackgroundImage />
         <Switch>
-          {renderRouteItems}
+          <Route
+            exact={true}
+            strict={false}
+            path={[ABOUT]}
+            render={(routeProps) => (
+              <About {...addToHomeScreenProps} {...routeProps} />
+            )}
+          />
+          <Route
+            exact={true}
+            strict={false}
+            path={[ROOT, HOME]}
+            render={(routeProps) => (
+              <Home {...addToHomeScreenProps} {...routeProps} />
+            )}
+          />
+          <Route
+            exact
+            path={[LOGIN, SIGNUP, PASSWORD_RESET]}
+            component={renderRedirectOrComponent(
+              !!User.token,
+              Account,
+              "GoBack"
+            )}
+          />
+          <Route
+            exact
+            path={[
+              SETTINGS,
+              SETTINGS_ENTRIES,
+              SETTINGS_PREFERENCES,
+              SETTINGS_PROFILE,
+            ]}
+            component={Settings}
+          />
+          <Route exact path={[SUPPORT]} component={Support} />
+          <Route
+            exact={true}
+            strict={false}
+            path={[ENTRY_DETAIL]}
+            render={(routeProps) => <EntryDetail {...routeProps} />}
+          />
+          <Route
+            exact={true}
+            strict={false}
+            path={[
+              ENTRIES,
+              NEW_ENTRY,
+              ENTRIES_CALENDAR,
+              ENTRIES_FOLDERS,
+              ENTRIES_LIST,
+              ENTRIES_TABLE,
+              ENTRIES_MAP,
+              NEW_ENTRY,
+            ]}
+            render={(routeProps) => <Entries {...routeProps} />}
+          />
+          <Route exact path={[PRIVACY_POLICY]} component={PrivacyPolicy} />
           <Route component={PageNotFound} />
         </Switch>
       </main>
