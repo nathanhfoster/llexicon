@@ -1,6 +1,6 @@
 import { AlertActionTypes } from "../Alerts/types"
 import { EntriesActionTypes } from "./types"
-import { Axios, AxiosForm, Sync } from "../Actions"
+import { Axios, AxiosForm } from "../Actions"
 import {
   getFileFromBase64,
   htmlToArrayOfBase64,
@@ -327,25 +327,21 @@ const SearchUserEntries = (search) => (dispatch, getState) => {
     })
 }
 
-const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
+const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
   const {
     User,
     Entries: { items, filteredItems, isPending },
   } = getState()
 
-  // if (isPending) return
+  const UserId = User.id
+
+  if (!UserId) return
 
   dispatch({ type: EntriesActionTypes.ENTRIES_PENDING })
-
-  const UserId = User.id
 
   let synced = false
 
   const entries = items.concat(filteredItems)
-
-  let dispatchDeleteEntries = []
-  let dispatchPostEntries = []
-  let dispatchUpdateEntries = []
 
   for (let i = 0, { length } = entries; i < length; i++) {
     const {
@@ -370,8 +366,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
 
     if (_shouldDelete) {
       synced = true
-      // dispatch(DeleteEntry(id))
-      dispatchDeleteEntries.push(DeleteEntry(id))
+      await dispatch(DeleteEntry(id))
       continue
     } else if (_shouldPost) {
       synced = true
@@ -386,57 +381,31 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         longitude,
         is_public,
       }
-      console.log(dispatchPostEntries)
-      dispatchPostEntries.push(
-        PostEntry(postPayload).then((entry) => {
-          if (!entry) return
-          const {
-            EntryFiles,
-            author,
-            date_created,
-            date_created_by_author,
-            date_updated,
-            id,
-            title,
-            views,
-            address,
-            latitude,
-            longitude,
-            is_public,
-          } = entry
 
-          const updateEntryPayload = {
-            html,
-            tags: getJsonTagsOrPeople(tags),
-            people: getJsonTagsOrPeople(people),
-          }
-          dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
-        })
-      )
-      // dispatch(PostEntry(postPayload)).then((entry) => {
-      //   if (!entry) return
-      //   const {
-      //     EntryFiles,
-      //     author,
-      //     date_created,
-      //     date_created_by_author,
-      //     date_updated,
-      //     id,
-      //     title,
-      //     views,
-      //     address,
-      //     latitude,
-      //     longitude,
-      //     is_public,
-      //   } = entry
+      await dispatch(PostEntry(postPayload)).then(async (entry) => {
+        if (!entry) return
+        const {
+          EntryFiles,
+          author,
+          date_created,
+          date_created_by_author,
+          date_updated,
+          id,
+          title,
+          views,
+          address,
+          latitude,
+          longitude,
+          is_public,
+        } = entry
 
-      //   const updateEntryPayload = {
-      //     html,
-      //     tags: getJsonTagsOrPeople(tags),
-      //     people: getJsonTagsOrPeople(people),
-      //   }
-      //   dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
-      // })
+        const updateEntryPayload = {
+          html,
+          tags: getJsonTagsOrPeople(tags),
+          people: getJsonTagsOrPeople(people),
+        }
+        await dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+      })
       continue
     } else if (_lastUpdated) {
       synced = true
@@ -452,54 +421,22 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         longitude,
         is_public,
       }
-      dispatchUpdateEntries.push(
-        ParseBase64(id, cleanObject(updateEntryPayload))
-      )
-      // dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
     }
   }
 
-  let dispatchActions = []
-
   if (typeof getEntryMethod === "function") {
-    // getEntryMethod()
-    dispatchActions.push(getEntryMethod)
+    await getEntryMethod()
   }
 
-  dispatchActions = dispatchActions
-    .concat(dispatchDeleteEntries)
-    .concat(dispatchPostEntries)
-    .concat(dispatchUpdateEntries)
-
-  if (
-    dispatchDeleteEntries.length > 0 ||
-    dispatchPostEntries.length > 0 ||
-    dispatchUpdateEntries.length > 0
-  ) {
-    dispatchActions = dispatchActions.concat(
-      () =>
-        new Promise((resolve) => {
-          dispatch({
-            type: AlertActionTypes.ALERTS_SET_MESSAGE,
-            payload: { title: "Synced", message: "Entries" },
-          })
-          dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
-        })
-    )
+  if (synced) {
+    dispatch({
+      type: AlertActionTypes.ALERTS_SET_MESSAGE,
+      payload: { title: "Synced", message: "Entries" },
+    })
   }
 
-  // console.log("dispatchActions: ", dispatchUpdateEntries)
-
-  dispatch(Sync(dispatchActions))
-
-  // if (synced) {
-  //   dispatch({
-  //     type: AlertActionTypes.ALERTS_SET_MESSAGE,
-  //     payload: { title: "Synced", message: "Entries" },
-  //   })
-  // }
-
-  // dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
+  dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
 }
 
 const ResetEntriesSortAndFilterMaps = () => ({
