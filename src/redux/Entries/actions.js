@@ -1,6 +1,6 @@
 import { AlertActionTypes } from "../Alerts/types"
 import { EntriesActionTypes } from "./types"
-import { Axios, AxiosForm } from "../Actions"
+import { Axios, AxiosForm, Sync } from "../Actions"
 import {
   getFileFromBase64,
   htmlToArrayOfBase64,
@@ -106,7 +106,7 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
       ReactGA.event({
         category: "Aws Upload",
         action: "User created a EntryFile in Aws",
-        value: data.url
+        value: data.url,
       })
       return data
     })
@@ -343,6 +343,10 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
 
   const entries = items.concat(filteredItems)
 
+  let dispatchDeleteEntries = []
+  let dispatchPostEntries = []
+  let dispatchUpdateEntries = []
+
   for (let i = 0, { length } = entries; i < length; i++) {
     const {
       id,
@@ -366,7 +370,8 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
 
     if (_shouldDelete) {
       synced = true
-      dispatch(DeleteEntry(id))
+      // dispatch(DeleteEntry(id))
+      dispatchDeleteEntries.push(DeleteEntry(id))
       continue
     } else if (_shouldPost) {
       synced = true
@@ -381,31 +386,57 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         longitude,
         is_public,
       }
+      console.log(dispatchPostEntries)
+      dispatchPostEntries.push(
+        PostEntry(postPayload).then((entry) => {
+          if (!entry) return
+          const {
+            EntryFiles,
+            author,
+            date_created,
+            date_created_by_author,
+            date_updated,
+            id,
+            title,
+            views,
+            address,
+            latitude,
+            longitude,
+            is_public,
+          } = entry
 
-      dispatch(PostEntry(postPayload)).then((entry) => {
-        if (!entry) return
-        const {
-          EntryFiles,
-          author,
-          date_created,
-          date_created_by_author,
-          date_updated,
-          id,
-          title,
-          views,
-          address,
-          latitude,
-          longitude,
-          is_public,
-        } = entry
+          const updateEntryPayload = {
+            html,
+            tags: getJsonTagsOrPeople(tags),
+            people: getJsonTagsOrPeople(people),
+          }
+          dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+        })
+      )
+      // dispatch(PostEntry(postPayload)).then((entry) => {
+      //   if (!entry) return
+      //   const {
+      //     EntryFiles,
+      //     author,
+      //     date_created,
+      //     date_created_by_author,
+      //     date_updated,
+      //     id,
+      //     title,
+      //     views,
+      //     address,
+      //     latitude,
+      //     longitude,
+      //     is_public,
+      //   } = entry
 
-        const updateEntryPayload = {
-          html,
-          tags: getJsonTagsOrPeople(tags),
-          people: getJsonTagsOrPeople(people),
-        }
-        dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
-      })
+      //   const updateEntryPayload = {
+      //     html,
+      //     tags: getJsonTagsOrPeople(tags),
+      //     people: getJsonTagsOrPeople(people),
+      //   }
+      //   dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+      // })
       continue
     } else if (_lastUpdated) {
       synced = true
@@ -421,22 +452,54 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         longitude,
         is_public,
       }
-      dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+      dispatchUpdateEntries.push(
+        ParseBase64(id, cleanObject(updateEntryPayload))
+      )
+      // dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
     }
   }
 
+  let dispatchActions = []
+
   if (typeof getEntryMethod === "function") {
-    getEntryMethod()
+    // getEntryMethod()
+    dispatchActions.push(getEntryMethod)
   }
 
-  if (synced) {
-    dispatch({
-      type: AlertActionTypes.ALERTS_SET_MESSAGE,
-      payload: { title: "Synced", message: "Entries" },
-    })
+  dispatchActions = dispatchActions
+    .concat(dispatchDeleteEntries)
+    .concat(dispatchPostEntries)
+    .concat(dispatchUpdateEntries)
+
+  if (
+    dispatchDeleteEntries.length > 0 ||
+    dispatchPostEntries.length > 0 ||
+    dispatchUpdateEntries.length > 0
+  ) {
+    dispatchActions = dispatchActions.concat(
+      () =>
+        new Promise((resolve) => {
+          dispatch({
+            type: AlertActionTypes.ALERTS_SET_MESSAGE,
+            payload: { title: "Synced", message: "Entries" },
+          })
+          dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
+        })
+    )
   }
 
-  dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
+  // console.log("dispatchActions: ", dispatchUpdateEntries)
+
+  dispatch(Sync(dispatchActions))
+
+  // if (synced) {
+  //   dispatch({
+  //     type: AlertActionTypes.ALERTS_SET_MESSAGE,
+  //     payload: { title: "Synced", message: "Entries" },
+  //   })
+  // }
+
+  // dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
 }
 
 const ResetEntriesSortAndFilterMaps = () => ({
