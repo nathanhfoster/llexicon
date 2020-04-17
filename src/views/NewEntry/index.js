@@ -13,7 +13,7 @@ import {
   InputGroupText,
   Button,
 } from "reactstrap"
-import { SetCalendar } from "../../redux/Calendar/Calendar"
+import { SetCalendar } from "../../redux/Calendar/actions"
 import { PostReduxEntry, SyncEntries } from "../../redux/Entries/actions"
 import {
   SetEditorState,
