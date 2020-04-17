@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import { connect as reduxConnect } from "react-redux"
 import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
+import { SetCalendar } from "../../redux/Calendar/actions"
 import PageNotFound from "../PageNotFound"
 import "./styles.css"
 
@@ -13,16 +14,18 @@ const mapStateToProps = ({ User, Entries: { items, filteredItems } }) => ({
   filteredItems,
 })
 
-const mapDispatchToProps = { GetUserEntryDetails, SyncEntries }
+const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
 
 const EntryDetail = ({
+  entryId,
   UserId,
   items,
   filteredItems,
-  SyncEntries,
   GetUserEntryDetails,
-  entryId,
+  SyncEntries,
+  SetCalendar,
 }) => {
+  let setCalendarDateToEntryDate = useRef(false)
   const entry = useMemo(
     () => items.concat(filteredItems).find((entry) => entry.id == entryId),
     [entryId, items, filteredItems]
@@ -35,6 +38,18 @@ const EntryDetail = ({
       () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
     )
   }, [])
+
+  useEffect(() => {
+    if (
+      entry &&
+      entry.date_created_by_author &&
+      !setCalendarDateToEntryDate.current
+    ) {
+      const activeDate = new Date(entry.date_created_by_author)
+      SetCalendar({ activeDate })
+      setCalendarDateToEntryDate.current = true
+    }
+  }, [entry])
 
   return entry ? (
     <Container className="Container">
@@ -56,12 +71,13 @@ const EntryDetail = ({
 }
 
 EntryDetail.propTypes = {
+  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   UserId: PropTypes.number,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
-  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  SetCalendar: PropTypes.func.isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)

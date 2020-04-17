@@ -76,7 +76,6 @@ const NewEntry = ({
     await PostReduxEntry(payload)
     SyncEntries()
     ClearEditorState()
-    handleChangeDateCreatedByAuthor(new Date())
   }
 
   return (

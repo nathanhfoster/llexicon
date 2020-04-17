@@ -3,7 +3,6 @@ import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { EntryCards, Header } from "../"
 import Moment from "react-moment"
-import MomentJs from "moment"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
@@ -11,15 +10,17 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
 })
 
 const EntriesRediscover = ({ items, filteredItems }) => {
-  const today = MomentJs()
+  const today = new Date()
   const entriesOnThisDay = useMemo(
     () =>
       items
         .concat(filteredItems)
         .filter(({ date_created_by_author, _shouldDelete }) => {
           if (_shouldDelete) return true
-          const entryDate = MomentJs(date_created_by_author)
-          const isOnThisDay = entryDate.dayOfYear() === today.dayOfYear()
+          const entryDate = new Date(date_created_by_author)
+          const isOnThisDay =
+            entryDate.getMonth() === today.getMonth() &&
+            entryDate.getDate() === today.getDate()
           return isOnThisDay
         })
         .sort((a, b) => {

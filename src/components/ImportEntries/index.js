@@ -3,17 +3,16 @@ import { useDispatch } from "react-redux"
 import PropTypes from "prop-types"
 import FileUpload from "../FileUpload"
 import { ImportReduxEntry } from "../../redux/Entries/actions"
-import "./styles.css"
 
 const ImportEntries = () => {
   const dispatch = useDispatch()
 
-  const importEntries = e => {
+  const importEntries = (e) => {
     const files = e.currentTarget.files
-    Object.keys(files).forEach(i => {
+    Object.keys(files).forEach((i) => {
       const file = files[i]
       const reader = new FileReader()
-      reader.onload = e => {
+      reader.onload = (e) => {
         const { result } = reader
         //server call for uploading or reading the files one-by-one
         //by using 'reader.result' or 'file'
@@ -32,9 +31,18 @@ const ImportEntries = () => {
           id: `entryImport-${i}`,
           title,
           html: html.join(""),
+          date_created: date_created_by_author,
           date_created_by_author,
+          date_updated:date_created_by_author,
+          EntryFiles: [],
           tags: [],
-          _shouldPost: true
+          people: [],
+          views: 0,
+          rating: 0,
+          latitude: null,
+          longitude: null,
+          is_public: false,
+          _shouldPost: true,
         }
         dispatch(ImportReduxEntry(payload))
       }

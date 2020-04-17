@@ -106,7 +106,7 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
       ReactGA.event({
         category: "Aws Upload",
         action: "User created a EntryFile in Aws",
-        value: data.url
+        value: data.url,
       })
       return data
     })
@@ -327,17 +327,17 @@ const SearchUserEntries = (search) => (dispatch, getState) => {
     })
 }
 
-const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
+const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
   const {
     User,
     Entries: { items, filteredItems, isPending },
   } = getState()
 
-  // if (isPending) return
+  const UserId = User.id
+
+  if (!UserId) return
 
   dispatch({ type: EntriesActionTypes.ENTRIES_PENDING })
-
-  const UserId = User.id
 
   let synced = false
 
@@ -366,7 +366,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
 
     if (_shouldDelete) {
       synced = true
-      dispatch(DeleteEntry(id))
+      await dispatch(DeleteEntry(id))
       continue
     } else if (_shouldPost) {
       synced = true
@@ -382,7 +382,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         is_public,
       }
 
-      dispatch(PostEntry(postPayload)).then((entry) => {
+      await dispatch(PostEntry(postPayload)).then(async (entry) => {
         if (!entry) return
         const {
           EntryFiles,
@@ -404,7 +404,7 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
           tags: getJsonTagsOrPeople(tags),
           people: getJsonTagsOrPeople(people),
         }
-        dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+        await dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })
       continue
     } else if (_lastUpdated) {
@@ -421,12 +421,12 @@ const SyncEntries = (getEntryMethod) => (dispatch, getState) => {
         longitude,
         is_public,
       }
-      dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
     }
   }
 
   if (typeof getEntryMethod === "function") {
-    getEntryMethod()
+    await getEntryMethod()
   }
 
   if (synced) {

@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -22,7 +22,21 @@ const popperPlacementPositions = {
   TOP_START: "top-start",
 }
 
-const ReactDatePicker = (props) => <DatePicker {...props} />
+const ReactDatePicker = (props) => {
+  const handleTodayClick = useCallback(() => {
+    // props.onChange(new Date())
+  }, [])
+  const todayButton = useMemo(
+    () => (
+      <div className="NavBaDatePickerTodayButton" onClick={handleTodayClick}>
+        <i className="fas fa-calendar-day mr-1" />
+        Today
+      </div>
+    ),
+    []
+  )
+  return <DatePicker {...props} todayButton={todayButton} />
+}
 
 ReactDatePicker.propTypes = {
   adjustDateOnChange: PropTypes.bool,
@@ -162,9 +176,6 @@ ReactDatePicker.propTypes = {
 
 ReactDatePicker.defaultProps = {
   wrapperClassName: "DatePicker",
-  todayButton: (
-    <i className="fas fa-calendar-day NavBaDatePickerTodayButton"> Today</i>
-  ),
   popperClassName: "DatePickerPopper",
   popperPlacement: popperPlacementPositions.BOTTOM_END,
   // popperModifiers:{{

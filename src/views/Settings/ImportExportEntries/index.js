@@ -38,6 +38,7 @@ const ImportExportEntries = ({
         id,
         author,
         tags,
+        people,
         title,
         html,
         date_created,
@@ -53,7 +54,11 @@ const ImportExportEntries = ({
         id,
         author,
         tags: tags.reduce(
-          (entryString, entry) => (entryString += `${entry.name},`),
+          (tagString, tag) => (tagString += `${tag.name},`),
+          ""
+        ),
+        people: people.reduce(
+          (peopleString, person) => (peopleString += `${person.name},`),
           ""
         ),
         title,
@@ -84,9 +89,7 @@ const ImportExportEntries = ({
             <i className="fas fa-cloud-download-alt" /> Download and Sync All
             Entries
           </Button>
-          <Button color="accent" onClick={handleExportEntries} disabled>
-            <i className="fas fa-download" /> Import Entries
-          </Button>
+          <ImportEntries />
           <Button
             color="accent"
             onClick={handleExportEntries}
@@ -95,9 +98,6 @@ const ImportExportEntries = ({
             <i className="fas fa-clipboard" /> Export Entries
           </Button>
         </Col>
-        {/* <Col xs={6}>
-          <ImportEntries />
-        </Col> */}
       </Row>
     </Container>
   )
