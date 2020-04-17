@@ -5,6 +5,7 @@ import { Axios } from "../Actions"
 import axios from "axios"
 import qs from "qs"
 import ReactGA from "react-ga"
+const { PUBLIC_URL } = process.env
 
 const LATEST_APP_VERSION = 1
 
@@ -18,8 +19,9 @@ const ResetRedux = () => (dispatch) =>
 
 const CheckAppVersion = () => (dispatch) =>
   axios
-    .get("./version.txt")
+    .get(`${PUBLIC_URL}/version.txt`)
     .then(({ data }) => {
+      console.log("DATA: ", data)
       const clientNeedsUpdate = data !== LATEST_APP_VERSION
 
       if (clientNeedsUpdate) {
