@@ -1,32 +1,48 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { FormGroup, Label, Input, Media, FormText } from "reactstrap"
-
+import { FormGroup, Label, Input, Media, FormText, Button } from "reactstrap"
 import "./styles.css"
 
-const FileUpload = ({ value, onChangeCallback }) => (
-  <FormGroup className="FileUploadContainer">
-    <FormText color="white">Import Entries</FormText>
-    <Label className="FileUpload" for="fileUpload">
-      {!value ? (
-        <i className="fas fa-file-import fa-2x" />
-      ) : (
-        <Media src={value} />
-      )}
-    </Label>
-    <Input
-      type="file"
-      name={value}
-      id="fileUpload"
-      onChange={onChangeCallback}
-      multiple
-    />
-  </FormGroup>
-)
+const FileUpload = ({ title, value, onChangeCallback }) => {
+  const handleButtonClick = () => document.getElementById("fileUpload").click()
+
+  return (
+    <FormGroup
+      className="FileUploadContainer m-0"
+      color="accent"
+      tag={Button}
+      onClick={handleButtonClick}
+    >
+      <FormText color="white">
+        <Label className="FileUpload mr-1" for="fileUpload">
+          {!value ? (
+            <i className="fas fa-file-import" />
+          ) : (
+            <Media src={value} />
+          )}
+          <Input
+            hidden
+            type="file"
+            name={value}
+            id="fileUpload"
+            onChange={onChangeCallback}
+            multiple
+          />
+        </Label>
+        {title}
+      </FormText>
+    </FormGroup>
+  )
+}
 
 FileUpload.propTypes = {
+  title: PropTypes.string,
   value: PropTypes.string,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
+}
+
+FileUpload.defaultProps = {
+  title: "Import Entries",
 }
 
 export default memo(FileUpload)
