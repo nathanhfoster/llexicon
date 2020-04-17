@@ -38,6 +38,7 @@ const ImportExportEntries = ({
         id,
         author,
         tags,
+        people,
         title,
         html,
         date_created,
@@ -53,7 +54,11 @@ const ImportExportEntries = ({
         id,
         author,
         tags: tags.reduce(
-          (entryString, entry) => (entryString += `${entry.name},`),
+          (tagString, tag) => (tagString += `${tag.name},`),
+          ""
+        ),
+        people: people.reduce(
+          (peopleString, person) => (peopleString += `${person.name},`),
           ""
         ),
         title,
