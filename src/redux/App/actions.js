@@ -21,7 +21,6 @@ const CheckAppVersion = () => (dispatch) =>
   axios
     .get(`${PUBLIC_URL}/version.txt`)
     .then(({ data }) => {
-      console.log("DATA: ", data)
       const clientNeedsUpdate = data !== LATEST_APP_VERSION
 
       if (clientNeedsUpdate) {
