@@ -335,7 +335,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
 
   const UserId = User.id
 
-  if (!UserId) return
+  // if (!UserId) return
 
   dispatch({ type: EntriesActionTypes.ENTRIES_PENDING })
 
