@@ -69,8 +69,9 @@ const NewEntry = ({
     const payload = {
       ...entry,
       id: `NewEntry-${entriesLength}`,
+      date_created: activeDate,
       date_created_by_author: activeDate,
-      _shouldPost: true,
+      date_updated: activeDate,
     }
 
     await PostReduxEntry(payload)

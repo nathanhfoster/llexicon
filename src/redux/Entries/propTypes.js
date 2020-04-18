@@ -42,12 +42,18 @@ const EntryPropTypes = PropTypes.shape({
   EntryFiles: EntryFilesProps,
   title: PropTypes.string,
   html: PropTypes.string,
-  date_created: PropTypes.string,
+  date_created: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date),
+  ]),
   date_created_by_author: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.instanceOf(Date),
   ]),
-  date_updated: PropTypes.string,
+  date_updated: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date),
+  ]),
   views: PropTypes.number,
   rating: EntryRatingProps,
   address: PropTypes.string,

@@ -246,23 +246,16 @@ const PostEntry = (payload) => (dispatch) =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload: error })
     })
 
-const UpdateReduxEntry = (payload) => ({
+const UpdateReduxEntry = (payload, _lastUpdated = new Date()) => ({
   type: EntriesActionTypes.ENTRY_UPDATE,
-  id: payload.id,
-  payload,
-  _lastUpdated: new Date(),
+  payload: { ...payload, _lastUpdated },
 })
 
 const UpdateEntry = (id, payload) => (dispatch) =>
   Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRY_UPDATE,
-        id,
-        payload: data,
-        _lastUpdated: null,
-      })
+      dispatch(UpdateReduxEntry(data, null))
       ReactGA.event({
         category: "Update Entry",
         action: "User updated a new entry!",
@@ -275,11 +268,13 @@ const UpdateEntry = (id, payload) => (dispatch) =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
+const DeleteReduxEntry = (id) => ({ type: EntriesActionTypes.ENTRY_DELETE, id })
+
 const DeleteEntry = (id) => (dispatch) =>
   Axios()
     .delete(`/entries/${id}/`)
     .then((res) => {
-      dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
+      dispatch(DeleteReduxEntry(id))
       ReactGA.event({
         category: "Delete Entry",
         action: "User deleted a new entry!",
@@ -467,6 +462,7 @@ export {
   PostEntry,
   UpdateReduxEntry,
   UpdateEntry,
+  DeleteReduxEntry,
   DeleteEntry,
   SearchUserEntries,
   SyncEntries,

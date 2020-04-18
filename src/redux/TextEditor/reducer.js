@@ -12,8 +12,13 @@ const DEFAULT_STATE_TEXT_EDITOR = {
   tags: [],
   people: [],
   rating: 0,
-  _lastUpdated: "",
-  EntryFiles: []
+  EntryFiles: [],
+  date_created: null,
+  date_created_by_author: null,
+  date_updated: null,
+  _shouldDelete: false,
+  _shouldPost: false,
+  _lastUpdated: null,
 }
 
 const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {

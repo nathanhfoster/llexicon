@@ -21,7 +21,7 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const { id, type, payload, search, _lastUpdated } = action
+  const { id, type, payload, search } = action
   switch (type) {
     case EntriesActionTypes.ENTRIES_SET_TAGS:
       return { ...state, EntryTags: payload }
@@ -95,11 +95,10 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         error: DEFAULT_STATE_ENTRIES.error,
         ...handleFilterEntries(
           state.items.concat(state.filteredItems).map((item) =>
-            item.id === id
+            item.id === payload.id
               ? {
                   ...item,
                   ...payload,
-                  _lastUpdated,
                 }
               : item
           ),
