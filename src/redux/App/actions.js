@@ -7,7 +7,7 @@ import qs from "qs"
 import ReactGA from "react-ga"
 const { PUBLIC_URL } = process.env
 // Must be the same number as the one in the /public/version.txt file
-const LATEST_APP_VERSION = 2
+const LATEST_APP_VERSION = 3
 
 const SetWindow = (payload) => ({
   type: WindowActionTypes.SET_WINDOW,

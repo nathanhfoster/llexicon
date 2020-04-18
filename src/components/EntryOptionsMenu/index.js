@@ -1,4 +1,4 @@
-import React, { Fragment, useState, memo } from "react"
+import React, { Fragment, useState, useCallback, memo } from "react"
 import PropTypes from "prop-types"
 import {
   ButtonDropdown,
@@ -16,6 +16,7 @@ import "./styles.css"
 
 const EntryOptionsMenu = ({
   entryId,
+  author,
   is_public,
   history,
   shouldRedirectOnDelete,
@@ -30,21 +31,33 @@ const EntryOptionsMenu = ({
   const { origin } = window.location
   const url = `${origin}${GetEntryDetailUrl(entryId)}`
 
-  const handleEditorChange = ({ ...payload }) =>
-    dispatch(UpdateReduxEntry({ id: entryId, ...payload }))
+  const handleEditorChange = useCallback(
+    ({ ...payload }) => dispatch(UpdateReduxEntry(entryId, payload)),
+    []
+  )
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     shouldRedirectOnDelete && RouterGoBack(history)
     setTimeout(async () => {
       await dispatch(
         handleEditorChange({
-          id: entryId,
           _shouldDelete: true,
         })
       )
       dispatch(SyncEntries())
     }, 200)
-  }
+  }, [history])
+
+  const handleCopyAndMakePublic = useCallback(() => {
+    copyStringToClipboard(url)
+    setUrlCopied(true)
+    if (!is_public) handleEditorChange({ is_public: true })
+  }, [is_public])
+
+  const handleToggleIsPublic = useCallback(() => {
+    setUrlCopied(false)
+    handleEditorChange({ is_public: !is_public })
+  }, [is_public])
 
   return (
     <ButtonDropdown
@@ -60,22 +73,11 @@ const EntryOptionsMenu = ({
           <i className="fas fa-share mr-1" />
           <span>{url}</span>
         </DropdownItem>
-        <DropdownItem
-          onClick={() => {
-            copyStringToClipboard(url)
-            setUrlCopied(true)
-            if (!is_public) handleEditorChange({ is_public: true })
-          }}
-        >
+        <DropdownItem onClick={handleCopyAndMakePublic} disabled={!author}>
           <i className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`} />
           Copy and make public
         </DropdownItem>
-        <DropdownItem
-          onClick={() => {
-            setUrlCopied(false)
-            handleEditorChange({ is_public: !is_public })
-          }}
-        >
+        <DropdownItem onClick={handleToggleIsPublic}>
           <i className={`fas fa-lock${is_public ? "-open" : ""} mr-1`} />
           {`Make ${is_public ? "Private" : "Public"}`}
         </DropdownItem>

@@ -213,26 +213,25 @@ const GetUserEntriesByDate = (date) => (dispatch, getState) => {
     })
 }
 
-const PostReduxEntry = (payload) => (dispatch) =>
-  dispatch({
-    type: EntriesActionTypes.ENTRY_SET,
-    payload: { ...payload, _shouldPost: true },
-  })
-
 const ImportReduxEntry = (payload) => ({
   type: EntriesActionTypes.ENTRY_IMPORT,
   payload,
 })
 
+const PostReduxEntry = (payload) => (dispatch, getState) => {
+  const { items, filteredItems } = getState().Entries
+  const { length } = items.concat(filteredItems)
+  return dispatch({
+    type: EntriesActionTypes.ENTRY_SET,
+    payload: { ...payload, id: `NewEntry-${length}`, _shouldPost: true },
+  })
+}
+
 const PostEntry = (payload) => (dispatch) =>
   Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch({
-        id: payload.id,
-        type: EntriesActionTypes.ENTRY_POST,
-        payload: data,
-      })
+      dispatch(UpdateReduxEntry(payload.id, data, null))
       ReactGA.event({
         category: "Post Entry",
         action: "User posted a new entry!",
@@ -246,16 +245,17 @@ const PostEntry = (payload) => (dispatch) =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload: error })
     })
 
-const UpdateReduxEntry = (payload, _lastUpdated = new Date()) => ({
+const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
   type: EntriesActionTypes.ENTRY_UPDATE,
-  payload: { ...payload, _lastUpdated },
+  id,
+  payload: { ...entry, _lastUpdated, _shouldPost: false },
 })
 
 const UpdateEntry = (id, payload) => (dispatch) =>
   Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch(UpdateReduxEntry(data, null))
+      dispatch(UpdateReduxEntry(id, data, null))
       ReactGA.event({
         category: "Update Entry",
         action: "User updated a new entry!",
@@ -457,8 +457,8 @@ export {
   GetAllUserEntries,
   GetUserEntries,
   GetUserEntriesByDate,
-  PostReduxEntry,
   ImportReduxEntry,
+  PostReduxEntry,
   PostEntry,
   UpdateReduxEntry,
   UpdateEntry,

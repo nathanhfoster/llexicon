@@ -43,7 +43,7 @@ const EntryCard = ({
           className="EntryOptionsMenuContainer"
           onClick={(e) => e.stopPropagation()}
         >
-          <EntryOptionsMenu entryId={id} is_public={is_public} />
+          <EntryOptionsMenu entryId={id} author={author} is_public={is_public} />
         </div>
         <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
       </Fragment>

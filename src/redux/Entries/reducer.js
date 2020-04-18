@@ -76,18 +76,6 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
-    case EntriesActionTypes.ENTRY_POST:
-      return {
-        ...state,
-        isPending: false,
-        error: DEFAULT_STATE_ENTRIES.error,
-        ...handleFilterEntries(
-          state.items
-            .concat(state.filteredItems)
-            .map((item) => (item.id === id ? payload : item)),
-          state.search
-        ),
-      }
     case EntriesActionTypes.ENTRY_UPDATE:
       return {
         ...state,
@@ -95,7 +83,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         error: DEFAULT_STATE_ENTRIES.error,
         ...handleFilterEntries(
           state.items.concat(state.filteredItems).map((item) =>
-            item.id === payload.id
+            item.id === id
               ? {
                   ...item,
                   ...payload,
