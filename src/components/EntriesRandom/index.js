@@ -15,7 +15,8 @@ const EntriesRandom = ({ items, filteredItems }) => {
   const [shouldRerender, forceUpdate] = useState(false)
   const handleRefresh = () => forceUpdate(!shouldRerender)
   const viewableEntries = useMemo(
-    () => items.concat(filteredItems).filter((item) => !item._shouldDelete),
+    () =>
+      items.concat(filteredItems).filter(({ _shouldDelete }) => !_shouldDelete),
     [items, filteredItems, shouldRerender]
   )
 

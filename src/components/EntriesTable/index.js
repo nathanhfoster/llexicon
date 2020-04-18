@@ -34,7 +34,7 @@ const EntriesTable = ({
   const history = useHistory()
 
   const viewableEntries = useMemo(
-    () => items.filter((item) => !item._shouldDelete),
+    () => items.filter(({ _shouldDelete }) => !_shouldDelete),
     [items]
   )
 
@@ -141,15 +141,15 @@ const EntriesTable = ({
         width: 130,
         render: (item) => (
           <Moment format="D MMM YY hh:mma">
-            {item._lastUpdated || item.date_updated}
+            {item._shouldUpdate || item.date_updated}
           </Moment>
         ),
         sort: (a, b, sortUp) =>
           sortUp
-            ? new Date(b._lastUpdated || b.date_updated) -
-              new Date(a._lastUpdated || a.date_updated)
-            : new Date(a._lastUpdated || a.date_updated) -
-              new Date(b._lastUpdated || b.date_updated),
+            ? new Date(b._shouldUpdate || b.date_updated) -
+              new Date(a._shouldUpdate || a.date_updated)
+            : new Date(a._shouldUpdate || a.date_updated) -
+              new Date(b._shouldUpdate || b.date_updated),
         defaultSortValue: sortMap.date_updated,
         filter: "date",
         filterPlaceholder: "Updated",
