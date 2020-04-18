@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment, createRef, lazy } from "react"
 import ReactQuill, { Quill } from "react-quill"
-import { Font, Size, Video } from "./modules"
+import { THEMES, FORMATS, getModules, Font, Size, Video } from "./modules"
 import "react-quill/dist/quill.snow.css"
 import "react-quill/dist/quill.bubble.css"
 import "react-quill/dist/quill.core.css"
@@ -16,63 +16,9 @@ Quill.register(Size, true)
 Quill.register(Font, true)
 Quill.register("formats/video", Video)
 Quill.register("modules/imageResize", ImageResize)
-
-const BottomToolbar = lazy(() => import("./BottomToolbar"))
-
 // Quill.setAttribute('spellcheck', true)
 
-const THEMES = {
-  CORE: "core",
-  SNOW: "snow",
-  BUBBLE: "bubble",
-}
-
-const getModules = (toolbarId, topToolbarIsOpen) => ({
-  history: {
-    delay: 2000,
-    maxStack: 500,
-    userOnly: false,
-  },
-  toolbar: topToolbarIsOpen ? `#${toolbarId}` : false,
-  clipboard: {
-    // toggle to add extra line breaks when pasting HTML:
-    matchVisual: true,
-  },
-  imageResize: {
-    parchment: Quill.import("parchment"),
-    // See optional "config" below
-  },
-  // imageDrop: {}
-})
-
-const formats = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "color",
-  "background",
-  "font",
-  "code",
-  "size",
-  "script",
-  "align",
-  "direction",
-  "code-block",
-  "image",
-  "video",
-  "alt",
-  "height",
-  "width",
-  "style",
-  "size",
-]
+const BottomToolbar = lazy(() => import("./BottomToolbar"))
 
 class Editor extends PureComponent {
   constructor(props) {
@@ -234,7 +180,7 @@ class Editor extends PureComponent {
             className="Editor"
             style={{ height: editorHeight }}
             theme={theme}
-            formats={formats}
+            formats={FORMATS}
             modules={modules}
             value={entry.html}
             onChange={this.handleEditorStateChange}
