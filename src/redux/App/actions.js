@@ -6,7 +6,7 @@ import axios from "axios"
 import qs from "qs"
 import ReactGA from "react-ga"
 const { PUBLIC_URL } = process.env
-// Must be the same integer as the one in the /public/version.txt file
+// Must be the same number as the one in the /public/version.txt file
 const LATEST_APP_VERSION = 2
 
 const SetWindow = (payload) => ({
