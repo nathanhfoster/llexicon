@@ -141,15 +141,15 @@ const EntriesTable = ({
         width: 130,
         render: (item) => (
           <Moment format="D MMM YY hh:mma">
-            {item._shouldUpdate || item.date_updated}
+            {item._lastUpdated || item.date_updated}
           </Moment>
         ),
         sort: (a, b, sortUp) =>
           sortUp
-            ? new Date(b._shouldUpdate || b.date_updated) -
-              new Date(a._shouldUpdate || a.date_updated)
-            : new Date(a._shouldUpdate || a.date_updated) -
-              new Date(b._shouldUpdate || b.date_updated),
+            ? new Date(b._lastUpdated || b.date_updated) -
+              new Date(a._lastUpdated || a.date_updated)
+            : new Date(a._lastUpdated || a.date_updated) -
+              new Date(b._lastUpdated || b.date_updated),
         defaultSortValue: sortMap.date_updated,
         filter: "date",
         filterPlaceholder: "Updated",
