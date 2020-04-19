@@ -95,6 +95,7 @@ const Entry = ({
                 tag={EntryOptionsMenu}
                 onChangeCallback={handleEditorChange}
                 entryId={entry.id}
+                author={entry.author}
                 is_public={entry.is_public}
                 history={history}
                 shouldRedirectOnDelete={shouldRedirectOnDelete}
