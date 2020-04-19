@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
@@ -6,27 +6,39 @@ import { UseDebounce } from ".."
 import { ClearAlerts } from "../../redux/Alerts/actions"
 import "./styles.css"
 
-const mapStateToProps = ({ Alerts: { title, message } }) => ({ title, message })
+const mapStateToProps = ({
+  Alerts: { title, message, serviceWorkerRegistration },
+}) => ({
+  title,
+  message,
+  serviceWorkerRegistration,
+})
 
 const mapDispatchToProps = { ClearAlerts }
 
-const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
+const AlertNotifications = ({
+  title,
+  message,
+  alertInterval,
+  serviceWorkerRegistration,
+  ClearAlerts,
+}) => {
   const appUpdate = title === "Update Available"
   const shouldShow = appUpdate || (title && message) ? true : false
 
-  const debounceClear = () => {
+  const handleClearAlerts = useCallback(() => {
     ClearAlerts()
-  }
+  }, [])
 
-  const handleOnClickCallback = () => {
-    debounceClear()
+  const handleUpdate = useCallback(() => {
+    handleClearAlerts()
     setTimeout(() => {
       // const currentUrl = window.location.href
       // window.close()
       // window.open(currentUrl, "_blank")
       window.location.reload()
     }, 1000)
-  }
+  }, [])
 
   return (
     <Toast
@@ -35,6 +47,7 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
       appear={true}
       enter={true}
       exit={true}
+      fade={true}
       transition={{
         mountOnEnter: true,
         unmountOnExit: true,
@@ -43,7 +56,7 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
     >
       <UseDebounce
         debounceOnMount={!appUpdate}
-        onChangeCallback={debounceClear}
+        onChangeCallback={handleClearAlerts}
         value={shouldShow}
         delay={1600}
       />
@@ -55,7 +68,7 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
 
         {appUpdate && (
           <div className="Center">
-            <Button onClick={handleOnClickCallback} color="accent">
+            <Button onClick={handleUpdate} color="accent">
               Update
             </Button>
           </div>

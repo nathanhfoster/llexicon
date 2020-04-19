@@ -18,6 +18,7 @@ const config = (ReduxStore) => ({
               payload: {
                 title: `Update Available`,
                 message: `There is an update for your service worker!`,
+                serviceWorkerRegistration: registration,
               },
             })
           } else {
@@ -26,7 +27,6 @@ const config = (ReduxStore) => ({
           }
         }
       })
-      // Test
       waitingServiceWorker.postMessage({ type: "SKIP_WAITING" })
     }
   },

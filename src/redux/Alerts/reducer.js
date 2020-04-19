@@ -3,7 +3,8 @@ import { AppActionTypes } from "../App/types"
 
 const DEFAULT_STATE_ALERTS = {
   title: "",
-  message: ""
+  message: "",
+  serviceWorkerRegistration: null,
 }
 
 const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
