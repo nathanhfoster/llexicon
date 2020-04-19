@@ -21,12 +21,12 @@ const GetAppVersion = () => (dispatch, getState) => {
   return axios
     .get(`${PUBLIC_URL}/version.txt`)
     .then(({ data }) => {
-        dispatch({ type: AppActionTypes.APP_SET_VERSION, payload: data })
-        ReactGA.event({
-          category: "Check App Version",
-          action: "User got the latest app version!",
-          value: data,
-        })
+      dispatch({ type: AppActionTypes.APP_SET_VERSION, payload: data })
+      ReactGA.event({
+        category: "Check App Version",
+        action: "User got the latest app version!",
+        value: data,
+      })
 
       return { currentVersion: version, latestVersion: data }
     })

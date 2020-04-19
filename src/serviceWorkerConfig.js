@@ -1,5 +1,7 @@
+import ReactGA from "react-ga"
 import { AlertActionTypes } from "./redux/Alerts/types"
 import { GetAppVersion } from "./redux/App/actions"
+
 const config = (ReduxStore) => ({
   // onUpdate: (registration) => {
   //   registration.unregister().then(() => {
@@ -26,6 +28,12 @@ const config = (ReduxStore) => ({
                     message,
                     serviceWorkerRegistration: registration,
                   },
+                })
+
+                ReactGA.event({
+                  category: "Update Service Worker",
+                  action: "User's service worker is going to SKIP_WAITING",
+                  value: message,
                 })
               })
               .catch((e) =>
