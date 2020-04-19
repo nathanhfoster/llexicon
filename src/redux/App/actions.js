@@ -27,7 +27,7 @@ const CheckAppVersion = () => (dispatch) =>
           type: AlertActionTypes.ALERTS_SET_MESSAGE,
           payload: {
             title: `App Update`,
-            message: `You are on version ${LATEST_APP_VERSION}. The latest version of the app is ${data}!`,
+            message: `You are on version ${LATEST_APP_VERSION}. The latest version is ${data}!`,
           },
         })
         ReactGA.event({
