@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import { RouteMap } from "../../routes"
 import "./styles.css"
 // Must be the same number as the one in the /public/version.txt file
-export const LATEST_APP_VERSION = 1.002
+export const LATEST_APP_VERSION = 1.003
 
 const Footer = () => (
   <Container fluid tag="footer" className="MainFooter">
