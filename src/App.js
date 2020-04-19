@@ -87,7 +87,7 @@ const App = ({
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
 
-    GetAppVersion()
+    GetAppVersion(true)
 
     const handleResize = () => SetWindow()
 

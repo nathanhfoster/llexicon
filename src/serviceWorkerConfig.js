@@ -1,5 +1,5 @@
 import { AlertActionTypes } from "./redux/Alerts/types"
-
+import { GetAppVersion } from "./redux/App/actions"
 const config = (ReduxStore) => ({
   // onUpdate: (registration) => {
   //   registration.unregister().then(() => {
@@ -13,14 +13,27 @@ const config = (ReduxStore) => ({
       waitingServiceWorker.addEventListener("statechange", (event) => {
         if (event.target.state === "activated") {
           if (ReduxStore) {
-            ReduxStore.dispatch({
-              type: AlertActionTypes.ALERTS_SET_MESSAGE,
-              payload: {
-                title: `Update Available`,
-                message: `There is an update for your service worker!`,
-                serviceWorkerRegistration: registration,
-              },
-            })
+            ReduxStore.dispatch(GetAppVersion())
+              .then(({ currentVersion, latestVersion }) => {
+                const message =
+                  currentVersion != latestVersion
+                    ? `From version${currentVersion} to ${latestVersion}`
+                    : `Version: ${latestVersion}`
+                ReduxStore.dispatch({
+                  type: AlertActionTypes.ALERTS_SET_MESSAGE,
+                  payload: {
+                    title: `Update Available`,
+                    message,
+                    serviceWorkerRegistration: registration,
+                  },
+                })
+              })
+              .catch((e) =>
+                console.log(
+                  "GetAppVersion failed in Service Worker Update: ",
+                  e
+                )
+              )
           } else {
             alert("Update Available")
             window.location.reload()

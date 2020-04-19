@@ -177,13 +177,13 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
       ReactGA.event({
         category: "Get User Entries Page",
         action: "User got a entry page!",
-        label: pageNumber,
+        label: pageNumber.toString(),
         value: id,
       })
-      return pageNumber
+      return data
     })
-    .catch(({ response }) => {
-      console.log(response)
+    .catch((e) => {
+      console.log(e)
       // const payload = JSON.parse(JSON.stringify(e.response))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
@@ -201,13 +201,13 @@ const GetUserEntriesByDate = (date) => (dispatch, getState) => {
       ReactGA.event({
         category: "Get User Entries By Date",
         action: "User got a entry page!",
-        label: date,
+        label: date.toString(),
         value: id,
       })
       return data
     })
-    .catch(({ response }) => {
-      console.log(response)
+    .catch((e) => {
+      console.log(e)
       // const payload = JSON.parse(JSON.stringify(e))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })

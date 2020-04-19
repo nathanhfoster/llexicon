@@ -14,19 +14,25 @@ const SetWindow = (payload) => ({
 const ResetRedux = () => (dispatch) =>
   dispatch({ type: AppActionTypes.REDUX_RESET })
 
-const GetAppVersion = () => (dispatch) =>
-  axios
+const GetAppVersion = (shouldSetVersion = false) => (dispatch, getState) => {
+  const {
+    App: { version },
+  } = getState()
+  return axios
     .get(`${PUBLIC_URL}/version.txt`)
     .then(({ data }) => {
-      dispatch({ type: AppActionTypes.APP_SET_VERSION, payload: data })
-      ReactGA.event({
-        category: "Check App Version",
-        action: "User got the latest app version!",
-        value: data,
-      })
+      if (shouldSetVersion) {
+        dispatch({ type: AppActionTypes.APP_SET_VERSION, payload: data })
+        ReactGA.event({
+          category: "Check App Version",
+          action: "User got the latest app version!",
+          value: data,
+        })
+      }
 
-      return data
+      return { currentVersion: version, latestVersion: data }
     })
     .catch(({ response }) => console.log("ERROR: ", response))
+}
 
 export { SetWindow, ResetRedux, GetAppVersion }
