@@ -11,7 +11,7 @@ const mapStateToProps = ({ Alerts: { title, message } }) => ({ title, message })
 const mapDispatchToProps = { ClearAlerts }
 
 const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
-  const appUpdate = title === "App Update"
+  const appUpdate = title === "Update Available"
   const shouldShow = appUpdate || (title && message) ? true : false
 
   const debounceClear = () => {

@@ -26,7 +26,7 @@ const CheckAppVersion = () => (dispatch) =>
         dispatch({
           type: AlertActionTypes.ALERTS_SET_MESSAGE,
           payload: {
-            title: `App Update`,
+            title: `Update Available`,
             message: `You are on version ${LATEST_APP_VERSION}. The latest version is ${data}!`,
           },
         })

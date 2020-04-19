@@ -10,7 +10,9 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-const config = {
+import { AlertActionTypes } from "./redux/Alerts/types"
+
+const config = (ReduxStore) => ({
   // onUpdate: (registration) => {
   //   registration.unregister().then(() => {
   //     window.location.reload()
@@ -22,7 +24,18 @@ const config = {
     if (waitingServiceWorker) {
       waitingServiceWorker.addEventListener("statechange", (event) => {
         if (event.target.state === "activated") {
-          window.location.reload()
+          if (ReduxStore) {
+            ReduxStore.dispatch({
+              type: AlertActionTypes.ALERTS_SET_MESSAGE,
+              payload: {
+                title: `Update Available`,
+                message: `There is an update for your service worker!`,
+              },
+            })
+          } else {
+            alert("Update Available")
+            window.location.reload()
+          }
         }
       })
       waitingServiceWorker.postMessage({ type: "SKIP_WAITING" })
@@ -32,7 +45,7 @@ const config = {
     console.info("Service worker on success state")
     console.log(registration)
   },
-}
+})
 
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
@@ -187,4 +200,4 @@ const unregister = () => {
   }
 }
 
-export { config,register, update, unregister }
+export { config, register, update, unregister }
