@@ -20,7 +20,7 @@ const isLocalhost = Boolean(
     )
 )
 
-const register = config => {
+const register = (config) => {
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href)
@@ -31,12 +31,12 @@ const register = config => {
       return
     }
 
-    let refreshing
-    window.addEventListener("controllerchange", () => {
-      if (refreshing) return
-      refreshing = true
-      window.location.reload()
-    })
+    // let refreshing
+    // window.addEventListener("controllerchange", () => {
+    //   if (refreshing) return
+    //   refreshing = true
+    //   window.location.reload()
+    // })
 
     window.addEventListener("load", () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
@@ -64,7 +64,7 @@ const register = config => {
 const registerValidSW = (swUrl, config) => {
   navigator.serviceWorker
     .register(swUrl)
-    .then(registration => {
+    .then((registration) => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing
         if (installingWorker == null) {
@@ -100,16 +100,16 @@ const registerValidSW = (swUrl, config) => {
         }
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error during service worker registration:", error)
     })
 }
 
-const update = swUrl => {
+const update = (swUrl) => {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
       .register(swUrl)
-      .then(registration => {
+      .then((registration) => {
         // registration worked
         registration.update()
         console.log("Registration succeeded.")
@@ -117,7 +117,7 @@ const update = swUrl => {
         //   registration.update()
         // }
       })
-      .catch(error => {
+      .catch((error) => {
         // registration failed
         console.log("Registration failed with " + error)
       })
@@ -127,7 +127,7 @@ const update = swUrl => {
 const checkValidServiceWorker = (swUrl, config) => {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
-    .then(response => {
+    .then((response) => {
       // Ensure service worker exists, and that we really are getting a JS file.
       const contentType = response.headers.get("content-type")
       if (
@@ -135,7 +135,7 @@ const checkValidServiceWorker = (swUrl, config) => {
         (contentType != null && contentType.indexOf("javascript") === -1)
       ) {
         // No service worker found. Probably a different app. Reload the page.
-        navigator.serviceWorker.ready.then(registration => {
+        navigator.serviceWorker.ready.then((registration) => {
           registration.unregister().then(() => {
             window.location.reload()
           })
@@ -154,7 +154,7 @@ const checkValidServiceWorker = (swUrl, config) => {
 
 const unregister = () => {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.ready.then(registration => {
+    navigator.serviceWorker.ready.then((registration) => {
       registration.unregister()
     })
   }
