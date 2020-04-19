@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import { Container, Row, Col } from "reactstrap"
-import { Header } from "../"
+import { Header } from "../../components"
 import { RouteMap } from "../../routes"
 import "./styles.css"
 

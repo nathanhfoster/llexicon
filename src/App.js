@@ -14,8 +14,8 @@ import {
   ResetEntriesSortAndFilterMaps,
 } from "./redux/Entries/actions"
 import { RouteMap, RouterGoBack } from "./routes"
-import { About, Home, Entries } from "./views"
-import { NavBar, PrivacyPolicy } from "./components"
+import { About, Home, Entries, PrivacyPolicy } from "./views"
+import { NavBar } from "./components"
 import { RouterLinkPush } from "./routes"
 import memoizeProps from "./helpers/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"

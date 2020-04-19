@@ -4,6 +4,8 @@ import { Container, Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
 import { RouteMap } from "../../routes"
 import "./styles.css"
+// Must be the same number as the one in the /public/version.txt file
+export const LATEST_APP_VERSION = 7
 
 const Footer = () => (
   <Container fluid tag="footer" className="MainFooter">
@@ -13,6 +15,9 @@ const Footer = () => (
           <i className="fas fa-user-secret" /> Privacy policy
         </Link>
       </Col>
+    </Row>
+    <Row className="Center">
+      <Col xs={12}>App Version: {LATEST_APP_VERSION}</Col>
     </Row>
     <Row className="Center">
       <Col xs={12}>&copy; {new Date().getFullYear()} Nathan Foster</Col>

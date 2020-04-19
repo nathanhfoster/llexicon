@@ -5,9 +5,8 @@ import { Axios } from "../Actions"
 import axios from "axios"
 import qs from "qs"
 import ReactGA from "react-ga"
+import { LATEST_APP_VERSION } from "../../components/Footer"
 const { PUBLIC_URL } = process.env
-// Must be the same number as the one in the /public/version.txt file
-const LATEST_APP_VERSION = 6
 
 const SetWindow = (payload) => ({
   type: WindowActionTypes.SET_WINDOW,
