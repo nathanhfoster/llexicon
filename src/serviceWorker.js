@@ -10,6 +10,30 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
+const config = {
+  // onUpdate: (registration) => {
+  //   registration.unregister().then(() => {
+  //     window.location.reload()
+  //   })
+  // },
+  onUpdate: (registration) => {
+    const waitingServiceWorker = registration.waiting
+
+    if (waitingServiceWorker) {
+      waitingServiceWorker.addEventListener("statechange", (event) => {
+        if (event.target.state === "activated") {
+          window.location.reload()
+        }
+      })
+      waitingServiceWorker.postMessage({ type: "SKIP_WAITING" })
+    }
+  },
+  onSuccess: (registration) => {
+    console.info("Service worker on success state")
+    console.log(registration)
+  },
+}
+
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
     // [::1] is the IPv6 localhost address.
@@ -68,16 +92,6 @@ const registerValidSW = (swUrl, config) => {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-      // Test
-      if (registration.waiting) {
-        navigator.serviceWorker.ready.then(async (registration) => {
-          await registration.unregister()
-          // Once the service worker is unregistered, we can reload
-          // the page to let the browser download a fresh copy of our app
-          window.alert("Update Available")
-          window.location.reload()
-        })
-      }
       registration.onupdatefound = () => {
         const installingWorker = registration.installing
         if (installingWorker == null) {
@@ -173,4 +187,4 @@ const unregister = () => {
   }
 }
 
-export { register, update, unregister }
+export { config,register, update, unregister }
