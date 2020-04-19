@@ -38,6 +38,7 @@ const config = (ReduxStore) => ({
           }
         }
       })
+      // Test
       waitingServiceWorker.postMessage({ type: "SKIP_WAITING" })
     }
   },
