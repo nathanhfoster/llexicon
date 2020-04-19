@@ -25,17 +25,17 @@ class Video extends BlockEmbed {
 
     // console.log(iFrameHeight, iFrameWidth)
 
-    // if (value.includes("watch?v=")) {
-    //   value = value.replace("watch?v=", "embed/")
-    // }
+    if (value.includes("watch?v=")) {
+       value = value.replace("watch?v=", "embed/")
+    }
 
-    // if (value.includes("/watch/")) {
-    //   value = value.replace("/watch/", "/embed/")
-    // }
+    if (value.includes("/watch/")) {
+       value = value.replace("/watch/", "/embed/")
+    }
 
-    // if (value.includes("youtu.be/")) {
-    //   value = value.replace("youtu.be/", "youtube.com/embed/")
-    // }
+    if (value.includes("youtu.be/")) {
+       value = value.replace("youtu.be/", "youtube.com/embed/")
+    }
 
     let node = super.create(value)
     let iframe = document.createElement("iframe")
