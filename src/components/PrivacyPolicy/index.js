@@ -12,6 +12,9 @@ const PrivacyPolicy = () => (
         <p>Let's make this simple.</p>
         <p>Our privacy is important to me.</p>
         <p>I do not sell or reveal your data to any person or entity.</p>
+        <p>Google Analytics is used to record {" "}
+           <a href="https://support.google.com/analytics/answer/6004245?hl=en" target="_blank">basic visit data</a>.
+        </p>
         <p>
           Your data belongs to you and you can completely remove your data at
           any point by going to{" "}
