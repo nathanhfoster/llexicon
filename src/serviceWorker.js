@@ -69,7 +69,7 @@ const registerValidSW = (swUrl, config) => {
     .register(swUrl)
     .then((registration) => {
       // test
-      if (registration.installing || registration.waiting) {
+      if (registration.waiting) {
         navigator.serviceWorker.ready.then(async (registration) => {
           await registration.unregister()
           // Once the service worker is unregistered, we can reload
