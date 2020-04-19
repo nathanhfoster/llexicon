@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
-import { SetWindow, GetAppVersion } from "./redux/App/actions"
+import { SetWindow } from "./redux/App/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
 import {
@@ -55,7 +55,6 @@ const mapStateToProps = ({ User }) => ({ User })
 const mapDispatchToProps = {
   SetWindow,
   GetUserSettings,
-  GetAppVersion,
   SetCalendar,
   SyncEntries,
   GetUserEntries,
@@ -67,7 +66,6 @@ const mapDispatchToProps = {
 const App = ({
   GetUserSettings,
   User,
-  GetAppVersion,
   SetWindow,
   SetCalendar,
   SyncEntries,
@@ -86,8 +84,6 @@ const App = ({
 
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
-
-    GetAppVersion(true)
 
     const handleResize = () => SetWindow()
 
@@ -191,7 +187,6 @@ App.propTypes = {
   User: UserProps,
   SetWindow: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
-  GetAppVersion: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
