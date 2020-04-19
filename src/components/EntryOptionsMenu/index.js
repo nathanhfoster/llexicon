@@ -113,11 +113,12 @@ const EntryOptionsMenu = ({
 
 EntryOptionsMenu.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  author: PropTypes.number,
   is_public: PropTypes.bool.isRequired,
   history: PropTypes.object,
   shouldRedirectOnDelete: PropTypes.bool,
 }
 
-EntryOptionsMenu.defaultProps = { getUrlCallback: () => "URL" }
+EntryOptionsMenu.defaultProps = { }
 
 export default memo(EntryOptionsMenu)
