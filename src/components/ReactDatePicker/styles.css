@@ -7,7 +7,7 @@
 .react-datepicker__input-container {}
 
 .DatePicker input {
-  max-width: 108px;
+  max-width: 104px;
   outline: 0;
   padding-left: 8px;
 }
