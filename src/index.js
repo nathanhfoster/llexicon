@@ -75,5 +75,5 @@ ReactDOM.render(
 if (inDevelopmentMode) {
   serviceWorker.unregister()
 } else {
-  serviceWorker.register(serviceWorker.config(store))
+  serviceWorker.register(serviceWorker.serviceWorkerConfig(store))
 }

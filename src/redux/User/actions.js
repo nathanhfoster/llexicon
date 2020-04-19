@@ -2,6 +2,7 @@ import { UserActionTypes } from "../User/types"
 import { AlertActionTypes } from "../Alerts/types"
 import { AppActionTypes } from "../App/types"
 import { Axios, AxiosForm, AxiosOffline } from "../Actions"
+import { ResetRedux } from "../App/actions"
 import { persistReduxState } from "../localState"
 import { GetUserEntries } from "../Entries/actions"
 import { clearReduxStoreFromLocalStorage } from "../localState"
@@ -55,7 +56,7 @@ const RefreshPatchUser = (id) => (dispatch) =>
         : console.log(e)
     )
 
-const UserLogout = () => ({ type: AppActionTypes.REDUX_RESET })
+const UserLogout = () => (dispatch) => dispatch(ResetRedux())
 
 const CreateUser = (payload, rememberMe) => (dispatch) =>
   AxiosOffline()

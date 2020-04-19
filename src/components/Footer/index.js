@@ -1,13 +1,14 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
 import { RouteMap } from "../../routes"
 import "./styles.css"
-// Must be the same number as the one in the /public/version.txt file
-export const LATEST_APP_VERSION = 1.004
 
-const Footer = () => (
+const mapStateToProps = ({ App: { version } }) => ({ version })
+
+const Footer = ({ version }) => (
   <Container fluid tag="footer" className="MainFooter">
     <Row>
       <Col xs={12}>
@@ -17,7 +18,7 @@ const Footer = () => (
       </Col>
     </Row>
     <Row className="Center">
-      <Col xs={12}>App Version: {LATEST_APP_VERSION}</Col>
+      <Col xs={12}>App Version: {version}</Col>
     </Row>
     <Row className="Center">
       <Col xs={12}>&copy; {new Date().getFullYear()} Nathan Foster</Col>
@@ -25,6 +26,6 @@ const Footer = () => (
   </Container>
 )
 
-Footer.propTypes = {}
+Footer.propTypes = { version: PropTypes.number.isRequired }
 
-export default memo(Footer)
+export default reduxConnect(mapStateToProps)(Footer)

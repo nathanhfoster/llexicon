@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
-import { SetWindow, CheckAppVersion } from "./redux/App/actions"
+import { SetWindow, GetAppVersion } from "./redux/App/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
 import {
@@ -26,8 +26,6 @@ const Settings = lazy(() => import("./views/Settings"))
 const Support = lazy(() => import("./views/Support"))
 const EntryDetail = lazy(() => import("./views/EntryDetail"))
 const PageNotFound = lazy(() => import("./views/PageNotFound"))
-
-const FIFTEEN_MINUTES = 1000 * 60 * 15
 
 const {
   ABOUT,
@@ -57,7 +55,7 @@ const mapStateToProps = ({ User }) => ({ User })
 const mapDispatchToProps = {
   SetWindow,
   GetUserSettings,
-  CheckAppVersion,
+  GetAppVersion,
   SetCalendar,
   SyncEntries,
   GetUserEntries,
@@ -69,7 +67,7 @@ const mapDispatchToProps = {
 const App = ({
   GetUserSettings,
   User,
-  CheckAppVersion,
+  GetAppVersion,
   SetWindow,
   SetCalendar,
   SyncEntries,
@@ -89,9 +87,7 @@ const App = ({
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
 
-    CheckAppVersion()
-
-    setInterval(() => CheckAppVersion(), FIFTEEN_MINUTES)
+    GetAppVersion()
 
     const handleResize = () => SetWindow()
 
@@ -195,7 +191,7 @@ App.propTypes = {
   User: UserProps,
   SetWindow: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
-  CheckAppVersion: PropTypes.func.isRequired,
+  GetAppVersion: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
