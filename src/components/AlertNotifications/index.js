@@ -23,7 +23,7 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
     setTimeout(() => {
       const currentUrl = window.location.href
       window.close()
-      window.open(currentUrl)
+      window.open(currentUrl, "_parent")
       // window.location.reload(true)
     }, 1000)
   }
