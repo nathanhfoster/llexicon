@@ -20,7 +20,12 @@ const AlertNotifications = ({ title, message, alertInterval, ClearAlerts }) => {
 
   const handleOnClickCallback = () => {
     debounceClear()
-    setTimeout(() => window.location.reload(true), 1000)
+    setTimeout(() => {
+      const currentUrl = window.location.href
+      window.close()
+      window.open(currentUrl)
+      // window.location.reload(true)
+    }, 1000)
   }
 
   return (

@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment, createRef, lazy } from "react"
-import ReactQuill, { Quill } from "react-quill"
-import { THEMES, FORMATS, getModules, Font, Size, Video } from "./modules"
+import ReactQuill from "react-quill"
+import { THEMES, FORMATS, getModules } from "./modules"
 import "react-quill/dist/quill.snow.css"
 import "react-quill/dist/quill.bubble.css"
 import "react-quill/dist/quill.core.css"
@@ -8,15 +8,9 @@ import "react-quill/dist/quill.core.css"
 // import "quill-mention/dist/quill.mention.min.css"
 import "./styles.css"
 import TopToolbar from "./TopToolbar"
-import ImageResize from "quill-image-resize-module-react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import deepEquals from "../../helpers/deepEquals"
-Quill.register(Size, true)
-Quill.register(Font, true)
-Quill.register("formats/video", Video)
-Quill.register("modules/imageResize", ImageResize)
-// Quill.setAttribute('spellcheck', true)
 
 const BottomToolbar = lazy(() => import("./BottomToolbar"))
 

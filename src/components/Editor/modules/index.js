@@ -1,4 +1,16 @@
 import { Quill } from "react-quill"
+import ImageResize from "quill-image-resize-module-react"
+// import * as QuillTableUI from "quill-table-ui"
+import Font from "./Font"
+import Size from "./Size"
+import Video from "./Video"
+
+Quill.register(Size, true)
+Quill.register(Font, true)
+Quill.register("formats/video", Video)
+Quill.register({ "modules/imageResize": ImageResize }, true)
+// Quill.register({ "modules/tableUI": QuillTableUI }, true)
+// Quill.setAttribute('spellcheck', true)
 
 const THEMES = {
   CORE: "core",
@@ -50,11 +62,9 @@ const getModules = (toolbarId, topToolbarIsOpen) => ({
     parchment: Quill.import("parchment"),
     // See optional "config" below
   },
+  // table: true,
+  // tableUI: true,
   // imageDrop: {}
 })
 
 export { THEMES, FORMATS, getModules }
-
-export { default as Font } from "./Font"
-export { default as Size } from "./Size"
-export { default as Video } from "./Video"
