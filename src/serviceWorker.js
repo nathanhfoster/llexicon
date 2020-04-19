@@ -68,6 +68,15 @@ const registerValidSW = (swUrl, config) => {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+      if (registration.installing || registration.waiting) {
+        navigator.serviceWorker.ready.then(async (registration) => {
+          await registration.unregister()
+          // Once the service worker is unregistered, we can reload
+          // the page to let the browser download a fresh copy of our app
+          window.alert("Update Available")
+          window.location.reload()
+        })
+      }
       registration.onupdatefound = () => {
         const installingWorker = registration.installing
         if (installingWorker == null) {
