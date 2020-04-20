@@ -11,7 +11,7 @@
 // opt-in, read https://bit.ly/CRA-PWA
 
 import serviceWorkerConfig from "./serviceWorkerConfig"
-import { AlertActionTypes } from "./redux/Alerts/types"
+import { SetAlert } from "./redux/Alerts/actions"
 import { GetAppVersion } from "./redux/App/actions"
 
 const isLocalhost = Boolean(
@@ -90,14 +90,13 @@ const registerValidSW = (swUrl, config) => {
 
               config.store.dispatch(GetAppVersion())
 
-              config.store.dispatch({
-                type: AlertActionTypes.ALERTS_SET_MESSAGE,
-                payload: {
+              config.store.dispatch(
+                SetAlert({
                   title: `Offline Available`,
                   message: `Content is cached for offline use.`,
                   serviceWorkerRegistration: registration,
-                },
-              })
+                })
+              )
 
               // Execute callback
               if (config && config.onSuccess) {

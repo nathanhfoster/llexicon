@@ -1,4 +1,4 @@
-import { AlertActionTypes } from "../Alerts/types"
+import { SetAlert } from "../Alerts/actions"
 import { EntriesActionTypes } from "./types"
 import { Axios, AxiosForm } from "../Actions"
 import {
@@ -76,10 +76,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
     dispatch(AwsUpload(entry_id, file, base64, html))
   }
   return new Promise((resolve) =>
-    dispatch({
-      type: AlertActionTypes.ALERTS_SET_MESSAGE,
-      payload: { title: "Synced", message: "Files" },
-    })
+    dispatch(SetAlert({ title: "Synced", message: "Files" }))
   )
 }
 
@@ -425,10 +422,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
   }
 
   if (synced) {
-    dispatch({
-      type: AlertActionTypes.ALERTS_SET_MESSAGE,
-      payload: { title: "Synced", message: "Entries" },
-    })
+    dispatch({ title: "Synced", message: "Entries" })
   }
 
   dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })

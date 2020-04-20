@@ -1,8 +1,8 @@
 import { UserActionTypes } from "../User/types"
-import { AlertActionTypes } from "../Alerts/types"
 import { AppActionTypes } from "../App/types"
 import { Axios, AxiosForm, AxiosOffline } from "../Actions"
 import { ResetRedux } from "../App/actions"
+import { SetAlert } from "../Alerts/actions"
 import { persistReduxState } from "../localState"
 import { GetUserEntries } from "../Entries/actions"
 import { clearReduxStoreFromLocalStorage } from "../localState"
@@ -76,10 +76,7 @@ const UpdateUser = (payload) => (dispatch, getState) => {
     .patch(`users/${id}/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch({ type: UserActionTypes.USER_SET, payload: data })
-      dispatch({
-        type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Updated", message: "Profile" },
-      })
+      dispatch(SetAlert({ title: "Updated", message: "Profile" }))
       ReactGA.event({
         category: "Update User",
         action: "User updated their account",
@@ -181,10 +178,12 @@ const PasswordReset = (payload) => (dispatch) =>
   AxiosOffline()
     .post("rest-auth/password/reset/", qs.stringify(payload))
     .then(({ data: { detail } }) => {
-      dispatch({
-        type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Password Reset", message: detail },
-      })
+      dispatch(
+        SetAlert({
+          title: "Password Reset",
+          message: detail,
+        })
+      )
       ReactGA.event({
         category: "Password Reset",
         action: "User requested a password reset!",
@@ -192,10 +191,7 @@ const PasswordReset = (payload) => (dispatch) =>
     })
     .catch((e) => {
       console.log(JSON.parse(JSON.stringify(e)))
-      dispatch({
-        type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Password Reset", message: "ERROR" },
-      })
+      dispatch(SetAlert({ title: "Password Reset", message: "ERROR" }))
     })
 
 const GetUserSettings = () => (dispatch, getState) => {
@@ -242,10 +238,7 @@ const UpdateSettings = (payload) => (dispatch, getState) => {
   return AxiosOffline()
     .patch(`user/settings/${id}/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch({
-        type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Updated", message: "Setting" },
-      })
+      dispatch(SetAlert({ title: "Updated", message: "Setting" }))
       dispatch({
         type: UserActionTypes.USER_SET_SETTINGS,
         payload: data,
@@ -264,10 +257,7 @@ const DeleteAccount = () => (dispatch, getState) => {
   return AxiosOffline()
     .delete(`users/${id}/`)
     .then((res) => {
-      dispatch({
-        type: AlertActionTypes.ALERTS_SET_MESSAGE,
-        payload: { title: "Deleted", message: "Account" },
-      })
+      dispatch(SetAlert({ title: "Deleted", message: "Account" }))
       clearReduxStoreFromLocalStorage()
       dispatch(UserLogout())
       ReactGA.event({

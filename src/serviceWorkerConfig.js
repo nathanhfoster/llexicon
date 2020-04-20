@@ -1,5 +1,5 @@
 import ReactGA from "react-ga"
-import { AlertActionTypes } from "./redux/Alerts/types"
+import { SetAlert } from "./redux/Alerts/actions"
 import { GetAppVersion } from "./redux/App/actions"
 
 const config = (store) => ({
@@ -22,14 +22,13 @@ const config = (store) => ({
                   currentVersion != latestVersion
                     ? `From version ${currentVersion} to ${latestVersion}`
                     : `Version: ${latestVersion}`
-                store.dispatch({
-                  type: AlertActionTypes.ALERTS_SET_MESSAGE,
-                  payload: {
+                store.dispatch(
+                  SetAlert({
                     title: `Update Available`,
                     message,
                     serviceWorkerRegistration: registration,
-                  },
-                })
+                  })
+                )
 
                 ReactGA.event({
                   category: "Update Service Worker",
