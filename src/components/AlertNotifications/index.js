@@ -7,10 +7,11 @@ import { ClearAlerts } from "../../redux/Alerts/actions"
 import "./styles.css"
 
 const mapStateToProps = ({
-  Alerts: { title, message, serviceWorkerRegistration },
+  Alerts: { title, message, timeout, serviceWorkerRegistration },
 }) => ({
   title,
   message,
+  timeout,
   serviceWorkerRegistration,
 })
 
@@ -19,11 +20,11 @@ const mapDispatchToProps = { ClearAlerts }
 const AlertNotifications = ({
   title,
   message,
-  alertInterval,
+  timeout,
   serviceWorkerRegistration,
   ClearAlerts,
 }) => {
-  const appUpdate = title === "Update Available"
+  const appUpdate = timeout === false
   const shouldShow = appUpdate || (title && message) ? true : false
 
   const handleClearAlerts = useCallback(() => {
@@ -58,7 +59,7 @@ const AlertNotifications = ({
         debounceOnMount={!appUpdate}
         onChangeCallback={handleClearAlerts}
         value={shouldShow}
-        delay={1600}
+        delay={timeout}
       />
       <ToastHeader icon={<i className="fas fa-feather-alt" />}>
         {title}
@@ -82,10 +83,10 @@ AlertNotifications.propTypes = {
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   ClearAlerts: PropTypes.func.isRequired,
-  alertInterval: PropTypes.number.isRequired,
+  timeout: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
 }
 
-AlertNotifications.defaultProps = { alertInterval: 3000 }
+AlertNotifications.defaultProps = {}
 
 export default reduxConnect(
   mapStateToProps,

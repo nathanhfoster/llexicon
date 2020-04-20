@@ -191,7 +191,7 @@ const PasswordReset = (payload) => (dispatch) =>
     })
     .catch((e) => {
       console.log(JSON.parse(JSON.stringify(e)))
-      dispatch(SetAlert({ title: "Password Reset", message: "ERROR" }))
+      dispatch(SetAlert({ title: "Password Reset Error", message: "ERROR" }))
     })
 
 const GetUserSettings = () => (dispatch, getState) => {

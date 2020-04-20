@@ -25,8 +25,10 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   switch (type) {
     case EntriesActionTypes.ENTRIES_SET_TAGS:
       return { ...state, EntryTags: payload }
+
     case EntriesActionTypes.ENTRIES_SET_PEOPLE:
       return { ...state, EntryPeople: payload }
+
     case EntriesActionTypes.ENTRIES_SEARCH_FILTER:
       return {
         ...state,
@@ -36,18 +38,23 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ),
         search,
       }
+
     case EntriesActionTypes.ENTRIES_PENDING:
       return { ...state, isPending: true }
+
     case EntriesActionTypes.ENTRIES_ERROR:
       return { ...state, isPending: false, error: payload }
+
     case EntriesActionTypes.ENTRIES_COMPLETE:
       return { ...state, isPending: false, error: DEFAULT_STATE_ENTRIES.error }
+
     case EntriesActionTypes.ENTRY_IMPORT:
       return {
         ...state,
         items: mergeJson(state.items, payload),
         error: DEFAULT_STATE_ENTRIES.error,
       }
+
     case EntriesActionTypes.ENTRIES_SET:
       const { count, next, previous, results } = payload
       return {
@@ -60,6 +67,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRIES_SET_BY_DATE:
       return {
         ...state,
@@ -68,6 +76,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRY_SET:
       return {
         ...state,
@@ -76,6 +85,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRY_UPDATE:
       return {
         ...state,
@@ -93,6 +103,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRY_DELETE:
       const hasArrayOfIds = Array.isArray(payload)
       const filterCondition = (item) =>
@@ -104,18 +115,21 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRIES_RESET_SORT_AND_FILTER_MAP:
       return {
         ...state,
         sortMap: DEFAULT_STATE_ENTRIES.sortMap,
         filterMap: DEFAULT_STATE_ENTRIES.filterMap,
       }
+
     case EntriesActionTypes.ENTRIES_SET_SORT_MAP:
       const { sortKey, sortUp } = payload
       return {
         ...state,
         sortMap: { ...state.sortMap, [sortKey]: sortUp },
       }
+
     case EntriesActionTypes.ENTRIES_SET_FILTER_MAP:
       const { filterKey, searchValue } = payload
       return {
@@ -125,8 +139,10 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           [filterKey]: searchValue,
         },
       }
+
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ENTRIES
+
     default:
       return state
   }

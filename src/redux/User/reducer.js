@@ -46,17 +46,22 @@ const User = (state = DEFAULT_STATE_USER, action) => {
         updated: true,
         error: null,
       }
+
     case UserActionTypes.USER_SET_LOCATION:
       return { ...state, location: { ...state.location, ...payload } }
+
     case UserActionTypes.USER_RESET_LOCATION:
       return { ...state, location: DEFAULT_STATE_USER.location }
+
     case UserActionTypes.USER_SET_SETTINGS:
       return {
         ...state,
         Settings: { ...state.Settings, ...payload },
       }
+
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_USER
+
     default:
       return state
   }

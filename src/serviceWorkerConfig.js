@@ -26,6 +26,7 @@ const config = (store) => ({
                   SetAlert({
                     title: `Update Available`,
                     message,
+                    timeout: false,
                     serviceWorkerRegistration: registration,
                   })
                 )
