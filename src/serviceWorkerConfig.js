@@ -2,7 +2,7 @@ import ReactGA from "react-ga"
 import { AlertActionTypes } from "./redux/Alerts/types"
 import { GetAppVersion } from "./redux/App/actions"
 
-const config = (ReduxStore) => ({
+const config = (store) => ({
   // onUpdate: (registration) => {
   //   registration.unregister().then(() => {
   //     window.location.reload()
@@ -14,14 +14,15 @@ const config = (ReduxStore) => ({
     if (waitingServiceWorker) {
       waitingServiceWorker.addEventListener("statechange", (event) => {
         if (event.target.state === "activated") {
-          if (ReduxStore) {
-            ReduxStore.dispatch(GetAppVersion())
+          if (store) {
+            store
+              .dispatch(GetAppVersion())
               .then(({ currentVersion, latestVersion }) => {
                 const message =
                   currentVersion != latestVersion
                     ? `From version ${currentVersion} to ${latestVersion}`
                     : `Version: ${latestVersion}`
-                ReduxStore.dispatch({
+                store.dispatch({
                   type: AlertActionTypes.ALERTS_SET_MESSAGE,
                   payload: {
                     title: `Update Available`,
@@ -55,7 +56,7 @@ const config = (ReduxStore) => ({
     console.info("Service worker on success state")
     console.log(registration)
   },
-  ReduxStore,
+  store,
 })
 
 export default config

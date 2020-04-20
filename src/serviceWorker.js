@@ -12,6 +12,7 @@
 
 import serviceWorkerConfig from "./serviceWorkerConfig"
 import { AlertActionTypes } from "./redux/Alerts/types"
+import { GetAppVersion } from "./redux/App/actions"
 
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
@@ -87,7 +88,9 @@ const registerValidSW = (swUrl, config) => {
               // "Content is cached for offline use." message.
               console.log("Content is cached for offline use.")
 
-              config.ReduxStore.dispatch({
+              config.store.dispatch(GetAppVersion())
+
+              config.store.dispatch({
                 type: AlertActionTypes.ALERTS_SET_MESSAGE,
                 payload: {
                   title: `Offline Available`,
