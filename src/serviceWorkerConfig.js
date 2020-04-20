@@ -19,7 +19,7 @@ const config = (ReduxStore) => ({
               .then(({ currentVersion, latestVersion }) => {
                 const message =
                   currentVersion != latestVersion
-                    ? `From version${currentVersion} to ${latestVersion}`
+                    ? `From version ${currentVersion} to ${latestVersion}`
                     : `Version: ${latestVersion}`
                 ReduxStore.dispatch({
                   type: AlertActionTypes.ALERTS_SET_MESSAGE,
@@ -55,6 +55,7 @@ const config = (ReduxStore) => ({
     console.info("Service worker on success state")
     console.log(registration)
   },
+  ReduxStore,
 })
 
 export default config

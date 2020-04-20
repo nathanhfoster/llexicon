@@ -50,7 +50,7 @@ const saveState = (localStorageKey, value, dispatch) => {
 }
 
 const getState = (localStorageKey) => {
-  let state = {}
+  let state = null
 
   const localStateString = localStorage.getItem(localStorageKey)
 
@@ -145,18 +145,26 @@ const isQuotaExceeded = (e) => {
 }
 
 const getUserClientId = () => {
-  const {
-    User: { id, username, email },
-    Window: {
-      navigator: { appVersion },
-    },
-  } = getPersistedReduxStore()
+  let userClientId = {}
+  const persistedStore = getPersistedReduxStore()
 
-  const userId = id
-  const clientId = appVersion
-  const userIdUsernameEmail = `${id}-${username}-${email}`
+  if (persistedStore) {
+    const {
+      App: { version },
+      User: { id, username, email },
+      Window: {
+        navigator: { appVersion },
+      },
+    } = persistedStore
 
-  return { userId, appVersion, userIdUsernameEmail }
+    const userId = id
+    const clientId = appVersion
+    const userIdUsernameEmail = `${id}-${username}-${email}`
+
+    userClientId = { userId, version, appVersion, userIdUsernameEmail }
+  }
+
+  return userClientId
 }
 
 export {

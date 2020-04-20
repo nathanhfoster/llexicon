@@ -11,6 +11,7 @@
 // opt-in, read https://bit.ly/CRA-PWA
 
 import serviceWorkerConfig from "./serviceWorkerConfig"
+import { AlertActionTypes } from "./redux/Alerts/types"
 
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
@@ -32,16 +33,6 @@ const register = (config) => {
       // serve assets; see https://github.com/facebook/create-react-app/issues/2374
       return
     }
-
-    // let refreshing
-    // window.addEventListener("controllerchange", () => {
-    //   if (refreshing) return
-    //   refreshing = true
-    //   const currentUrl = window.location.href
-    //   window.close()
-    //   window.open(currentUrl)
-    //   // window.location.reload(true)
-    // })
 
     window.addEventListener("load", () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
@@ -96,6 +87,15 @@ const registerValidSW = (swUrl, config) => {
               // "Content is cached for offline use." message.
               console.log("Content is cached for offline use.")
 
+              config.ReduxStore.dispatch({
+                type: AlertActionTypes.ALERTS_SET_MESSAGE,
+                payload: {
+                  title: `Offline Available`,
+                  message: `Content is cached for offline use.`,
+                  serviceWorkerRegistration: registration,
+                },
+              })
+
               // Execute callback
               if (config && config.onSuccess) {
                 config.onSuccess(registration)
@@ -110,28 +110,11 @@ const registerValidSW = (swUrl, config) => {
     })
 }
 
-const update = (swUrl) => {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .register(swUrl)
-      .then((registration) => {
-        // registration worked
-        registration.update()
-        console.log("Registration succeeded.")
-        // button.onclick = function() {
-        //   registration.update()
-        // }
-      })
-      .catch((error) => {
-        // registration failed
-        console.log("Registration failed with " + error)
-      })
-  }
-}
-
 const checkValidServiceWorker = (swUrl, config) => {
   // Check if the service worker can be found. If it can't reload the page.
-  fetch(swUrl)
+  fetch(swUrl, {
+    headers: { "Service-Worker": "script" },
+  })
     .then((response) => {
       // Ensure service worker exists, and that we really are getting a JS file.
       const contentType = response.headers.get("content-type")
@@ -165,4 +148,4 @@ const unregister = () => {
   }
 }
 
-export { serviceWorkerConfig, register, update, unregister }
+export { serviceWorkerConfig, register, unregister }
