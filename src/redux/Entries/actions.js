@@ -422,7 +422,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
   }
 
   if (synced) {
-    dispatch({ title: "Synced", message: "Entries" })
+    dispatch(SetAlert({ title: "Synced", message: "Entries" }))
   }
 
   dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })

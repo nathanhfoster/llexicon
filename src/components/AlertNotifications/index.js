@@ -18,6 +18,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = { ClearAlerts }
 
 const AlertNotifications = ({
+  icon,
   title,
   message,
   timeout,
@@ -61,9 +62,7 @@ const AlertNotifications = ({
         value={shouldShow}
         delay={timeout}
       />
-      <ToastHeader icon={<i className="fas fa-feather-alt" />}>
-        {title}
-      </ToastHeader>
+      <ToastHeader icon={icon}>{title}</ToastHeader>
       <ToastBody>
         <h6>{message}</h6>
 
@@ -80,13 +79,17 @@ const AlertNotifications = ({
 }
 
 AlertNotifications.propTypes = {
+  icon: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   ClearAlerts: PropTypes.func.isRequired,
   timeout: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
 }
 
-AlertNotifications.defaultProps = {}
+AlertNotifications.defaultProps = {
+  icon: <i className="fas fa-feather-alt" />,
+  timeout: 3000,
+}
 
 export default reduxConnect(
   mapStateToProps,
