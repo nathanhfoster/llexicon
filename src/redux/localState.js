@@ -119,21 +119,6 @@ const persistReduxState = () => (dispatch, getState) =>
 
 const removeReduxState = () => removeState(LocalStorageReduxKey)
 
-const getUserClientId = () => {
-  const {
-    User: { id, username, email },
-    Window: {
-      navigator: { appVersion },
-    },
-  } = getPersistedReduxStore()
-
-  const userId = id
-  const clientId = appVersion
-  const userIdUsernameEmail = `${id}-${username}-${email}`
-
-  return { userId, appVersion, userIdUsernameEmail }
-}
-
 const Clean = (array) => {
   for (let i = 0; i < array.length; i++) {
     const item = array[i]
@@ -187,6 +172,13 @@ const getUserClientId = () => {
   }
 
   return userClientId
+}
+
+const handleQuotaExceeded = (e) => {
+  // console.log("--------------------handleQuotaExceeded", JSON.stringify(e))
+
+  if (isQuotaExceeded(e)) {
+  }
 }
 
 export {
