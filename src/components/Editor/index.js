@@ -1,5 +1,6 @@
 import React, { PureComponent, Fragment, createRef, lazy } from "react"
-import ReactQuill, { Quill } from "react-quill"
+import ReactQuill from "react-quill"
+import { THEMES, FORMATS, getModules } from "./modules"
 import "react-quill/dist/quill.snow.css"
 import "react-quill/dist/quill.bubble.css"
 import "react-quill/dist/quill.core.css"
@@ -7,214 +8,11 @@ import "react-quill/dist/quill.core.css"
 // import "quill-mention/dist/quill.mention.min.css"
 import "./styles.css"
 import TopToolbar from "./TopToolbar"
-import ImageResize from "quill-image-resize-module-react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import deepEquals from "../../helpers/deepEquals"
 
 const BottomToolbar = lazy(() => import("./BottomToolbar"))
-
-const BlockEmbed = Quill.import("blots/block/embed")
-
-class Video extends BlockEmbed {
-  static create(value) {
-    const editorRef = document.getElementById("TextEditor")
-
-    let iFrameHeight = "auto"
-    let iFrameWidth = "100%"
-
-    if (editorRef) {
-      const editorContainerRef = editorRef.children[1].children[0]
-      const { offsetHeight, offsetWidth } = editorContainerRef
-
-      if (offsetHeight > 0) {
-        iFrameHeight = `${offsetHeight}px`
-        iFrameWidth = `${offsetHeight * (16 / 9)}px`
-      }
-      if (offsetWidth > 0) {
-        // iFrameWidth = `${offsetWidth}px`
-      }
-    }
-
-    // console.log(iFrameHeight, iFrameWidth)
-
-    if (value.includes("watch?v=")) {
-      value = value.replace("watch?v=", "embed/")
-    }
-
-    if (value.includes("/watch/")) {
-      value = value.replace("/watch/", "/embed/")
-    }
-
-    if (value.includes("youtu.be/")) {
-      value = value.replace("youtu.be/", "youtube.com/embed/")
-    }
-
-    let node = super.create(value)
-    let iframe = document.createElement("iframe")
-    iframe.setAttribute("frameborder", "0")
-    iframe.setAttribute("allowfullscreen", true)
-
-    iframe.setAttribute("height", iFrameHeight)
-    iframe.setAttribute("width", iFrameWidth)
-
-    iframe.setAttribute("src", value)
-    node.appendChild(iframe)
-    return node
-  }
-
-  static value(domNode) {
-    if (domNode.firstChild) {
-      return domNode.firstChild.getAttribute("src")
-    }
-  }
-}
-
-Video.blotName = "video"
-Video.className = "ql-video"
-Video.tagName = "div"
-
-const Size = Quill.import("attributors/style/size")
-Size.whitelist = [
-  "Header 1",
-  "Header 2",
-  "Header 3",
-  "Header 4",
-  "Header 5",
-  "8px",
-  "9px",
-  "10px",
-  "11px",
-  "12px",
-  "14px",
-  "16px",
-  "18px",
-  "20px",
-  "22px",
-  "24px",
-  "26px",
-  "28px",
-  "36px",
-  "48px",
-  "72px",
-]
-
-const Font = Quill.import("formats/font")
-Font.whitelist = [
-  "roboto",
-  "arial",
-  "serif",
-  "monospace",
-  "comic-sans",
-  "courier-new",
-  "georgia",
-  "helvetica",
-  "lucida",
-]
-
-Quill.register(Size, true)
-
-Quill.register(Font, true)
-
-Quill.register("modules/imageResize", ImageResize)
-
-Quill.register("formats/video", Video)
-
-// Quill.setAttribute('spellcheck', true)
-
-const THEMES = {
-  CORE: "core",
-  SNOW: "snow",
-  BUBBLE: "bubble",
-}
-
-const getModules = (toolbarId, topToolbarIsOpen) => {
-  return {
-    history: {
-      delay: 2000,
-      maxStack: 500,
-      userOnly: false,
-    },
-    toolbar: topToolbarIsOpen ? `#${toolbarId}` : false,
-    // toolbar: {
-    //   container: [
-    //     ["bold", "italic", "underline", "strike"], // toggled buttons
-    //     ["blockquote", "code-block"],
-
-    //     // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-    //     // [{ header: 1 }, { header: 2 }], // custom button values
-    //     [{ header: [1, 2, 3, 4, 5, false] }],
-
-    //     [{ list: "ordered" }, { list: "bullet" }],
-    //     [{ script: "sub" }, { script: "super" }], // superscript/subscript
-    //     [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-    //     [{ direction: "rtl" }], // text direction
-
-    //     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-
-    //     [{ align: [] }, { font: [] }],
-    //     ["link", "image", "video"],
-    //     ["clean"],
-    //     ["undo", "redo"]
-    //   ],
-
-    //   // https://github.com/zenoamaro/react-quill/issues/436
-    //   handlers: {
-    //     undo: () => {
-    //       editorRef.current.editor.history.undo()
-    //     },
-    //     redo: () => {
-    //       editorRef.current.editor.history.undo()
-    //     }
-    //     // image: () => {
-    //     //   this.showImageUploadModal();
-    //     // },
-    //     // video: () => {
-    //     //   this.showVideoUploadModal()
-    //     // },
-    //     // insertImage: this.insertImage,
-    //   }
-    // },
-    clipboard: {
-      // toggle to add extra line breaks when pasting HTML:
-      matchVisual: false,
-    },
-    imageResize: {
-      parchment: Quill.import("parchment"),
-      // See optional "config" below
-    },
-    // imageDrop: {}
-  }
-}
-
-const formats = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "color",
-  "background",
-  "font",
-  "code",
-  "size",
-  "script",
-  "align",
-  "direction",
-  "code-block",
-  "image",
-  "video",
-  "alt",
-  "height",
-  "width",
-  "style",
-  "size",
-]
 
 class Editor extends PureComponent {
   constructor(props) {
@@ -376,7 +174,7 @@ class Editor extends PureComponent {
             className="Editor"
             style={{ height: editorHeight }}
             theme={theme}
-            formats={formats}
+            formats={FORMATS}
             modules={modules}
             value={entry.html}
             onChange={this.handleEditorStateChange}

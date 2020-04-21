@@ -13,7 +13,7 @@ import "./styles.css"
 
 const RocketEarthMoon = () => (
   <BackgroundObjects>
-    <Rocket />
+    <Rocket zIndex={-1} />
     <Earth />
     <Moon />
   </BackgroundObjects>

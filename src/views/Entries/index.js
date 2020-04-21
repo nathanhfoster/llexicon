@@ -63,7 +63,7 @@ const Entries = ({
   const viewableEntries = useMemo(
     () =>
       entries
-        .filter((item) => !item._shouldDelete)
+        .filter(({ _shouldDelete }) => !_shouldDelete)
         .sort(
           (a, b) =>
             new Date(b.date_created_by_author) -

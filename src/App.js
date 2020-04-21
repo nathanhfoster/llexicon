@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
-import { SetWindow, CheckAppVersion } from "./redux/App/actions"
+import { SetWindow } from "./redux/App/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
 import {
@@ -14,8 +14,8 @@ import {
   ResetEntriesSortAndFilterMaps,
 } from "./redux/Entries/actions"
 import { RouteMap, RouterGoBack } from "./routes"
-import { About, Home, Entries } from "./views"
-import { NavBar, PrivacyPolicy } from "./components"
+import { About, Home, Entries, PrivacyPolicy } from "./views"
+import { NavBar } from "./components"
 import { RouterLinkPush } from "./routes"
 import memoizeProps from "./helpers/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
@@ -26,8 +26,6 @@ const Settings = lazy(() => import("./views/Settings"))
 const Support = lazy(() => import("./views/Support"))
 const EntryDetail = lazy(() => import("./views/EntryDetail"))
 const PageNotFound = lazy(() => import("./views/PageNotFound"))
-
-const FIFTEEN_MINUTES = 1000 * 60 * 15
 
 const {
   ABOUT,
@@ -57,7 +55,6 @@ const mapStateToProps = ({ User }) => ({ User })
 const mapDispatchToProps = {
   SetWindow,
   GetUserSettings,
-  CheckAppVersion,
   SetCalendar,
   SyncEntries,
   GetUserEntries,
@@ -69,7 +66,6 @@ const mapDispatchToProps = {
 const App = ({
   GetUserSettings,
   User,
-  CheckAppVersion,
   SetWindow,
   SetCalendar,
   SyncEntries,
@@ -88,10 +84,6 @@ const App = ({
 
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
-
-    CheckAppVersion()
-
-    setInterval(() => CheckAppVersion(), FIFTEEN_MINUTES)
 
     const handleResize = () => SetWindow()
 
@@ -195,7 +187,6 @@ App.propTypes = {
   User: UserProps,
   SetWindow: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
-  CheckAppVersion: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,

@@ -15,6 +15,7 @@ const EntriesMostViewed = ({ items, filteredItems }) => {
     () =>
       items
         .concat(filteredItems)
+        .filter(({ _shouldDelete }) => !_shouldDelete)
         .sort((a, b) => b.views - a.views)
         .slice(0, NUMBER_OF_MOST_VIEWED_ENTRIES),
     [items, filteredItems]

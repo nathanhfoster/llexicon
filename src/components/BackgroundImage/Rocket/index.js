@@ -24,7 +24,7 @@ Rocket.propTypes = {
 Rocket.defaultProps = {
   top: 75,
   move: 200,
-  zIndex: -1,
+  zIndex: 0,
 }
 
 export default memo(Rocket)

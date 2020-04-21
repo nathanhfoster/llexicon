@@ -22,14 +22,9 @@ import {
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../redux/TextEditor/reducer"
 import "./styles.css"
 
-const mapStateToProps = ({
-  Calendar: { activeDate },
-  TextEditor,
-  Entries: { items },
-}) => ({
+const mapStateToProps = ({ Calendar: { activeDate }, TextEditor }) => ({
   entry: TextEditor,
   activeDate,
-  entriesLength: items.length,
 })
 
 const mapDispatchToProps = {
@@ -43,7 +38,7 @@ const mapDispatchToProps = {
 const NewEntry = ({
   entry,
   activeDate,
-  entriesLength,
+
   SetCalendar,
   PostReduxEntry,
   SyncEntries,
@@ -68,9 +63,9 @@ const NewEntry = ({
   const handlePostEntry = async () => {
     const payload = {
       ...entry,
-      id: `NewEntry-${entriesLength}`,
+      date_created: activeDate,
       date_created_by_author: activeDate,
-      _shouldPost: true,
+      date_updated: activeDate,
     }
 
     await PostReduxEntry(payload)
@@ -134,7 +129,6 @@ NewEntry.propTypes = {
   ClearEditorState: PropTypes.func.isRequired,
   PostReduxEntry: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
-  entriesLength: PropTypes.number.isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(NewEntry)

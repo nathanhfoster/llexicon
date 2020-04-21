@@ -2,12 +2,45 @@ import { EntriesActionTypes } from "../Entries/types"
 import { AppActionTypes } from "../App/types"
 import { handleFilterEntries } from "./utils"
 import { mergeJson } from "../../helpers"
+import { RouteMap } from "../../routes"
+
+const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
+
+const FIRST_JOUNRAL_ENTRY = {
+  author: null,
+  id: "NewEntry-1",
+  tags: [
+    {
+      name: "Excited",
+    },
+    {
+      name: "Inspired",
+    },
+  ],
+  people: [],
+  EntryFiles: [],
+  title: "My First Journal Entry",
+  html: `<p>After I've installed Astral Tree today, I will make a diary entry every day from now on. In case I forget to make an entry, the app will remind me with a notification in the evening. Besides pictures, videos, audio recordings or other files, I can add a location, tags or people to my journal entries.</p><p><br></p><p>If I <a href="${LINK_TO_SIGN_UP}" rel="noopener noreferrer" target="_blank">sign up</a>, my journal entries will be synced across all my devices. I am already looking forward to revisiting all those memories in a few months or years.</p>`,
+  date_created_by_author: new Date(),
+  date_updated: new Date(),
+  views: 0,
+  rating: 5,
+  address: null,
+  latitude: null,
+  longitude: null,
+  is_public: false,
+
+  // Redux Only
+  _shouldDelete: false,
+  _shouldPost: false,
+  _lastUpdated: null,
+}
 
 const DEFAULT_STATE_ENTRIES = {
   count: null,
   next: null,
   previous: null,
-  items: [],
+  items: [FIRST_JOUNRAL_ENTRY],
   filteredItems: [],
   isPending: false,
   error: null,
@@ -21,12 +54,14 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const { id, type, payload, search, _lastUpdated } = action
+  const { id, type, payload, search } = action
   switch (type) {
     case EntriesActionTypes.ENTRIES_SET_TAGS:
       return { ...state, EntryTags: payload }
+
     case EntriesActionTypes.ENTRIES_SET_PEOPLE:
       return { ...state, EntryPeople: payload }
+
     case EntriesActionTypes.ENTRIES_SEARCH_FILTER:
       return {
         ...state,
@@ -36,18 +71,23 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ),
         search,
       }
+
     case EntriesActionTypes.ENTRIES_PENDING:
       return { ...state, isPending: true }
+
     case EntriesActionTypes.ENTRIES_ERROR:
       return { ...state, isPending: false, error: payload }
+
     case EntriesActionTypes.ENTRIES_COMPLETE:
       return { ...state, isPending: false, error: DEFAULT_STATE_ENTRIES.error }
+
     case EntriesActionTypes.ENTRY_IMPORT:
       return {
         ...state,
         items: mergeJson(state.items, payload),
         error: DEFAULT_STATE_ENTRIES.error,
       }
+
     case EntriesActionTypes.ENTRIES_SET:
       const { count, next, previous, results } = payload
       return {
@@ -60,6 +100,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRIES_SET_BY_DATE:
       return {
         ...state,
@@ -68,6 +109,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRY_SET:
       return {
         ...state,
@@ -76,18 +118,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
-    case EntriesActionTypes.ENTRY_POST:
-      return {
-        ...state,
-        isPending: false,
-        error: DEFAULT_STATE_ENTRIES.error,
-        ...handleFilterEntries(
-          state.items
-            .concat(state.filteredItems)
-            .map((item) => (item.id === id ? payload : item)),
-          state.search
-        ),
-      }
+
     case EntriesActionTypes.ENTRY_UPDATE:
       return {
         ...state,
@@ -99,13 +130,13 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
               ? {
                   ...item,
                   ...payload,
-                  _lastUpdated,
                 }
               : item
           ),
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRY_DELETE:
       const hasArrayOfIds = Array.isArray(payload)
       const filterCondition = (item) =>
@@ -117,18 +148,21 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           state.search
         ),
       }
+
     case EntriesActionTypes.ENTRIES_RESET_SORT_AND_FILTER_MAP:
       return {
         ...state,
         sortMap: DEFAULT_STATE_ENTRIES.sortMap,
         filterMap: DEFAULT_STATE_ENTRIES.filterMap,
       }
+
     case EntriesActionTypes.ENTRIES_SET_SORT_MAP:
       const { sortKey, sortUp } = payload
       return {
         ...state,
         sortMap: { ...state.sortMap, [sortKey]: sortUp },
       }
+
     case EntriesActionTypes.ENTRIES_SET_FILTER_MAP:
       const { filterKey, searchValue } = payload
       return {
@@ -138,8 +172,10 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           [filterKey]: searchValue,
         },
       }
+
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ENTRIES
+
     default:
       return state
   }

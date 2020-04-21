@@ -10,6 +10,7 @@ import { createBrowserHistory } from "history"
 import { LoadingScreen } from "./components"
 import { PersistGate } from "redux-persist/integration/react"
 import * as serviceWorker from "./serviceWorker"
+import { GetAppVersion } from "./redux/App/actions"
 import ReactGA from "react-ga"
 
 const { store, persistor } = storeFactory()
@@ -22,7 +23,7 @@ const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
 const inDevelopmentMode = NODE_ENV === "development"
 
-const { userId, appVersion, userIdUsernameEmail } = getUserClientId()
+const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
 
 ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
   debug: inDevelopmentMode,
@@ -30,19 +31,20 @@ ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
   // dimension14: "userIdUsernameEmail",
   gaOptions: {
     userId,
+    version,
     appVersion,
     userIdUsernameEmail,
   },
 })
 // Initialize google analytics page view tracking
 history.listen((location) => {
-  const { userId, appVersion, userIdUsernameEmail } = getUserClientId()
+  const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
   const page = location.pathname
 
   // ReactGA.set({ dimension1: "test" })
   // ReactGA.pageview(page, { dimension1: "test" }) // Record a pageview for the given page
 
-  ReactGA.set({ userId, appVersion, userIdUsernameEmail, page }) // Update the user's current page
+  ReactGA.set({ userId, version, appVersion, userIdUsernameEmail, page }) // Update the user's current page
   ReactGA.pageview(page) // Record a pageview for the given page
 })
 
@@ -72,8 +74,7 @@ ReactDOM.render(
   document.getElementById("root")
 )
 
-if (inDevelopmentMode) {
-  serviceWorker.unregister()
-} else {
-  serviceWorker.register()
-}
+// Doesn't get called in development since there is no service worker
+inDevelopmentMode && store.dispatch(GetAppVersion())
+
+serviceWorker.register(serviceWorker.serviceWorkerConfig(store))

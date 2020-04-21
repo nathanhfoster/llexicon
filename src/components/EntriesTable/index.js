@@ -34,7 +34,7 @@ const EntriesTable = ({
   const history = useHistory()
 
   const viewableEntries = useMemo(
-    () => items.filter((item) => !item._shouldDelete),
+    () => items.filter(({ _shouldDelete }) => !_shouldDelete),
     [items]
   )
 

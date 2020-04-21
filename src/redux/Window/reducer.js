@@ -10,6 +10,7 @@ const Window = (state = DEFAULT_STATE_WINDOW, action) => {
   switch (type) {
     case WindowActionTypes.SET_WINDOW:
       return { ...state, ...getWindowDimensions() }
+
     default:
       return state
   }

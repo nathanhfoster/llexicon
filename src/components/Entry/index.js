@@ -1,4 +1,4 @@
-import React, { Fragment, memo } from "react"
+import React, { useCallback, Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { useDispatch } from "react-redux"
@@ -32,17 +32,22 @@ const Entry = ({
   const handleTitleChange = ({ target: { value } }) =>
     dispatch(handleEditorChange({ id: entry.id, title: value }))
 
-  const handleDateChange = (date_created_by_author) =>
-    dispatch(
-      handleEditorChange({
-        id: entry.id,
-        date_created_by_author,
-        _lastUpdated: date_created_by_author,
-      })
-    )
+  const handleDateChange = useCallback(
+    (date_created_by_author) =>
+      dispatch(
+        handleEditorChange({
+          id: entry.id,
+          date_created_by_author,
+          _lastUpdated: date_created_by_author,
+        })
+      ),
+    []
+  )
 
-  const handleEditorChange = ({ ...payload }) =>
-    dispatch(UpdateReduxEntry({ id: entry.id, ...payload }))
+  const handleEditorChange = useCallback(
+    ({ ...payload }) => dispatch(UpdateReduxEntry(entry.id, payload)),
+    [entry.id]
+  )
 
   return (
     <Editor
@@ -90,6 +95,7 @@ const Entry = ({
                 tag={EntryOptionsMenu}
                 onChangeCallback={handleEditorChange}
                 entryId={entry.id}
+                author={entry.author}
                 is_public={entry.is_public}
                 history={history}
                 shouldRedirectOnDelete={shouldRedirectOnDelete}

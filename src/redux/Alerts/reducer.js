@@ -3,7 +3,9 @@ import { AppActionTypes } from "../App/types"
 
 const DEFAULT_STATE_ALERTS = {
   title: "",
-  message: ""
+  message: "",
+  timeout: 3000,
+  serviceWorkerRegistration: null,
 }
 
 const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
@@ -11,10 +13,13 @@ const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
   switch (type) {
     case AlertActionTypes.ALERTS_SET_MESSAGE:
       return { ...state, ...payload }
+
     case AlertActionTypes.ALERTS_CLEAR:
       return DEFAULT_STATE_ALERTS
+
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ALERTS
+
     default:
       return state
   }

@@ -1,4 +1,4 @@
-import { AlertActionTypes } from "../Alerts/types"
+import { SetAlert } from "../Alerts/actions"
 import { EntriesActionTypes } from "./types"
 import { Axios, AxiosForm } from "../Actions"
 import {
@@ -76,10 +76,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
     dispatch(AwsUpload(entry_id, file, base64, html))
   }
   return new Promise((resolve) =>
-    dispatch({
-      type: AlertActionTypes.ALERTS_SET_MESSAGE,
-      payload: { title: "Synced", message: "Files" },
-    })
+    dispatch(SetAlert({ title: "Synced", message: "Files" }))
   )
 }
 
@@ -177,13 +174,13 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
       ReactGA.event({
         category: "Get User Entries Page",
         action: "User got a entry page!",
-        label: pageNumber,
+        label: pageNumber.toString(),
         value: id,
       })
-      return pageNumber
+      return data
     })
-    .catch(({ response }) => {
-      console.log(response)
+    .catch((e) => {
+      console.log(e)
       // const payload = JSON.parse(JSON.stringify(e.response))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
@@ -201,38 +198,37 @@ const GetUserEntriesByDate = (date) => (dispatch, getState) => {
       ReactGA.event({
         category: "Get User Entries By Date",
         action: "User got a entry page!",
-        label: date,
+        label: date.toString(),
         value: id,
       })
       return data
     })
-    .catch(({ response }) => {
-      console.log(response)
+    .catch((e) => {
+      console.log(e)
       // const payload = JSON.parse(JSON.stringify(e))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
-
-const PostReduxEntry = (payload) => (dispatch) =>
-  dispatch({
-    type: EntriesActionTypes.ENTRY_SET,
-    payload: { ...payload, _shouldPost: true },
-  })
 
 const ImportReduxEntry = (payload) => ({
   type: EntriesActionTypes.ENTRY_IMPORT,
   payload,
 })
 
+const PostReduxEntry = (payload) => (dispatch, getState) => {
+  const { items, filteredItems } = getState().Entries
+  const { length } = items.concat(filteredItems)
+  return dispatch({
+    type: EntriesActionTypes.ENTRY_SET,
+    payload: { ...payload, id: `NewEntry-${length}`, _shouldPost: true },
+  })
+}
+
 const PostEntry = (payload) => (dispatch) =>
   Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch({
-        id: payload.id,
-        type: EntriesActionTypes.ENTRY_POST,
-        payload: data,
-      })
+      dispatch(UpdateReduxEntry(payload.id, data, null))
       ReactGA.event({
         category: "Post Entry",
         action: "User posted a new entry!",
@@ -246,23 +242,17 @@ const PostEntry = (payload) => (dispatch) =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload: error })
     })
 
-const UpdateReduxEntry = (payload) => ({
+const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
   type: EntriesActionTypes.ENTRY_UPDATE,
-  id: payload.id,
-  payload,
-  _lastUpdated: new Date(),
+  id,
+  payload: { ...entry, _lastUpdated, _shouldPost: false },
 })
 
 const UpdateEntry = (id, payload) => (dispatch) =>
   Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRY_UPDATE,
-        id,
-        payload: data,
-        _lastUpdated: null,
-      })
+      dispatch(UpdateReduxEntry(id, data, null))
       ReactGA.event({
         category: "Update Entry",
         action: "User updated a new entry!",
@@ -275,11 +265,13 @@ const UpdateEntry = (id, payload) => (dispatch) =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
+const DeleteReduxEntry = (id) => ({ type: EntriesActionTypes.ENTRY_DELETE, id })
+
 const DeleteEntry = (id) => (dispatch) =>
   Axios()
     .delete(`/entries/${id}/`)
     .then((res) => {
-      dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
+      dispatch(DeleteReduxEntry(id))
       ReactGA.event({
         category: "Delete Entry",
         action: "User deleted a new entry!",
@@ -430,10 +422,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
   }
 
   if (synced) {
-    dispatch({
-      type: AlertActionTypes.ALERTS_SET_MESSAGE,
-      payload: { title: "Synced", message: "Entries" },
-    })
+    dispatch(SetAlert({ title: "Synced", message: "Entries" }))
   }
 
   dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
@@ -462,11 +451,12 @@ export {
   GetAllUserEntries,
   GetUserEntries,
   GetUserEntriesByDate,
-  PostReduxEntry,
   ImportReduxEntry,
+  PostReduxEntry,
   PostEntry,
   UpdateReduxEntry,
   UpdateEntry,
+  DeleteReduxEntry,
   DeleteEntry,
   SearchUserEntries,
   SyncEntries,

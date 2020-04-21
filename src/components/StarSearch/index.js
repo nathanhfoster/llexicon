@@ -59,7 +59,7 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
       <UseDebounce onChangeCallback={handleSearch} value={searchValue} />
       <Input
         value={searchValue}
-        placeholder="Filter entries..."
+        placeholder="Search for entries"
         className="p-0"
         onChange={handleSeachOnChange}
         // style={{ outline: "red" }}

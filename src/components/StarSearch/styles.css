@@ -1,35 +1,23 @@
-.StarSearch input, .StarSearch .input-group-text {
-    border: 0;
-}
-
-.StarSearch input::placeholder {
-    /* padding-left: 24px; */
-    color: var(--secondaryColor);
-}
-
-.StarSearch input:-ms-input-placeholder {
-    color: var(--secondaryColor);
-}
-
-.StarSearch input::-ms-input-placeholder {
-    color: var(--secondaryColor);
+.StarSearch input,
+.StarSearch .input-group-text {
+  border: 0;
 }
 
 .TelescopeIconContainer {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    background: var(--quinaryColor);
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  background: var(--quinaryColor);
 }
 
 .TelescopeIcon {
-    color: var(--secondaryColor);
-    font-size: 32px;
+  color: var(--secondaryColor);
+  font-size: 32px;
 }
 
 .TelescopeIcon:hover {
-    color: var(--accentColor);
+  color: var(--accentColor);
 }
 
 .StarSearch:focus-within .TelescopeIcon {
-    animation: fa-spin 0.8s alternate ease-in;
+  animation: fa-spin 0.8s alternate ease-in;
 }

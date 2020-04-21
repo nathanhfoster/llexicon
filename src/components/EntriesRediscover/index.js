@@ -16,7 +16,7 @@ const EntriesRediscover = ({ items, filteredItems }) => {
       items
         .concat(filteredItems)
         .filter(({ date_created_by_author, _shouldDelete }) => {
-          if (_shouldDelete) return true
+          if (_shouldDelete) return false
           const entryDate = new Date(date_created_by_author)
           const isOnThisDay =
             entryDate.getMonth() === today.getMonth() &&
@@ -24,8 +24,8 @@ const EntriesRediscover = ({ items, filteredItems }) => {
           return isOnThisDay
         })
         .sort((a, b) => {
-          const aDate = new Date(a._lastUpdated || a.date_updated)
-          const bDate = new Date(b._lastUpdated || b.date_updated)
+          const aDate = new Date(a._shouldUpdate || a.date_updated)
+          const bDate = new Date(b._shouldUpdate || b.date_updated)
           return bDate - aDate
         }),
     [items, filteredItems]

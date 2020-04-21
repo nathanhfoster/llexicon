@@ -1,16 +1,9 @@
 {
   "name": "Astral Tree",
   "short_name": "Astral Tree",
-  "description": "Capture the essence of your life with a free online journal and dairy.",
+  "description": "Capture the essence of your life with a free online journal and diary.",
   "author": "Nathan Foster",
-  "keywords": [
-    "react",
-    "redux",
-    "journal",
-    "diary", 
-    "astral", 
-    "tree" 
-  ],
+  "keywords": ["react", "redux", "journal", "diary", "astral", "tree"],
   "icons": [
     {
       "src": "/android-chrome-144x144.png",
