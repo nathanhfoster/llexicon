@@ -4,13 +4,19 @@ import { getPersistedReduxStore } from "../localState"
 const { REACT_APP_API_URL } = process.env
 
 const getUser = () => {
-  const { User } = getPersistedReduxStore()
-  if (!User) return { token: null, offline_mode: null }
-  const {
-    token,
-    Settings: { offline_mode },
-  } = User
-  return { token, offline_mode }
+  let userFromLocalStorage = {}
+  const persistedReduxStore = getPersistedReduxStore()
+  if (persistedReduxStore) {
+    const { User } = persistedReduxStore
+    if (!User) return { token: null, offline_mode: null }
+    const {
+      token,
+      Settings: { offline_mode },
+    } = User
+    userFromLocalStorage = { token, offline_mode }
+  }
+
+  return userFromLocalStorage
 }
 
 const base = {

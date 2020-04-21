@@ -31,12 +31,14 @@ const EntryDetail = ({
     [entryId, items, filteredItems]
   )
 
-  const readOnly = entry && entry.author && UserId !== entry.author
+  const readOnly = Boolean(entry && entry.author && UserId !== entry.author)
 
   useEffect(() => {
-    SyncEntries(
-      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
-    )
+    if (UserId) {
+      SyncEntries(
+        () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
+      )
+    }
   }, [])
 
   useEffect(() => {
