@@ -39,7 +39,7 @@ const AlertNotifications = ({
       // window.close()
       // window.open(currentUrl, "_blank")
       window.location.reload()
-    }, 1000)
+    }, 400)
   }, [])
 
   return (
