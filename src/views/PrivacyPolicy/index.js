@@ -23,6 +23,17 @@ const PrivacyPolicy = () => (
           .
         </p>
         <p>
+          If you choose, you can use your browser's{" "}
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition"
+            target="_blank"
+          >
+            Geolocation API
+          </a>{" "}
+          to attach GPS coordinates to your{" "}
+          <a href={RouteMap.NEW_ENTRY}>journal entries</a>.
+        </p>
+        <p>
           Your data belongs to you and you can completely remove your data at
           any point by going to{" "}
           <a href={RouteMap.SETTINGS_PROFILE}> your profile</a>.
