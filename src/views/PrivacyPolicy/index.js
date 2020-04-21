@@ -11,7 +11,7 @@ const PrivacyPolicy = () => (
         <Header>Privacy Policy</Header>
         <p>Let's make this simple.</p>
         <p>Our privacy is important to me.</p>
-        <p>I do not sell or reveal your data to any person or entity.</p>
+        <p>I do not sell or reveal your personal data to any person or entity.</p>
         <p>
           Google Analytics is used to record{" "}
           <a
