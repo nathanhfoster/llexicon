@@ -134,6 +134,14 @@ class Editor extends PureComponent {
       bottomToolbarIsOpen: !currentState.bottomToolbarIsOpen,
     }))
 
+  handleOnFocus = (range) => {
+    const { editorRef } = this
+
+    if (editorRef && editorRef.current) {
+      editorRef.current.setEditorSelection(editorRef.current.editor, range)
+    }
+  }
+
   render() {
     const { editorRef } = this
     const {
@@ -179,6 +187,7 @@ class Editor extends PureComponent {
             value={entry.html}
             onChange={this.handleEditorStateChange}
             placeholder={placeholder}
+            onFocus={this.handleOnFocus}
           />
           <BottomToolbar
             entry={entry}

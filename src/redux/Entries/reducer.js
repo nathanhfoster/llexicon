@@ -3,12 +3,25 @@ import { AppActionTypes } from "../App/types"
 import { handleFilterEntries } from "./utils"
 import { mergeJson } from "../../helpers"
 import { RouteMap } from "../../routes"
+import * as AwsImages from "../../images/AWS"
+const { fourOfour, ...entryFiles } = AwsImages
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
+const DEFAULT_JOUNRAL_ENTRY_ID = "NewEntry"
+
+const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
+  id,
+  file_type: "image/jpeg",
+  name,
+  size: 870,
+  url: entryFiles[name],
+  entry_id: `${DEFAULT_JOUNRAL_ENTRY_ID}-1`,
+}))
+
 const FIRST_JOUNRAL_ENTRY = {
   author: null,
-  id: "NewEntry-1",
+  id: `${DEFAULT_JOUNRAL_ENTRY_ID}-1`,
   tags: [
     {
       name: "Excited",
@@ -18,9 +31,9 @@ const FIRST_JOUNRAL_ENTRY = {
     },
   ],
   people: [],
-  EntryFiles: [],
+  EntryFiles: DEFAULT_ENTRY_FILES,
   title: "My First Journal Entry",
-  html: `<p>After I've installed Astral Tree today, I will make a diary entry every day from now on. In case I forget to make an entry, the app will remind me with a notification in the evening. Besides pictures, videos, audio recordings or other files, I can add a location, tags or people to my journal entries.</p><p><br></p><p>If I <a href="${LINK_TO_SIGN_UP}" rel="noopener noreferrer" target="_blank">sign up</a>, my journal entries will be synced across all my devices. I am already looking forward to revisiting all those memories in a few months or years.</p>`,
+  html: `<p class="ql-align-center"><img src="${entryFiles.Logo}" width="140"></p><br><p>After I've installed Astral Tree today, I will make a diary entry every day from now on. In case I forget to make an entry, the app will remind me with a notification in the evening. Besides pictures, videos, audio recordings or other files, I can add a location, tags or people to my journal entries.</p><p><br></p><p>If I <a href="${LINK_TO_SIGN_UP}" rel="noopener noreferrer" target="_blank">sign up</a>, my journal entries will be synced across all my devices. I am already looking forward to revisiting all those memories in a few months or years.</p>`,
   date_created_by_author: new Date(),
   date_updated: new Date(),
   views: 0,
@@ -181,4 +194,4 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   }
 }
 
-export { DEFAULT_STATE_ENTRIES, Entries }
+export { DEFAULT_JOUNRAL_ENTRY_ID, DEFAULT_STATE_ENTRIES, Entries }

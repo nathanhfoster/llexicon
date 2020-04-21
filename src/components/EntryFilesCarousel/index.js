@@ -37,18 +37,16 @@ const EntryFilesCarousel = ({
   }
 
   const handleImageClick = (url, file_type) => {
-    let cursorIndex = 0
-
     if (editorRef.current) {
+      let cursorIndex = 0
       if (editorSelection) {
         const { index, length } = editorSelection
         cursorIndex = index
       }
+      const type = file_type.split("/")[0]
+
+      editorRef.current.editor.insertEmbed(cursorIndex, type, url)
     }
-
-    const type = file_type.split("/")[0]
-
-    editorRef.current.editor.insertEmbed(cursorIndex, type, url)
   }
 
   const renderImageFiles = (imageFiles) => {

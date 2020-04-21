@@ -10,6 +10,7 @@ import { getJsonTagsOrPeople } from "./utils"
 import FormData from "form-data"
 import qs from "qs"
 import ReactGA from "react-ga"
+import { DEFAULT_JOUNRAL_ENTRY_ID } from "./reducer"
 
 const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -220,7 +221,11 @@ const PostReduxEntry = (payload) => (dispatch, getState) => {
   const { length } = items.concat(filteredItems)
   return dispatch({
     type: EntriesActionTypes.ENTRY_SET,
-    payload: { ...payload, id: `NewEntry-${length}`, _shouldPost: true },
+    payload: {
+      ...payload,
+      id: `${DEFAULT_JOUNRAL_ENTRY_ID}-${length}`,
+      _shouldPost: true,
+    },
   })
 }
 
