@@ -119,31 +119,6 @@ const persistReduxState = () => (dispatch, getState) =>
 
 const removeReduxState = () => removeState(LocalStorageReduxKey)
 
-const isQuotaExceeded = (e) => {
-  let quotaExceeded = false
-  if (e) {
-    if (e.code) {
-      switch (e.code) {
-        case 22:
-          quotaExceeded = true
-          break
-        case 1014:
-          // Firefox
-          if (e.name === "NS_ERROR_DOM_QUOTA_REACHED") {
-            quotaExceeded = true
-          }
-          break
-        default:
-          break
-      }
-    } else if (e.number === -2147024882) {
-      // Internet Explorer 8
-      quotaExceeded = true
-    }
-  }
-  return quotaExceeded
-}
-
 const getUserClientId = () => {
   const {
     User: { id, username, email },
@@ -157,6 +132,46 @@ const getUserClientId = () => {
   const userIdUsernameEmail = `${id}-${username}-${email}`
 
   return { userId, appVersion, userIdUsernameEmail }
+}
+
+const Clean = (array) => {
+  for (let i = 0; i < array.length; i++) {
+    const item = array[i]
+    if (item.hasOwnProperty("html")) delete item.html
+    if (item.hasOwnProperty("image")) delete item.image
+  }
+  return array.filter((e) => e)
+}
+
+const isQuotaExceeded = (e) => {
+  let quotaExceeded = false
+  if (e) {
+    if (e.code) {
+      switch (e.code) {
+        case 22:
+          quotaExceeded = true
+          break
+        case 1014:
+          // Firefox
+          if (e.name == "NS_ERROR_DOM_QUOTA_REACHED") {
+            quotaExceeded = true
+          }
+          break
+      }
+    } else if (e.number == -2147024882) {
+      // Internet Explorer 8
+      quotaExceeded = true
+    }
+  }
+  return quotaExceeded
+}
+
+const handleQuotaExceeded = (e) => {
+  // console.log("--------------------handleQuotaExceeded", JSON.stringify(e))
+
+  if (isQuotaExceeded(e)) {
+    
+  }
 }
 
 export {
@@ -177,4 +192,5 @@ export {
   persistReduxState,
   removeReduxState,
   getUserClientId,
+  handleQuotaExceeded,
 }

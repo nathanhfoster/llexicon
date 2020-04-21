@@ -5,14 +5,15 @@ import { composeWithDevTools } from "redux-devtools-extension"
 import { persistStore, persistReducer } from "redux-persist"
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2"
 import storage from "redux-persist/lib/storage" // defaults to localStorage for web
-import { LocalStorageReduxKey } from "./localState"
+import { LocalStorageReduxKey, handleQuotaExceeded } from "./localState"
 
 const { NODE_ENV } = process.env
 
 const persistConfig = {
   key: LocalStorageReduxKey,
   storage,
-  stateReconciler: autoMergeLevel2
+  stateReconciler: autoMergeLevel2,
+  writeFailHandler: handleQuotaExceeded,
 }
 
 const persistedReducer = persistReducer(persistConfig, RootReducer)
