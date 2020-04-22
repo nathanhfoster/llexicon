@@ -4,7 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { Col } from "reactstrap"
 import { BasicList, EntryMinimal } from "../"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
-import { SyncEntries, GetUserEntries } from "../../redux/Entries/actions"
+import { GetUserEntries } from "../../redux/Entries/actions"
 import deepEquals from "../../helpers/deepEquals"
 
 const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
@@ -23,7 +23,6 @@ const mapStateToProps = ({ Entries: { next, search } }) => ({
 })
 
 const mapDispatchToProps = {
-  SyncEntries,
   GetUserEntries,
 }
 
@@ -35,7 +34,6 @@ const EntriesList = ({
   width,
   itemSize,
   entries,
-  SyncEntries,
   GetUserEntries,
 }) => {
   const listLength = entries.length
@@ -47,9 +45,7 @@ const EntriesList = ({
     const split = nextEntryPage.split(/\?page=(.*)/)
     const pageNumber = split[1]
 
-    SyncEntries(
-      () => new Promise((resolve) => resolve(GetUserEntries(pageNumber)))
-    )
+    GetUserEntries(pageNumber)
   }, [entries])
   return (
     <BasicList
@@ -70,7 +66,6 @@ EntriesList.propTypes = {
   onItemsRendered: PropTypes.func,
   height: PropTypes.number.isRequired,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  SyncEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
 }
 
