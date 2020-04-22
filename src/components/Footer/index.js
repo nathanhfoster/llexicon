@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
@@ -26,6 +26,8 @@ const Footer = ({ version }) => (
   </Container>
 )
 
-Footer.propTypes = { version: PropTypes.number.isRequired }
+Footer.propTypes = {
+  version: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+}
 
 export default reduxConnect(mapStateToProps)(Footer)

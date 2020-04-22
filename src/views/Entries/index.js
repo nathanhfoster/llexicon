@@ -94,7 +94,10 @@ const Entries = ({
     {
       tabId: RouteMap.NEW_ENTRY,
       mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-feather-alt"></i>,
+      title: {
+        name: "Create Entry",
+        render: <i className="fas fa-feather-alt" />,
+      },
       className: "fade-in",
       render: (
         <Row>
@@ -106,7 +109,10 @@ const Entries = ({
     {
       tabId: RouteMap.ENTRIES_CALENDAR,
       mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-calendar-alt"></i>,
+      title: {
+        name: "Entries Calendar",
+        render: <i className="fas fa-calendar-alt" />,
+      },
       className: "fade-in",
       render: (
         <Row>
@@ -118,7 +124,10 @@ const Entries = ({
     {
       tabId: RouteMap.ENTRIES_FOLDERS,
       mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-folder" />,
+      title: {
+        name: "Entries Folders",
+        render: <i className="fas fa-folder" />,
+      },
       className: "fade-in",
       render: (
         <Row>
@@ -139,7 +148,7 @@ const Entries = ({
     {
       tabId: RouteMap.ENTRIES_LIST,
       mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-th-list" />,
+      title: { name: "Entries List", render: <i className="fas fa-th-list" /> },
       className: "fade-in",
       render: shouldRenderNewEntryButton ? (
         <Row>
@@ -158,7 +167,7 @@ const Entries = ({
     {
       tabId: RouteMap.ENTRIES_TABLE,
       mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-table" />,
+      title: { name: "Entries Table", render: <i className="fas fa-table" /> },
       className: "fade-in",
       render: shouldRenderNewEntryButton ? (
         <Row>
@@ -174,7 +183,10 @@ const Entries = ({
     {
       tabId: RouteMap.ENTRIES_MAP,
       mountTabOnlyWhenActive: true,
-      title: <i className="fas fa-map-marked-alt" />,
+      title: {
+        name: "Entries Map",
+        render: <i className="fas fa-map-marked-alt" />,
+      },
       className: "fade-in",
       render: (
         <Row>

@@ -1,13 +1,15 @@
 .BasicTable {
-    table-layout: fixed;
-    width: 100%;
+  table-layout: fixed;
+  width: 100%;
 }
 
-.BasicTable th, .BasicTable tr, .BasicTable td {
-    text-overflow: clip;
-    white-space: nowrap;
-    overflow: auto;
-    /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 40px), transparent calc(100% - 2px), transparent);
+.BasicTable th,
+.BasicTable tr,
+.BasicTable td {
+  text-overflow: clip;
+  white-space: nowrap;
+  overflow: hidden;
+  /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 40px), transparent calc(100% - 2px), transparent);
     mask-image: linear-gradient( to right, #000, #000 calc(100% - 40px), transparent calc(100% - 2px), transparent); */
 }
 

@@ -45,7 +45,7 @@ export const ENTRY_LINKS = [
   {
     dropdownItem: true,
     route: NEW_ENTRY,
-    title: "NEW ENTRY",
+    title: "CREATE ENTRY",
     icon: <i className="fas fa-feather-alt NavBarImage" />,
   },
   {

@@ -10,6 +10,7 @@ import {
   TabContent,
   TabPane,
 } from "reactstrap"
+import { isType } from "../../helpers"
 import "./styles.css"
 
 const getInitialState = (activeTab, defaultTab, tabs) => {
@@ -44,8 +45,9 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
       tabs.map((tab) => {
         const { tabId, title, onClickCallback } = tab
         const onTab = activeTab === tabId
+        const titleIsObject = Boolean(typeof title === isType.OBJECT)
         return (
-          <NavItem key={tabId}>
+          <NavItem key={tabId} title={titleIsObject ? title.name : title}>
             <NavLink
               className={`BasicTabsNavLink p-2 px-sm-3 py-sm-2 ${
                 onTab ? "active" : ""
@@ -56,7 +58,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
                   : handleTabChanged(tabId)
               }
             >
-              {title}
+              {titleIsObject ? title.render : title}
             </NavLink>
           </NavItem>
         )
@@ -105,7 +107,7 @@ BasicTabs.propTypes = {
       mountTabOnlyWhenActive: PropTypes.bool,
       title: PropTypes.oneOfType([
         PropTypes.string.isRequired,
-        PropTypes.object,
+        PropTypes.shape({ name: PropTypes.string, render: PropTypes.object }),
       ]),
       render: PropTypes.object.isRequired,
       onClickCallback: PropTypes.func,

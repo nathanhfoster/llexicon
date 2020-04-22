@@ -24,7 +24,7 @@ const mapStateToProps = (
       ? calendarDate.isSame(currentDate, "day")
       : true
 
-  const entries = entriesWithinView.filter(entry => {
+  const entries = entriesWithinView.filter((entry) => {
     const { date_created_by_author, _shouldDelete } = entry
 
     const entryDate = MomentJS(date_created_by_author)
@@ -39,7 +39,7 @@ const mapStateToProps = (
     entries,
     date,
     staticContext,
-    view
+    view,
   }
 }
 
@@ -52,13 +52,13 @@ const TileContent = ({
   date,
   staticContext,
   view,
-  history
+  history,
 }) => {
   const handleTodayClick = () =>
     setTimeout(() => RouterPush(history, RouteMap.NEW_ENTRY), 10)
 
   const renderEntryPreviews = () =>
-    entries.map(entry => {
+    entries.map((entry) => {
       const { id, ...restOfProps } = entry
 
       return (
@@ -81,23 +81,21 @@ const TileContent = ({
       {shouldRenderPlusButton && (
         <i
           className="fas fa-feather-alt TileContentFeather"
+          title="Create Entry"
           onClick={handleTodayClick}
         />
       )}
       {shouldRenderEntryPreview && (
-        <div className="TileContentContainer">
-          {renderEntryPreviews()}
-        </div>
+        <div className="TileContentContainer">{renderEntryPreviews()}</div>
       )}
     </Fragment>
   )
 }
 
 TileContent.propTypes = {
-  GetUserEntriesByDate: PropTypes.func.isRequired
+  GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-  
 export default withRouter(
   reduxConnect(mapStateToProps, mapDispatchToProps)(memo(TileContent))
 )

@@ -27,7 +27,7 @@ const EntryFileProps = PropTypes.shape({
   date_created: PropTypes.string,
   date_updated: PropTypes.string,
   date_modified: PropTypes.string,
-  entry_id: PropTypes.number,
+  entry_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 })
 
 const EntryFilesProps = PropTypes.arrayOf(EntryFileProps)

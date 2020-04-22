@@ -12,14 +12,14 @@ import TagsContainer from "../TagsContainer"
 import "./styles.css"
 
 const mapStateToProps = ({
-  Window: { innerHeight, navBarHeight, isMobile }
+  Window: { innerHeight, navBarHeight, isMobile },
 }) => {
   const calendarTileHeight = innerHeight * 0.07 - 46 / 6
   const calendarHeight = 64 + 24 + calendarTileHeight * 6
   return {
     listHeight: isMobile
       ? innerHeight - navBarHeight - calendarHeight - 64 + 10
-      : innerHeight - navBarHeight - 64 - 4
+      : innerHeight - navBarHeight - 64 - 4,
   }
 }
 
@@ -27,7 +27,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
   const entries = useMemo(
     () =>
       entriesWithinView
-        .filter(entry => {
+        .filter((entry) => {
           const { date_created_by_author, _shouldDelete } = entry
           const date = MomentJS(activeDate)
           const startDate = MomentJS(date_created_by_author)
@@ -46,7 +46,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
             date_created_by_author,
             date_updated,
             views,
-            EntryFiles
+            EntryFiles,
           } = e
           const showImageIcon = EntryFiles.length > 0
           return {
@@ -56,6 +56,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
                 key={id}
                 onClick={() => GoToEntryDetail(id, history)}
                 className="listItem"
+                title={title}
               >
                 <div className="Overflow eventTitle">
                   <Star size={8} color="White" animation={false} opacity={1} />
@@ -74,7 +75,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
                   faIcon="fas fa-user"
                 />
               </div>
-            )
+            ),
           }
         }),
     [entriesWithinView, activeDate]
@@ -95,9 +96,9 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
 EntryList.propTypes = {
   activeDate: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.instanceOf(Date)
+    PropTypes.instanceOf(Date),
   ]).isRequired,
-  entriesWithinView: EntriesPropTypes
+  entriesWithinView: EntriesPropTypes,
 }
 
 export default reduxConnect(mapStateToProps)(withRouter(memo(EntryList)))

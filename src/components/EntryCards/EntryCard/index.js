@@ -56,7 +56,10 @@ const EntryCard = ({
   )
 
   const cardTitle = useMemo(
-    () => <EntryCardTitle title={title} is_public={is_public} />,
+    () => ({
+      name: title,
+      render: <EntryCardTitle title={title} is_public={is_public} />,
+    }),
     [title, is_public]
   )
 

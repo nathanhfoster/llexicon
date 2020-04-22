@@ -9,8 +9,13 @@ const EntryNavButtons = ({ size }) => {
   const history = useHistory()
 
   const renderButtons = () =>
-    ENTRY_LINKS.map(({ route, icon }, i) => (
-      <Button key={i} color="accent" onClick={() => RouterPush(history, route)}>
+    ENTRY_LINKS.map(({ title, route, icon }, i) => (
+      <Button
+        key={i}
+        color="accent"
+        title={title}
+        onClick={() => RouterPush(history, route)}
+      >
         {icon}
       </Button>
     ))

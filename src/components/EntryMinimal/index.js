@@ -38,6 +38,7 @@ const EntryMinimal = ({
       tag={Badge}
       className="EntryMinimal p-2"
       onClick={() => GoToEntryDetail(id, history)}
+      title={title}
     >
       <Row>
         <Col xs={12} className="EntryMinimalDetail Overflow mb-1">

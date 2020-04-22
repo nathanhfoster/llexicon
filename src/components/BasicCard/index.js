@@ -1,6 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Card, CardHeader, CardText, CardBody, CardTitle } from "reactstrap"
+import { isType } from "../../helpers"
 import "./styles.css"
 
 const BasicCard = ({
@@ -18,10 +19,18 @@ const BasicCard = ({
 }) => {
   const handleOnClickCallback = () => onClickCallback && onClickCallback()
   const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
+  const titleIsObject = typeof title === isType.OBJECT
+  const cardTitle = titleIsObject ? title.name : title
+  const renderCardTitle = titleIsObject ? (
+    title.render
+  ) : (
+    <CardTitle className={`${cardTitleClassName} Center`}>{title}</CardTitle>
+  )
   return (
     <Card
       className={`BasicCard ${cardClassName} ${cardHoverStyles}`}
       onClick={handleOnClickCallback}
+      title={cardTitle}
     >
       <CardHeader
         tag="div"
@@ -37,13 +46,7 @@ const BasicCard = ({
         tag="div"
         className={`BasicCardBodyContainer ${cardBodyClassName}`}
       >
-        {typeof title === "string" ? (
-          <CardTitle className={`${cardTitleClassName} Center`}>
-            {title}
-          </CardTitle>
-        ) : (
-          title
-        )}
+        {renderCardTitle}
         {text && (
           <CardText tag="div" className={`${cardTextClassName} Center`}>
             {text}
@@ -57,7 +60,13 @@ const BasicCard = ({
 
 BasicCard.propTypes = {
   header: PropTypes.object,
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  title: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      name: PropTypes.string,
+      render: PropTypes.object.isRequired,
+    }),
+  ]),
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   faIcon: PropTypes.string,
   button: PropTypes.object,

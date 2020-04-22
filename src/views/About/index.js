@@ -134,7 +134,10 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
     []
   )
 
-  const homeCardTitle = useMemo(() => <Header>Astral Tree</Header>, [])
+  const homeCardTitle = useMemo(
+    () => ({ name: "Astral Tree", render: <Header>Astral Tree</Header> }),
+    []
+  )
 
   const homeCardText = useMemo(
     () => (

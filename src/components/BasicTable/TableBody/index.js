@@ -3,26 +3,17 @@ import PropTypes from "prop-types"
 import { ColumnsPropType, DataPropType } from "../propTypes"
 import TableRow from "./TableRow"
 
-
 const TableBody = ({ columns, data, onRowClick }) => {
   const renderTableRows = useMemo(
     () =>
-      data.map((item, i) => {
-        const [firstColumn, ...restOfColumns] = columns
-        const { title, key, width = "auto", render } = firstColumn
-        const firstItemIndexOrKeyValue = item[key]
-
-        return (
-          <TableRow
-            key={i}
-            onRowClick={onRowClick}
-            item={item}
-            render={render}
-            firstItemIndexOrKeyValue={firstItemIndexOrKeyValue}
-            restOfColumns={restOfColumns}
-          />
-        )
-      }),
+      data.map((item, i) => (
+        <TableRow
+          key={i}
+          onRowClick={onRowClick}
+          item={item}
+          columns={columns}
+        />
+      )),
     [columns, data]
   )
   return <tbody>{renderTableRows}</tbody>

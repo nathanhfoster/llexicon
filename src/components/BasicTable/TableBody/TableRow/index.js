@@ -1,35 +1,33 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { ColumnsPropType, DataPropType } from "../../propTypes"
+import TableDataCell from "./TableDataCell"
+import { ColumnsPropType } from "../../propTypes"
 
-const TableRow = ({
-  onRowClick,
-  item,
-  render,
-  firstItemIndexOrKeyValue,
-  restOfColumns,
-}) => (
-  <tr onClick={onRowClick ? () => onRowClick(item) : null}>
-    <th scope="row" style={{ fontWeight: "normal" }}>
-      {render ? render(item) : firstItemIndexOrKeyValue}
-    </th>
-    {restOfColumns.map((c, j) => {
-      const { title, key, width = "auto", render } = c
-      const itemValue = item[key]
-      return <td key={j}>{render ? render(item) : itemValue}</td>
-    })}
-  </tr>
-)
+const TableRow = ({ onRowClick, item, columns }) => {
+  const [firstColumn, ...restOfColumns] = columns
+  const { key, render } = firstColumn
+  const renderRestOfColumns = useMemo(
+    () =>
+      restOfColumns.map((c, j) => {
+        const { key, render } = c
+        return (
+          <TableDataCell key={j} render={render} item={item} itemKey={key} />
+        )
+      }),
+    [restOfColumns]
+  )
+  return (
+    <tr onClick={onRowClick ? () => onRowClick(item) : null}>
+      <TableDataCell scope="row" render={render} item={item} itemKey={key} />
+      {renderRestOfColumns}
+    </tr>
+  )
+}
 
 TableRow.propTypes = {
   onRowClick: PropTypes.func,
   item: PropTypes.object,
-  render: PropTypes.object,
-  firstItemIndexOrKeyValue: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  restOfColumns: ColumnsPropType,
+  columns: ColumnsPropType,
 }
 
 export default memo(TableRow)
