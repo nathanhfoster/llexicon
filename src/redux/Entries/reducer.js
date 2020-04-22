@@ -45,7 +45,7 @@ const FIRST_JOUNRAL_ENTRY = {
 
   // Redux Only
   _shouldDelete: false,
-  _shouldPost: false,
+  _shouldPost: true,
   _lastUpdated: null,
 }
 
