@@ -24,8 +24,8 @@ const EntriesRediscover = ({ items, filteredItems }) => {
           return isOnThisDay
         })
         .sort((a, b) => {
-          const aDate = new Date(a._shouldUpdate || a.date_updated)
-          const bDate = new Date(b._shouldUpdate || b.date_updated)
+          const aDate = new Date(a.date_created_by_author)
+          const bDate = new Date(b.date_created_by_author)
           return bDate - aDate
         }),
     [items, filteredItems]
