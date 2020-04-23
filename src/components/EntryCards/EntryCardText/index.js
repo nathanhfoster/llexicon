@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import {
   EntryTagsProps,
-  EntryPeopleProps
+  EntryPeopleProps,
 } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { RatingIcon, TagsContainer } from "../../"
@@ -15,7 +15,7 @@ const EntryCardText = ({
   date_created_by_author,
   date_updated,
   views,
-  rating
+  rating,
 }) => {
   return (
     <Container className="EntryCardText Container">
@@ -60,11 +60,14 @@ EntryCardText.propTypes = {
   people: EntryPeopleProps,
   date_created_by_author: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.instanceOf(Date)
+    PropTypes.instanceOf(Date),
   ]),
-  date_updated: PropTypes.string,
+  date_updated: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date),
+  ]),
   views: PropTypes.number,
-  rating: PropTypes.number
+  rating: PropTypes.number,
 }
 
 EntryCardText.defaultProps = {}
