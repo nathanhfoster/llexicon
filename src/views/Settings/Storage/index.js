@@ -10,7 +10,7 @@ const Storage = ({}) => {
   return (
     <Container fluid>
       <Row>
-        <Col xs={12}>
+        <Col xs={12} className="p-0">
           <LocalStorage />
         </Col>
       </Row>

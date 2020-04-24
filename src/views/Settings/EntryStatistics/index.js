@@ -23,9 +23,6 @@ const EntryStatistics = ({ items, filteredItems }) => {
   let viewCount = 0
 
   const entries = items.concat(filteredItems)
-  const entriesStorageSize = formatBytes(
-    JSON.stringify(entries).split(/%..|./).length - 1
-  )
 
   let validRatedEntries = 0
 
@@ -125,7 +122,6 @@ const EntryStatistics = ({ items, filteredItems }) => {
 
   const entryCounts = [
     { title: "Entries", value: totalEntries },
-    { title: "Storage Size", value: entriesStorageSize, type: "string" },
     { title: "Views", value: viewCount },
     { title: "Characters", value: charCount },
     { title: "Words", value: wordCount },
