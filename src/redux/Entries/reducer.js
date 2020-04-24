@@ -187,7 +187,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case AppActionTypes.REDUX_RESET:
-      return DEFAULT_STATE_ENTRIES
+      return { ...DEFAULT_STATE_ENTRIES, items: [] }
 
     default:
       return state
