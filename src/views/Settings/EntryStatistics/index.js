@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
+import { Container, Row, Col } from "reactstrap"
 import MomentJs from "moment"
 import deepEquals from "../../../helpers/deepEquals"
 import { formatBytes } from "../../../helpers"

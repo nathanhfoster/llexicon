@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { withRouter, Route, Switch, Redirect } from "react-router-dom"
-import { SetWindow } from "./redux/App/actions"
+import { SetWindow, SetLocalStorageUsage } from "./redux/App/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
 import {
@@ -39,6 +39,7 @@ const {
   SETTINGS,
   SETTINGS_ENTRIES,
   SETTINGS_PREFERENCES,
+  SETTINGS_STORAGE,
   SETTINGS_PROFILE,
   SUPPORT,
   ENTRIES_CALENDAR,
@@ -55,6 +56,7 @@ const mapStateToProps = ({ User }) => ({ User })
 
 const mapDispatchToProps = {
   SetWindow,
+  SetLocalStorageUsage,
   GetUserSettings,
   SetCalendar,
   SyncEntries,
@@ -69,6 +71,7 @@ const App = ({
   GetUserSettings,
   User,
   SetWindow,
+  SetLocalStorageUsage,
   SetCalendar,
   SyncEntries,
   GetUserEntries,
@@ -90,6 +93,8 @@ const App = ({
     ResetMap()
 
     const handleResize = () => SetWindow()
+
+    SetLocalStorageUsage()
 
     window.addEventListener("resize", handleResize)
 
@@ -150,6 +155,7 @@ const App = ({
               SETTINGS_ENTRIES,
               SETTINGS_PREFERENCES,
               SETTINGS_PROFILE,
+              SETTINGS_STORAGE,
             ]}
             component={Settings}
           />
@@ -190,6 +196,7 @@ const App = ({
 App.propTypes = {
   User: UserProps,
   SetWindow: PropTypes.func.isRequired,
+  SetLocalStorageUsage: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
@@ -198,7 +205,6 @@ App.propTypes = {
   GetUserEntryPeople: PropTypes.func.isRequired,
   ResetEntriesSortAndFilterMaps: PropTypes.func.isRequired,
   ResetMap: PropTypes.func.isRequired,
-  SetWindow: PropTypes.func.isRequired,
 }
 
 const isEqual = (prevProps, nextProps) =>

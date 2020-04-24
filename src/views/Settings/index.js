@@ -2,14 +2,15 @@ import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "../../redux/User/propTypes"
 import { withRouter } from "react-router-dom"
+import { Container, Row, Col } from "reactstrap"
 import { BasicTabs, Header } from "../../components"
 import EntryStatistics from "./EntryStatistics"
-import { RouterPush, RouteMap } from "../../routes"
-import { Container, Row, Col } from "reactstrap"
 import ImportExportEntries from "./ImportExportEntries"
 import AccountDetails from "./AccountDetails"
 import UpdateProfile from "./UpdateProfile"
+import Storage from "./Storage"
 import Sections from "./Sections"
+import { RouterPush, RouteMap } from "../../routes"
 import "./styles.css"
 
 const {
@@ -17,6 +18,7 @@ const {
   SETTINGS_ENTRIES,
   SETTINGS_PREFERENCES,
   SETTINGS_PROFILE,
+  SETTINGS_STORAGE,
 } = RouteMap
 
 const Settings = ({ history, location: { pathname } }) => {
@@ -29,6 +31,7 @@ const Settings = ({ history, location: { pathname } }) => {
     {
       tabId: SETTINGS_ENTRIES,
       title: "Entries",
+
       className: "mt-2",
       render: (
         <Fragment>
@@ -55,6 +58,13 @@ const Settings = ({ history, location: { pathname } }) => {
       title: "Preferences",
       className: "mt-2",
       render: <Sections />,
+      onClickCallback: handleTabChange,
+    },
+    {
+      tabId: SETTINGS_STORAGE,
+      title: "Storage",
+      className: "mt-2",
+      render: <Storage />,
       onClickCallback: handleTabChange,
     },
   ]

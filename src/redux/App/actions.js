@@ -1,5 +1,5 @@
-import { WindowActionTypes } from "../Window/types"
 import { AppActionTypes } from "../App/types"
+import { WindowActionTypes } from "../Window/types"
 import { Axios } from "../Actions"
 import axios from "axios"
 import qs from "qs"
@@ -10,6 +10,22 @@ const SetWindow = (payload) => ({
   type: WindowActionTypes.SET_WINDOW,
   payload,
 })
+
+const SetLocalStorageUsage = () => (dispatch) => {
+  if ("storage" in navigator && "estimate" in navigator.storage) {
+    return navigator.storage
+      .estimate()
+      .then(({ usage, quota, usageDetails }) => {
+        const payload = {
+          localStorageUsage: usage,
+          localStorageQuota: quota,
+          localStorageUsageDetails: usageDetails,
+        }
+        dispatch({ type: AppActionTypes.APP_SET_LOCAL_STORAGE_USAGE, payload })
+        return [usage, quota]
+      })
+  }
+}
 
 const ResetRedux = () => (dispatch) =>
   dispatch({ type: AppActionTypes.REDUX_RESET })
@@ -33,4 +49,4 @@ const GetAppVersion = () => (dispatch, getState) => {
     .catch(({ response }) => console.log("ERROR: ", response))
 }
 
-export { SetWindow, ResetRedux, GetAppVersion }
+export { SetWindow, SetLocalStorageUsage, ResetRedux, GetAppVersion }

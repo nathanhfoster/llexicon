@@ -37,6 +37,7 @@ const {
   SETTINGS_ENTRIES,
   SETTINGS_PREFERENCES,
   SETTINGS_PROFILE,
+  SETTINGS_STORAGE,
   SUPPORT,
   PRIVACY_POLICY,
 } = RouteMap
@@ -157,6 +158,12 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
               route: SETTINGS_PREFERENCES,
               title: "PREFERENCES",
               icon: <i className="fas fa-sliders-h NavBarImage" />,
+            },
+            {
+              dropdownItem: true,
+              route: SETTINGS_STORAGE,
+              title: "STORAGE",
+              icon: <i className="fas fa-hdd NavBarImage" />,
             },
           ],
         },
