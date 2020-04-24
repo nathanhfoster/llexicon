@@ -154,6 +154,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
         action: "User is got all their entries!",
         value: id,
       })
+      dispatch(SetAlert({ title: "Received", message: "Entries" }))
       return data
     })
     .catch((e) => {
@@ -178,6 +179,7 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
         label: pageNumber.toString(),
         value: id,
       })
+      dispatch(SetAlert({ title: "Received", message: "Entries" }))
       return data
     })
     .catch((e) => {
@@ -202,6 +204,7 @@ const GetUserEntriesByDate = (date) => (dispatch, getState) => {
         label: date.toString(),
         value: id,
       })
+      dispatch(SetAlert({ title: "Received", message: "Entries" }))
       return data
     })
     .catch((e) => {
@@ -361,7 +364,9 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
     } = entries[i]
 
     if (_shouldDelete) {
-      await dispatch(DeleteEntry(id)).then(res => dispatch(SetAlert({ title: "Deleted", message: "Entry" })))
+      await dispatch(DeleteEntry(id)).then((res) =>
+        dispatch(SetAlert({ title: "Deleted", message: "Entry" }))
+      )
       continue
     } else if (_shouldPost) {
       const postPayload = {
@@ -377,7 +382,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
       }
 
       await dispatch(PostEntry(postPayload)).then(async (entry) => {
-      dispatch(SetAlert({ title: "Saved", message: "Entry" }))
+        dispatch(SetAlert({ title: "Saved", message: "Entry" }))
         if (!entry) return
         const {
           EntryFiles,
@@ -415,12 +420,18 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
         longitude,
         is_public,
       }
-      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res => dispatch(SetAlert({ title: "Synced", message: "Entries" })))
+      await dispatch(
+        ParseBase64(id, cleanObject(updateEntryPayload))
+      ).then((res) =>
+        dispatch(SetAlert({ title: "Updated", message: "Entry" }))
+      )
     }
   }
 
   if (typeof getEntryMethod === "function") {
-    await getEntryMethod().then(res => dispatch(SetAlert({ title: "Received", message: "Ebtry" })))
+    await getEntryMethod().then((res) =>
+      dispatch(SetAlert({ title: "Received", message: "Entry" }))
+    )
   }
 
   dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
