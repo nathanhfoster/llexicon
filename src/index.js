@@ -26,7 +26,7 @@ const inDevelopmentMode = NODE_ENV === "development"
 const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
 
 ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
-  debug: false,
+  // debug: inDevelopmentMode,
   // titleCase: false,
   // dimension14: "userIdUsernameEmail",
   gaOptions: {

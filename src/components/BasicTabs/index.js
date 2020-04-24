@@ -125,4 +125,4 @@ BasicTabs.defaultProps = {
   ],
 }
 
-export default memo(BasicTabs)
+export default memo(BasicTabs, () => false)

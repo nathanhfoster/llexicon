@@ -284,10 +284,11 @@ const DeleteEntry = (id) => (dispatch) =>
       })
       return res
     })
-    .catch((e) => {
-      const error = JSON.parse(JSON.stringify(e))
-      console.log(error)
-      const payload = error.response
+    .catch(({ response }) => {
+      if (response.status === 404) {
+        dispatch(DeleteReduxEntry(id))
+      }
+      const payload = response
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 

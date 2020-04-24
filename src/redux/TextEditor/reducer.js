@@ -1,23 +1,36 @@
 import { TextEditorActionTypes } from "../TextEditor/types"
 import { AppActionTypes } from "../App/types"
+import { DEFAULT_ENTRY_FILES } from "../Entries/reducer"
 
 const DEFAULT_STATE_TEXT_EDITOR = {
-  id: "NewEntry",
   clearedOn: "",
+  author: null,
+  id: "NewEntry",
+  tags: [
+    {
+      name: "Excited",
+    },
+    {
+      name: "Inspired",
+    },
+  ],
+  people: [],
+  EntryFiles: DEFAULT_ENTRY_FILES,
   title: "",
   html: "<p><br></p>",
-  address: "",
-  latitude: null,
-  longitude: null,
-  tags: [],
-  people: [],
-  rating: 0,
-  EntryFiles: [],
   date_created: null,
   date_created_by_author: null,
   date_updated: null,
+  views: 0,
+  rating: 5,
+  address: null,
+  latitude: null,
+  longitude: null,
+  is_public: false,
+
+  // Redux Only
   _shouldDelete: false,
-  _shouldPost: false,
+  _shouldPost: true,
   _lastUpdated: null,
 }
 

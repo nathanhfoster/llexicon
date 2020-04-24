@@ -13,6 +13,7 @@ import {
   GetUserEntryPeople,
   ResetEntriesSortAndFilterMaps,
 } from "./redux/Entries/actions"
+import { ResetMap } from "./redux/Map/actions"
 import { RouteMap, RouterGoBack } from "./routes"
 import { About, Home, Entries, PrivacyPolicy } from "./views"
 import { NavBar } from "./components"
@@ -61,6 +62,7 @@ const mapDispatchToProps = {
   GetUserEntryTags,
   GetUserEntryPeople,
   ResetEntriesSortAndFilterMaps,
+  ResetMap,
 }
 
 const App = ({
@@ -73,6 +75,7 @@ const App = ({
   GetUserEntryTags,
   GetUserEntryPeople,
   ResetEntriesSortAndFilterMaps,
+  ResetMap,
   history,
   location,
   match,
@@ -84,6 +87,7 @@ const App = ({
 
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
+    ResetMap()
 
     const handleResize = () => SetWindow()
 
@@ -193,6 +197,7 @@ App.propTypes = {
   GetUserEntryTags: PropTypes.func.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
   ResetEntriesSortAndFilterMaps: PropTypes.func.isRequired,
+  ResetMap: PropTypes.func.isRequired,
   SetWindow: PropTypes.func.isRequired,
 }
 

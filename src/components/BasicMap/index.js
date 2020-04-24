@@ -88,11 +88,23 @@ class BasicMap extends PureComponent {
 
   handleChange = ({ bounds, center, marginBounds, size, zoom }) => {
     const boundsCenterZoom = { center, zoom, bounds }
+
+    // console.log("bounds: ", bounds)
+    // console.log("center: ", center)
+    // console.log("marginBounds: ", marginBounds)
+    // console.log("size: ", size)
+    // console.log("zoom: ", zoom)
     this.panTo(boundsCenterZoom)
   }
 
   panTo = (boundsCenterZoom) => {
     const { SetMapBoundsCenterZoom } = this.props
+    if (
+      boundsCenterZoom.bounds &&
+      !(boundsCenterZoom.bounds.ne.lat && boundsCenterZoom.bounds.sw.lat)
+    ) {
+      delete boundsCenterZoom.bounds
+    }
 
     SetMapBoundsCenterZoom(boundsCenterZoom)
   }
@@ -155,8 +167,11 @@ class BasicMap extends PureComponent {
   }
 
   renderMarkerClusters = (markerClusters) => {
-    const { onChangeCallback, getAddressOnMarkerClick } = this.props
-    const { zoom } = this.state
+    const { onChangeCallback, getAddressOnMarkerClick, zoom } = this.props
+    const { mapInstance } = this.state
+    if (!mapInstance) {
+      return null
+    }
     return markerClusters.map((item) => {
       const { id, numPoints, points, ...props } = item
       if (numPoints === 1) {
@@ -196,7 +211,6 @@ class BasicMap extends PureComponent {
       renderUserLocation,
       getAddressOnMarkerClick,
       UserLocation,
-      children,
     } = this.props
     const { entry, markerClusters } = this.state
 
@@ -205,14 +219,17 @@ class BasicMap extends PureComponent {
     const shouldRenderEntryLocation = entry.latitude && entry.longitude
 
     const shouldRenderUserLocation =
-      renderUserLocation && UserLocation.latitude && UserLocation.longitude
+      renderUserLocation &&
+      UserLocation.latitude &&
+      UserLocation.longitudebounds
 
     return (
       <div style={{ height, width }}>
         <GoogleMapReact
+          // debounced
           bootstrapURLKeys={{ key: REACT_APP_GOOGLE_LOCATION_API }}
-          defaultCenter={center}
-          defaultZoom={zoom}
+          // defaultCenter={center}
+          // defaultZoom={zoom}
           center={center}
           zoom={zoom}
           onChange={this.handleChange}
@@ -243,7 +260,6 @@ class BasicMap extends PureComponent {
           )}
           {this.renderMarkerClusters(markerClusters)}
           {this.renderControls(mapControls)}
-          {children}
         </GoogleMapReact>
       </div>
     )

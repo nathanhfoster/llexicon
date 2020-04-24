@@ -28,15 +28,16 @@ class RecenterZoomButton extends PureComponent {
     panTo,
     UserLocation: { latitude, longitude },
     WatchUserLocation,
-    onChangeCallback
+    onChangeCallback,
   }) => {
     if (!this.watchId) {
       this.watchId = WatchUserLocation()
     }
+
     if (latitude && longitude) {
       panTo({
         center: { lat: latitude, lng: longitude },
-        zoom: 16
+        zoom: 16,
       })
     }
   }

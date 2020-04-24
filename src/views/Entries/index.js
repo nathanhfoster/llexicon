@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, memo, lazy } from "react"
+import React, { useEffect, useMemo, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
@@ -6,7 +6,6 @@ import { Row } from "reactstrap"
 import { RouteMap, RouterPush } from "../../routes"
 import { BasicTabs, NewEntryButton, EntriesTable } from "../../components"
 import NewEntry from "../NewEntry"
-import memoizeProps from "../../helpers/memoizeProps"
 import { GetUserEntries } from "../../redux/Entries/actions"
 import "./styles.css"
 
@@ -17,14 +16,13 @@ const EntriesMap = lazy(() => import("../../components/EntriesMap"))
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, next, search },
+  Entries: { items },
   TextEditor,
   Window: { innerHeight, navBarHeight },
 }) => ({
   userId: id,
   entries: items,
   TextEditor,
-
   viewPortHeight: innerHeight - navBarHeight,
 })
 
@@ -182,15 +180,18 @@ const Entries = ({
       onClickCallback: handleTabChange,
     },
   ]
+  const fluid = useMemo(
+    () =>
+      activeTab === RouteMap.ENTRIES_CALENDAR ||
+      activeTab === RouteMap.ENTRIES_TABLE ||
+      activeTab === RouteMap.ENTRIES_MAP,
+    [activeTab]
+  )
 
   return (
     <BasicTabs
       className="EntryTabs"
-      fluid={
-        activeTab === RouteMap.ENTRIES_CALENDAR ||
-        activeTab === RouteMap.ENTRIES_TABLE ||
-        activeTab === RouteMap.ENTRIES_MAP
-      }
+      fluid={fluid}
       activeTab={activeTab}
       tabs={tabs}
     />
@@ -209,18 +210,4 @@ Entries.propTypes = {
   GetUserEntries: PropTypes.func.isRequired,
 }
 
-const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, [
-    "entries",
-    "TextEditor",
-
-    "viewPortHeight",
-    "history",
-    "location",
-    "match",
-  ])
-
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(memo(Entries, isEqual))
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Entries)

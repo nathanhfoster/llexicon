@@ -35,6 +35,7 @@ const AlertNotifications = ({
   const handleUpdate = useCallback(() => {
     handleClearAlerts()
     serviceWorkerRegistration &&
+      serviceWorkerRegistration.waiting &&
       serviceWorkerRegistration.waiting.postMessage({ type: "SKIP_WAITING" })
     setTimeout(() => {
       // const currentUrl = window.location.href

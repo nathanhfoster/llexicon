@@ -194,4 +194,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   }
 }
 
-export { DEFAULT_JOUNRAL_ENTRY_ID, DEFAULT_STATE_ENTRIES, Entries }
+export {
+  DEFAULT_JOUNRAL_ENTRY_ID,
+  DEFAULT_ENTRY_FILES,
+  DEFAULT_STATE_ENTRIES,
+  Entries,
+}
