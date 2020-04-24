@@ -49,7 +49,7 @@ const config = (store) => ({
           }
         }
       })
-      // waitingServiceWorker.postMessage({ type: "SKIP_WAITING" })
+      waitingServiceWorker.postMessage({ type: "SKIP_WAITING" })
     }
   },
   onSuccess: (registration) => {
