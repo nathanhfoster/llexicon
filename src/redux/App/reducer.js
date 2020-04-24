@@ -1,6 +1,6 @@
 import { AppActionTypes } from "./types"
 
-const DEFAULT_STATE_APP = { version: new Number(1).toFixed(3) }
+const DEFAULT_STATE_APP = { version: new Number(1).toFixed(3), localStorageUsage: null, localStorageQuota: null }
 
 const App = (state = DEFAULT_STATE_APP, action) => {
   const { type, payload } = action
@@ -12,6 +12,12 @@ const App = (state = DEFAULT_STATE_APP, action) => {
       return state
 
     default:
+if ('storage' in navigator && 'estimate' in navigator.storage) {
+  navigator.storage.estimate().then(({usage, quota}) => {
+    return {...state, localStorageUsage: usage, localStorageQuota: quota}
+  })
+}
+else
       return state
   }
 }
