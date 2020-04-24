@@ -282,9 +282,13 @@ const getMostRecent = (reduxData, newData) => {
   )
   const newDataLastUpdated = new Date(newData.date_updated)
 
+  // const reduxViews = reduxData.views
+  // const newDataViews = newData.views
+
   // console.log(newDataLastUpdated - reduxDataLastUpdated)
   // console.log(newDataLastUpdated - 0 > reduxDataLastUpdated - 0)
 
+  // || newDataViews > reduxViews
   if (newDataLastUpdated > reduxDataLastUpdated) {
     delete reduxData._lastUpdated
     // delete reduxData._shouldDelete
