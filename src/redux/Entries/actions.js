@@ -77,7 +77,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
     dispatch(AwsUpload(entry_id, file, base64, html))
   }
   return new Promise((resolve) =>
-    dispatch(SetAlert({ title: "Synced", message: "Files" }))
+    resolve(dispatch(SetAlert({ title: "Synced", message: "Files" })))
   )
 }
 
@@ -337,8 +337,6 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
 
   dispatch({ type: EntriesActionTypes.ENTRIES_PENDING })
 
-  let synced = false
-
   const entries = items.concat(filteredItems)
 
   for (let i = 0, { length } = entries; i < length; i++) {
@@ -363,11 +361,9 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
     } = entries[i]
 
     if (_shouldDelete) {
-      synced = true
-      await dispatch(DeleteEntry(id))
+      await dispatch(DeleteEntry(id)).then(res => dispatch(SetAlert({ title: "Deleted", message: "Entry" })))
       continue
     } else if (_shouldPost) {
-      synced = true
       const postPayload = {
         id,
         author: UserId,
@@ -381,6 +377,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
       }
 
       await dispatch(PostEntry(postPayload)).then(async (entry) => {
+      dispatch(SetAlert({ title: "Saved", message: "Entry" }))
         if (!entry) return
         const {
           EntryFiles,
@@ -406,7 +403,6 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
       })
       continue
     } else if (_lastUpdated) {
-      synced = true
       const updateEntryPayload = {
         title,
         date_created_by_author,
@@ -419,16 +415,12 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
         longitude,
         is_public,
       }
-      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res => dispatch(SetAlert({ title: "Synced", message: "Entries" })))
     }
   }
 
   if (typeof getEntryMethod === "function") {
-    await getEntryMethod()
-  }
-
-  if (synced) {
-    dispatch(SetAlert({ title: "Synced", message: "Entries" }))
+    await getEntryMethod().then(res => dispatch(SetAlert({ title: "Received", message: "Ebtry" })))
   }
 
   dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
