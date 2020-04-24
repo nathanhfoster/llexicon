@@ -30,6 +30,11 @@ const Map = (state = DEFAULT_STATE_MAP, action) => {
 
   switch (type) {
     case MapActionTypes.MAP_SET_BOUNDS_CENTER_ZOOM:
+      if (payload.bounds) {
+        // Clean
+        if (!payload.bounds.ne.lat) payload.bounds.ne = { lat: 0, lng: 0 }
+        if (!payload.bounds.sw.lat) payload.bounds.sw = { lat: 0, lng: 0 }
+      }
       return { ...state, ...payload }
 
     case MapActionTypes.MAP_RESET:

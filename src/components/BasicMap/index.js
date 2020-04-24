@@ -93,9 +93,8 @@ class BasicMap extends PureComponent {
 
   panTo = (boundsCenterZoom) => {
     const { SetMapBoundsCenterZoom } = this.props
-    if (boundsCenterZoom.bounds.ne.lat) {
-      SetMapBoundsCenterZoom(boundsCenterZoom)
-    }
+
+    SetMapBoundsCenterZoom(boundsCenterZoom)
   }
 
   getMapControls = () => {
@@ -113,7 +112,12 @@ class BasicMap extends PureComponent {
       },
       {
         controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
-        props: { width: "auto", UserLocation, WatchUserLocation },
+        props: {
+          width: "auto",
+          UserLocation,
+          WatchUserLocation,
+          panTo: this.panTo,
+        },
         items: [
           {
             Component: RecenterZoomButton,

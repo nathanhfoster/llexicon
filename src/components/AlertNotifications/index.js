@@ -34,10 +34,13 @@ const AlertNotifications = ({
 
   const handleUpdate = useCallback(() => {
     handleClearAlerts()
+    serviceWorkerRegistration &&
+      serviceWorkerRegistration.waiting.postMessage({ type: "SKIP_WAITING" })
     setTimeout(() => {
       // const currentUrl = window.location.href
       // window.close()
       // window.open(currentUrl, "_blank")
+
       window.location.reload()
     }, 400)
   }, [])
