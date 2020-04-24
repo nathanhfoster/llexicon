@@ -4,6 +4,7 @@ import { Container, Row, Col } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import MomentJs from "moment"
 import deepEquals from "../../../helpers/deepEquals"
+import { formatBytes } from "../../../helpers"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
@@ -22,6 +23,9 @@ const EntryStatistics = ({ items, filteredItems }) => {
   let viewCount = 0
 
   const entries = items.concat(filteredItems)
+  const entriesStorageSize = formatBytes(
+    JSON.stringify(entries).split(/%..|./).length - 1
+  )
 
   let validRatedEntries = 0
 
@@ -121,6 +125,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
 
   const entryCounts = [
     { title: "Entries", value: totalEntries },
+    { title: "Storage Size", value: entriesStorageSize, type: "string" },
     { title: "Views", value: viewCount },
     { title: "Characters", value: charCount },
     { title: "Words", value: wordCount },
@@ -162,10 +167,16 @@ const EntryStatistics = ({ items, filteredItems }) => {
         return renderStat(i, { title: name, value })
       })
 
-  const renderStat = (key, { title, value }, fixedValue = 0) => (
+  const renderStat = (
+    key,
+    { title, value, type = "number" },
+    fixedValue = 0
+  ) => (
     <Col xs={12} key={`${title}-${key}`}>
       <span style={{ fontSize: 14, fontWeight: 600 }}>{`${title}: `}</span>
-      <span className="Stat">{Number(value).toFixed(fixedValue)}</span>
+      <span className="Stat">
+        {type === "number" ? Number(value).toFixed(fixedValue) : value}
+      </span>
     </Col>
   )
 
