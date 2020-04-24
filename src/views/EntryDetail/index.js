@@ -34,11 +34,9 @@ const EntryDetail = ({
   const readOnly = Boolean(entry && entry.author && UserId !== entry.author)
 
   useEffect(() => {
-    if (UserId) {
-      SyncEntries(
-        () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
-      )
-    }
+    SyncEntries(
+      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
+    )
   }, [])
 
   useEffect(() => {
