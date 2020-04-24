@@ -4,13 +4,14 @@ import { connect as reduxConnect } from "react-redux"
 import GoogleMapReact from "google-map-react"
 import MarkerCluster from "../RadiusMap/MarkerCluster"
 import Marker from "../RadiusMap/Marker"
+import { SetMapBoundsCenterZoom } from "../../redux/Map/actions"
 import { WatchUserLocation } from "../../redux/User/actions"
+
 import {
   DEFAULT_MAP_OPTIONS,
   GOOGLE_MAP_CONTROL_POSITIONS,
 } from "../RadiusMap/constants"
 import MapControl from "../RadiusMap/MapControl"
-import fitCoordsToBounds from "../RadiusMap/functions/fitCoordsToBounds"
 import MapSearchBox from "../RadiusMap/MapControl/Controls/MapSearchBox"
 import RecenterZoomButton from "../RadiusMap/MapControl/Controls/Buttons/RecenterZoomButton"
 import createClusters from "./functions/createClusters"
@@ -19,28 +20,18 @@ import { EntryPropTypes } from "../../redux/Entries/propTypes"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
-const mapStateToProps = ({ User: { location } }) => ({ UserLocation: location })
+const mapStateToProps = ({
+  Map: { bounds, center, zoom },
+  User: { location },
+}) => ({ bounds, center, zoom, UserLocation: location })
 
-const mapDispatchToProps = { WatchUserLocation }
+const mapDispatchToProps = { SetMapBoundsCenterZoom, WatchUserLocation }
 
 class BasicMap extends PureComponent {
-  constructor(props) {
-    super(props)
-
-    let { defaultCenter, zoom } = props
-
-    this.state = {
-      center: defaultCenter,
-      mapApiLoaded: false,
-      zoom,
-    }
-  }
-
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
+    SetMapBoundsCenterZoom: PropTypes.func.isRequired,
     WatchUserLocation: PropTypes.func.isRequired,
     onChangeCallback: PropTypes.func.isRequired,
     locations: PropTypes.arrayOf(PropTypes.object),
@@ -52,16 +43,6 @@ class BasicMap extends PureComponent {
     renderUserLocation: true,
     height: 500,
     width: "100%",
-    defaultCenter: {
-      lat: 39.8097343,
-      lng: -98.5556199,
-    },
-    center: {
-      lat: 39.8097343,
-      lng: -98.5556199,
-    },
-    defaultZoom: 18,
-    zoom: 18,
     options: DEFAULT_MAP_OPTIONS,
     locations: [],
     getAddressOnMarkerClick: false,
@@ -69,11 +50,11 @@ class BasicMap extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let { entry, renderUserLocation, UserLocation, locations } = nextProps
+    const { bounds, center, zoom, locations } = nextProps
+
+    let { entry } = nextProps
 
     let markerClusters = []
-
-    const { center, bounds, zoom, mapInstance, mapApi } = prevState
 
     const formattedLocations = formatLocations(locations)
 
@@ -91,105 +72,35 @@ class BasicMap extends PureComponent {
       entry.longitude = parseFloat(entry.longitude.toString())
     }
 
-    const shouldRenderEntryLocation = entry.latitude && entry.longitude
-
-    const shouldRenderUserLocation =
-      renderUserLocation && UserLocation.latitude && UserLocation.longitude
-
     return {
       entry,
-      renderUserLocation,
-      UserLocation,
-      center,
-      zoom,
-      mapInstance,
-      mapApi,
-      shouldRenderEntryLocation,
-      shouldRenderUserLocation,
       markerClusters,
       formattedLocations,
     }
   }
 
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    const previousUserLocation = prevState.UserLocation
-    const { UserLocation, mapInstance, mapApi } = this.state
-
-    const recievedUserLocation =
-      mapInstance &&
-      mapApi &&
-      previousUserLocation.latitude === null &&
-      previousUserLocation.longitude === null &&
-      UserLocation.latitude &&
-      UserLocation.longitude
-
-    if (recievedUserLocation) {
-      return true
-    }
-
-    return null
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { mapInstance, mapApi } = this.state
-    if (snapshot) {
-      this.handleFitCoordsToBounds(mapInstance, mapApi)
-    }
-  }
-
   onGoogleApiLoaded = ({ map, maps }) => {
     this.setState({
-      mapApiLoaded: true,
       mapInstance: map,
       mapApi: maps,
     })
-    this.handleFitCoordsToBounds(map, maps)
-  }
-
-  handleFitCoordsToBounds = (map, maps) => {
-    if (!(map || maps)) {
-      return
-    }
-    let coords = []
-    const {
-      UserLocation,
-      entry: { latitude, longitude },
-      formattedLocations,
-    } = this.state
-    if (latitude && longitude) {
-      coords.push({ lat: latitude, lng: longitude })
-    }
-
-    if (UserLocation.latitude && UserLocation.longitude) {
-      coords.push({ lat: UserLocation.latitude, lng: UserLocation.longitude })
-    }
-
-    for (let i = 0; i < formattedLocations.length; i++) {
-      const { lat, lng } = formattedLocations[i]
-
-      coords.push({ lat, lng })
-    }
-
-    fitCoordsToBounds(map, maps, coords)
   }
 
   handleChange = ({ bounds, center, marginBounds, size, zoom }) => {
-    // const centerToArray = Object.values(center)
-    // console.log('handleChange bounds: ', centerToArray)
-    this.panTo({ center, zoom, bounds })
+    const boundsCenterZoom = { center, zoom, bounds }
+    this.panTo(boundsCenterZoom)
   }
 
-  panTo = ({
-    center = this.state.center,
-    zoom = this.state.zoom,
-    bounds = this.state.bounds,
-  }) => {
-    this.setState({ center, zoom, bounds })
+  panTo = (boundsCenterZoom) => {
+    const { SetMapBoundsCenterZoom } = this.props
+    if (boundsCenterZoom.bounds.ne.lat) {
+      SetMapBoundsCenterZoom(boundsCenterZoom)
+    }
   }
 
   getMapControls = () => {
-    const { onChangeCallback, WatchUserLocation } = this.props
-    const { UserLocation } = this.state
+    const { onChangeCallback, UserLocation, WatchUserLocation } = this.props
+
     const mapControls = [
       {
         controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
@@ -219,15 +130,15 @@ class BasicMap extends PureComponent {
     if (!mapInstance) return null
     return controls.map((control, i) => {
       const { controlPosition, items, props } = control
+      const handlePanTo = (boundsCenterZoom) => this.panTo(boundsCenterZoom)
+
       return (
         <MapControl
           key={i}
           map={mapInstance}
           mapApi={mapApi}
           controlPosition={controlPosition}
-          panTo={({ center, zoom, bounds }) =>
-            this.panTo({ center, zoom, bounds })
-          }
+          panTo={handlePanTo}
           {...props}
         >
           {items.map((control, j) => {
@@ -272,33 +183,32 @@ class BasicMap extends PureComponent {
 
   render() {
     const {
-      height,
-      width,
-      defaultCenter,
-      defaultZoom,
-      options,
-      onChangeCallback,
-      getAddressOnMarkerClick,
-      children,
-    } = this.props
-    const {
-      entry,
       center,
       zoom,
+      height,
+      width,
+      options,
+      onChangeCallback,
       renderUserLocation,
+      getAddressOnMarkerClick,
       UserLocation,
-      shouldRenderEntryLocation,
-      shouldRenderUserLocation,
-      markerClusters,
-    } = this.state
+      children,
+    } = this.props
+    const { entry, markerClusters } = this.state
+
     const mapControls = this.getMapControls()
+
+    const shouldRenderEntryLocation = entry.latitude && entry.longitude
+
+    const shouldRenderUserLocation =
+      renderUserLocation && UserLocation.latitude && UserLocation.longitude
 
     return (
       <div style={{ height, width }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: REACT_APP_GOOGLE_LOCATION_API }}
-          defaultCenter={defaultCenter}
-          defaultZoom={defaultZoom}
+          defaultCenter={center}
+          defaultZoom={zoom}
           center={center}
           zoom={zoom}
           onChange={this.handleChange}

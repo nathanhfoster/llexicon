@@ -5,7 +5,7 @@ const getMarkerClusters = ({ markers, center, zoom, bounds }) => {
   const markerClusters = SuperCluster(markers, {
     minZoom: 0,
     maxZoom: 22,
-    radius
+    radius,
   })
 
   return markerClusters({ center, zoom, bounds })
@@ -21,7 +21,7 @@ const createClusters = (markers, { ...props }) => {
         lng: wx,
         numPoints,
         id: points[0].id,
-        points
+        points,
       })
     )
   return markerClusters
