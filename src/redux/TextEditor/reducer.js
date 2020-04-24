@@ -44,7 +44,7 @@ const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
       return { ...DEFAULT_STATE_TEXT_EDITOR, tags: [], EntryFiles: [], rating: 0, clearedOn: new Date() }
 
     case AppActionTypes.REDUX_RESET:
-      return { ...DEFAULT_STATE_TEXT_EDITOR, clearedOn: new Date() }
+      return { ...DEFAULT_STATE_TEXT_EDITOR, tags: [], EntryFiles: [], rating: 0, clearedOn: new Date() }
 
     default:
       return state
