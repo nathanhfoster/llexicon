@@ -27,8 +27,8 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
   const entry = useMemo(
-    () => items.concat(filteredItems).find((entry) => entry.id == entryId),
-    [entryId, items, filteredItems]
+    () => items.concat(filteredItems).find(({ id }) => id == entryId),
+    [UserId, entryId, items, filteredItems]
   )
 
   const readOnly = Boolean(entry && entry.author && UserId !== entry.author)
