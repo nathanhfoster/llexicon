@@ -1,4 +1,4 @@
-import { Axios } from "./redux/Actions"
+import { Axios } from "../../redux/Actions"
 import qs from "qs"
 
 const pushServerPublicKey =

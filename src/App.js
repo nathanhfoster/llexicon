@@ -16,7 +16,7 @@ import {
 import { ResetMap } from "./redux/Map/actions"
 import { RouteMap, RouterGoBack } from "./routes"
 import { About, Home, Entries, PrivacyPolicy } from "./views"
-import { NavBar } from "./components"
+import { NavBar, PushNotifications } from "./components"
 import { RouterLinkPush } from "./routes"
 import memoizeProps from "./helpers/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
@@ -120,6 +120,7 @@ const App = ({
   return (
     <Fragment>
       <NavBar {...addToHomeScreenProps} />
+      <PushNotifications/>
       <main className="App RouteOverlay">
         <BackgroundImage />
         <Switch>

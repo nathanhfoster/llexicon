@@ -11,14 +11,7 @@ import { LoadingScreen } from "./components"
 import { PersistGate } from "redux-persist/integration/react"
 import * as serviceWorker from "./serviceWorker"
 import { GetAppVersion } from "./redux/App/actions"
-import {
-  isPushNotificationSupported,
-  askUserPermission,
-  registerServiceWorker,
-  sendNotification,
-  createNotificationSubscription,
-  getUserSubscription,
-} from "./swUtils"
+
 import ReactGA from "react-ga"
 
 const { store, persistor } = storeFactory()
@@ -81,8 +74,6 @@ ReactDOM.render(
   // </React.StrictMode>,
   document.getElementById("root")
 )
-
-// isPushNotificationSupported() && registerServiceWorker()
 
 // Doesn't get called in development since there is no service worker
 inDevelopmentMode && store.dispatch(GetAppVersion())
