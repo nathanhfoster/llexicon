@@ -1,10 +1,11 @@
-import React from "react"
+import React, { useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { BasicProgress, Header } from "../"
 import { Container, Row, Col } from "reactstrap"
 import { ButtonClearCache } from "../"
 import { formatBytes, getStringBytes } from "../../helpers"
+import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 
 const mapStateToProps = (state) => {
   const {
@@ -19,13 +20,11 @@ const mapStateToProps = (state) => {
   } = state
   const reduxStoreUsage = getStringBytes(state)
   // const entriesStorageUsage = getStringBytes(Entries)
-  const serverUsage = items
-    .concat(filteredItems)
-    .reduce((usage, entry) => (usage += entry.size), 0)
 
   return {
     reduxStoreUsage,
-    serverUsage,
+    items,
+    filteredItems,
     // entriesStorageUsage,
     version,
     localStorageUsage,
@@ -38,7 +37,8 @@ const mapDispatchToProps = {}
 
 const LocalStorage = ({
   reduxStoreUsage,
-  serverUsage,
+  items,
+  filteredItems,
   entriesStorageUsage,
   version,
   localStorageUsage,
@@ -49,6 +49,14 @@ const LocalStorage = ({
   const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(
     localStorageLimit
   )}`
+
+  const serverUsage = useMemo(
+    () =>
+      items
+        .concat(filteredItems)
+        .reduce((usage, entry) => (usage += entry.size), 0),
+    [items, filteredItems]
+  )
 
   const serverStorageLimit = 5 * 1024 * 1024 * 100
   const serverStorageLabel = `${formatBytes(serverUsage)} / ${formatBytes(
@@ -99,7 +107,8 @@ const LocalStorage = ({
 
 LocalStorage.propTypes = {
   reduxStoreUsage: PropTypes.number,
-  serverUsage: PropTypes.number,
+  items: EntriesPropTypes,
+  filteredItems: EntriesPropTypes,
   version: PropTypes.string,
   localStorageUsage: PropTypes.number,
   localStorageQuota: PropTypes.number,
