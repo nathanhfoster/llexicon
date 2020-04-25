@@ -6,7 +6,7 @@ import {
 } from "../../../redux/Entries/propTypes"
 import moment from "moment"
 import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from "./styles"
-import { TagsContainer } from "../../../components"
+import { TagsContainer } from "../.."
 
 const HEIGHT = 140
 const WIDTH = 200

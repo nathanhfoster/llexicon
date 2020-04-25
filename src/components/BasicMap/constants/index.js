@@ -15,7 +15,7 @@ const GOOGLE_MAP_CONTROL_POSITIONS = {
   TOP: 2,
   TOP_CENTER: 2,
   TOP_LEFT: 1,
-  TOP_RIGHT: 3
+  TOP_RIGHT: 3,
 }
 
 const GOOGLE_MAP_TYPE_CONTROL_STYLE = {
@@ -23,14 +23,14 @@ const GOOGLE_MAP_TYPE_CONTROL_STYLE = {
   HORIZONTAL_BAR: 1,
   DROPDOWN_MENU: 2,
   INSET: 3,
-  INSET_LARGE: 4
+  INSET_LARGE: 4,
 }
 
 const GOOGLE_MAP_TYPE_ID = {
   HYBRID: "hybrid",
   ROADMAP: "roadmap",
   SATELLITE: "satellite",
-  TERRAIN: "terrain"
+  TERRAIN: "terrain",
 }
 
 const CENTER_OF_US = [39.8097343, -98.5556199]
@@ -59,11 +59,11 @@ const DEFAULT_MAP_OPTIONS = {
       GOOGLE_MAP_TYPE_ID.ROADMAP,
       GOOGLE_MAP_TYPE_ID.SATELLITE,
       GOOGLE_MAP_TYPE_ID.HYBRID,
-      GOOGLE_MAP_TYPE_ID.TERRAIN
-    ]
+      GOOGLE_MAP_TYPE_ID.TERRAIN,
+    ],
   },
   mapTypeControlOptions: {
-    position: GOOGLE_MAP_CONTROL_POSITIONS.LEFT_BOTTOM
+    position: GOOGLE_MAP_CONTROL_POSITIONS.LEFT_BOTTOM,
   },
   styles: [
     {
@@ -71,10 +71,10 @@ const DEFAULT_MAP_OPTIONS = {
       elementType: "labels",
       stylers: [
         {
-          visibility: "off"
-        }
-      ]
-    }
+          visibility: "off",
+        },
+      ],
+    },
   ],
   scaleControl: true,
   streetViewControl: true,
@@ -84,10 +84,12 @@ const DEFAULT_MAP_OPTIONS = {
   fullscreenControl: true,
   // zoomControl: true,
   zoomControlOptions: {
-    position: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM
+    position: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
   },
-  clickableIcons: false
+  clickableIcons: false,
 }
+
+const ATTACHED_COLOR = "#2ecc71"
 
 export {
   GOOGLE_MAP_CONTROL_POSITIONS,
@@ -101,5 +103,6 @@ export {
   DEFAULT_POLYGON_MAX_ZOOM,
   DEFAULT_PARLAY_MIN_ZOOM,
   DEFAULT_PARLAY_MAX_ZOOM,
-  DEFAULT_MAP_OPTIONS
+  DEFAULT_MAP_OPTIONS,
+  ATTACHED_COLOR,
 }
