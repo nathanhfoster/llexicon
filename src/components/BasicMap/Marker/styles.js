@@ -1,4 +1,4 @@
-import { ATTACHED_COLOR } from "../PolygonSystem/getOptions"
+import { ATTACHED_COLOR } from "../constants"
 
 const K_CIRCLE_SIZE = 34
 const K_STICK_SIZE = 10
@@ -11,7 +11,7 @@ const K_POP_UP_ANIMATION = {
   willChange: "transform",
   backgroundRepeat: "no-repeat",
   backfaceVisibility: "hidden",
-  WebkitFontSmoothing: "subpixel-antialiased"
+  WebkitFontSmoothing: "subpixel-antialiased",
 }
 
 const markerStyle = {
@@ -19,7 +19,7 @@ const markerStyle = {
   width: K_CIRCLE_SIZE,
   height: K_CIRCLE_SIZE + K_STICK_SIZE,
   top: -(K_CIRCLE_SIZE + K_STICK_SIZE),
-  left: -K_CIRCLE_SIZE / 2
+  left: -K_CIRCLE_SIZE / 2,
 }
 
 const locationCircleStyle = {
@@ -44,7 +44,7 @@ const locationCircleStyle = {
   justifyContent: "center",
   verticalAlign: "middle",
   flexWrap: "wrap",
-  zIndex: 999
+  zIndex: 999,
 }
 
 const locationCircleStyleHover = {
@@ -59,7 +59,7 @@ const locationCircleStyleHover = {
   transformOrigin: "15px 60px 0px",
   zIndex: 1000,
   boxShadow:
-    "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)"
+    "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)",
 }
 
 const locationStickStyle = {
@@ -70,13 +70,13 @@ const locationStickStyle = {
   height: 0,
   border: "14px solid transparent",
   borderTop: `18px solid ${ATTACHED_COLOR}`,
-  zIndex: 998
+  zIndex: 998,
 }
 
 const locationStickStyleHover = {
   ...locationStickStyle,
   willChange: "transform",
-  transition: "-webkit-transform 1s cubic-bezier(0.485, 1.65, 0.545, 0.835)"
+  transition: "-webkit-transform 1s cubic-bezier(0.485, 1.65, 0.545, 0.835)",
 }
 
 export {
@@ -87,5 +87,5 @@ export {
   locationStickStyleHover,
   K_CIRCLE_SIZE,
   K_STICK_SIZE,
-  K_POP_UP_ANIMATION
+  K_POP_UP_ANIMATION,
 }
