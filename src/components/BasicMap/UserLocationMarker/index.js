@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import Marker from "../../RadiusMap/Marker"
+import Marker from "../Marker"
 import { WatchUserLocation } from "../../../redux/User/actions"
 
 const mapStateToProps = ({ User: { location } }) => ({ userLocation: location })
@@ -11,7 +11,7 @@ const mapDispatchToProps = { WatchUserLocation }
 const UserLocationMarker = ({
   userLocation,
   onChangeCallback,
-  WatchUserLocation
+  WatchUserLocation,
 }) => {
   const watchId = useRef(null)
 
@@ -32,7 +32,7 @@ const UserLocationMarker = ({
 UserLocationMarker.propTypes = {
   UserLocation: PropTypes.object,
   onChangeCallback: PropTypes.func,
-  WatchUserLocation: PropTypes.func
+  WatchUserLocation: PropTypes.func,
 }
 
 export default reduxConnect(
