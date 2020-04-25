@@ -104,13 +104,11 @@ const BasicTable = ({
     setState((prevState) => ({ ...prevState, pageSize, currentPage: 0 }))
   }
 
-  // const hasFilters = filterList.some(({ filterValue }) => filterValue)
+  const sortedData = tableSort([...data], sortList)
 
-  const filteredData = tableFilter(data, filterList)
+  const sortedAndFilteredData = tableFilter(sortedData, filterList)
 
-  const sortedAndFilteredData = tableSort(filteredData, sortList)
-
-  const dataLength = filteredData.length
+  const dataLength = (sortedAndFilteredData || data).length
 
   const totalPages = Math.ceil(dataLength / pageSize)
 
@@ -142,7 +140,7 @@ const BasicTable = ({
         <TableFooters
           onRowClick={onRowClick}
           columns={columns}
-          sortedAndFilteredData={sortedAndFilteredData}
+          data={sortedAndFilteredData}
         />
       </Table>
       <TablePaginator
