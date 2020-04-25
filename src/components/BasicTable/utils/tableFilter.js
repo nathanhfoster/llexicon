@@ -2,10 +2,12 @@ import MomentJS from "moment"
 import { stringMatch, isType } from "../../../helpers"
 
 const tableFilter = (data, filterList) => {
-  // console.log(filterList)
   let filteredData = [...data]
 
-  filterList.forEach((item) => {
+  const filters = filterList.filter(({ filterValue }) => filterValue)
+
+  for (let i = 0, { length } = filters; i < length; i++) {
+    const item = filters[i]
     const { key, filterValue, filter } = item
     if (!filterValue) return
 
@@ -32,7 +34,7 @@ const tableFilter = (data, filterList) => {
         filteredData = filteredData.filter((item) => item[key] >= filterValue)
       }
     }
-  })
+  }
 
   return filteredData
 }
