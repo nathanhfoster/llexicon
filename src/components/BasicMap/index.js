@@ -221,8 +221,6 @@ class BasicMap extends PureComponent {
 
     const shouldRenderEntryLocation = entry.latitude && entry.longitude
 
-    console.log(center)
-
     const shouldRenderUserLocation =
       renderUserLocation &&
       UserLocation.latitude &&
