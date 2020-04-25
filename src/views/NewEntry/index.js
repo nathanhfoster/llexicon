@@ -20,6 +20,7 @@ import {
   ClearEditorState,
 } from "../../redux/TextEditor/actions"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../redux/TextEditor/reducer"
+import { getStringBytes } from "../../helpers"
 import "./styles.css"
 
 const mapStateToProps = ({ Calendar: { activeDate }, TextEditor }) => ({
@@ -61,12 +62,16 @@ const NewEntry = ({
     SetCalendar({ activeDate })
 
   const handlePostEntry = async () => {
-    const payload = {
+    const newEntryData = {
       ...entry,
       date_created: activeDate,
       date_created_by_author: activeDate,
       date_updated: activeDate,
     }
+
+    const size = getStringBytes(newEntryData)
+
+    const payload = { ...newEntryData, size }
 
     await PostReduxEntry(payload)
     SyncEntries()
@@ -80,8 +85,8 @@ const NewEntry = ({
           <InputGroup
             tag={Form}
             className="EntryInput EntryInputTitle"
-            onSubmit={handlePostEntry}
-            method="post"
+            // onSubmit={handlePostEntry}
+            // method="post"
           >
             <Input
               type="text"
@@ -105,7 +110,7 @@ const NewEntry = ({
                 className="SaveButton"
                 color="primary"
                 disabled={postDisabled}
-                type="submit"
+                // type="submit"
               >
                 <i className="fas fa-save" style={{ fontSize: 20 }} />
               </InputGroupText>

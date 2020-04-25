@@ -3,14 +3,9 @@ import PropTypes from "prop-types"
 import { UserProps } from "../../../redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { useHistory } from "react-router-dom"
-import { BasicForm, ConfirmAction } from "../../../components"
+import { BasicForm, ConfirmAction, ButtonClearCache } from "../../../components"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
-import {
-  UpdateUser,
-  DeleteAccount,
-  UserLogout,
-} from "../../../redux/User/actions"
-import { clearReduxStoreFromLocalStorage } from "../../../redux/localState"
+import { UpdateUser, DeleteAccount } from "../../../redux/User/actions"
 import { cleanObject } from "../../../helpers"
 import { RouteMap, RouterPush } from "../../../routes"
 
@@ -21,19 +16,15 @@ const mapStateToProps = ({ User }) => ({
 const mapDispatchToProps = {
   UpdateUser,
   DeleteAccount,
-  UserLogout,
 }
 
-const UpdateProfile = ({ User, UpdateUser, DeleteAccount, UserLogout }) => {
+const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
   const history = useHistory()
   const handleChangeUser = useCallback((payload) => {
     UpdateUser(cleanObject(payload, true))
   }, [])
   const handleDeleteAccount = useCallback(() => DeleteAccount(), [])
-  const handleClearCache = useCallback(() => {
-    clearReduxStoreFromLocalStorage()
-    UserLogout()
-  }, [])
+
   const handleSignUp = useCallback(() => {
     RouterPush(history, RouteMap.SIGNUP)
   }, [history])
@@ -122,16 +113,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount, UserLogout }) => {
       <Button color="accent" onClick={handleSignUp}>
         Sign Up
       </Button>
-      <ConfirmAction
-        message="Are you sure you want to clear your cache? Everything will be erased."
-        onConfirm={handleClearCache}
-        button={
-          <Button color="danger">
-            <i className="fas fa-trash-alt mr-1" />
-            Clear Cache
-          </Button>
-        }
-      />
+      <ButtonClearCache />
     </ButtonGroup>
   )
 }
@@ -140,7 +122,6 @@ UpdateProfile.propTypes = {
   User: UserProps,
   UpdateUser: PropTypes.func.isRequired,
   DeleteAccount: PropTypes.func.isRequired,
-  UserLogout: PropTypes.func.isRequired,
 }
 
 UpdateProfile.defaultProps = {}

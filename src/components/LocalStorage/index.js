@@ -1,7 +1,9 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { BasicProgress } from "../"
+import { BasicProgress, Header } from "../"
+import { Container, Row, Col } from "reactstrap"
+import { ButtonClearCache } from "../"
 import { formatBytes, getStringBytes } from "../../helpers"
 
 const mapStateToProps = (state) => {
@@ -12,13 +14,18 @@ const mapStateToProps = (state) => {
       localStorageQuota,
       localStorageUsageDetails,
     },
+    Entries: { items, filteredItems },
     // Entries,
   } = state
   const reduxStoreUsage = getStringBytes(state)
   // const entriesStorageUsage = getStringBytes(Entries)
+  const serverUsage = items
+    .concat(filteredItems)
+    .reduce((usage, entry) => (usage += entry.size), 0)
 
   return {
     reduxStoreUsage,
+    serverUsage,
     // entriesStorageUsage,
     version,
     localStorageUsage,
@@ -31,6 +38,7 @@ const mapDispatchToProps = {}
 
 const LocalStorage = ({
   reduxStoreUsage,
+  serverUsage,
   entriesStorageUsage,
   version,
   localStorageUsage,
@@ -38,8 +46,13 @@ const LocalStorage = ({
   localStorageUsageDetails,
 }) => {
   const localStorageLimit = 5 * 1024 * 1024
-  const label = `${formatBytes(reduxStoreUsage)} / ${formatBytes(
+  const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(
     localStorageLimit
+  )}`
+
+  const serverStorageLimit = 5 * 1024 * 1024 * 100
+  const serverStorageLabel = `${formatBytes(serverUsage)} / ${formatBytes(
+    serverStorageLimit
   )}`
 
   // const bars = [
@@ -48,16 +61,45 @@ const LocalStorage = ({
   // ]
 
   return (
-    <BasicProgress
-      label={label}
-      showPercentage
-      value={reduxStoreUsage}
-      max={localStorageLimit}
-    />
+    <Container fluid>
+      <Row>
+        <Header>Local Storage Usage</Header>
+      </Row>
+      <Row>
+        <Col xs={12} className="p-0">
+          <BasicProgress
+            label={reduxStorageLabel}
+            showPercentage
+            value={reduxStoreUsage}
+            max={localStorageLimit}
+          />
+        </Col>
+      </Row>
+      <Row className="text-center my-3">
+        <Col xs={12}>
+          <ButtonClearCache />
+        </Col>
+      </Row>
+      <Row>
+        <Header>Server Usage</Header>
+      </Row>
+      <Row>
+        <Col xs={12} className="p-0">
+          <BasicProgress
+            label={serverStorageLabel}
+            showPercentage
+            value={serverUsage}
+            max={serverStorageLimit}
+          />
+        </Col>
+      </Row>
+    </Container>
   )
 }
 
 LocalStorage.propTypes = {
+  reduxStoreUsage: PropTypes.number,
+  serverUsage: PropTypes.number,
   version: PropTypes.string,
   localStorageUsage: PropTypes.number,
   localStorageQuota: PropTypes.number,

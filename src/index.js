@@ -82,7 +82,7 @@ ReactDOM.render(
   document.getElementById("root")
 )
 
-isPushNotificationSupported() && registerServiceWorker()
+// isPushNotificationSupported() && registerServiceWorker()
 
 // Doesn't get called in development since there is no service worker
 inDevelopmentMode && store.dispatch(GetAppVersion())
