@@ -54,13 +54,17 @@ const EntriesTable = ({
         title: <i className="fas fa-hdd" />,
         key: "id",
         width: 90,
-        sort: (a, b, sortUp) => (sortUp ? b.size - a.size : a.size - b.size),
+        sort: (a, b, sortUp) => {
+          const aSize = a.size || a._size
+          const bSize = b.size || b._size
+          return sortUp ? bSize - aSize : aSize - bSize
+        },
         defaultSortValue: sortMap.id,
-        filter: (searchValue) => (item) =>
-          stringMatch(formatBytes(item.size), searchValue),
+        filter: (searchValue) => ({ size, _size }) =>
+          stringMatch(formatBytes(size || _size), searchValue),
         defaultFilterValue: filterMap.id,
         filterPlaceholder: "Size",
-        render: (item) => formatBytes(item.size),
+        render: ({ size, _size }) => formatBytes(size || _size),
       },
       {
         title: <i className="fas fa-heading" />,

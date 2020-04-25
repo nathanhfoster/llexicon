@@ -1,14 +1,14 @@
 import { EntriesActionTypes } from "../Entries/types"
 import { AppActionTypes } from "../App/types"
 import { handleFilterEntries } from "./utils"
-import { mergeJson } from "../../helpers"
+import { getStringBytes, mergeJson } from "../../helpers"
 import { RouteMap } from "../../routes"
 import * as AwsImages from "../../images/AWS"
 const { fourOfour, ...entryFiles } = AwsImages
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
-const DEFAULT_JOUNRAL_ENTRY_ID = "NewEntry"
+const DEFAULT_JOUNRAL_ENTRY_ID = "Entry"
 
 const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
   id,
@@ -16,12 +16,12 @@ const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
   name,
   size: 870,
   url: entryFiles[name],
-  entry_id: `${DEFAULT_JOUNRAL_ENTRY_ID}-1`,
+  entry_id: `${DEFAULT_JOUNRAL_ENTRY_ID}-0`,
 }))
 
-const FIRST_JOUNRAL_ENTRY = {
+const defaultEntry = {
   author: null,
-  id: `${DEFAULT_JOUNRAL_ENTRY_ID}-1`,
+  id: `${DEFAULT_JOUNRAL_ENTRY_ID}-0`,
   tags: [
     {
       name: "Excited",
@@ -47,6 +47,11 @@ const FIRST_JOUNRAL_ENTRY = {
   _shouldDelete: false,
   _shouldPost: true,
   _lastUpdated: null,
+}
+
+const FIRST_JOUNRAL_ENTRY = {
+  ...defaultEntry,
+  _size: getStringBytes(defaultEntry),
 }
 
 const DEFAULT_STATE_ENTRIES = {
@@ -138,14 +143,19 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
         ...handleFilterEntries(
-          state.items.concat(state.filteredItems).map((item) =>
-            item.id === id
-              ? {
-                  ...item,
-                  ...payload,
-                }
-              : item
-          ),
+          state.items.concat(state.filteredItems).map((item) => {
+            if (item.id === id) {
+              const mergedItem = {
+                ...item,
+                ...payload,
+              }
+              const newItem = {
+                ...mergedItem,
+                _size: getStringBytes(mergedItem),
+              }
+              return newItem
+            } else return item
+          }),
           state.search
         ),
       }

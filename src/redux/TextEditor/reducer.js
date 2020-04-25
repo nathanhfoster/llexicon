@@ -1,8 +1,9 @@
 import { TextEditorActionTypes } from "../TextEditor/types"
 import { AppActionTypes } from "../App/types"
 import { DEFAULT_ENTRY_FILES } from "../Entries/reducer"
+import { getStringBytes } from "../../helpers"
 
-const DEFAULT_STATE_TEXT_EDITOR = {
+const defaultTextEditor = {
   _clearedOn: "",
   size: 0,
   author: null,
@@ -33,6 +34,11 @@ const DEFAULT_STATE_TEXT_EDITOR = {
   _shouldDelete: false,
   _shouldPost: true,
   _lastUpdated: null,
+}
+
+const DEFAULT_STATE_TEXT_EDITOR = {
+  ...defaultTextEditor,
+  _size: getStringBytes(defaultTextEditor),
 }
 
 const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {

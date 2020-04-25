@@ -63,6 +63,7 @@ const EntryPropTypes = PropTypes.shape({
   is_public: PropTypes.bool,
 
   // Redux Only
+  _size: PropTypes.number,
   _shouldDelete: PropTypes.bool,
   _shouldPost: PropTypes.bool,
   _lastUpdated: PropTypes.oneOfType([
