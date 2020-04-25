@@ -2,6 +2,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Container, Row, Col, Media } from "reactstrap"
 import { EntryFilesProps } from "../../redux/Entries/propTypes"
+import Lightbox from 'react-image-lightbox';
 import "./styles.css"
 
 const EntryFilesCarousel = ({

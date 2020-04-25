@@ -104,17 +104,13 @@ const BasicTable = ({
     setState((prevState) => ({ ...prevState, pageSize, currentPage: 0 }))
   }
 
-  const sortedData = tableSort([...data], sortList)
+  // const hasFilters = filterList.some(({ filterValue }) => filterValue)
 
-  const sortedAndFilteredData = tableFilter(sortedData, filterList)
+  const filteredData = tableFilter(data, filterList)
 
-  const sliceStart = currentPage * pageSize
+  const sortedAndFilteredData = tableSort(filteredData, sortList)
 
-  const sliceEnd = sliceStart + pageSize
-
-  const slicedData = (sortedAndFilteredData || data).slice(sliceStart, sliceEnd)
-
-  const dataLength = (sortedAndFilteredData || data).length
+  const dataLength = filteredData.length
 
   const totalPages = Math.ceil(dataLength / pageSize)
 
@@ -138,7 +134,9 @@ const BasicTable = ({
         />
         <TableBody
           columns={columns}
-          data={slicedData}
+          data={sortedAndFilteredData}
+          currentPage={currentPage}
+          pageSize={pageSize}
           onRowClick={onRowClick}
         />
         <TableFooters
