@@ -50,13 +50,16 @@ class BasicMap extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { bounds, center, zoom, locations } = nextProps
+    const { bounds, zoom, locations } = nextProps
 
-    let { entry } = nextProps
+    let { center, entry } = nextProps
 
     let markerClusters = []
 
     const formattedLocations = formatLocations(locations)
+
+    center.lat = parseFloat(center.lat)
+    center.lng = parseFloat(center.lng)
 
     if (center && zoom && bounds) {
       markerClusters = createClusters(formattedLocations, {
@@ -217,6 +220,8 @@ class BasicMap extends PureComponent {
     const mapControls = this.getMapControls()
 
     const shouldRenderEntryLocation = entry.latitude && entry.longitude
+
+    console.log(center)
 
     const shouldRenderUserLocation =
       renderUserLocation &&
