@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable } from "../"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
-import { stringMatch } from "../../helpers"
+import { stringMatch, formatBytes, getStringBytes } from "../../helpers"
 import {
   SetEntriesSortMap,
   SetEntriesFilterMap,
@@ -50,6 +50,21 @@ const EntriesTable = ({
 
   const tableColumns = useMemo(
     () => [
+      {
+        title: <i className="fas fa-hdd" />,
+        key: "id",
+        width: 90,
+        sort: (a, b, sortUp) =>
+          sortUp
+            ? getStringBytes(b) - getStringBytes(a)
+            : getStringBytes(a) - getStringBytes(b),
+        defaultSortValue: sortMap.id,
+        filter: (searchValue) => (item) =>
+          stringMatch(formatBytes(getStringBytes(item)), searchValue),
+        defaultFilterValue: filterMap.id,
+        filterPlaceholder: "Size",
+        render: (item) => formatBytes(getStringBytes(item)),
+      },
       {
         title: <i className="fas fa-heading" />,
         key: "title",

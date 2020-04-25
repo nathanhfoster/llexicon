@@ -516,9 +516,12 @@ const formatBytes = (bytes, decimals = 2) => {
   return (
     parseFloat((bytes / Math.pow(1024, d)).toFixed(fix)) +
     " " +
-    ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d]
+    ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d]
   )
 }
+
+const getStringBytes = (object) =>
+  parseInt(JSON.stringify(object).split(/%..|./).length - 1)
 
 const isType = {
   UNDEFINED: "undefined",
@@ -576,5 +579,6 @@ export {
   replaceAll,
   stringMatch,
   formatBytes,
+  getStringBytes,
   isType,
 }

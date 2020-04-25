@@ -2,10 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { BasicProgress } from "../"
-import { formatBytes } from "../../helpers"
-
-const getStringBytes = (object) =>
-  JSON.stringify(object).split(/%..|./).length - 1
+import { formatBytes, getStringBytes } from "../../helpers"
 
 const mapStateToProps = (state) => {
   const {
