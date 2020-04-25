@@ -3,4 +3,5 @@
 @import "./base/index.css";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Varela+Round&display=swap");
+@import "../../node_modules/react-image-lightbox/style.css";
 @import "./bootstrap/index.css";
