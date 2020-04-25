@@ -1,6 +1,7 @@
 import { isType } from "../../../helpers"
 
 const tableSort = (data, sortList) => {
+  let sortedData = [...data]
   // console.log(sortList)
   sortList.forEach((item) => {
     const { key, sortUp, sort } = item
@@ -11,10 +12,10 @@ const tableSort = (data, sortList) => {
 
     if (shouldSort && sort) {
       // console.log("shouldSort && sort: ", key)
-      data = data.sort((a, b) => sort(a, b, sortUp))
+      sortedData = sortedData.sort((a, b) => sort(a, b, sortUp))
     } else if (shouldSort) {
       // console.log("else: ", key)
-      data = data.sort((a, b) => {
+      sortedData = sortedData.sort((a, b) => {
         const aValue = a[key]
         const bValue = b[key]
         let valueType = null
@@ -46,7 +47,7 @@ const tableSort = (data, sortList) => {
     }
   })
 
-  return data
+  return sortedData
 }
 
 export default tableSort
