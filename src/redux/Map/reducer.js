@@ -1,6 +1,6 @@
 import { MapActionTypes } from "./types"
 
-const CENTER_OF_US = [39.8097343, -98.5556199]
+const CENTER_OF_US = { lat: 39.8097343, lng: -98.5556199 }
 
 const DEFAULT_STATE_MAP = {
   center: CENTER_OF_US,
@@ -30,7 +30,6 @@ const Map = (state = DEFAULT_STATE_MAP, action) => {
 
   switch (type) {
     case MapActionTypes.MAP_SET_BOUNDS_CENTER_ZOOM:
-    
       return { ...state, ...payload }
 
     case MapActionTypes.MAP_RESET:

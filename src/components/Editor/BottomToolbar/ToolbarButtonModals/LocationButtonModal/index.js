@@ -1,28 +1,33 @@
-import React, { useRef, useEffect, memo } from "react"
+import React, { useRef, useMemo, useEffect } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
+import { EntryPropTypes } from "../../../../../redux/Entries/propTypes"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import BasicMap from "../../../../BasicMap"
 import { WatchUserLocation } from "../../../../../redux/User/actions"
+import { SetMapBoundsCenterZoom } from "../../../../../redux/Map/actions"
 import { GetAddress } from "../../../../../redux/Actions/Google"
 import "./styles.css"
 
-const mapStateToProps = ({ User: { location } }) => ({ UserLocation: location })
+const mapStateToProps = ({ Map, User: { location } }) => ({
+  Map,
+  UserLocation: location,
+})
 
-const mapDispatchToProps = { WatchUserLocation }
+const mapDispatchToProps = { WatchUserLocation, SetMapBoundsCenterZoom }
 
 const LocationButtonModal = ({
+  Map,
   entry,
-  address,
-  latitude,
-  longitude,
   UserLocation,
   xs,
   onChangeCallback,
   WatchUserLocation,
+  SetMapBoundsCenterZoom,
 }) => {
   let watchId = useRef(null)
+  const prevMap = useMemo(() => Map, [])
 
   useEffect(() => {
     return () => {
@@ -36,8 +41,15 @@ const LocationButtonModal = ({
   }
 
   const handleClick = () => {
+    const { latitude, longitude } = entry
     if (!watchId.current) {
       watchId.current = WatchUserLocation()
+    }
+    if (latitude && longitude) {
+      SetMapBoundsCenterZoom({
+        center: { lat: latitude, lng: longitude },
+        zoom: 16,
+      })
     }
   }
 
@@ -55,6 +67,7 @@ const LocationButtonModal = ({
     if (watchId.current) {
       watchId.current = WatchUserLocation(watchId.current)
     }
+    SetMapBoundsCenterZoom(prevMap)
   }
 
   return (
@@ -82,9 +95,19 @@ const LocationButtonModal = ({
 }
 
 LocationButtonModal.propTypes = {
+  Map: PropTypes.shape({
+    bounds: PropTypes.shape({
+      nw: PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }),
+      se: PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }),
+      sw: PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }),
+      ne: PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }),
+    }),
+    center: PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }),
+    zoom: PropTypes.number,
+  }),
   UserLocation: PropTypes.object,
   xs: PropTypes.number,
-  entry: PropTypes.object.isRequired,
+  entry: EntryPropTypes,
   onChangeCallback: PropTypes.func.isRequired,
   WatchUserLocation: PropTypes.func.isRequired,
 }
