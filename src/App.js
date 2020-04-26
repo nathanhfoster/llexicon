@@ -121,7 +121,6 @@ const App = ({
   return (
     <Fragment>
       <NavBar {...addToHomeScreenProps} />
-
       <main className="App RouteOverlay">
         <BackgroundImage />
         <Switch>
