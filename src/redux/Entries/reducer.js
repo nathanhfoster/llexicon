@@ -92,7 +92,11 @@ const DEFAULT_STATE_ENTRIES = {
       name: "Video",
     },
   ],
-  EntryPeople: [],
+  EntryPeople: [
+    {
+      name: "Me",
+    },
+  ],
   sortMap: {
     date_updated: true,
   },
