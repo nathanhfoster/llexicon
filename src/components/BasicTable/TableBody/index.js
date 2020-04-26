@@ -27,7 +27,7 @@ const TableBody = ({ columns, data, currentPage, pageSize, onRowClick }) => {
 
 TableBody.propTypes = {
   columns: ColumnsPropType,
-  data: DataPropType,
+  data: DataPropType.isRequired,
   currentPage: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   onRowClick: PropTypes.func,
