@@ -1,9 +1,16 @@
-import React, { memo } from "react"
+import React from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col, Media } from "reactstrap"
+import { connect as reduxConnect } from "react-redux"
+import { BasicImageCarousel } from "../"
+import { Container, Row, Col, Button } from "reactstrap"
 import { EntryFilesProps } from "../../redux/Entries/propTypes"
-import Lightbox from 'react-image-lightbox';
+import { removeAttributeDuplicates } from "../../helpers"
 import "./styles.css"
+
+const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
+  items,
+  filteredItems,
+})
 
 const EntryFilesCarousel = ({
   className,
@@ -13,7 +20,8 @@ const EntryFilesCarousel = ({
   overflowX,
   overflowY,
   whiteSpace,
-  onChangeCallback,
+  items,
+  filteredItems,
 }) => {
   let imageFiles = []
 
@@ -37,7 +45,19 @@ const EntryFilesCarousel = ({
     }
   }
 
-  const handleImageClick = (url, file_type) => {
+  const AllEntryFiles = items
+    .concat(filteredItems)
+    .map((item) => item.EntryFiles)
+    .flat(1)
+    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
+
+  imageFiles = removeAttributeDuplicates(
+    imageFiles.concat(AllEntryFiles),
+    "url"
+  )
+
+  const handleImageClick = ({ images, photoIndex, isOpen }) => {
+    const { url, file_type } = images[photoIndex]
     if (editorRef.current) {
       let cursorIndex = 0
       if (editorSelection) {
@@ -50,20 +70,11 @@ const EntryFilesCarousel = ({
     }
   }
 
-  const renderImageFiles = (imageFiles) => {
-    return imageFiles.map((image, i) => {
-      const { url, name, file_type } = image
-      return (
-        <Media
-          key={i}
-          src={url}
-          className="EntryFilesCarouselImage p-1"
-          alt={name}
-          onClick={() => handleImageClick(url, file_type)}
-        />
-      )
-    })
-  }
+  const toolbarButtons = [
+    <Button color="accent" onClick={handleImageClick}>
+      Insert Image
+    </Button>,
+  ]
 
   return (
     <Container className={className}>
@@ -73,7 +84,11 @@ const EntryFilesCarousel = ({
           className="EntryFilesCarouselImageContainer p-0"
           style={{ overflowX, overflowY, whiteSpace }}
         >
-          {renderImageFiles(imageFiles)}
+          {/* {renderImageFiles(imageFiles)} */}
+          <BasicImageCarousel
+            images={imageFiles}
+            toolbarButtons={toolbarButtons}
+          />
         </Col>
       </Row>
     </Container>
@@ -82,7 +97,6 @@ const EntryFilesCarousel = ({
 
 EntryFilesCarousel.propTypes = {
   files: EntryFilesProps.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
   editorRef: PropTypes.object.isRequired,
 }
 
@@ -93,4 +107,4 @@ EntryFilesCarousel.defaultProps = {
   whiteSpace: "nowrap",
 }
 
-export default memo(EntryFilesCarousel)
+export default reduxConnect(mapStateToProps)(EntryFilesCarousel)

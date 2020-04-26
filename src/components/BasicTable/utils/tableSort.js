@@ -1,20 +1,24 @@
 import { isType } from "../../../helpers"
 
 const tableSort = (data, sortList) => {
-  // console.log(sortList)
-  sortList.forEach((item) => {
-    const { key, sortUp, sort } = item
+  let sortedData = [...data]
+  
+  const sorts = sortList.filter(
+    ({ sortUp }) => typeof sortUp !== isType.UNDEFINED && sortUp !== null
+  )
 
-    const shouldSort = typeof sortUp !== isType.UNDEFINED && sortUp !== null
+  for (let i = 0, { length } = sorts; i < length; i++) {
+    const item = sorts[i]
+    const { key, sortUp, sort } = item
 
     // console.log(key)
 
-    if (shouldSort && sort) {
+    if (sort) {
       // console.log("shouldSort && sort: ", key)
-      data = data.sort((a, b) => sort(a, b, sortUp))
-    } else if (shouldSort) {
+      sortedData = sortedData.sort((a, b) => sort(a, b, sortUp))
+    } else {
       // console.log("else: ", key)
-      data = data.sort((a, b) => {
+      sortedData = sortedData.sort((a, b) => {
         const aValue = a[key]
         const bValue = b[key]
         let valueType = null
@@ -44,9 +48,9 @@ const tableSort = (data, sortList) => {
         }
       })
     }
-  })
+  }
 
-  return data
+  return sortedData
 }
 
 export default tableSort

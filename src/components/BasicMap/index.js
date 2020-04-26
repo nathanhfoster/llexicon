@@ -219,9 +219,7 @@ class BasicMap extends PureComponent {
     const shouldRenderEntryLocation = entry.latitude && entry.longitude
 
     const shouldRenderUserLocation =
-      renderUserLocation &&
-      UserLocation.latitude &&
-      UserLocation.longitudebounds
+      renderUserLocation && UserLocation.latitude && UserLocation.longitude
 
     return (
       <div style={{ height, width }}>

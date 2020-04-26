@@ -38,7 +38,7 @@ const BottomToolbar = ({
       [
         {
           Component: MediaButtonModal,
-          props: { onChangeCallback, editorRef, editorSelection },
+          props: { editorRef, editorSelection },
         },
         {
           Component: RatingButtonModal,
