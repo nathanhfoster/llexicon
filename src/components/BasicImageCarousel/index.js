@@ -93,17 +93,21 @@ const BasicImageCarousel = ({
   )
 
   return (
-    <div>
+    <div style={{ zIndex: 9999 }}>
       {renderImageFiles}
       {isOpen && (
         <Lightbox
           mainSrc={mainSrc}
+          mainSrcThumbnail={mainSrc}
           prevSrc={prevSrc}
+          prevSrcThumbnail={prevSrc}
           nextSrc={nextSrc}
+          nextSrcThumbnail={nextSrc}
           onCloseRequest={handleClose}
           onMovePrevRequest={handleMovePrev}
           onMoveNextRequest={handleMoveNext}
           toolbarButtons={toolBarImagesWithCallback}
+         
         />
       )}
     </div>

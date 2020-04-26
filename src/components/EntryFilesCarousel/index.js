@@ -1,9 +1,16 @@
-import React, { memo } from "react"
+import React from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { BasicImageCarousel } from "../"
-import { Container, Row, Col, Media, Button } from "reactstrap"
+import { Container, Row, Col, Button } from "reactstrap"
 import { EntryFilesProps } from "../../redux/Entries/propTypes"
+import { removeAttributeDuplicates } from "../../helpers"
 import "./styles.css"
+
+const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
+  items,
+  filteredItems,
+})
 
 const EntryFilesCarousel = ({
   className,
@@ -13,7 +20,8 @@ const EntryFilesCarousel = ({
   overflowX,
   overflowY,
   whiteSpace,
-  onChangeCallback,
+  items,
+  filteredItems,
 }) => {
   let imageFiles = []
 
@@ -36,6 +44,17 @@ const EntryFilesCarousel = ({
       }
     }
   }
+
+  const AllEntryFiles = items
+    .concat(filteredItems)
+    .map((item) => item.EntryFiles)
+    .flat(1)
+    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
+
+  imageFiles = removeAttributeDuplicates(
+    imageFiles.concat(AllEntryFiles),
+    "url"
+  )
 
   const handleImageClick = ({ images, photoIndex, isOpen }) => {
     const { url, file_type } = images[photoIndex]
@@ -78,7 +97,6 @@ const EntryFilesCarousel = ({
 
 EntryFilesCarousel.propTypes = {
   files: EntryFilesProps.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
   editorRef: PropTypes.object.isRequired,
 }
 
@@ -89,4 +107,4 @@ EntryFilesCarousel.defaultProps = {
   whiteSpace: "nowrap",
 }
 
-export default memo(EntryFilesCarousel)
+export default reduxConnect(mapStateToProps)(EntryFilesCarousel)

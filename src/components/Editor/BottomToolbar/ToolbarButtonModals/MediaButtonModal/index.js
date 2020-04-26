@@ -1,5 +1,6 @@
 import React, { useState, memo } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import {
   Container,
   Row,
@@ -8,39 +9,26 @@ import {
   InputGroupAddon,
   InputGroupText,
   Input,
+  Media,
 } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
-import EntryFilesCarousel from "../../../../EntryFilesCarousel"
 import { BasicDropDown } from "../../../../"
 import memoizeProps from "../../../../../helpers/memoizeProps"
+import { cleanUrl } from "../../../../Editor/modules/Video"
 import "./styles.css"
-
-const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
-  items,
-  filteredItems,
-})
-
-const mapDispatchToProps = {}
 
 const EMBEDED_TYPES = [{ id: "Image" }, { id: "Video" }]
 
-const MediaButtonModal = ({
-  onChangeCallback,
-  xs,
-  editorRef,
-  editorSelection,
-  items,
-  filteredItems,
-}) => {
+const PLACEHOLDER =
+  "https://astraltree.s3.us-east-2.amazonaws.com/media/Logo.png"
+
+const mapStateToProps = ({ Window: { innerHeight } }) => ({
+  videoHeight: `${innerHeight / 3}px`,
+})
+
+const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
   const [url, setUrl] = useState("")
   const [type, setType] = useState(EMBEDED_TYPES[0].id)
-
-  const AllEntryFiles = items
-    .concat(filteredItems)
-    .map((item) => item.EntryFiles)
-    .flat(1)
-    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
 
   const addUrlDisabled = false
 
@@ -97,23 +85,27 @@ const MediaButtonModal = ({
                 type="text"
                 name="url"
                 id="url"
-                placeholder="https://astraltree.s3.us-east-2.amazonaws.com/media/Logo.png"
+                placeholder={PLACEHOLDER}
                 value={url}
                 onChange={handleInputChange}
               />
             </InputGroup>
           </Col>
         </Row>
-        <EntryFilesCarousel
-          className="MediaEntryFilesCarousel"
-          files={AllEntryFiles}
-          onChangeCallback={onChangeCallback}
-          editorRef={editorRef}
-          editorSelection={editorSelection}
-          overflowX="hidden"
-          overflowY="auto"
-          whiteSpace="wrap"
-        />
+        <Row>
+          <Col className="Center">
+            {type === EMBEDED_TYPES[0].id ? (
+              <Media src={url || PLACEHOLDER} height="100%" width="100%" />
+            ) : (
+              <iframe
+                src={cleanUrl(url)}
+                frameBorder="0"
+                height={videoHeight}
+                width="100%"
+              />
+            )}
+          </Col>
+        </Row>
       </Container>
     </ToolbarModal>
   )
@@ -123,6 +115,7 @@ MediaButtonModal.propTypes = {
   editorRef: PropTypes.object.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
+  videoHeight: PropTypes.string.isRequired,
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -134,7 +127,4 @@ const isEqual = (prevProps, nextProps) =>
     "filteredItems",
   ])
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(memo(MediaButtonModal, isEqual))
+export default reduxConnect(mapStateToProps)(memo(MediaButtonModal, isEqual))

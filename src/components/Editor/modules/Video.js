@@ -3,8 +3,15 @@ const Link = Quill.import("formats/link")
 const BlockEmbed = Quill.import("blots/block/embed")
 // https://github.com/zenoamaro/react-quill/issues/436
 
+export const cleanUrl = (url) =>
+  url
+    .replace("watch?v=", "embed/")
+    .replace("/watch/", "/embed/")
+    .replace("youtu.be/", "youtube.com/embed/")
+
 class Video extends BlockEmbed {
   static create(value) {
+    value = cleanUrl(value)
     const editorRef = document.getElementById("TextEditor")
 
     let iFrameHeight = "auto"
@@ -24,18 +31,6 @@ class Video extends BlockEmbed {
     }
 
     // console.log(iFrameHeight, iFrameWidth)
-
-    if (value.includes("watch?v=")) {
-       value = value.replace("watch?v=", "embed/")
-    }
-
-    if (value.includes("/watch/")) {
-       value = value.replace("/watch/", "/embed/")
-    }
-
-    if (value.includes("youtu.be/")) {
-       value = value.replace("youtu.be/", "youtube.com/embed/")
-    }
 
     let node = super.create(value)
     let iframe = document.createElement("iframe")
