@@ -15,12 +15,12 @@ import ToolbarModal from "../../ToolbarModal"
 import { BasicDropDown } from "../../../../"
 import memoizeProps from "../../../../../helpers/memoizeProps"
 import { cleanUrl } from "../../../../Editor/modules/Video"
+import { Logo } from "../../../../../images/AWS"
 import "./styles.css"
 
 const EMBEDED_TYPES = [{ id: "Image" }, { id: "Video" }]
 
-const PLACEHOLDER =
-  "https://astraltree.s3.us-east-2.amazonaws.com/media/Logo.png"
+const PLACEHOLDER = Logo
 
 const mapStateToProps = ({ Window: { innerHeight } }) => ({
   videoHeight: `${innerHeight / 3}px`,
