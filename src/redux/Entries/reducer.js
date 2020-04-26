@@ -63,7 +63,21 @@ const DEFAULT_STATE_ENTRIES = {
   isPending: false,
   error: null,
   search: "",
-  EntryTags: [],
+  EntryTags: [
+   {
+      name: "Family",
+    }, {
+      name: "Friends",
+    }, {
+      name: "Document",
+    }, {
+      name: "Link",
+    }, {
+      name: "Music",
+    }, {
+      name: "Video",
+    },
+],
   EntryPeople: [],
   sortMap: {
     date_updated: true,
