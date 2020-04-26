@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, memo } from "react"
+import React, { Fragment, useState, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import TableHeaders from "./TableHeaders"
@@ -104,13 +104,14 @@ const BasicTable = ({
     setState((prevState) => ({ ...prevState, pageSize, currentPage: 0 }))
   }
 
-  // const hasFilters = filterList.some(({ filterValue }) => filterValue)
+  const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
-  const filteredData = tableFilter(data, filterList)
+  const sortedAndFilteredData = useMemo(
+    () => tableFilter(sortedData, filterList),
+    [sortedData, filterList]
+  )
 
-  const sortedAndFilteredData = tableSort(filteredData, sortList)
-
-  const dataLength = filteredData.length
+  const dataLength = (sortedAndFilteredData || data).length
 
   const totalPages = Math.ceil(dataLength / pageSize)
 
@@ -142,7 +143,7 @@ const BasicTable = ({
         <TableFooters
           onRowClick={onRowClick}
           columns={columns}
-          sortedAndFilteredData={sortedAndFilteredData}
+          data={sortedAndFilteredData}
         />
       </Table>
       <TablePaginator

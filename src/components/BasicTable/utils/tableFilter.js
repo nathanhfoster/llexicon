@@ -2,15 +2,19 @@ import MomentJS from "moment"
 import { stringMatch, isType } from "../../../helpers"
 
 const tableFilter = (data, filterList) => {
-  // console.log(filterList)
-  filterList.forEach((item) => {
+  let filteredData = [...data]
+
+  const filters = filterList.filter(({ filterValue }) => filterValue)
+
+  for (let i = 0, { length } = filters; i < length; i++) {
+    const item = filters[i]
     const { key, filterValue, filter } = item
     if (!filterValue) return
 
     if (filter instanceof Function || typeof filter === "function") {
-      data = data.filter(filter(filterValue))
+      filteredData = filteredData.filter(filter(filterValue))
     } else if (filter === "date") {
-      data = data.filter((item) => {
+      filteredData = filteredData.filter((item) => {
         if (filterValue) {
           const momentCreatedByAuthor = MomentJS(item[key])
           const momentOfSearchValue = MomentJS(filterValue)
@@ -21,18 +25,18 @@ const tableFilter = (data, filterList) => {
         }
       })
     } else if (filter === "string") {
-      data = data.filter((item) => {
+      filteredData = filteredData.filter((item) => {
         const itemString = item[key]
         return stringMatch(itemString, filterValue)
       })
     } else if (filter === "number") {
       if (filterValue) {
-        data = data.filter((item) => item[key] >= filterValue)
+        filteredData = filteredData.filter((item) => item[key] >= filterValue)
       }
     }
-  })
+  }
 
-  return data
+  return filteredData
 }
 
 export default tableFilter

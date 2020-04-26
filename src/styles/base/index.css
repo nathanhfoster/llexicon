@@ -113,8 +113,11 @@ input[type="file"] {
 
 ::-webkit-scrollbar {
   display: none;
+  height: 8px;
+  width: 8px;
   background-color: transparent;
   -webkit-border-radius: 6px;
+  border-radius: 6px;
   transition: 200ms linear;
 }
 

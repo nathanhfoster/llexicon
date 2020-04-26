@@ -1,7 +1,7 @@
 import React, { useMemo, memo } from "react"
 import { ColumnsPropType, DataPropType } from "../propTypes"
 
-const TableFooters = ({ columns, sortedAndFilteredData }) => {
+const TableFooters = ({ columns, data }) => {
   const shouldRender = useMemo(() => columns.some((column) => column.footer))
 
   const renderTableRows = useMemo(
@@ -9,13 +9,9 @@ const TableFooters = ({ columns, sortedAndFilteredData }) => {
       columns.map((column, i) => {
         const { footer } = column
 
-        return footer ? (
-          <td key={i}>{footer(sortedAndFilteredData)}</td>
-        ) : (
-          <td key={i}></td>
-        )
+        return footer ? <td key={i}>{footer(data)}</td> : <td key={i}></td>
       }),
-    [columns, sortedAndFilteredData]
+    [columns, data]
   )
 
   return (
@@ -29,7 +25,7 @@ const TableFooters = ({ columns, sortedAndFilteredData }) => {
 
 TableFooters.propTypes = {
   columns: ColumnsPropType,
-  sortedAndFilteredData: DataPropType,
+  data: DataPropType,
 }
 
 export default memo(TableFooters)

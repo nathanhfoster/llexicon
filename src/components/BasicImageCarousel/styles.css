@@ -1,0 +1,17 @@
+.EntryFilesCarouselImage {
+  height: var(--bottomToolbarFilesHeight);
+  display: inline-flex;
+}
+
+.EntryFilesCarouselImage:hover {
+  /* position: fixed; */
+  cursor: pointer;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  transition: -webkit-transform 0.425s cubic-bezier(0.485, 1.65, 0.545, 0.835);
+  transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.2, 1.2, 1);
+  box-shadow: var(--primaryBoxShadow);
+  z-index: 9999;
+  overflow-x: initial;
+}
