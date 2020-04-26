@@ -10,7 +10,7 @@ import { getJsonTagsOrPeople } from "./utils"
 import FormData from "form-data"
 import qs from "qs"
 import ReactGA from "react-ga"
-import { DEFAULT_JOUNRAL_ENTRY_ID } from "./reducer"
+import { BASE_JOURNAL_ENTRY_ID } from "./reducer"
 
 const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -226,7 +226,7 @@ const PostReduxEntry = (payload) => (dispatch, getState) => {
     type: EntriesActionTypes.ENTRY_SET,
     payload: {
       ...payload,
-      id: `${DEFAULT_JOUNRAL_ENTRY_ID}-${length}`,
+      id: `${BASE_JOURNAL_ENTRY_ID}-${length}`,
       _shouldPost: true,
     },
   })

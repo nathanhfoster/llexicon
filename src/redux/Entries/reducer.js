@@ -8,7 +8,9 @@ const { fourOfour, ...entryFiles } = AwsImages
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
-const DEFAULT_JOUNRAL_ENTRY_ID = "Entry"
+const BASE_JOURNAL_ENTRY_ID = "Entry"
+
+const DEFAULT_JOUNRAL_ENTRY_ID = `${BASE_JOURNAL_ENTRY_ID}-0`
 
 const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
   id,
@@ -16,12 +18,12 @@ const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
   name,
   size: 870,
   url: entryFiles[name],
-  entry_id: `${DEFAULT_JOUNRAL_ENTRY_ID}-0`,
+  entry_id: DEFAULT_JOUNRAL_ENTRY_ID,
 }))
 
 const defaultEntry = {
   author: null,
-  id: `${DEFAULT_JOUNRAL_ENTRY_ID}-0`,
+  id: DEFAULT_JOUNRAL_ENTRY_ID,
   tags: [
     {
       name: "Excited",
@@ -231,7 +233,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
 }
 
 export {
-  DEFAULT_JOUNRAL_ENTRY_ID,
+  BASE_JOURNAL_ENTRY_ID,
   DEFAULT_ENTRY_FILES,
   DEFAULT_STATE_ENTRIES,
   Entries,
