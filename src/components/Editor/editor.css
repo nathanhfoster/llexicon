@@ -2,7 +2,7 @@
   box-shadow: var(--primaryBoxShadow);
   box-shadow: 0 -2px rgba(0, 0, 0, 0.1);
   /* Default font-size */
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .ql-editor.ql-blank::before {
