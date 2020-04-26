@@ -1,8 +1,8 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { Container, Row, Col, Media } from "reactstrap"
+import { BasicImageCarousel } from "../"
+import { Container, Row, Col, Media, Button } from "reactstrap"
 import { EntryFilesProps } from "../../redux/Entries/propTypes"
-import Lightbox from 'react-image-lightbox';
 import "./styles.css"
 
 const EntryFilesCarousel = ({
@@ -37,7 +37,8 @@ const EntryFilesCarousel = ({
     }
   }
 
-  const handleImageClick = (url, file_type) => {
+  const handleImageClick = ({ images, photoIndex, isOpen }) => {
+    const { url, file_type } = images[photoIndex]
     if (editorRef.current) {
       let cursorIndex = 0
       if (editorSelection) {
@@ -50,20 +51,11 @@ const EntryFilesCarousel = ({
     }
   }
 
-  const renderImageFiles = (imageFiles) => {
-    return imageFiles.map((image, i) => {
-      const { url, name, file_type } = image
-      return (
-        <Media
-          key={i}
-          src={url}
-          className="EntryFilesCarouselImage p-1"
-          alt={name}
-          onClick={() => handleImageClick(url, file_type)}
-        />
-      )
-    })
-  }
+  const toolbarButtons = [
+    <Button color="accent" onClick={handleImageClick}>
+      Insert Image
+    </Button>,
+  ]
 
   return (
     <Container className={className}>
@@ -73,7 +65,11 @@ const EntryFilesCarousel = ({
           className="EntryFilesCarouselImageContainer p-0"
           style={{ overflowX, overflowY, whiteSpace }}
         >
-          {renderImageFiles(imageFiles)}
+          {/* {renderImageFiles(imageFiles)} */}
+          <BasicImageCarousel
+            images={imageFiles}
+            toolbarButtons={toolbarButtons}
+          />
         </Col>
       </Row>
     </Container>
