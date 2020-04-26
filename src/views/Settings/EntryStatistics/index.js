@@ -129,7 +129,7 @@ const EntryStatistics = ({ items, filteredItems }) => {
     { title: "Maximum words / entry", value: maximumWordsInAnEntry },
   ]
 
-  const renderEntryStats = (stats, fixedValue = 3) =>
+  const renderEntryStats = (stats, fixedValue = 2) =>
     stats.map((stat, i) => {
       const { title, value } = stat
       if (Array.isArray(value)) {
