@@ -8,7 +8,7 @@ const TableBody = ({ columns, data, currentPage, pageSize, onRowClick }) => {
 
   const sliceEnd = sliceStart + pageSize
 
-  const slicedData = data.slice(sliceStart, sliceEnd)
+  const slicedData = useMemo(() => data.slice(sliceStart, sliceEnd), [sliceStart, sliceEnd])
 
   const renderTableRows = useMemo(
     () =>
