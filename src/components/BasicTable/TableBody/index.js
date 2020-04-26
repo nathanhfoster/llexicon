@@ -20,7 +20,7 @@ const TableBody = ({ columns, data, currentPage, pageSize, onRowClick }) => {
           columns={columns}
         />
       )),
-    [columns, data]
+    [columns, slicedData]
   )
   return <tbody>{renderTableRows}</tbody>
 }
