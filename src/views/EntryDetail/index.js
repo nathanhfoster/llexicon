@@ -7,6 +7,7 @@ import { connect as reduxConnect } from "react-redux"
 import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
 import { SetCalendar } from "../../redux/Calendar/actions"
 import PageNotFound from "../PageNotFound"
+import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
 const mapStateToProps = ({ User, Entries: { items, filteredItems } }) => ({
@@ -31,13 +32,16 @@ const EntryDetail = ({
     () => items.concat(filteredItems).find(({ id }) => id == entryId),
     [UserId, entryId, items, filteredItems]
   )
+  const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
   const readOnly = Boolean(entry && entry.author && UserId !== entry.author)
 
   useEffect(() => {
-    SyncEntries(
-      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
-    )
+    if (!entryIsLocalOnly) {
+      SyncEntries(
+        () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
+      )
+    }
   }, [])
 
   useEffect(() => {
