@@ -11,7 +11,7 @@ const TablePaginator = ({
   pageSize,
   dataLength,
   handlePageChange,
-  handlePageSizeChange
+  handlePageSizeChange,
 }) => {
   const pageList = [{ header: true, value: "Page" }].concat(
     new Array(totalPages).fill().map((e, i) => ({ value: i + 1 }))
@@ -90,18 +90,18 @@ TablePaginator.propTypes = {
       value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
-        PropTypes.object
+        PropTypes.node,
       ]).isRequired,
       otherValue: PropTypes.any,
       header: PropTypes.bool,
       disabled: PropTypes.bool,
-      divider: PropTypes.bool
+      divider: PropTypes.bool,
     })
   ).isRequired,
   totalPages: PropTypes.number.isRequired,
   dataLength: PropTypes.number.isRequired,
   handlePageChange: PropTypes.func.isRequired,
-  handlePageSizeChange: PropTypes.func.isRequired
+  handlePageSizeChange: PropTypes.func.isRequired,
 }
 
 export default memo(TablePaginator)

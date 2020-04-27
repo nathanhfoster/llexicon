@@ -20,7 +20,7 @@ const BasicFormInputsProps = PropTypes.arrayOf(
 )
 
 const BasicFormProps = {
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   inputs: BasicFormInputsProps,
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,

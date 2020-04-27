@@ -75,7 +75,7 @@ BasicDropDown.propTypes = {
       value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
-        PropTypes.object
+        PropTypes.node
       ]),
       otherValue: PropTypes.any,
       header: PropTypes.bool,
@@ -84,7 +84,7 @@ BasicDropDown.propTypes = {
     }).isRequired
   ),
   onClickCallback: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 
   // ---Dropdown---
   a11y: PropTypes.bool, // defaults to true. Set to false to enable more bootstrap like tabbing behavior

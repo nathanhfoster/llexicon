@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
+import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { Editor, ReactDatePicker } from "../../components"
 import {
   Container,
@@ -35,7 +36,7 @@ const mapDispatchToProps = {
   SyncEntries,
   SetEditorState,
   ClearEditorState,
-  ResetMap
+  ResetMap,
 }
 
 const NewEntry = ({
@@ -46,11 +47,11 @@ const NewEntry = ({
   SyncEntries,
   SetEditorState,
   ClearEditorState,
-  ResetMap
+  ResetMap,
 }) => {
   useEffect(() => {
-   ResetMap()
-  },[])
+    ResetMap()
+  }, [])
 
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
@@ -134,7 +135,7 @@ const NewEntry = ({
 }
 
 NewEntry.propTypes = {
-  entry: PropTypes.object.isRequired,
+  entry: EntryPropTypes.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SetEditorState: PropTypes.func.isRequired,
   ClearEditorState: PropTypes.func.isRequired,

@@ -63,7 +63,7 @@ const TableHeader = ({
 
 TableHeader.propTypes = {
   headerKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   column: ColumnPropType,
   sortable: PropTypes.bool.isRequired,

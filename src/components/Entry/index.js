@@ -1,5 +1,6 @@
 import React, { useCallback, Fragment, memo } from "react"
 import PropTypes from "prop-types"
+import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { useDispatch } from "react-redux"
 import { withRouter } from "react-router-dom"
@@ -110,7 +111,7 @@ const Entry = ({
 
 Entry.propTypes = {
   readOnly: PropTypes.bool.isRequired,
-  entry: PropTypes.object.isRequired,
+  entry: EntryPropTypes.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   bottomToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,

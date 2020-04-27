@@ -1,5 +1,6 @@
 import React, { useMemo, memo, Fragment } from "react"
 import PropTypes from "prop-types"
+import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { Collapse, Container, Row, Col, Button } from "reactstrap"
 import {
   LocationButtonModal,
@@ -130,7 +131,7 @@ const BottomToolbar = ({
 BottomToolbar.propTypes = {
   readOnly: PropTypes.bool,
   editorRef: PropTypes.object,
-  entry: PropTypes.object.isRequired,
+  entry: EntryPropTypes.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleBottomToolbar: PropTypes.func.isRequired,
   onChangeCallback: PropTypes.func.isRequired,

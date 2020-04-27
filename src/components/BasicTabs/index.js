@@ -107,9 +107,9 @@ BasicTabs.propTypes = {
       mountTabOnlyWhenActive: PropTypes.bool,
       title: PropTypes.oneOfType([
         PropTypes.string.isRequired,
-        PropTypes.shape({ name: PropTypes.string, render: PropTypes.object }),
+        PropTypes.shape({ name: PropTypes.string, render: PropTypes.node }),
       ]),
-      render: PropTypes.object.isRequired,
+      render: PropTypes.node.isRequired,
       onClickCallback: PropTypes.func,
     }).isRequired
   ),

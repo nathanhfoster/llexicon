@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
+import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import { connect as reduxConnect } from "react-redux"
@@ -73,8 +74,8 @@ const EntryDetail = ({
 EntryDetail.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   UserId: PropTypes.number,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
+  items: EntriesPropTypes.isRequired,
+  filteredItems: EntriesPropTypes.isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
