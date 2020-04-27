@@ -24,7 +24,7 @@ const getInitialState = (activeTab, defaultTab, tabs) => {
 }
 
 const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
-  const [activeTab, setState] = useState(
+  const [activeTab, setActiveTab] = useState(
     getInitialState(restOfProps.activeTab, defaultTab, tabs)
   )
 
@@ -34,11 +34,11 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     if (!mounted.current) {
       mounted.current = true
     } else {
-      setState(restOfProps.activeTab)
+      setActiveTab(restOfProps.activeTab)
     }
   }, [restOfProps.activeTab])
 
-  const handleTabChanged = (activeTab) => setState(activeTab)
+  const handleTabChanged = (activeTab) => setActiveTab(activeTab)
 
   const renderNavItems = useMemo(
     () =>
