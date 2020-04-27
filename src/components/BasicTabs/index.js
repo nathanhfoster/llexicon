@@ -118,11 +118,14 @@ BasicTabs.propTypes = {
 BasicTabs.defaultProps = {
   className: "BasicTabs",
   fluid: false,
-  tabs: [
-    { tabId: 1, title: "1", render: <div>Tab 1</div> },
-    { tabId: 2, title: "2", render: <div>Tab 2</div> },
-    { tabId: 3, title: "3", render: <div>Tab 3</div> },
-  ],
+  tabs: new Array(3).fill().map((i) => {
+    const index = i + 1
+    return {
+      tabId: index,
+      title: `${index}`,
+      render: <div>`Tab ${index}`</div>,
+    }
+  }),
 }
 
-export default memo(BasicTabs, () => false)
+export default memo(BasicTabs)
