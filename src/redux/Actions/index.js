@@ -78,6 +78,16 @@ const Axios = (responseType = "json") => {
   })
 }
 
+const AxiosCors = (responseType = 'json') =>
+  axios.create({
+    withCredentials: false,
+    baseURL: REACT_APP_API_URL,
+    // timeout: 25000,
+    crossDomain: true,
+    mode: 'cors',
+    responseType
+  })
+
 const AxiosOffline = (responseType = "json") => {
   const { token } = getUser()
 
@@ -146,4 +156,4 @@ const Sync = (dispatchActions) => async (dispatch) => {
     })
 }
 
-export { Axios, AxiosOffline, AxiosForm, AxiosData, Sync }
+export { Axios, AxiosCors, AxiosOffline, AxiosForm, AxiosData, Sync }
