@@ -78,14 +78,10 @@ const Axios = (responseType = "json") => {
   })
 }
 
-const AxiosCors = (responseType = 'json') =>
+const AxiosCors = (responseType = "json") =>
   axios.create({
-    withCredentials: false,
     baseURL: REACT_APP_API_URL,
-    // timeout: 25000,
-    crossDomain: true,
-    mode: 'cors',
-    responseType
+    responseType,
   })
 
 const AxiosOffline = (responseType = "json") => {
