@@ -1,4 +1,4 @@
-import "./styles/index.css"
+import "./css/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
