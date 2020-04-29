@@ -18,7 +18,8 @@ class MapControl extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const mapChanged = !this.props.map && nextProps.map
     const mapApiChanged = !this.props.mapApi && nextProps.mapApi
-    return mapChanged || mapApiChanged
+    const childrenChange = !memoizeProps(this.props, nextProps)
+    return mapChanged || mapApiChanged || childrenChange
   }
 
   componentDidMount() {
