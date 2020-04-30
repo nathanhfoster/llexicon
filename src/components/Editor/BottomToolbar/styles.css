@@ -33,7 +33,7 @@
   height: var(--bottomToolbarHeight);
   opacity: var(--mainOpacity);
   color: var(--secondaryColor);
-  background: var(--slate_grey);
+  background: var(--primaryColor);
 }
 
 .BottomToolBar i {
@@ -48,7 +48,8 @@
   opacity: 1;
 }
 
-.BottomToolBarTags {}
+.BottomToolBarTags {
+}
 
 .BottomToolBarTags,
 .BottomToolBarTags .btn {

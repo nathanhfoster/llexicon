@@ -1,25 +1,25 @@
 .EntryMinimal {
-    color: var(--secondaryColor);
-    background: var(--quinaryColor);
-    box-shaow: var(--primaryBoxShadow);
-    height: 100%;
-    width: 100%;
-    text-align: inherit;
+  color: var(--secondaryColor);
+  background: var(--quinaryColor);
+  box-shaow: var(--primaryBoxShadow);
+  height: 100%;
+  width: 100%;
+  text-align: inherit;
 }
 
 .EntryMinimal:hover {
-    background: var(--slate_grey);
-    cursor: pointer;
+  background: var(--primaryColor);
+  cursor: pointer;
 }
 
 .EntryMinimalDetail {
-    font-size: 1.5em;
-    font-weight: 900;
-    min-height: 21px;
+  font-size: 1.5em;
+  font-weight: 900;
+  min-height: 21px;
 }
 
-.EntryMinimalTime, .EntryMinimalTime time {
-    font-size: 1.25em;
-    font-weight: 200;
+.EntryMinimalTime,
+.EntryMinimalTime time {
+  font-size: 1.25em;
+  font-weight: 200;
 }
-
