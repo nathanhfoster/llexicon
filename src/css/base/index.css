@@ -146,3 +146,19 @@ input[type="file"] {
   content: "-";
   padding-left: 1px;
 }
+
+
+ /* Light mode */
+    @media (prefers-color-scheme: light) {
+        body {
+            background-color: #000;
+            color: white;
+        }
+    }
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: #000;
+            color: white;
+        }
+    }
