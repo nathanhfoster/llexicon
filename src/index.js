@@ -18,7 +18,11 @@ const { store, persistor } = storeFactory()
 
 const history = createBrowserHistory()
 
-const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
+const AlertNotifications = lazy(() =>
+  new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+    import("./components/AlertNotifications")
+  )
+)
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
