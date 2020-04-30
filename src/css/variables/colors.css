@@ -100,3 +100,17 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+
+/* Light mode */
+    @media (prefers-color-scheme: light) {
+        :root {
+            --primaryColor: #f5f5f5;
+        }
+}
+
+/* Dark mode */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --primaryColor: #29303b;
+        }
+}
