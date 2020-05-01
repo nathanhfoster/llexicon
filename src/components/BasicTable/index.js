@@ -92,6 +92,7 @@ const BasicTable = ({
       return {
         ...prevState,
         filterList: newFilterList,
+        currentPage: 0,
       }
     })
   }, [])
