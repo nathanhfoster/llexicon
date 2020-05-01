@@ -1,4 +1,4 @@
-import { SetAlert } from "../Alerts/actions"
+import { SetApiResponseStatus, SetAlert } from "../Alerts/actions"
 import { EntriesActionTypes } from "./types"
 import { Axios, AxiosForm } from "../Actions"
 import {
@@ -130,6 +130,13 @@ const GetEntry = (url, id) => (dispatch) =>
       const { status } = response
       if (status === 401 || status === 404) {
         dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
+        dispatch(SetApiResponseStatus(status))
+        dispatch(
+          SetAlert({
+            title: "Access Denied",
+            message: "This entry is no longer public",
+          })
+        )
       }
       const payload = JSON.parse(JSON.stringify(response))
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })

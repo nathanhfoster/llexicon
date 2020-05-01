@@ -4,7 +4,7 @@ import { handleFilterEntries } from "./utils"
 import { getStringBytes, mergeJson } from "../../helpers"
 import { RouteMap } from "../../routes"
 import * as AwsImages from "../../images/AWS"
-const { fourOfour, ...entryFiles } = AwsImages
+const { ...entryFiles } = AwsImages
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
