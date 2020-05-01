@@ -84,12 +84,14 @@ const BasicImageCarousel = ({
     [images]
   )
 
-  const toolBarImagesWithCallback = React.Children.map(
-    toolbarButtons,
-    (child) =>
-      React.cloneElement(child, {
-        onClick: () => child.props.onClick(state),
-      })
+  const toolBarImagesWithCallback = useMemo(
+    () =>
+      React.Children.map(toolbarButtons, (child) =>
+        React.cloneElement(child, {
+          onClick: () => child.props.onClick(state),
+        })
+      ),
+    [toolbarButtons]
   )
 
   return (
@@ -107,7 +109,6 @@ const BasicImageCarousel = ({
           onMovePrevRequest={handleMovePrev}
           onMoveNextRequest={handleMoveNext}
           toolbarButtons={toolBarImagesWithCallback}
-         
         />
       )}
     </div>
