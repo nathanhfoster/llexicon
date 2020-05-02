@@ -7,8 +7,14 @@ import {
   DropdownItem,
   Button,
 } from "reactstrap"
-import { BasicModal, ConfirmAction } from "../"
-import { copyStringToClipboard } from "../../helpers"
+import {
+  BasicModal,
+  ConfirmAction,
+  ShareOnFaceBook,
+  ShareOnLinkedIn,
+  ShareOnTwitter,
+} from "../"
+import { copyStringToClipboard, shareUrl } from "../../helpers"
 import { RouterGoBack, GetEntryDetailUrl } from "../../routes"
 import { useDispatch } from "react-redux"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
@@ -16,6 +22,7 @@ import "./styles.css"
 
 const EntryOptionsMenu = ({
   entryId,
+  title,
   author,
   is_public,
   history,
@@ -30,6 +37,7 @@ const EntryOptionsMenu = ({
 
   const { origin } = window.location
   const url = `${origin}${GetEntryDetailUrl(entryId)}`
+  const canShareOnMobileDevice = navigator.share
 
   const handleEditorChange = useCallback(
     ({ ...payload }) => dispatch(UpdateReduxEntry(entryId, payload)),
@@ -47,6 +55,11 @@ const EntryOptionsMenu = ({
       dispatch(SyncEntries())
     }, 200)
   }, [history])
+
+  const handleShareOnMobile = useCallback(() => {
+    const sharePayload = { url, title, text: "Check out my journal entry." }
+    shareUrl(sharePayload)
+  }, [url, title])
 
   const handleCopyAndMakePublic = useCallback(() => {
     copyStringToClipboard(url)
@@ -70,9 +83,25 @@ const EntryOptionsMenu = ({
       </DropdownToggle>
       <DropdownMenu right>
         <DropdownItem header>
-          <i className="fas fa-share mr-1" />
-          <span>{url}</span>
+          <Button
+            color={!canShareOnMobileDevice ? "inherit" : "accent"}
+            className="EntryOptionsMenuShareButton"
+            disabled={!canShareOnMobileDevice}
+            onClick={handleShareOnMobile}
+          >
+            <i className="fas fa-share mr-1" />
+            <span>{url}</span>
+          </Button>
         </DropdownItem>
+        <DropdownItem
+          style={{ display: "flex", justifyContent: "space-around" }}
+        >
+          <ShareOnFaceBook url={url} />
+          <ShareOnLinkedIn url={url} />
+          <ShareOnTwitter />
+        </DropdownItem>
+        <DropdownItem divider />
+
         <DropdownItem onClick={handleCopyAndMakePublic} disabled={!author}>
           <i className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`} />
           Copy and make public
@@ -82,6 +111,7 @@ const EntryOptionsMenu = ({
           {`Make ${is_public ? "Private" : "Public"}`}
         </DropdownItem>
         <DropdownItem divider />
+
         <DropdownItem onClick={toggleModal}>
           <i className="fas fa-trash-alt mr-1" />
           Delete Entry
@@ -113,12 +143,13 @@ const EntryOptionsMenu = ({
 
 EntryOptionsMenu.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  title: PropTypes.string,
   author: PropTypes.number,
   is_public: PropTypes.bool.isRequired,
   history: PropTypes.object,
   shouldRedirectOnDelete: PropTypes.bool,
 }
 
-EntryOptionsMenu.defaultProps = { }
+EntryOptionsMenu.defaultProps = {}
 
 export default memo(EntryOptionsMenu)

@@ -45,6 +45,7 @@ const EntryCard = ({
         >
           <EntryOptionsMenu
             entryId={id}
+            title={title}
             author={author}
             is_public={is_public}
           />

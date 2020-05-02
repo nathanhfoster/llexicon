@@ -1,4 +1,5 @@
 import { lazy } from "react"
+import ReactGA from "react-ga"
 
 const DeepClone = (arrayOrObj) => JSON.parse(JSON.stringify(arrayOrObj))
 
@@ -533,6 +534,46 @@ const isType = {
   OBJECT: "object",
 }
 
+const shareUrl = ({ url, title, text }) => {
+  if (!navigator.share) return
+  navigator
+    .share({
+      url,
+      title,
+      text,
+    })
+    .then(() => {
+      console.log("Shared YEEEE!!!!!")
+      ReactGA.event({
+        category: "Share Url",
+        action: "User shared a url!",
+        value: url,
+      })
+    })
+    .catch((error) => {
+      console.log("Sharing Failed")
+    })
+}
+
+const shareFile = (file) => {
+  let filesArray = [file]
+  if (!navigator.canShare || !navigator.canShare({ files: filesArray })) return
+  navigator
+    .share({
+      files: filesArray,
+      title: "My File",
+      text: "Here, Sharing my files. Keep it safe",
+    })
+    .then(() => {
+      console.log("Share was successful.")
+      ReactGA.event({
+        category: "Share File",
+        action: "User shared a file!",
+      })
+    })
+    .catch((error) => console.log("Sharing failed", error))
+}
+
 export {
   DeepClone,
   getObjectLength,
@@ -579,4 +620,6 @@ export {
   formatBytes,
   getStringBytes,
   isType,
+  shareUrl,
+  shareFile,
 }
