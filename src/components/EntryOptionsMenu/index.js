@@ -81,8 +81,7 @@ const EntryOptionsMenu = ({
 
       shareUrl(sharePayload)
     },
-    [url, title],
-    is_public
+    [is_public, url, title]
   )
 
   return (
