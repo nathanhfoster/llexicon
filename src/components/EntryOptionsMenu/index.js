@@ -67,11 +67,26 @@ const EntryOptionsMenu = ({
     handleEditorChange({ is_public: !is_public })
   }, [is_public])
 
-const handleShareOnMobile = useCallback(() => {
-    handleToggleIsPublic()
-    const sharePayload = { url, title, text: "Check out my journal entry: " }
-    shareUrl(sharePayload)
-  }, [url, title], is_public)
+  const handleShareOnMobile = useCallback(
+    () => {
+      const onSuccessCallback = (response) => {
+        handleToggleIsPublic()
+      }
+      const onErrorCallback = (response) => {
+        alert(response)
+      }
+      const sharePayload = {
+        url,
+        title,
+        text: "Check out my journal entry: ",
+        onSuccessCallback,
+        onErrorCallback,
+      }
+      shareUrl(sharePayload)
+    },
+    [url, title],
+    is_public
+  )
 
   return (
     <ButtonDropdown
