@@ -123,7 +123,7 @@ const EntryOptionsMenu = ({
         </DropdownItem>
         <DropdownItem divider />
 
-        <DropdownItem onClick={toggleModal} style{{ color: "var(--danger)" }}>
+        <DropdownItem onClick={toggleModal} style={{ color: "var(--danger)" }}>
           <i className="fas fa-trash-alt mr-1" />
           Delete Entry
           <BasicModal
