@@ -4,7 +4,7 @@ import ShareUrl from "../"
 
 const ShareOnTwitter = ({ text }) => (
   <ShareUrl href={`https://twitter.com/intent/tweet?text=${text}`}>
-    <i className="fab fa-twitter" />
+    <i className="fab fa-twitter-square" />
   </ShareUrl>
 )
 

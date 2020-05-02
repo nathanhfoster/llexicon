@@ -4,7 +4,7 @@ import ShareUrl from "../"
 
 const ShareOnFacebook = ({ url }) => (
   <ShareUrl href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}>
-    <i className="fab fa-facebook-f" />
+    <i className="fab fa-facebook-square" />
   </ShareUrl>
 )
 

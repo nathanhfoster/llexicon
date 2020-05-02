@@ -69,20 +69,15 @@ const EntryOptionsMenu = ({
 
   const handleShareOnMobile = useCallback(
     () => {
-      const onSuccessCallback = (response) => {
-        handleToggleIsPublic()
-      }
-      const onErrorCallback = (response) => {
-        alert(response)
-      }
       const sharePayload = {
         url,
         title,
         text: "Check out my journal entry: ",
-        onSuccessCallback,
-        onErrorCallback,
       }
+
       shareUrl(sharePayload)
+        .then((response) => handleToggleIsPublic())
+        .catch((error) => alert(error))
     },
     [url, title],
     is_public
@@ -109,9 +104,7 @@ const EntryOptionsMenu = ({
             <span>{url}</span>
           </Button>
         </DropdownItem>
-        <DropdownItem
-          style={{ display: "flex", justifyContent: "space-around" }}
-        >
+        <DropdownItem className="SocialMediaShareContainer">
           <ShareOnFaceBook url={url} />
           <ShareOnLinkedIn url={url} />
           <ShareOnTwitter />

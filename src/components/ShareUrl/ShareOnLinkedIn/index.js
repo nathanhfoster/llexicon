@@ -4,7 +4,7 @@ import ShareUrl from "../"
 
 const ShareOnLinkedIn = ({ url }) => (
   <ShareUrl href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`}>
-    <i className="fab fa-linkedin-in" />
+    <i className="fab fa-linkedin" />
   </ShareUrl>
 )
 

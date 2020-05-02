@@ -534,7 +534,7 @@ const isType = {
   OBJECT: "object",
 }
 
-const shareUrl = ({ url, title, text, onSuccessCallback, onErrorCallback }) => {
+const shareUrl = ({ url, title, text }) => {
   if (!navigator.share) return
   navigator
     .share({
@@ -543,15 +543,15 @@ const shareUrl = ({ url, title, text, onSuccessCallback, onErrorCallback }) => {
       text,
     })
     .then((response) => {
-      onSuccessCallback && onSuccessCallback(response)
       ReactGA.event({
         category: "Share Url",
         action: "User shared a url!",
         value: url,
       })
+      return response
     })
     .catch((error) => {
-      onErrorCallback && onErrorCallback(error)
+      return error
     })
 }
 
