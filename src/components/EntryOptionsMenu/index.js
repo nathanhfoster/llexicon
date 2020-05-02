@@ -93,22 +93,23 @@ const EntryOptionsMenu = ({
         <i className="fas fa-ellipsis-v" style={{ fontSize: 20 }} />
       </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem header>
-          <Button
-            color={!canShareOnMobileDevice ? "inherit" : "accent"}
-            className="EntryOptionsMenuShareButton"
-            disabled={!canShareOnMobileDevice}
-            onClick={handleShareOnMobile}
-          >
-            <i className="fas fa-share mr-1" />
-            <span>{url}</span>
-          </Button>
-        </DropdownItem>
-        <DropdownItem className="SocialMediaShareContainer">
+        <Button
+          tag={DropdownItem}
+          header
+          color={!canShareOnMobileDevice ? "inherit" : "accent"}
+          className="EntryOptionsMenuShareButton"
+          disabled={!canShareOnMobileDevice}
+          onClick={handleShareOnMobile}
+        >
+          <i className="fas fa-share mr-1" />
+          <span>{url}</span>
+        </Button>
+        <DropdownItem divider />
+        <div className="SocialMediaShareContainer">
           <ShareOnFaceBook url={url} />
           <ShareOnLinkedIn url={url} />
           <ShareOnTwitter />
-        </DropdownItem>
+        </div>
         <DropdownItem divider />
 
         <DropdownItem onClick={handleCopyAndMakePublic} disabled={!author}>
