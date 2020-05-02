@@ -18,6 +18,7 @@ import { copyStringToClipboard, shareUrl } from "../../helpers"
 import { RouterGoBack, GetEntryDetailUrl } from "../../routes"
 import { useDispatch } from "react-redux"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
+import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
 const EntryOptionsMenu = ({
@@ -37,7 +38,8 @@ const EntryOptionsMenu = ({
 
   const { origin } = window.location
   const url = `${origin}${GetEntryDetailUrl(entryId)}`
-  const canShareOnMobileDevice = navigator.share
+  const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
+  const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
 
   const handleEditorChange = useCallback(
     ({ ...payload }) => dispatch(UpdateReduxEntry(entryId, payload)),
