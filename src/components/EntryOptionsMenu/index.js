@@ -56,11 +56,6 @@ const EntryOptionsMenu = ({
     }, 200)
   }, [history])
 
-  const handleShareOnMobile = useCallback(() => {
-    const sharePayload = { url, title, text: "Check out my journal entry." }
-    shareUrl(sharePayload)
-  }, [url, title])
-
   const handleCopyAndMakePublic = useCallback(() => {
     copyStringToClipboard(url)
     setUrlCopied(true)
@@ -71,6 +66,12 @@ const EntryOptionsMenu = ({
     setUrlCopied(false)
     handleEditorChange({ is_public: !is_public })
   }, [is_public])
+
+const handleShareOnMobile = useCallback(() => {
+    handleToggleIsPublic()
+    const sharePayload = { url, title, text: "Check out my journal entry." }
+    shareUrl(sharePayload)
+  }, [url, title], is_public)
 
   return (
     <ButtonDropdown
