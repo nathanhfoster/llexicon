@@ -69,6 +69,8 @@ const EntryOptionsMenu = ({
 
   const handleShareOnMobile = useCallback(
     () => {
+      handleToggleIsPublic()
+
       const sharePayload = {
         url,
         title,
@@ -76,8 +78,6 @@ const EntryOptionsMenu = ({
       }
 
       shareUrl(sharePayload)
-        .then((response) => handleToggleIsPublic())
-        .catch((error) => alert(error))
     },
     [url, title],
     is_public
