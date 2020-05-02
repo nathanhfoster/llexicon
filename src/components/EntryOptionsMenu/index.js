@@ -69,7 +69,7 @@ const EntryOptionsMenu = ({
 
 const handleShareOnMobile = useCallback(() => {
     handleToggleIsPublic()
-    const sharePayload = { url, title, text: "Check out my journal entry." }
+    const sharePayload = { url, title, text: "Check out my journal entry: " }
     shareUrl(sharePayload)
   }, [url, title], is_public)
 
