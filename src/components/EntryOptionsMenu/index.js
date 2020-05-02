@@ -108,7 +108,7 @@ const EntryOptionsMenu = ({
         <div className="SocialMediaShareContainer">
           <ShareOnFaceBook url={url} />
           <ShareOnLinkedIn url={url} />
-          <ShareOnTwitter />
+          <ShareOnTwitter text={`Check my journal entry: ${url}`} />
         </div>
         <DropdownItem divider />
 
