@@ -27,6 +27,7 @@ const EntryOptionsMenu = ({
   author,
   is_public,
   history,
+  shouldSyncOnUpdate,
   shouldRedirectOnDelete,
 }) => {
   const dispatch = useDispatch()
@@ -41,10 +42,12 @@ const EntryOptionsMenu = ({
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
   const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
 
-  const handleEditorChange = useCallback(
-    ({ ...payload }) => dispatch(UpdateReduxEntry(entryId, payload)),
-    []
-  )
+  const handleSync = useCallback(() => dispatch(SyncEntries()), [])
+
+  const handleEditorChange = useCallback(({ ...payload }) => {
+    dispatch(UpdateReduxEntry(entryId, payload))
+    shouldSyncOnUpdate && handleSync()
+  }, [])
 
   const handleDelete = useCallback(() => {
     shouldRedirectOnDelete && RouterGoBack(history)
@@ -54,7 +57,7 @@ const EntryOptionsMenu = ({
           _shouldDelete: true,
         })
       )
-      dispatch(SyncEntries())
+      handleSync()
     }, 200)
   }, [history])
 
@@ -69,20 +72,17 @@ const EntryOptionsMenu = ({
     handleEditorChange({ is_public: !is_public })
   }, [is_public])
 
-  const handleShareOnMobile = useCallback(
-    () => {
-      handleToggleIsPublic()
+  const handleShareOnMobile = useCallback(() => {
+    handleToggleIsPublic()
 
-      const sharePayload = {
-        url,
-        title,
-        text: "Check out my journal entry: ",
-      }
+    const sharePayload = {
+      url,
+      title,
+      text: "Check out my journal entry: ",
+    }
 
-      shareUrl(sharePayload)
-    },
-    [is_public, url, title]
-  )
+    shareUrl(sharePayload)
+  }, [is_public, url, title])
 
   return (
     <ButtonDropdown
@@ -158,9 +158,13 @@ EntryOptionsMenu.propTypes = {
   author: PropTypes.number,
   is_public: PropTypes.bool.isRequired,
   history: PropTypes.object,
+  shouldSyncOnUpdate: PropTypes.bool,
   shouldRedirectOnDelete: PropTypes.bool,
 }
 
-EntryOptionsMenu.defaultProps = {}
+EntryOptionsMenu.defaultProps = {
+  shouldSyncOnUpdate: false,
+  shouldRedirectOnDelete: false,
+}
 
 export default memo(EntryOptionsMenu)

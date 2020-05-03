@@ -48,6 +48,7 @@ const EntryCard = ({
             title={title}
             author={author}
             is_public={is_public}
+            shouldSyncOnUpdate={true}
           />
         </div>
         <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
