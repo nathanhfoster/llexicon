@@ -93,7 +93,7 @@ const EntryOptionsMenu = ({
       <DropdownToggle>
         <i className="fas fa-ellipsis-v" style={{ fontSize: 20 }} />
       </DropdownToggle>
-      <DropdownMenu right>
+      <DropdownMenu right className="EntryOptionsDropDown">
         <DropdownItem header>
           <Button
             color={!canShareOnMobileDevice ? "primary" : "accent"}
