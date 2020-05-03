@@ -543,15 +543,15 @@ const shareUrl = ({ url, title, text }) => {
       text,
     })
     .then((response) => {
+      console.log("Successfully shared: ", response)
       ReactGA.event({
         category: "Share Url",
         action: "User shared a url!",
         value: url,
       })
-      return response
     })
     .catch((error) => {
-      return error
+      alert(error)
     })
 }
 

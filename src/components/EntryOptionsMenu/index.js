@@ -51,12 +51,11 @@ const EntryOptionsMenu = ({
 
   const handleDelete = useCallback(() => {
     shouldRedirectOnDelete && RouterGoBack(history)
-    setTimeout(async () => {
-      await dispatch(
-        handleEditorChange({
-          _shouldDelete: true,
-        })
-      )
+    setTimeout(() => {
+      handleEditorChange({
+        _shouldDelete: true,
+      })
+
       handleSync()
     }, 200)
   }, [history])
