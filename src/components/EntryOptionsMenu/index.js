@@ -86,7 +86,7 @@ const EntryOptionsMenu = ({
   return (
     <ButtonDropdown
       className="EntryOptionsMenu"
-      direction="right"
+      direction="down"
       isOpen={dropdownOpen}
       toggle={toggleDropdown}
     >
