@@ -88,7 +88,6 @@ const Entry = ({
             />
           </InputGroupText>
         </InputGroupAddon>
-        {!readOnly && (
           <Fragment>
             <InputGroupAddon addonType="append">
               <InputGroupText
@@ -100,10 +99,10 @@ const Entry = ({
                 is_public={entry.is_public}
                 history={history}
                 shouldRedirectOnDelete={shouldRedirectOnDelete}
+                readOnly={readOnly}
               />
             </InputGroupAddon>
           </Fragment>
-        )}
       </InputGroup>
     </Editor>
   )
