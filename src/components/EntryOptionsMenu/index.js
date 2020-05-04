@@ -15,7 +15,7 @@ import {
   ShareOnTwitter,
 } from "../"
 import { copyStringToClipboard, shareUrl } from "../../helpers"
-import { RouterGoBack, GetEntryDetailUrl } from "../../routes"
+import { RouterGoBack } from "../../routes"
 import { useDispatch } from "react-redux"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
 import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
@@ -37,8 +37,8 @@ const EntryOptionsMenu = ({
   const toggleDropdown = () => setOpen(!dropdownOpen)
   const toggleModal = () => setShowModal(!showModal)
 
-  const { origin } = window.location
-  const url = `${origin}${GetEntryDetailUrl(entryId)}`
+  const { href } = window.location
+  const url = href
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
   const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
 
