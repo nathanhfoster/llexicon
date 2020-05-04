@@ -64,7 +64,7 @@ const EntryOptionsMenu = ({
   const handleCopyAndMakePublic = useCallback(() => {
     copyStringToClipboard(url)
     setUrlCopied(true)
-    if (!is_public) handleEditorChange({ is_public: true })
+    !is_public && handleEditorChange({ is_public: true })
   }, [is_public])
 
   const handleToggleIsPublic = useCallback(() => {
@@ -73,7 +73,7 @@ const EntryOptionsMenu = ({
   }, [is_public])
 
   const handleShareOnMobile = useCallback(() => {
-    handleToggleIsPublic()
+   !readOnly && handleToggleIsPublic()
 
     const sharePayload = {
       url,
