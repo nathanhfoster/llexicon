@@ -73,7 +73,7 @@ const EntryOptionsMenu = ({
   }, [is_public])
 
   const handleShareOnMobile = useCallback(() => {
-   !readOnly && handleToggleIsPublic()
+   !readOnly && handleEditorChange({ is_public: true })
 
     const sharePayload = {
       url,
