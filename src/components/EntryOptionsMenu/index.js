@@ -105,6 +105,7 @@ const EntryOptionsMenu = ({
             <span>{url}</span>
           </Button>
         </DropdownItem>
+
         <DropdownItem divider />
         <div className="SocialMediaShareContainer">
           <ShareOnFaceBook url={url} />

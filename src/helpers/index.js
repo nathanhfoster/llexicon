@@ -394,11 +394,11 @@ const throttled = (func, delay = 1000) => {
   }
 }
 
-const copyStringToClipboard = (str) => {
+const copyStringToClipboard = (string) => {
   // Create new element
-  var el = document.createElement("textarea")
+  let el = document.createElement("textarea")
   // Set value (string to be copied)
-  el.value = str
+  el.value = string
   // Set non-editable to avoid focus and move outside of view
   el.setAttribute("readonly", "")
   el.style = { position: "absolute", left: "-9999px" }
