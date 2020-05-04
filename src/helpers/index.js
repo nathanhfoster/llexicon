@@ -551,7 +551,7 @@ const shareUrl = ({ url, title, text }) => {
       })
     })
     .catch((error) => {
-      alert(error)
+      console.log(error)
     })
 }
 

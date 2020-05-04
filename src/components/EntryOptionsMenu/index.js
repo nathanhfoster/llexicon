@@ -29,6 +29,7 @@ const EntryOptionsMenu = ({
   history,
   shouldSyncOnUpdate,
   shouldRedirectOnDelete,
+  readOnly,
 }) => {
   const dispatch = useDispatch()
   const [dropdownOpen, setOpen] = useState(false)
@@ -63,7 +64,7 @@ const EntryOptionsMenu = ({
   const handleCopyAndMakePublic = useCallback(() => {
     copyStringToClipboard(url)
     setUrlCopied(true)
-    if (!is_public) handleEditorChange({ is_public: true })
+    !is_public && handleEditorChange({ is_public: true })
   }, [is_public])
 
   const handleToggleIsPublic = useCallback(() => {
@@ -72,7 +73,7 @@ const EntryOptionsMenu = ({
   }, [is_public])
 
   const handleShareOnMobile = useCallback(() => {
-    handleToggleIsPublic()
+   !readOnly && handleEditorChange({ is_public: true })
 
     const sharePayload = {
       url,
@@ -112,7 +113,8 @@ const EntryOptionsMenu = ({
           <ShareOnTwitter text={`Check my journal entry: ${url}`} />
         </div>
         <DropdownItem divider />
-
+        {!readOnly &&
+        <Fragment>
         <DropdownItem onClick={handleCopyAndMakePublic} disabled={!author}>
           <i className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`} />
           Copy and make public
@@ -122,6 +124,7 @@ const EntryOptionsMenu = ({
           {`Make ${is_public ? "Private" : "Public"}`}
         </DropdownItem>
         <DropdownItem divider />
+        
 
         <DropdownItem onClick={toggleModal} style={{ color: "var(--danger)" }}>
           <i className="fas fa-trash-alt mr-1" />
@@ -147,6 +150,8 @@ const EntryOptionsMenu = ({
             </span>
           </BasicModal>
         </DropdownItem>
+        </Fragment>
+}
       </DropdownMenu>
     </ButtonDropdown>
   )
@@ -160,11 +165,13 @@ EntryOptionsMenu.propTypes = {
   history: PropTypes.object,
   shouldSyncOnUpdate: PropTypes.bool,
   shouldRedirectOnDelete: PropTypes.bool,
+  readOnly: PropTypes.bool.isRequired,
 }
 
 EntryOptionsMenu.defaultProps = {
   shouldSyncOnUpdate: false,
   shouldRedirectOnDelete: false,
+  readOnly: true
 }
 
 export default memo(EntryOptionsMenu)
