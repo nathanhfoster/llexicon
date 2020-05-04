@@ -10,8 +10,11 @@ import PageNotFound from "../PageNotFound"
 import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
-const mapStateToProps = ({ User, Entries: { items, filteredItems } }) => ({
-  UserId: User.id,
+const mapStateToProps = ({
+  User: { id },
+  Entries: { items, filteredItems },
+}) => ({
+  userId: id,
   items,
   filteredItems,
 })
@@ -20,7 +23,7 @@ const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
 
 const EntryDetail = ({
   entryId,
-  UserId,
+  userId,
   items,
   filteredItems,
   GetUserEntryDetails,
@@ -30,11 +33,13 @@ const EntryDetail = ({
   let setCalendarDateToEntryDate = useRef(false)
   const entry = useMemo(
     () => items.concat(filteredItems).find(({ id }) => id == entryId),
-    [UserId, entryId, items, filteredItems]
+    [userId, entryId, items, filteredItems]
   )
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
-  const readOnly = Boolean(entry && entry.author && UserId !== entry.author)
+  const readOnly = Boolean(
+    entry && entry.author && userId && userId !== entry.author
+  )
 
   useEffect(() => {
     if (!entryIsLocalOnly) {
@@ -77,7 +82,7 @@ const EntryDetail = ({
 
 EntryDetail.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  UserId: PropTypes.number,
+  userId: PropTypes.number,
   items: EntriesPropTypes.isRequired,
   filteredItems: EntriesPropTypes.isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,

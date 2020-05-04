@@ -88,21 +88,20 @@ const Entry = ({
             />
           </InputGroupText>
         </InputGroupAddon>
-          <Fragment>
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                className="p-0"
-                tag={EntryOptionsMenu}
-                onChangeCallback={handleEditorChange}
-                entryId={entry.id}
-                author={entry.author}
-                is_public={entry.is_public}
-                history={history}
-                shouldRedirectOnDelete={shouldRedirectOnDelete}
-                readOnly={readOnly}
-              />
-            </InputGroupAddon>
-          </Fragment>
+        <Fragment>
+          <InputGroupAddon addonType="append">
+            <InputGroupText
+              className="p-0"
+              tag={EntryOptionsMenu}
+              onChangeCallback={handleEditorChange}
+              entryId={entry.id}
+              is_public={entry.is_public}
+              history={history}
+              shouldRedirectOnDelete={shouldRedirectOnDelete}
+              readOnly={readOnly}
+            />
+          </InputGroupAddon>
+        </Fragment>
       </InputGroup>
     </Editor>
   )

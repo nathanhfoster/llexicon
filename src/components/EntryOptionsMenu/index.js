@@ -24,7 +24,6 @@ import "./styles.css"
 const EntryOptionsMenu = ({
   entryId,
   title,
-  author,
   is_public,
   history,
   shouldSyncOnUpdate,
@@ -73,7 +72,7 @@ const EntryOptionsMenu = ({
   }, [is_public])
 
   const handleShareOnMobile = useCallback(() => {
-   !readOnly && handleEditorChange({ is_public: true })
+    !readOnly && handleEditorChange({ is_public: true })
 
     const sharePayload = {
       url,
@@ -113,45 +112,47 @@ const EntryOptionsMenu = ({
           <ShareOnTwitter text={`Check my journal entry: ${url}`} />
         </div>
         <DropdownItem divider />
-        {!readOnly &&
-        <Fragment>
-        <DropdownItem onClick={handleCopyAndMakePublic} disabled={!author}>
-          <i className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`} />
-          Copy and make public
-        </DropdownItem>
-        <DropdownItem onClick={handleToggleIsPublic}>
-          <i className={`fas fa-lock${is_public ? "-open" : ""} mr-1`} />
-          {`Make ${is_public ? "Private" : "Public"}`}
-        </DropdownItem>
-        <DropdownItem divider />
-        
 
-        <DropdownItem onClick={toggleModal} style={{ color: "var(--danger)" }}>
-          <i className="fas fa-trash-alt mr-1" />
-          Delete Entry
-          <BasicModal
-            size="xs"
-            button={false}
-            show={showModal}
-            title={"Delete Entry"}
-            footer={
-              <Fragment>
-                <Button color="danger" onClick={handleDelete}>
-                  Confirm
-                </Button>
-                <Button color="success" onClick={toggleModal}>
-                  Cancel
-                </Button>
-              </Fragment>
-            }
+        <Fragment>
+          <DropdownItem onClick={handleCopyAndMakePublic} disabled={readOnly}>
+            <i className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`} />
+            Copy and make public
+          </DropdownItem>
+          <DropdownItem onClick={handleToggleIsPublic} disabled={readOnly}>
+            <i className={`fas fa-lock${is_public ? "-open" : ""} mr-1`} />
+            {`Make ${is_public ? "Private" : "Public"}`}
+          </DropdownItem>
+          <DropdownItem divider />
+
+          <DropdownItem
+            onClick={toggleModal}
+            style={{ color: "var(--danger)" }}
+            disabled={readOnly}
           >
-            <span className="Center">
-              Are you sure you want to delete this entry?
-            </span>
-          </BasicModal>
-        </DropdownItem>
+            <i className="fas fa-trash-alt mr-1" />
+            Delete Entry
+            <BasicModal
+              size="xs"
+              button={false}
+              show={showModal}
+              title={"Delete Entry"}
+              footer={
+                <Fragment>
+                  <Button color="danger" onClick={handleDelete}>
+                    Confirm
+                  </Button>
+                  <Button color="success" onClick={toggleModal}>
+                    Cancel
+                  </Button>
+                </Fragment>
+              }
+            >
+              <span className="Center">
+                Are you sure you want to delete this entry?
+              </span>
+            </BasicModal>
+          </DropdownItem>
         </Fragment>
-}
       </DropdownMenu>
     </ButtonDropdown>
   )
@@ -160,7 +161,6 @@ const EntryOptionsMenu = ({
 EntryOptionsMenu.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string,
-  author: PropTypes.number,
   is_public: PropTypes.bool.isRequired,
   history: PropTypes.object,
   shouldSyncOnUpdate: PropTypes.bool,
@@ -171,7 +171,7 @@ EntryOptionsMenu.propTypes = {
 EntryOptionsMenu.defaultProps = {
   shouldSyncOnUpdate: false,
   shouldRedirectOnDelete: false,
-  readOnly: true
+  readOnly: true,
 }
 
 export default memo(EntryOptionsMenu)
