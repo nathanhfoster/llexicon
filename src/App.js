@@ -140,6 +140,11 @@ const App = ({
               <Home {...addToHomeScreenProps} history={history} />
             )}
           />
+          {/* <Route
+            path={ROOT}
+            render={() => <Redirect to={HOME} />}
+            exact={true}
+          /> */}
           <Route
             exact
             path={[LOGIN, SIGNUP, PASSWORD_RESET]}
