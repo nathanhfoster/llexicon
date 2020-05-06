@@ -53,7 +53,10 @@ const {
   PRIVACY_POLICY,
 } = RouteMap
 
-const mapStateToProps = ({ User }) => ({ User })
+const mapStateToProps = ({ User }) => ({
+  userId: User.id,
+  userToken: User.token,
+})
 
 const mapDispatchToProps = {
   SetWindow,
@@ -70,7 +73,8 @@ const mapDispatchToProps = {
 
 const App = ({
   GetUserSettings,
-  User,
+  userId,
+  userToken,
   SetWindow,
   SetLocalStorageUsage,
   SetCalendar,
@@ -101,7 +105,7 @@ const App = ({
 
     handleResize()
 
-    if (User.id) {
+    if (userId) {
       SyncEntries(() => new Promise((resolve) => resolve(GetUserEntries(1))))
       GetUserSettings()
       GetUserEntryTags()
@@ -149,7 +153,7 @@ const App = ({
             exact
             path={[LOGIN, SIGNUP, PASSWORD_RESET]}
             component={renderRedirectOrComponent(
-              !!User.token,
+              !!userToken,
               Account,
               "GoBack"
             )}
@@ -215,7 +219,7 @@ App.propTypes = {
 }
 
 const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, ["User"])
+  memoizeProps(prevProps, nextProps, ["userId", "userToken"])
 
 export default withRouter(
   reduxConnect(mapStateToProps, mapDispatchToProps)(memo(App, isEqual))
