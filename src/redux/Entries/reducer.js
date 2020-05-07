@@ -1,4 +1,4 @@
-import { EntriesActionTypes } from "../Entries/types"
+import { EntriesActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
 import { handleFilterEntries } from "./utils"
 import { getStringBytes, mergeJson } from "../../helpers"
