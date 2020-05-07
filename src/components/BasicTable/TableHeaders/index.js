@@ -1,9 +1,7 @@
-import React, { useMemo, memo, useCallback } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import TableHeader from "./TableHeader"
-import { Input } from "reactstrap"
-import { capitalizeFirstLetter, isType } from "../../../helpers"
-import { ColumnsPropType } from "../propTypes"
+import { ColumnsPropType } from "../state/propTypes"
 
 const TableHeaders = ({
   columns,

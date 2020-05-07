@@ -1,7 +1,7 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import TableDataCell from "./TableDataCell"
-import { ColumnsPropType } from "../../propTypes"
+import { ColumnsPropType } from "../../state/propTypes"
 
 const TableRow = ({ onRowClick, item, columns }) => {
   const [firstColumn, ...restOfColumns] = columns

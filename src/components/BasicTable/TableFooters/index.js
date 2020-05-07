@@ -1,5 +1,5 @@
 import React, { useMemo, memo } from "react"
-import { ColumnsPropType, DataPropType } from "../propTypes"
+import { ColumnsPropType, DataPropType } from "../state/propTypes"
 
 const TableFooters = ({ columns, data }) => {
   const shouldRender = useMemo(() => columns.some((column) => column.footer))

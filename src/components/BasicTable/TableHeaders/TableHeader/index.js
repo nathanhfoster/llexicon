@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import { UseDebounce } from "../../../"
 import { capitalizeFirstLetter, isType } from "../../../../helpers"
-import { ColumnPropType } from "../../propTypes"
+import { ColumnPropType } from "../../state/propTypes"
 import "./styles.css"
 
 const TableHeader = ({
