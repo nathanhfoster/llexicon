@@ -2,6 +2,7 @@ import React, { memo } from "react"
 import { Container, Row, Col, Button } from "reactstrap"
 import BasicDropDown from "../../BasicDropDown"
 import PropTypes from "prop-types"
+import { basicTableSetPage, basicTableSetPageSize } from "../state/actions"
 import "./styles.css"
 
 const TablePaginator = ({
@@ -10,9 +11,16 @@ const TablePaginator = ({
   totalPages,
   pageSize,
   dataLength,
-  handlePageChange,
-  handlePageSizeChange,
+  dispatch,
 }) => {
+  const handlePageChange = (page) => {
+    dispatch(basicTableSetPage(page))
+  }
+
+  const handlePageSizeChange = (id, pageSize) => {
+    dispatch(basicTableSetPageSize(pageSize))
+  }
+
   const pageList = [{ header: true, value: "Page" }].concat(
     new Array(totalPages).fill().map((e, i) => ({ value: i + 1 }))
   )
@@ -82,6 +90,7 @@ const TablePaginator = ({
 }
 
 TablePaginator.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   pageSizes: PropTypes.arrayOf(
@@ -100,8 +109,6 @@ TablePaginator.propTypes = {
   ).isRequired,
   totalPages: PropTypes.number.isRequired,
   dataLength: PropTypes.number.isRequired,
-  handlePageChange: PropTypes.func.isRequired,
-  handlePageSizeChange: PropTypes.func.isRequired,
 }
 
 export default memo(TablePaginator)

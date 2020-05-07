@@ -6,7 +6,7 @@ import TableBody from "./TableBody"
 import TableFooters from "./TableFooters"
 import TablePaginator from "./TablePaginator"
 import { tableSort, tableFilter } from "./utils"
-import { ColumnsPropType, DataPropType } from "./state/propTypes"
+import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../helpers"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
 import {
@@ -14,7 +14,6 @@ import {
   basicTableFilter,
   basicTableSetPage,
   basicTableSetPageSize,
-  basicTableResetState,
 } from "./state/actions"
 import "./styles.css"
 
@@ -31,9 +30,10 @@ const BasicTable = ({
   onFilterCallback,
   ...propsUsedToDeriveState
 }) => {
+  const initialState = { columns, ...propsUsedToDeriveState }
   const [state, dispatch] = useReducer(
     BasicTableReducer,
-    { columns, ...propsUsedToDeriveState },
+    initialState,
     getInitialState
   )
 
@@ -45,33 +45,6 @@ const BasicTable = ({
     sortList,
     filterList,
   } = state
-
-  // console.log("sortList: ", sortList)
-  // console.log("filterList: ", filterList)
-
-  const handleSort = useCallback((sortKey, sortUp) => {
-    onSortCallback && onSortCallback(sortKey, sortUp)
-
-    const payload = { sortKey, sortUp }
-
-    dispatch(basicTableSort(payload))
-  }, [])
-
-  const handleFilter = useCallback((filterKey, filterValue) => {
-    onFilterCallback && onFilterCallback(filterKey, filterValue)
-
-    const payload = { filterKey, filterValue }
-
-    dispatch(basicTableFilter(payload))
-  }, [])
-
-  const handlePageChange = (currentPage) => {
-    dispatch(basicTableSetPage(currentPage))
-  }
-
-  const handlePageSizeChange = (id, pageSize) => {
-    dispatch(basicTableSetPageSize(pageSize))
-  }
 
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
@@ -96,10 +69,11 @@ const BasicTable = ({
         className="BasicTable m-0"
       >
         <TableHeaders
-          sortable={sortable}
-          sortCallback={handleSort}
-          filterCallback={handleFilter}
+          dispatch={dispatch}
+          onSortCallback={onSortCallback}
+          onFilterCallback={onFilterCallback}
           columns={columns}
+          sortable={sortable}
           sortList={sortList}
         />
         <TableBody
@@ -109,20 +83,15 @@ const BasicTable = ({
           pageSize={pageSize}
           onRowClick={onRowClick}
         />
-        <TableFooters
-          onRowClick={onRowClick}
-          columns={columns}
-          data={sortedAndFilteredData}
-        />
+        <TableFooters columns={columns} data={sortedAndFilteredData} />
       </Table>
       <TablePaginator
+        dispatch={dispatch}
         currentPage={currentPage}
         totalPages={totalPages}
         pageSize={pageSize}
         pageSizes={pageSizes}
         dataLength={dataLength}
-        handlePageChange={handlePageChange}
-        handlePageSizeChange={handlePageSizeChange}
       />
     </Fragment>
   )

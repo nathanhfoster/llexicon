@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import { UseDebounce } from "../../../"
 import { capitalizeFirstLetter, isType } from "../../../../helpers"
-import { ColumnPropType } from "../../state/propTypes"
+import { ColumnPropType } from "../../state/types"
 import "./styles.css"
 
 const TableHeader = ({
@@ -43,20 +43,19 @@ const TableHeader = ({
           <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
         )}
       </div>
-          <UseDebounce onChangeCallback={handleDebounce} value={filterValue} />
-          <Input
-            className="TableHeaderSortInput"
-            value={filterValue}
-            disabled={!filter}
-            onClick={(e) => e.stopPropagation()}
-            onChange={handleChange}
-            placeholder={
-              filter
-                ? filterPlaceholder ||
-                  `${capitalizeFirstLetter(headerKey)} filter`
-                : null
-            }
-          />
+      <UseDebounce onChangeCallback={handleDebounce} value={filterValue} />
+      <Input
+        className="TableHeaderSortInput"
+        value={filterValue}
+        disabled={!filter}
+        onClick={(e) => e.stopPropagation()}
+        onChange={handleChange}
+        placeholder={
+          filter
+            ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)} filter`
+            : null
+        }
+      />
     </th>
   )
 }

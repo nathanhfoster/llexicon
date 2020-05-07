@@ -1,6 +1,6 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { ColumnsPropType, DataPropType } from "../state/propTypes"
+import { ColumnsPropType, DataPropType } from "../state/types"
 import TableRow from "./TableRow"
 
 const TableBody = ({ columns, data, currentPage, pageSize, onRowClick }) => {

@@ -68,9 +68,6 @@ const BasicTableReducer = (state, action) => {
     case BasicTableActionTypes.BASIC_TABLE_SET_PAGE_SIZE:
       return { ...state, pageSize: payload, currentPage: 0 }
 
-    case BasicTableActionTypes.BASIC_TABLE_RESET:
-      return getInitialState(payload)
-
     default:
       throw new Error()
   }

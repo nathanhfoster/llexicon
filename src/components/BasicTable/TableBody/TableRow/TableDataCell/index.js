@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { ColumnsPropType } from "../../../state/propTypes"
+import { ColumnsPropType } from "../../../state/types"
 import { isType } from "../../../../../helpers"
 
 const TableDataCell = ({ scope, render, item, itemKey }) => {
