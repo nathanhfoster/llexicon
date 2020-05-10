@@ -54,7 +54,7 @@ const LocalStorage = ({
     () =>
       items
         .concat(filteredItems)
-        .reduce((usage, entry) => (usage += entry.size), 0),
+        .reduce((usage, entry) => (usage += entry.size || 0), 0),
     [items, filteredItems]
   )
 
