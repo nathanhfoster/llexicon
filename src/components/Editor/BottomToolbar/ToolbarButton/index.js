@@ -8,7 +8,7 @@ const ToolbarButton = ({
   onClickCallback,
   ButtonIcon,
   title,
-  disabled
+  disabled,
 }) => {
   return (
     <Col
@@ -24,7 +24,7 @@ const ToolbarButton = ({
       ) : (
         cloneElement(ButtonIcon, {
           ...ButtonIcon.props,
-          key: title
+          key: title,
         })
       )}
       <div>{title}</div>
@@ -35,9 +35,9 @@ const ToolbarButton = ({
 ToolbarButton.propTypes = {
   xs: PropTypes.number,
   onClickCallback: PropTypes.func,
-  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   title: PropTypes.string,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
 }
 
 export default memo(ToolbarButton)

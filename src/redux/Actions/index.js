@@ -78,6 +78,12 @@ const Axios = (responseType = "json") => {
   })
 }
 
+const AxiosCors = (responseType = "json") =>
+  axios.create({
+    baseURL: REACT_APP_API_URL,
+    responseType,
+  })
+
 const AxiosOffline = (responseType = "json") => {
   const { token } = getUser()
 
@@ -146,4 +152,4 @@ const Sync = (dispatchActions) => async (dispatch) => {
     })
 }
 
-export { Axios, AxiosOffline, AxiosForm, AxiosData, Sync }
+export { Axios, AxiosCors, AxiosOffline, AxiosForm, AxiosData, Sync }

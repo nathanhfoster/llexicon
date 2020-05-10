@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
+import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { Editor, ReactDatePicker } from "../../components"
 import {
   Container,
@@ -15,6 +16,7 @@ import {
 } from "reactstrap"
 import { SetCalendar } from "../../redux/Calendar/actions"
 import { PostReduxEntry, SyncEntries } from "../../redux/Entries/actions"
+
 import {
   SetEditorState,
   ClearEditorState,
@@ -22,7 +24,7 @@ import {
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../redux/TextEditor/reducer"
 import { getStringBytes } from "../../helpers"
 import "./styles.css"
-
+import { ResetMap } from "../../redux/Map/actions"
 const mapStateToProps = ({ Calendar: { activeDate }, TextEditor }) => ({
   entry: TextEditor,
   activeDate,
@@ -34,18 +36,23 @@ const mapDispatchToProps = {
   SyncEntries,
   SetEditorState,
   ClearEditorState,
+  ResetMap,
 }
 
 const NewEntry = ({
   entry,
   activeDate,
-
   SetCalendar,
   PostReduxEntry,
   SyncEntries,
   SetEditorState,
   ClearEditorState,
+  ResetMap,
 }) => {
+  useEffect(() => {
+    ResetMap()
+  }, [])
+
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
   const postDisabled = editorStateHtmlIsBlank && !entry.title
@@ -128,12 +135,13 @@ const NewEntry = ({
 }
 
 NewEntry.propTypes = {
-  entry: PropTypes.object.isRequired,
+  entry: EntryPropTypes.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SetEditorState: PropTypes.func.isRequired,
   ClearEditorState: PropTypes.func.isRequired,
   PostReduxEntry: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
+  ResetMap: PropTypes.func.isRequired,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(NewEntry)

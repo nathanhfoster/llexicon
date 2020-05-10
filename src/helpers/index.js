@@ -1,4 +1,5 @@
 import { lazy } from "react"
+import ReactGA from "react-ga"
 
 const DeepClone = (arrayOrObj) => JSON.parse(JSON.stringify(arrayOrObj))
 
@@ -393,14 +394,13 @@ const throttled = (func, delay = 1000) => {
   }
 }
 
-const copyStringToClipboard = (str) => {
+const copyStringToClipboard = (s) => {
   // Create new element
-  var el = document.createElement("textarea")
+  let el = document.createElement("textarea")
   // Set value (string to be copied)
-  el.value = str
+  el.value = s
   // Set non-editable to avoid focus and move outside of view
   el.setAttribute("readonly", "")
-  el.style = { position: "absolute", left: "-9999px" }
   document.body.appendChild(el)
   // Select text inside element
   el.select()
@@ -510,14 +510,12 @@ const stringMatch = (s1, s2, caseSensitive = false) => {
 }
 
 const formatBytes = (bytes, decimals = 2) => {
-  if (0 === bytes) return "0 Bytes"
-  const fix = 0 > decimals ? 0 : decimals,
-    d = Math.floor(Math.log(bytes) / Math.log(1024))
-  return (
-    parseFloat((bytes / Math.pow(1024, d)).toFixed(fix)) +
-    " " +
+  if (0 === bytes) return "0B"
+  const fix = 0 > decimals ? 0 : decimals
+  const d = Math.floor(Math.log(bytes) / Math.log(1024))
+  return `${parseFloat((bytes / Math.pow(1024, d)).toFixed(fix))}${
     ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d]
-  )
+  }`
 }
 
 const getStringBytes = (object) =>
@@ -533,6 +531,46 @@ const isType = {
   SYMBOL: "symbol",
   FUNCTION: "function",
   OBJECT: "object",
+}
+
+const shareUrl = ({ url, title, text }) => {
+  if (!navigator.share) return
+  navigator
+    .share({
+      url,
+      title,
+      text,
+    })
+    .then((response) => {
+      console.log("Successfully shared: ", response)
+      ReactGA.event({
+        category: "Share Url",
+        action: "User shared a url!",
+        value: url,
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+const shareFile = (file) => {
+  let filesArray = [file]
+  if (!navigator.canShare || !navigator.canShare({ files: filesArray })) return
+  navigator
+    .share({
+      files: filesArray,
+      title: "My File",
+      text: "Here, Sharing my files. Keep it safe",
+    })
+    .then(() => {
+      console.log("Share was successful.")
+      ReactGA.event({
+        category: "Share File",
+        action: "User shared a file!",
+      })
+    })
+    .catch((error) => console.log("Sharing failed", error))
 }
 
 export {
@@ -581,4 +619,6 @@ export {
   formatBytes,
   getStringBytes,
   isType,
+  shareUrl,
+  shareFile,
 }

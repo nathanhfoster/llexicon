@@ -1,4 +1,4 @@
-import "./styles/index.css"
+import "./css/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
@@ -18,7 +18,11 @@ const { store, persistor } = storeFactory()
 
 const history = createBrowserHistory()
 
-const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
+const AlertNotifications = lazy(() =>
+  new Promise((resolve) => setTimeout(resolve, 1500)).then(() =>
+    import("./components/AlertNotifications")
+  )
+)
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 

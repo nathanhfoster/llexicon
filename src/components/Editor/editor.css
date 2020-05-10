@@ -1,44 +1,46 @@
 .ql-editor {
-    box-shadow: var(--primaryBoxShadow);
-    box-shadow: 0 -2px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--primaryBoxShadow);
+  box-shadow: 0 -2px rgba(0, 0, 0, 0.1);
+  /* Default font-size */
+  font-size: 1rem;
 }
 
 .ql-editor.ql-blank::before {
-    color: var(--secondaryColor);
-    font-style: normal;
+  color: var(--secondaryColor);
+  font-style: normal;
 }
 
 .ql-snow .ql-tooltip {
-    background-color: var(--primaryColor) !important;
-    left: 0 !important;
-    right: 0 !important;
-    color: var(--secondaryColor);
-    border: 0;
-    box-shadow: var(--primaryBoxShadow);
+  background-color: var(--primaryColor) !important;
+  left: 0 !important;
+  right: 0 !important;
+  color: var(--secondaryColor);
+  border: 0;
+  box-shadow: var(--primaryBoxShadow);
 }
 
 .ql-snow .ql-tooltip.ql-flip {
-    /* transform: translateY(4px); */
+  /* transform: translateY(4px); */
 }
 
 .ql-snow .ql-tooltip a {
-    background-color: inherit !important;
+  background-color: inherit !important;
 }
 
-.ql-editor ul>li.ql-indent-1::before {
-    content: '\25E6';
+.ql-editor ul > li.ql-indent-1::before {
+  content: "\25E6";
 }
 
-.ql-editor ul>li.ql-indent-2::before {
-    content: '\25A0';
+.ql-editor ul > li.ql-indent-2::before {
+  content: "\25A0";
 }
 
-.ql-editor ul>li.ql-indent-3::before {
-    content: '\25A1';
+.ql-editor ul > li.ql-indent-3::before {
+  content: "\25A1";
 }
 
-.ql-editor .ql-video  {
-    display: flex;
-    justify-content: center;
-    flex-grow: auto;
+.ql-editor .ql-video {
+  display: flex;
+  justify-content: center;
+  flex-grow: auto;
 }

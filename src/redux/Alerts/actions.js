@@ -1,10 +1,15 @@
 import { AlertActionTypes } from "../Alerts/types"
 
-const ClearAlerts = () => ({ type: AlertActionTypes.ALERTS_CLEAR })
+const SetApiResponseStatus = (payload) => ({
+  type: AlertActionTypes.ALERTS_SET_API_RESPONSE_STATUS,
+  payload,
+})
 
 const SetAlert = (payload) => ({
   type: AlertActionTypes.ALERTS_SET_MESSAGE,
   payload,
 })
 
-export { SetAlert, ClearAlerts }
+const ClearAlerts = () => ({ type: AlertActionTypes.ALERTS_CLEAR })
+
+export { SetApiResponseStatus, SetAlert, ClearAlerts }

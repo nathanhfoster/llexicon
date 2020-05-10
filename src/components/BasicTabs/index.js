@@ -24,7 +24,7 @@ const getInitialState = (activeTab, defaultTab, tabs) => {
 }
 
 const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
-  const [activeTab, setState] = useState(
+  const [activeTab, setActiveTab] = useState(
     getInitialState(restOfProps.activeTab, defaultTab, tabs)
   )
 
@@ -34,65 +34,69 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     if (!mounted.current) {
       mounted.current = true
     } else {
-      setState(restOfProps.activeTab)
+      setActiveTab(restOfProps.activeTab)
     }
   }, [restOfProps.activeTab])
 
-  const handleTabChanged = (activeTab) => setState(activeTab)
+  const handleTabChanged = (activeTab) => setActiveTab(activeTab)
 
-  const renderNavItems = useMemo(
-    () =>
-      tabs.map((tab) => {
-        const { tabId, title, onClickCallback } = tab
-        const onTab = activeTab === tabId
-        const titleIsObject = Boolean(typeof title === isType.OBJECT)
-        return (
-          <NavItem key={tabId} title={titleIsObject ? title.name : title}>
-            <NavLink
-              className={`BasicTabsNavLink p-2 px-sm-3 py-sm-2 ${
-                onTab ? "active" : ""
-              }`}
-              onClick={() =>
-                onClickCallback
-                  ? onClickCallback(tabId)
-                  : handleTabChanged(tabId)
-              }
-            >
-              {titleIsObject ? title.render : title}
-            </NavLink>
-          </NavItem>
-        )
-      }),
-    [activeTab, tabs]
-  )
+  const [renderTabs, renderTabPanes] = useMemo(() => {
+    let tabsToRender = []
+    let tabPanesToRender = []
 
-  const renderTabs = useMemo(
-    () =>
-      tabs.map((tab) => {
-        const { tabId, render, mountTabOnlyWhenActive, className } = tab
-        const shouldNotRender =
-          mountTabOnlyWhenActive === true && activeTab !== tabId
-        return (
-          <TabContent key={tabId} activeTab={activeTab}>
-            {shouldNotRender ? null : (
-              <TabPane tabId={tabId} className={className}>
-                {render}
-              </TabPane>
-            )}
-          </TabContent>
-        )
-      }),
-    [activeTab, tabs]
-  )
+    for (let i = 0, { length } = tabs; i < length; i++) {
+      const tab = tabs[i]
+      const {
+        tabId,
+        title,
+        onClickCallback,
+        render,
+        mountTabOnlyWhenActive,
+        className,
+      } = tab
+      const onTab = activeTab === tabId
+      const titleIsObject = Boolean(typeof title === isType.OBJECT)
+
+      tabsToRender.push(
+        <NavItem key={tabId} title={titleIsObject ? title.name : title}>
+          <NavLink
+            className={`BasicTabsNavLink p-2 px-sm-3 py-sm-2 ${
+              onTab ? "active" : ""
+            }`}
+            onClick={() =>
+              onClickCallback ? onClickCallback(tabId) : handleTabChanged(tabId)
+            }
+          >
+            {titleIsObject ? title.render : title}
+          </NavLink>
+        </NavItem>
+      )
+
+      const shouldNotRenderTabPane =
+        mountTabOnlyWhenActive === true && activeTab !== tabId
+
+      tabPanesToRender.push(
+        <TabContent key={tabId} activeTab={activeTab}>
+          {shouldNotRenderTabPane ? null : (
+            <TabPane tabId={tabId} className={className}>
+              {render}
+            </TabPane>
+          )}
+        </TabContent>
+      )
+    }
+
+    return [tabsToRender, tabPanesToRender]
+  }, [activeTab, tabs])
 
   return (
     <Container fluid={fluid} className={`${className} Container`}>
       <Row>
         <Col tag={Nav} tabs xs={12}>
-          {renderNavItems}
+          {renderTabs}
         </Col>
       </Row>
-      {renderTabs}
+      {renderTabPanes}
     </Container>
   )
 }
@@ -107,9 +111,9 @@ BasicTabs.propTypes = {
       mountTabOnlyWhenActive: PropTypes.bool,
       title: PropTypes.oneOfType([
         PropTypes.string.isRequired,
-        PropTypes.shape({ name: PropTypes.string, render: PropTypes.object }),
+        PropTypes.shape({ name: PropTypes.string, render: PropTypes.node }),
       ]),
-      render: PropTypes.object.isRequired,
+      render: PropTypes.node.isRequired,
       onClickCallback: PropTypes.func,
     }).isRequired
   ),
@@ -118,11 +122,14 @@ BasicTabs.propTypes = {
 BasicTabs.defaultProps = {
   className: "BasicTabs",
   fluid: false,
-  tabs: [
-    { tabId: 1, title: "1", render: <div>Tab 1</div> },
-    { tabId: 2, title: "2", render: <div>Tab 2</div> },
-    { tabId: 3, title: "3", render: <div>Tab 3</div> },
-  ],
+  tabs: new Array(3).fill().map((i) => {
+    const index = i + 1
+    return {
+      tabId: index,
+      title: `${index}`,
+      render: <div>`Tab ${index}`</div>,
+    }
+  }),
 }
 
-export default memo(BasicTabs, () => false)
+export default memo(BasicTabs)

@@ -51,7 +51,7 @@ class SearchList extends PureComponent {
     list: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.any.isRequired,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
           .isRequired,
         otherValue: PropTypes.any
       }).isRequired

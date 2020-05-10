@@ -113,8 +113,8 @@ const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
 
 MediaButtonModal.propTypes = {
   editorRef: PropTypes.object.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filteredItems: PropTypes.arrayOf(PropTypes.object).isRequired,
+  xs: PropTypes.number,
+  editorSelection: PropTypes.object,
   videoHeight: PropTypes.string.isRequired,
 }
 

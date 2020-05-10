@@ -1,17 +1,16 @@
 .Entries {
-   
 }
 
 .EntryTabs .nav-link i {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .MinimalEntryListToggle {
-    background: var(--quinaryColor);
-    padding: 4px;
-    border-radius: 4px;
+  background: var(--quinaryColor);
+  padding: 4px;
+  border-radius: 4px;
 }
 
 .MinimalEntryListToggle:hover {
-    background: var(--slate_grey);
+  background: var(--primaryColor);
 }

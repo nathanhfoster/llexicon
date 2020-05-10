@@ -9,6 +9,7 @@
   text-overflow: clip;
   white-space: nowrap;
   overflow: hidden;
+  color: var(--secondaryColor);
   /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 40px), transparent calc(100% - 2px), transparent);
     mask-image: linear-gradient( to right, #000, #000 calc(100% - 40px), transparent calc(100% - 2px), transparent); */
 }

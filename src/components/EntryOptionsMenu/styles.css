@@ -2,6 +2,15 @@
   box-shadow: none;
 }
 
+.EntryOptionsDropDown {
+}
+
+.SocialMediaShareContainer {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.5rem;
+}
+
 .EntryOptionsMenu button:first-child {
   background-color: var(--quinaryColor);
   border: 0;

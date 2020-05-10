@@ -58,9 +58,11 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
       button: (
         <Button
           color="accent"
-          onClick={() => RouterPush(history, RouteMap.SETTINGS)}
+          onClick={() =>
+            RouterPush(history, RouteMap.SETTINGS_PUSH_NOTIFICATIONS)
+          }
         >
-          Comming Soon
+          Grant Access
         </Button>
       ),
     },

@@ -16,16 +16,4 @@ const earth = `${BASE_URL}earth.svg`
 
 const astronaut = `${BASE_URL}astronaut.svg`
 
-const fourOfour = `${BASE_URL}404.svg`
-
-export {
-  Logo,
-  nebulus,
-  nebulus2,
-  nebulus3,
-  rocket,
-  moon,
-  earth,
-  astronaut,
-  fourOfour,
-}
+export { Logo, nebulus, nebulus2, nebulus3, rocket, moon, earth, astronaut }

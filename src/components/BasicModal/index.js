@@ -99,21 +99,16 @@ const BasicModal = ({
 }
 
 BasicModal.propTypes = {
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   onClickCallback: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
-  button: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
   disabledSave: PropTypes.bool,
-  button: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-    PropTypes.bool,
-  ]),
-  footer: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+  button: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.bool]),
+  footer: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 
   // reasctrap Modal Props https://reactstrap.github.io/components/modals/
   // boolean to control the state of the popover

@@ -1,7 +1,7 @@
 import React, { Component, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { render } from "react-dom"
-import memoizeProps from "../../../helpers/memoizeProps"
+import deepEquals from "../../../helpers/deepEquals"
 import "./styles.css"
 
 class MapControl extends Component {
@@ -18,8 +18,8 @@ class MapControl extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const mapChanged = !this.props.map && nextProps.map
     const mapApiChanged = !this.props.mapApi && nextProps.mapApi
-    const childrenChange = !memoizeProps(this.props, nextProps)
-    return mapChanged || mapApiChanged || childrenChange
+    const childrenChanged = !deepEquals(this.props.children, nextProps.children)
+    return mapChanged || mapApiChanged || childrenChanged
   }
 
   componentDidMount() {

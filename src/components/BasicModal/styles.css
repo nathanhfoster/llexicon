@@ -1,20 +1,19 @@
 .BasicModal {
-    /* position: fixed;
+  /* position: fixed;
     top: 50%;
     left: 50%;
     transform-origin: (-50%, -50%); */
 }
 
 .BasicModal .modal-title {
-    font-size: 2em;
+  font-size: 2em;
 }
 
 .BasicModal .modal-header .close {
-    display: none;
+  display: none;
 }
 
 .BasicModal .modal-content {
-    background: var(--slate_grey);
-    color: var(--secondaryColor);
+  background: var(--primaryColor);
+  color: var(--secondaryColor);
 }
-

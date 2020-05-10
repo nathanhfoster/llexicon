@@ -1,50 +1,21 @@
-import React, { Fragment, useState, useCallback, useMemo, memo } from "react"
+import React, { Fragment, useReducer, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import TableHeaders from "./TableHeaders"
 import TableBody from "./TableBody"
 import TableFooters from "./TableFooters"
 import TablePaginator from "./TablePaginator"
-import { filterSort, tableSort, tableFilter } from "./utils"
-import { ColumnsPropType, DataPropType } from "./propTypes"
+import { tableSort, tableFilter } from "./utils"
+import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../helpers"
+import { getInitialState, BasicTableReducer } from "./state/reducer"
+import {
+  basicTableSort,
+  basicTableFilter,
+  basicTableSetPage,
+  basicTableSetPageSize,
+} from "./state/actions"
 import "./styles.css"
-
-const getInitialState = (columns, { pageSize, pageSizes }) => {
-  let sortList = []
-  let filterList = []
-  let firstRowClickFound = null
-
-  for (let i = 0, { length } = columns; i < length; i++) {
-    const {
-      key,
-      sort,
-      filter,
-      defaultSortValue,
-      defaultFilterValue,
-      onRowClick,
-    } = columns[i]
-
-    if (!firstRowClickFound && onRowClick) firstRowClickFound = onRowClick
-
-    const sortItem = { key, sortUp: defaultSortValue, sort }
-    sortList.push(sortItem)
-
-    const filterItem = { key, filterValue: defaultFilterValue || "", filter }
-    filterList.push(filterItem)
-  }
-
-  return {
-    sortList,
-    filterList,
-    onRowClick: firstRowClickFound,
-    currentPage: 0,
-    pageSize,
-    pageSizes: [{ id: 0, header: true, value: "Page Sizes" }].concat(
-      pageSizes.map((value, i) => ({ id: i + 1, value }))
-    ),
-  }
-}
 
 const BasicTable = ({
   data,
@@ -59,50 +30,21 @@ const BasicTable = ({
   onFilterCallback,
   ...propsUsedToDeriveState
 }) => {
-  const [
-    { onRowClick, currentPage, pageSize, pageSizes, sortList, filterList },
-    setState,
-  ] = useState(getInitialState(columns, propsUsedToDeriveState))
+  const initialState = { columns, ...propsUsedToDeriveState }
+  const [state, dispatch] = useReducer(
+    BasicTableReducer,
+    initialState,
+    getInitialState
+  )
 
-  // console.log("sortList: ", sortList)
-  // console.log("filterList: ", filterList)
-
-  const handleSort = useCallback((sortKey, sortUp) => {
-    onSortCallback && onSortCallback(sortKey, sortUp)
-
-    setState((prevState) => {
-      const newSortList = filterSort(prevState.sortList, sortKey, {
-        sortUp,
-      })
-
-      return {
-        ...prevState,
-        sortList: newSortList,
-      }
-    })
-  }, [])
-
-  const handleFilter = useCallback((filterKey, filterValue) => {
-    onFilterCallback && onFilterCallback(filterKey, filterValue)
-
-    setState((prevState) => {
-      const newFilterList = filterSort(prevState.filterList, filterKey, {
-        filterValue,
-      })
-      return {
-        ...prevState,
-        filterList: newFilterList,
-      }
-    })
-  }, [])
-
-  const handlePageChange = (currentPage) => {
-    setState((prevState) => ({ ...prevState, currentPage }))
-  }
-
-  const handlePageSizeChange = (id, pageSize) => {
-    setState((prevState) => ({ ...prevState, pageSize, currentPage: 0 }))
-  }
+  const {
+    onRowClick,
+    currentPage,
+    pageSize,
+    pageSizes,
+    sortList,
+    filterList,
+  } = state
 
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
@@ -127,10 +69,11 @@ const BasicTable = ({
         className="BasicTable m-0"
       >
         <TableHeaders
-          sortable={sortable}
-          sortCallback={handleSort}
-          filterCallback={handleFilter}
+          dispatch={dispatch}
+          onSortCallback={onSortCallback}
+          onFilterCallback={onFilterCallback}
           columns={columns}
+          sortable={sortable}
           sortList={sortList}
         />
         <TableBody
@@ -140,20 +83,15 @@ const BasicTable = ({
           pageSize={pageSize}
           onRowClick={onRowClick}
         />
-        <TableFooters
-          onRowClick={onRowClick}
-          columns={columns}
-          data={sortedAndFilteredData}
-        />
+        <TableFooters columns={columns} data={sortedAndFilteredData} />
       </Table>
       <TablePaginator
+        dispatch={dispatch}
         currentPage={currentPage}
         totalPages={totalPages}
         pageSize={pageSize}
         pageSizes={pageSizes}
         dataLength={dataLength}
-        handlePageChange={handlePageChange}
-        handlePageSizeChange={handlePageSizeChange}
       />
     </Fragment>
   )

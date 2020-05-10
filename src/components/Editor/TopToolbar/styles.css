@@ -1,71 +1,71 @@
 .ToggleTopToolbarButton {
-    opacity: 0.1;
-    position: absolute;
-    left: 50%;
+  opacity: 0.1;
+  position: absolute;
+  left: 50%;
 }
 
 .ToggleTopToolbarButton:hover {
-    opacity: 1;
-    z-index: 99;
-    color: var(--accentColor);
+  opacity: 1;
+  z-index: 99;
+  color: var(--accentColor);
 }
 
 .TopToolbarIsOpen {
-    top: -8px;
+  top: -8px;
 }
 
 .TopToolbarIsClosed {
-    top: -8px;
-    z-index: 99;
+  top: -8px;
+  z-index: 99;
 }
 
-[id*='toolbar-'] {
-    box-shadow: var(--primaryBoxShadow);
-    background: var(--quinaryColor);
-    color: #444444;
-    z-index: 9999;
+[id*="toolbar-"] {
+  box-shadow: var(--primaryBoxShadow);
+  background: var(--quinaryColor);
+  color: #444444;
+  z-index: 9999;
 }
 
-[id*='toolbar-'] i {
-    color: #444444;
+[id*="toolbar-"] i {
+  color: #444444;
 }
 
-[id*='toolbar-'] i:hover {
-    color: #06c;
+[id*="toolbar-"] i:hover {
+  color: #06c;
 }
 
 .ql-toolbar.ql-snow {
-    border: 0;
+  border: 0;
 }
 
 .ql-toolbar.ql-snow .ql-picker-options {
-    box-shadow: var(--primaryBoxShadow);
-    background: var(--slate_grey);
-    color: var(--secondaryColor);
+  box-shadow: var(--primaryBoxShadow);
+  background: var(--primaryColor);
+  color: var(--secondaryColor);
 }
 
 @media (max-width: 415px) {
-    :root {
-        --topToolbarHeight: 116px;
-    }
+  :root {
+    --topToolbarHeight: 116px;
+  }
 }
 
 @media (min-width: 416px) and (max-width: 767px) {
-    :root {
-        --topToolbarHeight: 94px;
-    }
+  :root {
+    --topToolbarHeight: 94px;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
-    :root {
-        --topToolbarHeight: 68px;
-    }
+  :root {
+    --topToolbarHeight: 68px;
+  }
 }
 
 @media (min-width: 1200px) {
-    :root {
-        --topToolbarHeight: 42px;
-    }
+  :root {
+    --topToolbarHeight: 42px;
+  }
 }
 
 /* @media (min-width: 768px) and (max-width: 991px) {
@@ -81,11 +81,11 @@
 } */
 
 .ql-toolbar.ql-snow .ql-formats {
-    margin-right: 12px;
+  margin-right: 12px;
 }
 
 .ql-toolbar.ql-snow .ql-formats::before {
-    /* content: '';
+  /* content: '';
    
     height: 100%;
     border: 1px solid #444444; */

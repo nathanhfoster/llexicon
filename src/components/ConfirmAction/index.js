@@ -37,7 +37,7 @@ const ConfirmAction = ({
 }
 
 ConfirmAction.propTypes = {
-  button: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  button: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   title: PropTypes.string,
   onConfirm: PropTypes.func,
   onCancel: PropTypes.func,

@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
+import { EntryTagsProps } from "../../../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { GoToEntryDetail } from "../../../../routes"
 import Moment from "react-moment"
@@ -54,7 +55,7 @@ EntryPreview.propTypes = {
   view: PropTypes.string,
   id: PropTypes.number,
   author: PropTypes.number,
-  tags: PropTypes.arrayOf(PropTypes.object),
+  tags: EntryTagsProps,
   title: PropTypes.string,
   html: PropTypes.string,
   date_created: PropTypes.string,

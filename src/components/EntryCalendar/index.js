@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
+import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Container, Row, Col, Button } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import Calendar from "react-calendar"
@@ -181,7 +182,7 @@ const EntryCalendar = ({
 }
 
 EntryCalendar.propTypes = {
-  entries: PropTypes.arrayOf(PropTypes.object).isRequired,
+  entries: EntriesPropTypes.isRequired,
   activeDate: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.instanceOf(Date),
