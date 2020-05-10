@@ -95,75 +95,70 @@ const EntryOptionsMenu = ({
       <DropdownToggle>
         <i className="fas fa-ellipsis-v" style={{ fontSize: 20 }} />
       </DropdownToggle>
-      {dropdownOpen && (
-        <Portal>
-          <DropdownMenu right className="EntryOptionsDropDown">
-            <DropdownItem header>
-              <Button
-                color={!canShareOnMobileDevice ? "primary" : "accent"}
-                className="EntryOptionsMenuShareButton"
-                disabled={!canShareOnMobileDevice}
-                onClick={handleShareOnMobile}
-              >
-                <i className="fas fa-share mr-1" />
-                <span>{url}</span>
-              </Button>
-            </DropdownItem>
-            <DropdownItem divider />
-            <div className="SocialMediaShareContainer">
-              <ShareOnFaceBook url={url} />
-              <ShareOnLinkedIn url={url} />
-              <ShareOnTwitter text={`Check my journal entry: ${url}`} />
-            </div>
-            <DropdownItem divider />
-            <Fragment>
-              <DropdownItem
-                onClick={handleCopyAndMakePublic}
-                disabled={readOnly}
-              >
-                <i
-                  className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`}
-                />
-                Copy and make public
-              </DropdownItem>
-              <DropdownItem onClick={handleToggleIsPublic} disabled={readOnly}>
-                <i className={`fas fa-lock${is_public ? "-open" : ""} mr-1`} />
-                {`Make ${is_public ? "Private" : "Public"}`}
-              </DropdownItem>
-              <DropdownItem divider />
+      {/* {dropdownOpen && (
+        <Portal> */}
+      <DropdownMenu right className="EntryOptionsDropDown">
+        <DropdownItem header>
+          <Button
+            color={!canShareOnMobileDevice ? "primary" : "accent"}
+            className="EntryOptionsMenuShareButton"
+            disabled={!canShareOnMobileDevice}
+            onClick={handleShareOnMobile}
+          >
+            <i className="fas fa-share mr-1" />
+            <span>{url}</span>
+          </Button>
+        </DropdownItem>
+        <DropdownItem divider />
+        <div className="SocialMediaShareContainer">
+          <ShareOnFaceBook url={url} />
+          <ShareOnLinkedIn url={url} />
+          <ShareOnTwitter text={`Check my journal entry: ${url}`} />
+        </div>
+        <DropdownItem divider />
+        <Fragment>
+          <DropdownItem onClick={handleCopyAndMakePublic} disabled={readOnly}>
+            <i className={`fas fa-${urlCopied ? "check" : "clipboard"} mr-1`} />
+            Copy and make public
+          </DropdownItem>
+          <DropdownItem onClick={handleToggleIsPublic} disabled={readOnly}>
+            <i className={`fas fa-lock${is_public ? "-open" : ""} mr-1`} />
+            {`Make ${is_public ? "Private" : "Public"}`}
+          </DropdownItem>
+          <DropdownItem divider />
 
-              <DropdownItem
-                onClick={toggleModal}
-                style={{ color: "var(--danger)" }}
-                disabled={readOnly}
-              >
-                <i className="fas fa-trash-alt mr-1" />
-                Delete Entry
-                <BasicModal
-                  size="xs"
-                  button={false}
-                  show={showModal}
-                  title={"Delete Entry"}
-                  footer={
-                    <Fragment>
-                      <Button color="danger" onClick={handleDelete}>
-                        Confirm
-                      </Button>
-                      <Button color="success" onClick={toggleModal}>
-                        Cancel
-                      </Button>
-                    </Fragment>
-                  }
-                >
-                  <span className="Center">
-                    Are you sure you want to delete this entry?
-                  </span>
-                </BasicModal>
-              </DropdownItem>
-            </Fragment>
-          </DropdownMenu>
-        </Portal>
-      )}
+          <DropdownItem
+            onClick={toggleModal}
+            style={{ color: "var(--danger)" }}
+            disabled={readOnly}
+          >
+            <i className="fas fa-trash-alt mr-1" />
+            Delete Entry
+            <BasicModal
+              size="xs"
+              button={false}
+              show={showModal}
+              title={"Delete Entry"}
+              footer={
+                <Fragment>
+                  <Button color="danger" onClick={handleDelete}>
+                    Confirm
+                  </Button>
+                  <Button color="success" onClick={toggleModal}>
+                    Cancel
+                  </Button>
+                </Fragment>
+              }
+            >
+              <span className="Center">
+                Are you sure you want to delete this entry?
+              </span>
+            </BasicModal>
+          </DropdownItem>
+        </Fragment>
+      </DropdownMenu>
+      {/* </Portal>
+      )} */}
     </ButtonDropdown>
   )
 }

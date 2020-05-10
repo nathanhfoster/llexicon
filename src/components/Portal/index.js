@@ -7,8 +7,6 @@ const Portal = ({ children, domNodeId }) => {
   const modalRoot = document.getElementById(domNodeId)
   const domNode = document.createElement("div")
 
-  console.log(modalRoot)
-
   useEffect(() => {
     modalRoot.appendChild(domNode)
   }, [])
