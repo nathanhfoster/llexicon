@@ -43,7 +43,7 @@
 }
 
 .react-calendar__navigation button:hover {
-  /* background-color: var(--slate_grey); */
+  /* background-color: var(--primaryColor); */
 }
 
 .react-calendar__navigation__arrow:hover {
@@ -103,7 +103,7 @@
 .react-calendar__decade-view__years__year:hover,
 .react-calendar__year-view__months__month:hover,
 .react-calendar__month-view button:hover {
-  background: var(--slate_grey);
+  background: var(--primaryColor);
 }
 
 .react-calendar__month-view .react-calendar__tile abbr {

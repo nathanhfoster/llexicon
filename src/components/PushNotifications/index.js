@@ -1,6 +1,6 @@
 import React from "react"
 import usePushNotifications from "../../hooks/usePushNotifications"
-import { Container, Row, Col, Button } from "reactstrap"
+import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 
 const Loading = ({ loading }) =>
   loading ? (
@@ -32,62 +32,82 @@ const PushNotifications = () => {
   const isConsentGranted = userConsent === "granted"
 
   return (
-    <main>
-      <Loading loading={loading} />
+    <Container fluid className="PushNotifications Container">
+      <Row className="mb-3">
+        <Col xs={12}>
+          <Loading loading={loading} />
+        </Col>
+        <Col xs={12}>
+          <p>
+            Push notification are {!pushNotificationSupported && "NOT"}{" "}
+            supported by your device.
+          </p>
+          <p>
+            User consent to recevie push notificaitons is{" "}
+            <strong>{userConsent}</strong>.
+          </p>
+        </Col>
+        <Col xs={12}>
+          <Error error={error} />
+        </Col>
+      </Row>
+      <Row className="mb-3">
+        <Col tag={ButtonGroup} xs={12}>
+          <Button
+            color="accent"
+            disabled={!pushNotificationSupported || isConsentGranted}
+            onClick={onClickAskUserPermission}
+          >
+            {isConsentGranted ? "Consent granted" : " Ask user permission"}
+          </Button>
 
-      <p>
-        Push notification are {!pushNotificationSupported && "NOT"} supported by
-        your device.
-      </p>
+          <Button
+            color="accent"
+            disabled={
+              !pushNotificationSupported ||
+              !isConsentGranted ||
+              userSubscription
+            }
+            onClick={onClickSusbribeToPushNotification}
+          >
+            {userSubscription
+              ? "Push subscription created"
+              : "Create Notification subscription"}
+          </Button>
 
-      <p>
-        User consent to recevie push notificaitons is{" "}
-        <strong>{userConsent}</strong>.
-      </p>
-
-      <Error error={error} />
-
-      <Button
-        disabled={!pushNotificationSupported || isConsentGranted}
-        onClick={onClickAskUserPermission}
-      >
-        {isConsentGranted ? "Consent granted" : " Ask user permission"}
-      </Button>
-
-      <Button
-        disabled={
-          !pushNotificationSupported || !isConsentGranted || userSubscription
-        }
-        onClick={onClickSusbribeToPushNotification}
-      >
-        {userSubscription
-          ? "Push subscription created"
-          : "Create Notification subscription"}
-      </Button>
-
-      <Button
-        disabled={!userSubscription || pushServerSubscriptionId}
-        onClick={onClickSendSubscriptionToPushServer}
-      >
-        {pushServerSubscriptionId
-          ? "Subscrption sent to the server"
-          : "Send subscription to push server"}
-      </Button>
+          <Button
+            color="accent"
+            disabled={!userSubscription || pushServerSubscriptionId}
+            onClick={onClickSendSubscriptionToPushServer}
+          >
+            {pushServerSubscriptionId
+              ? "Subscrption sent to the server"
+              : "Send subscription to push server"}
+          </Button>
+        </Col>
+      </Row>
 
       {pushServerSubscriptionId && (
-        <div>
-          <p>The server accepted the push subscrption!</p>
-          <Button onClick={onClickSendNotification}>Send a notification</Button>
-        </div>
+        <Row>
+          <Col xs={12}>
+            <p>The server accepted the push subscrption!</p>
+            <Button color="accent" onClick={onClickSendNotification}>
+              Send a notification
+            </Button>
+          </Col>
+        </Row>
       )}
-
-      <section>
-        <h4>Your notification subscription details</h4>
-        <pre>
-          <code>{JSON.stringify(userSubscription, null, " ")}</code>
-        </pre>
-      </section>
-    </main>
+      <Row tag="section" className="my-3">
+        <Col xs={12}>
+          <h4>Your notification subscription details</h4>
+          <pre>
+            <code style={{ color: "white" }}>
+              {JSON.stringify(userSubscription, null, " ")}
+            </code>
+          </pre>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

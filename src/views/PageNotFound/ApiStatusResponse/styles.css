@@ -1,0 +1,51 @@
+.central-body {
+  width: 100%;
+  padding: 5% 5% 0 5%;
+  text-align: center;
+  z-index: 102;
+}
+
+.api-reponse-title {
+  font-size: 10rem;
+}
+
+.api-reponse-subtitle-container {
+  margin-top: -3rem;
+}
+
+.api-reponse-subtitle {
+  font-size: 2rem;
+  font-family: monospace;
+  font-weight: 200;
+  letter-spacing: 0.25rem;
+}
+
+.btn-go-home {
+  position: relative;
+  z-index: 102;
+  margin: 15px auto;
+  width: 100px;
+  padding: 10px 15px;
+  border: 1px solid var(--primaryColor);
+  border-radius: 100px;
+  font-weight: 400;
+  display: block;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-size: 11px;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -ms-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+
+.btn-go-home:hover {
+  cursor: pointer;
+  background-color: var(--primaryColor);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
+}

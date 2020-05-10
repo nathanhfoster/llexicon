@@ -16,7 +16,7 @@ import {
 import { ResetMap } from "./redux/Map/actions"
 import { RouteMap, RouterGoBack } from "./routes"
 import { About, Home, Entries, PrivacyPolicy } from "./views"
-import { NavBar, PushNotifications } from "./components"
+import { NavBar } from "./components"
 import { RouterLinkPush } from "./routes"
 import memoizeProps from "./helpers/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
@@ -39,6 +39,7 @@ const {
   SETTINGS,
   SETTINGS_ENTRIES,
   SETTINGS_PREFERENCES,
+  SETTINGS_PUSH_NOTIFICATIONS,
   SETTINGS_STORAGE,
   SETTINGS_PROFILE,
   SUPPORT,
@@ -52,7 +53,10 @@ const {
   PRIVACY_POLICY,
 } = RouteMap
 
-const mapStateToProps = ({ User }) => ({ User })
+const mapStateToProps = ({ User }) => ({
+  userId: User.id,
+  userToken: User.token,
+})
 
 const mapDispatchToProps = {
   SetWindow,
@@ -69,7 +73,8 @@ const mapDispatchToProps = {
 
 const App = ({
   GetUserSettings,
-  User,
+  userId,
+  userToken,
   SetWindow,
   SetLocalStorageUsage,
   SetCalendar,
@@ -100,7 +105,7 @@ const App = ({
 
     handleResize()
 
-    if (User.id) {
+    if (userId) {
       SyncEntries(() => new Promise((resolve) => resolve(GetUserEntries(1))))
       GetUserSettings()
       GetUserEntryTags()
@@ -120,7 +125,6 @@ const App = ({
   return (
     <Fragment>
       <NavBar {...addToHomeScreenProps} />
-      <PushNotifications/>
       <main className="App RouteOverlay">
         <BackgroundImage />
         <Switch>
@@ -140,11 +144,16 @@ const App = ({
               <Home {...addToHomeScreenProps} history={history} />
             )}
           />
+          {/* <Route
+            path={ROOT}
+            render={() => <Redirect to={HOME} />}
+            exact={true}
+          /> */}
           <Route
             exact
             path={[LOGIN, SIGNUP, PASSWORD_RESET]}
             component={renderRedirectOrComponent(
-              !!User.token,
+              !!userToken,
               Account,
               "GoBack"
             )}
@@ -156,6 +165,7 @@ const App = ({
               SETTINGS_ENTRIES,
               SETTINGS_PREFERENCES,
               SETTINGS_PROFILE,
+              SETTINGS_PUSH_NOTIFICATIONS,
               SETTINGS_STORAGE,
             ]}
             component={Settings}
@@ -209,7 +219,7 @@ App.propTypes = {
 }
 
 const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, ["User"])
+  memoizeProps(prevProps, nextProps, ["userId", "userToken"])
 
 export default withRouter(
   reduxConnect(mapStateToProps, mapDispatchToProps)(memo(App, isEqual))

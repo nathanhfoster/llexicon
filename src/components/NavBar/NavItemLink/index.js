@@ -47,10 +47,10 @@ NavItemLink.propTypes = {
   dropdownItem: PropTypes.bool.isRequired,
   route: PropTypes.string,
   title: PropTypes.string,
-  icon: PropTypes.object,
+  icon: PropTypes.node,
   onClick: PropTypes.func,
   onClickCallback: PropTypes.func,
-  render: PropTypes.object
+  render: PropTypes.node
 }
 
 NavItemLink.defaultProps = { dropdownItem: false }

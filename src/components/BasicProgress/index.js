@@ -53,7 +53,7 @@ const BasicProgress = ({ label, showPercentage, bars, ...restOfProps }) => {
 }
 
 BasicProgress.propTypes = {
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   showPercentage: PropTypes.bool,
   bars: PropTypes.arrayOf(
     PropTypes.shape({

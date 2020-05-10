@@ -204,7 +204,7 @@ const TagsButtonModal = ({
               onChange={handleTagsInputChange}
               type="text"
               value={tagName}
-              placeholder="Family,Friends,Health,Vacation"
+              placeholder="Document,Dream,Family,Friends,Quote,Vacation"
             />
           </Col>
         </Row>

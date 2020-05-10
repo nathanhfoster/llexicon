@@ -84,12 +84,14 @@ const BasicImageCarousel = ({
     [images]
   )
 
-  const toolBarImagesWithCallback = React.Children.map(
-    toolbarButtons,
-    (child) =>
-      React.cloneElement(child, {
-        onClick: () => child.props.onClick(state),
-      })
+  const toolBarImagesWithCallback = useMemo(
+    () =>
+      React.Children.map(toolbarButtons, (child) =>
+        React.cloneElement(child, {
+          onClick: () => child.props.onClick(state),
+        })
+      ),
+    [toolbarButtons]
   )
 
   return (
@@ -107,7 +109,6 @@ const BasicImageCarousel = ({
           onMovePrevRequest={handleMovePrev}
           onMoveNextRequest={handleMoveNext}
           toolbarButtons={toolBarImagesWithCallback}
-         
         />
       )}
     </div>
@@ -145,10 +146,10 @@ BasicImageCarousel.propTypes = {
   animationDuration: PropTypes.number,
   keyRepeatLimit: PropTypes.number,
   keyRepeatKeyupBonus: PropTypes.number,
-  imageTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  imageCaption: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  imageTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  imageCaption: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   imageCrossOrigin: PropTypes.string,
-  toolbarButtons: PropTypes.arrayOf(PropTypes.object),
+  toolbarButtons: PropTypes.arrayOf(PropTypes.node),
   reactModalStyle: PropTypes.any,
   reactModalProps: PropTypes.any,
   imagePadding: PropTypes.number,

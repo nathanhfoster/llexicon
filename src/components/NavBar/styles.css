@@ -3,7 +3,7 @@
   width: 100%;
   box-shadow: var(--primaryBoxShadow);
   text-align: center !important;
-  background: var(--slate_grey);
+  background: var(--primaryColor);
   position: absolute;
   z-index: 103;
   top: 0;

@@ -37,6 +37,7 @@ const {
   SETTINGS_ENTRIES,
   SETTINGS_PREFERENCES,
   SETTINGS_PROFILE,
+  SETTINGS_PUSH_NOTIFICATIONS,
   SETTINGS_STORAGE,
   SUPPORT,
   PRIVACY_POLICY,
@@ -159,6 +160,13 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
               title: "PREFERENCES",
               icon: <i className="fas fa-sliders-h NavBarImage" />,
             },
+            {
+              dropdownItem: true,
+              route: SETTINGS_PUSH_NOTIFICATIONS,
+              title: "PUSH NOTIFICATIONS",
+              icon: <i className="fas fa-bell NavBarImage" />,
+            },
+
             {
               dropdownItem: true,
               route: SETTINGS_STORAGE,

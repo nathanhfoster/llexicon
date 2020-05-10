@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Dosis:300,400,500');
+@import url("https://fonts.googleapis.com/css?family=Dosis:300,400,500");
 
-
-.PageNotFound html, .PageNotFound body {
+.PageNotFound html,
+.PageNotFound body {
   margin: 0;
   width: 100%;
   height: 100%;
-  font-family: 'Dosis', sans-serif;
+  font-family: "Dosis", sans-serif;
   font-weight: 300;
   -webkit-user-select: none;
   /* Safari 3.1+ */
@@ -18,7 +18,47 @@
 }
 
 .bg-purple {
-  background: radial-gradient(ellipse at top left, #7ccbf6, #71c1f2, #68b6ee, #60abe9, #5ba0e4, #5999e1, #5893dd, #588cd9, #5888d7, #5884d4, #5880d2, #597ccf, #6172c8, #6868bf, #6f5db6, #785cb3, #805baf, #815baf, #835bae, #845aae, #855aad, #865aac, #885aac, #895aab, #8a5aaa, #8b59aa, #8c59a9, #8d59a8, #915ba9, #955da9, #995faa, #9d61ab, #a264ac, #a767ad, #ac6aae, #b36faf, #ba74b1, #c07ab2);
+  background: radial-gradient(
+    ellipse at top left,
+    #7ccbf6,
+    #71c1f2,
+    #68b6ee,
+    #60abe9,
+    #5ba0e4,
+    #5999e1,
+    #5893dd,
+    #588cd9,
+    #5888d7,
+    #5884d4,
+    #5880d2,
+    #597ccf,
+    #6172c8,
+    #6868bf,
+    #6f5db6,
+    #785cb3,
+    #805baf,
+    #815baf,
+    #835bae,
+    #845aae,
+    #855aad,
+    #865aac,
+    #885aac,
+    #895aab,
+    #8a5aaa,
+    #8b59aa,
+    #8c59a9,
+    #8d59a8,
+    #915ba9,
+    #955da9,
+    #995faa,
+    #9d61ab,
+    #a264ac,
+    #a767ad,
+    #ac6aae,
+    #b36faf,
+    #ba74b1,
+    #c07ab2
+  );
   background-repeat: repeat-x;
   background-size: cover;
   background-position: left top;
@@ -77,56 +117,20 @@
 
 .btn-request {
   padding: 10px 25px;
-  border: 1px solid #FFCB39;
+  border: 1px solid #ffcb39;
   border-radius: 100px;
   font-weight: 400;
 }
 
 .btn-request:hover {
-  background-color: #FFCB39;
+  background-color: #ffcb39;
   color: #fff;
   transform: scale(1.05);
   box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
 }
 
-.btn-go-home {
-  position: relative;
-  z-index: 102;
-  margin: 15px auto;
-  width: 100px;
-  padding: 10px 15px;
-  border: 1px solid var(--primaryColor);
-  border-radius: 100px;
-  font-weight: 400;
-  display: block;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  letter-spacing: 2px;
-  font-size: 11px;
-  -webkit-transition: all 0.3s ease-in;
-  -moz-transition: all 0.3s ease-in;
-  -ms-transition: all 0.3s ease-in;
-  -o-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
+.earth-moon {
 }
-
-.btn-go-home:hover {
-  background-color: var(--primaryColor);
-  color: #fff;
-  transform: scale(1.05);
-  box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
-}
-
-.central-body {
-  /*    width: 100%;*/
-  padding: 17% 5% 10% 5%;
-  text-align: center;
-  z-index: 102;
-}
-
-.earth-moon {}
-
 
 @media only screen and (max-width: 600px) {
   .navbar-links {

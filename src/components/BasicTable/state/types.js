@@ -1,5 +1,12 @@
 import PropTypes from "prop-types"
 
+const BasicTableActionTypes = {
+  BASIC_TABLE_SORT: "BASIC_TABLE_SORT",
+  BASIC_TABLE_FILTER: "BASIC_TABLE_FILTER",
+  BASIC_TABLE_SET_PAGE: "BASIC_TABLE_SET_PAGE",
+  BASIC_TABLE_SET_PAGE_SIZE: "BASIC_TABLE_SET_PAGE_SIZE",
+}
+
 const ColumnPropType = PropTypes.shape({
   title: PropTypes.oneOfType([
     PropTypes.string,
@@ -26,4 +33,4 @@ const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
 
 const DataPropType = PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
 
-export { ColumnPropType, ColumnsPropType, DataPropType }
+export { BasicTableActionTypes, ColumnPropType, ColumnsPropType, DataPropType }

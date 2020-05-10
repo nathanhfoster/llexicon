@@ -1,17 +1,29 @@
-import React, { useMemo, memo, useCallback } from "react"
+import React, { useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import TableHeader from "./TableHeader"
-import { Input } from "reactstrap"
-import { capitalizeFirstLetter, isType } from "../../../helpers"
-import { ColumnsPropType } from "../propTypes"
+import { ColumnsPropType } from "../state/types"
+import { basicTableSort, basicTableFilter } from "../state/actions"
 
 const TableHeaders = ({
+  dispatch,
+  onSortCallback,
+  onFilterCallback,
   columns,
-  sortCallback,
   sortable,
   sortList,
-  filterCallback,
 }) => {
+  const handleSort = useCallback(
+    (sortKey, sortUp) =>
+      dispatch(basicTableSort(onSortCallback, sortKey, sortUp)),
+    []
+  )
+
+  const handleFilter = useCallback(
+    (filterKey, filterValue) =>
+      dispatch(basicTableFilter(onFilterCallback, filterKey, filterValue)),
+    []
+  )
+
   const sortMap = useMemo(
     () =>
       sortList.reduce((map, item) => {
@@ -38,11 +50,11 @@ const TableHeaders = ({
           filterValue,
         } = column
         const { sortUp } = sortMap[key]
-        const handleSort = () => {
+        const sortCallback = () => {
           if (sortUp === false) {
-            sortCallback(key, null)
+            handleSort(key, null)
           } else {
-            sortCallback(key, !sortUp)
+            handleSort(key, !sortUp)
           }
         }
 
@@ -55,11 +67,11 @@ const TableHeaders = ({
             column={column}
             sortable={sortable}
             sortUp={sortUp}
-            sortCallback={handleSort}
+            sortCallback={sortCallback}
             filter={filter}
             filterPlaceholder={filterPlaceholder}
             defaultFilterValue={defaultFilterValue}
-            filterCallback={filterCallback}
+            filterCallback={handleFilter}
           />
         )
       }),
@@ -74,9 +86,10 @@ const TableHeaders = ({
 }
 
 TableHeaders.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  onSortCallback: PropTypes.func,
+  onFilterCallback: PropTypes.func,
   sortable: PropTypes.bool.isRequired,
-  sortCallback: PropTypes.func.isRequired,
-  filterCallback: PropTypes.func.isRequired,
   columns: ColumnsPropType,
   sortList: PropTypes.arrayOf(
     PropTypes.shape({

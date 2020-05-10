@@ -83,7 +83,7 @@ const AlertNotifications = ({
 }
 
 AlertNotifications.propTypes = {
-  icon: PropTypes.object.isRequired,
+  icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   ClearAlerts: PropTypes.func.isRequired,

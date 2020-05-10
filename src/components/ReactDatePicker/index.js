@@ -128,7 +128,7 @@ ReactDatePicker.propTypes = {
       prevMonthButtonDisabled: PropTypes.bool,
       nextMonthButtonDisabled: PropTypes.bool,
     }),
-    PropTypes.object,
+    PropTypes.node,
   ]),
   renderDayContents: PropTypes.oneOfType([
     PropTypes.number,

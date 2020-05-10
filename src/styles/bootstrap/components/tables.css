@@ -1,8 +1,0 @@
-.table-dark {
-    background-color: var(--slate_grey);
-}
-
-.table-dark.table-hover tbody tr:hover {
-    background-color: var(--dark_border);
-    cursor: pointer;
-}

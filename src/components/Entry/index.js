@@ -1,5 +1,6 @@
 import React, { useCallback, Fragment, memo } from "react"
 import PropTypes from "prop-types"
+import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { useDispatch } from "react-redux"
 import { withRouter } from "react-router-dom"
@@ -87,22 +88,20 @@ const Entry = ({
             />
           </InputGroupText>
         </InputGroupAddon>
-        {!readOnly && (
-          <Fragment>
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                className="p-0"
-                tag={EntryOptionsMenu}
-                onChangeCallback={handleEditorChange}
-                entryId={entry.id}
-                author={entry.author}
-                is_public={entry.is_public}
-                history={history}
-                shouldRedirectOnDelete={shouldRedirectOnDelete}
-              />
-            </InputGroupAddon>
-          </Fragment>
-        )}
+        <Fragment>
+          <InputGroupAddon addonType="append">
+            <InputGroupText
+              className="p-0"
+              tag={EntryOptionsMenu}
+              onChangeCallback={handleEditorChange}
+              entryId={entry.id}
+              is_public={entry.is_public}
+              history={history}
+              shouldRedirectOnDelete={shouldRedirectOnDelete}
+              readOnly={readOnly}
+            />
+          </InputGroupAddon>
+        </Fragment>
       </InputGroup>
     </Editor>
   )
@@ -110,7 +109,7 @@ const Entry = ({
 
 Entry.propTypes = {
   readOnly: PropTypes.bool.isRequired,
-  entry: PropTypes.object.isRequired,
+  entry: EntryPropTypes.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   bottomToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,

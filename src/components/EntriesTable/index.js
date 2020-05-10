@@ -53,7 +53,7 @@ const EntriesTable = ({
       {
         title: <i className="fas fa-hdd" />,
         key: "id",
-        width: 90,
+        width: 65,
         sort: (a, b, sortUp) => {
           const aSize = a.size || a._size
           const bSize = b.size || b._size

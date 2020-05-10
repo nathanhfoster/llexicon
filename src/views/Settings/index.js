@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { UserProps } from "../../redux/User/propTypes"
 import { withRouter } from "react-router-dom"
 import { Container, Row, Col } from "reactstrap"
-import { BasicTabs, Header } from "../../components"
+import { BasicTabs, Header, PushNotifications } from "../../components"
 import EntryStatistics from "./EntryStatistics"
 import ImportExportEntries from "./ImportExportEntries"
 import AccountDetails from "./AccountDetails"
@@ -18,6 +18,7 @@ const {
   SETTINGS_ENTRIES,
   SETTINGS_PREFERENCES,
   SETTINGS_PROFILE,
+  SETTINGS_PUSH_NOTIFICATIONS,
   SETTINGS_STORAGE,
 } = RouteMap
 
@@ -58,6 +59,13 @@ const Settings = ({ history, location: { pathname } }) => {
       title: "Preferences",
       className: "mt-2",
       render: <Sections />,
+      onClickCallback: handleTabChange,
+    },
+    {
+      tabId: SETTINGS_PUSH_NOTIFICATIONS,
+      title: "Push Notifications",
+      className: "mt-2",
+      render: <PushNotifications />,
       onClickCallback: handleTabChange,
     },
     {

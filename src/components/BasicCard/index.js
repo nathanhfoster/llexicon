@@ -59,17 +59,17 @@ const BasicCard = ({
 }
 
 BasicCard.propTypes = {
-  header: PropTypes.object,
+  header: PropTypes.node,
   title: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.shape({
       name: PropTypes.string,
-      render: PropTypes.object.isRequired,
+      render: PropTypes.node.isRequired,
     }),
   ]),
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   faIcon: PropTypes.string,
-  button: PropTypes.object,
+  button: PropTypes.node,
   cardClassName: PropTypes.string,
   cardHeaderClassName: PropTypes.string,
   onClickCallback: PropTypes.func,

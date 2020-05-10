@@ -18,9 +18,9 @@ class BasicList extends PureComponent {
         value: PropTypes.oneOfType([
           PropTypes.string,
           PropTypes.number,
-          PropTypes.object
+          PropTypes.node,
         ]),
-        otherValue: PropTypes.any
+        otherValue: PropTypes.any,
       })
     ),
     render: PropTypes.func,
@@ -36,7 +36,7 @@ class BasicList extends PureComponent {
       "relative",
       "sticky",
       "initial",
-      "inherit"
+      "inherit",
     ]),
     listItemHoverable: PropTypes.bool,
     listItemStyles: PropTypes.object,
@@ -44,7 +44,7 @@ class BasicList extends PureComponent {
 
     // Callback props
     onListItemClickCallback: PropTypes.func, // When an item is clicked
-    onScrollToBottomOfListCallback: PropTypes.func // When scrolled to the bottom of the list,
+    onScrollToBottomOfListCallback: PropTypes.func, // When scrolled to the bottom of the list,
   }
 
   static defaultProps = {
@@ -57,7 +57,7 @@ class BasicList extends PureComponent {
     listPosition: "absolute",
     listItemHoverable: false,
     listItemStyles: {},
-    layout: "vertical"
+    layout: "vertical",
   }
 
   renderList = ({ data, index, style, isScrolling }) => {
@@ -67,7 +67,7 @@ class BasicList extends PureComponent {
       onListItemClickCallback,
       listItemHoverable,
       itemSize,
-      listItemStyles
+      listItemStyles,
     } = this.props
 
     const onListItemClick = () => {
@@ -79,8 +79,9 @@ class BasicList extends PureComponent {
     return (
       <div
         key={id}
-        className={`basicListItem ${listItemHoverable &&
-          "basicListItemHoverable"}`}
+        className={`basicListItem ${
+          listItemHoverable && "basicListItemHoverable"
+        }`}
         style={{ ...style, padding: itemSize / 4, ...listItemStyles }}
         id={id}
         value={value}
@@ -104,7 +105,7 @@ class BasicList extends PureComponent {
     overscanStartIndex,
     overscanStopIndex,
     visibleStartIndex,
-    visibleStopIndex
+    visibleStopIndex,
   }) => {
     const { onScrollToBottomOfListCallback, list } = this.props
 
@@ -130,10 +131,10 @@ class BasicList extends PureComponent {
       height,
       width,
       layout,
-      render
+      render,
     } = this.props
     const styles = {
-      position: render ? "relative" : listPosition
+      position: render ? "relative" : listPosition,
     }
     return (
       <FixedSizeList
