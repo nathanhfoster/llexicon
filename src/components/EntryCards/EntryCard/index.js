@@ -44,6 +44,7 @@ const EntryCard = ({
   const cardHeader = useMemo(
     () => (
       <Fragment>
+        <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
         <div
           className="EntryOptionsMenuContainer"
           onClick={(e) => e.stopPropagation()}
@@ -56,7 +57,6 @@ const EntryCard = ({
             readOnly={readOnly}
           />
         </div>
-        <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
       </Fragment>
     ),
     [id, is_public, reducedHtml, views, rating]
