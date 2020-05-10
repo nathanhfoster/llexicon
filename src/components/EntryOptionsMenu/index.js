@@ -177,7 +177,7 @@ EntryOptionsMenu.defaultProps = {
   shouldSyncOnUpdate: false,
   shouldRedirectOnDelete: false,
   readOnly: true,
-  direction: "down",
+  direction: "up",
 }
 
 export default memo(EntryOptionsMenu)
