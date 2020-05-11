@@ -2,19 +2,26 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 import { RouteMap } from "./types"
 import { history } from "./reducer"
+import { removeArrayDuplicates } from "../../helpers"
+
+const MAX_PATH_HISTORY_LENGTH = 21
 
 const getHistoryState = (route) => {
   const { pathname, state } = history.location
   let newState = {}
-  if (!state) {
+  if (!(state && state.pathHistory)) {
     newState = {
       previousRoute: pathname,
       pathHistory: [pathname],
     }
   } else {
+    const previousRoute = pathname
+    const pathHistory = removeArrayDuplicates(
+      state.pathHistory.concat(pathname)
+    ).slice(0, MAX_PATH_HISTORY_LENGTH)
     newState = {
-      previousRoute: pathname,
-      pathHistory: state.pathHistory.concat(pathname),
+      previousRoute,
+      pathHistory,
     }
   }
 
