@@ -16,6 +16,7 @@ const persistConfig = {
   storage,
   stateReconciler: autoMergeLevel2,
   writeFailHandler: handleQuotaExceeded,
+  // blacklist: ["router"], // router will not be persisted
 }
 
 const persistedReducer = persistReducer(persistConfig, RootReducer(history))

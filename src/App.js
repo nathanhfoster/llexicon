@@ -160,18 +160,14 @@ const App = ({
               SETTINGS_PUSH_NOTIFICATIONS,
               SETTINGS_STORAGE,
             ]}
-            component={Settings}
+            render={() => <Settings />}
           />
-          <Route exact path={[SUPPORT]} component={Support} />
+          <Route exact path={[SUPPORT]} render={() => <Support />} />
           <Route
             exact={true}
             strict={false}
             path={[ENTRY_DETAIL]}
-            render={({
-              match: {
-                params: { entryId },
-              },
-            }) => <EntryDetail entryId={entryId} />}
+            render={() => <EntryDetail />}
           />
           <Route
             exact={true}
@@ -186,10 +182,14 @@ const App = ({
               ENTRIES_MAP,
               NEW_ENTRY,
             ]}
-            component={Entries}
+            render={() => <Entries />}
           />
-          <Route exact path={[PRIVACY_POLICY]} component={PrivacyPolicy} />
-          <Route component={PageNotFound} />
+          <Route
+            exact
+            path={[PRIVACY_POLICY]}
+            render={() => <PrivacyPolicy />}
+          />
+          <Route render={() => <PageNotFound />} />
         </Switch>
       </main>
     </Fragment>

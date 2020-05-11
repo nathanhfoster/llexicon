@@ -3,18 +3,45 @@ import { Redirect } from "react-router-dom"
 import { RouteMap } from "./types"
 import { history } from "./reducer"
 
+const getHistoryState = (route) => {
+  const { pathname, state } = history.location
+  let newState = {}
+  if (!state) {
+    newState = {
+      previousRoute: pathname,
+      pathHistory: [pathname],
+    }
+  } else {
+    newState = {
+      previousRoute: pathname,
+      pathHistory: state.pathHistory.concat(pathname),
+    }
+  }
+
+  return newState
+}
+
+const ValidateHistroy = () => {
+  if (!history || !history.location) {
+    return false
+  }
+  return true
+}
+
 const RouterPush = (route) => {
-  history.push(route)
+  if (!ValidateHistroy()) return {}
+
+  const newState = getHistoryState(route)
+
+  history.push(route, newState)
 }
 
 const RouterLinkPush = (route) => {
-  let {
-    location: { state },
-  } = history
+  if (!ValidateHistroy()) return {}
 
   const newState = {
     pathname: route,
-    state,
+    state: getHistoryState(route),
   }
 
   return newState
@@ -46,6 +73,7 @@ const RouterGoBack = (
         .find((route) => !redirectRoutesToIgnore.includes(route))
       route = newRoute
     }
+
     if (shouldRedirect) return <Redirect push to={RouterLinkPush(route)} />
     else return RouterPush(route)
   } catch {
