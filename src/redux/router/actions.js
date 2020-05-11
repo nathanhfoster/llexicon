@@ -16,9 +16,9 @@ const getHistoryState = (route) => {
     }
   } else {
     const previousRoute = pathname
-    const pathHistory = removeArrayDuplicates(
-      state.pathHistory.concat(pathname)
-    ).slice(0, MAX_PATH_HISTORY_LENGTH)
+    const pathHistory = state.pathHistory
+      .concat(pathname)
+      .slice(0, MAX_PATH_HISTORY_LENGTH)
     newState = {
       previousRoute,
       pathHistory,
