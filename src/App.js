@@ -2,7 +2,7 @@ import React, { useEffect, lazy, memo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter, Route, Switch, Redirect } from "react-router-dom"
+import { Route, Switch, Redirect } from "react-router-dom"
 import { SetWindow, SetLocalStorageUsage } from "./redux/App/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
@@ -14,10 +14,10 @@ import {
   ResetEntriesSortAndFilterMaps,
 } from "./redux/Entries/actions"
 import { ResetMap } from "./redux/Map/actions"
-import { RouteMap, RouterGoBack } from "./routes"
+import { RouteMap, RouterGoBack } from "./redux/router/actions"
 import { About, Home, Entries, PrivacyPolicy } from "./views"
 import { NavBar } from "./components"
-import { RouterLinkPush } from "./routes"
+import { RouterLinkPush } from "./redux/router/actions"
 import memoizeProps from "./helpers/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 
@@ -84,9 +84,6 @@ const App = ({
   GetUserEntryPeople,
   ResetEntriesSortAndFilterMaps,
   ResetMap,
-  history,
-  location,
-  match,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const addToHomeScreenProps = { prompt, promptToInstall }
@@ -116,9 +113,8 @@ const App = ({
   }, [])
 
   const renderRedirectOrComponent = (shouldRedirect, component, route) => {
-    if (shouldRedirect && route === "GoBack")
-      return () => RouterGoBack(history, true)
-    const directTo = () => RouterLinkPush(history, route)
+    if (shouldRedirect && route === "GoBack") return () => RouterGoBack(true)
+    const directTo = () => RouterLinkPush(route)
     return shouldRedirect ? () => <Redirect push to={directTo} /> : component
   }
 
@@ -132,17 +128,13 @@ const App = ({
             exact={true}
             strict={false}
             path={[ABOUT]}
-            render={({ history }) => (
-              <About {...addToHomeScreenProps} history={history} />
-            )}
+            render={() => <About {...addToHomeScreenProps} />}
           />
           <Route
             exact={true}
             strict={false}
             path={[ROOT, HOME]}
-            render={({ history }) => (
-              <Home {...addToHomeScreenProps} history={history} />
-            )}
+            render={() => <Home {...addToHomeScreenProps} />}
           />
           {/* <Route
             path={ROOT}
@@ -194,7 +186,7 @@ const App = ({
               ENTRIES_MAP,
               NEW_ENTRY,
             ]}
-            render={(routeProps) => <Entries {...routeProps} />}
+            component={Entries}
           />
           <Route exact path={[PRIVACY_POLICY]} component={PrivacyPolicy} />
           <Route component={PageNotFound} />
@@ -221,6 +213,7 @@ App.propTypes = {
 const isEqual = (prevProps, nextProps) =>
   memoizeProps(prevProps, nextProps, ["userId", "userToken"])
 
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(App, isEqual))
-)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(memo(App, isEqual))

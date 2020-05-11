@@ -10,7 +10,7 @@ import AccountDetails from "./AccountDetails"
 import UpdateProfile from "./UpdateProfile"
 import Storage from "./Storage"
 import Sections from "./Sections"
-import { RouterPush, RouteMap } from "../../routes"
+import { RouterPush, RouteMap } from "../../redux/router/actions"
 import "./styles.css"
 
 const {
@@ -23,10 +23,10 @@ const {
 } = RouteMap
 
 const Settings = ({ history, location: { pathname } }) => {
-  if (pathname === SETTINGS) RouterPush(history, SETTINGS_ENTRIES)
+  if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
   const activeTab = pathname
 
-  const handleTabChange = (tabId) => RouterPush(history, tabId)
+  const handleTabChange = (tabId) => RouterPush(tabId)
 
   const tabs = [
     {

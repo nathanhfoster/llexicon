@@ -1,0 +1,26 @@
+const RouteMap = {
+  ROOT: "/",
+  SETTINGS: "/settings",
+  SETTINGS_ENTRIES: "/settings/entries",
+  SETTINGS_PROFILE: "/settings/profile",
+  SETTINGS_PREFERENCES: "/settings/preferences",
+  SETTINGS_PUSH_NOTIFICATIONS: "/settings/push-notifications",
+  SETTINGS_STORAGE: "/settings/storage",
+  SUPPORT: "/support",
+  ABOUT: "/about",
+  HOME: "/home",
+  NEW_ENTRY: "/new-entry",
+  ENTRIES_CALENDAR: "/entries/calendar",
+  ENTRY_DETAIL: "/entry/:entryId",
+  ENTRIES: "/entries",
+  ENTRIES_LIST: "/entries/list",
+  ENTRIES_TABLE: "/entries/table",
+  ENTRIES_MAP: "/entries/map",
+  ENTRIES_FOLDERS: "/entries/folders",
+  LOGIN: "/login",
+  SIGNUP: "/sign-up",
+  PASSWORD_RESET: "/password-reset",
+  PRIVACY_POLICY: "/privacy-policy",
+}
+
+export { RouteMap }

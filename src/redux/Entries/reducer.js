@@ -2,7 +2,7 @@ import { EntriesActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
 import { handleFilterEntries } from "./utils"
 import { getStringBytes, mergeJson } from "../../helpers"
-import { RouteMap } from "../../routes"
+import { RouteMap } from "../../redux/router/actions"
 import * as AwsImages from "../../images/AWS"
 const { ...entryFiles } = AwsImages
 

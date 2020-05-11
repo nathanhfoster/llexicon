@@ -3,20 +3,19 @@ import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import storeFactory from "./redux"
+import { history } from "./redux/router/reducer"
 import { getUserClientId } from "./redux/localState"
 import { Provider } from "react-redux"
-import { BrowserRouter, Router } from "react-router-dom"
-import { createBrowserHistory } from "history"
+import { ConnectedRouter } from "connected-react-router"
+// import { BrowserRouter, Router } from "react-router-dom"
+// import { createBrowserHistory } from "history"
 import { LoadingScreen } from "./components"
 import { PersistGate } from "redux-persist/integration/react"
 import * as serviceWorker from "./serviceWorker"
 import { GetAppVersion } from "./redux/App/actions"
-
 import ReactGA from "react-ga"
 
 const { store, persistor } = storeFactory()
-
-const history = createBrowserHistory()
 
 const AlertNotifications = lazy(() =>
   new Promise((resolve) => setTimeout(resolve, 1500)).then(() =>
@@ -69,9 +68,9 @@ ReactDOM.render(
     <PersistGate loading={null} persistor={persistor}>
       <Suspense fallback={<LoadingScreen />}>
         <AlertNotifications />
-        <Router history={history}>
+        <ConnectedRouter history={history}>
           <App />
-        </Router>
+        </ConnectedRouter>
       </Suspense>
     </PersistGate>
   </Provider>,

@@ -2,12 +2,11 @@ import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "../../../redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
-import { useHistory } from "react-router-dom"
 import { BasicForm, ConfirmAction, ButtonClearCache } from "../../../components"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import { UpdateUser, DeleteAccount } from "../../../redux/User/actions"
 import { cleanObject } from "../../../helpers"
-import { RouteMap, RouterPush } from "../../../routes"
+import { RouteMap, RouterPush } from "../../../redux/router/actions"
 
 const mapStateToProps = ({ User }) => ({
   User,
@@ -19,15 +18,14 @@ const mapDispatchToProps = {
 }
 
 const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
-  const history = useHistory()
   const handleChangeUser = useCallback((payload) => {
     UpdateUser(cleanObject(payload, true))
   }, [])
   const handleDeleteAccount = useCallback(() => DeleteAccount(), [])
 
   const handleSignUp = useCallback(() => {
-    RouterPush(history, RouteMap.SIGNUP)
-  }, [history])
+    RouterPush(RouteMap.SIGNUP)
+  }, [])
   const inputs = useMemo(
     () => [
       {

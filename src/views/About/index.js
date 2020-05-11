@@ -7,7 +7,7 @@ import {
   Header,
   NewEntryButton,
 } from "../../components"
-import { RouteMap, RouterPush } from "../../routes"
+import { RouteMap, RouterPush } from "../../redux/router/actions"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
 import {
@@ -25,7 +25,7 @@ const Footer = lazy(() => import("../../components/Footer"))
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 
-const About = ({ userId, history, prompt, promptToInstall }) => {
+const About = ({ userId, prompt, promptToInstall }) => {
   const features = [
     {
       faIcon: "fas fa-download",
@@ -44,7 +44,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
       button: (
         <Button
           color="accent"
-          onClick={() => RouterPush(history, RouteMap.SIGNUP)}
+          onClick={() => RouterPush(RouteMap.SIGNUP)}
           disabled={userId ? true : false}
         >
           Sign Up
@@ -58,9 +58,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
       button: (
         <Button
           color="accent"
-          onClick={() =>
-            RouterPush(history, RouteMap.SETTINGS_PUSH_NOTIFICATIONS)
-          }
+          onClick={() => RouterPush(RouteMap.SETTINGS_PUSH_NOTIFICATIONS)}
         >
           Grant Access
         </Button>
@@ -71,10 +69,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
       title: "Offline",
       text: "Doesn't require an internet connection",
       button: (
-        <Button
-          color="accent"
-          onClick={() => RouterPush(history, RouteMap.SETTINGS)}
-        >
+        <Button color="accent" onClick={() => RouterPush(RouteMap.SETTINGS)}>
           Go Offline
         </Button>
       ),
@@ -84,10 +79,7 @@ const About = ({ userId, history, prompt, promptToInstall }) => {
       title: "Support",
       text: "Open to feature suggestions, bug reports, or conversation!",
       button: (
-        <Button
-          color="accent"
-          onClick={() => RouterPush(history, RouteMap.SUPPORT)}
-        >
+        <Button color="accent" onClick={() => RouterPush(RouteMap.SUPPORT)}>
           Support Page
         </Button>
       ),

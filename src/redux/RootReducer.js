@@ -7,17 +7,20 @@ import { DEFAULT_STATE_TEXT_EDITOR, TextEditor } from "./TextEditor/reducer"
 import { DEFAULT_STATE_ENTRIES, Entries } from "./Entries/reducer"
 import { DEFAULT_STATE_MAP, Map } from "./Map/reducer"
 import { DEFAULT_STATE_WINDOW, Window } from "./Window/reducer"
+import { router } from "./router/reducer"
 
-const RootReducer = combineReducers({
-  Alerts,
-  App,
-  Calendar,
-  Entries,
-  Map,
-  User,
-  TextEditor,
-  Window,
-})
+const RootReducer = () =>
+  combineReducers({
+    Alerts,
+    App,
+    Calendar,
+    Entries,
+    Map,
+    User,
+    TextEditor,
+    Window,
+    router,
+  })
 
 export {
   RootReducer,

@@ -1,21 +1,14 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Button } from "reactstrap"
-import { useHistory } from "react-router-dom"
-import { RouteMap, RouterPush } from "../../routes"
+import { RouteMap, RouterPush } from "../../redux/router/actions"
 
-const NewEntryButton = () => {
-  const history = useHistory()
-  return (
-    <Button
-      color="accent"
-      onClick={() => RouterPush(history, RouteMap.NEW_ENTRY)}
-    >
-      <i className="fas fa-feather-alt mr-1" />
-      Create a new journal entry
-    </Button>
-  )
-}
+const NewEntryButton = () => (
+  <Button color="accent" onClick={() => RouterPush(RouteMap.NEW_ENTRY)}>
+    <i className="fas fa-feather-alt mr-1" />
+    Create a new journal entry
+  </Button>
+)
 
 NewEntryButton.propTypes = {}
 

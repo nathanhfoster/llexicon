@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, memo } from "react"
+import React, { useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Container, Row, Col, Button } from "reactstrap"
@@ -6,8 +6,7 @@ import { connect as reduxConnect } from "react-redux"
 import Calendar from "react-calendar"
 import Moment from "react-moment"
 import MomentJS from "moment"
-import { withRouter } from "react-router-dom"
-import { RouterPush, RouteMap } from "../../routes"
+import { RouterPush, RouteMap } from "../../redux/router/actions"
 import { SetCalendar } from "../../redux/Calendar/actions"
 import { GetUserEntriesByDate } from "../../redux/Entries/actions"
 import TileContent from "./TileContent"
@@ -31,7 +30,6 @@ const EntryCalendar = ({
   view,
   SetCalendar,
   GetUserEntriesByDate,
-  history,
 }) => {
   useEffect(() => {
     GetUserEntriesByDate(activeDate)
@@ -83,7 +81,7 @@ const EntryCalendar = ({
     handleDateChange({ activeStartDate, view: "month" }, false)
   }
 
-  const handleNewEntryClick = () => RouterPush(history, RouteMap.NEW_ENTRY)
+  const handleNewEntryClick = () => RouterPush(RouteMap.NEW_ENTRY)
 
   const handleOnChange = (activeStartDate) =>
     handleDateChange({ activeStartDate, view }, false)
@@ -192,6 +190,4 @@ EntryCalendar.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(EntryCalendar)
-)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryCalendar)

@@ -16,7 +16,7 @@ import {
   Portal,
 } from "../"
 import { copyStringToClipboard, shareUrl } from "../../helpers"
-import { RouterGoBack } from "../../routes"
+import { RouterGoBack } from "../../redux/router/actions"
 import { useDispatch } from "react-redux"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
 import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
@@ -26,7 +26,6 @@ const EntryOptionsMenu = ({
   entryId,
   title,
   is_public,
-  history,
   shouldSyncOnUpdate,
   shouldRedirectOnDelete,
   readOnly,
@@ -52,7 +51,7 @@ const EntryOptionsMenu = ({
   }, [])
 
   const handleDelete = useCallback(() => {
-    shouldRedirectOnDelete && RouterGoBack(history)
+    shouldRedirectOnDelete && RouterGoBack()
     setTimeout(() => {
       handleEditorChange({
         _shouldDelete: true,
@@ -60,7 +59,7 @@ const EntryOptionsMenu = ({
 
       handleSync()
     }, 200)
-  }, [history])
+  }, [])
 
   const handleCopyAndMakePublic = useCallback(() => {
     copyStringToClipboard(url)
@@ -167,7 +166,6 @@ EntryOptionsMenu.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string,
   is_public: PropTypes.bool.isRequired,
-  history: PropTypes.object,
   shouldSyncOnUpdate: PropTypes.bool,
   shouldRedirectOnDelete: PropTypes.bool,
   readOnly: PropTypes.bool.isRequired,

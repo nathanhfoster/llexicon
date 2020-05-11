@@ -4,7 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
 import { AddToHomeScreen, BasicCard, Header } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
-import { RouterPush, RouteMap } from "../../routes"
+import { RouterPush, RouteMap } from "../../redux/router/actions"
 import "./styles.css"
 
 const EntryNavButtons = lazy(() => import("../../components/EntryNavButtons"))
@@ -21,7 +21,7 @@ const mapStateToProps = ({ User: { id } }) => ({
   userIsLoggedIn: !!id,
 })
 
-const Home = ({ userIsLoggedIn, prompt, promptToInstall, history }) => {
+const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
   const homeCardHeader = useMemo(
     () => <LogoImage height={256} width={256} />,
     []
@@ -38,7 +38,6 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall, history }) => {
         color={!userIsLoggedIn ? "info" : "success"}
         onClick={() =>
           RouterPush(
-            history,
             !userIsLoggedIn ? RouteMap.ABOUT : RouteMap.SETTINGS_ENTRIES
           )
         }
