@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, lazy, Fragment } from "react"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
-import { GoToEntryDetail } from "../../../redux/router/actions"
+import { GetEntryDetailUrl } from "../../../redux/router/actions"
 import { BasicCard } from "../../"
 import EntryCardHtml from "../EntryCardHtml"
 import EntryCardTitle from "../EntryCardTitle"
@@ -32,7 +32,7 @@ const EntryCard = ({
   _lastUpdated,
   userId,
 }) => {
-  const onClickCallback = useCallback(() => GoToEntryDetail(id), [id])
+  const href = useMemo(() => GetEntryDetailUrl(id), [id])
   const readOnly = Boolean(author && userId && userId !== author)
   const reducedHtml = html.slice(0, 1000)
 
@@ -90,6 +90,8 @@ const EntryCard = ({
 
   return (
     <BasicCard
+      tag="a"
+      href={href}
       header={cardHeader}
       title={cardTitle}
       text={cardText}
@@ -97,7 +99,6 @@ const EntryCard = ({
       cardHeaderClassName="EntryCardHeader Overflow p-0"
       cardBodyClassName="px-2 pt-0 pb-2"
       cardTextClassName="EntryCardText"
-      onClickCallback={onClickCallback}
     />
   )
 }
