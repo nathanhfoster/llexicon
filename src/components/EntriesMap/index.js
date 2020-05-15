@@ -1,11 +1,14 @@
 import React, { useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { useHistory } from "react-router-dom"
 import { BasicMap } from "../"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { SetEditorState } from "../../redux/TextEditor/actions"
-import { RouteMap, RouterPush, GoToEntryDetail } from "../../routes"
+import {
+  RouteMap,
+  RouterPush,
+  GoToEntryDetail,
+} from "../../redux/router/actions"
 
 const mapStateToProps = ({ Entries: { items } }) => ({
   entries: items,
@@ -16,7 +19,6 @@ const mapDispatchToProps = {
 }
 
 const EntriesMap = ({ height, entries }) => {
-  const history = useHistory()
   const handleOnChange = useCallback(
     ({ entryId, address, latitude, longitude }) => {
       if (!entryId) return
@@ -36,9 +38,9 @@ const EntriesMap = ({ height, entries }) => {
           latitude,
           longitude,
         })
-        return RouterPush(history, RouteMap.NEW_ENTRY)
+        return RouterPush(RouteMap.NEW_ENTRY)
       } else {
-        return GoToEntryDetail(entryId, history)
+        return GoToEntryDetail(entryId)
       }
     },
     []

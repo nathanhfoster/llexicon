@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import { Container, Row, Col } from "reactstrap"
 import { Header } from "../../components"
-import { RouteMap } from "../../routes"
+import { RouteMap } from "../../redux/router/actions"
 import "./styles.css"
 
 const PrivacyPolicy = () => (
@@ -11,7 +11,9 @@ const PrivacyPolicy = () => (
         <Header>Privacy Policy</Header>
         <p>Let's make this simple.</p>
         <p>Our privacy is important to me.</p>
-        <p>I do not sell or reveal your personal data to any person or entity.</p>
+        <p>
+          I do not sell or reveal your personal data to any person or entity.
+        </p>
         <p>
           Google Analytics is used to record{" "}
           <a

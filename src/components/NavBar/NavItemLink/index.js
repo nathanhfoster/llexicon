@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { NavItem, NavLink, DropdownItem } from "reactstrap"
 import { NavLink as RouterNavLink, withRouter } from "react-router-dom"
-import { RouterLinkPush } from "../../../routes"
+import { RouterLinkPush } from "../../../redux/router/actions"
 import "./styles.css"
 
 const NavItemLink = ({
@@ -11,9 +11,8 @@ const NavItemLink = ({
   title,
   icon,
   onClick,
-  history,
   onClickCallback,
-  render
+  render,
 }) => {
   const handleCLick = () => {
     onClick && onClick()
@@ -27,7 +26,7 @@ const NavItemLink = ({
           activeClassName="active"
           className="Navlink"
           tag={RouterNavLink}
-          to={RouterLinkPush(history, route)}
+          to={RouterLinkPush(route)}
           onClick={handleCLick}
         >
           {icon}
@@ -50,7 +49,7 @@ NavItemLink.propTypes = {
   icon: PropTypes.node,
   onClick: PropTypes.func,
   onClickCallback: PropTypes.func,
-  render: PropTypes.node
+  render: PropTypes.node,
 }
 
 NavItemLink.defaultProps = { dropdownItem: false }

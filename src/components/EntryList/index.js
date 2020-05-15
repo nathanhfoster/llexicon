@@ -3,10 +3,9 @@ import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { BasicList } from "../"
-import { withRouter } from "react-router-dom"
 import Moment from "react-moment"
 import MomentJS from "moment"
-import { GoToEntryDetail } from "../../routes"
+import { GoToEntryDetail } from "../../redux/router/actions"
 import Star from "../BackgroundImage/Star"
 import TagsContainer from "../TagsContainer"
 import "./styles.css"
@@ -23,7 +22,7 @@ const mapStateToProps = ({
   }
 }
 
-const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
+const EntryList = ({ entriesWithinView, activeDate, listHeight }) => {
   const entries = useMemo(
     () =>
       entriesWithinView
@@ -54,7 +53,7 @@ const EntryList = ({ history, entriesWithinView, activeDate, listHeight }) => {
             value: (
               <div
                 key={id}
-                onClick={() => GoToEntryDetail(id, history)}
+                onClick={() => GoToEntryDetail(id)}
                 className="listItem"
                 title={title}
               >
@@ -101,4 +100,4 @@ EntryList.propTypes = {
   entriesWithinView: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(withRouter(memo(EntryList)))
+export default reduxConnect(mapStateToProps)(EntryList)

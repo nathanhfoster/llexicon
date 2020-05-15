@@ -5,6 +5,8 @@ import { isType } from "../../helpers"
 import "./styles.css"
 
 const BasicCard = ({
+  tag,
+  href,
   header,
   title,
   text,
@@ -31,6 +33,8 @@ const BasicCard = ({
       className={`BasicCard ${cardClassName} ${cardHoverStyles}`}
       onClick={handleOnClickCallback}
       title={cardTitle}
+      tag={tag}
+      href={href}
     >
       <CardHeader
         tag="div"
@@ -59,6 +63,8 @@ const BasicCard = ({
 }
 
 BasicCard.propTypes = {
+  tag: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  href: PropTypes.string,
   header: PropTypes.node,
   title: PropTypes.oneOfType([
     PropTypes.string,
@@ -76,6 +82,7 @@ BasicCard.propTypes = {
 }
 
 BasicCard.defaultProps = {
+  tag: "div",
   cardClassName: "",
   cardHeaderClassName: "Center",
   cardBodyClassName: "",

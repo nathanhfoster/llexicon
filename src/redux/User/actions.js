@@ -31,7 +31,7 @@ const UserLogin = (payload, rememberMe) => async (dispatch) =>
       })
       return data
     })
-    .catch((e) => console.log("UserLogin: ", e.response))
+    .catch((e) => console.log("UserLogin: ", e))
 
 const RefreshPatchUser = (id) => (dispatch) =>
   AxiosOffline()

@@ -41,7 +41,7 @@ ConfirmAction.propTypes = {
   title: PropTypes.string,
   onConfirm: PropTypes.func,
   onCancel: PropTypes.func,
-  size: PropTypes.oneOfType(["xs", "sm", "md", "lg", "xl"]),
+  size: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
 }
 
 ConfirmAction.defaultProps = {
