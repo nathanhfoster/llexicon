@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import { RouteMap, RouterGoBack } from "../../../routes"
+import { RouteMap, RouterGoBack } from "../../../redux/router/actions"
 import { SetApiResponseStatus } from "../../../redux/Alerts/actions"
 import { stringMatch } from "../../../helpers"
 import "./styles.css"
@@ -22,8 +21,14 @@ const getSubtitles = (apiResponseStatus) => {
   }
 }
 
-const mapStateToProps = ({ Alerts: { apiResponseStatus } }) => ({
+const mapStateToProps = ({
+  Alerts: { apiResponseStatus },
+  router: {
+    location: { pathname },
+  },
+}) => ({
   apiResponseStatus,
+  pathname,
 })
 
 const mapDispatchToProps = { SetApiResponseStatus }
@@ -31,10 +36,8 @@ const mapDispatchToProps = { SetApiResponseStatus }
 const ApiStatusResponse = ({
   apiResponseStatus,
   SetApiResponseStatus,
-  history,
+  pathname,
 }) => {
-  const { pathname } = history.location
-
   useEffect(() => {
     const isOnEntryDetailView = stringMatch(
       pathname,
@@ -48,7 +51,7 @@ const ApiStatusResponse = ({
       SetApiResponseStatus(404)
     }
   }, [])
-  const handleGoBack = () => RouterGoBack(history)
+  const handleGoBack = () => RouterGoBack()
   const renderSubtitles = useMemo(() => {
     const [subtitle1, subtitle2] = getSubtitles(apiResponseStatus)
     return (
@@ -79,4 +82,4 @@ ApiStatusResponse.defaultProps = { apiResponseStatus: 404 }
 export default reduxConnect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ApiStatusResponse))
+)(ApiStatusResponse)

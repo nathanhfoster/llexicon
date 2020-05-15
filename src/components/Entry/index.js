@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { useDispatch } from "react-redux"
-import { withRouter } from "react-router-dom"
 import { Editor, EntryOptionsMenu } from "../../components"
 import ReactDatePicker from "../ReactDatePicker"
 import UseDebounce from "../UseDebounce"
@@ -18,7 +17,6 @@ const Entry = ({
   bottomToolbarIsOpen,
   shouldRedirectOnDelete,
   theme,
-  history,
   readOnly,
 }) => {
   const activeDate = new Date(
@@ -96,7 +94,6 @@ const Entry = ({
               onChangeCallback={handleEditorChange}
               entryId={entry.id}
               is_public={entry.is_public}
-              history={history}
               shouldRedirectOnDelete={shouldRedirectOnDelete}
               readOnly={readOnly}
             />
@@ -113,9 +110,6 @@ Entry.propTypes = {
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   bottomToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,
-  history: PropTypes.object,
-  location: PropTypes.object,
-  match: PropTypes.object,
   staticContext: PropTypes.any,
   topToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,
@@ -133,4 +127,4 @@ Entry.defaultProps = {
 const isEqual = (prevProps, nextProps) =>
   memoizeProps(prevProps, nextProps, ["entry", "itemSize", "width"])
 
-export default withRouter(memo(Entry, isEqual))
+export default memo(Entry, isEqual)

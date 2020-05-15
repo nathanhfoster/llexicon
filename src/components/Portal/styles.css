@@ -1,0 +1,4 @@
+#portal-root {
+  position: absolute;
+  z-index: 999;
+}

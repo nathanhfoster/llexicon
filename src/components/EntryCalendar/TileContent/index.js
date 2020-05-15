@@ -1,9 +1,8 @@
-import React, { Fragment, memo } from "react"
+import React, { Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { RouteMap, RouterPush } from "../../../routes"
+import { RouteMap, RouterPush } from "../../../redux/router/actions"
 import { GetUserEntriesByDate } from "../../../redux/Entries/actions"
-import { withRouter } from "react-router-dom"
 import EntryPreview from "./EntryPreview"
 import MomentJS from "moment"
 import "./styles.css"
@@ -52,10 +51,9 @@ const TileContent = ({
   date,
   staticContext,
   view,
-  history,
 }) => {
   const handleTodayClick = () =>
-    setTimeout(() => RouterPush(history, RouteMap.NEW_ENTRY), 10)
+    setTimeout(() => RouterPush(RouteMap.NEW_ENTRY), 10)
 
   const renderEntryPreviews = () =>
     entries.map((entry) => {
@@ -69,7 +67,6 @@ const TileContent = ({
           date={date}
           staticContext={staticContext}
           view={view}
-          history={history}
         />
       )
     })
@@ -96,6 +93,4 @@ TileContent.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-export default withRouter(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(memo(TileContent))
-)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)

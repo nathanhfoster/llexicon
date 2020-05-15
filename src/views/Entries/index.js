@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Row } from "reactstrap"
-import { RouteMap, RouterPush } from "../../routes"
+import { RouteMap, RouterPush } from "../../redux/router/actions"
 import { BasicTabs, NewEntryButton, EntriesTable } from "../../components"
 import NewEntry from "../NewEntry"
 import { GetUserEntries } from "../../redux/Entries/actions"
@@ -19,11 +19,15 @@ const mapStateToProps = ({
   Entries: { items },
   TextEditor,
   Window: { innerHeight, navBarHeight },
+  router: {
+    location: { pathname },
+  },
 }) => ({
   userId: id,
   entries: items,
   TextEditor,
   viewPortHeight: innerHeight - navBarHeight,
+  pathname,
 })
 
 const mapDispatchToProps = {
@@ -36,11 +40,8 @@ const Entries = ({
   TextEditor,
   viewPortHeight,
   GetUserEntries,
-  history,
-  location,
-  match,
+  pathname,
 }) => {
-  const { pathname } = location
   useEffect(() => {
     if (userId) GetUserEntries(1)
   }, [])
@@ -59,7 +60,7 @@ const Entries = ({
   const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
 
   if (pathname === RouteMap.ENTRIES) {
-    RouterPush(history, RouteMap.ENTRIES_LIST)
+    RouterPush(RouteMap.ENTRIES_LIST)
   }
 
   if (TextEditor.latitude && TextEditor.longitude) {
@@ -72,7 +73,7 @@ const Entries = ({
 
   const activeTab = pathname
 
-  const handleTabChange = (tabId) => RouterPush(history, tabId)
+  const handleTabChange = (tabId) => RouterPush(tabId)
 
   const tabs = [
     {
@@ -118,12 +119,7 @@ const Entries = ({
           {shouldRenderNewEntryButton ? (
             <NewEntryButton />
           ) : (
-            <EntryFolders
-              entries={viewableEntries}
-              history={history}
-              location={location}
-              match={match}
-            />
+            <EntryFolders entries={viewableEntries} />
           )}
         </Row>
       ),

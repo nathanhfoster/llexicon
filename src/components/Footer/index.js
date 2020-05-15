@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
-import { RouteMap } from "../../routes"
 import "./styles.css"
 
 const mapStateToProps = ({ App: { version } }) => ({ version })

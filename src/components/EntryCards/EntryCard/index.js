@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo, lazy, Fragment } from "react"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
-import { useHistory } from "react-router-dom"
-import { GoToEntryDetail } from "../../../routes"
+import { GetEntryDetailUrl } from "../../../redux/router/actions"
 import { BasicCard } from "../../"
 import EntryCardHtml from "../EntryCardHtml"
 import EntryCardTitle from "../EntryCardTitle"
@@ -33,17 +32,14 @@ const EntryCard = ({
   _lastUpdated,
   userId,
 }) => {
-  const history = useHistory()
-  const onClickCallback = useCallback(() => GoToEntryDetail(id, history), [
-    id,
-    history,
-  ])
+  const href = useMemo(() => GetEntryDetailUrl(id), [id])
   const readOnly = Boolean(author && userId && userId !== author)
   const reducedHtml = html.slice(0, 1000)
 
   const cardHeader = useMemo(
     () => (
       <Fragment>
+        <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
         <div
           className="EntryOptionsMenuContainer"
           onClick={(e) => e.stopPropagation()}
@@ -56,7 +52,6 @@ const EntryCard = ({
             readOnly={readOnly}
           />
         </div>
-        <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
       </Fragment>
     ),
     [id, is_public, reducedHtml, views, rating]
@@ -95,6 +90,8 @@ const EntryCard = ({
 
   return (
     <BasicCard
+      tag="a"
+      href={href}
       header={cardHeader}
       title={cardTitle}
       text={cardText}
@@ -102,7 +99,6 @@ const EntryCard = ({
       cardHeaderClassName="EntryCardHeader Overflow p-0"
       cardBodyClassName="px-2 pt-0 pb-2"
       cardTextClassName="EntryCardText"
-      onClickCallback={onClickCallback}
     />
   )
 }

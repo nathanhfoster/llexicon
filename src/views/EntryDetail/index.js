@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
+import { useParams } from "react-router-dom"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
-import { connect as reduxConnect } from "react-redux"
+
 import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
 import { SetCalendar } from "../../redux/Calendar/actions"
 import PageNotFound from "../PageNotFound"
@@ -22,7 +24,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
 
 const EntryDetail = ({
-  entryId,
   userId,
   items,
   filteredItems,
@@ -30,6 +31,8 @@ const EntryDetail = ({
   SyncEntries,
   SetCalendar,
 }) => {
+  const { entryId } = useParams()
+
   let setCalendarDateToEntryDate = useRef(false)
   const entry = useMemo(
     () => items.concat(filteredItems).find(({ id }) => id == entryId),

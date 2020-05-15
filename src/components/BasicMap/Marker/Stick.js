@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { useHistory } from "react-router-dom"
-import { RouterPush, RouteMap } from "../../../routes"
+import { RouterPush, RouteMap } from "../../../redux/router/actions"
 import { GetAddress } from "../../../redux/Actions/Google"
 import {
   K_CIRCLE_SIZE,
@@ -21,10 +21,9 @@ const infoClick = ({
   lat,
   lng,
   getAddressOnMarkerClick,
-  history,
 }) => {
   if ($dimensionKey === "NewEntry") {
-    RouterPush(history, RouteMap.NEW_ENTRY)
+    RouterPush(RouteMap.NEW_ENTRY)
   } else if (!getAddressOnMarkerClick) {
     return onChangeCallback({
       entryId: $dimensionKey,

@@ -1,9 +1,10 @@
-import React, { useEffect, useState, lazy, memo } from "react"
+import React, { useEffect, useState, lazy } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap"
 import { NavLink } from "react-router-dom"
-import { RouterPush } from "../../routes"
+import { RouterPush } from "../../redux/router/actions"
 import { TopKFrequentStrings } from "../../helpers"
 import "./styles.css"
 
@@ -13,9 +14,15 @@ const BASE_FOLDER_DIRECTORY_URL = "folders?folder=All"
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
-const EntryFolders = ({ entries, history, location: { search } }) => {
+const mapStateToProps = ({
+  router: {
+    location: { search },
+  },
+}) => ({ search })
+
+const EntryFolders = ({ entries, search }) => {
   useEffect(() => {
-    if (!search) RouterPush(history, BASE_FOLDER_DIRECTORY_URL)
+    if (!search) RouterPush(BASE_FOLDER_DIRECTORY_URL)
   }, [])
 
   const [viewableEntriesRange, setViewableEntriesRange] = useState(
@@ -69,7 +76,7 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
   const renderFolders = () =>
     sortedTags.map((name, i) => {
       const handleOnClickCallback = () => {
-        RouterPush(history, search.concat(`+${name}`))
+        RouterPush(search.concat(`+${name}`))
         setViewableEntriesRange(DEFAULT_VIEWABLE_ENTRIES_RANGE)
       }
 
@@ -105,10 +112,9 @@ const EntryFolders = ({ entries, history, location: { search } }) => {
 
 EntryFolders.propTypes = {
   entries: EntriesPropTypes,
-  history: PropTypes.object,
-  location: PropTypes.object,
+  search: PropTypes.string.isRequired,
 }
 
-EntryFolders.defaultProps = {}
+EntryFolders.defaultProps = { search: "" }
 
-export default memo(EntryFolders)
+export default reduxConnect(mapStateToProps)(EntryFolders)

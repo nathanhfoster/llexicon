@@ -1,8 +1,7 @@
 import React, { Fragment, memo } from "react"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { Badge, Container, Row, Col } from "reactstrap"
-import { useHistory } from "react-router-dom"
-import { GoToEntryDetail } from "../../routes"
+import { GoToEntryDetail } from "../../redux/router/actions"
 import Moment from "react-moment"
 import Star from "../BackgroundImage/Star"
 import TagsContainer from "../TagsContainer"
@@ -27,8 +26,6 @@ const EntryMinimal = ({
   views,
   rating,
 }) => {
-  const history = useHistory()
-
   const showFileIcon = EntryFiles.length > 0
   const showLocationIcon = latitude && longitude
 
@@ -37,7 +34,7 @@ const EntryMinimal = ({
       fluid
       tag={Badge}
       className="EntryMinimal p-2"
-      onClick={() => GoToEntryDetail(id, history)}
+      onClick={() => GoToEntryDetail(id)}
       title={title}
     >
       <Row>

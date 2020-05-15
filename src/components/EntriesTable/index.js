@@ -2,8 +2,7 @@ import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { stripHtml } from "../../helpers"
-import { GoToEntryDetail } from "../../routes"
-import { useHistory } from "react-router-dom"
+import { GoToEntryDetail } from "../../redux/router/actions"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable } from "../"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
@@ -31,8 +30,6 @@ const EntriesTable = ({
   SetEntriesSortMap,
   SetEntriesFilterMap,
 }) => {
-  const history = useHistory()
-
   const viewableEntries = useMemo(
     () => items.filter(({ _shouldDelete }) => !_shouldDelete),
     [items]
@@ -134,7 +131,7 @@ const EntriesTable = ({
         title: <i className="fas fa-calendar-day" />,
         key: "date_created_by_author",
         width: 100,
-        onRowClick: (item) => GoToEntryDetail(item.id, history),
+        onRowClick: (item) => GoToEntryDetail(item.id),
         render: (item) => (
           <Moment format="D MMM YY hh:mma">
             {item.date_created_by_author}
