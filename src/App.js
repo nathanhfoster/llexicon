@@ -18,7 +18,7 @@ import { RouteMap, RouterGoBack } from "./redux/router/actions"
 import { About, Home, Entries, PrivacyPolicy } from "./views"
 import { NavBar } from "./components"
 import { RouterLinkPush } from "./redux/router/actions"
-import memoizeProps from "./helpers/memoizeProps"
+import memoizeProps from "./utils/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 
 const Account = lazy(() => import("./views/Account"))

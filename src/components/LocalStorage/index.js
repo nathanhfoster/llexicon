@@ -4,7 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { BasicProgress, Header } from "../"
 import { Container, Row, Col } from "reactstrap"
 import { ButtonClearCache } from "../"
-import { formatBytes, getStringBytes } from "../../helpers"
+import { formatBytes, getStringBytes } from "../../utils"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 
 const mapStateToProps = (state) => {

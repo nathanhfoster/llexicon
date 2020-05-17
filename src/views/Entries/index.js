@@ -9,10 +9,10 @@ import NewEntry from "../NewEntry"
 import { GetUserEntries } from "../../redux/Entries/actions"
 import "./styles.css"
 
-const EntryCalendar = lazy(() => import("../../components/EntryCalendar"))
-const EntryFolders = lazy(() => import("../../components/EntryFolders"))
-const EntriesList = lazy(() => import("../../components/EntriesList"))
-const EntriesMap = lazy(() => import("../../components/EntriesMap"))
+const EntryCalendar = lazy(() => import("../../components/EntryComponents/EntryCalendar"))
+const EntryFolders = lazy(() => import("../../components/EntryComponents/EntryFolders"))
+const EntriesList = lazy(() => import("../../components/EntryComponents/EntriesList"))
+const EntriesMap = lazy(() => import("../../components/EntryComponents/EntriesMap"))
 
 const mapStateToProps = ({
   User: { id },
@@ -154,7 +154,7 @@ const Entries = ({
           <NewEntryButton />
         </Row>
       ) : (
-        <Row>
+        <Row className="ShowScrollBar">
           <EntriesTable />
         </Row>
       ),

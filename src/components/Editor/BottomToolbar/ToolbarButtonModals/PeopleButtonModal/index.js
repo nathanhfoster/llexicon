@@ -12,14 +12,14 @@ import {
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
-import TagsContainer from "../../../../TagsContainer"
+import { TagsContainer } from "../../../../"
 import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,
   removeAttributeDuplicates,
   stringMatch,
-} from "../../../../../helpers"
-import memoizeProps from "../../../../../helpers/memoizeProps"
+} from "../../../../../utils"
+import memoizeProps from "../../../../../utils/memoizeProps"
 import { validateTagOrPeopleString, validatedPersonNameString } from "../utlis"
 import {
   EntriesPropTypes,

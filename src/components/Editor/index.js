@@ -10,7 +10,7 @@ import "./styles.css"
 import TopToolbar from "./TopToolbar"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
-import deepEquals from "../../helpers/deepEquals"
+import deepEquals from "../../utils/deepEquals"
 
 const BottomToolbar = lazy(() => import("./BottomToolbar"))
 

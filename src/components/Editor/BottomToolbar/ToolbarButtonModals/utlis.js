@@ -1,4 +1,4 @@
-import { removeArrayDuplicates } from "../../../../helpers"
+import { removeArrayDuplicates } from "../../../../utils"
 
 const REMOVE_SPECIAL_CHARACTERS_REGEX = /[!@#$%^&*().?":{}|<>]/gi
 const REMOVE_SPECIAL_CHARACTERS_REPLACEMENT = ""

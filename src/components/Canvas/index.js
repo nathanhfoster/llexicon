@@ -1,6 +1,6 @@
 import React, { createRef, PureComponent } from "react"
 import PropTypes from "prop-types"
-import { getRandomInt } from "../../helpers"
+import { getRandomInt } from "../../utils"
 
 class Canvas extends PureComponent {
   constructor(props) {
