@@ -13,7 +13,7 @@ const Portal = ({ children, domNodeId }) => {
 
   useEffect(() => {
     return () => {
-     setTimeout(() => modalRoot && modalRoot.removeChild(domNode), 200)
+      modalRoot.removeChild(domNode)
     }
   })
 
