@@ -9,12 +9,6 @@ import { tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../helpers"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
-import {
-  basicTableSort,
-  basicTableFilter,
-  basicTableSetPage,
-  basicTableSetPageSize,
-} from "./state/actions"
 import "./styles.css"
 
 const BasicTable = ({
