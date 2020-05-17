@@ -79,7 +79,10 @@ const EntriesTable = ({
             : a.tags.join().localeCompare(b.tags.join()),
         defaultSortValue: sortMap.tags,
         filter: (searchValue) => ({ tags }) =>
-          tags.some((t) => stringMatch(t.name, searchValue)),
+          searchValue
+            .split(",")
+            .every((value) => tags.some((tag) => stringMatch(tag.name, value))),
+
         defaultFilterValue: filterMap.tags,
         filterPlaceholder: "Tags",
         render: ({ tags }) => <TagsContainer tags={tags} />,
@@ -94,7 +97,11 @@ const EntriesTable = ({
             : a.people.join().localeCompare(b.people.join()),
         defaultSortValue: sortMap.people,
         filter: (searchValue) => ({ people }) =>
-          people.some((t) => stringMatch(t.name, searchValue)),
+          searchValue
+            .split(",")
+            .every((value) =>
+              people.some((person) => stringMatch(person.name, value))
+            ),
         defaultFilterValue: filterMap.people,
         filterPlaceholder: "People",
         render: ({ people }) => (

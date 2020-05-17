@@ -1,13 +1,14 @@
 .EntryMinimal {
   color: var(--secondaryColor);
   background: var(--quinaryColor);
-  box-shaow: var(--primaryBoxShadow);
+  box-shadow: var(--primaryBoxShadow);
   height: 100%;
   width: 100%;
   text-align: inherit;
 }
 
 .EntryMinimal:hover {
+  color: var(--secondaryColor);
   background: var(--primaryColor);
   cursor: pointer;
 }
