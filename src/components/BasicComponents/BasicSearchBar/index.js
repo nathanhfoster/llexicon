@@ -7,16 +7,16 @@ import {
   InputGroupAddon,
   InputGroupText,
   Input,
-  Media
+  Media,
 } from "reactstrap"
-import UseDebounce from "../UseDebounce"
+import { UseDebounce } from "../../"
 
 const BasicSearchBar = ({ placeholder, onSubmit }) => {
   const [searchValue, setSearchValue] = useState("")
 
   const handleOnChange = ({ target: { value } }) => setSearchValue(value)
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     onSubmit(searchValue)
   }
@@ -43,10 +43,10 @@ const BasicSearchBar = ({ placeholder, onSubmit }) => {
 
 BasicSearchBar.propTypes = {
   placeholder: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
 }
 
 BasicSearchBar.defaultProps = {
-  placeholder: "Search..."
+  placeholder: "Search...",
 }
 export default memo(BasicSearchBar)

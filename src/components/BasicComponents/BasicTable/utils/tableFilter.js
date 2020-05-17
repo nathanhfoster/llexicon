@@ -1,5 +1,5 @@
 import MomentJS from "moment"
-import { stringMatch, isType } from "../../../utils"
+import { stringMatch, isType } from "../../../../utils"
 
 const tableFilter = (data, filterList) => {
   let filteredData = [...data]
@@ -24,12 +24,12 @@ const tableFilter = (data, filterList) => {
           return true
         }
       })
-    } else if (filter === "string") {
+    } else if (filter === isType.STRING) {
       filteredData = filteredData.filter((item) => {
         const itemString = item[key]
         return stringMatch(itemString, filterValue)
       })
-    } else if (filter === "number") {
+    } else if (filter === isType.NUMBER) {
       if (filterValue) {
         filteredData = filteredData.filter((item) => item[key] >= filterValue)
       }

@@ -1,15 +1,13 @@
 import React, { PureComponent, createRef, Fragment } from "react"
 import PropTypes from "prop-types"
-import BasicList from "../BasicList"
-import UseDebounce from "../UseDebounce"
+import { BasicList, UseDebounce } from "../"
 import {
   getSearchValue,
   filterList,
   getTextWidth,
-  mergeLists
+  mergeLists,
 } from "./functions"
 import { Input, Label } from "reactstrap"
-
 import "./styles.css"
 
 const TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK = 200
@@ -25,7 +23,7 @@ class SearchList extends PureComponent {
       value,
       height,
       width,
-      showList
+      showList,
     } = props
 
     const searchValue = defaultValue || getSearchValue(list, value)
@@ -40,7 +38,7 @@ class SearchList extends PureComponent {
       height,
       width,
       value,
-      searchListRef: {}
+      searchListRef: {},
     }
   }
 
@@ -53,7 +51,7 @@ class SearchList extends PureComponent {
         id: PropTypes.any.isRequired,
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
           .isRequired,
-        otherValue: PropTypes.any
+        otherValue: PropTypes.any,
       }).isRequired
     ),
     cacheList: PropTypes.bool,
@@ -71,7 +69,7 @@ class SearchList extends PureComponent {
       "relative",
       "sticky",
       "initial",
-      "inherit"
+      "inherit",
     ]),
 
     // Callback props
@@ -80,7 +78,7 @@ class SearchList extends PureComponent {
     onChangeCallbackDebounceDelay: PropTypes.number,
     onBlurCallback: PropTypes.func,
     onFocusCallback: PropTypes.func,
-    onScrollToBottomOfListCallback: PropTypes.func // When scrolled to the bottom of the list,
+    onScrollToBottomOfListCallback: PropTypes.func, // When scrolled to the bottom of the list,
   }
 
   static defaultProps = {
@@ -94,7 +92,7 @@ class SearchList extends PureComponent {
     initiallyRenderList: true,
     cacheList: false,
     listPosition: "absolute",
-    onChangeCallbackDebounceDelay: 400
+    onChangeCallbackDebounceDelay: 400,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -103,7 +101,7 @@ class SearchList extends PureComponent {
       searchValue,
       showList,
       searchListRef,
-      typingSearchValue
+      typingSearchValue,
     } = prevState
     const { defaultValue, itemSize, maxHeight, value, cacheList } = nextProps
     let nextList = nextProps.list
@@ -140,7 +138,7 @@ class SearchList extends PureComponent {
       showDropDownIcon,
       value,
       searchListRef,
-      width: clientWidth
+      width: clientWidth,
     }
   }
 
@@ -156,7 +154,7 @@ class SearchList extends PureComponent {
     this.setState({ showDropDownIcon: true })
   }
 
-  onSearchChange = e => {
+  onSearchChange = (e) => {
     const { value } = e.target
     this.setState({ searchValue: value, initiallyRenderList: false })
   }
@@ -176,13 +174,13 @@ class SearchList extends PureComponent {
   }
 
   handleDropDownIconClick = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const { placeholder } = this.props
       const { searchValue, showList } = prevState
       if (searchValue === placeholder && !showList) {
         return {
           showList: true,
-          searchValue: ""
+          searchValue: "",
         }
       } else {
         return { showList: !showList }
@@ -205,7 +203,7 @@ class SearchList extends PureComponent {
       onChangeCallbackDebounceDelay,
       onChangeCallback,
       listPosition,
-      onScrollToBottomOfListCallback
+      onScrollToBottomOfListCallback,
     } = this.props
     const {
       showList,
@@ -213,7 +211,7 @@ class SearchList extends PureComponent {
       list,
       searchValue,
       height,
-      width
+      width,
     } = this.state
     return (
       <Fragment>
@@ -239,7 +237,7 @@ class SearchList extends PureComponent {
               value={searchValue}
               placeholder={placeholder}
               onChange={this.onSearchChange}
-              onFocus={e => {
+              onFocus={(e) => {
                 e.target.select()
                 this.setState({ typingSearchValue: true })
                 setTimeout(

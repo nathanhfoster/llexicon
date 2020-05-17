@@ -7,7 +7,7 @@ import TableFooters from "./TableFooters"
 import TablePaginator from "./TablePaginator"
 import { tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./state/types"
-import { stringMatch } from "../../utils"
+import { stringMatch } from "../../../utils"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
 import "./styles.css"
 

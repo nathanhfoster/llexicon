@@ -3,10 +3,10 @@ import PropTypes from "prop-types"
 import {
   EntryTagsProps,
   EntryPeopleProps,
-} from "../../../redux/Entries/propTypes"
+} from "../../../../redux/Entries/propTypes"
 import moment from "moment"
+import { TagsContainer } from "../../../"
 import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from "./styles"
-import { TagsContainer } from "../.."
 
 const HEIGHT = 140
 const WIDTH = 200

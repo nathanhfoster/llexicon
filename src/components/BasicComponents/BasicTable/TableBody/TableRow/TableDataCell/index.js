@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { ColumnsPropType } from "../../../state/types"
-import { isType } from "../../../../../utils"
+import { isType } from "../../../../../../utils"
 
 const TableDataCell = ({ scope, render, item, itemKey }) => {
   const itemValue = item[itemKey]

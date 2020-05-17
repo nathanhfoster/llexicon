@@ -1,8 +1,8 @@
 import React, { useCallback, useState, memo } from "react"
 import PropTypes from "prop-types"
 import { Input } from "reactstrap"
-import { UseDebounce } from "../../../"
-import { capitalizeFirstLetter, isType } from "../../../../utils"
+import { UseDebounce } from "../../../../"
+import { capitalizeFirstLetter, isType } from "../../../../../utils"
 import { ColumnPropType } from "../../state/types"
 import "./styles.css"
 

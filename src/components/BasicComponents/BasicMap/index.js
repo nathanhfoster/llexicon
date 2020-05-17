@@ -4,8 +4,8 @@ import { connect as reduxConnect } from "react-redux"
 import GoogleMapReact from "google-map-react"
 import MarkerCluster from "./MarkerCluster"
 import Marker from "./Marker"
-import { SetMapBoundsCenterZoom } from "../../redux/Map/actions"
-import { WatchUserLocation } from "../../redux/User/actions"
+import { SetMapBoundsCenterZoom } from "../../../redux/Map/actions"
+import { WatchUserLocation } from "../../../redux/User/actions"
 
 import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from "./constants"
 import MapControl from "./MapControl"
@@ -13,7 +13,7 @@ import MapSearchBox from "./MapControl/Controls/MapSearchBox"
 import RecenterZoomButton from "./MapControl/Controls/Buttons/RecenterZoomButton"
 import createClusters from "./functions/createClusters"
 import formatLocations from "./functions/formatLocations"
-import { EntryPropTypes } from "../../redux/Entries/propTypes"
+import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 

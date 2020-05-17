@@ -1,7 +1,7 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import ToolbarButton from "../ToolbarButton"
-import BasicModal from "../../../BasicModal"
+import { BasicModal } from "../../../"
 
 const ToolbarModal = ({
   ButtonIcon,
