@@ -4,6 +4,7 @@ import TableDataCell from "./TableDataCell"
 import { ColumnsPropType } from "../../state/types"
 
 const TableRow = ({ onRowClick, item, columns }) => {
+  const handleRowClick = onRowClick ? () => onRowClick(item) : null
   const [firstColumn, ...restOfColumns] = columns
   const { key, render } = firstColumn
   const renderRestOfColumns = useMemo(
@@ -17,7 +18,7 @@ const TableRow = ({ onRowClick, item, columns }) => {
     [restOfColumns]
   )
   return (
-    <tr onClick={onRowClick ? () => onRowClick(item) : null}>
+    <tr onClick={handleRowClick}>
       <TableDataCell scope="row" render={render} item={item} itemKey={key} />
       {renderRestOfColumns}
     </tr>
