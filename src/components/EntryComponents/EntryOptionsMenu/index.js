@@ -35,8 +35,10 @@ const EntryOptionsMenu = ({
   const [dropdownOpen, setOpen] = useState(false)
   const [urlCopied, setUrlCopied] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const toggleDropdown = () => setOpen(!dropdownOpen)
-  const toggleModal = () => setShowModal(!showModal)
+  // Timeout to allow from onClick events within portal to dispatch first
+  const toggleDropdown = () =>
+    setTimeout(() => setOpen((prevDropdownOpen) => !prevDropdownOpen), 200)
+  const toggleModal = () => setShowModal((prevShowModal) => !prevShowModal)
 
   const { href } = window.location
   const url = href
@@ -94,8 +96,9 @@ const EntryOptionsMenu = ({
       <DropdownToggle>
         <i className="fas fa-ellipsis-v" style={{ fontSize: 20 }} />
       </DropdownToggle>
-      {/* {dropdownOpen && (
-        <Portal> */}
+
+      {(dropdownOpen || showModal) && (
+        <Portal>
           <DropdownMenu right className="EntryOptionsDropDown">
             <DropdownItem header>
               <Button
@@ -161,8 +164,8 @@ const EntryOptionsMenu = ({
               </DropdownItem>
             </Fragment>
           </DropdownMenu>
-        {/* </Portal>
-      )} */}
+        </Portal>
+      )}
     </ButtonDropdown>
   )
 }
