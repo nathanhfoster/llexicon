@@ -5,7 +5,7 @@ import { connect as reduxConnect } from "react-redux"
 import { BasicForm, ConfirmAction, ButtonClearCache } from "../../../components"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import { UpdateUser, DeleteAccount } from "../../../redux/User/actions"
-import { cleanObject } from "../../../helpers"
+import { cleanObject } from "../../../utils"
 import { RouteMap, RouterPush } from "../../../redux/router/actions"
 
 const mapStateToProps = ({ User }) => ({

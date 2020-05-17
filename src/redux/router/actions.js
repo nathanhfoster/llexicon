@@ -2,7 +2,7 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 import { RouteMap } from "./types"
 import { history } from "./reducer"
-import { removeArrayDuplicates } from "../../helpers"
+import { removeArrayDuplicates } from "../../utils"
 
 const MAX_PATH_HISTORY_LENGTH = 21
 

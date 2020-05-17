@@ -10,7 +10,7 @@ import {
   TabContent,
   TabPane,
 } from "reactstrap"
-import { isType } from "../../helpers"
+import { isType } from "../../utils"
 import "./styles.css"
 
 const getInitialState = (activeTab, defaultTab, tabs) => {

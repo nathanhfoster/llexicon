@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Card, CardHeader, CardText, CardBody, CardTitle } from "reactstrap"
-import { isType } from "../../helpers"
+import { isType } from "../../utils"
 import "./styles.css"
 
 const BasicCard = ({

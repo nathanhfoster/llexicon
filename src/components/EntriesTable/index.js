@@ -1,12 +1,12 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { stripHtml } from "../../helpers"
+import { stripHtml } from "../../utils"
 import { GoToEntryDetail } from "../../redux/router/actions"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable } from "../"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
-import { stringMatch, formatBytes } from "../../helpers"
+import { stringMatch, formatBytes } from "../../utils"
 import {
   SetEntriesSortMap,
   SetEntriesFilterMap,

@@ -7,7 +7,7 @@ import { Editor, EntryOptionsMenu } from "../../components"
 import ReactDatePicker from "../ReactDatePicker"
 import UseDebounce from "../UseDebounce"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"
-import memoizeProps from "../../helpers/memoizeProps"
+import memoizeProps from "../../utils/memoizeProps"
 import "./styles.css"
 
 const Entry = ({

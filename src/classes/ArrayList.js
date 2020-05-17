@@ -1,4 +1,4 @@
-import { getRandomInt } from "../helpers"
+import { getRandomInt } from "../utils"
 
 class ArrayList {
   constructor({ ofNumbers, ofFloats, length }) {

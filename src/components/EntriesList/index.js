@@ -5,7 +5,7 @@ import { Col } from "reactstrap"
 import { BasicList, EntryMinimal } from "../"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { GetUserEntries } from "../../redux/Entries/actions"
-import deepEquals from "../../helpers/deepEquals"
+import deepEquals from "../../utils/deepEquals"
 
 const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
   const entry = data[index]

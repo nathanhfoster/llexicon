@@ -1,4 +1,4 @@
-import { isType } from "../../../helpers"
+import { isType } from "../../../utils"
 
 const tableSort = (data, sortList) => {
   let sortedData = [...data]

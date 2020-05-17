@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { capitalizeFirstLetter } from "../../../../helpers"
+import { capitalizeFirstLetter } from "../../../../utils"
 import "./styles.css"
 
 const capitalizeHeaders = string => {

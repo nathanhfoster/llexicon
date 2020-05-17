@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { ArrayList } from "../../../classes"
-import { getRandomInt } from "../../../helpers"
+import { getRandomInt } from "../../../utils"
 import { StarColorGradients } from "../Star"
 import Star from "../Star"
 

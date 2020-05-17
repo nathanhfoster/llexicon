@@ -15,7 +15,7 @@ import {
   ShareOnTwitter,
   Portal,
 } from "../"
-import { copyStringToClipboard, shareUrl } from "../../helpers"
+import { copyStringToClipboard, shareUrl } from "../../utils"
 import { RouterGoBack } from "../../redux/router/actions"
 import { useDispatch } from "react-redux"
 import { UpdateReduxEntry, SyncEntries } from "../../redux/Entries/actions"

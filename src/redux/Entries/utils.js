@@ -1,4 +1,4 @@
-import { stringMatch } from "../../helpers"
+import { stringMatch } from "../../utils"
 
 const handleFilterEntries = (entries, search) => {
   if (!search) return { items: entries, filteredItems: [] }

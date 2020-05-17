@@ -3,8 +3,8 @@ import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import MomentJs from "moment"
-import deepEquals from "../../../helpers/deepEquals"
-import { formatBytes } from "../../../helpers"
+import deepEquals from "../../../utils/deepEquals"
+import { formatBytes } from "../../../utils"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({

@@ -4,7 +4,7 @@ import { connect as reduxConnect } from "react-redux"
 import { BasicImageCarousel } from "../"
 import { Container, Row, Col, Button } from "reactstrap"
 import { EntryFilesProps } from "../../redux/Entries/propTypes"
-import { removeAttributeDuplicates } from "../../helpers"
+import { removeAttributeDuplicates } from "../../utils"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({

@@ -5,7 +5,7 @@ import {
   getFileFromBase64,
   htmlToArrayOfBase64,
   cleanObject,
-} from "../../helpers"
+} from "../../utils"
 import { getJsonTagsOrPeople } from "./utils"
 import FormData from "form-data"
 import qs from "qs"

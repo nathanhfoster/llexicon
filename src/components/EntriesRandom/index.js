@@ -3,7 +3,7 @@ import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { EntryCards, Header } from "../"
 import { ButtonGroup, Button } from "reactstrap"
-import { getRandomInt } from "../../helpers"
+import { getRandomInt } from "../../utils"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({

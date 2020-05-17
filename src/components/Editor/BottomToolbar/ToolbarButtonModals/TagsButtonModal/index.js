@@ -18,8 +18,8 @@ import {
   TopKFrequentStrings,
   removeAttributeDuplicates,
   stringMatch,
-} from "../../../../../helpers"
-import memoizeProps from "../../../../../helpers/memoizeProps"
+} from "../../../../../utils"
+import memoizeProps from "../../../../../utils/memoizeProps"
 import { validateTagOrPeopleString, validatedTagString } from "../utlis"
 import {
   EntriesPropTypes,

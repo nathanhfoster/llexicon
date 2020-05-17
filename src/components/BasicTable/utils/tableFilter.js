@@ -1,5 +1,5 @@
 import MomentJS from "moment"
-import { stringMatch, isType } from "../../../helpers"
+import { stringMatch, isType } from "../../../utils"
 
 const tableFilter = (data, filterList) => {
   let filteredData = [...data]

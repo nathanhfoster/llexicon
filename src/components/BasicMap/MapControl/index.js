@@ -1,7 +1,7 @@
 import React, { Component, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { render } from "react-dom"
-import deepEquals from "../../../helpers/deepEquals"
+import deepEquals from "../../../utils/deepEquals"
 import "./styles.css"
 
 class MapControl extends Component {

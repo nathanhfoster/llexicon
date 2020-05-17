@@ -5,7 +5,7 @@ import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap"
 import { NavLink } from "react-router-dom"
 import { RouterPush } from "../../redux/router/actions"
-import { TopKFrequentStrings } from "../../helpers"
+import { TopKFrequentStrings } from "../../utils"
 import "./styles.css"
 
 const EntryCards = lazy(() => import("../EntryCards"))
