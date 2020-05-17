@@ -94,8 +94,8 @@ const EntryOptionsMenu = ({
       <DropdownToggle>
         <i className="fas fa-ellipsis-v" style={{ fontSize: 20 }} />
       </DropdownToggle>
-      {dropdownOpen && (
-        <Portal>
+      {/* {dropdownOpen && (
+        <Portal> */}
           <DropdownMenu right className="EntryOptionsDropDown">
             <DropdownItem header>
               <Button
@@ -161,8 +161,8 @@ const EntryOptionsMenu = ({
               </DropdownItem>
             </Fragment>
           </DropdownMenu>
-        </Portal>
-      )}
+        {/* </Portal>
+      )} */}
     </ButtonDropdown>
   )
 }
