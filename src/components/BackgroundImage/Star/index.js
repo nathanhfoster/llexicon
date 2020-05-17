@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { getRandomInt, getRandomFloat, objectToArray } from "../../../helpers"
+import { getRandomInt, getRandomFloat, objectToArray } from "../../../utils"
 import "./styles.css"
 
 export const StarColorGradients = {

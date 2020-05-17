@@ -9,7 +9,7 @@ import Colors from "./QuillSelect/Colors"
 import Align from "./QuillSelect/Align"
 import Fonts from "./QuillSelect/Fonts"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../../redux/TextEditor/reducer"
-import memoizeProps from "../../../helpers/memoizeProps"
+import memoizeProps from "../../../utils/memoizeProps"
 import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR

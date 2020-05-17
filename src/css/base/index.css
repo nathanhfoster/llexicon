@@ -117,6 +117,10 @@ input[type="file"] {
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
+.ShowScrollBar ::-webkit-scrollbar {
+  display: block;
+}
+
 ::-webkit-scrollbar {
   display: none;
   height: 8px;

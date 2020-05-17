@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import { BasicFormInputsProps } from "../../../components/BasicForm/propTypes"
+import { BasicFormInputsProps } from "../../../components/BasicComponents/BasicForm/propTypes"
 import { useDispatch } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"

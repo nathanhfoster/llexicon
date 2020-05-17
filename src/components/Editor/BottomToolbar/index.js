@@ -9,8 +9,8 @@ import {
   MediaButtonModal,
   PeopleButtonModal,
 } from "./ToolbarButtonModals"
-import TagsContainer from "../../TagsContainer"
-import EntryFilesCarousel from "../../EntryFilesCarousel"
+import { TagsContainer } from "../../"
+import EntryFilesCarousel from "../../EntryComponents/EntryFilesCarousel"
 import "./styles.css"
 
 const renderButtonColumns = (columns) =>

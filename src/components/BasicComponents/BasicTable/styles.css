@@ -1,0 +1,20 @@
+.BasicTable {
+  table-layout: fixed;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.BasicTable th,
+.BasicTable tr,
+.BasicTable td {
+  text-overflow: clip;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--secondaryColor);
+  /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 40px), transparent calc(100% - 2px), transparent);
+    mask-image: linear-gradient( to right, #000, #000 calc(100% - 40px), transparent calc(100% - 2px), transparent); */
+}
+
+/* .BasicTable th, .BasicTable tr, .BasicTable td {
+    padding: 0.75rem;
+} */

@@ -4,7 +4,7 @@ import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import { ImportEntries } from "../../../components"
 import { connect as reduxConnect } from "react-redux"
-import { copyStringToClipboard } from "../../../helpers"
+import { copyStringToClipboard } from "../../../utils"
 import { SyncEntries, GetAllUserEntries } from "../../../redux/Entries/actions"
 import MomentJs from "moment"
 

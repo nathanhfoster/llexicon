@@ -9,7 +9,7 @@
     "form-data": "^3.0.0",
     "google-map-react": "^1.1.7",
     "history": "^4.10.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.1",
     "moment": "^2.24.0",
     "points-cluster": "^0.1.4",
     "prop-types": "^15.7.2",

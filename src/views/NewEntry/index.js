@@ -22,7 +22,7 @@ import {
   ClearEditorState,
 } from "../../redux/TextEditor/actions"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../redux/TextEditor/reducer"
-import { getStringBytes } from "../../helpers"
+import { getStringBytes } from "../../utils"
 import "./styles.css"
 import { ResetMap } from "../../redux/Map/actions"
 const mapStateToProps = ({ Calendar: { activeDate }, TextEditor }) => ({
