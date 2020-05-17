@@ -42,7 +42,7 @@ const EntryCard = ({
         <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
         <div
           className="EntryOptionsMenuContainer"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => e.preventDefault()}
         >
           <EntryOptionsMenu
             entryId={id}
