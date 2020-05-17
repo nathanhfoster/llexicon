@@ -1,5 +1,5 @@
 import { BasicTableActionTypes } from "./types"
-import { filterSort, tableSort, tableFilter } from "../utils"
+import { filterSort } from "../utils"
 
 const getInitialState = ({ columns, pageSize, pageSizes }) => {
   let sortList = []
