@@ -12,7 +12,9 @@ const Portal = ({ children, domNodeId }) => {
   }, [])
 
   useEffect(() => {
-    return () => modalRoot.removeChild(domNode)
+    return () => {
+     setTimeout(() => modalRoot && modalRoot.removeChild(domNode), 200)
+    }
   })
 
   return ReactDOM.createPortal(children, domNode)
