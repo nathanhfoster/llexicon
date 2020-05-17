@@ -31,6 +31,6 @@ const ColumnPropType = PropTypes.shape({
 
 const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
 
-const DataPropType = PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+const DataPropType = PropTypes.arrayOf(PropTypes.object).isRequired
 
 export { BasicTableActionTypes, ColumnPropType, ColumnsPropType, DataPropType }

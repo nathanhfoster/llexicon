@@ -1,6 +1,7 @@
 .BasicTable {
   table-layout: fixed;
   width: 100%;
+  overflow-x: auto;
 }
 
 .BasicTable th,

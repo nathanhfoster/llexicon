@@ -12,7 +12,7 @@ import {
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
-import TagsContainer from "../../../../TagsContainer"
+import { TagsContainer } from "../../../../"
 import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,

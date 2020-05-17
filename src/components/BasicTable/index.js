@@ -18,6 +18,7 @@ const BasicTable = ({
   striped,
   dark,
   responsive,
+  hover,
   sortable,
   columns,
   onSortCallback,
@@ -51,6 +52,8 @@ const BasicTable = ({
 
   const totalPages = Math.ceil(dataLength / pageSize)
 
+  const isHoverable = hover || onRowClick ? true : false
+
   return (
     <Fragment>
       <Table
@@ -58,7 +61,7 @@ const BasicTable = ({
         borderless={borderless}
         striped={striped}
         dark={dark}
-        hover={onRowClick ? true : false}
+        hover={isHoverable}
         responsive={responsive}
         className="BasicTable m-0"
       >
@@ -117,6 +120,7 @@ BasicTable.propTypes = {
 }
 
 BasicTable.defaultProps = {
+  hover: false,
   sortable: false,
   bordered: false,
   borderless: true,

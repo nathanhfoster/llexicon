@@ -7,14 +7,20 @@ import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { RouterPush, RouteMap } from "../../redux/router/actions"
 import "./styles.css"
 
-const EntryNavButtons = lazy(() => import("../../components/EntryNavButtons"))
-const EntriesTable = lazy(() => import("../../components/EntriesTable"))
-const EntriesMostViewed = lazy(() =>
-  import("../../components/EntriesMostViewed")
+const EntryNavButtons = lazy(() =>
+  import("../../components/EntryComponents/EntryNavButtons")
 )
-const EntriesRandom = lazy(() => import("../../components/EntriesRandom"))
+const EntriesTable = lazy(() =>
+  import("../../components/EntryComponents/EntriesTable")
+)
+const EntriesMostViewed = lazy(() =>
+  import("../../components/EntryComponents/EntriesMostViewed")
+)
+const EntriesRandom = lazy(() =>
+  import("../../components/EntryComponents/EntriesRandom")
+)
 const EntriesRediscover = lazy(() =>
-  import("../../components/EntriesRediscover")
+  import("../../components/EntryComponents/EntriesRediscover")
 )
 
 const mapStateToProps = ({ User: { id } }) => ({
@@ -62,7 +68,7 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
           />
         </Col>
       </Row>
-      <Row className="mb-3">
+      <Row className="ShowScrollBar mb-3">
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Entries Table</Header>
         </Col>
