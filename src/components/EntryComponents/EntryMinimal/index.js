@@ -1,10 +1,13 @@
 import React, { Fragment, memo } from "react"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { Badge, Container, Row, Col } from "reactstrap"
-import { GoToEntryDetail } from "../../../redux/router/actions"
+import {
+  GoToEntryDetail,
+  GetEntryDetailUrl,
+} from "../../../redux/router/actions"
 import Moment from "react-moment"
 import Star from "../../BackgroundImage/Star"
-import { TagsContainer } from "../../"
+import { TagsContainer, EntryDataCellLink } from "../../"
 
 import "./styles.css"
 
@@ -29,6 +32,8 @@ const EntryMinimal = ({
   const showFileIcon = EntryFiles.length > 0
   const showLocationIcon = latitude && longitude
 
+  const href = GetEntryDetailUrl(id)
+
   return (
     <Container
       fluid
@@ -40,7 +45,9 @@ const EntryMinimal = ({
       <Row>
         <Col xs={12} className="EntryMinimalDetail Overflow mb-1">
           <Star size={14} animation={false} opacity={1} />
-          <span className="ml-1">{title}</span>
+          <EntryDataCellLink className="ml-1" href={href}>
+            {title}
+          </EntryDataCellLink>
         </Col>
         <Col xs={12} className="EntryMinimalTime mb-2">
           <i

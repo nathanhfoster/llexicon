@@ -6,23 +6,32 @@ import {
   GetEntryDetailUrl,
 } from "../../../redux/router/actions"
 
-const EntryDataCellLink = ({ entryId, children }) => {
+const EntryDataCellLink = ({ className, entryId, children }) => {
   const entryDetailUrl = GetEntryDetailUrl(entryId)
   const route = RouterLinkPush(entryDetailUrl)
   return (
-    <NavLink to={route} onClick={(e) => e.stopPropagation()}>
+    <NavLink
+      className={className}
+      to={route}
+      onClick={(e) => e.stopPropagation()}
+    >
       {children}
     </NavLink>
   )
 }
 
 EntryDataCellLink.propTypes = {
+  className: PropTypes.string,
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
   ]),
+}
+
+EntryDataCellLink.defaultProps = {
+  className: null,
 }
 
 export default memo(EntryDataCellLink)
