@@ -36,9 +36,8 @@ const EntryOptionsMenu = ({
   const [urlCopied, setUrlCopied] = useState(false)
   const [showModal, setShowModal] = useState(false)
   // Timeout to allow from onClick events within portal to dispatch first
-  const toggleDropdown = () =>
-    setTimeout(() => setOpen((prevDropdownOpen) => !prevDropdownOpen), 200)
-  const toggleModal = () => setShowModal((prevShowModal) => !prevShowModal)
+  const toggleDropdown = () => setTimeout(() => setOpen(!dropdownOpen), 200)
+  const toggleModal = () => setShowModal(!showModal)
 
   const { href } = window.location
   const url = href
