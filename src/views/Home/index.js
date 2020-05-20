@@ -1,4 +1,4 @@
-import React, { useMemo, lazy } from "react"
+import React, { useMemo, lazy, } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"

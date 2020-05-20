@@ -1,6 +1,6 @@
+import { Axios, AxiosForm } from "../Actions"
 import { SetApiResponseStatus, SetAlert } from "../Alerts/actions"
 import { EntriesActionTypes } from "./types"
-import { Axios, AxiosForm } from "../Actions"
 import {
   getFileFromBase64,
   htmlToArrayOfBase64,

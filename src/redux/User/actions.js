@@ -1,6 +1,6 @@
+import { Axios, AxiosForm, AxiosOffline } from "../Actions"
 import { UserActionTypes } from "../User/types"
 import { AppActionTypes } from "../App/types"
-import { Axios, AxiosForm, AxiosOffline } from "../Actions"
 import { ResetRedux } from "../App/actions"
 import { SetAlert } from "../Alerts/actions"
 import { persistReduxState } from "../localState"
