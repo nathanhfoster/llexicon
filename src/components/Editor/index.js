@@ -118,13 +118,9 @@ class Editor extends PureComponent {
     return null
   }
 
-  handleEditorStateChange = (html) => {
-    const { onChangeCallback } = this.props
+  handleEditorStateChange = (html) => this.handleEditorChange({ html })
 
-    onChangeCallback({ html })
-  }
-
-  handleBottomToolBarOnChange = ({ ...payload }) => {
+  handleEditorChange = ({ ...payload }) => {
     const { toolbarId, onChangeCallback } = this.props
     onChangeCallback({ id: toolbarId, ...payload })
   }
@@ -194,7 +190,7 @@ class Editor extends PureComponent {
             canToggleToolbars={canToggleToolbars}
             isOpen={bottomToolbarIsOpen}
             toggleBottomToolbar={this.toggleBottomToolbar}
-            onChangeCallback={this.handleBottomToolBarOnChange}
+            onChangeCallback={this.handleEditorChange}
             id={this.props.toolbarId}
             editorRef={editorRef}
           />
