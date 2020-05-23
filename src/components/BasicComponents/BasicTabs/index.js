@@ -39,7 +39,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     }
   }, [restOfProps.activeTab])
 
-  const handleTabChanged = (activeTab) => setActiveTab(activeTab)
+  const handleTabChanged = (activeTab) => activeTab && setActiveTab(activeTab)
 
   const { renderTabs, renderTabPanes, previousTab, nextTab } = useMemo(() => {
     let tabsToRender = []
