@@ -11,6 +11,7 @@ import {
   TabPane,
 } from "reactstrap"
 import { isType } from "../../../utils"
+import { useSwipeable } from "react-swipeable"
 import "./styles.css"
 
 const getInitialState = (activeTab, defaultTab, tabs) => {
@@ -40,9 +41,11 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
 
   const handleTabChanged = (activeTab) => setActiveTab(activeTab)
 
-  const [renderTabs, renderTabPanes] = useMemo(() => {
+  const { renderTabs, renderTabPanes, previousTab, nextTab } = useMemo(() => {
     let tabsToRender = []
     let tabPanesToRender = []
+    let previousTab = null
+    let nextTab = null
 
     for (let i = 0, { length } = tabs; i < length; i++) {
       const tab = tabs[i]
@@ -54,8 +57,23 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
         mountTabOnlyWhenActive,
         className,
       } = tab
+
       const onTab = activeTab === tabId
       const titleIsObject = Boolean(typeof title === isType.OBJECT)
+
+      // For react-swipeable
+      if (onTab) {
+        const hasPreviousIndex = !previousTab && i > 0
+        const hasNextIndex = !nextTab && i + 1 < length
+
+        if (hasPreviousIndex) {
+          previousTab = tabs[i - 1].tabId
+        }
+
+        if (hasNextIndex) {
+          nextTab = tabs[i + 1].tabId
+        }
+      }
 
       tabsToRender.push(
         <NavItem key={tabId} title={titleIsObject ? title.name : title}>
@@ -86,18 +104,32 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
       )
     }
 
-    return [tabsToRender, tabPanesToRender]
+    return {
+      renderTabs: tabsToRender,
+      renderTabPanes: tabPanesToRender,
+      previousTab,
+      nextTab,
+    }
   }, [activeTab, tabs])
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => handleTabChanged(nextTab),
+    onSwipedRight: () => handleTabChanged(previousTab),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  })
+
   return (
-    <Container fluid={fluid} className={`${className} Container`}>
-      <Row>
-        <Col tag={Nav} tabs xs={12}>
-          {renderTabs}
-        </Col>
-      </Row>
-      {renderTabPanes}
-    </Container>
+    <div {...handlers}>
+      <Container fluid={fluid} className={`${className} Container`}>
+        <Row>
+          <Col tag={Nav} tabs xs={12}>
+            {renderTabs}
+          </Col>
+        </Row>
+        {renderTabPanes}
+      </Container>
+    </div>
   )
 }
 

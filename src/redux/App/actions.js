@@ -1,8 +1,6 @@
 import { AppActionTypes } from "../App/types"
 import { WindowActionTypes } from "../Window/types"
-import { Axios } from "../Actions"
 import axios from "axios"
-import qs from "qs"
 import ReactGA from "react-ga"
 const { PUBLIC_URL } = process.env
 

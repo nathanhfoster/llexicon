@@ -1,4 +1,4 @@
-import React, { useMemo, memo, Fragment } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { Collapse, Container, Row, Col, Button } from "reactstrap"
@@ -11,6 +11,7 @@ import {
 } from "./ToolbarButtonModals"
 import { TagsContainer } from "../../"
 import EntryFilesCarousel from "../../EntryComponents/EntryFilesCarousel"
+import { useSwipeable } from "react-swipeable"
 import "./styles.css"
 
 const renderButtonColumns = (columns) =>
@@ -79,8 +80,15 @@ const BottomToolbar = ({
     [buttons]
   )
 
+  const handlers = useSwipeable({
+    onSwipedUp: () => toggleBottomToolbar(),
+    onSwipedDown: () => toggleBottomToolbar(),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  })
+
   return (
-    <Fragment>
+    <div {...handlers}>
       {canToggleToolbars && (
         <Container fluid>
           <Row className="BottomToolBarTags px-1">
@@ -124,7 +132,7 @@ const BottomToolbar = ({
           {renderButtonRows}
         </Container>
       </Collapse>
-    </Fragment>
+    </div>
   )
 }
 
