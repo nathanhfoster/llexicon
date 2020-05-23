@@ -40,9 +40,7 @@ const EntryDetail = ({
   )
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
-  const readOnly = Boolean(
-    entry && entry.author && userId && userId !== entry.author
-  )
+  const readOnly = Boolean(entry && entry.author && userId !== entry.author)
 
   useEffect(() => {
     if (!entryIsLocalOnly) {
