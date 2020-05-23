@@ -3,16 +3,15 @@ import { connect as reduxConnect } from "react-redux"
 import { RouteMap } from "../../redux/router/actions"
 import PropTypes from "prop-types"
 import "./styles.css"
+import { useSwipeable } from "react-swipeable"
 import {
   Collapse,
-  Button,
   Navbar,
   NavbarToggler,
   Nav,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
   NavItem,
 } from "reactstrap"
 import { AddToHomeScreen, StarSearch } from "../"
@@ -230,24 +229,33 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
       )
     )
 
+  const handlers = useSwipeable({
+    onSwipedUp: () => setCollapse(true),
+    onSwipedDown: () => setCollapse(false),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  })
+
   return (
-    <Navbar className="NavBar" fixed="top" expand="md">
-      {isMobile && (
-        <NavbarToggler
-          tag={Hamburger}
-          onClick={toggleHamburgerMenu}
-          collapsed={collapsed}
-        />
-      )}
+    <div {...handlers}>
+      <Navbar className="NavBar" fixed="top" expand="md">
+        {isMobile && (
+          <NavbarToggler
+            tag={Hamburger}
+            onClick={toggleHamburgerMenu}
+            collapsed={collapsed}
+          />
+        )}
 
-      <StarSearch />
+        <StarSearch />
 
-      <Collapse isOpen={!collapsed} navbar>
-        <Nav className="ml-auto" navbar>
-          {renderNavLinks(navLinks)}
-        </Nav>
-      </Collapse>
-    </Navbar>
+        <Collapse isOpen={!collapsed} navbar>
+          <Nav className="ml-auto" navbar>
+            {renderNavLinks(navLinks)}
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </div>
   )
 }
 
