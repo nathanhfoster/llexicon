@@ -141,6 +141,7 @@ const TopKFrequentStrings = (
   prop = "id",
   k = arrayOfObjs.length
 ) => {
+  if(!arrayOfObjs) return []
   let map = new Map()
   for (let i = 0; i < arrayOfObjs.length; i++) {
     const s = arrayOfObjs[i][prop]
