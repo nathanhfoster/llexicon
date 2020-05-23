@@ -1,14 +1,18 @@
 import React, { useCallback, Fragment, memo } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
-import { useDispatch } from "react-redux"
 import { Editor, EntryOptionsMenu } from "../.."
 import ReactDatePicker from "../../ReactDatePicker"
 import UseDebounce from "../../UseDebounce"
 import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
 import memoizeProps from "../../../utils/memoizeProps"
 import "./styles.css"
+
+const mapStateToProps = ({ User: { token } }) => ({ userToken: token })
+
+const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 
 const Entry = ({
   entry,
@@ -18,34 +22,38 @@ const Entry = ({
   shouldRedirectOnDelete,
   theme,
   readOnly,
+  userToken,
+  UpdateReduxEntry,
+  SyncEntries,
 }) => {
   const activeDate = new Date(
     entry.date_created_by_author || entry._lastUpdated || 0
   )
-  const dispatch = useDispatch()
 
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 
-  const handleDebounce = () => dispatch(SyncEntries())
+  const handleDebounce = () => SyncEntries()
 
   const handleTitleChange = ({ target: { value } }) =>
-    dispatch(handleEditorChange({ id: entry.id, title: value }))
+    handleEditorChange({ id: entry.id, title: value })
 
   const handleDateChange = useCallback(
     (date_created_by_author) =>
-      dispatch(
-        handleEditorChange({
-          id: entry.id,
-          date_created_by_author,
-          _lastUpdated: date_created_by_author,
-        })
-      ),
+      handleEditorChange({
+        id: entry.id,
+        date_created_by_author,
+        _lastUpdated: date_created_by_author,
+      }),
     []
   )
 
   const handleEditorChange = useCallback(
-    ({ ...payload }) => dispatch(UpdateReduxEntry(entry.id, payload)),
-    [entry.id]
+    ({ ...payload }) => {
+      if (entry.author && !userToken) return
+
+      UpdateReduxEntry(entry.id, payload)
+    },
+    [entry.id, entry.author, userToken]
   )
 
   return (
@@ -113,6 +121,9 @@ Entry.propTypes = {
   staticContext: PropTypes.any,
   topToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,
+  userToken: PropTypes.string,
+  UpdateReduxEntry: PropTypes.func.isRequired,
+  SyncEntries: PropTypes.string.isRequired,
 }
 
 Entry.defaultProps = {
@@ -125,6 +136,14 @@ Entry.defaultProps = {
 }
 
 const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, ["entry", "itemSize", "width"])
+  memoizeProps(prevProps, nextProps, [
+    "entry",
+    "itemSize",
+    "width",
+    "userToken",
+  ])
 
-export default memo(Entry, isEqual)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(memo(Entry, isEqual))
