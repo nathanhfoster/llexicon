@@ -22,7 +22,7 @@ const EntryDataCellLink = ({ className, entryId, children }) => {
 
 EntryDataCellLink.propTypes = {
   className: PropTypes.string,
-  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.node,

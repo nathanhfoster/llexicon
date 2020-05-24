@@ -118,20 +118,21 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
     trackMouse: false,
-    delta: 256,
+    delta: 128,
   })
 
   return (
-    <div className={`${className} Container`} {...handlers}>
-      <Container fluid={fluid}>
+    <Container className={`${className} Container`} fluid={fluid}>
+      <div {...handlers}>
         <Row>
           <Col tag={Nav} tabs xs={12}>
             {renderTabs}
           </Col>
         </Row>
-        {renderTabPanes}
-      </Container>
-    </div>
+      </div>
+
+      {renderTabPanes}
+    </Container>
   )
 }
 
