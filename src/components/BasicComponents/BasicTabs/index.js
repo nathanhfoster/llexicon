@@ -118,7 +118,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
     trackMouse: false,
-    delta: 40,
+    delta: 256,
   })
 
   return (
