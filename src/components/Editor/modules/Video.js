@@ -14,8 +14,8 @@ class Video extends BlockEmbed {
     value = cleanUrl(value)
     const editorRef = document.getElementById("TextEditor")
 
-    let iFrameHeight = "auto"
-    let iFrameWidth = "100%"
+    let iFrameHeight = "270px"
+    let iFrameWidth = "480px"
 
     if (editorRef) {
       const editorContainerRef = editorRef.children[1].children[0]

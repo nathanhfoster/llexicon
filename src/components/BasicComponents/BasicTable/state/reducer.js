@@ -26,6 +26,7 @@ const getInitialState = ({ columns, pageSize, pageSizes }) => {
   }
 
   return {
+    columns,
     sortList,
     filterList,
     onRowClick: firstRowClickFound,

@@ -1,15 +1,17 @@
-import React, { Fragment, useReducer, useCallback, useMemo, memo } from "react"
+import React, { createContext, useReducer, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import TableHeaders from "./TableHeaders"
 import TableBody from "./TableBody"
 import TableFooters from "./TableFooters"
 import TablePaginator from "./TablePaginator"
+import { getInitialState, BasicTableReducer } from "./state/reducer"
 import { tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
-import { getInitialState, BasicTableReducer } from "./state/reducer"
 import "./styles.css"
+
+export const BasicTableContext = createContext()
 
 const BasicTable = ({
   data,
@@ -26,20 +28,14 @@ const BasicTable = ({
   ...propsUsedToDeriveState
 }) => {
   const initialState = { columns, ...propsUsedToDeriveState }
+
   const [state, dispatch] = useReducer(
     BasicTableReducer,
     initialState,
     getInitialState
   )
 
-  const {
-    onRowClick,
-    currentPage,
-    pageSize,
-    pageSizes,
-    sortList,
-    filterList,
-  } = state
+  const { onRowClick, pageSize, sortList, filterList } = state
 
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
@@ -54,43 +50,29 @@ const BasicTable = ({
 
   const isHoverable = hover || onRowClick ? true : false
 
+  const providerValue = useMemo(() => [state, dispatch], [state])
+
   return (
-    <Fragment>
+    <BasicTableContext.Provider value={providerValue}>
       <Table
+        className="BasicTable m-0"
         bordered={bordered}
         borderless={borderless}
         striped={striped}
         dark={dark}
         hover={isHoverable}
         responsive={responsive}
-        className="BasicTable m-0"
       >
         <TableHeaders
-          dispatch={dispatch}
           onSortCallback={onSortCallback}
           onFilterCallback={onFilterCallback}
-          columns={columns}
           sortable={sortable}
-          sortList={sortList}
         />
-        <TableBody
-          columns={columns}
-          data={sortedAndFilteredData}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          onRowClick={onRowClick}
-        />
+        <TableBody data={sortedAndFilteredData} />
         <TableFooters columns={columns} data={sortedAndFilteredData} />
       </Table>
-      <TablePaginator
-        dispatch={dispatch}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        pageSize={pageSize}
-        pageSizes={pageSizes}
-        dataLength={dataLength}
-      />
-    </Fragment>
+      <TablePaginator totalPages={totalPages} dataLength={dataLength} />
+    </BasicTableContext.Provider>
   )
 }
 

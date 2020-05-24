@@ -123,7 +123,7 @@ Entry.propTypes = {
   theme: PropTypes.string,
   userToken: PropTypes.string,
   UpdateReduxEntry: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.string.isRequired,
+  SyncEntries: PropTypes.func.isRequired,
 }
 
 Entry.defaultProps = {
