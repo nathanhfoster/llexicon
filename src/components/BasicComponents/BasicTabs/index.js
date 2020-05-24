@@ -116,7 +116,9 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     onSwipedLeft: () => handleTabChanged(nextTab),
     onSwipedRight: () => handleTabChanged(previousTab),
     preventDefaultTouchmoveEvent: true,
-    trackMouse: true,
+    trackTouch: true,
+    trackMouse: false,
+    delta: 40,
   })
 
   return (
