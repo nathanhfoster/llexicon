@@ -1,18 +1,16 @@
-import React, { memo } from "react"
+import React, { useContext, memo } from "react"
 import { Container, Row, Col, Button } from "reactstrap"
 import BasicDropDown from "../../BasicDropDown"
 import PropTypes from "prop-types"
+import { BasicTableContext } from "../"
 import { basicTableSetPage, basicTableSetPageSize } from "../state/actions"
 import "./styles.css"
 
-const TablePaginator = ({
-  pageSizes,
-  currentPage,
-  totalPages,
-  pageSize,
-  dataLength,
-  dispatch,
-}) => {
+const TablePaginator = ({ totalPages, dataLength }) => {
+  const [{ currentPage, pageSize, pageSizes }, dispatch] = useContext(
+    BasicTableContext
+  )
+
   const handlePageChange = (page) => {
     dispatch(basicTableSetPage(page))
   }
@@ -90,23 +88,6 @@ const TablePaginator = ({
 }
 
 TablePaginator.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  pageSize: PropTypes.number.isRequired,
-  pageSizes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.any.isRequired,
-      value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.node,
-      ]).isRequired,
-      otherValue: PropTypes.any,
-      header: PropTypes.bool,
-      disabled: PropTypes.bool,
-      divider: PropTypes.bool,
-    })
-  ).isRequired,
   totalPages: PropTypes.number.isRequired,
   dataLength: PropTypes.number.isRequired,
 }

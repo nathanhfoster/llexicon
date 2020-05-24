@@ -39,7 +39,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     }
   }, [restOfProps.activeTab])
 
-  const handleTabChanged = (activeTab) => activeTab && setActiveTab(activeTab)
+  const handleTabChanged = (activeTab) => setActiveTab(activeTab)
 
   const { renderTabs, renderTabPanes, previousTab, nextTab } = useMemo(() => {
     let tabsToRender = []
@@ -120,8 +120,8 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
   })
 
   return (
-    <div {...handlers}>
-      <Container fluid={fluid} className={`${className} Container`}>
+    <div className={`${className} Container`} {...handlers}>
+      <Container fluid={fluid}>
         <Row>
           <Col tag={Nav} tabs xs={12}>
             {renderTabs}
