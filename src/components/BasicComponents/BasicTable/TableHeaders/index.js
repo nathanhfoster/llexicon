@@ -1,17 +1,18 @@
-import React, { useCallback, useMemo, memo } from "react"
+import React, { useContext, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import TableHeader from "./TableHeader"
 import { ColumnsPropType } from "../state/types"
+import { BasicTableContext } from "../"
 import { basicTableSort, basicTableFilter } from "../state/actions"
 
 const TableHeaders = ({
-  dispatch,
   onSortCallback,
   onFilterCallback,
   columns,
   sortable,
   sortList,
 }) => {
+  const [state, dispatch] = useContext(BasicTableContext)
   const handleSort = useCallback(
     (sortKey, sortUp) =>
       dispatch(basicTableSort(onSortCallback, sortKey, sortUp)),

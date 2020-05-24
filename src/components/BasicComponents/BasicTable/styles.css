@@ -17,7 +17,6 @@
 
 .BasicTable *:hover {
   overflow-x: auto;
-  overflow-y: hidden;
 }
 
 /* .BasicTable th, .BasicTable tr, .BasicTable td {

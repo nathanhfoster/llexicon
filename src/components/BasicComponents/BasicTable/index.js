@@ -1,15 +1,17 @@
-import React, { Fragment, useReducer, useCallback, useMemo, memo } from "react"
+import React, { createContext, useReducer, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import TableHeaders from "./TableHeaders"
 import TableBody from "./TableBody"
 import TableFooters from "./TableFooters"
 import TablePaginator from "./TablePaginator"
+import { getInitialState, BasicTableReducer } from "./state/reducer"
 import { tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
-import { getInitialState, BasicTableReducer } from "./state/reducer"
 import "./styles.css"
+
+export const BasicTableContext = createContext()
 
 const BasicTable = ({
   data,
@@ -26,6 +28,7 @@ const BasicTable = ({
   ...propsUsedToDeriveState
 }) => {
   const initialState = { columns, ...propsUsedToDeriveState }
+
   const [state, dispatch] = useReducer(
     BasicTableReducer,
     initialState,
@@ -55,7 +58,7 @@ const BasicTable = ({
   const isHoverable = hover || onRowClick ? true : false
 
   return (
-    <Fragment>
+    <BasicTableContext.Provider value={[state, dispatch]}>
       <Table
         bordered={bordered}
         borderless={borderless}
@@ -66,7 +69,6 @@ const BasicTable = ({
         className="BasicTable m-0"
       >
         <TableHeaders
-          dispatch={dispatch}
           onSortCallback={onSortCallback}
           onFilterCallback={onFilterCallback}
           columns={columns}
@@ -83,14 +85,13 @@ const BasicTable = ({
         <TableFooters columns={columns} data={sortedAndFilteredData} />
       </Table>
       <TablePaginator
-        dispatch={dispatch}
         currentPage={currentPage}
         totalPages={totalPages}
         pageSize={pageSize}
         pageSizes={pageSizes}
         dataLength={dataLength}
       />
-    </Fragment>
+    </BasicTableContext.Provider>
   )
 }
 
