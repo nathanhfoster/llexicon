@@ -33,4 +33,17 @@ const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
 
 const DataPropType = PropTypes.arrayOf(PropTypes.object).isRequired
 
-export { BasicTableActionTypes, ColumnPropType, ColumnsPropType, DataPropType }
+const SortListPropType = PropTypes.arrayOf(
+  PropTypes.shape({
+    key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    sortUp: PropTypes.oneOf([false, true, null]),
+  })
+)
+
+export {
+  BasicTableActionTypes,
+  ColumnPropType,
+  ColumnsPropType,
+  DataPropType,
+  SortListPropType,
+}

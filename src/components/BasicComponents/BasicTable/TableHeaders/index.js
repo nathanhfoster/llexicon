@@ -1,18 +1,11 @@
 import React, { useContext, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import TableHeader from "./TableHeader"
-import { ColumnsPropType } from "../state/types"
 import { BasicTableContext } from "../"
 import { basicTableSort, basicTableFilter } from "../state/actions"
 
-const TableHeaders = ({
-  onSortCallback,
-  onFilterCallback,
-  columns,
-  sortable,
-  sortList,
-}) => {
-  const [state, dispatch] = useContext(BasicTableContext)
+const TableHeaders = ({ onSortCallback, onFilterCallback, sortable }) => {
+  const [{ columns, sortList }, dispatch] = useContext(BasicTableContext)
   const handleSort = useCallback(
     (sortKey, sortUp) =>
       dispatch(basicTableSort(onSortCallback, sortKey, sortUp)),
@@ -87,17 +80,9 @@ const TableHeaders = ({
 }
 
 TableHeaders.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   onSortCallback: PropTypes.func,
   onFilterCallback: PropTypes.func,
   sortable: PropTypes.bool.isRequired,
-  columns: ColumnsPropType,
-  sortList: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      sortUp: PropTypes.oneOf([false, true, null]),
-    })
-  ).isRequired,
 }
 
 export default memo(TableHeaders)

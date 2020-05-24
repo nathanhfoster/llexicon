@@ -35,14 +35,7 @@ const BasicTable = ({
     getInitialState
   )
 
-  const {
-    onRowClick,
-    currentPage,
-    pageSize,
-    pageSizes,
-    sortList,
-    filterList,
-  } = state
+  const { onRowClick, pageSize, sortList, filterList } = state
 
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
@@ -57,40 +50,28 @@ const BasicTable = ({
 
   const isHoverable = hover || onRowClick ? true : false
 
+  const providerValue = useMemo(() => [state, dispatch], [state])
+
   return (
-    <BasicTableContext.Provider value={[state, dispatch]}>
+    <BasicTableContext.Provider value={providerValue}>
       <Table
+        className="BasicTable m-0"
         bordered={bordered}
         borderless={borderless}
         striped={striped}
         dark={dark}
         hover={isHoverable}
         responsive={responsive}
-        className="BasicTable m-0"
       >
         <TableHeaders
           onSortCallback={onSortCallback}
           onFilterCallback={onFilterCallback}
-          columns={columns}
           sortable={sortable}
-          sortList={sortList}
         />
-        <TableBody
-          columns={columns}
-          data={sortedAndFilteredData}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          onRowClick={onRowClick}
-        />
+        <TableBody data={sortedAndFilteredData} />
         <TableFooters columns={columns} data={sortedAndFilteredData} />
       </Table>
-      <TablePaginator
-        currentPage={currentPage}
-        totalPages={totalPages}
-        pageSize={pageSize}
-        pageSizes={pageSizes}
-        dataLength={dataLength}
-      />
+      <TablePaginator totalPages={totalPages} dataLength={dataLength} />
     </BasicTableContext.Provider>
   )
 }

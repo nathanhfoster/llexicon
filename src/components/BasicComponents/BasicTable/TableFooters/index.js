@@ -1,7 +1,9 @@
-import React, { useMemo, memo } from "react"
-import { ColumnsPropType, DataPropType } from "../state/types"
+import React, { useContext, useMemo, memo } from "react"
+import { DataPropType } from "../state/types"
+import { BasicTableContext } from "../"
 
-const TableFooters = ({ columns, data }) => {
+const TableFooters = ({ data }) => {
+  const [{ columns }, dispatch] = useContext(BasicTableContext)
   const shouldRender = useMemo(() => columns.some((column) => column.footer))
 
   const renderTableRows = useMemo(
@@ -24,7 +26,6 @@ const TableFooters = ({ columns, data }) => {
 }
 
 TableFooters.propTypes = {
-  columns: ColumnsPropType,
   data: DataPropType,
 }
 

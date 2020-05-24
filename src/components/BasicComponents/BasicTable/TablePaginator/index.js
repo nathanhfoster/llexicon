@@ -7,8 +7,9 @@ import { basicTableSetPage, basicTableSetPageSize } from "../state/actions"
 import "./styles.css"
 
 const TablePaginator = ({ totalPages, dataLength }) => {
-  const [state, dispatch] = useContext(BasicTableContext)
-  const { currentPage, pageSize, pageSizes } = state
+  const [{ currentPage, pageSize, pageSizes }, dispatch] = useContext(
+    BasicTableContext
+  )
 
   const handlePageChange = (page) => {
     dispatch(basicTableSetPage(page))
@@ -87,22 +88,6 @@ const TablePaginator = ({ totalPages, dataLength }) => {
 }
 
 TablePaginator.propTypes = {
-  currentPage: PropTypes.number.isRequired,
-  pageSize: PropTypes.number.isRequired,
-  pageSizes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.any.isRequired,
-      value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.node,
-      ]).isRequired,
-      otherValue: PropTypes.any,
-      header: PropTypes.bool,
-      disabled: PropTypes.bool,
-      divider: PropTypes.bool,
-    })
-  ).isRequired,
   totalPages: PropTypes.number.isRequired,
   dataLength: PropTypes.number.isRequired,
 }
