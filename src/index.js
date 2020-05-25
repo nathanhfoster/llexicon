@@ -14,6 +14,7 @@ import { PersistGate } from "redux-persist/integration/react"
 import * as serviceWorker from "./serviceWorker"
 import { GetAppVersion } from "./redux/App/actions"
 import ReactGA from "react-ga"
+import { ContextProvider } from "./store/provider/provider"
 
 const { store, persistor } = storeFactory()
 
@@ -69,7 +70,9 @@ ReactDOM.render(
       <Suspense fallback={<LoadingScreen />}>
         <AlertNotifications />
         <ConnectedRouter history={history}>
-          <App />
+          <ContextProvider>
+            <App />
+          </ContextProvider>
         </ConnectedRouter>
       </Suspense>
     </PersistGate>
