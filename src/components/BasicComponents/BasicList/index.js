@@ -135,6 +135,8 @@ class BasicList extends PureComponent {
     } = this.props
     const styles = {
       position: render ? "relative" : listPosition,
+      overflowX: "hidden",
+      overflowY: "auto",
     }
     return (
       <FixedSizeList

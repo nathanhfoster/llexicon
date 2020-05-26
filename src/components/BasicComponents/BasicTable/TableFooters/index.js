@@ -1,32 +1,18 @@
-import React, { useContext, useMemo, memo } from "react"
-import { DataPropType } from "../state/types"
+import React from "react"
 import { BasicTableContext } from "../"
+import TableFooter from "./TableFooter"
 
-const TableFooters = ({ data }) => {
-  const [{ columns }, dispatch] = useContext(BasicTableContext)
-  const shouldRender = useMemo(() => columns.some((column) => column.footer))
+const TableFooterContainer = (propsFromBasicTable) => (
+  <BasicTableContext.Consumer>
+    {({ state: { columns, sortList } }, dispatch) => (
+      <TableFooter
+        {...propsFromBasicTable}
+        columns={columns}
+        sortList={sortList}
+        dispatch={dispatch}
+      />
+    )}
+  </BasicTableContext.Consumer>
+)
 
-  const renderTableRows = useMemo(
-    () =>
-      columns.map((column, i) => {
-        const { footer } = column
-
-        return footer ? <td key={i}>{footer(data)}</td> : <td key={i}></td>
-      }),
-    [columns, data]
-  )
-
-  return (
-    shouldRender && (
-      <tfoot>
-        <tr>{renderTableRows}</tr>
-      </tfoot>
-    )
-  )
-}
-
-TableFooters.propTypes = {
-  data: DataPropType,
-}
-
-export default memo(TableFooters)
+export default TableFooterContainer
