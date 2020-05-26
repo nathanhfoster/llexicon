@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import { Container, Row, Col, Button } from "reactstrap"
 import BasicDropDown from "../../BasicDropDown"
 import PropTypes from "prop-types"
@@ -6,13 +6,17 @@ import { basicTableSetPage, basicTableSetPageSize } from "../state/actions"
 import "./styles.css"
 
 const TablePaginator = ({
-  totalPages,
   dataLength,
   currentPage,
   pageSize,
   pageSizes,
   dispatch,
 }) => {
+  const totalPages = useMemo(() => Math.ceil(dataLength / pageSize), [
+    dataLength,
+    pageSize,
+  ])
+
   const handlePageChange = (page) => {
     dispatch(basicTableSetPage(page))
   }
@@ -21,8 +25,12 @@ const TablePaginator = ({
     dispatch(basicTableSetPageSize(pageSize))
   }
 
-  const pageList = [{ header: true, value: "Page" }].concat(
-    new Array(totalPages).fill().map((e, i) => ({ value: i + 1 }))
+  const pageList = useMemo(
+    () =>
+      [{ header: true, value: "Page" }].concat(
+        new Array(totalPages).fill().map((e, i) => ({ value: i + 1 }))
+      ),
+    [totalPages]
   )
 
   const disabledLeftArrow = currentPage === 0

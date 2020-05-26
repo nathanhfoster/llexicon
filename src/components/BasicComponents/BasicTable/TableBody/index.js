@@ -4,7 +4,7 @@ import TableBody from "./TableBody"
 
 const TableBodyContainer = (propsFromBasicTable) => (
   <BasicTableContext.Consumer>
-    {({ state: { columns, onRowClick, currentPage, pageSize } }, dispatch) => (
+    {({ state: { columns, onRowClick, currentPage, pageSize } }) => (
       <TableBody
         {...propsFromBasicTable}
         columns={columns}

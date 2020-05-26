@@ -21,10 +21,7 @@ const BasicTable = ({
   dark,
   responsive,
   hover,
-  sortable,
   columns,
-  onSortCallback,
-  onFilterCallback,
   ...propsUsedToDeriveState
 }) => {
   const initialState = { columns, ...propsUsedToDeriveState }
@@ -35,7 +32,7 @@ const BasicTable = ({
     getInitialState
   )
 
-  const { onRowClick, pageSize, sortList, filterList } = state
+  const { onRowClick, sortList, filterList } = state
 
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
@@ -44,9 +41,10 @@ const BasicTable = ({
     [sortedData, filterList]
   )
 
-  const dataLength = (sortedAndFilteredData || data).length
-
-  const totalPages = Math.ceil(dataLength / pageSize)
+  const dataLength = useMemo(() => (sortedAndFilteredData || data).length, [
+    sortedAndFilteredData,
+    data,
+  ])
 
   const isHoverable = hover || onRowClick ? true : false
 
@@ -63,15 +61,11 @@ const BasicTable = ({
         hover={isHoverable}
         responsive={responsive}
       >
-        <TableHeaders
-          onSortCallback={onSortCallback}
-          onFilterCallback={onFilterCallback}
-          sortable={sortable}
-        />
+        <TableHeaders />
         <TableBody data={sortedAndFilteredData} />
         <TableFooters columns={columns} data={sortedAndFilteredData} />
       </Table>
-      <TablePaginator totalPages={totalPages} dataLength={dataLength} />
+      <TablePaginator dataLength={dataLength} />
     </BasicTableContext.Provider>
   )
 }
