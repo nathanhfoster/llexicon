@@ -115,7 +115,7 @@ const NewEntry = ({
               <InputGroupText
                 tag={Button}
                 className="SaveButton"
-                color="primary"
+                color="accent"
                 disabled={postDisabled}
                 // type="submit"
               >
