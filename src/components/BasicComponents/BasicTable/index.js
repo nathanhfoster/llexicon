@@ -50,7 +50,7 @@ const BasicTable = ({
 
   const isHoverable = hover || onRowClick ? true : false
 
-  const providerValue = useMemo(() => [state, dispatch], [state])
+  const providerValue = useMemo(() => ({ state, dispatch }), [state])
 
   return (
     <BasicTableContext.Provider value={providerValue}>
