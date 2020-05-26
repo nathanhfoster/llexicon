@@ -84,7 +84,9 @@ const BottomToolbar = ({
     onSwipedUp: () => toggleBottomToolbar(),
     onSwipedDown: () => toggleBottomToolbar(),
     preventDefaultTouchmoveEvent: true,
+    trackTouch: true,
     trackMouse: true,
+    delta: 40,
   })
 
   return (
