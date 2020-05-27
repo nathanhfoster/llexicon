@@ -7,8 +7,7 @@ import { history } from "./redux/router/reducer"
 import { getUserClientId } from "./redux/localState"
 import { Provider } from "react-redux"
 import { ConnectedRouter } from "connected-react-router"
-// import { BrowserRouter, Router } from "react-router-dom"
-// import { createBrowserHistory } from "history"
+import { getRandomInt } from "./utils"
 import { LoadingScreen } from "./components"
 import { PersistGate } from "redux-persist/integration/react"
 import * as serviceWorker from "./serviceWorker"
@@ -20,7 +19,7 @@ import ReactGA from "react-ga"
 const { store, persistor } = storeFactory()
 
 const AlertNotifications = lazy(() =>
-  new Promise((resolve) => setTimeout(resolve, 1500)).then(() =>
+  new Promise((resolve) => setTimeout(resolve, getRandomInt(0, 1500))).then(() =>
     import("./components/AlertNotifications")
   )
 )
