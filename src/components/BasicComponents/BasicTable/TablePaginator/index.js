@@ -26,6 +26,7 @@ const TablePaginator = ({
   handlePageChange,
   handlePageSizeChange,
 }) => {
+  console.log("TablePaginator")
   const totalPages = useMemo(() => Math.ceil(dataLength / pageSize), [
     dataLength,
     pageSize,

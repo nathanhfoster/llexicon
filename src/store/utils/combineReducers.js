@@ -3,7 +3,7 @@ const combineReducers = (reducers) => {
 
   // set default state returned by reducer and its reducer
   for (const [key, value] of Object.entries(reducers)) {
-    if (typeof value === "function") {
+    if (value instanceof Function || typeof value === "function") {
       globalState[key] = value(undefined, { type: "__@@PLACEHOLDER_ACTION__" })
     } else {
       console.error(`${value} is not a function`)
@@ -34,6 +34,8 @@ const combineReducers = (reducers) => {
         const returnedStateByReducer = currentReducer(currentStateByKey, action)
 
         const areStateByKeyEqual = returnedStateByReducer !== currentStateByKey
+
+        console.log(hasStateChanged, areStateByKeyEqual)
 
         hasStateChanged = hasStateChanged || areStateByKeyEqual
 

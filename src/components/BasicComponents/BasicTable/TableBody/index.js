@@ -12,6 +12,7 @@ const mapStateToProps = ({ columns, onRowClick, currentPage, pageSize }) => ({
 })
 
 const TableBody = ({ data, columns, onRowClick, currentPage, pageSize }) => {
+  console.log("TableBody")
   const sliceStart = currentPage * pageSize
 
   const sliceEnd = sliceStart + pageSize
