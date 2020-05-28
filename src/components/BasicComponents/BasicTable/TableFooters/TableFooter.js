@@ -1,5 +1,5 @@
 import React, { useMemo, memo } from "react"
-import { DataPropType } from "../state/types"
+import { DataPropType, ColumnsPropType } from "../state/types"
 
 const TableFooters = ({ data, columns }) => {
   const shouldRender = useMemo(() => columns.some((column) => column.footer))
@@ -25,6 +25,7 @@ const TableFooters = ({ data, columns }) => {
 
 TableFooters.propTypes = {
   data: DataPropType,
+  columns: ColumnsPropType,
 }
 
 export default memo(TableFooters)

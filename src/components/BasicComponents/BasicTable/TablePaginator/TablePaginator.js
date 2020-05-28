@@ -98,8 +98,24 @@ const TablePaginator = ({
 }
 
 TablePaginator.propTypes = {
-  totalPages: PropTypes.number.isRequired,
   dataLength: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  pageSizes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.node,
+      ]),
+      otherValue: PropTypes.any,
+      header: PropTypes.bool,
+      disabled: PropTypes.bool,
+      divider: PropTypes.bool,
+    }).isRequired
+  ),
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default memo(TablePaginator)

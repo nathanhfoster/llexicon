@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
+import { ColumnsPropType, SortListPropType } from "../state/types"
 import TableHeader from "./TableHeader"
 import { basicTableSort, basicTableFilter } from "../state/actions"
 
@@ -85,9 +86,12 @@ const TableHeaders = ({
 }
 
 TableHeaders.propTypes = {
-  onSortCallback: PropTypes.func,
-  onFilterCallback: PropTypes.func,
+  onSortCallback: PropTypes.func.isRequired,
+  onFilterCallback: PropTypes.func.isRequired,
   sortable: PropTypes.bool.isRequired,
+  columns: ColumnsPropType,
+  sortList: SortListPropType,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default memo(TableHeaders)

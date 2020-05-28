@@ -1,6 +1,6 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { DataPropType } from "../state/types"
+import { DataPropType, ColumnsPropType } from "../state/types"
 import TableRow from "./TableRow"
 
 const TableBody = ({ data, columns, onRowClick, currentPage, pageSize }) => {
@@ -31,6 +31,10 @@ const TableBody = ({ data, columns, onRowClick, currentPage, pageSize }) => {
 
 TableBody.propTypes = {
   data: DataPropType,
+  columns: ColumnsPropType,
+  onRowClick: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
 }
 
 export default memo(TableBody)
