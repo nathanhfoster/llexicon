@@ -5,7 +5,7 @@ import connect from "../state/connect"
 const mapStateToProps = ({ columns, sortList }) => ({ columns, sortList })
 
 const TableFooters = ({ data, columns }) => {
-  console.log('TableFooters')
+  console.log("TableFooters")
   const shouldRender = useMemo(() => columns.some((column) => column.footer))
 
   const renderTableRows = useMemo(

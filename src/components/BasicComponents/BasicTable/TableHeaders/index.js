@@ -29,7 +29,7 @@ const TableHeaders = ({
   basicTableSort,
   basicTableFilter,
 }) => {
-  console.log('TableHeaders')
+  console.log("TableHeaders")
   const handleFilter = useCallback((filterKey, filterValue) => {
     basicTableFilter(onFilterCallback, filterKey, filterValue)
   })

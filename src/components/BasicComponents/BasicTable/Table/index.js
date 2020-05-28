@@ -5,6 +5,7 @@ import { Table } from "reactstrap"
 import { tableSort, tableFilter } from "../utils"
 import { ColumnsPropType, DataPropType, SortListPropType } from "../state/types"
 import { stringMatch } from "../../../../utils"
+import deepEquals from "../../../../utils/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -125,4 +126,10 @@ BasicTable.defaultProps = {
   pageSizes: [5, 10, 15, 20, 25, 50, 100],
 }
 
-export default connect(mapStateToProps)(memo(BasicTable))
+const isEqual = (prevProps, nextProps) => {
+  console.log("prevProps: ", prevProps)
+  console.log("nextProps: ", nextProps)
+  return deepEquals(prevProps, nextProps, true)
+}
+
+export default connect(mapStateToProps)(memo(BasicTable, isEqual))
