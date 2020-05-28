@@ -1,24 +1,105 @@
-import React from "react"
-import { BasicTableContext } from "../"
-import TableHeaders from "./TableHeaders"
+import React, { useCallback, useMemo, memo } from "react"
+import PropTypes from "prop-types"
+import { ColumnsPropType, SortListPropType } from "../state/types"
+import TableHeader from "./TableHeader"
+import { basicTableSort, basicTableFilter } from "../state/actions"
+import connect from "../state/connect"
 
-const TableHeadersContainer = (propsFromBasicTable) => (
-  <BasicTableContext.Consumer>
-    {({
-      state: { columns, sortList, onSortCallback, onFilterCallback, sortable },
-      dispatch,
-    }) => (
-      <TableHeaders
-        {...propsFromBasicTable}
-        columns={columns}
-        sortList={sortList}
-        sortable={sortable}
-        onSortCallback={onSortCallback}
-        onFilterCallback={onFilterCallback}
-        dispatch={dispatch}
-      />
-    )}
-  </BasicTableContext.Consumer>
-)
+const mapStateToProps = ({
+  columns,
+  sortList,
+  onSortCallback,
+  onFilterCallback,
+  sortable,
+}) => ({ columns, sortList, onSortCallback, onFilterCallback, sortable })
 
-export default TableHeadersContainer
+const mapDispatchToProps = (dispatch, state) => ({
+  basicTableSort: (onSortCallback, sortKey, sortUp) =>
+    dispatch(basicTableSort(onSortCallback, sortKey, sortUp)),
+  basicTableFilter: (onFilterCallback, filterKey, filterValue) =>
+    dispatch(basicTableFilter(onFilterCallback, filterKey, filterValue)),
+})
+
+const TableHeaders = ({
+  onSortCallback,
+  onFilterCallback,
+  sortable,
+  columns,
+  sortList,
+  basicTableSort,
+  basicTableFilter,
+}) => {
+  const handleFilter = useCallback((filterKey, filterValue) => {
+    basicTableFilter(onFilterCallback, filterKey, filterValue)
+  })
+
+  const sortMap = useMemo(
+    () =>
+      sortList.reduce((map, item) => {
+        const { key, ...restOfItem } = item
+        map[key] = restOfItem
+        return map
+      }, {}),
+    [sortList]
+  )
+
+  const renderColumnHeaders = useMemo(
+    () =>
+      columns.map((column, i) => {
+        const {
+          title,
+          key,
+          width,
+          render,
+          sort,
+          filter,
+          filterPlaceholder,
+          defaultSortValue,
+          defaultFilterValue,
+          filterValue,
+        } = column
+        const { sortUp } = sortMap[key]
+        const sortCallback = () => {
+          if (sortUp === false) {
+            basicTableSort(onSortCallback, key, null)
+          } else {
+            basicTableSort(onSortCallback, key, !sortUp)
+          }
+        }
+
+        return (
+          <TableHeader
+            key={key}
+            headerKey={key}
+            title={title}
+            width={width}
+            column={column}
+            sortable={sortable}
+            sortUp={sortUp}
+            sortCallback={sortCallback}
+            filter={filter}
+            filterPlaceholder={filterPlaceholder}
+            defaultFilterValue={defaultFilterValue}
+            filterCallback={handleFilter}
+          />
+        )
+      }),
+    [columns, sortList]
+  )
+
+  return (
+    <thead>
+      <tr>{renderColumnHeaders}</tr>
+    </thead>
+  )
+}
+
+TableHeaders.propTypes = {
+  onSortCallback: PropTypes.func.isRequired,
+  onFilterCallback: PropTypes.func.isRequired,
+  sortable: PropTypes.bool.isRequired,
+  columns: ColumnsPropType,
+  sortList: SortListPropType,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(memo(TableHeaders))

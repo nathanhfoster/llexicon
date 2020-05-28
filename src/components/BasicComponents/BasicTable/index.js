@@ -1,15 +1,18 @@
-import React, { createContext, useReducer, useMemo, memo } from "react"
+import React, { createContext, useReducer, useMemo, memo, lazy } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
-import TableHeaders from "./TableHeaders"
-import TableBody from "./TableBody"
-import TableFooters from "./TableFooters"
-import TablePaginator from "./TablePaginator"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
 import { tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
+import { useProviderReducer } from "../../../store/provider"
 import "./styles.css"
+
+// Lazy load other child components so BasicTableContext can be initialized before it is used
+const TableHeaders = lazy(() => import("./TableHeaders"))
+const TableBody = lazy(() => import("./TableBody"))
+const TableFooters = lazy(() => import("./TableFooters"))
+const TablePaginator = lazy(() => import("./TablePaginator"))
 
 export const BasicTableContext = createContext()
 
