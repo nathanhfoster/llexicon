@@ -1,15 +1,18 @@
-import React, { createContext, useReducer, useMemo, memo } from "react"
+import React, { createContext, useReducer, useMemo, memo, lazy } from "react"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
-import TableHeaders from "./TableHeaders"
-import TableBody from "./TableBody"
-import TableFooters from "./TableFooters"
-import TablePaginator from "./TablePaginator"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
 import { tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
+import { useProviderReducer } from "../../../store/provider"
 import "./styles.css"
+
+// Lazy load other child components so BasicTableContext can be initialized before it is used
+const TableHeaders = lazy(() => import("./TableHeaders"))
+const TableBody = lazy(() => import("./TableBody"))
+const TableFooters = lazy(() => import("./TableFooters"))
+const TablePaginator = lazy(() => import("./TablePaginator"))
 
 export const BasicTableContext = createContext()
 
@@ -21,10 +24,7 @@ const BasicTable = ({
   dark,
   responsive,
   hover,
-  sortable,
   columns,
-  onSortCallback,
-  onFilterCallback,
   ...propsUsedToDeriveState
 }) => {
   const initialState = { columns, ...propsUsedToDeriveState }
@@ -35,7 +35,7 @@ const BasicTable = ({
     getInitialState
   )
 
-  const { onRowClick, pageSize, sortList, filterList } = state
+  const { onRowClick, sortList, filterList } = state
 
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
@@ -44,13 +44,14 @@ const BasicTable = ({
     [sortedData, filterList]
   )
 
-  const dataLength = (sortedAndFilteredData || data).length
-
-  const totalPages = Math.ceil(dataLength / pageSize)
+  const dataLength = useMemo(() => (sortedAndFilteredData || data).length, [
+    sortedAndFilteredData,
+    data,
+  ])
 
   const isHoverable = hover || onRowClick ? true : false
 
-  const providerValue = useMemo(() => [state, dispatch], [state])
+  const providerValue = useMemo(() => ({ state, dispatch }), [state])
 
   return (
     <BasicTableContext.Provider value={providerValue}>
@@ -63,15 +64,11 @@ const BasicTable = ({
         hover={isHoverable}
         responsive={responsive}
       >
-        <TableHeaders
-          onSortCallback={onSortCallback}
-          onFilterCallback={onFilterCallback}
-          sortable={sortable}
-        />
+        <TableHeaders />
         <TableBody data={sortedAndFilteredData} />
         <TableFooters columns={columns} data={sortedAndFilteredData} />
       </Table>
-      <TablePaginator totalPages={totalPages} dataLength={dataLength} />
+      <TablePaginator dataLength={dataLength} />
     </BasicTableContext.Provider>
   )
 }

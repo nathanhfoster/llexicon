@@ -51,20 +51,53 @@ const applyMiddleware = (...middlewares) => {
   }
 }
 
-const wrapDispatchAndState = (mapDispatchToProps, dispatch, state) => {
-  console.log(mapDispatchToProps)
-  return Object.keys(mapDispatchToProps).reduce((dispatchToProps, key) => {
-    const propAction = dispatchToProps[key]
-    console.log(propAction)
-    // console.log(propAction)
-    // if (propAction instanceof Function || typeof propAction === "function") {
-    //   dispatchToProps[key] = (...args) => {
-    //     console.log(args)
-    //     return propAction((dispatch, state))
-    //   }
-    // }
-    return dispatchToProps
-  }, mapDispatchToProps)
+function bindActionCreator(actionCreator, dispatch, state) {
+  return dispatch(actionCreator.apply(this, arguments))
+}
+
+/**
+ * Turns an object whose values are action creators, into an object with the
+ * same keys, but with every function wrapped into a `dispatch` call so they
+ * may be invoked directly. This is just a convenience method, as you can call
+ * `store.dispatch(MyActionCreators.doSomething())` yourself just fine.
+ *
+ * For convenience, you can also pass an action creator as the first argument,
+ * and get a dispatch wrapped function in return.
+ *
+ * @param {Function|Object} actionCreators An object whose values are action
+ * creator functions. One handy way to obtain it is to use ES6 `import * as`
+ * syntax. You may also pass a single function.
+ *
+ * @param {Function} dispatch The `dispatch` function available on your Redux
+ * store.
+ *
+ * @returns {Function|Object} The object mimicking the original object, but with
+ * every action creator wrapped into the `dispatch` call. If you passed a
+ * function as `actionCreators`, the return value will also be a single
+ * function.
+ */
+const bindActionCreators = (actionCreators, dispatch, state) => {
+  if (typeof actionCreators === "function") {
+    return bindActionCreator(actionCreators, dispatch)
+  }
+
+  if (typeof actionCreators !== "object" || actionCreators === null) {
+    throw new Error(
+      `bindActionCreators expected an object or a function, instead received ${
+        actionCreators === null ? "null" : typeof actionCreators
+      }. ` +
+        `Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?`
+    )
+  }
+
+  const boundActionCreators = {}
+  for (const key in actionCreators) {
+    const actionCreator = actionCreators[key]
+    if (typeof actionCreator === "function") {
+      boundActionCreators[key] = bindActionCreator(actionCreator, dispatch)
+    }
+  }
+  return boundActionCreators
 }
 
 /**
@@ -74,11 +107,16 @@ const wrapDispatchAndState = (mapDispatchToProps, dispatch, state) => {
  * @param {factory} mapDispatchToProps
  * @return {function(React.Component): function(object): *}
  */
-const connect = (mapStateToProps, mapDispatchToProps) => {
+const connect = (
+  mapStateToProps,
+  mapDispatchToProps,
+  // Allow flexibility to be used with a different context
+  Context = ContextConsumer
+) =>
   /**
    * @param {React.node} Component
    */
-  return (Component) => {
+  (Component) =>
     /**
      * that returns a function, the 'props' parameter gives use
      * any props that this component may have. If console.log this
@@ -86,36 +124,32 @@ const connect = (mapStateToProps, mapDispatchToProps) => {
      *
      * We will place all combined props here
      */
-    return (props) => {
-      return (
-        <ContextConsumer.Consumer>
-          {({ state, dispatch }) => {
-            const stateToProps = mapStateToProps(state)
+    (props) => (
+      <Context.Consumer>
+        {({ state, dispatch }) => {
+          const stateToProps = mapStateToProps(state)
 
-            const dispatchToProps = !mapDispatchToProps
-              ? null
-              : mapDispatchToProps instanceof Function ||
-                typeof mapDispatchToProps === "function"
-              ? // the dispatch provided by the consumer; our global reducer
-                mapDispatchToProps(dispatch, state)
-              : // wrap the dispatch and state
-                wrapDispatchAndState(mapDispatchToProps, dispatch, state)
+          const dispatchToProps = !mapDispatchToProps
+            ? null
+            : mapDispatchToProps instanceof Function ||
+              typeof mapDispatchToProps === "function"
+            ? // the dispatch provided by the consumer; our global reducer
+              mapDispatchToProps(dispatch, state)
+            : // wrap the dispatch and state
+              bindActionCreators(mapDispatchToProps, dispatch, state)
 
-            const componentProps = {
-              ...stateToProps,
-              ...props,
-              // not all components need to dispatch actions so its optional
-              ...(mapDispatchToProps && {
-                ...dispatchToProps,
-              }),
-            }
+          const componentProps = {
+            ...stateToProps,
+            ...props,
+            // not all components need to dispatch actions so its optional
+            ...(mapDispatchToProps && {
+              ...dispatchToProps,
+            }),
+          }
 
-            return <Component {...componentProps} />
-          }}
-        </ContextConsumer.Consumer>
-      )
-    }
-  }
-}
+          return <Component {...componentProps} />
+        }}
+      </Context.Consumer>
+    )
 
 export default connect

@@ -12,6 +12,7 @@ const basicTableSort = (onSortCallback, sortKey, sortUp) => {
 const basicTableFilter = (onFilterCallback, filterKey, filterValue) => {
   onFilterCallback && onFilterCallback(filterKey, filterValue)
   const payload = { filterKey, filterValue }
+
   return {
     type: BasicTableActionTypes.BASIC_TABLE_FILTER,
     payload,
