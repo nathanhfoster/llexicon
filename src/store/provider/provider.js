@@ -30,4 +30,14 @@ const ContextProvider = ({
   )
 }
 
+ContextProvider.propTypes = {
+  rootReducer: PropTypes.object.isRequired,
+  initialState: PropTypes.object.isRequired,
+  initializer: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
+}
+
 export { ContextProvider, AppStateProvider as ContextConsumer }
