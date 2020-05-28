@@ -166,4 +166,4 @@ const connect = (mapStateToProps, mapDispatchToProps) => {
   }
 }
 
-export default connect
+export default React.memo(connect)
