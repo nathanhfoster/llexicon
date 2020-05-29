@@ -2,7 +2,7 @@ import { BasicTableActionTypes } from "./types"
 
 const basicTableSort = (onSortCallback, sortKey, sortUp) => (
   dispatch,
-  state
+  getState
 ) => {
   onSortCallback && onSortCallback(sortKey, sortUp)
   const payload = { sortKey, sortUp }
@@ -14,7 +14,7 @@ const basicTableSort = (onSortCallback, sortKey, sortUp) => (
 
 const basicTableFilter = (onFilterCallback, filterKey, filterValue) => (
   dispatch,
-  state
+  getState
 ) => {
   onFilterCallback && onFilterCallback(filterKey, filterValue)
   const payload = { filterKey, filterValue }
@@ -25,17 +25,15 @@ const basicTableFilter = (onFilterCallback, filterKey, filterValue) => (
   })
 }
 
-const basicTableSetPage = (payload) => (dispatch, state) =>
-  dispatch({
-    type: BasicTableActionTypes.BASIC_TABLE_SET_PAGE,
-    payload,
-  })
+const basicTableSetPage = (payload) => ({
+  type: BasicTableActionTypes.BASIC_TABLE_SET_PAGE,
+  payload,
+})
 
-const basicTableSetPageSize = (payload) => (dispatch, state) =>
-  dispatch({
-    type: BasicTableActionTypes.BASIC_TABLE_SET_PAGE_SIZE,
-    payload,
-  })
+const basicTableSetPageSize = (payload) => ({
+  type: BasicTableActionTypes.BASIC_TABLE_SET_PAGE_SIZE,
+  payload,
+})
 
 export {
   basicTableSort,

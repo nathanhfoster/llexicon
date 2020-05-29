@@ -1,9 +1,27 @@
 import * as React from "react"
 import { ContextConsumer } from "./provider"
 
-const bindActionCreator = (actionCreator, dispatch, state) => {
+const bindActionCreator = (actionCreator, dispatch, getState) => {
   function boundAction() {
-    return actionCreator(...arguments)(dispatch, state)
+    try {
+      /**
+       * If the action returns a function, append => (dispatch, getState) to the orginal function
+       *
+       * example:
+       * const basicTableSetPage = (payload) => (dispatch, getState) => dispatch({ type: "SOME_ACTION_TYPE", payload })
+       */
+      return actionCreator(...arguments)(dispatch, getState)
+    } catch {
+      /**
+       * If the action returns an object, wrap it in a dispatch
+       *
+       * example:
+       * const basicTableSetPage = (payload) => ({ type: "SOME_ACTION_TYPE", payload })
+       */
+      return dispatch(actionCreator(...arguments))
+    } finally {
+      return Error("Something bad happened in bindActionCreator")
+    }
   }
 
   return boundAction
@@ -27,9 +45,9 @@ const bindActionCreator = (actionCreator, dispatch, state) => {
  * @param {Function} state The `state` value / object derived from ContextConsumer
  */
 
-const bindActionCreators = (actionCreators, dispatch, state) => {
+const bindActionCreators = (actionCreators, dispatch, getState) => {
   if (typeof actionCreators === "function") {
-    return bindActionCreator(actionCreators, dispatch, state)
+    return bindActionCreator(actionCreators, dispatch, getState)
   }
 
   if (typeof actionCreators !== "object" || actionCreators === null) {
@@ -48,7 +66,7 @@ const bindActionCreators = (actionCreators, dispatch, state) => {
       boundActionCreators[key] = bindActionCreator(
         actionCreator,
         dispatch,
-        state
+        getState
       )
     }
   }
@@ -81,12 +99,14 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
        * {... return <Component {...combinedComponentProps} />}
        * </ContextConsumer.Consumer>
        * The above approach will not allow us to memoize dispatchToProps
-       * This is due to calling mapDispatchToProps(dispatch, state)
+       * This is due to calling mapDispatchToProps(dispatch, getState)
        * This will cause rerenders of the Component
        * To prevent this, we will use the useContext hook which allows us to use other hooks
        * This allows us to memoize our stateToProps and dispatchToProps using the useMemo hook
        */
       const { state, dispatch } = React.useContext(ContextConsumer)
+
+      const getState = React.useCallback(() => state, [state])
 
       // Memoize globalState
       const stateToProps = React.useMemo(() => mapStateToProps(state), [state])
@@ -103,7 +123,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
                *
                * example:
                *
-               * const mapDispatchToProps = (dispatch, state) => ({
+               * const mapDispatchToProps = (dispatch, getState) => ({
                * basicTableSort: (onSortCallback, sortKey, sortUp) =>
                * dispatch(basicTableSort(onSortCallback, sortKey, sortUp)),
                *
@@ -112,15 +132,14 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
                * })
                *
                */
-              mapDispatchToProps(dispatch, state)
+              mapDispatchToProps(dispatch, getState)
             : /**
-               * For convenience, append (dispatch, state) => function to the orginal (arguments) => function
-               *
-               * example:
-               *
+               * For convenience, append (dispatch, getState) => function to the orginal (arguments) => function
+               * Or if the action returns an object, wrap it in a dispatch
                * example: const mapDispatchToProps = { basicTableSort, basicTableFilter }
+               *
                */
-              bindActionCreators(mapDispatchToProps, dispatch, state),
+              bindActionCreators(mapDispatchToProps, dispatch, getState),
         [mapDispatchToProps]
       )
 
