@@ -7,8 +7,6 @@ import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
 import { ContextProvider } from "../../../store/provider"
 
-export const BasicTableContext = createContext()
-
 const BasicTableProvider = (props) => (
   <ContextProvider
     rootReducer={BasicTableReducer}

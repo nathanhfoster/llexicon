@@ -2,7 +2,7 @@ import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { DataPropType, ColumnsPropType } from "../state/types"
 import TableRow from "./TableRow"
-import connect from "../state/connect"
+import { connect } from "../../../../store/provider"
 
 const mapStateToProps = ({ columns, onRowClick, currentPage, pageSize }) => ({
   columns,
@@ -12,7 +12,6 @@ const mapStateToProps = ({ columns, onRowClick, currentPage, pageSize }) => ({
 })
 
 const TableBody = ({ data, columns, onRowClick, currentPage, pageSize }) => {
-  console.log("TableBody")
   const sliceStart = currentPage * pageSize
 
   const sliceEnd = sliceStart + pageSize

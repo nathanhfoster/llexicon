@@ -1,11 +1,13 @@
 import React, { useMemo, memo } from "react"
 import { DataPropType, ColumnsPropType } from "../state/types"
-import connect from "../state/connect"
+import { connect } from "../../../../store/provider"
 
-const mapStateToProps = ({ columns, sortList }) => ({ columns, sortList })
+const mapStateToProps = ({ columns, sortList }) => ({
+  columns,
+  sortList,
+})
 
 const TableFooters = ({ data, columns }) => {
-  console.log("TableFooters")
   const shouldRender = useMemo(() => columns.some((column) => column.footer))
 
   const renderTableRows = useMemo(

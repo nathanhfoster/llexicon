@@ -1,14 +1,24 @@
-const combineReducers = (reducers) => {
-  const globalState = {}
+import { isAFunction } from "./"
+
+const combineReducers = (reducers, initialState = {}) => {
+  // If a single reducer
+  if (isAFunction(reducers)) {
+    return [initialState, reducers]
+  }
 
   // set default state returned by reducer and its reducer
-  for (const [key, value] of Object.entries(reducers)) {
-    if (value instanceof Function || typeof value === "function") {
-      globalState[key] = value(undefined, { type: "__@@PLACEHOLDER_ACTION__" })
-    } else {
-      console.error(`${value} is not a function`)
-    }
-  }
+  const globalState = Object.entries(reducers).reduce(
+    (state, [key, reducer]) => {
+      if (isAFunction(reducer)) {
+        state[key] = reducer(initialState, { type: "__@@PLACEHOLDER_ACTION__" })
+      } else {
+        console.error(`${reducer} is not a function`)
+      }
+
+      return state
+    },
+    {}
+  )
 
   /**
    * Global reducer function; this is passed to the useReducer hook
@@ -34,8 +44,6 @@ const combineReducers = (reducers) => {
         const returnedStateByReducer = currentReducer(currentStateByKey, action)
 
         const areStateByKeyEqual = returnedStateByReducer !== currentStateByKey
-
-        console.log(hasStateChanged, areStateByKeyEqual)
 
         hasStateChanged = hasStateChanged || areStateByKeyEqual
 

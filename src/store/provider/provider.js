@@ -1,8 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 
-import { deepParseJson, combineReducers } from "../utils"
-import { PersistedStorageReduxKey } from "../../redux/localState"
+import { combineReducers } from "../utils"
 
 const AppStateProvider = React.createContext({})
 
@@ -14,26 +13,18 @@ const ContextProvider = ({
   initializer = defaultInitializer,
   children,
 }) => {
-  // const persistedState = deepParseJson(
-  //   localStorage.getItem(PersistedStorageReduxKey)
-  // )
-
-  const isASingleReducer = React.useMemo(
-    () => rootReducer instanceof Function || typeof rootReducer === "function",
-    [rootReducer]
+  const reducers = React.useCallback(
+    () => combineReducers(rootReducer, initialState),
+    []
   )
-
-  const rootReducerMemo = React.useMemo(() => rootReducer, [])
-
-  const reducers = React.useCallback(() => combineReducers(rootReducer), [])
 
   // call the function to get initial state and global reducer
   const [mainState, mainReducer] = reducers()
 
   // setup useReducer with the returned value of the reducers function
   const [state, dispatch] = React.useReducer(
-    isASingleReducer ? rootReducerMemo : mainReducer,
-    initialState || mainState,
+    mainReducer,
+    mainState,
     initializer
   )
 

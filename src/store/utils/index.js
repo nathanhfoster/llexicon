@@ -4,10 +4,14 @@ import { combineReducers } from "./combineReducers"
 import { deepParseJson } from "./deepParseJson"
 import isPlainObject from "./isPlainObject"
 
+const isAFunction = (object) =>
+  object instanceof Function || typeof object === "function"
+
 export {
   actionTypes,
   combineReducers,
   // createStore,
   deepParseJson,
   isPlainObject,
+  isAFunction,
 }

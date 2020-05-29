@@ -1,11 +1,9 @@
-import React, { createContext, useMemo, memo, lazy, Fragment } from "react"
-import connect from "../state/connect"
+import React, { useMemo, memo, lazy, Fragment } from "react"
+import { connect } from "../../../../store/provider"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import { tableSort, tableFilter } from "../utils"
 import { ColumnsPropType, DataPropType, SortListPropType } from "../state/types"
-import { stringMatch } from "../../../../utils"
-import deepEquals from "../../../../utils/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -50,7 +48,7 @@ const BasicTable = ({
   striped,
   dark,
   responsive,
-  columns,
+
   onRowClick,
 }) => {
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
@@ -67,8 +65,6 @@ const BasicTable = ({
 
   const isHoverable = hover || onRowClick ? true : false
 
-  console.log("BasicTable")
-
   return (
     <Fragment>
       <Table
@@ -82,7 +78,7 @@ const BasicTable = ({
       >
         <TableHeaders />
         <TableBody data={sortedAndFilteredData} />
-        <TableFooters columns={columns} data={sortedAndFilteredData} />
+        <TableFooters data={sortedAndFilteredData} />
       </Table>
       <TablePaginator dataLength={dataLength} />
     </Fragment>
@@ -126,10 +122,4 @@ BasicTable.defaultProps = {
   pageSizes: [5, 10, 15, 20, 25, 50, 100],
 }
 
-const isEqual = (prevProps, nextProps) => {
-  console.log("prevProps: ", prevProps)
-  console.log("nextProps: ", nextProps)
-  return deepEquals(prevProps, nextProps, true)
-}
-
-export default connect(mapStateToProps)(memo(BasicTable, isEqual))
+export default connect(mapStateToProps)(memo(BasicTable))

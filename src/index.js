@@ -4,24 +4,28 @@ import ReactDOM from "react-dom"
 import App from "./App"
 import storeFactory from "./redux"
 import { history } from "./redux/router/reducer"
-import { getUserClientId } from "./redux/localState"
+import { getUserClientId, PersistedStorageReduxKey } from "./redux/localState"
 import { Provider } from "react-redux"
 import { ConnectedRouter } from "connected-react-router"
-import { getRandomInt } from "./utils"
+import { deepParseJson, getRandomInt } from "./utils"
 import { LoadingScreen } from "./components"
 import { PersistGate } from "redux-persist/integration/react"
 import * as serviceWorker from "./serviceWorker"
 import { GetAppVersion } from "./redux/App/actions"
 import ReactGA from "react-ga"
+
 // import { ContextProvider } from "./store/provider/provider"
 // import rootReducer from "./store/containers"
+// const persistedState = deepParseJson(
+//   localStorage.getItem(PersistedStorageReduxKey)
+// )
 
 const { store, persistor } = storeFactory()
 
 const AlertNotifications = lazy(() =>
-  new Promise((resolve) => setTimeout(resolve, getRandomInt(0, 1500))).then(() =>
-    import("./components/AlertNotifications")
-  )
+  new Promise((resolve) =>
+    setTimeout(resolve, getRandomInt(0, 1500))
+  ).then(() => import("./components/AlertNotifications"))
 )
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
@@ -71,7 +75,7 @@ ReactDOM.render(
         <AlertNotifications />
         <ConnectedRouter history={history}>
           {/* <ContextProvider rootReducer={rootReducer}> */}
-            <App />
+          <App />
           {/* </ContextProvider> */}
         </ConnectedRouter>
       </Suspense>

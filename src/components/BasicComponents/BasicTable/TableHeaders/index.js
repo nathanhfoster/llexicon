@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
+import { connect } from "../../../../store/provider"
 import { ColumnsPropType, SortListPropType } from "../state/types"
 import TableHeader from "./TableHeader"
 import { basicTableSort, basicTableFilter } from "../state/actions"
-import connect from "../state/connect"
 
 const mapStateToProps = ({
   columns,
@@ -29,7 +29,6 @@ const TableHeaders = ({
   basicTableSort,
   basicTableFilter,
 }) => {
-  console.log("TableHeaders")
   const handleFilter = useCallback((filterKey, filterValue) => {
     basicTableFilter(onFilterCallback, filterKey, filterValue)
   })

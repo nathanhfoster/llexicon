@@ -107,12 +107,7 @@ const bindActionCreators = (actionCreators, dispatch, state) => {
  * @param {factory} mapDispatchToProps
  * @return {function(React.Component): function(object): *}
  */
-const connect = (
-  mapStateToProps,
-  mapDispatchToProps,
-  // Allow flexibility to be used with a different context
-  Context = ContextConsumer
-) =>
+const connect = (mapStateToProps, mapDispatchToProps) =>
   /**
    * @param {React.node} Component
    */
@@ -124,32 +119,52 @@ const connect = (
      *
      * We will place all combined props here
      */
-    (props) => (
-      <Context.Consumer>
-        {({ state, dispatch }) => {
-          const stateToProps = mapStateToProps(state)
+    (props) => {
+      /**
+       * <ContextConsumer.Consumer>
+       * {({ state, dispatch }) =>
+       * {... return <Component {...combinedComponentProps} />}
+       * </ContextConsumer.Consumer>
+       * The above approach will not allow us to memoize dispatchToProps
+       * This is due to calling mapDispatchToProps(dispatch, state)
+       * This will cause rerenders of the Component
+       * To prevent this, we will use the useContext hook which allows us to use other hooks
+       * This allows us to memoize our stateToProps and dispatchToProps using the useMemo hook
+       */
+      const { state, dispatch } = React.useContext(ContextConsumer)
 
-          const dispatchToProps = !mapDispatchToProps
+      // Memoize globalState
+      const stateToProps = React.useMemo(() => mapStateToProps(state), [state])
+
+      // Memoize globalDispatch
+      const dispatchToProps = React.useMemo(
+        () =>
+          !mapDispatchToProps
             ? null
             : mapDispatchToProps instanceof Function ||
               typeof mapDispatchToProps === "function"
             ? // the dispatch provided by the consumer; our global reducer
               mapDispatchToProps(dispatch, state)
             : // wrap the dispatch and state
-              bindActionCreators(mapDispatchToProps, dispatch, state)
+              bindActionCreators(mapDispatchToProps, dispatch, state),
+        [mapDispatchToProps]
+      )
 
-          const componentProps = {
-            ...stateToProps,
-            ...props,
-            // not all components need to dispatch actions so its optional
-            ...(mapDispatchToProps && {
-              ...dispatchToProps,
-            }),
-          }
+      // Memoize the Component's combined props
+      const combinedComponentProps = React.useMemo(
+        () => ({
+          ...stateToProps,
+          ...props,
+          // not all components need to dispatch actions so its optional
+          ...(mapDispatchToProps && {
+            ...dispatchToProps,
+          }),
+        }),
+        [stateToProps, props, dispatchToProps]
+      )
 
-          return <Component {...componentProps} />
-        }}
-      </Context.Consumer>
-    )
+      // Pass all the key value combinedComponentProps to Component
+      return <Component {...combinedComponentProps} />
+    }
 
 export default connect
