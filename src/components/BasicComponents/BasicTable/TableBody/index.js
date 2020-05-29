@@ -2,7 +2,7 @@ import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { DataPropType, ColumnsPropType } from "../state/types"
 import TableRow from "./TableRow"
-import connect from "../state/connect"
+import { connect } from "../../../../store/provider"
 
 const mapStateToProps = ({ columns, onRowClick, currentPage, pageSize }) => ({
   columns,

@@ -1,79 +1,23 @@
-import React, { createContext, useReducer, useMemo, memo, lazy } from "react"
+import React, { createContext, memo } from "react"
 import PropTypes from "prop-types"
-import { Table } from "reactstrap"
+import Table from "./Table"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
-import { tableSort, tableFilter } from "./utils"
+
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
-import { useProviderReducer } from "../../../store/provider"
-import "./styles.css"
+import { ContextProvider } from "../../../store/provider"
 
-// Lazy load other child components so BasicTableContext can be initialized before it is used
-const TableHeaders = lazy(() => import("./TableHeaders"))
-const TableBody = lazy(() => import("./TableBody"))
-const TableFooters = lazy(() => import("./TableFooters"))
-const TablePaginator = lazy(() => import("./TablePaginator"))
+const BasicTableProvider = (props) => (
+  <ContextProvider
+    rootReducer={BasicTableReducer}
+    initialState={props}
+    initializer={getInitialState}
+  >
+    <Table />
+  </ContextProvider>
+)
 
-export const BasicTableContext = createContext()
-
-const BasicTable = ({
-  data,
-  bordered,
-  borderless,
-  striped,
-  dark,
-  responsive,
-  hover,
-  columns,
-  ...propsUsedToDeriveState
-}) => {
-  const initialState = { columns, ...propsUsedToDeriveState }
-
-  const [state, dispatch] = useReducer(
-    BasicTableReducer,
-    initialState,
-    getInitialState
-  )
-
-  const { onRowClick, sortList, filterList } = state
-
-  const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
-
-  const sortedAndFilteredData = useMemo(
-    () => tableFilter(sortedData, filterList),
-    [sortedData, filterList]
-  )
-
-  const dataLength = useMemo(() => (sortedAndFilteredData || data).length, [
-    sortedAndFilteredData,
-    data,
-  ])
-
-  const isHoverable = hover || onRowClick ? true : false
-
-  const providerValue = useMemo(() => ({ state, dispatch }), [state])
-
-  return (
-    <BasicTableContext.Provider value={providerValue}>
-      <Table
-        className="BasicTable m-0"
-        bordered={bordered}
-        borderless={borderless}
-        striped={striped}
-        dark={dark}
-        hover={isHoverable}
-        responsive={responsive}
-      >
-        <TableHeaders />
-        <TableBody data={sortedAndFilteredData} />
-        <TableFooters columns={columns} data={sortedAndFilteredData} />
-      </Table>
-      <TablePaginator dataLength={dataLength} />
-    </BasicTableContext.Provider>
-  )
-}
-
-BasicTable.propTypes = {
+BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
   data: DataPropType,
@@ -98,7 +42,7 @@ BasicTable.propTypes = {
   ]),
 }
 
-BasicTable.defaultProps = {
+BasicTableProvider.defaultProps = {
   hover: false,
   sortable: false,
   bordered: false,
@@ -150,4 +94,4 @@ BasicTable.defaultProps = {
       })
   ),
 }
-export default memo(BasicTable)
+export default memo(BasicTableProvider)

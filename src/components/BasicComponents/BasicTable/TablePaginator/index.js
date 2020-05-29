@@ -1,9 +1,10 @@
-import React, { useMemo, memo } from "react"
+import React, { useMemo, useCallback, memo } from "react"
 import { Container, Row, Col, Button } from "reactstrap"
 import BasicDropDown from "../../BasicDropDown"
 import PropTypes from "prop-types"
 import { basicTableSetPage, basicTableSetPageSize } from "../state/actions"
-import connect from "../state/connect"
+import { connect } from "../../../../store/provider"
+import deepEquals from "../../../../utils/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({ currentPage, pageSize, pageSizes }) => ({
@@ -12,11 +13,16 @@ const mapStateToProps = ({ currentPage, pageSize, pageSizes }) => ({
   pageSizes,
 })
 
-const mapDispatchToProps = (dispatch, state) => ({
-  handlePageChange: (page) => dispatch(basicTableSetPage(page)),
-  handlePageSizeChange: (id, pageSize) =>
-    dispatch(basicTableSetPageSize(pageSize)),
-})
+const mapDispatchToProps = (dispatch, state) => {
+  const handlePageChange = (page) => dispatch(basicTableSetPage(page))
+  const handlePageSizeChange = (id, pageSize) =>
+    dispatch(basicTableSetPageSize(pageSize))
+
+  return {
+    handlePageChange,
+    handlePageSizeChange,
+  }
+}
 
 const TablePaginator = ({
   dataLength,
@@ -26,6 +32,7 @@ const TablePaginator = ({
   handlePageChange,
   handlePageSizeChange,
 }) => {
+  console.log("TablePaginator")
   const totalPages = useMemo(() => Math.ceil(dataLength / pageSize), [
     dataLength,
     pageSize,
@@ -123,7 +130,9 @@ TablePaginator.propTypes = {
   ),
 }
 
+const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps, true)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(memo(TablePaginator))
+)(memo(TablePaginator, isEqual))

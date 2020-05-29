@@ -71,7 +71,7 @@ const BasicTableReducer = (state, action) => {
       return { ...state, pageSize: payload, currentPage: 0 }
 
     default:
-      throw new Error()
+      return state
   }
 }
 
