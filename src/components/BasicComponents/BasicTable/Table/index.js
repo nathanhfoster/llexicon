@@ -48,7 +48,6 @@ const BasicTable = ({
   striped,
   dark,
   responsive,
-
   onRowClick,
 }) => {
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])

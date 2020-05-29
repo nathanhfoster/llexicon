@@ -4,7 +4,6 @@ import BasicDropDown from "../../BasicDropDown"
 import PropTypes from "prop-types"
 import { basicTableSetPage, basicTableSetPageSize } from "../state/actions"
 import { connect } from "../../../../store/provider"
-import deepEquals from "../../../../utils/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({ currentPage, pageSize, pageSizes }) => ({
@@ -13,15 +12,9 @@ const mapStateToProps = ({ currentPage, pageSize, pageSizes }) => ({
   pageSizes,
 })
 
-const mapDispatchToProps = (dispatch, state) => {
-  const handlePageChange = (page) => dispatch(basicTableSetPage(page))
-  const handlePageSizeChange = (id, pageSize) =>
-    dispatch(basicTableSetPageSize(pageSize))
-
-  return {
-    handlePageChange,
-    handlePageSizeChange,
-  }
+const mapDispatchToProps = {
+  basicTableSetPage,
+  basicTableSetPageSize,
 }
 
 const TablePaginator = ({
@@ -29,10 +22,9 @@ const TablePaginator = ({
   currentPage,
   pageSize,
   pageSizes,
-  handlePageChange,
-  handlePageSizeChange,
+  basicTableSetPage,
+  basicTableSetPageSize,
 }) => {
-  console.log("TablePaginator")
   const totalPages = useMemo(() => Math.ceil(dataLength / pageSize), [
     dataLength,
     pageSize,
@@ -50,11 +42,11 @@ const TablePaginator = ({
 
   const disabledRightArrow = currentPage + 1 === totalPages
 
-  const navigateBack = () => handlePageChange(currentPage - 1)
+  const navigateBack = () => basicTableSetPage(currentPage - 1)
 
-  const navigateWithDropDown = (id, value) => handlePageChange(value - 1)
+  const navigateWithDropDown = (id, value) => basicTableSetPage(value - 1)
 
-  const navigateForward = () => handlePageChange(currentPage + 1)
+  const navigateForward = () => basicTableSetPage(currentPage + 1)
 
   return (
     <Container fluid className="BasicTablePaginator">
@@ -92,7 +84,7 @@ const TablePaginator = ({
                 <span className="Pagination">{pageSize}</span>
               </span>
             }
-            onClickCallback={handlePageSizeChange}
+            onClickCallback={basicTableSetPageSize}
           />
         </Col>
         <Col
@@ -130,9 +122,7 @@ TablePaginator.propTypes = {
   ),
 }
 
-const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps, true)
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(memo(TablePaginator, isEqual))
+)(memo(TablePaginator))

@@ -1,58 +1,12 @@
 import * as React from "react"
 import { ContextConsumer } from "./provider"
 
-// ƒ () {
-//   return dispatch(actionCreator.apply(this, arguments));
-// }
-
-const thunk = (extraArgument) => {
-  return ({ dispatch, getState }) => (next) => (action) => {
-    if (typeof action === "function") {
-      return action(dispatch, getState, extraArgument)
-    }
-
-    return next(action)
-  }
-}
-
-const compose = (...funcs) => {
-  if (funcs.length === 0) {
-    return (arg) => arg
+const bindActionCreator = (actionCreator, dispatch, state) => {
+  function boundAction() {
+    return actionCreator(...arguments)(dispatch, state)
   }
 
-  if (funcs.length === 1) {
-    return funcs[0]
-  }
-
-  return funcs.reduce((a, b) => (...args) => a(b(...args)))
-}
-
-const applyMiddleware = (...middlewares) => {
-  return (createStore) => (...args) => {
-    const store = createStore(...args)
-    let dispatch = () => {
-      throw new Error(
-        "Dispatching while constructing your middleware is not allowed. " +
-          "Other middleware would not be applied to this dispatch."
-      )
-    }
-
-    const middlewareAPI = {
-      getState: store.getState,
-      dispatch: (...args) => dispatch(...args),
-    }
-    const chain = middlewares.map((middleware) => middleware(middlewareAPI))
-    dispatch = compose(...chain)(store.dispatch)
-
-    return {
-      ...store,
-      dispatch,
-    }
-  }
-}
-
-function bindActionCreator(actionCreator, dispatch, state) {
-  return dispatch(actionCreator.apply(this, arguments))
+  return boundAction
 }
 
 /**
@@ -68,17 +22,14 @@ function bindActionCreator(actionCreator, dispatch, state) {
  * creator functions. One handy way to obtain it is to use ES6 `import * as`
  * syntax. You may also pass a single function.
  *
- * @param {Function} dispatch The `dispatch` function available on your Redux
- * store.
+ * @param {Function} dispatch The `dispatch` function derived from ContextConsumer
  *
- * @returns {Function|Object} The object mimicking the original object, but with
- * every action creator wrapped into the `dispatch` call. If you passed a
- * function as `actionCreators`, the return value will also be a single
- * function.
+ * @param {Function} state The `state` value / object derived from ContextConsumer
  */
+
 const bindActionCreators = (actionCreators, dispatch, state) => {
   if (typeof actionCreators === "function") {
-    return bindActionCreator(actionCreators, dispatch)
+    return bindActionCreator(actionCreators, dispatch, state)
   }
 
   if (typeof actionCreators !== "object" || actionCreators === null) {
@@ -94,7 +45,11 @@ const bindActionCreators = (actionCreators, dispatch, state) => {
   for (const key in actionCreators) {
     const actionCreator = actionCreators[key]
     if (typeof actionCreator === "function") {
-      boundActionCreators[key] = bindActionCreator(actionCreator, dispatch)
+      boundActionCreators[key] = bindActionCreator(
+        actionCreator,
+        dispatch,
+        state
+      )
     }
   }
   return boundActionCreators
@@ -143,9 +98,28 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
             ? null
             : mapDispatchToProps instanceof Function ||
               typeof mapDispatchToProps === "function"
-            ? // the dispatch provided by the consumer; our global reducer
+            ? /**
+               * pass dispatch and state to the mapDispatchToProps function
+               *
+               * example:
+               *
+               * const mapDispatchToProps = (dispatch, state) => ({
+               * basicTableSort: (onSortCallback, sortKey, sortUp) =>
+               * dispatch(basicTableSort(onSortCallback, sortKey, sortUp)),
+               *
+               * basicTableFilter: (onFilterCallback, filterKey, filterValue) =>
+               * dispatch(basicTableFilter(onFilterCallback, filterKey, filterValue)),
+               * })
+               *
+               */
               mapDispatchToProps(dispatch, state)
-            : // wrap the dispatch and state
+            : /**
+               * For convenience, append (dispatch, state) => function to the orginal (arguments) => function
+               *
+               * example:
+               *
+               * example: const mapDispatchToProps = { basicTableSort, basicTableFilter }
+               */
               bindActionCreators(mapDispatchToProps, dispatch, state),
         [mapDispatchToProps]
       )

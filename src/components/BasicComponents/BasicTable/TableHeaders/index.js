@@ -13,12 +13,7 @@ const mapStateToProps = ({
   sortable,
 }) => ({ columns, sortList, onSortCallback, onFilterCallback, sortable })
 
-const mapDispatchToProps = (dispatch, state) => ({
-  basicTableSort: (onSortCallback, sortKey, sortUp) =>
-    dispatch(basicTableSort(onSortCallback, sortKey, sortUp)),
-  basicTableFilter: (onFilterCallback, filterKey, filterValue) =>
-    dispatch(basicTableFilter(onFilterCallback, filterKey, filterValue)),
-})
+const mapDispatchToProps = { basicTableSort, basicTableFilter }
 
 const TableHeaders = ({
   onSortCallback,
