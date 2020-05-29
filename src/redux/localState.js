@@ -1,5 +1,5 @@
 import { getObjectLength, removeKeyOrValueFromObject } from "../utils"
-import { deepParseJson } from "../store/utils"
+import { deepParseJson } from "../utils"
 import {
   DEFAULT_STATE_ALERTS,
   DEFAULT_STATE_CALENDAR,
