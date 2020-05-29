@@ -16,6 +16,7 @@ import ReactGA from "react-ga"
 
 // import { ContextProvider } from "./store/provider/provider"
 // import rootReducer from "./store/containers"
+
 // const persistedState = deepParseJson(
 //   localStorage.getItem(PersistedStorageReduxKey)
 // )
@@ -71,14 +72,14 @@ ReactDOM.render(
   // <React.StrictMode>
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
+      {/* <ContextProvider rootReducer={rootReducer} initialState={persistedState}> */}
       <Suspense fallback={<LoadingScreen />}>
         <AlertNotifications />
         <ConnectedRouter history={history}>
-          {/* <ContextProvider rootReducer={rootReducer}> */}
           <App />
-          {/* </ContextProvider> */}
         </ConnectedRouter>
       </Suspense>
+      {/* </ContextProvider>, */}
     </PersistGate>
   </Provider>,
   // </React.StrictMode>,
