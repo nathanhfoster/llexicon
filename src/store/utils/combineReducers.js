@@ -10,7 +10,7 @@ const combineReducers = (reducers, initialState = {}) => {
   const globalState = Object.entries(reducers).reduce(
     (state, [key, reducer]) => {
       if (isAFunction(reducer)) {
-        state[key] = reducer(initialState, { type: "__@@PLACEHOLDER_ACTION__" })
+        state[key] = reducer(undefined, { type: "__@@PLACEHOLDER_ACTION__" })
       } else {
         console.error(`${reducer} is not a function`)
       }
