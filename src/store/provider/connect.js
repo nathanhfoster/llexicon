@@ -153,7 +153,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
             ...dispatchToProps,
           }),
         }),
-        [stateToProps, props, dispatchToProps]
+        [props, stateToProps, dispatchToProps]
       )
 
       // Pass all the key value combinedComponentProps to Component
