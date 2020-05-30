@@ -3,22 +3,39 @@ import { isAFunction } from "./"
 const combineReducers = (reducers, initialState = {}) => {
   // If a single reducer
   if (isAFunction(reducers)) {
-    return [initialState, reducers]
+    const reducerFunction = (state, action) => {
+      let hasStateChanged = false
+      let updatedStateByReducers = {}
+
+      const currentStateByKey = state
+      const currentReducer = reducers
+
+      const returnedStateByReducer = currentReducer(currentStateByKey, action)
+
+      const areStateByKeyEqual = returnedStateByReducer !== currentStateByKey
+
+      hasStateChanged = hasStateChanged || areStateByKeyEqual
+
+      updatedStateByReducers = returnedStateByReducer
+
+      return hasStateChanged ? updatedStateByReducers : state
+    }
+
+    return [initialState, reducerFunction]
   }
 
   // set default state returned by reducer and its reducer
-  const globalState = Object.entries(reducers).reduce(
-    (state, [key, reducer]) => {
-      if (isAFunction(reducer)) {
-        state[key] = reducer(undefined, { type: "__@@PLACEHOLDER_ACTION__" })
-      } else {
-        console.error(`${reducer} is not a function`)
-      }
+  let globalState = {}
 
-      return state
-    },
-    {}
-  )
+  for (const [key, reducer] of Object.entries(reducers)) {
+    if (isAFunction(reducer)) {
+      globalState[key] = reducer(undefined, {
+        type: "__@@PLACEHOLDER_ACTION__",
+      })
+    } else {
+      console.error(`${reducer} is not a function`)
+    }
+  }
 
   /**
    * Global reducer function; this is passed to the useReducer hook
@@ -28,7 +45,7 @@ const combineReducers = (reducers, initialState = {}) => {
    */
   const reducerFunction = (state, action) => {
     let hasStateChanged = false
-    const updatedStateByReducers = {}
+    let updatedStateByReducers = {}
 
     /**
      * this is where dispatching happens;

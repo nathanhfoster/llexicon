@@ -10,7 +10,7 @@ const bindActionCreator = (actionCreator, dispatch, getState) => {
        * example:
        * const basicTableSetPage = (payload) => (dispatch, getState) => dispatch({ type: "SOME_ACTION_TYPE", payload })
        */
-      return actionCreator(...arguments)(dispatch, getState)
+      return actionCreator.apply(this, arguments)(dispatch, getState)
     } catch {
       /**
        * If the action returns an object, wrap it in a dispatch
@@ -18,9 +18,8 @@ const bindActionCreator = (actionCreator, dispatch, getState) => {
        * example:
        * const basicTableSetPage = (payload) => ({ type: "SOME_ACTION_TYPE", payload })
        */
-      return dispatch(actionCreator(...arguments))
+      return dispatch(actionCreator.apply(this, arguments))
     } finally {
-      return Error("Something bad happened in bindActionCreator")
     }
   }
 
@@ -54,22 +53,19 @@ const bindActionCreators = (actionCreators, dispatch, getState) => {
     throw new Error(
       `bindActionCreators expected an object or a function, instead received ${
         actionCreators === null ? "null" : typeof actionCreators
-      }. ` +
-        `Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?`
+      }.`
     )
   }
 
-  const boundActionCreators = {}
+  let boundActionCreators = {}
+
   for (const key in actionCreators) {
-    const actionCreator = actionCreators[key]
-    if (typeof actionCreator === "function") {
-      boundActionCreators[key] = bindActionCreator(
-        actionCreator,
-        dispatch,
-        getState
-      )
+    const action = actionCreators[key]
+    if (typeof action === "function") {
+      boundActionCreators[key] = bindActionCreator(action, dispatch, getState)
     }
   }
+
   return boundActionCreators
 }
 
@@ -92,7 +88,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
      *
      * We will place all combined props here
      */
-    (props) => {
+    (ownProps) => {
       /**
        * <ContextConsumer.Consumer>
        * {({ state, dispatch }) =>
@@ -109,7 +105,10 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
       const getState = React.useCallback(() => state, [state])
 
       // Memoize globalState
-      const stateToProps = React.useMemo(() => mapStateToProps(state), [state])
+      const stateToProps = React.useMemo(
+        () => mapStateToProps(state, ownProps),
+        [state]
+      )
 
       // Memoize globalDispatch
       const dispatchToProps = React.useMemo(
@@ -119,7 +118,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
             : mapDispatchToProps instanceof Function ||
               typeof mapDispatchToProps === "function"
             ? /**
-               * pass dispatch and state to the mapDispatchToProps function
+               * pass dispatch and getState to the mapDispatchToProps function
                *
                * example:
                *
@@ -147,17 +146,22 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
       const combinedComponentProps = React.useMemo(
         () => ({
           ...stateToProps,
-          ...props,
+          ...ownProps,
           // not all components need to dispatch actions so its optional
           ...(mapDispatchToProps && {
             ...dispatchToProps,
           }),
         }),
-        [props, stateToProps, dispatchToProps]
+        [ownProps, stateToProps, dispatchToProps]
       )
 
-      // Pass all the key value combinedComponentProps to Component
-      return <Component {...combinedComponentProps} />
+      const renderComponent = React.useMemo(
+        // Pass all the key value combinedComponentProps to Component
+        () => <Component {...combinedComponentProps} />,
+        [combinedComponentProps]
+      )
+
+      return renderComponent
     }
 
 export default connect
