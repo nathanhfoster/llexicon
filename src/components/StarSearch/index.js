@@ -1,12 +1,11 @@
-import React, { useRef, useState, useCallback, useEffect } from "react"
+import React, { useCallback } from "react"
 import PropTypes from "prop-types"
-import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap"
+import { InputGroup, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import { Link } from "react-router-dom"
 import { RouteMap } from "../../redux/router/actions"
 import { SearchUserEntries } from "../../redux/Entries/actions"
-import { DEFAULT_STATE_ENTRIES } from "../../redux/Entries/reducer"
-import UseDebounce from "../UseDebounce"
+import { DebounceInput } from "../"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
@@ -17,30 +16,10 @@ const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
 const mapDispatchToProps = { SearchUserEntries }
 
 const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
-  const isMounted = useRef(false)
-  const isTyping = useRef(false)
-  const [searchValue, setSearch] = useState(search)
-
   const handleSearch = useCallback(
     (searchValue) => SearchUserEntries(searchValue),
     []
   )
-
-  const handleSeachOnChange = ({ target: { value } }) => {
-    isTyping.current = true
-    setSearch(value)
-  }
-
-  useEffect(() => {
-    if (!isMounted.current) {
-      setSearch(DEFAULT_STATE_ENTRIES.search)
-      isMounted.current = true
-    }
-
-    return () => {
-      isTyping.current = false
-    }
-  })
 
   return (
     <InputGroup
@@ -56,13 +35,11 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
         </InputGroupText>
       </InputGroupAddon>
 
-      <UseDebounce onChangeCallback={handleSearch} value={searchValue} />
-      <Input
-        value={searchValue}
+      <DebounceInput
+        defaultValue={search}
         placeholder="Search for entries"
         className="p-0"
-        onChange={handleSeachOnChange}
-        // style={{ outline: "red" }}
+        onChange={handleSearch}
       />
     </InputGroup>
   )

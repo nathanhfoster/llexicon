@@ -20,7 +20,7 @@ const UseDebounce = ({ debounceOnMount, value, delay, onChangeCallback }) => {
 
 UseDebounce.propTypes = {
   debounceOnMount: PropTypes.bool.isRequired,
-  value: PropTypes.any,
+  value: PropTypes.any.isRequired,
   delay: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
   onChangeCallback: PropTypes.func.isRequired,
 }

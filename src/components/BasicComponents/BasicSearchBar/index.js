@@ -6,15 +6,14 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Input,
   Media,
 } from "reactstrap"
-import { UseDebounce } from "../../"
+import { DebounceInput } from "../../"
 
 const BasicSearchBar = ({ placeholder, onSubmit }) => {
   const [searchValue, setSearchValue] = useState("")
 
-  const handleOnChange = ({ target: { value } }) => setSearchValue(value)
+  const handleOnChange = (value) => setSearchValue(value)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -23,7 +22,7 @@ const BasicSearchBar = ({ placeholder, onSubmit }) => {
 
   return (
     <InputGroup tag={Form} onSubmit={handleSubmit} method="post">
-      <Input
+      <DebounceInput
         value={searchValue}
         placeholder={placeholder}
         onChange={handleOnChange}
@@ -36,7 +35,6 @@ const BasicSearchBar = ({ placeholder, onSubmit }) => {
           />
         </InputGroupText>
       </InputGroupAddon>
-      <UseDebounce onChangeCallback={onSubmit} value={searchValue} />
     </InputGroup>
   )
 }
