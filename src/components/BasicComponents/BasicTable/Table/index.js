@@ -7,7 +7,6 @@ import { ColumnsPropType, DataPropType, SortListPropType } from "../state/types"
 import "./styles.css"
 
 const mapStateToProps = ({
-  data,
   sortList,
   filterList,
   hover,
@@ -19,7 +18,6 @@ const mapStateToProps = ({
   columns,
   onRowClick,
 }) => ({
-  data,
   sortList,
   filterList,
   hover,

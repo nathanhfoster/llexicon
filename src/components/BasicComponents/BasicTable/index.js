@@ -1,19 +1,18 @@
-import React, { createContext, memo } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import Table from "./Table"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
-
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
 import { ContextProvider } from "../../../store/provider"
 
-const BasicTableProvider = (props) => (
+const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
   <ContextProvider
     rootReducer={BasicTableReducer}
-    initialState={props}
+    initialState={propsUsedToDeriveContextValue}
     initializer={getInitialState}
   >
-    <Table />
+    <Table data={data} />
   </ContextProvider>
 )
 
