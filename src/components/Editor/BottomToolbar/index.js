@@ -81,8 +81,8 @@ const BottomToolbar = ({
   )
 
   const handlers = useSwipeable({
-    onSwipedUp: () => toggleBottomToolbar(),
-    onSwipedDown: () => toggleBottomToolbar(),
+    onSwipedUp: () => toggleBottomToolbar(true),
+    onSwipedDown: () => toggleBottomToolbar(false),
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
     trackMouse: true,

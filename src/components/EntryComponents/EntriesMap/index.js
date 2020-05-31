@@ -22,7 +22,7 @@ const EntriesMap = ({ height, entries }) => {
   const handleOnChange = useCallback(
     ({ entryId, address, latitude, longitude }) => {
       if (!entryId) return
-      else if (entryId === "NewEntry") {
+      else {
         SetEditorState({
           id: entryId,
           title: "",
@@ -30,17 +30,11 @@ const EntriesMap = ({ height, entries }) => {
           latitude,
           longitude,
         })
-      } else if (entryId === "MyLocation") {
-        SetEditorState({
-          id: entryId,
-          title: "",
-          address,
-          latitude,
-          longitude,
-        })
-        return RouterPush(RouteMap.NEW_ENTRY)
-      } else {
-        return GoToEntryDetail(entryId)
+        if (entryId === "MyLocation") {
+          return RouterPush(RouteMap.NEW_ENTRY)
+        } else {
+          return GoToEntryDetail(entryId)
+        }
       }
     },
     []
