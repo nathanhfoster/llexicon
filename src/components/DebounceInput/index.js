@@ -3,24 +3,35 @@ import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import { UseDebounce } from "../"
 
-const DebounceInput = ({ debounceOnMount, delay, onChange, ...inputProps }) => {
+const DebounceInput = ({
+  debounceOnMount,
+  delay,
+  onChange,
+  value,
+  defaultValue,
+  ...restOfInputProps
+}) => {
   const mounted = useRef(false)
-  const [value, setValue] = useState("")
-  const handleInputChange = ({ target: { value } }) => setValue(value)
+  const [debouncedValue, setDebouncedValue] = useState(defaultValue || value)
+  const handleInputChange = ({ target: { value } }) => setDebouncedValue(value)
 
   useEffect(() => {
-    if(mounted.current) {
-       setValue(input props.defaultValue)
+    if (mounted.current) {
+      setDebouncedValue(value)
     }
     mounted.current = true
-  }, [inputProps.defaultValue])
+  }, [value])
 
   return (
     <Fragment>
-      <Input onChange={handleInputChange} {...inputProps} />
+      <Input
+        value={debouncedValue}
+        onChange={handleInputChange}
+        {...restOfInputProps}
+      />
       <UseDebounce
         debounceOnMount={debounceOnMount}
-        value={value}
+        value={debouncedValue}
         delay={delay}
         onChangeCallback={onChange}
       />
@@ -32,6 +43,7 @@ DebounceInput.propTypes = {
   debounceOnMount: PropTypes.bool.isRequired,
   delay: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
   onChange: PropTypes.func.isRequired,
+  defaultValue: PropTypes.string,
 }
 
 DebounceInput.defaultProps = { debounceOnMount: false, delay: 400 }
