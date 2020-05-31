@@ -1,11 +1,19 @@
-import React, { useState, memo, Fragment } from "react"
+import React, { useRef, useState, useEffect, memo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { Input } from "reactstrap"
 import { UseDebounce } from "../"
 
 const DebounceInput = ({ debounceOnMount, delay, onChange, ...inputProps }) => {
+  const mounted = useRef(false)
   const [value, setValue] = useState("")
   const handleInputChange = ({ target: { value } }) => setValue(value)
+
+  useEffect(() => {
+    if(mounted.current) {
+       setValue(input props.defaultValue)
+    }
+    mounted.current = true
+  }, [inputProps.defaultValue])
 
   return (
     <Fragment>
