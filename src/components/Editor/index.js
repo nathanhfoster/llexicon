@@ -127,7 +127,7 @@ class Editor extends PureComponent {
 
   toggleBottomToolbar = (toggle) =>
     this.setState((currentState) => ({
-      bottomToolbarIsOpen: toggle !== undefined ? toggle : !currentState.bottomToolbarIsOpen,
+      bottomToolbarIsOpen: toggle === true || toggle === false ? toggle : !currentState.bottomToolbarIsOpen,
     }))
 
   handleOnFocus = (range) => {
