@@ -477,7 +477,7 @@ const stringMatch = (s1, s2, caseSensitive = false) => {
   const cleanString = escapeRegExp(s2)
 
   const regexMatch = new RegExp(cleanString, flags)
-  return s1.match(regexMatch)
+  return (s1 || "").match(regexMatch)
 }
 
 const formatBytes = (bytes, decimals = 2) => {

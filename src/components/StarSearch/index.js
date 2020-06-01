@@ -5,7 +5,7 @@ import { connect as reduxConnect } from "react-redux"
 import { Link } from "react-router-dom"
 import { RouteMap } from "../../redux/router/actions"
 import { SearchUserEntries } from "../../redux/Entries/actions"
-import { DebounceInput } from "../"
+import DebounceInput from "../DebounceInput"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
