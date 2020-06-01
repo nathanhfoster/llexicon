@@ -5,14 +5,13 @@ import {
   Row,
   Col,
   InputGroup,
-  Input,
   InputGroupAddon,
   InputGroupText,
   Button,
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
-import { TagsContainer } from "../../../../"
+import { TagsContainer, DebounceInput } from "../../../../"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,
@@ -93,9 +92,7 @@ const TagsButtonModal = ({
     [entryTags]
   )
 
-  const handleTagsInputChange = (e) => {
-    const { value } = e.target
-
+  const handleTagsInputChange = (value) => {
     const validatedTagsAsString = validatedTagString(value)
 
     setState((prevState) => ({
@@ -200,10 +197,10 @@ const TagsButtonModal = ({
                 <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
               </InputGroupText>
             </InputGroupAddon>
-            <Input
-              onChange={handleTagsInputChange}
+            <DebounceInput
               type="text"
               value={tagName}
+              onChange={handleTagsInputChange}
               placeholder="Document,Dream,Family,Friends,Quote,Vacation"
             />
           </Col>

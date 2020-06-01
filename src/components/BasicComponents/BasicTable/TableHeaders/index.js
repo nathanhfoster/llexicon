@@ -1,22 +1,32 @@
-import React, { useContext, useCallback, useMemo, memo } from "react"
+import React, { useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
+import { connect } from "../../../../store/provider"
+import { ColumnsPropType, SortListPropType } from "../state/types"
 import TableHeader from "./TableHeader"
-import { BasicTableContext } from "../"
 import { basicTableSort, basicTableFilter } from "../state/actions"
 
-const TableHeaders = ({ onSortCallback, onFilterCallback, sortable }) => {
-  const [{ columns, sortList }, dispatch] = useContext(BasicTableContext)
-  const handleSort = useCallback(
-    (sortKey, sortUp) =>
-      dispatch(basicTableSort(onSortCallback, sortKey, sortUp)),
-    []
-  )
+const mapStateToProps = ({
+  columns,
+  sortList,
+  onSortCallback,
+  onFilterCallback,
+  sortable,
+}) => ({ columns, sortList, onSortCallback, onFilterCallback, sortable })
 
-  const handleFilter = useCallback(
-    (filterKey, filterValue) =>
-      dispatch(basicTableFilter(onFilterCallback, filterKey, filterValue)),
-    []
-  )
+const mapDispatchToProps = { basicTableSort, basicTableFilter }
+
+const TableHeaders = ({
+  onSortCallback,
+  onFilterCallback,
+  sortable,
+  columns,
+  sortList,
+  basicTableSort,
+  basicTableFilter,
+}) => {
+  const handleFilter = useCallback((filterKey, filterValue) => {
+    basicTableFilter(onFilterCallback, filterKey, filterValue)
+  })
 
   const sortMap = useMemo(
     () =>
@@ -46,9 +56,9 @@ const TableHeaders = ({ onSortCallback, onFilterCallback, sortable }) => {
         const { sortUp } = sortMap[key]
         const sortCallback = () => {
           if (sortUp === false) {
-            handleSort(key, null)
+            basicTableSort(onSortCallback, key, null)
           } else {
-            handleSort(key, !sortUp)
+            basicTableSort(onSortCallback, key, !sortUp)
           }
         }
 
@@ -80,9 +90,11 @@ const TableHeaders = ({ onSortCallback, onFilterCallback, sortable }) => {
 }
 
 TableHeaders.propTypes = {
-  onSortCallback: PropTypes.func,
-  onFilterCallback: PropTypes.func,
+  onSortCallback: PropTypes.func.isRequired,
+  onFilterCallback: PropTypes.func.isRequired,
   sortable: PropTypes.bool.isRequired,
+  columns: ColumnsPropType,
+  sortList: SortListPropType,
 }
 
-export default memo(TableHeaders)
+export default connect(mapStateToProps, mapDispatchToProps)(memo(TableHeaders))

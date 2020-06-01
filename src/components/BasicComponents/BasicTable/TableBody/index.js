@@ -1,14 +1,17 @@
-import React, { useContext, useMemo, memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { DataPropType } from "../state/types"
+import { DataPropType, ColumnsPropType } from "../state/types"
 import TableRow from "./TableRow"
-import { BasicTableContext } from "../"
+import { connect } from "../../../../store/provider"
 
-const TableBody = ({ data }) => {
-  const [{ columns, onRowClick, currentPage, pageSize }, dispatch] = useContext(
-    BasicTableContext
-  )
+const mapStateToProps = ({ columns, onRowClick, currentPage, pageSize }) => ({
+  columns,
+  onRowClick,
+  currentPage,
+  pageSize,
+})
 
+const TableBody = ({ data, columns, onRowClick, currentPage, pageSize }) => {
   const sliceStart = currentPage * pageSize
 
   const sliceEnd = sliceStart + pageSize
@@ -36,6 +39,10 @@ const TableBody = ({ data }) => {
 
 TableBody.propTypes = {
   data: DataPropType,
+  columns: ColumnsPropType,
+  onRowClick: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
 }
 
-export default memo(TableBody)
+export default connect(mapStateToProps)(memo(TableBody))

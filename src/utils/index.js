@@ -141,7 +141,7 @@ const TopKFrequentStrings = (
   prop = "id",
   k = arrayOfObjs.length
 ) => {
-  if(!arrayOfObjs) return []
+  if (!arrayOfObjs) return []
   let map = new Map()
   for (let i = 0; i < arrayOfObjs.length; i++) {
     const s = arrayOfObjs[i][prop]
@@ -464,36 +464,6 @@ const fuzzySearch = (s, p, caseSensitive = false, maxLength = 1000) => {
   return true
 }
 
-const deepParseJson = (jsonString) => {
-  // if not stringified json rather a simple string value then JSON.parse will throw error
-  // otherwise continue recursion
-  if (typeof jsonString === "string") {
-    if (!isNaN(Number(jsonString))) {
-      // if a numeric string is received, return itself
-      // otherwise JSON.parse will convert it to a number
-      return jsonString
-    }
-    try {
-      return deepParseJson(JSON.parse(jsonString))
-    } catch (err) {
-      return jsonString
-    }
-  } else if (Array.isArray(jsonString)) {
-    // if an array is received, map over the array and deepParse each value
-    return jsonString.map((val) => deepParseJson(val))
-  } else if (typeof jsonString === "object" && jsonString !== null) {
-    // if an object is received then deepParse each element in the object
-    // typeof null returns 'object' too, so we have to eliminate that
-    return Object.keys(jsonString).reduce((obj, key) => {
-      obj[key] = deepParseJson(jsonString[key])
-      return obj
-    }, {})
-  } else {
-    // otherwise return whatever was received
-    return jsonString
-  }
-}
-
 const replaceAll = (str, mapObj) => {
   var re = new RegExp(Object.keys(mapObj).join("|"), "gi")
 
@@ -503,6 +473,8 @@ const replaceAll = (str, mapObj) => {
 const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") // $& means the whole matched string
 
 const stringMatch = (s1, s2, caseSensitive = false) => {
+  s1 = s1 || ""
+  s2 = s2 || ""
   const flags = caseSensitive ? "g" : "gi"
   const cleanString = escapeRegExp(s2)
 
@@ -574,6 +546,36 @@ const shareFile = (file) => {
     .catch((error) => console.log("Sharing failed", error))
 }
 
+const deepParseJson = (jsonString) => {
+  // if not stringified json rather a simple string value then JSON.parse will throw error
+  // otherwise continue recursion
+  if (typeof jsonString === "string") {
+    if (!isNaN(Number(jsonString))) {
+      // if a numeric string is received, return itself
+      // otherwise JSON.parse will convert it to a number
+      return jsonString
+    }
+    try {
+      return deepParseJson(JSON.parse(jsonString))
+    } catch (err) {
+      return jsonString
+    }
+  } else if (Array.isArray(jsonString)) {
+    // if an array is received, map over the array and deepParse each value
+    return jsonString.map((val) => deepParseJson(val))
+  } else if (typeof jsonString === "object" && jsonString !== null) {
+    // if an object is received then deepParse each element in the object
+    // typeof null returns 'object' too, so we have to eliminate that
+    return Object.keys(jsonString).reduce((obj, key) => {
+      obj[key] = deepParseJson(jsonString[key])
+      return obj
+    }, {})
+  } else {
+    // otherwise return whatever was received
+    return jsonString
+  }
+}
+
 export {
   DeepClone,
   getObjectLength,
@@ -614,7 +616,6 @@ export {
   cleanObject,
   stripHtml,
   fuzzySearch,
-  deepParseJson,
   replaceAll,
   stringMatch,
   formatBytes,
@@ -622,4 +623,5 @@ export {
   isType,
   shareUrl,
   shareFile,
+  deepParseJson,
 }

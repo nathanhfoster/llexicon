@@ -1,37 +1,52 @@
-import React, { useContext, memo } from "react"
+import React, { useMemo, useCallback, memo } from "react"
 import { Container, Row, Col, Button } from "reactstrap"
 import BasicDropDown from "../../BasicDropDown"
 import PropTypes from "prop-types"
-import { BasicTableContext } from "../"
 import { basicTableSetPage, basicTableSetPageSize } from "../state/actions"
+import { connect } from "../../../../store/provider"
 import "./styles.css"
 
-const TablePaginator = ({ totalPages, dataLength }) => {
-  const [{ currentPage, pageSize, pageSizes }, dispatch] = useContext(
-    BasicTableContext
-  )
+const mapStateToProps = ({ currentPage, pageSize, pageSizes }) => ({
+  currentPage,
+  pageSize,
+  pageSizes,
+})
 
-  const handlePageChange = (page) => {
-    dispatch(basicTableSetPage(page))
-  }
+const mapDispatchToProps = {
+  basicTableSetPage,
+  basicTableSetPageSize,
+}
 
-  const handlePageSizeChange = (id, pageSize) => {
-    dispatch(basicTableSetPageSize(pageSize))
-  }
+const TablePaginator = ({
+  dataLength,
+  currentPage,
+  pageSize,
+  pageSizes,
+  basicTableSetPage,
+  basicTableSetPageSize,
+}) => {
+  const totalPages = useMemo(() => Math.ceil(dataLength / pageSize), [
+    dataLength,
+    pageSize,
+  ])
 
-  const pageList = [{ header: true, value: "Page" }].concat(
-    new Array(totalPages).fill().map((e, i) => ({ value: i + 1 }))
+  const pageList = useMemo(
+    () =>
+      [{ header: true, value: "Page" }].concat(
+        new Array(totalPages).fill().map((e, i) => ({ value: i + 1 }))
+      ),
+    [totalPages]
   )
 
   const disabledLeftArrow = currentPage === 0
 
   const disabledRightArrow = currentPage + 1 === totalPages
 
-  const navigateBack = () => handlePageChange(currentPage - 1)
+  const navigateBack = () => basicTableSetPage(currentPage - 1)
 
-  const navigateWithDropDown = (id, value) => handlePageChange(value - 1)
+  const navigateWithDropDown = (id, value) => basicTableSetPage(value - 1)
 
-  const navigateForward = () => handlePageChange(currentPage + 1)
+  const navigateForward = () => basicTableSetPage(currentPage + 1)
 
   return (
     <Container fluid className="BasicTablePaginator">
@@ -69,7 +84,7 @@ const TablePaginator = ({ totalPages, dataLength }) => {
                 <span className="Pagination">{pageSize}</span>
               </span>
             }
-            onClickCallback={handlePageSizeChange}
+            onClickCallback={basicTableSetPageSize}
           />
         </Col>
         <Col
@@ -88,8 +103,26 @@ const TablePaginator = ({ totalPages, dataLength }) => {
 }
 
 TablePaginator.propTypes = {
-  totalPages: PropTypes.number.isRequired,
   dataLength: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  pageSizes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.node,
+      ]),
+      otherValue: PropTypes.any,
+      header: PropTypes.bool,
+      disabled: PropTypes.bool,
+      divider: PropTypes.bool,
+    }).isRequired
+  ),
 }
 
-export default memo(TablePaginator)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(memo(TablePaginator))

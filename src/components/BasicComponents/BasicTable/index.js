@@ -1,82 +1,22 @@
-import React, { createContext, useReducer, useMemo, memo } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { Table } from "reactstrap"
-import TableHeaders from "./TableHeaders"
-import TableBody from "./TableBody"
-import TableFooters from "./TableFooters"
-import TablePaginator from "./TablePaginator"
+import Table from "./Table"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
-import { tableSort, tableFilter } from "./utils"
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
-import "./styles.css"
+import { ContextProvider } from "../../../store/provider"
 
-export const BasicTableContext = createContext()
+const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
+  <ContextProvider
+    rootReducer={BasicTableReducer}
+    initialState={propsUsedToDeriveContextValue}
+    initializer={getInitialState}
+  >
+    <Table data={data} />
+  </ContextProvider>
+)
 
-const BasicTable = ({
-  data,
-  bordered,
-  borderless,
-  striped,
-  dark,
-  responsive,
-  hover,
-  sortable,
-  columns,
-  onSortCallback,
-  onFilterCallback,
-  ...propsUsedToDeriveState
-}) => {
-  const initialState = { columns, ...propsUsedToDeriveState }
-
-  const [state, dispatch] = useReducer(
-    BasicTableReducer,
-    initialState,
-    getInitialState
-  )
-
-  const { onRowClick, pageSize, sortList, filterList } = state
-
-  const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
-
-  const sortedAndFilteredData = useMemo(
-    () => tableFilter(sortedData, filterList),
-    [sortedData, filterList]
-  )
-
-  const dataLength = (sortedAndFilteredData || data).length
-
-  const totalPages = Math.ceil(dataLength / pageSize)
-
-  const isHoverable = hover || onRowClick ? true : false
-
-  const providerValue = useMemo(() => [state, dispatch], [state])
-
-  return (
-    <BasicTableContext.Provider value={providerValue}>
-      <Table
-        className="BasicTable m-0"
-        bordered={bordered}
-        borderless={borderless}
-        striped={striped}
-        dark={dark}
-        hover={isHoverable}
-        responsive={responsive}
-      >
-        <TableHeaders
-          onSortCallback={onSortCallback}
-          onFilterCallback={onFilterCallback}
-          sortable={sortable}
-        />
-        <TableBody data={sortedAndFilteredData} />
-        <TableFooters columns={columns} data={sortedAndFilteredData} />
-      </Table>
-      <TablePaginator totalPages={totalPages} dataLength={dataLength} />
-    </BasicTableContext.Provider>
-  )
-}
-
-BasicTable.propTypes = {
+BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
   data: DataPropType,
@@ -101,7 +41,7 @@ BasicTable.propTypes = {
   ]),
 }
 
-BasicTable.defaultProps = {
+BasicTableProvider.defaultProps = {
   hover: false,
   sortable: false,
   bordered: false,
@@ -153,4 +93,4 @@ BasicTable.defaultProps = {
       })
   ),
 }
-export default memo(BasicTable)
+export default memo(BasicTableProvider)

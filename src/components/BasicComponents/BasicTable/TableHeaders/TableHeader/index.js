@@ -1,7 +1,6 @@
-import React, { useCallback, useState, memo } from "react"
+import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { Input } from "reactstrap"
-import { UseDebounce } from "../../../../"
+import { DebounceInput } from "../../../../"
 import { capitalizeFirstLetter, isType } from "../../../../../utils"
 import { ColumnPropType } from "../../state/types"
 import "./styles.css"
@@ -19,11 +18,9 @@ const TableHeader = ({
   defaultFilterValue,
   filterCallback,
 }) => {
-  const [filterValue, setFilterValue] = useState(defaultFilterValue || "")
-  const handleChange = ({ target: { value } }) => setFilterValue(value)
   const handleDebounce = useCallback(
-    () => filterCallback(headerKey, filterValue),
-    [filterValue, headerKey]
+    (filterValue) => filterCallback(headerKey, filterValue),
+    [headerKey]
   )
 
   const headerTitle = typeof title === isType.STRING ? title : headerKey
@@ -43,13 +40,12 @@ const TableHeader = ({
           <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
         )}
       </div>
-      <UseDebounce onChangeCallback={handleDebounce} value={filterValue} />
-      <Input
+      <DebounceInput
         className="TableHeaderSortInput"
-        value={filterValue}
+        defaultValue={defaultFilterValue}
         disabled={!filter}
         onClick={(e) => e.stopPropagation()}
-        onChange={handleChange}
+        onChange={handleDebounce}
         placeholder={
           filter
             ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)} filter`

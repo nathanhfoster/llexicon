@@ -1,7 +1,7 @@
 import { BasicTableActionTypes } from "./types"
 import { filterSort } from "../utils"
 
-const getInitialState = ({ columns, pageSize, pageSizes }) => {
+const getInitialState = ({ columns, pageSize, pageSizes, ...restOfProps }) => {
   let sortList = []
   let filterList = []
   let firstRowClickFound = null
@@ -26,6 +26,7 @@ const getInitialState = ({ columns, pageSize, pageSizes }) => {
   }
 
   return {
+    ...restOfProps,
     columns,
     sortList,
     filterList,
@@ -70,7 +71,7 @@ const BasicTableReducer = (state, action) => {
       return { ...state, pageSize: payload, currentPage: 0 }
 
     default:
-      throw new Error()
+      return state
   }
 }
 
