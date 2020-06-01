@@ -199,6 +199,7 @@ const TagsButtonModal = ({
             </InputGroupAddon>
             <DebounceInput
               type="text"
+              value={tagName}
               onChange={handleTagsInputChange}
               placeholder="Document,Dream,Family,Friends,Quote,Vacation"
             />

@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { RouteMap } from "../../redux/router/actions"
 import PropTypes from "prop-types"
-import "./styles.css"
+
 import { useSwipeable } from "react-swipeable"
 import {
   Collapse,
@@ -21,6 +21,7 @@ import Hamburger from "./Hamburger"
 import NavItemLink from "./NavItemLink"
 import { Logo } from "../../images/AWS"
 import Support from "../../views/Support"
+import "./styles.css"
 
 const {
   ABOUT,

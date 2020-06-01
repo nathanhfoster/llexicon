@@ -24,9 +24,9 @@ import ReactGA from "react-ga"
 const { store, persistor } = storeFactory()
 
 const AlertNotifications = lazy(() =>
-  new Promise((resolve) =>
-    setTimeout(resolve, getRandomInt(0, 1500))
-  ).then(() => import("./components/AlertNotifications"))
+  new Promise((resolve) =>	
+    setTimeout(resolve, getRandomInt(0, 200))	
+  ).then(() => import("./components/AlertNotifications"))	
 )
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env

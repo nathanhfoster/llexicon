@@ -473,6 +473,8 @@ const replaceAll = (str, mapObj) => {
 const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") // $& means the whole matched string
 
 const stringMatch = (s1, s2, caseSensitive = false) => {
+  s1 = s1 || ""
+  s2 = s2 || ""
   const flags = caseSensitive ? "g" : "gi"
   const cleanString = escapeRegExp(s2)
 
