@@ -32,7 +32,11 @@ const EntryCalendar = ({
   GetUserEntriesByDate,
 }) => {
   useEffect(() => {
-    GetUserEntriesByDate(activeDate)
+    const payload = {
+      year: activeDate.getFullYear(),
+      month: activeDate.getMonth(),
+    }
+    GetUserEntriesByDate(payload)
   }, [])
 
   const previousActiveStartDate = useRef(activeDate)
@@ -73,7 +77,13 @@ const EntryCalendar = ({
 
     SetCalendar({ activeDate, view })
 
-    if (shouldGetUserEntries) GetUserEntriesByDate(activeStartDate)
+    if (shouldGetUserEntries) {
+      const payload = {
+        year: activeStartDate.getFullYear(),
+        month: activeStartDate.getMonth(),
+      }
+      GetUserEntriesByDate(payload)
+    }
   }
 
   const handleTodayClick = () => {

@@ -11,6 +11,7 @@ import {
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
 } from "./redux/Entries/actions"
 import { ResetMap } from "./redux/Map/actions"
@@ -67,6 +68,7 @@ const mapDispatchToProps = {
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
   ResetMap,
 }
@@ -82,6 +84,7 @@ const App = ({
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
   ResetMap,
 }) => {
@@ -107,6 +110,9 @@ const App = ({
       GetUserSettings()
       GetUserEntryTags()
       GetUserEntryPeople()
+      const now = new Date()
+      const payload = { month: now.getMonth(), day: now.getDay() }
+      GetUserEntriesByDate(payload)
     }
 
     return () => window.removeEventListener("resize", handleResize)

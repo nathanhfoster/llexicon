@@ -197,10 +197,10 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
     })
 }
 
-const GetUserEntriesByDate = (date) => (dispatch, getState) => {
+const GetUserEntriesByDate = (payload) => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
-    .post(`/entries/${id}/view_by_date/`, qs.stringify({ date }))
+    .post(`/entries/${id}/view_by_date/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch({
         type: EntriesActionTypes.ENTRIES_SET_BY_DATE,
@@ -209,7 +209,7 @@ const GetUserEntriesByDate = (date) => (dispatch, getState) => {
       ReactGA.event({
         category: "Get User Entries By Date",
         action: "User got a entry page!",
-        label: date.toString(),
+        label: JSON.stringify(payload),
         value: id,
       })
       dispatch(SetAlert({ title: "Received", message: "Entries" }))
