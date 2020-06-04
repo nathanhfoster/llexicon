@@ -89,7 +89,6 @@ const App = ({
   ResetMap,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const addToHomeScreenProps = { prompt, promptToInstall }
   useEffect(() => {
     const activeDate = new Date()
 
@@ -126,7 +125,7 @@ const App = ({
 
   return (
     <Fragment>
-      <NavBar {...addToHomeScreenProps} />
+      <NavBar prompt={prompt} promptToInstall={promptToInstall} />
       <main className="App RouteOverlay">
         <BackgroundImage />
         <Switch>
@@ -134,13 +133,17 @@ const App = ({
             exact={true}
             strict={false}
             path={[ABOUT]}
-            render={() => <About {...addToHomeScreenProps} />}
+            render={() => (
+              <About prompt={prompt} promptToInstall={promptToInstall} />
+            )}
           />
           <Route
             exact={true}
             strict={false}
             path={[ROOT, HOME]}
-            render={() => <Home {...addToHomeScreenProps} />}
+            render={() => (
+              <Home prompt={prompt} promptToInstall={promptToInstall} />
+            )}
           />
           {/* <Route
             path={ROOT}
