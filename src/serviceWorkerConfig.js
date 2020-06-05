@@ -5,6 +5,8 @@ import { GetAppVersion } from "./redux/App/actions"
 const receivePushNotification = (event, registration) => {
   console.log("[Service Worker] Push Received.")
 
+  alert(JSON.stringify(event))
+
   const { image, tag, url, title, text } = event.data.json()
 
   const options = {

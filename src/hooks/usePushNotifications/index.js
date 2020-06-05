@@ -116,7 +116,7 @@ const usePushNotifications = () => {
         const {
           response: { status },
         } = e
-        if (status === 400) {
+        if (status === 400 && pushServerSubscriptionId) {
           // Already exists
           onClickSendNotification()
         }
@@ -132,7 +132,7 @@ const usePushNotifications = () => {
     setLoading(true)
     setError(false)
     await Axios()
-      .get(`/subscription/${pushServerSubscriptionId}`)
+      .get(`/subscription/${pushServerSubscriptionId}/`)
       .then(({ data }) => {
         sendNotification()
       })
