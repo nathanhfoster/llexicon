@@ -1,4 +1,4 @@
-import { WindowActionTypes } from "../Window/types"
+import { WindowActionTypes } from "./types"
 
 const SetWindow = (payload) => ({
   type: WindowActionTypes.SET_WINDOW,
