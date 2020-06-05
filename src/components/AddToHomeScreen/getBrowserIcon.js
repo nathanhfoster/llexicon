@@ -22,9 +22,6 @@ const getBrowserIcon = (isOnMobileBrowser, browserUserAgent) => {
     if (browserUserAgent.includes("Android")) {
       return <i className="fab fa-android" />
     }
-    if (browserUserAgent.includes("Android")) {
-      return <i className="fab fa-android" />
-    }
     if (browserUserAgent.includes("iP")) {
       return <i className="fab fa-apple" />
     }
