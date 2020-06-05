@@ -9,9 +9,11 @@ const DebounceInput = ({
   onChange,
   value,
   defaultValue,
+  focusOnMount,
   ...restOfInputProps
 }) => {
   const mounted = useRef(false)
+  const inputRef = useRef()
   const [debouncedValue, setDebouncedValue] = useState(defaultValue || value)
   const handleInputChange = ({ target: { value } }) => setDebouncedValue(value)
 
@@ -22,12 +24,19 @@ const DebounceInput = ({
     mounted.current = true
   }, [value])
 
+  useEffect(() => {
+    if (focusOnMount) {
+      inputRef.current.focus()
+    }
+  }, [inputRef.current])
+
   return (
     <Fragment>
       <Input
+        {...restOfInputProps}
+        innerRef={inputRef}
         value={debouncedValue}
         onChange={handleInputChange}
-        {...restOfInputProps}
       />
       <UseDebounce
         debounceOnMount={debounceOnMount}
@@ -44,8 +53,13 @@ DebounceInput.propTypes = {
   delay: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
   onChange: PropTypes.func.isRequired,
   defaultValue: PropTypes.string,
+  focusOnMount: PropTypes.bool,
 }
 
-DebounceInput.defaultProps = { debounceOnMount: false, delay: 400 }
+DebounceInput.defaultProps = {
+  debounceOnMount: false,
+  delay: 400,
+  focusOnMount: false,
+}
 
 export default memo(DebounceInput)

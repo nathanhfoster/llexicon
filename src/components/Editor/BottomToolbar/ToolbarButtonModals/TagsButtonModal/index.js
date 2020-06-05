@@ -202,6 +202,7 @@ const TagsButtonModal = ({
               value={tagName}
               onChange={handleTagsInputChange}
               placeholder="Document,Dream,Family,Friends,Quote,Vacation"
+              focusOnMount
             />
           </Col>
         </Row>
