@@ -31,15 +31,17 @@ const usePushNotifications = () => {
   //if the push notifications are supported, registers the service worker
   //this effect runs only the first render
 
+  const getExixtingSubscription = async () => {
+    const existingSubscription = await getUserSubscription()
+    const existingUserSubscription = await getSHA256(existingSubscription)
+    setUserSubscription(existingUserSubscription)
+    setLoading(false)
+  }
+
   useEffect(() => {
     setLoading(true)
     setError(false)
-    const getExixtingSubscription = async () => {
-      const existingSubscription = await getUserSubscription()
-      const existingUserSubscription = await getSHA256(existingSubscription)
-      setUserSubscription(existingUserSubscription)
-      setLoading(false)
-    }
+
     getExixtingSubscription()
   }, [])
   //Retrieve if there is any push notification subscription for the registered service worker
@@ -110,9 +112,16 @@ const usePushNotifications = () => {
         setPushServerSubscriptionId(id)
         setLoading(false)
       })
-      .catch((err) => {
+      .catch((e) => {
+        const {
+          response: { status },
+        } = e
+        if (status === 400) {
+          // Already exists
+          onClickSendNotification()
+        }
         setLoading(false)
-        setError(err)
+        setError(e)
       })
   }
 
