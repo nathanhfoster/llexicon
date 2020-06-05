@@ -47,6 +47,7 @@ const sendNotification = ({
       },
     ],
   }
+  console.log("sendNotification: ", options)
   navigator.serviceWorker.ready.then((serviceWorker) =>
     serviceWorker.showNotification(title, options)
   )
