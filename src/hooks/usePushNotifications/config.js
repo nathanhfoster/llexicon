@@ -53,11 +53,6 @@ const sendNotification = ({
 
 /**
  *
- */
-const registerServiceWorker = () => navigator.serviceWorker.register(swUrl)
-
-/**
- *
  * using the registered service worker creates a push notification subscription and returns it
  *
  */
@@ -84,7 +79,6 @@ const getUserSubscription = () => {
 export {
   isPushNotificationSupported,
   askUserPermission,
-  registerServiceWorker,
   sendNotification,
   createNotificationSubscription,
   getUserSubscription,

@@ -5,7 +5,6 @@ import { Axios } from "../../redux/Actions"
 import {
   isPushNotificationSupported,
   askUserPermission,
-  registerServiceWorker,
   sendNotification,
   createNotificationSubscription,
   getUserSubscription,
@@ -28,15 +27,6 @@ const usePushNotifications = () => {
   const [loading, setLoading] = useState(true)
   //to manage async actions
 
-  useEffect(() => {
-    if (pushNotificationSupported) {
-      setLoading(true)
-      setError(false)
-      registerServiceWorker().then(() => {
-        setLoading(false)
-      })
-    }
-  }, [])
   //if the push notifications are supported, registers the service worker
   //this effect runs only the first render
 

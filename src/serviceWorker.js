@@ -37,7 +37,7 @@ const register = (config) => {
       return
     }
 
-    window.addEventListener("load", () => {
+    const loadServiceWorker = () => {
       const swUrl = `${PUBLIC_URL}/service-worker.js`
 
       if (isLocalhost) {
@@ -56,7 +56,9 @@ const register = (config) => {
         // Is not localhost. Just register service worker
         registerValidSW(swUrl, config)
       }
-    })
+    }
+
+    window.addEventListener("load", loadServiceWorker)
   }
 }
 
