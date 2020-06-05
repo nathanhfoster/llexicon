@@ -102,7 +102,7 @@ const usePushNotifications = () => {
     setLoading(true)
     setError(false)
     return Axios()
-      .post("/subscription", qs.stringify(userSubscription))
+      .post("/subscription/", qs.stringify(userSubscription))
       .then(({ data: { id } }) => {
         setPushServerSubscriptionId(id)
         setLoading(false)
