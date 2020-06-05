@@ -1,21 +1,28 @@
 import ReactGA from "react-ga"
 import { SetAlert } from "./redux/Alerts/actions"
 import { GetAppVersion } from "./redux/App/actions"
+const { PUBLIC_URL } = process.env
 
 const receivePushNotification = (event, registration) => {
   console.log("[Service Worker] Push Received.")
 
   alert(JSON.stringify(event))
 
-  const { image, tag, url, title, text } = event.data.json()
+  // const { image, tag, url, title, text } = event.data.json()
+
+  const image = "https://via.placeholder.com/128/ff0000"
+  const tag = "tag"
+  const url = PUBLIC_URL
+  const title = "title"
+  const text = "text"
 
   const options = {
     data: url,
     body: text,
     icon: image,
     vibrate: [200, 100, 200],
-    tag: tag,
-    image: image,
+    tag,
+    image,
     badge: "https://spyna.it/icons/favicon.ico",
     actions: [
       {
