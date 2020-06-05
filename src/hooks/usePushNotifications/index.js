@@ -6,6 +6,7 @@ import {
   isPushNotificationSupported,
   askUserPermission,
   registerServiceWorker,
+  sendNotification,
   createNotificationSubscription,
   getUserSubscription,
 } from "./config"
@@ -109,10 +110,10 @@ const usePushNotifications = () => {
   const onClickSendSubscriptionToPushServer = () => {
     setLoading(true)
     setError(false)
-    Axios()
+    return Axios()
       .post("/subscription", userSubscription)
-      .then((response) => {
-        setPushServerSubscriptionId(response.id)
+      .then(({ data: { id } }) => {
+        setPushServerSubscriptionId(id)
         setLoading(false)
       })
       .catch((err) => {
@@ -129,6 +130,9 @@ const usePushNotifications = () => {
     setError(false)
     await Axios()
       .get(`/subscription/${pushServerSubscriptionId}`)
+      .then(({ data }) => {
+        sendNotification()
+      })
       .catch((err) => {
         setLoading(false)
         setError(err)

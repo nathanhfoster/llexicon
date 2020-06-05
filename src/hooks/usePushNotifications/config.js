@@ -1,5 +1,6 @@
 import { Axios } from "../../redux/Actions"
 import qs from "qs"
+import { Logo } from "../../images/AWS"
 
 const pushServerPublicKey =
   "BIN2Jc5Vmkmy-S3AUrcMlpKxJpLeVRAfu9WBqUbJ70SJOCWGCGXKY-Xzyh7HDr6KbRDGYHjqZ06OcS3BjD7uAm8"
@@ -18,17 +19,21 @@ const askUserPermission = async () => await Notification.requestPermission()
 /**
  * shows a notification
  */
-const sendNotification = () => {
-  const img = "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg"
-  const text = "Take a look at this brand new t-shirt!"
-  const title = "New Product Available"
+const sendNotification = ({
+  image = Logo,
+  body = "Take a look at this brand new t-shirt!",
+  title = "New Product Available",
+  tag = "new-product",
+  icon = Logo,
+  badge = Logo,
+}) => {
   const options = {
-    body: text,
-    icon: "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg",
+    body,
+    icon,
     vibrate: [200, 100, 200],
-    tag: "new-product",
-    image: img,
-    badge: "https://spyna.it/icons/android-icon-192x192.png",
+    tag,
+    image,
+    badge,
     actions: [
       {
         action: "Detail",
@@ -45,7 +50,8 @@ const sendNotification = () => {
 /**
  *
  */
-const registerServiceWorker = () => navigator.serviceWorker.register("../../sw.js")
+const registerServiceWorker = () =>
+  navigator.serviceWorker.register("../../sw.js")
 
 /**
  *
