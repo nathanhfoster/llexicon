@@ -1,12 +1,12 @@
-import { Alerts } from "./Alerts/reducer"
-import { App } from "./App/reducer"
-import { Calendar } from "./Calendar/reducer"
-import { Entries } from "./Entries/reducer"
-import { Map } from "./Map/reducer"
-import { router } from "./router/reducer"
-import { TextEditor } from "./TextEditor/reducer"
-import { User } from "./User/reducer"
-import { Window } from "./Window/reducer"
+import { Alerts } from "../../redux/redux/Alerts/reducer"
+import { App } from "../../redux/App/reducer"
+import { Calendar } from "../../redux/Calendar/reducer"
+import { Entries } from "../../redux/Entries/reducer"
+import { Map } from "../../redux/Map/reducer"
+import { router } from "../../redux/router/reducer"
+import { TextEditor } from "../../redux/TextEditor/reducer"
+import { User } from "../../redux/User/reducer"
+import { Window } from "../../redux/Window/reducer"
 
 const rootReducer = {
   Alerts,

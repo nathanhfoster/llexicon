@@ -3,7 +3,8 @@ import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { Route, Switch, Redirect } from "react-router-dom"
-import { SetWindow, SetLocalStorageUsage } from "./redux/App/actions"
+import { SetLocalStorageUsage } from "./redux/App/actions"
+import { SetWindow } from "./redux/Window/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
 import {
@@ -11,6 +12,7 @@ import {
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
 } from "./redux/Entries/actions"
 import { ResetMap } from "./redux/Map/actions"
@@ -67,6 +69,7 @@ const mapDispatchToProps = {
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
   ResetMap,
 }
@@ -82,19 +85,18 @@ const App = ({
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
+  GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
   ResetMap,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const addToHomeScreenProps = { prompt, promptToInstall }
+  const handleResize = () => SetWindow()
   useEffect(() => {
     const activeDate = new Date()
 
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
     ResetMap()
-
-    const handleResize = () => SetWindow()
 
     SetLocalStorageUsage()
 
@@ -107,9 +109,14 @@ const App = ({
       GetUserSettings()
       GetUserEntryTags()
       GetUserEntryPeople()
+      const now = new Date()
+      const payload = { month: now.getMonth(), day: now.getDay() }
+      GetUserEntriesByDate(payload)
     }
 
-    return () => window.removeEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
   }, [])
 
   const renderRedirectOrComponent = (shouldRedirect, component, route) => {
@@ -120,7 +127,7 @@ const App = ({
 
   return (
     <Fragment>
-      <NavBar {...addToHomeScreenProps} />
+      <NavBar prompt={prompt} promptToInstall={promptToInstall} />
       <main className="App RouteOverlay">
         <BackgroundImage />
         <Switch>
@@ -128,13 +135,17 @@ const App = ({
             exact={true}
             strict={false}
             path={[ABOUT]}
-            render={() => <About {...addToHomeScreenProps} />}
+            render={() => (
+              <About prompt={prompt} promptToInstall={promptToInstall} />
+            )}
           />
           <Route
             exact={true}
             strict={false}
             path={[ROOT, HOME]}
-            render={() => <Home {...addToHomeScreenProps} />}
+            render={() => (
+              <Home prompt={prompt} promptToInstall={promptToInstall} />
+            )}
           />
           {/* <Route
             path={ROOT}
