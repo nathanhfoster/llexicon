@@ -46,7 +46,7 @@ ContextProvider.propTypes = {
     PropTypes.objectOf(PropTypes.func.isRequired),
     PropTypes.func,
   ]).isRequired,
-  initialState: PropTypes.object.isRequired,
+  initialState: PropTypes.object,
   initializer: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.node,
