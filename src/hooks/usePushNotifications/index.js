@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Axios } from "../../redux/Actions"
 import qs from "qs"
 //the function to call the push server: https://github.com/Spyna/push-notification-demo/blob/master/front-end-react/src/utils/Axios().js
-
+import { getSHA256 } from "../../utils"
 import {
   isPushNotificationSupported,
   askUserPermission,
@@ -36,7 +36,8 @@ const usePushNotifications = () => {
     setError(false)
     const getExixtingSubscription = async () => {
       const existingSubscription = await getUserSubscription()
-      setUserSubscription(existingSubscription)
+      const existingUserSubscription = await getSHA256(existingSubscription)
+      setUserSubscription(existingUserSubscription)
       setLoading(false)
     }
     getExixtingSubscription()
@@ -74,8 +75,9 @@ const usePushNotifications = () => {
     setLoading(true)
     setError(false)
     createNotificationSubscription()
-      .then((subscrition) => {
-        setUserSubscription(subscrition)
+      .then(async (subscrition) => {
+        const userSubscription = await getSHA256(subscrition)
+        setUserSubscription(userSubscription)
         setLoading(false)
       })
       .catch((err) => {
@@ -101,8 +103,9 @@ const usePushNotifications = () => {
   const onClickSendSubscriptionToPushServer = () => {
     setLoading(true)
     setError(false)
+    const payload = { id: userSubscription }
     return Axios()
-      .post("/subscription/", qs.stringify(userSubscription))
+      .post("/subscription/", qs.stringify(payload))
       .then(({ data: { id } }) => {
         setPushServerSubscriptionId(id)
         setLoading(false)

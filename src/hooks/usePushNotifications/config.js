@@ -1,5 +1,6 @@
 import { Axios } from "../../redux/Actions"
 import qs from "qs"
+import { getSHA256 } from "../../utils"
 import { Logo } from "../../images/AWS"
 
 const pushServerPublicKey =
@@ -73,7 +74,7 @@ const getUserSubscription = () => {
   //wait for service worker installation to be ready, and then
   return navigator.serviceWorker.ready
     .then((serviceWorker) => serviceWorker.pushManager.getSubscription())
-    .then((pushSubscription) => pushSubscription)
+    .then(async (pushSubscription) => await getSHA256(pushSubscription))
 }
 
 export {
