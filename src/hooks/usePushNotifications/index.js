@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
 import { Axios } from "../../redux/Actions"
+import qs from "qs"
 //the function to call the push server: https://github.com/Spyna/push-notification-demo/blob/master/front-end-react/src/utils/Axios().js
-
+import { getSHA256 } from "../../utils"
 import {
   isPushNotificationSupported,
   askUserPermission,
-  registerServiceWorker,
   sendNotification,
   createNotificationSubscription,
   getUserSubscription,
@@ -28,26 +28,20 @@ const usePushNotifications = () => {
   const [loading, setLoading] = useState(true)
   //to manage async actions
 
-  useEffect(() => {
-    if (pushNotificationSupported) {
-      setLoading(true)
-      setError(false)
-      registerServiceWorker().then(() => {
-        setLoading(false)
-      })
-    }
-  }, [])
   //if the push notifications are supported, registers the service worker
   //this effect runs only the first render
+
+  const getExixtingSubscription = async () => {
+    const existingSubscription = await getUserSubscription()
+    const existingUserSubscription = await getSHA256(existingSubscription)
+    setUserSubscription(existingUserSubscription)
+    setLoading(false)
+  }
 
   useEffect(() => {
     setLoading(true)
     setError(false)
-    const getExixtingSubscription = async () => {
-      const existingSubscription = await getUserSubscription()
-      setUserSubscription(existingSubscription)
-      setLoading(false)
-    }
+
     getExixtingSubscription()
   }, [])
   //Retrieve if there is any push notification subscription for the registered service worker
@@ -83,8 +77,9 @@ const usePushNotifications = () => {
     setLoading(true)
     setError(false)
     createNotificationSubscription()
-      .then((subscrition) => {
-        setUserSubscription(subscrition)
+      .then(async (subscrition) => {
+        const userSubscription = await getSHA256(subscrition)
+        setUserSubscription(userSubscription)
         setLoading(false)
       })
       .catch((err) => {
@@ -110,15 +105,23 @@ const usePushNotifications = () => {
   const onClickSendSubscriptionToPushServer = () => {
     setLoading(true)
     setError(false)
+    const payload = { id: userSubscription }
     return Axios()
-      .post("/subscription", userSubscription)
+      .post("/subscription/", qs.stringify(payload))
       .then(({ data: { id } }) => {
         setPushServerSubscriptionId(id)
         setLoading(false)
       })
-      .catch((err) => {
+      .catch((e) => {
+        const {
+          response: { status },
+        } = e
+        if (status === 400 && pushServerSubscriptionId) {
+          // Already exists
+          onClickSendNotification()
+        }
         setLoading(false)
-        setError(err)
+        setError(e)
       })
   }
 
@@ -129,7 +132,7 @@ const usePushNotifications = () => {
     setLoading(true)
     setError(false)
     await Axios()
-      .get(`/subscription/${pushServerSubscriptionId}`)
+      .get(`/subscription/${pushServerSubscriptionId}/`)
       .then(({ data }) => {
         sendNotification()
       })

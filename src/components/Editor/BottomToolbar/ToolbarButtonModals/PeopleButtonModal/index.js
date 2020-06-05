@@ -5,14 +5,13 @@ import {
   Row,
   Col,
   InputGroup,
-  Input,
   InputGroupAddon,
   InputGroupText,
   Button,
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
-import { TagsContainer } from "../../../../"
+import { TagsContainer, DebounceInput } from "../../../../"
 import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,
@@ -102,9 +101,7 @@ const PeopleButtonModal = ({
     [entryPeople]
   )
 
-  const handlePeopleInputChange = (e) => {
-    const { value } = e.target
-
+  const handlePeopleInputChange = (value) => {
     const validatedTagsAsString = validatedPersonNameString(value)
 
     setState((prevState) => ({
@@ -208,11 +205,12 @@ const PeopleButtonModal = ({
                 <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
               </InputGroupText>
             </InputGroupAddon>
-            <Input
-              onChange={handlePeopleInputChange}
+            <DebounceInput
               type="text"
               value={personsName}
+              onChange={handlePeopleInputChange}
               placeholder="John Doe,Jane Doe"
+              focusOnMount
             />
           </Col>
         </Row>
