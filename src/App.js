@@ -3,7 +3,8 @@ import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { Route, Switch, Redirect } from "react-router-dom"
-import { SetWindow, SetLocalStorageUsage } from "./redux/App/actions"
+import { SetLocalStorageUsage } from "./redux/App/actions"
+import { SetWindow } from "./redux/Window/actions"
 import { GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
 import {
@@ -89,14 +90,13 @@ const App = ({
   ResetMap,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
+  const handleResize = () => SetWindow()
   useEffect(() => {
     const activeDate = new Date()
 
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
     ResetMap()
-
-    const handleResize = () => SetWindow()
 
     SetLocalStorageUsage()
 

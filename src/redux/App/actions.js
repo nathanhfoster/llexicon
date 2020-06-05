@@ -1,13 +1,7 @@
 import { AppActionTypes } from "../App/types"
-import { WindowActionTypes } from "../Window/types"
 import axios from "axios"
 import ReactGA from "react-ga"
 const { PUBLIC_URL } = process.env
-
-const SetWindow = (payload) => ({
-  type: WindowActionTypes.SET_WINDOW,
-  payload,
-})
 
 const SetLocalStorageUsage = () => (dispatch) => {
   if ("storage" in navigator && "estimate" in navigator.storage) {
@@ -47,4 +41,4 @@ const GetAppVersion = () => (dispatch, getState) => {
     .catch(({ response }) => console.log("ERROR: ", response))
 }
 
-export { SetWindow, SetLocalStorageUsage, ResetRedux, GetAppVersion }
+export { SetLocalStorageUsage, ResetRedux, GetAppVersion }
