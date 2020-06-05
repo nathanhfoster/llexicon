@@ -1,5 +1,5 @@
 import React from "react"
-import usePushNotifications from "../../hooks/usePushNotifications"
+import { usePushNotifications } from "../../hooks"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 
 const Loading = ({ loading }) =>
