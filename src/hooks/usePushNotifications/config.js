@@ -5,6 +5,10 @@ import { Logo } from "../../images/AWS"
 const pushServerPublicKey =
   "BIN2Jc5Vmkmy-S3AUrcMlpKxJpLeVRAfu9WBqUbJ70SJOCWGCGXKY-Xzyh7HDr6KbRDGYHjqZ06OcS3BjD7uAm8"
 
+const { PUBLIC_URL } = process.env
+
+const swUrl = `${PUBLIC_URL}/sw.js`
+
 /**
  * checks if Push notification and service workers are supported by your browser
  */
@@ -50,8 +54,7 @@ const sendNotification = ({
 /**
  *
  */
-const registerServiceWorker = () =>
-  navigator.serviceWorker.register("./sw.js")
+const registerServiceWorker = () => navigator.serviceWorker.register(swUrl)
 
 /**
  *
