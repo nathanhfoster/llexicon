@@ -1,9 +1,14 @@
 import { Axios } from "../../redux/Actions"
 import qs from "qs"
+import { getSHA256 } from "../../utils"
 import { Logo } from "../../images/AWS"
 
 const pushServerPublicKey =
   "BIN2Jc5Vmkmy-S3AUrcMlpKxJpLeVRAfu9WBqUbJ70SJOCWGCGXKY-Xzyh7HDr6KbRDGYHjqZ06OcS3BjD7uAm8"
+
+const { PUBLIC_URL } = process.env
+
+const swUrl = `${PUBLIC_URL}/sw.js`
 
 /**
  * checks if Push notification and service workers are supported by your browser
@@ -42,16 +47,11 @@ const sendNotification = ({
       },
     ],
   }
+  alert(options)
   navigator.serviceWorker.ready.then((serviceWorker) =>
     serviceWorker.showNotification(title, options)
   )
 }
-
-/**
- *
- */
-const registerServiceWorker = () =>
-  navigator.serviceWorker.register("./sw.js")
 
 /**
  *
@@ -75,13 +75,12 @@ const getUserSubscription = () => {
   //wait for service worker installation to be ready, and then
   return navigator.serviceWorker.ready
     .then((serviceWorker) => serviceWorker.pushManager.getSubscription())
-    .then((pushSubscription) => pushSubscription)
+    .then(async (pushSubscription) => await getSHA256(pushSubscription))
 }
 
 export {
   isPushNotificationSupported,
   askUserPermission,
-  registerServiceWorker,
   sendNotification,
   createNotificationSubscription,
   getUserSubscription,
