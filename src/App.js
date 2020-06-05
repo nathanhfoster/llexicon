@@ -114,7 +114,9 @@ const App = ({
       GetUserEntriesByDate(payload)
     }
 
-    return () => window.removeEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
   }, [])
 
   const renderRedirectOrComponent = (shouldRedirect, component, route) => {
