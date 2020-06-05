@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Axios } from "../../redux/Actions"
+import qs from "qs"
 //the function to call the push server: https://github.com/Spyna/push-notification-demo/blob/master/front-end-react/src/utils/Axios().js
 
 import {
@@ -101,7 +102,7 @@ const usePushNotifications = () => {
     setLoading(true)
     setError(false)
     return Axios()
-      .post("/subscription", userSubscription)
+      .post("/subscription", qs.stringify(userSubscription))
       .then(({ data: { id } }) => {
         setPushServerSubscriptionId(id)
         setLoading(false)
