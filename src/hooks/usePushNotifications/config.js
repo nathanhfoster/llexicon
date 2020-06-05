@@ -51,7 +51,7 @@ const sendNotification = ({
  *
  */
 const registerServiceWorker = () =>
-  navigator.serviceWorker.register("../../sw.js")
+  navigator.serviceWorker.register("./sw.js")
 
 /**
  *
