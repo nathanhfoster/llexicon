@@ -48,7 +48,7 @@ const LocationButtonModal = ({
     }
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const {
       address,
       latitude: entryLatitude,
@@ -58,7 +58,7 @@ const LocationButtonModal = ({
     const latitude = userLatitude || entryLatitude
     const longitude = userLongitude || entryLongitude
     if (!address && latitude && longitude) {
-      GetAddress(latitude, longitude).then((address) =>
+      await GetAddress(latitude, longitude).then((address) =>
         onChangeCallback({ address, latitude, longitude })
       )
     } else {
