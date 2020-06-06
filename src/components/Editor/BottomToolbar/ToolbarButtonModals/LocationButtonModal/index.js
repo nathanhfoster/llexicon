@@ -35,7 +35,7 @@ const LocationButtonModal = ({
     }
   }, [])
 
-  if (!(entry.latitude || entry.longitude)) {
+  if (watchId.current) {
     entry.latitude = UserLocation.latitude
     entry.longitude = UserLocation.longitude
   }
