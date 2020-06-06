@@ -35,11 +35,6 @@ const LocationButtonModal = ({
     }
   }, [])
 
-  if (UserLocation.latitude && UserLocation.longitude) {
-    entry.latitude = UserLocation.latitude
-    entry.longitude = UserLocation.longitude
-  }
-
   const handleClick = () => {
     const { latitude, longitude } = entry
     if (!watchId.current) {
@@ -54,7 +49,14 @@ const LocationButtonModal = ({
   }
 
   const handleSave = () => {
-    const { address, latitude, longitude } = entry
+    const {
+      address,
+      latitude: entryLatitude,
+      longitude: entryLongitude,
+    } = entry
+    const { latitude: userLatitude, longitude: userLongitude } = UserLocation
+    const latitude = userLatitude || entryLatitude
+    const longitude = userLongitude || entryLongitude
     if (!address && latitude && longitude) {
       GetAddress(latitude, longitude).then((address) =>
         onChangeCallback({ address, latitude, longitude })
