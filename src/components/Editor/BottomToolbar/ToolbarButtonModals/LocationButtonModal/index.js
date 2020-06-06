@@ -56,9 +56,11 @@ const LocationButtonModal = ({
   const handleSave = () => {
     const { address, latitude, longitude } = entry
     if (!address && latitude && longitude) {
-      GetAddress(latitude, longitude)
-        .then((address) => onChangeCallback({ latitude, longitude, address }))
-        .catch((e) => onChangeCallback({ latitude, longitude }))
+      GetAddress(latitude, longitude).then((address) =>
+        onChangeCallback({ address, latitude, longitude })
+      )
+    } else {
+      onChangeCallback({ address, latitude, longitude })
     }
     handleCancel()
   }
