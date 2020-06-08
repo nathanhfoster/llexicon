@@ -10,7 +10,8 @@ const defaultInitializer = (state) => state
 const ContextProvider = ({
   rootReducer,
   initialState,
-  initializer = defaultInitializer,
+  initializer,
+  persistKey,
   children,
 }) => {
   const reducers = React.useCallback(
@@ -27,6 +28,12 @@ const ContextProvider = ({
     mainState,
     initializer
   )
+
+  React.useEffect(() => {
+    if (persistKey) {
+      localStorage.setItem(persistKey, JSON.stringify(state))
+    }
+  }, [state])
 
   // pass in the returned value of useReducer
   const contextValue = React.useMemo(() => ({ state, dispatch }), [
@@ -46,12 +53,17 @@ ContextProvider.propTypes = {
     PropTypes.objectOf(PropTypes.func.isRequired),
     PropTypes.func,
   ]).isRequired,
-  initialState: PropTypes.object.isRequired,
+  initialState: PropTypes.object,
   initializer: PropTypes.func,
+  persistKey: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
   ]),
+}
+
+ContextProvider.defaultProps = {
+  initializer: defaultInitializer,
 }
 
 export { ContextProvider, AppStateProvider as ContextConsumer }

@@ -1,8 +1,8 @@
 import React, { memo } from "react"
 import { useDispatch } from "react-redux"
 import PropTypes from "prop-types"
-import FileUpload from "../FileUpload"
-import { ImportReduxEntry } from "../../redux/Entries/actions"
+import FileUpload from "../../FileUpload"
+import { ImportReduxEntry } from "../../../redux/Entries/actions"
 
 const ImportEntries = () => {
   const dispatch = useDispatch()
