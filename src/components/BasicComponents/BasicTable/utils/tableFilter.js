@@ -1,4 +1,3 @@
-import MomentJS from "moment"
 import { stringMatch, isType } from "../../../../utils"
 
 const tableFilter = (data, filterList) => {
@@ -16,8 +15,8 @@ const tableFilter = (data, filterList) => {
     } else if (filter === "date") {
       filteredData = filteredData.filter((item) => {
         if (filterValue) {
-          const momentCreatedByAuthor = MomentJS(item[key])
-          const momentOfSearchValue = MomentJS(filterValue)
+          const momentCreatedByAuthor = new Date(item[key])
+          const momentOfSearchValue = new Date(filterValue)
 
           return momentCreatedByAuthor >= momentOfSearchValue
         } else {
