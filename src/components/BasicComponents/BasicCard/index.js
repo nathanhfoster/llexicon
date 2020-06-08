@@ -23,11 +23,10 @@ const BasicCard = ({
   const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
   const titleIsObject = typeof title === isType.OBJECT
   const cardTitle = titleIsObject ? title.name : title
-  const renderCardTitle = titleIsObject ? (
-    title.render
-  ) : (
+
+  const renderCardTitle = (
     <CardTitle className={`BasicCardTitle ${cardTitleClassName}`}>
-      {title}
+      {titleIsObject ? title.render : title}
     </CardTitle>
   )
 
