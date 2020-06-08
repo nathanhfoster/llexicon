@@ -14,6 +14,7 @@ import {
   GetUserEntryPeople,
   GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
+  ResetSearchEntries,
 } from "./redux/Entries/actions"
 import { ResetMap } from "./redux/Map/actions"
 import { RouteMap, RouterGoBack } from "./redux/router/actions"
@@ -71,6 +72,7 @@ const mapDispatchToProps = {
   GetUserEntryPeople,
   GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
+  ResetSearchEntries,
   ResetMap,
 }
 
@@ -87,6 +89,7 @@ const App = ({
   GetUserEntryPeople,
   GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
+  ResetSearchEntries,
   ResetMap,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
@@ -97,6 +100,7 @@ const App = ({
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
     ResetMap()
+    ResetSearchEntries()
 
     SetLocalStorageUsage()
 

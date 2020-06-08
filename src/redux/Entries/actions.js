@@ -304,13 +304,12 @@ const DeleteEntry = (id) => (dispatch) =>
     })
 
 const SetSearchEntries = (search, payload = []) => ({
-    type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-    payload,
-    search,
-  })
+  type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
+  payload,
+  search,
+})
 
-const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(""))
-
+const ResetSearchEntries = () => (dispatch) => dispatch(SetSearchEntries(""))
 
 const SearchUserEntries = (search) => (dispatch, getState) => {
   dispatch(SetSearchEntries(search))
@@ -474,6 +473,7 @@ export {
   UpdateEntry,
   DeleteReduxEntry,
   DeleteEntry,
+  ResetSearchEntries,
   SearchUserEntries,
   SyncEntries,
   ResetEntriesSortAndFilterMaps,
