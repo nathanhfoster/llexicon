@@ -303,21 +303,22 @@ const DeleteEntry = (id) => (dispatch) =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
-const SearchUserEntries = (search) => (dispatch, getState) => {
-  dispatch({
+const SetSearchEntries = (search, payload = []) => ({
     type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-    payload: [],
+    payload,
     search,
   })
+
+const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(""))
+
+
+const SearchUserEntries = (search) => (dispatch, getState) => {
+  dispatch(SetSearchEntries(search))
   const { id } = getState().User
   return Axios()
     .post(`entries/${id}/search/`, qs.stringify({ search }))
     .then(async ({ data }) => {
-      await dispatch({
-        type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-        payload: data,
-        search,
-      })
+      await dispatch(SetSearchEntries(search, data))
       ReactGA.event({
         category: "Search User Entries",
         action: "User searched for entries!",
