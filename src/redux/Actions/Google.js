@@ -10,7 +10,7 @@ const GetAddress = (lat, lng, type = TYPES.LatLng) => {
 
   return axios
     .get(
-      `https://maps.googleapis.com/maps/api/geocode/json?${type}=${lat}, ${lng}&key=${REACT_APP_GOOGLE_LOCATION_API}`
+      `https://maps.googleapis.com/maps/api/geocode/json?${type}=${lat},${lng}&key=${REACT_APP_GOOGLE_LOCATION_API}`
     )
     .then(({ data: { results } }) => {
       if (results.length === 0) {
