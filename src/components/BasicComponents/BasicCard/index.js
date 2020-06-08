@@ -24,12 +24,6 @@ const BasicCard = ({
   const titleIsObject = typeof title === isType.OBJECT
   const cardTitle = titleIsObject ? title.name : title
 
-  const renderCardTitle = (
-    <CardTitle className={`BasicCardTitle ${cardTitleClassName}`}>
-      {titleIsObject ? title.render : title}
-    </CardTitle>
-  )
-
   return (
     <Card
       className={`BasicCard ${cardClassName} ${cardHoverStyles}`}
@@ -52,7 +46,9 @@ const BasicCard = ({
         tag="div"
         className={`BasicCardBodyContainer ${cardBodyClassName}`}
       >
-        {renderCardTitle}
+        <CardTitle className={`BasicCardTitle ${cardTitleClassName}`}>
+          {titleIsObject ? title.render : title}
+        </CardTitle>
         {text && (
           <CardText tag="div" className={`BasicCardText ${cardTextClassName}`}>
             {text}
