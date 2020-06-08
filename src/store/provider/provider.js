@@ -31,7 +31,6 @@ const ContextProvider = ({
 
   React.useEffect(() => {
     if (persistKey) {
-      console.log(persistKey)
       localStorage.setItem(persistKey, JSON.stringify(state))
     }
   }, [state])
