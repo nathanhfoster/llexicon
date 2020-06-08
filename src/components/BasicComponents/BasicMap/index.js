@@ -10,7 +10,7 @@ import { WatchUserLocation } from "../../../redux/User/actions"
 import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from "./constants"
 import MapControl from "./MapControl"
 import MapSearchBox from "./MapControl/Controls/MapSearchBox"
-import RecenterZoomButton from "./MapControl/Controls/Buttons/RecenterZoomButton"
+import UserLocationButton from "./MapControl/Controls/Buttons/UserLocationButton"
 import createClusters from "./functions/createClusters"
 import formatLocations from "./functions/formatLocations"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
@@ -132,7 +132,7 @@ class BasicMap extends PureComponent {
         },
         items: [
           {
-            Component: RecenterZoomButton,
+            Component: UserLocationButton,
           },
         ],
       },

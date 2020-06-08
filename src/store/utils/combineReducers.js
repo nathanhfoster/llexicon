@@ -1,6 +1,6 @@
 import { isAFunction } from "./"
 
-const combineReducers = (reducers, initialState = {}) => {
+const combineReducers = (reducers, initialState) => {
   // If a single reducer
   if (isAFunction(reducers)) {
     const reducerFunction = (state, action) => {
@@ -21,20 +21,7 @@ const combineReducers = (reducers, initialState = {}) => {
       return hasStateChanged ? updatedStateByReducers : state
     }
 
-    return [initialState, reducerFunction]
-  }
-
-  // set default state returned by reducer and its reducer
-  let globalState = {}
-
-  for (const [key, reducer] of Object.entries(reducers)) {
-    if (isAFunction(reducer)) {
-      globalState[key] = reducer(undefined, {
-        type: "__@@PLACEHOLDER_ACTION__",
-      })
-    } else {
-      console.error(`${reducer} is not a function`)
-    }
+    return [initialState || {}, reducerFunction]
   }
 
   /**
@@ -70,8 +57,25 @@ const combineReducers = (reducers, initialState = {}) => {
     return hasStateChanged ? updatedStateByReducers : state
   }
 
-  // return the initial state and the global reducer
-  return [globalState, reducerFunction]
+  if (initialState) {
+    return [initialState, reducerFunction]
+  } else {
+    // set default state returned by reducer and its reducer
+    let globalState = {}
+
+    for (const [key, reducer] of Object.entries(reducers)) {
+      if (isAFunction(reducer)) {
+        globalState[key] = reducer(undefined, {
+          type: "__@@PLACEHOLDER_ACTION__",
+        })
+      } else {
+        console.error(`${reducer} is not a function`)
+      }
+    }
+
+    // return the initial state and the global reducer
+    return [globalState, reducerFunction]
+  }
 }
 
 export { combineReducers }
