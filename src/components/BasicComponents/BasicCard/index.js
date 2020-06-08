@@ -26,8 +26,11 @@ const BasicCard = ({
   const renderCardTitle = titleIsObject ? (
     title.render
   ) : (
-    <CardTitle className={`${cardTitleClassName} Center`}>{title}</CardTitle>
+    <CardTitle className={`BasicCardTitle ${cardTitleClassName}`}>
+      {title}
+    </CardTitle>
   )
+
   return (
     <Card
       className={`BasicCard ${cardClassName} ${cardHoverStyles}`}
@@ -52,7 +55,7 @@ const BasicCard = ({
       >
         {renderCardTitle}
         {text && (
-          <CardText tag="div" className={`${cardTextClassName} Center`}>
+          <CardText tag="div" className={`BasicCardText ${cardTextClassName}`}>
             {text}
           </CardText>
         )}
@@ -84,10 +87,10 @@ BasicCard.propTypes = {
 BasicCard.defaultProps = {
   tag: "div",
   cardClassName: "",
-  cardHeaderClassName: "Center",
+  cardHeaderClassName: "",
   cardBodyClassName: "",
-  cardTitleClassName: "BasicCardTitle Overflow",
-  cardTextClassName: "BasicCardText",
+  cardTitleClassName: "",
+  cardTextClassName: "",
 }
 
 export default memo(BasicCard)
