@@ -20,7 +20,7 @@ const BasicCard = ({
   onClickCallback,
 }) => {
   const handleOnClickCallback = () => onClickCallback && onClickCallback()
-  const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
+  const cardHoverStyles = onClickCallback || href ? "BasicCardHover" : ""
   const titleIsObject = typeof title === isType.OBJECT
   const cardTitle = titleIsObject ? title.name : title
 
