@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, memo } from "react"
+import React, { Fragment, useState, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import {
   ButtonDropdown,
@@ -39,7 +39,12 @@ const EntryOptionsMenu = ({
   const toggleDropdown = () => setTimeout(() => setOpen(!dropdownOpen), 200)
   const toggleModal = () => setShowModal(!showModal)
 
-  const url = useMemo(() => GetEntryDetailUrl(entryId), [entryId])
+  const url = useMemo(() => {
+    const { origin } = window.location
+    const entryDetailUrl = GetEntryDetailUrl(entryId)
+    const fullUrl = `${origin}${entryDetailUrl}`
+    return fullUrl
+  }, [entryId])
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
   const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
 
