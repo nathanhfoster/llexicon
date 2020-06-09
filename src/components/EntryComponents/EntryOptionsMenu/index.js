@@ -16,7 +16,7 @@ import {
   Portal,
 } from "../.."
 import { copyStringToClipboard, shareUrl } from "../../../utils"
-import { RouterGoBack } from "../../../redux/router/actions"
+import { RouterGoBack, GetEntryDetailUrl } from "../../../redux/router/actions"
 import { useDispatch } from "react-redux"
 import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
 import { BASE_JOURNAL_ENTRY_ID } from "../../../redux/Entries/reducer"
@@ -39,8 +39,7 @@ const EntryOptionsMenu = ({
   const toggleDropdown = () => setTimeout(() => setOpen(!dropdownOpen), 200)
   const toggleModal = () => setShowModal(!showModal)
 
-  const { href } = window.location
-  const url = href
+  const url = useMemo(() => GetEntryDetailUrl(entryId), [entryId])
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
   const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
 
