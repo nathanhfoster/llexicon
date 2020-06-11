@@ -11,6 +11,7 @@ const EntryNavButtons = ({ size }) => {
       ENTRY_LINKS.map(({ title, route, icon }, i) => (
         <Button
           key={i}
+          className="p-2 px-sm-3 py-sm-2"
           color="accent"
           title={title}
           onClick={() => RouterPush(route)}
@@ -28,8 +29,10 @@ const EntryNavButtons = ({ size }) => {
   )
 }
 
-EntryNavButtons.propTypes = { size: PropTypes.string }
+EntryNavButtons.propTypes = {
+  size: PropTypes.oneOfType(["xs", "sm", "md", "lg", "xl"]),
+}
 
-EntryNavButtons.defaultProps = { size: "mod" }
+EntryNavButtons.defaultProps = { size: "lg" }
 
 export default memo(EntryNavButtons)
