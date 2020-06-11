@@ -11,7 +11,7 @@ const EntryNavButtons = ({ size }) => {
       ENTRY_LINKS.map(({ title, route, icon }, i) => (
         <Button
           key={i}
-          className="p-2 px-sm-3 py-sm-2"
+          className="py-2 px-3"
           color="accent"
           title={title}
           onClick={() => RouterPush(route)}
