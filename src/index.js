@@ -25,7 +25,7 @@ const { store, persistor } = storeFactory()
 
 const AlertNotifications = lazy(() =>
   new Promise((resolve) =>	
-    setTimeout(resolve, getRandomInt(0, 50))	
+    setTimeout(resolve, getRandomInt(0, 1))	
   ).then(() => import("./components/AlertNotifications"))	
 )
 
