@@ -13,7 +13,6 @@ const GetAddress = (lat, lng, type = TYPES.LatLng) => {
       `https://maps.googleapis.com/maps/api/geocode/json?${type}=${lat},${lng}&key=${REACT_APP_GOOGLE_LOCATION_API}`
     )
     .then(({ data: { results } }) => {
-      console.log(results)
       if (results.length === 0) {
         return null
       }
