@@ -33,21 +33,21 @@
 }
 
 .DarkMode {
-  --primaryColor: #29303b;
+  /* --primaryColor: #29303b;
   --primaryColorRGB: 41, 48, 59;
   --secondaryColor: white;
   --tertiarycolor: #bdc3c7;
   --quaternaryColor: #34495e;
-  --quinaryColor: #1f2326;
+  --quinaryColor: #1f2326; */
 }
 
 .LightMode {
-  --primaryColor: white;
+  /* --primaryColor: white;
   --primaryColorRGB: 255, 255, 255;
   --secondaryColor: black;
   --tertiarycolor: rgba(0, 0, 0, 0.75);
   --quaternaryColor: blue;
-  --quinaryColor: whitesmoke;
+  --quinaryColor: whitesmoke; */
 }
 
 /* Light mode */
