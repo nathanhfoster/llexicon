@@ -82,8 +82,8 @@
 }
 
 .react-calendar__month-view__weekdays {
-  border-left: 1px solid var(--dark_border);
-  border-right: 1px solid var(--dark_border);
+  border-left: 1px solid var(--quinaryColor);
+  border-right: 1px solid var(--quinaryColor);
   text-align: center;
   background-color: var(--grey);
   opacity: var(--mainOpacity);
@@ -95,7 +95,7 @@
   opacity: var(--mainOpacity);
   height: var(--calendarTileHeight);
   background: var(--quinaryColor);
-  border: 1px solid var(--dark_border);
+  border: 1px solid var(--quinaryColor);
   background: var(--quinaryColor);
 }
 

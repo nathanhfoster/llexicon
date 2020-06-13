@@ -24,6 +24,7 @@ import { RouterLinkPush } from "./redux/router/actions"
 import memoizeProps from "./utils/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 
+const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
 const Account = lazy(() => import("./views/Account"))
 const BackgroundImage = lazy(() => import("./components/BackgroundImage"))
 const Settings = lazy(() => import("./views/Settings"))
@@ -56,9 +57,16 @@ const {
   PRIVACY_POLICY,
 } = RouteMap
 
-const mapStateToProps = ({ User }) => ({
-  userId: User.id,
-  userToken: User.token,
+const mapStateToProps = ({
+  User: {
+    id,
+    token,
+    Settings: { dark_mode },
+  },
+}) => ({
+  userId: id,
+  userToken: token,
+  userDarkMode: dark_mode,
 })
 
 const mapDispatchToProps = {
@@ -80,6 +88,7 @@ const App = ({
   GetUserSettings,
   userId,
   userToken,
+  userDarkMode,
   SetWindow,
   SetLocalStorageUsage,
   SetCalendar,
@@ -130,9 +139,10 @@ const App = ({
   }
 
   return (
-    <Fragment>
+    <main className={userDarkMode ? "DarkMode" : "LightMode"}>
+      <AlertNotifications />
       <NavBar prompt={prompt} promptToInstall={promptToInstall} />
-      <main className="App RouteOverlay">
+      <div className="App RouteOverlay">
         <BackgroundImage />
         <Switch>
           <Route
@@ -206,8 +216,8 @@ const App = ({
           />
           <Route render={() => <PageNotFound />} />
         </Switch>
-      </main>
-    </Fragment>
+      </div>
+    </main>
   )
 }
 
@@ -226,7 +236,7 @@ App.propTypes = {
 }
 
 const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, ["userId", "userToken"])
+  memoizeProps(prevProps, nextProps, ["userId", "userToken", "userDarkMode"])
 
 export default reduxConnect(
   mapStateToProps,

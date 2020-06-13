@@ -6,7 +6,7 @@
 }
 
 .form-control::placeholder {
-  color: var(--light_grey);
+  color: var(--tertiarycolor);
 }
 
 .form-control:focus {

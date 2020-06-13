@@ -23,12 +23,6 @@ import ReactGA from "react-ga"
 
 const { store, persistor } = storeFactory()
 
-const AlertNotifications = lazy(() =>
-  new Promise((resolve) =>	
-    setTimeout(resolve, getRandomInt(0, 1))	
-  ).then(() => import("./components/AlertNotifications"))	
-)
-
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
 const inDevelopmentMode = NODE_ENV === "development"
@@ -74,7 +68,6 @@ ReactDOM.render(
     <PersistGate loading={null} persistor={persistor}>
       {/* <ContextProvider rootReducer={rootReducer} initialState={persistedState}> */}
       <Suspense fallback={<LoadingScreen />}>
-        <AlertNotifications />
         <ConnectedRouter history={history}>
           <App />
         </ConnectedRouter>
