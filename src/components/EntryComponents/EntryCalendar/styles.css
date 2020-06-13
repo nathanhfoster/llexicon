@@ -133,7 +133,6 @@ abbr {
 
 .react-calendar__month-view .react-calendar__tile--now abbr {
   background-color: var(--accentColor);
-  color: var(--secondaryColor);
 }
 
 .react-calendar__year-view {

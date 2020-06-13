@@ -32,7 +32,7 @@
   --primaryColorRGB: 41, 48, 59;
   --secondaryColor: white;
   --tertiarycolor: #bdc3c7;
-  --quaternaryColor: #34495e;
+  --quaternaryColor: rgb(21, 32, 43);
   --quinaryColor: #1f2326;
 }
 
@@ -41,7 +41,7 @@
   --primaryColorRGB: 255, 255, 255;
   --secondaryColor: black;
   --tertiarycolor: rgba(0, 0, 0, 0.75);
-  --quaternaryColor: #34495e;
+  --quaternaryColor: rgb(21, 32, 43);
   --quinaryColor: whitesmoke;
 }
 
