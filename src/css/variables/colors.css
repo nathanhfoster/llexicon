@@ -1,4 +1,19 @@
 :root {
+  --primaryBackgroundGradient: linear-gradient(
+    to bottom,
+    #000000,
+    #100c0e,
+    #191518,
+    #201c22,
+    #25242d,
+    #25242d,
+    #25242d,
+    #25242d,
+    #201c22,
+    #191518,
+    #100c0e,
+    #000000
+  );
   --accentColor: #8e44ad;
   --white_smoke: #f8f9fa;
   --white_smoke_transparent: rgba(245, 245, 245, 0.96);
@@ -19,21 +34,6 @@
   --tertiarycolor: #bdc3c7;
   --quaternaryColor: #34495e;
   --quinaryColor: #1f2326;
-  --primaryBackgroundGradient: linear-gradient(
-    to bottom,
-    #000000,
-    #100c0e,
-    #191518,
-    #201c22,
-    #25242d,
-    #25242d,
-    #25242d,
-    #25242d,
-    #201c22,
-    #191518,
-    #100c0e,
-    #000000
-  );
 }
 
 .LightMode {
@@ -43,21 +43,6 @@
   --tertiarycolor: rgba(0, 0, 0, 0.75);
   --quaternaryColor: #34495e;
   --quinaryColor: whitesmoke;
-  --primaryBackgroundGradient: linear-gradient(
-    to bottom,
-    #201c22,
-    #211d24,
-    #221f26,
-    #232028,
-    #24222a,
-    #24222a,
-    #24222a,
-    #24222a,
-    #232028,
-    #221f26,
-    #211d24,
-    #201c22
-  );
 }
 
 /* Light mode */
