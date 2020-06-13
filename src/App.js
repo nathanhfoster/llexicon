@@ -140,6 +140,7 @@ const App = ({
 
   return (
     <main className={userDarkMode ? "DarkMode" : "LightMode"}>
+      <div id="portal-root"></div>
       <AlertNotifications />
       <NavBar prompt={prompt} promptToInstall={promptToInstall} />
       <div className="App RouteOverlay">

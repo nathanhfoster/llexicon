@@ -1,10 +1,4 @@
 :root {
-  --primaryColor: #29303b;
-  --primaryColorRGB: 41, 48, 59;
-  --secondaryColor: white;
-  --tertiarycolor: #bdc3c7;
-  --quaternaryColor: #34495e;
-  --quinaryColor: #1f2326;
   --accentColor: #8e44ad;
   --white_smoke: #f8f9fa;
   --white_smoke_transparent: rgba(245, 245, 245, 0.96);
@@ -14,6 +8,17 @@
   --primaryBoxShadow: 0 2px 4px rgba(0, 0, 0, 0.2),
     0 -1px 0px rgba(0, 0, 0, 0.02);
   --mainOpacity: 0.95;
+
+  /* radial-gradient(circle, #f5f5f5, #f7f7f7, #fafafa, #fcfcfc, #ffffff); */
+}
+
+.DarkMode {
+  --primaryColor: #29303b;
+  --primaryColorRGB: 41, 48, 59;
+  --secondaryColor: white;
+  --tertiarycolor: #bdc3c7;
+  --quaternaryColor: #34495e;
+  --quinaryColor: #1f2326;
   --primaryBackgroundGradient: linear-gradient(
     to bottom,
     #000000,
@@ -29,25 +34,30 @@
     #100c0e,
     #000000
   );
-  /* radial-gradient(circle, #f5f5f5, #f7f7f7, #fafafa, #fcfcfc, #ffffff); */
-}
-
-.DarkMode {
-  /* --primaryColor: #29303b;
-  --primaryColorRGB: 41, 48, 59;
-  --secondaryColor: white;
-  --tertiarycolor: #bdc3c7;
-  --quaternaryColor: #34495e;
-  --quinaryColor: #1f2326; */
 }
 
 .LightMode {
-  /* --primaryColor: white;
+  --primaryColor: white;
   --primaryColorRGB: 255, 255, 255;
   --secondaryColor: black;
   --tertiarycolor: rgba(0, 0, 0, 0.75);
-  --quaternaryColor: blue;
-  --quinaryColor: whitesmoke; */
+  --quaternaryColor: #34495e;
+  --quinaryColor: whitesmoke;
+  --primaryBackgroundGradient: linear-gradient(
+    to bottom,
+    #201c22,
+    #211d24,
+    #221f26,
+    #232028,
+    #24222a,
+    #24222a,
+    #24222a,
+    #24222a,
+    #232028,
+    #221f26,
+    #211d24,
+    #201c22
+  );
 }
 
 /* Light mode */

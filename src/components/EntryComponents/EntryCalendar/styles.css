@@ -72,7 +72,7 @@
 .react-calendar__month-view__days button {
   max-width: 100% !important;
   padding: 0;
-  color: white;
+  color: var(--secondaryColor);
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {

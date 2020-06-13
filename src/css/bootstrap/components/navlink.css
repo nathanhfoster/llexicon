@@ -8,7 +8,7 @@
 
 
 .nav-tabs .nav-link {
-  background: rgb(0, 0, 0, 0.2);
+  background: rgb(var(--primaryColorRGB), 0.2);
 }
 
 .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
