@@ -39,6 +39,7 @@ class Editor extends PureComponent {
       bottomToolbarIsOpen: !readOnly && bottomToolbarIsOpen,
       canToggleToolbars: !readOnly && canToggleToolbars,
       modules,
+      isTyping: false,
     }
   }
 
@@ -101,14 +102,16 @@ class Editor extends PureComponent {
       ? "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
       : "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
 
-    const nextState = {
-      entry,
-      editorHeight,
-    }
-
     const previousState = {
       entry: prevState.entry,
       editorHeight: prevState.editorHeight,
+      isTyping: prevState.isTyping,
+    }
+
+    const nextState = {
+      entry: previousState.isTyping ? previousState.entry : entry,
+      editorHeight,
+      isTyping: false,
     }
 
     if (!deepEquals(previousState, nextState)) {
@@ -118,7 +121,10 @@ class Editor extends PureComponent {
     return null
   }
 
-  handleEditorStateChange = (html) => this.handleEditorChange({ html })
+  handleEditorStateChange = (html) => {
+    this.setState({ isTyping: true })
+    this.handleEditorChange({ html })
+  }
 
   handleEditorChange = ({ ...payload }) => {
     const { toolbarId, onChangeCallback } = this.props
