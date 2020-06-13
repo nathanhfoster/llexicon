@@ -105,7 +105,7 @@ const EntryOptionsMenu = ({
           <DropdownMenu right className="EntryOptionsDropDown">
             <DropdownItem header>
               <Button
-                color={!canShareOnMobileDevice ? "primary" : "accent"}
+                color={!canShareOnMobileDevice ? "secondary" : "accent"}
                 className="EntryOptionsMenuShareButton"
                 disabled={!canShareOnMobileDevice}
                 onClick={handleShareOnMobile}

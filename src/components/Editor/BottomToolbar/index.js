@@ -1,18 +1,27 @@
-import React, { useMemo, memo } from "react"
+import React, { useMemo, memo, lazy } from "react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { Collapse, Container, Row, Col, Button } from "reactstrap"
-import {
-  LocationButtonModal,
-  TagsButtonModal,
-  RatingButtonModal,
-  MediaButtonModal,
-  PeopleButtonModal,
-} from "./ToolbarButtonModals"
 import { TagsContainer } from "../../"
 import EntryFilesCarousel from "../../EntryComponents/EntryFilesCarousel"
 import { useSwipeable } from "react-swipeable"
 import "./styles.css"
+
+const LocationButtonModal = lazy(() =>
+  import("./ToolbarButtonModals/LocationButtonModal")
+)
+const TagsButtonModal = lazy(() =>
+  import("./ToolbarButtonModals/TagsButtonModal")
+)
+const RatingButtonModal = lazy(() =>
+  import("./ToolbarButtonModals/RatingButtonModal")
+)
+const MediaButtonModal = lazy(() =>
+  import("./ToolbarButtonModals/MediaButtonModal")
+)
+const PeopleButtonModal = lazy(() =>
+  import("./ToolbarButtonModals/PeopleButtonModal")
+)
 
 const renderButtonColumns = (columns) =>
   columns.map((ButtonModal, i) => {
