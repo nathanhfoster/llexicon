@@ -14,4 +14,5 @@
   border-color: inherit !important;
   outline: 0;
   box-shadow: 0 0 0 0.175rem var(--accentColor);
+  background: var(--quinaryColor);
 }

@@ -1,5 +1,5 @@
 .BasicCard {
-  background: rgba(var(--primaryColorRGB), 0.4);
+  background: rgba(var(--primaryColorRGB), 0.75);
   border: 0;
   color: inherit;
   height: 100%;
