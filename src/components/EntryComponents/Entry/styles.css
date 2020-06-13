@@ -1,11 +1,17 @@
-.EntryInput .form-control, .EntryInput .input-group-text {
+.EntryInput .form-control,
+.EntryInput .input-group-text {
   outline: 0px;
   border: 0;
-  background: inherit;
   z-index: 3;
 }
 
-.EntryInputTitle .form-control, .EntryInputTitle .input-group-text {
+.EntryInput input {
+  background: var(--quinaryColor);
+  color: var(--secondaryColor);
+}
+
+.EntryInputTitle .form-control,
+.EntryInputTitle .input-group-text {
   box-shadow: none;
 }
 

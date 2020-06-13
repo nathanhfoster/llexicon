@@ -87,6 +87,10 @@ input[type="password"] {
   color: var(--secondaryColor); */
 }
 
+input[type="file"] {
+  display: none;
+}
+
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: var(--tertiarycolor);
@@ -102,10 +106,6 @@ input[type="password"] {
 ::-ms-input-placeholder {
   /* Microsoft Edge */
   color: var(--tertiarycolor);
-}
-
-input[type="file"] {
-  display: none;
 }
 
 /* *:hover {
