@@ -39,7 +39,6 @@ class Editor extends PureComponent {
       bottomToolbarIsOpen: !readOnly && bottomToolbarIsOpen,
       canToggleToolbars: !readOnly && canToggleToolbars,
       modules,
-      isTyping: false,
     }
   }
 
@@ -104,14 +103,12 @@ class Editor extends PureComponent {
 
     const previousState = {
       entry: prevState.entry,
-      editorHeight: prevState.editorHeight,
-      isTyping: prevState.isTyping,
+      editorHeight: prevState.editorHeight
     }
 
     const nextState = {
-      entry: previousState.isTyping ? previousState.entry : entry,
-      editorHeight,
-      isTyping: false,
+      entry,
+      editorHeight
     }
 
     if (!deepEquals(previousState, nextState)) {
@@ -122,7 +119,6 @@ class Editor extends PureComponent {
   }
 
   handleEditorStateChange = (html) => {
-    this.setState({ isTyping: true })
     this.handleEditorChange({ html })
   }
 
