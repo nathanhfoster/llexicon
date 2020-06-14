@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { RouteMap, RouterPush } from "../../../../redux/router/actions"
@@ -18,10 +18,9 @@ const mapStateToProps = (
 
   const shouldRenderEntryPreview = view === "month" && sameMonth
 
-  const shouldRenderPlusButton =
-    shouldRenderEntryPreview && isMobile
-      ? calendarDate.isSame(currentDate, "day")
-      : true
+  const shouldRenderPlusButton = !shouldRenderEntryPreview
+    ? false
+    : calendarDate.isSame(currentDate, "day")
 
   const entries = entriesWithinView.filter((entry) => {
     const { date_created_by_author, _shouldDelete } = entry
@@ -55,21 +54,20 @@ const TileContent = ({
   const handleTodayClick = () =>
     setTimeout(() => RouterPush(RouteMap.NEW_ENTRY), 10)
 
-  const renderEntryPreviews = () =>
-    entries.map((entry) => {
-      const { id, ...restOfProps } = entry
-
-      return (
+  const renderEntryPreviews = useMemo(
+    () =>
+      entries.map((entry) => (
         <EntryPreview
-          key={id}
-          id={id}
-          {...restOfProps}
+          key={entry.id}
+          id={entry.id}
+          {...entry}
           date={date}
           staticContext={staticContext}
           view={view}
         />
-      )
-    })
+      )),
+    [entries]
+  )
 
   // console.log("TileContent: ")
 
@@ -83,7 +81,7 @@ const TileContent = ({
         />
       )}
       {shouldRenderEntryPreview && (
-        <div className="TileContentContainer">{renderEntryPreviews()}</div>
+        <div className="TileContentContainer">{renderEntryPreviews}</div>
       )}
     </Fragment>
   )

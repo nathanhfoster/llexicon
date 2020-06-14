@@ -25,28 +25,26 @@
   /* radial-gradient(circle, #f5f5f5, #f7f7f7, #fafafa, #fcfcfc, #ffffff); */
 }
 
-.DarkMode {
-  --primaryColor: #29303b;
-  --primaryColorRGB: 41, 48, 59;
-  --secondaryColor: white;
-  --tertiarycolor: #bdc3c7;
-  --quaternaryColor: rgb(21, 32, 43);
-  --quinaryColor: #1f2326;
-}
-
-.LightMode {
-  --primaryColor: white;
-  --primaryColorRGB: 255, 255, 255;
-  --secondaryColor: black;
-  --tertiarycolor: rgba(0, 0, 0, 0.75);
-  --quaternaryColor: rgb(21, 32, 43);
-  --quinaryColor: whitesmoke;
-}
-
 /* Light mode */
 @media (prefers-color-scheme: light) {
+  :root {
+    --primaryColor: white;
+    --primaryColorRGB: 255, 255, 255;
+    --secondaryColor: black;
+    --tertiarycolor: rgba(0, 0, 0, 0.75);
+    --quaternaryColor: #7f8c8d;
+    --quinaryColor: #bdc3c7;
+  }
 }
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
+  :root {
+    --primaryColor: #29303b;
+    --primaryColorRGB: 41, 48, 59;
+    --secondaryColor: white;
+    --tertiarycolor: #bdc3c7;
+    --quaternaryColor: rgb(21, 32, 43);
+    --quinaryColor: #1f2326;
+  }
 }

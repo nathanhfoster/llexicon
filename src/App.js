@@ -84,6 +84,37 @@ const mapDispatchToProps = {
   ResetMap,
 }
 
+const DARK_MODE_THEME = {
+  "--primaryColor": "#29303b",
+  "--primaryColorRGB": "41, 48, 59",
+  "--secondaryColor": "white",
+  "--tertiarycolor": "#bdc3c7",
+  "--quaternaryColor": "rgb(21, 32, 43)",
+  "--quinaryColor": "#1f2326",
+}
+
+const LIGHT_MODE_THEME = {
+  "--primaryColor": "white",
+  "--primaryColorRGB": "255, 255, 255",
+  "--secondaryColor": "black",
+  "--tertiarycolor": "rgba(0, 0, 0, 0.75)",
+  "--quaternaryColor": "#dfe6e9",
+  "--quinaryColor": "#bdc3c7",
+}
+
+const mapThemeProperties = (themeObject) => {
+  let root = document.documentElement
+
+  for (const [key, value] of Object.entries(themeObject)) {
+    root.style.setProperty(key, value)
+  }
+}
+
+const changeTheme = (darkMode) =>
+  darkMode
+    ? mapThemeProperties(DARK_MODE_THEME)
+    : mapThemeProperties(LIGHT_MODE_THEME)
+
 const App = ({
   GetUserSettings,
   userId,
@@ -103,6 +134,9 @@ const App = ({
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const handleResize = () => SetWindow()
+  useEffect(() => {
+    changeTheme(userDarkMode)
+  }, [userDarkMode])
   useEffect(() => {
     const activeDate = new Date()
 

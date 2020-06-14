@@ -83,8 +83,8 @@ input[type="password"] {
   min-height: var(--inputHeight);
   padding: 0.5rem !important;
   border: inherit;
-  /* background: var(--quinaryColor) !important;
-  color: var(--secondaryColor); */
+  background: var(--quinaryColor) !important;
+  color: var(--secondaryColor);
 }
 
 input[type="file"] {

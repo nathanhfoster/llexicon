@@ -5,10 +5,7 @@
   z-index: 3;
 }
 
-.EntryInput input {
-  background: var(--quinaryColor);
-  color: var(--secondaryColor);
-}
+
 
 .EntryInputTitle .form-control,
 .EntryInputTitle .input-group-text {
