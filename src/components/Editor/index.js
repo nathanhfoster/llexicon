@@ -101,14 +101,14 @@ class Editor extends PureComponent {
       ? "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
       : "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
 
-    const nextState = {
-      entry,
-      editorHeight,
-    }
-
     const previousState = {
       entry: prevState.entry,
-      editorHeight: prevState.editorHeight,
+      editorHeight: prevState.editorHeight
+    }
+
+    const nextState = {
+      entry,
+      editorHeight
     }
 
     if (!deepEquals(previousState, nextState)) {
@@ -118,7 +118,9 @@ class Editor extends PureComponent {
     return null
   }
 
-  handleEditorStateChange = (html) => this.handleEditorChange({ html })
+  handleEditorStateChange = (html) => {
+    this.handleEditorChange({ html })
+  }
 
   handleEditorChange = ({ ...payload }) => {
     const { toolbarId, onChangeCallback } = this.props
@@ -127,7 +129,10 @@ class Editor extends PureComponent {
 
   toggleBottomToolbar = (toggle) =>
     this.setState((currentState) => ({
-      bottomToolbarIsOpen: toggle === true || toggle === false ? toggle : !currentState.bottomToolbarIsOpen,
+      bottomToolbarIsOpen:
+        toggle === true || toggle === false
+          ? toggle
+          : !currentState.bottomToolbarIsOpen,
     }))
 
   handleOnFocus = (range) => {

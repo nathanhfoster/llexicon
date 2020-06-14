@@ -1,5 +1,6 @@
 import React, { useState, memo, Fragment, cloneElement } from "react"
 import PropTypes from "prop-types"
+import { useSelector, shallowEqual } from "react-redux"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./styles.css"
 
@@ -35,6 +36,15 @@ const BasicModal = ({
 
   const shouldShowModal = show !== undefined ? show : isOpen
 
+  const dark_mode = useSelector(
+    ({
+      User: {
+        Settings: { dark_mode },
+      },
+    }) => dark_mode,
+    [shallowEqual]
+  )
+
   return (
     <Fragment>
       {button === false ? null : typeof button === "string" ? (
@@ -68,6 +78,7 @@ const BasicModal = ({
         isOpen={shouldShowModal}
         toggle={toggle}
         className="BasicModal"
+        contentClassName={`${dark_mode ? "BasicModalContentDark" : ""}`}
         size={size}
         centered
         onClosed={onCancelCallback}

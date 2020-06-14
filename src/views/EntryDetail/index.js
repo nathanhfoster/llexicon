@@ -31,12 +31,12 @@ const EntryDetail = ({
   SyncEntries,
   SetCalendar,
 }) => {
+  let setCalendarDateToEntryDate = useRef(false)
   const { entryId } = useParams()
 
-  let setCalendarDateToEntryDate = useRef(false)
   const entry = useMemo(
     () => items.concat(filteredItems).find(({ id }) => id == entryId),
-    [userId, entryId, items, filteredItems]
+    [entryId, items, filteredItems]
   )
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 

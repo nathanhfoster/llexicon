@@ -101,7 +101,7 @@ const PushNotifications = () => {
         <Col xs={12}>
           <h4>Your notification subscription details</h4>
           <pre>
-            <code style={{ color: "white" }}>
+            <code style={{ color: "var(--secondaryColor)" }}>
               {JSON.stringify(userSubscription, null, " ")}
             </code>
           </pre>

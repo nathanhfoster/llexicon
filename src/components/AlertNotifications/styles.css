@@ -1,9 +1,9 @@
 .Alert {
   position: absolute;
   z-index: 9999;
-  top: 0;
+  top: calc(var(--navBarHeight) + var(--inputHeight));
   right: 0;
-  background: var(--dark_border);
+  background: var(--quinaryColor);
   color: var(--secondaryColor);
 }
 

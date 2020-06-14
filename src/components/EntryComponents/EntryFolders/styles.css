@@ -15,7 +15,7 @@
 }
 
 .EntryFoldersContainer {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(var(--primaryColorRGB), 0.5);
   box-shadow: var(--primaryBoxShadow);
   max-height: calc(100vh - var(--navBarHeight) - 46px - 48px);
 }

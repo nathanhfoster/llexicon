@@ -192,7 +192,7 @@ const PeopleButtonModal = ({
             faIcon="fas fa-user-times"
           />
         </Row>
-        <Row>
+        <Row>xxs
           <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
             <InputGroupAddon addonType="append">
               <InputGroupText
@@ -202,7 +202,7 @@ const PeopleButtonModal = ({
                 disabled={!personsName}
                 onClick={handleCreatePeople}
               >
-                <i className="fas fa-user-plus" style={{ fontSize: 20 }} />
+                <i className="fas fa-user-plus" style={{ fontSize: 20, color: 'var(--accentColor)' }} />
               </InputGroupText>
             </InputGroupAddon>
             <DebounceInput

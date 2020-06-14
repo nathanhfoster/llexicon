@@ -12,5 +12,5 @@
 
 .SaveButton {
   box-shadow: var(--primaryBoxShadow) !important;
-  color: var(--secondaryColor) !important;
+  color: white !important;
 }

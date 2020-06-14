@@ -1,9 +1,9 @@
-import React, { useCallback, Fragment, memo } from "react"
+import React, { useCallback, useState, memo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
-import { Editor, EntryOptionsMenu, ReactDatePicker, UseDebounce} from "../../"
+import { Editor, EntryOptionsMenu, ReactDatePicker, UseDebounce } from "../../"
 import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
 import memoizeProps from "../../../utils/memoizeProps"
 import "./styles.css"
@@ -27,6 +27,7 @@ const Entry = ({
   const activeDate = new Date(
     entry.date_created_by_author || entry._lastUpdated || 0
   )
+  
 
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 

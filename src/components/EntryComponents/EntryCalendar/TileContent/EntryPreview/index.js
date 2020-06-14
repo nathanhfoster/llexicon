@@ -35,7 +35,7 @@ const EntryPreview = ({
         <Star
           size={8}
           marginRight={2}
-          color="White"
+          color="PurpleWhite"
           animation={false}
           opacity={1}
         />
@@ -46,7 +46,7 @@ const EntryPreview = ({
       </div>
     </div>
   ) : view == "month" ? (
-    <Star bottom="8px" size={8} color="White" animation={false} opacity={1} />
+    <Star bottom="8px" size={8} color="PurpleWhite" animation={false} opacity={1} />
   ) : null
 
 EntryPreview.propTypes = {

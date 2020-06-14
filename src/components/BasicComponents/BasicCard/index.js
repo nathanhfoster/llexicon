@@ -20,14 +20,10 @@ const BasicCard = ({
   onClickCallback,
 }) => {
   const handleOnClickCallback = () => onClickCallback && onClickCallback()
-  const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
+  const cardHoverStyles = onClickCallback || href ? "BasicCardHover" : ""
   const titleIsObject = typeof title === isType.OBJECT
   const cardTitle = titleIsObject ? title.name : title
-  const renderCardTitle = titleIsObject ? (
-    title.render
-  ) : (
-    <CardTitle className={`${cardTitleClassName} Center`}>{title}</CardTitle>
-  )
+
   return (
     <Card
       className={`BasicCard ${cardClassName} ${cardHoverStyles}`}
@@ -50,9 +46,11 @@ const BasicCard = ({
         tag="div"
         className={`BasicCardBodyContainer ${cardBodyClassName}`}
       >
-        {renderCardTitle}
+        <CardTitle className={`BasicCardTitle ${cardTitleClassName}`}>
+          {titleIsObject ? title.render : title}
+        </CardTitle>
         {text && (
-          <CardText tag="div" className={`${cardTextClassName} Center`}>
+          <CardText tag="div" className={`BasicCardText ${cardTextClassName}`}>
             {text}
           </CardText>
         )}
@@ -84,10 +82,10 @@ BasicCard.propTypes = {
 BasicCard.defaultProps = {
   tag: "div",
   cardClassName: "",
-  cardHeaderClassName: "Center",
+  cardHeaderClassName: "",
   cardBodyClassName: "",
-  cardTitleClassName: "BasicCardTitle Overflow",
-  cardTextClassName: "BasicCardText",
+  cardTitleClassName: "",
+  cardTextClassName: "",
 }
 
 export default memo(BasicCard)

@@ -2,10 +2,18 @@ import React, { useEffect, useState, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap"
+import {
+  Container,
+  Row,
+  Col,
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+} from "reactstrap"
 import { NavLink } from "react-router-dom"
 import { RouterPush } from "../../../redux/router/actions"
 import { TopKFrequentStrings } from "../../../utils"
+import { useScrollable } from "../../../hooks"
 import "./styles.css"
 
 const EntryCards = lazy(() => import("../EntryCards"))
@@ -29,6 +37,11 @@ const EntryFolders = ({ entries, search }) => {
     DEFAULT_VIEWABLE_ENTRIES_RANGE
   )
 
+  const [minimizeEntryCards, setMinimizeEntryCards] = useState(true)
+
+  const handleMinimizeEntryCardsToggle = () =>
+    setMinimizeEntryCards(!minimizeEntryCards)
+
   const [beginOffset, endOffset] = viewableEntriesRange
 
   const directoryPath = search.replace("?folder=", "").split("+")
@@ -47,20 +60,16 @@ const EntryFolders = ({ entries, search }) => {
 
   const sortedTags = TopKFrequentStrings(filteredEntryTags, "name")
 
-  const handleScroll = ({
-    target: { scrollHeight, scrollTop, clientHeight },
-  }) => {
-    const scrollOffset = clientHeight / 4
-    const moreEntriesExist = viewableEntries.length < entryFilteredTags.length
+  const setViewableEntriesRangeThreshold =
+    viewableEntries.length < entryFilteredTags.length
 
-    const reachedBottom =
-      moreEntriesExist &&
-      scrollHeight - scrollTop <= clientHeight + scrollOffset
+  const [reachedBottom, setReachedBottomCallback] = useScrollable(
+    setViewableEntriesRangeThreshold
+  )
 
-    if (reachedBottom) {
-      setViewableEntriesRange([beginOffset, endOffset + ENTRIES_RENDER_OFFSET])
-    }
-  }
+  useEffect(() => {
+    setViewableEntriesRange([beginOffset, endOffset + ENTRIES_RENDER_OFFSET])
+  }, [reachedBottom])
 
   const renderFolderBreadCrumbs = () =>
     directoryPath.map((directory, i) => {
@@ -91,18 +100,33 @@ const EntryFolders = ({ entries, search }) => {
     <Container className="EntryFolders">
       <Row>
         <Col
-          xs={12}
+          xs={11}
           tag={Breadcrumb}
           className="FolderBreadCrumbsContainer p-0"
         >
           {renderFolderBreadCrumbs()}
         </Col>
+        <Col
+          xs={1}
+          className="p-0"
+          tag={Button}
+          color="accent"
+          onClick={handleMinimizeEntryCardsToggle}
+        >
+          <i className={`fas fa-eye${minimizeEntryCards ? "" : "-slash"}`} />
+        </Col>
       </Row>
-      <Row className="EntryFoldersContainer Container" onScroll={handleScroll}>
+      <Row
+        className="EntryFoldersContainer Container"
+        onScroll={setReachedBottomCallback}
+      >
         {renderFolders()}
         <Container className="EntryCards">
           <Row>
-            <EntryCards entries={viewableEntries} />
+            <EntryCards
+              entries={viewableEntries}
+              minimal={minimizeEntryCards}
+            />
           </Row>
         </Container>
       </Row>

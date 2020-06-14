@@ -13,7 +13,7 @@
   display: none;
 }
 
-.BasicModal .modal-content {
-  background: var(--primaryColor);
-  color: var(--secondaryColor);
+.BasicModalContentDark {
+  background: #29303b;
+  color: white;
 }

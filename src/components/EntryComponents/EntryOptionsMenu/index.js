@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, memo } from "react"
+import React, { Fragment, useState, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import {
   ButtonDropdown,
@@ -16,7 +16,7 @@ import {
   Portal,
 } from "../.."
 import { copyStringToClipboard, shareUrl } from "../../../utils"
-import { RouterGoBack } from "../../../redux/router/actions"
+import { RouterGoBack, GetEntryDetailUrl } from "../../../redux/router/actions"
 import { useDispatch } from "react-redux"
 import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
 import { BASE_JOURNAL_ENTRY_ID } from "../../../redux/Entries/reducer"
@@ -39,8 +39,12 @@ const EntryOptionsMenu = ({
   const toggleDropdown = () => setTimeout(() => setOpen(!dropdownOpen), 200)
   const toggleModal = () => setShowModal(!showModal)
 
-  const { href } = window.location
-  const url = href
+  const url = useMemo(() => {
+    const { origin } = window.location
+    const entryDetailUrl = GetEntryDetailUrl(entryId)
+    const fullUrl = `${origin}${entryDetailUrl}`
+    return fullUrl
+  }, [entryId])
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
   const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
 
@@ -101,7 +105,7 @@ const EntryOptionsMenu = ({
           <DropdownMenu right className="EntryOptionsDropDown">
             <DropdownItem header>
               <Button
-                color={!canShareOnMobileDevice ? "primary" : "accent"}
+                color={!canShareOnMobileDevice ? "secondary" : "accent"}
                 className="EntryOptionsMenuShareButton"
                 disabled={!canShareOnMobileDevice}
                 onClick={handleShareOnMobile}

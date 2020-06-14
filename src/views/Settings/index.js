@@ -9,7 +9,7 @@ import ImportExportEntries from "./ImportExportEntries"
 import AccountDetails from "./AccountDetails"
 import UpdateProfile from "./UpdateProfile"
 import Storage from "./Storage"
-import Sections from "./Sections"
+import Preferences from "./Preferences"
 import { RouterPush, RouteMap } from "../../redux/router/actions"
 import "./styles.css"
 
@@ -64,7 +64,7 @@ const Settings = ({ pathname }) => {
       tabId: SETTINGS_PREFERENCES,
       title: "Preferences",
       className: "mt-2",
-      render: <Sections />,
+      render: <Preferences />,
       onClickCallback: handleTabChange,
     },
     {
