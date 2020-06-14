@@ -9,6 +9,8 @@
     overflow: auto;
     margin: 0.5rem;
     width: 170px;
+    background: white !important;
+    color: black !important;
 }
 
 .mapBoxSearchBoxContainer:focus-within {

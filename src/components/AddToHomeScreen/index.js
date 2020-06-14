@@ -8,11 +8,9 @@ const mapStateToProps = ({
   Window: {
     isInStandalone,
     isOnMobileBrowser,
-    navigator: { userAgent }
-  }
+    navigator: { userAgent },
+  },
 }) => ({ isInStandalone, isOnMobileBrowser, userAgent })
-
-const mapDispatchToProps = {}
 
 const AddToHomeScreenModal = ({
   width,
@@ -20,7 +18,7 @@ const AddToHomeScreenModal = ({
   isOnMobileBrowser,
   userAgent,
   prompt,
-  promptToInstall
+  promptToInstall,
 }) => {
   const [isDisabled, setDisabledState] = useState(true)
 
@@ -35,6 +33,7 @@ const AddToHomeScreenModal = ({
   const icon = getBrowserIcon(isOnMobileBrowser, userAgent)
 
   return (
+    !isInStandalone && (
       <Button
         style={styles}
         color="success"
@@ -43,6 +42,7 @@ const AddToHomeScreenModal = ({
       >
         {icon} Install
       </Button>
+    )
   )
 }
 
@@ -52,13 +52,11 @@ AddToHomeScreenModal.propTypes = {
   isOnMobileBrowser: PropTypes.bool,
   userAgent: PropTypes.string,
   prompt: PropTypes.func,
-  promptToInstall: PropTypes.func
+  promptToInstall: PropTypes.func,
 }
 
 AddToHomeScreenModal.defaultProps = {
-  width: "auto"
+  width: "auto",
 }
 
-export default memo(
-  reduxConnect(mapStateToProps, mapDispatchToProps)(AddToHomeScreenModal)
-)
+export default memo(reduxConnect(mapStateToProps)(AddToHomeScreenModal))

@@ -22,6 +22,7 @@ const DEFAULT_STATE_USER = {
     show_animated_background: true,
     push_messages: false,
     offline_mode: false,
+    dark_mode: true,
   },
   location: {
     accuracy: null,

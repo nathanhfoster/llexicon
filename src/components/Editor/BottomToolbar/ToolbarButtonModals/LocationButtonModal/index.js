@@ -28,6 +28,16 @@ const LocationButtonModal = ({
 }) => {
   let watchId = useRef(null)
   const prevMap = useMemo(() => Map, [])
+  const saveDisabeld = useMemo(
+    () =>
+      !(
+        entry.latitude ||
+        entry.longitude ||
+        UserLocation.latitude ||
+        UserLocation.longitude
+      ),
+    [entry, UserLocation]
+  )
 
   useEffect(() => {
     return () => {
@@ -84,7 +94,7 @@ const LocationButtonModal = ({
       ButtonIcon="fas fa-map-marker-alt"
       button="Add Location"
       xs={xs}
-      disabledSave={!(entry.latitude || entry.longitude)}
+      disabledSave={saveDisabeld}
     >
       <Container fluid className="LocationButtonModal p-0">
         <BasicMap

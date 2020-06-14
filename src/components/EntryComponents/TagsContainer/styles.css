@@ -1,23 +1,24 @@
 .TagsContainer {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .TagContainer {
-    background: var(--accentColor);
-    padding: 0.25rem;
-    /* top right bottom left */
-    margin: 0.25rem 0.25rem 0.25rem 0;
+  background: var(--accentColor);
+  padding: 0.25rem;
+  /* top right bottom left */
+  margin: 0.25rem 0.25rem 0.25rem 0;
 }
 
 .TagContainer * {
-    display: inline-block;
-    vertical-align: middle;
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.TagTitle {}
+.TagTitle {
+}
 
 .TagContainerHover:hover {
-    background: var(--dark_border);
-    cursor: pointer;
+  background: var(--quinaryColor);
+  cursor: pointer;
 }

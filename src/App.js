@@ -14,6 +14,7 @@ import {
   GetUserEntryPeople,
   GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
+  ResetSearchEntries,
 } from "./redux/Entries/actions"
 import { ResetMap } from "./redux/Map/actions"
 import { RouteMap, RouterGoBack } from "./redux/router/actions"
@@ -23,6 +24,7 @@ import { RouterLinkPush } from "./redux/router/actions"
 import memoizeProps from "./utils/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 
+const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
 const Account = lazy(() => import("./views/Account"))
 const BackgroundImage = lazy(() => import("./components/BackgroundImage"))
 const Settings = lazy(() => import("./views/Settings"))
@@ -55,9 +57,16 @@ const {
   PRIVACY_POLICY,
 } = RouteMap
 
-const mapStateToProps = ({ User }) => ({
-  userId: User.id,
-  userToken: User.token,
+const mapStateToProps = ({
+  User: {
+    id,
+    token,
+    Settings: { dark_mode },
+  },
+}) => ({
+  userId: id,
+  userToken: token,
+  userDarkMode: dark_mode,
 })
 
 const mapDispatchToProps = {
@@ -71,13 +80,46 @@ const mapDispatchToProps = {
   GetUserEntryPeople,
   GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
+  ResetSearchEntries,
   ResetMap,
 }
+
+const DARK_MODE_THEME = {
+  "--primaryColor": "#29303b",
+  "--primaryColorRGB": "41, 48, 59",
+  "--secondaryColor": "white",
+  "--tertiarycolor": "#bdc3c7",
+  "--quaternaryColor": "rgb(21, 32, 43)",
+  "--quinaryColor": "#1f2326",
+}
+
+const LIGHT_MODE_THEME = {
+  "--primaryColor": "white",
+  "--primaryColorRGB": "255, 255, 255",
+  "--secondaryColor": "black",
+  "--tertiarycolor": "rgba(0, 0, 0, 0.75)",
+  "--quaternaryColor": "#dfe6e9",
+  "--quinaryColor": "#bdc3c7",
+}
+
+const mapThemeProperties = (themeObject) => {
+  let root = document.documentElement
+
+  for (const [key, value] of Object.entries(themeObject)) {
+    root.style.setProperty(key, value)
+  }
+}
+
+const changeTheme = (darkMode) =>
+  darkMode
+    ? mapThemeProperties(DARK_MODE_THEME)
+    : mapThemeProperties(LIGHT_MODE_THEME)
 
 const App = ({
   GetUserSettings,
   userId,
   userToken,
+  userDarkMode,
   SetWindow,
   SetLocalStorageUsage,
   SetCalendar,
@@ -87,16 +129,21 @@ const App = ({
   GetUserEntryPeople,
   GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
+  ResetSearchEntries,
   ResetMap,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const handleResize = () => SetWindow()
+  useEffect(() => {
+    changeTheme(userDarkMode)
+  }, [userDarkMode])
   useEffect(() => {
     const activeDate = new Date()
 
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
     ResetMap()
+    ResetSearchEntries()
 
     SetLocalStorageUsage()
 
@@ -126,9 +173,11 @@ const App = ({
   }
 
   return (
-    <Fragment>
+    <main className={userDarkMode ? "DarkMode" : "LightMode"}>
+      <div id="portal-root"></div>
+      <AlertNotifications />
       <NavBar prompt={prompt} promptToInstall={promptToInstall} />
-      <main className="App RouteOverlay">
+      <div className="App RouteOverlay">
         <BackgroundImage />
         <Switch>
           <Route
@@ -202,8 +251,8 @@ const App = ({
           />
           <Route render={() => <PageNotFound />} />
         </Switch>
-      </main>
-    </Fragment>
+      </div>
+    </main>
   )
 }
 
@@ -222,7 +271,7 @@ App.propTypes = {
 }
 
 const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, ["userId", "userToken"])
+  memoizeProps(prevProps, nextProps, ["userId", "userToken", "userDarkMode"])
 
 export default reduxConnect(
   mapStateToProps,

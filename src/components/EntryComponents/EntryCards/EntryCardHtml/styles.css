@@ -1,0 +1,13 @@
+.EntryCardHtml .ql-editor {
+  font-size: 0.75rem;
+  transition: all 0.4s ease-in-out;
+}
+
+.EntryCardHtml .ql-editor:hover {
+  -webkit-font-smoothing: subpixel-antialiased;
+  transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.05, 1.05, 1);
+}
+
+.EntryCardHtml .ql-editor img {
+  transform: scale(0.5);
+}

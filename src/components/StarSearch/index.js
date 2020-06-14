@@ -36,7 +36,7 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
       </InputGroupAddon>
 
       <DebounceInput
-        defaultValue={search}
+        value={search}
         placeholder="Search for entries"
         className="p-0"
         onChange={handleSearch}

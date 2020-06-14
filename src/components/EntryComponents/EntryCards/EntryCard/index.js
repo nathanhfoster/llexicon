@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, lazy, Fragment } from "react"
+import React, { useMemo, lazy, Fragment } from "react"
+import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { GetEntryDetailUrl } from "../../../../redux/router/actions"
@@ -31,15 +32,15 @@ const EntryCard = ({
   author,
   _lastUpdated,
   userId,
+  minimal,
 }) => {
   const href = useMemo(() => GetEntryDetailUrl(id), [id])
   const readOnly = Boolean(author && userId && userId !== author)
-  const reducedHtml = html.slice(0, 1000)
 
   const cardHeader = useMemo(
     () => (
       <Fragment>
-        <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
+        <EntryCardHtml html={html} views={views} rating={rating} />
         <div
           className="EntryOptionsMenuContainer"
           onClick={(e) => e.preventDefault()}
@@ -54,7 +55,7 @@ const EntryCard = ({
         </div>
       </Fragment>
     ),
-    [id, is_public, reducedHtml, views, rating]
+    [id, is_public, html, views, rating]
   )
 
   const cardTitle = useMemo(
@@ -66,17 +67,18 @@ const EntryCard = ({
   )
 
   const cardText = useMemo(
-    () => (
-      <EntryCardText
-        tags={tags}
-        people={people}
-        date_created_by_author={date_created_by_author}
-        date_updated={date_updated}
-        views={views}
-        rating={rating}
-        is_public={is_public}
-      />
-    ),
+    () =>
+      !minimal && (
+        <EntryCardText
+          tags={tags}
+          people={people}
+          date_created_by_author={date_created_by_author}
+          date_updated={date_updated}
+          views={views}
+          rating={rating}
+          is_public={is_public}
+        />
+      ),
     [
       tags,
       people,
@@ -85,6 +87,7 @@ const EntryCard = ({
       views,
       rating,
       is_public,
+      minimal,
     ]
   )
 
@@ -103,8 +106,11 @@ const EntryCard = ({
   )
 }
 
-EntryCard.propTypes = { entry: EntryPropTypes }
+EntryCard.propTypes = {
+  entry: EntryPropTypes,
+  minimal: PropTypes.bool.isRequired,
+}
 
-EntryCard.defaultProps = {}
+EntryCard.defaultProps = { minimal: false }
 
 export default reduxConnect(mapStateToProps)(EntryCard)

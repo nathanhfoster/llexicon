@@ -18,12 +18,12 @@ const GetAddress = (lat, lng, type = TYPES.LatLng) => {
       }
       const {
         0: {
-         // address_components,
+          // address_components,
           formatted_address,
-         // geometry: { location, location_type, viewport },
-         // place_id,
-         // plus_code,
-         // types,
+          // geometry: { location, location_type, viewport },
+          // place_id,
+          // plus_code,
+          // types,
         },
       } = results
       return formatted_address

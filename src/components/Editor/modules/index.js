@@ -4,10 +4,12 @@ import ImageResize from "quill-image-resize-module-react"
 import Font from "./Font"
 import Size from "./Size"
 import Video from "./Video"
+import Image from "./Image"
 
 Quill.register(Size, true)
 Quill.register(Font, true)
 Quill.register("formats/video", Video)
+Quill.register("formats/Image", Image)
 Quill.register({ "modules/imageResize": ImageResize }, true)
 // Quill.register({ "modules/tableUI": QuillTableUI }, true)
 // Quill.setAttribute('spellcheck', true)

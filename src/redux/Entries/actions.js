@@ -267,13 +267,14 @@ const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
 const UpdateEntry = (id, payload) => (dispatch) =>
   Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
-    .then(({ data }) => {
+    .then(async ({ data }) => {
       dispatch(UpdateReduxEntry(id, data, null))
       ReactGA.event({
         category: "Update Entry",
         action: "User updated a new entry!",
         value: data.id,
       })
+
       return data
     })
     .catch((e) => {
@@ -303,21 +304,21 @@ const DeleteEntry = (id) => (dispatch) =>
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 
+const SetSearchEntries = (search, payload = []) => ({
+  type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
+  payload,
+  search,
+})
+
+const ResetSearchEntries = () => (dispatch) => dispatch(SetSearchEntries(""))
+
 const SearchUserEntries = (search) => (dispatch, getState) => {
-  dispatch({
-    type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-    payload: [],
-    search,
-  })
+  dispatch(SetSearchEntries(search))
   const { id } = getState().User
   return Axios()
     .post(`entries/${id}/search/`, qs.stringify({ search }))
     .then(async ({ data }) => {
-      await dispatch({
-        type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-        payload: data,
-        search,
-      })
+      await dispatch(SetSearchEntries(search, data))
       ReactGA.event({
         category: "Search User Entries",
         action: "User searched for entries!",
@@ -473,6 +474,7 @@ export {
   UpdateEntry,
   DeleteReduxEntry,
   DeleteEntry,
+  ResetSearchEntries,
   SearchUserEntries,
   SyncEntries,
   ResetEntriesSortAndFilterMaps,

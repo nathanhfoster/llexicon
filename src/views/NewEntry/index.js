@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
+import React, { useEffect, lazy } from "react"
 import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
-import { Editor, ReactDatePicker } from "../../components"
+import { ReactDatePicker } from "../../components"
 import {
   Container,
   Row,
@@ -21,10 +21,14 @@ import {
   SetEditorState,
   ClearEditorState,
 } from "../../redux/TextEditor/actions"
+
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../redux/TextEditor/reducer"
 import { getStringBytes } from "../../utils"
 import "./styles.css"
 import { ResetMap } from "../../redux/Map/actions"
+
+const Editor = lazy(() => import("../../components/Editor"))
+
 const mapStateToProps = ({ Calendar: { activeDate }, TextEditor }) => ({
   entry: TextEditor,
   activeDate,
