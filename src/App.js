@@ -227,7 +227,11 @@ const App = ({
             exact={true}
             strict={false}
             path={[ENTRY_DETAIL]}
-            render={() => <EntryDetail />}
+            render={({
+              match: {
+                params: { entryId },
+              },
+            }) => <EntryDetail entryId={entryId} />}
           />
           <Route
             exact={true}

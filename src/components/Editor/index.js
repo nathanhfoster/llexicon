@@ -19,6 +19,7 @@ class Editor extends PureComponent {
     super(props)
 
     const {
+      entry,
       toolbarId,
       theme,
       topToolbarIsOpen,
@@ -32,6 +33,7 @@ class Editor extends PureComponent {
     const modules = getModules(newToolbarId, topToolbarIsOpen)
 
     this.state = {
+      entry,
       quillId: toolbarId.toString(),
       toolbarId: newToolbarId,
       theme,
