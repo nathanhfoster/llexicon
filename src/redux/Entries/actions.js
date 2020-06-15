@@ -268,7 +268,7 @@ const UpdateEntry = (id, payload) => (dispatch) =>
   Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch(UpdateReduxEntry(id, data, null))
+      // dispatch(UpdateReduxEntry(data.id, data, null))
       ReactGA.event({
         category: "Update Entry",
         action: "User updated a new entry!",
