@@ -16,7 +16,7 @@ const mapStateToProps = (
   { entryId }
 ) => ({
   userId: id,
-  entry: items.concat(filteredItems).find(({ id }) => id == entryId),
+  entry: [...items, ...filteredItems].find(({ id }) => id == entryId),
 })
 
 const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
