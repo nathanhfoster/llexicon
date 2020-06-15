@@ -264,11 +264,16 @@ const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
   payload: { ...entry, _lastUpdated, _shouldPost: false },
 })
 
-const UpdateEntry = (id, payload) => (dispatch) =>
+const UpdateEntry = (id, payload) => (dispatch, getState) =>
   Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
-      // dispatch(UpdateReduxEntry(data.id, data, null))
+      const { items, filteredItems } = getState().Entries
+      const reduxEntry = items.concat(filteredItems).find(({id}) => id == data.id)
+      const reduxEntryDate = new Date(reduxEntry._lastUpdated || reduxEntry.date_updated)
+      const dataDate = new Date(data.date_updated)
+      if(dataDate > reduxEntryDate)
+      dispatch(UpdateReduxEntry(data.id, data, null))
       ReactGA.event({
         category: "Update Entry",
         action: "User updated a new entry!",
