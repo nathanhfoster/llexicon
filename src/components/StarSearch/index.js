@@ -47,8 +47,9 @@ const StarSearch = ({ isMobile, search, isPending, SearchUserEntries }) => {
 }
 
 StarSearch.propTypes = {
-  search: PropTypes.string,
   isMobile: PropTypes.bool,
+  search: PropTypes.string,
+  isPending: PropTypes.bool,
   SearchUserEntries: PropTypes.func.isRequired,
 }
 
