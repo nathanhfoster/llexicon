@@ -113,8 +113,9 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetEntry = (url, id) => (dispatch) =>
-  Axios()
+const GetEntry = (url, id) => (dispatch) => {
+   dispatch(pendingEntries())
+   return Axios()
     .get(url)
     .then(({ data }) => {
       dispatch({
@@ -143,6 +144,7 @@ const GetEntry = (url, id) => (dispatch) =>
       const payload = JSON.parse(JSON.stringify(response))
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
+}
 
 const GetUserEntry = (id) => (dispatch) =>
   dispatch(GetEntry(`/entries/${id}/`, id))
@@ -151,6 +153,7 @@ const GetUserEntryDetails = (id) => (dispatch) =>
   dispatch(GetEntry(`/entries/${id}/details/`, id))
 
 const GetAllUserEntries = () => (dispatch, getState) => {
+  dispatch(pendingEntries())
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/view/`)
@@ -175,6 +178,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
 }
 
 const GetUserEntries = (pageNumber) => (dispatch, getState) => {
+  dispatch(pendingEntries())
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/page/?page=${pageNumber}`)
@@ -200,6 +204,7 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
 }
 
 const GetUserEntriesByDate = (payload) => (dispatch, getState) => {
+  dispatch(pendingEntries())
   const { id } = getState().User
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify(payload))
@@ -242,8 +247,9 @@ const PostReduxEntry = (payload) => (dispatch, getState) => {
   })
 }
 
-const PostEntry = (payload) => (dispatch) =>
-  Axios()
+const PostEntry = (payload) => (dispatch) => {
+  dispatch(pendingEntries())
+  return Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch(UpdateReduxEntry(payload.id, data, null))
@@ -259,6 +265,7 @@ const PostEntry = (payload) => (dispatch) =>
       console.log(error)
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload: error })
     })
+}
 
 const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
   type: EntriesActionTypes.ENTRY_UPDATE,
@@ -266,8 +273,9 @@ const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
   payload: { ...entry, _lastUpdated, _shouldPost: false },
 })
 
-const UpdateEntry = (id, payload) => (dispatch, getState) =>
-  Axios()
+const UpdateEntry = (id, payload) => (dispatch, getState) => {
+  dispatch(pendingEntries())
+  return Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
       const { items, filteredItems } = getState().Entries
@@ -297,11 +305,13 @@ const UpdateEntry = (id, payload) => (dispatch, getState) =>
       const payload = JSON.parse(JSON.stringify(e.response))
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
+}
 
 const DeleteReduxEntry = (id) => ({ type: EntriesActionTypes.ENTRY_DELETE, id })
 
-const DeleteEntry = (id) => (dispatch) =>
-  Axios()
+const DeleteEntry = (id) => (dispatch) => {
+  dispatch(pendingEntries())
+  return Axios()
     .delete(`/entries/${id}/`)
     .then((res) => {
       dispatch(DeleteReduxEntry(id))
@@ -319,6 +329,7 @@ const DeleteEntry = (id) => (dispatch) =>
       const payload = response
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
+}
 
 const SetSearchEntries = (search, payload = []) => ({
   type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
