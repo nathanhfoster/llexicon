@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, memo } from "react"
+import React, { useCallback, useMemo, memo } from "react"
 import { Container, Row, Col, Button } from "reactstrap"
 import BasicDropDown from "../../BasicDropDown"
 import PropTypes from "prop-types"
@@ -44,11 +44,39 @@ const TablePaginator = ({
 
   const navigateBack = () => basicTableSetPage(currentPage - 1)
 
-  const navigateWithDropDown = useCallback((id, value) => basicTableSetPage(value - 1), [])
-  
-  const handleSetPageSize = (id, value) => basicTableSetPageSize(value)
+  const navigateWithDropDown = useCallback(
+    (id, value) => basicTableSetPage(value - 1),
+    []
+  )
+
+  const handleSetPageSize = useCallback(
+    (id, value) => basicTableSetPageSize(value),
+    []
+  )
 
   const navigateForward = () => basicTableSetPage(currentPage + 1)
+
+  const renderCurrentPage = useMemo(
+    () => (
+      <span>
+        <span className="Pagination">{currentPage + 1}</span>
+        <span> / </span>
+        <span>{totalPages}</span>
+      </span>
+    ),
+    [currentPage, totalPages]
+  )
+
+  const renderPageSize = useMemo(
+    () => (
+      <span>
+        <span>{dataLength}</span>
+        <span> / </span>
+        <span className="Pagination">{pageSize}</span>
+      </span>
+    ),
+    [dataLength, pageSize]
+  )
 
   return (
     <Container fluid className="BasicTablePaginator">
@@ -66,27 +94,15 @@ const TablePaginator = ({
         <Col xs={3} className="p-0">
           <BasicDropDown
             list={pageList}
-            value={
-              <span>
-                <span className="Pagination">{currentPage + 1}</span>
-                <span> / </span>
-                <span>{totalPages}</span>
-              </span>
-            }
-            onClickCallback={handleSetPageSize}
+            value={renderCurrentPage}
+            onClickCallback={navigateWithDropDown}
           />
         </Col>
         <Col xs={3} className="p-0">
           <BasicDropDown
             list={pageSizes}
-            value={
-              <span>
-                <span>{dataLength}</span>
-                <span> / </span>
-                <span className="Pagination">{pageSize}</span>
-              </span>
-            }
-            onClickCallback={basicTableSetPageSize}
+            value={renderPageSize}
+            onClickCallback={handleSetPageSize}
           />
         </Col>
         <Col
