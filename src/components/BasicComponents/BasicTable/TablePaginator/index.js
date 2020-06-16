@@ -44,7 +44,9 @@ const TablePaginator = ({
 
   const navigateBack = () => basicTableSetPage(currentPage - 1)
 
-  const navigateWithDropDown = (id, value) => basicTableSetPage(value - 1)
+  const navigateWithDropDown = useCallback((id, value) => basicTableSetPage(value - 1), [])
+  
+  const handleSetPageSize = (id, value) => basicTableSetPageSize(value)
 
   const navigateForward = () => basicTableSetPage(currentPage + 1)
 
@@ -71,7 +73,7 @@ const TablePaginator = ({
                 <span>{totalPages}</span>
               </span>
             }
-            onClickCallback={navigateWithDropDown}
+            onClickCallback={handleSetPageSize}
           />
         </Col>
         <Col xs={3} className="p-0">
