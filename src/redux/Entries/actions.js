@@ -12,6 +12,8 @@ import qs from "qs"
 import ReactGA from "react-ga"
 import { BASE_JOURNAL_ENTRY_ID } from "./reducer"
 
+const pendingEntries = () => ({ type: EntriesActionTypes.ENTRIES_PENDING })
+
 const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
@@ -327,6 +329,7 @@ const SetSearchEntries = (search, payload = []) => ({
 const ResetSearchEntries = () => (dispatch) => dispatch(SetSearchEntries(""))
 
 const SearchUserEntries = (search) => (dispatch, getState) => {
+  dispatch(pendingEntries())
   dispatch(SetSearchEntries(search))
   const { id } = getState().User
   return Axios()
@@ -359,7 +362,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
 
   const UserId = User.id
 
-  dispatch({ type: EntriesActionTypes.ENTRIES_PENDING })
+  dispatch(pendingEntries())
 
   const entries = items.concat(filteredItems)
 
