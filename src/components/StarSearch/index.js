@@ -8,14 +8,15 @@ import { SearchUserEntries } from "../../redux/Entries/actions"
 import { DebounceInput } from "../"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
+const mapStateToProps = ({ Entries: { search, isPending }, Window: { isMobile } }) => ({
   isMobile,
   search,
+  isPending
 })
 
 const mapDispatchToProps = { SearchUserEntries }
 
-const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
+const StarSearch = ({ isMobile, search, isPending, SearchUserEntries }) => {
   const handleSearch = useCallback(
     (searchValue) => SearchUserEntries(searchValue),
     []
@@ -31,7 +32,7 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
         className="TelescopeIconContainer Center"
       >
         <InputGroupText tag={Link} to={RouteMap.HOME}>
-          <i className="fab fa-wpexplorer TelescopeIcon" />
+          <i className={`fab fa-wpexplorer TelescopeIcon ${isPending ? 'Pending' : ''}`} />
         </InputGroupText>
       </InputGroupAddon>
 
