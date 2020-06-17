@@ -18,7 +18,10 @@
   color: var(--accentColor);
 }
 
-.Pending,
+.Pending {
+  animation: fa-spin infinite alternate ease-in;
+}
+
 .StarSearch:focus-within .TelescopeIcon {
   animation: fa-spin 0.8s alternate ease-in;
 }
