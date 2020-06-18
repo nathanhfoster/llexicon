@@ -118,6 +118,7 @@ const BasicImageCarousel = ({
 BasicImageCarousel.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       url: PropTypes.string.isRequired,
       name: PropTypes.string,
       file_type: PropTypes.string,
