@@ -1,16 +1,20 @@
-import React from "react"
+import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { BasicImageCarousel } from "../.."
+import { BasicImageCarousel, ConfirmAction } from "../.."
+
 import { Container, Row, Col, Button } from "reactstrap"
 import { EntryFilesProps } from "../../../redux/Entries/propTypes"
 import { removeAttributeDuplicates } from "../../../utils"
+import { DeleteEntryFile } from "../../../redux/Entries/actions"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
   items,
   filteredItems,
 })
+
+const mapDispatchToProps = { DeleteEntryFile }
 
 const EntryFilesCarousel = ({
   className,
@@ -22,6 +26,7 @@ const EntryFilesCarousel = ({
   whiteSpace,
   items,
   filteredItems,
+  DeleteEntryFile,
 }) => {
   let imageFiles = []
 
@@ -45,18 +50,22 @@ const EntryFilesCarousel = ({
     }
   }
 
-  const AllEntryFiles = items
-    .concat(filteredItems)
-    .map((item) => item.EntryFiles)
-    .flat(1)
-    .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated))
+  const AllEntryFiles = useMemo(
+    () =>
+      items
+        .concat(filteredItems)
+        .map((item) => item.EntryFiles)
+        .flat(1)
+        .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated)),
+    [items, filteredItems]
+  )
 
   imageFiles = removeAttributeDuplicates(
     imageFiles.concat(AllEntryFiles),
     "url"
   )
 
-  const handleImageClick = ({ images, photoIndex, isOpen }) => {
+  const handleImageClick = useCallback(({ images, photoIndex, isOpen }) => {
     const { url, file_type } = images[photoIndex]
     if (editorRef.current) {
       let cursorIndex = 0
@@ -68,13 +77,24 @@ const EntryFilesCarousel = ({
 
       editorRef.current.editor.insertEmbed(cursorIndex, type, url)
     }
-  }
+  }, [])
 
-  const toolbarButtons = [
-    <Button color="accent" onClick={handleImageClick}>
-      Insert Image
-    </Button>,
-  ]
+  const handleImageDelete = useCallback(({ images, photoIndex, isOpen }) => {
+    const { id, entry_id } = images[photoIndex]
+    DeleteEntryFile(id, entry_id)
+  }, [])
+
+  const toolbarButtons = useMemo(
+    () => [
+      <Button color="accent" onClick={handleImageClick}>
+        Insert Image
+      </Button>,
+      <Button color="danger" onClick={handleImageDelete}>
+        Delete Image
+      </Button>,
+    ],
+    []
+  )
 
   return (
     <Container className={className}>
@@ -107,4 +127,7 @@ EntryFilesCarousel.defaultProps = {
   whiteSpace: "nowrap",
 }
 
-export default reduxConnect(mapStateToProps)(EntryFilesCarousel)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EntryFilesCarousel)

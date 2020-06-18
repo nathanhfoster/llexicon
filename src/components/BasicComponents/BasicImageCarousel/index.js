@@ -27,6 +27,15 @@ const BasicImageCarousel = ({
     mounted.current = true
   }, [restOfProps.photoIndex, restOfProps.isOpen])
 
+  useEffect(() => {
+    if (mounted.current) {
+      setState((prevState) => ({
+        ...prevState,
+        images: restOfProps.images,
+      }))
+    }
+  }, [restOfProps.images])
+
   const { images, photoIndex, isOpen } = state
 
   let mainSrc = null
@@ -119,6 +128,7 @@ BasicImageCarousel.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      entry_id: PropTypes.number.isRequired,
       url: PropTypes.string.isRequired,
       name: PropTypes.string,
       file_type: PropTypes.string,

@@ -114,8 +114,8 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
 }
 
 const GetEntry = (url, id) => (dispatch) => {
-   dispatch(pendingEntries())
-   return Axios()
+  dispatch(pendingEntries())
+  return Axios()
     .get(url)
     .then(({ data }) => {
       dispatch({
@@ -365,6 +365,29 @@ const SearchUserEntries = (search) => (dispatch, getState) => {
     })
 }
 
+const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
+  const { items, filteredItems } = getState().Entries
+  let entryToUpdate = items
+    .concat(filteredItems)
+    .find((entry) => entry.id == entry_id)
+
+  if (entryToUpdate) {
+    const payload = {
+      EntryFiles: entryToUpdate.EntryFiles.filter((file) => file.id !== id),
+    }
+    dispatch(UpdateReduxEntry(entry_id, payload))
+  }
+}
+
+const DeleteEntryFile = (id, entry_id) => (dispatch) =>
+  Axios()
+    .delete(`/files/${id}/`)
+    .then((res) => {
+      dispatch(DeleteEntryFileFromRedux(id, entry_id))
+      return res
+    })
+    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
+
 const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
   const {
     User,
@@ -505,6 +528,8 @@ export {
   ResetSearchEntries,
   SearchUserEntries,
   SyncEntries,
+  DeleteEntryFileFromRedux,
+  DeleteEntryFile,
   ResetEntriesSortAndFilterMaps,
   SetEntriesSortMap,
   SetEntriesFilterMap,
