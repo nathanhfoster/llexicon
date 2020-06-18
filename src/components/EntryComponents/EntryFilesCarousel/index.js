@@ -70,9 +70,17 @@ const EntryFilesCarousel = ({
     }
   }
 
+ const handleImageDelete = ({ images, photoIndex, isOpen }) => {
+ const { id } = images[photoIndex]
+
+ }
+
   const toolbarButtons = [
     <Button color="accent" onClick={handleImageClick}>
       Insert Image
+    </Button>,
+    <Button color="danger" onClick={handleImageDelete}>
+      Delete Image
     </Button>,
   ]
 
