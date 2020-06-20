@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import Lightbox from "react-image-lightbox"
 import { Media } from "reactstrap"
+
 import "./styles.css"
 
 const getInitialState = ({ images, photoIndex, isOpen }) => {
@@ -29,10 +30,28 @@ const BasicImageCarousel = ({
 
   useEffect(() => {
     if (mounted.current) {
-      setState((prevState) => ({
-        ...prevState,
-        images: restOfProps.images,
-      }))
+      setState((prevState) => {
+        let nextState = {
+          ...prevState,
+          images: restOfProps.images,
+        }
+
+        if (restOfProps.images.length < prevState.images.length) {
+          nextState = {
+            ...nextState,
+            photoIndex:
+              (photoIndex + restOfProps.images.length - 1) %
+              restOfProps.images.length,
+          }
+        } else if (restOfProps.images.length > prevState.images.length) {
+          nextState = {
+            ...nextState,
+            photoIndex: (photoIndex + 1) % restOfProps.images.length,
+          }
+        }
+
+        return nextState
+      })
     }
   }, [restOfProps.images])
 
@@ -100,7 +119,7 @@ const BasicImageCarousel = ({
           onClick: () => child.props.onClick(state),
         })
       ),
-    [toolbarButtons]
+    [state, toolbarButtons]
   )
 
   return (

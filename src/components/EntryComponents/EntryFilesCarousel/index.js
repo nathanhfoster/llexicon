@@ -1,12 +1,12 @@
-import React, { useMemo, useCallback } from "react"
+import React, { useMemo, useCallback, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { BasicImageCarousel, ConfirmAction } from "../.."
-
 import { Container, Row, Col, Button } from "reactstrap"
 import { EntryFilesProps } from "../../../redux/Entries/propTypes"
 import { removeAttributeDuplicates } from "../../../utils"
 import { DeleteEntryFile } from "../../../redux/Entries/actions"
+import memoizeProps from "../../../utils/memoizeProps"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
@@ -28,28 +28,6 @@ const EntryFilesCarousel = ({
   filteredItems,
   DeleteEntryFile,
 }) => {
-  let imageFiles = []
-
-  if (files) {
-    for (const file of files) {
-      const {
-        date_created,
-        date_modified,
-        date_updated,
-        entry_id,
-        file_type,
-        id,
-        name,
-        size,
-        url,
-      } = file
-      // console.log(file_type)
-      if (file_type.includes("image")) {
-        imageFiles.push(file)
-      }
-    }
-  }
-
   const AllEntryFiles = useMemo(
     () =>
       items
@@ -60,10 +38,32 @@ const EntryFilesCarousel = ({
     [items, filteredItems]
   )
 
-  imageFiles = removeAttributeDuplicates(
-    imageFiles.concat(AllEntryFiles),
-    "url"
-  )
+  const imageFiles = useMemo(() => {
+    const arrayOfImages = []
+    if (files) {
+      for (const file of files) {
+        const {
+          date_created,
+          date_modified,
+          date_updated,
+          entry_id,
+          file_type,
+          id,
+          name,
+          size,
+          url,
+        } = file
+        // console.log(file_type)
+        if (file_type.includes("image")) {
+          arrayOfImages.push(file)
+        }
+      }
+      return removeAttributeDuplicates(
+        arrayOfImages.concat(AllEntryFiles),
+        "url"
+      )
+    }
+  }, [AllEntryFiles, files])
 
   const handleImageClick = useCallback(({ images, photoIndex, isOpen }) => {
     const { url, file_type } = images[photoIndex]
@@ -104,7 +104,6 @@ const EntryFilesCarousel = ({
           className="EntryFilesCarouselImageContainer p-0"
           style={{ overflowX, overflowY, whiteSpace }}
         >
-          {/* {renderImageFiles(imageFiles)} */}
           <BasicImageCarousel
             images={imageFiles}
             toolbarButtons={toolbarButtons}
@@ -127,7 +126,10 @@ EntryFilesCarousel.defaultProps = {
   whiteSpace: "nowrap",
 }
 
+const isEqual = (prevProps, nextProps) =>
+  memoizeProps(prevProps, nextProps, ["items", "filteredItems", "files"])
+
 export default reduxConnect(
   mapStateToProps,
   mapDispatchToProps
-)(EntryFilesCarousel)
+)(memo(EntryFilesCarousel, isEqual))
