@@ -89,6 +89,20 @@ const EntryOptionsMenu = ({
     shareUrl(sharePayload)
   }, [is_public, url, title])
 
+  const basicModalFooter = useMemo(
+    () => (
+      <Fragment>
+        <Button color="danger" onClick={handleDelete}>
+          Confirm
+        </Button>
+        <Button color="success" onClick={toggleModal}>
+          Cancel
+        </Button>
+      </Fragment>
+    ),
+    []
+  )
+
   return (
     <ButtonDropdown
       className="EntryOptionsMenu"
@@ -149,16 +163,7 @@ const EntryOptionsMenu = ({
                   button={false}
                   show={showModal}
                   title={"Delete Entry"}
-                  footer={
-                    <Fragment>
-                      <Button color="danger" onClick={handleDelete}>
-                        Confirm
-                      </Button>
-                      <Button color="success" onClick={toggleModal}>
-                        Cancel
-                      </Button>
-                    </Fragment>
-                  }
+                  footer={basicModalFooter}
                 >
                   <span className="Center">
                     Are you sure you want to delete this entry?
