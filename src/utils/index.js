@@ -1,6 +1,11 @@
 import { lazy } from "react"
 import ReactGA from "react-ga"
 
+Number.prototype.toFixedNumber = function (digits, base) {
+  var pow = Math.pow(base || 10, digits)
+  return Math.round(this * pow) / pow
+}
+
 const DeepClone = (arrayOrObj) => JSON.parse(JSON.stringify(arrayOrObj))
 
 const getObjectLength = (obj) => Object.keys(obj).length
@@ -9,7 +14,7 @@ const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min
 
 const getRandomFloat = (min, max, fix = 3) =>
-  (Math.random() * (min - max) + max).toFixed(fix)
+  (Math.random() * (min - max) + max).toFixedNumber(fix)
 
 const arrayToObject = (arr, keyField) =>
   Object.assign({}, ...arr.map((item) => ({ [item[keyField]]: item })))
