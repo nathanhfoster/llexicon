@@ -90,8 +90,8 @@ const TableHeaders = ({
 }
 
 TableHeaders.propTypes = {
-  onSortCallback: PropTypes.func.isRequired,
-  onFilterCallback: PropTypes.func.isRequired,
+  onSortCallback: PropTypes.func,
+  onFilterCallback: PropTypes.func,
   sortable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
   sortList: SortListPropType,
