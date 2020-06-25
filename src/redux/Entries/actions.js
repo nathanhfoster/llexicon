@@ -69,15 +69,12 @@ const CreateEntryTag = (payload) => (dispatch, getState) => {
 const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
   const { html } = updateEntryPayload
   const base64s = htmlToArrayOfBase64(html)
-  if (base64s.length === 0) {
-    // console.log("base64s.length === 0: ", base64s, updateEntryPayload)
-    return dispatch(UpdateEntry(entry_id, updateEntryPayload))
-  }
   for (let i = 0; i < base64s.length; i++) {
     const base64 = base64s[i]
     const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
     dispatch(AwsUpload(entry_id, file, base64, html))
   }
+  dispatch(UpdateEntry(entry_id, updateEntryPayload))
   return new Promise((resolve) =>
     resolve(dispatch(SetAlert({ title: "Synced", message: "Files" })))
   )
@@ -273,26 +270,12 @@ const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
   payload: { ...entry, _lastUpdated, _shouldPost: false },
 })
 
-const UpdateEntry = (id, payload) => (dispatch, getState) => {
+const UpdateEntry = (id, payload) => (dispatch) => {
   dispatch(pendingEntries())
   return Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
-      const { items, filteredItems } = getState().Entries
-      const reduxEntry = items
-        .concat(filteredItems)
-        .find(({ id }) => id == data.id)
-
-      if (reduxEntry) {
-        const reduxEntryDate = new Date(
-          reduxEntry._lastUpdated || reduxEntry.date_updated
-        )
-        const dataDate = new Date(data.date_updated)
-
-        if (dataDate > reduxEntryDate) {
-          dispatch(UpdateReduxEntry(data.id, data, null))
-        }
-      }
+      dispatch(UpdateReduxEntry(data.id, data, null))
       ReactGA.event({
         category: "Update Entry",
         action: "User updated a new entry!",
