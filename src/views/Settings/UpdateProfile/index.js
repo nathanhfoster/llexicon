@@ -90,7 +90,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
           />
         </Col>
       </Row>
-      <Row>
+      <Row className="mb-2">
         <Col xs={12} className="Center">
           <ConfirmAction
             message="Are you sure you want to delete your account? Everything will be erased."
