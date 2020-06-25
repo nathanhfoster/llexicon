@@ -2,7 +2,8 @@ import { objectToArray, stringMatch } from "../../utils"
 
 const getMostRecent = (reduxData, newData) => {
   const reduxDataLastUpdated = new Date(
-    reduxData._lastUpdated || reduxData.date_updated
+    // reduxData._lastUpdated || reduxData.date_updated
+    reduxData.date_updated
   )
   const newDataLastUpdated = new Date(newData.date_updated)
 
