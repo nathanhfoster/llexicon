@@ -9,7 +9,7 @@ const mapStateToProps = ({ columns, sortList }) => ({
 })
 
 const TableFooters = ({ data, columns }) => {
-  const shouldRender = useMemo(() => columns.some((column) => column.footer))
+  const shouldRender = useMemo(() => columns.some((column) => column.footer), [columns])
 
   const renderTableRows = useMemo(
     () =>
