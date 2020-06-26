@@ -22,7 +22,7 @@ const TableFooters = ({ data, columns }) => {
 
   return (
     shouldRender && (
-      <tfoot>
+      <tfoot className="BasicTableFooter">
         <tr>{renderTableRows}</tr>
       </tfoot>
     )
