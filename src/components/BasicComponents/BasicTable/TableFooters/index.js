@@ -1,6 +1,7 @@
 import React, { useMemo, memo } from "react"
 import { DataPropType, ColumnsPropType } from "../state/types"
 import { connect } from "../../../../store/provider"
+import "./styles.css"
 
 const mapStateToProps = ({ columns, sortList }) => ({
   columns,
