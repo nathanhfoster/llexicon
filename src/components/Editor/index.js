@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment, createRef, lazy } from "react"
+import React, { PureComponent, Fragment, createRef} from "react"
 import ReactQuill from "react-quill"
 import { THEMES, FORMATS, getModules } from "./modules"
 import "react-quill/dist/quill.snow.css"
@@ -8,11 +8,10 @@ import "react-quill/dist/quill.core.css"
 // import "quill-mention/dist/quill.mention.min.css"
 import "./styles.css"
 import TopToolbar from "./TopToolbar"
+import BottomToolbar from "./BottomToolbar"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import deepEquals from "../../utils/deepEquals"
-
-const BottomToolbar = lazy(() => import("./BottomToolbar"))
 
 class Editor extends PureComponent {
   constructor(props) {
