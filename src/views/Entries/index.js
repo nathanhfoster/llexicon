@@ -9,10 +9,18 @@ import NewEntry from "../NewEntry"
 import { GetUserEntries } from "../../redux/Entries/actions"
 import "./styles.css"
 
-const EntryCalendar = lazy(() => import("../../components/EntryComponents/EntryCalendar"))
-const EntryFolders = lazy(() => import("../../components/EntryComponents/EntryFolders"))
-const EntriesList = lazy(() => import("../../components/EntryComponents/EntriesList"))
-const EntriesMap = lazy(() => import("../../components/EntryComponents/EntriesMap"))
+const EntryCalendar = lazy(() =>
+  import("../../components/EntryComponents/EntryCalendar")
+)
+const EntryFolders = lazy(() =>
+  import("../../components/EntryComponents/EntryFolders")
+)
+const EntriesList = lazy(() =>
+  import("../../components/EntryComponents/EntriesList")
+)
+const EntriesMap = lazy(() =>
+  import("../../components/EntryComponents/EntriesMap")
+)
 
 const mapStateToProps = ({
   User: { id },
@@ -155,7 +163,7 @@ const Entries = ({
         </Row>
       ) : (
         <Row className="ShowScrollBar">
-          <EntriesTable />
+          <EntriesTable pageSize={10} />
         </Row>
       ),
       onClickCallback: handleTabChange,

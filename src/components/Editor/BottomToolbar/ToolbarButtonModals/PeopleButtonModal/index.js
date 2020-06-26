@@ -173,7 +173,7 @@ const PeopleButtonModal = ({
         <Row className="TagAndPeopleContainer">
           <TagsContainer
             tags={sortedPeople}
-            maxHeight={250}
+            maxHeight={200}
             flexWrap="wrap"
             onClickCallback={handleAddPerson}
             hoverable

@@ -29,6 +29,7 @@ const EntriesTable = ({
   filterMap,
   SetEntriesSortMap,
   SetEntriesFilterMap,
+  pageSize,
 }) => {
   const viewableEntries = useMemo(
     () => items.filter(({ _shouldDelete }) => !_shouldDelete),
@@ -244,6 +245,7 @@ const EntriesTable = ({
     <BasicTable
       hover
       sortable
+      pageSize={pageSize}
       columns={tableColumns}
       data={viewableEntries}
       onSortCallback={handleSortCallback}
@@ -258,6 +260,10 @@ EntriesTable.propTypes = {
   filterMap: PropTypes.object,
   SetEntriesSortMap: PropTypes.func.isRequired,
   SetEntriesFilterMap: PropTypes.func.isRequired,
+}
+
+EntriesTable.defaultProps = {
+  pageSize: 5,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesTable)

@@ -148,18 +148,34 @@ const isQuotaExceeded = (e) => {
   return quotaExceeded
 }
 
+const getUser = () => {
+  let userFromLocalStorage = {}
+  const persistedReduxStore = localStorage.getItem(PersistedStorageReduxKey)
+
+  if (persistedReduxStore) {
+    const { User } = JSON.parse(persistedReduxStore)
+    if (!User) return { token: null, offline_mode: null }
+
+    userFromLocalStorage = JSON.parse(User)
+  }
+
+  return userFromLocalStorage
+}
+
 const getUserClientId = () => {
   let userClientId = {}
-  const persistedStore = getPersistedReduxStore()
+  const persistedStore = localStorage.getItem(PersistedStorageReduxKey)
 
   if (persistedStore) {
+    const { App, Window } = JSON.parse(persistedStore)
+
+    const User = getUser()
+
+    const { version } = JSON.parse(App)
+    const { id, username, email } = User
     const {
-      App: { version },
-      User: { id, username, email },
-      Window: {
-        navigator: { appVersion },
-      },
-    } = persistedStore
+      navigator: { appVersion },
+    } = JSON.parse(Window)
 
     const userId = id
     const clientId = appVersion
@@ -195,6 +211,7 @@ export {
   saveReduxState,
   persistReduxState,
   removeReduxState,
+  getUser,
   getUserClientId,
   handleQuotaExceeded,
 }

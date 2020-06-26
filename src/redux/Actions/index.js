@@ -1,23 +1,7 @@
 import axios from "axios"
-import { getPersistedReduxStore } from "../localState"
+import { getUser } from "../localState"
 
 const { REACT_APP_API_URL } = process.env
-
-const getUser = () => {
-  let userFromLocalStorage = {}
-  const persistedReduxStore = getPersistedReduxStore()
-  if (persistedReduxStore) {
-    const { User } = persistedReduxStore
-    if (!User) return { token: null, offline_mode: null }
-    const {
-      token,
-      Settings: { offline_mode },
-    } = User
-    userFromLocalStorage = { token, offline_mode }
-  }
-
-  return userFromLocalStorage
-}
 
 const base = {
   Accept: "application/json",
@@ -61,7 +45,10 @@ Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/R
 */
 
 const Axios = (responseType = "json") => {
-  const { token, offline_mode } = getUser()
+  const {
+    token,
+    Settings: { offline_mode },
+  } = getUser()
   if (offline_mode) return isNotLoggedInAxios()
   return axios.create({
     withCredentials: true,

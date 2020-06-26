@@ -11,25 +11,32 @@ import PageNotFound from "../PageNotFound"
 import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
-const mapStateToProps = (
-  { User: { id }, Entries: { items, filteredItems } },
-  { entryId }
-) => ({
+const mapStateToProps = ({
+  User: { id },
+  Entries: { items, filteredItems },
+}) => ({
   userId: id,
-  entry: [...items, ...filteredItems].find(({ id }) => id == entryId),
+  items,
+  filteredItems,
 })
 
 const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
 
 const EntryDetail = ({
   entryId,
-  entry,
+  items,
+  filteredItems,
   userId,
   GetUserEntryDetails,
   SyncEntries,
   SetCalendar,
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
+
+  const entry = useMemo(
+    () => items.concat(filteredItems).find(({ id }) => id == entryId),
+    [items, filteredItems]
+  )
 
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 

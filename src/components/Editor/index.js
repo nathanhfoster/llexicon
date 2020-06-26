@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment, createRef} from "react"
+import React, { PureComponent, Fragment, createRef } from "react"
 import ReactQuill from "react-quill"
 import { THEMES, FORMATS, getModules } from "./modules"
 import "react-quill/dist/quill.snow.css"
@@ -104,12 +104,12 @@ class Editor extends PureComponent {
 
     const previousState = {
       entry: prevState.entry,
-      editorHeight: prevState.editorHeight
+      editorHeight: prevState.editorHeight,
     }
 
     const nextState = {
       entry,
-      editorHeight
+      editorHeight,
     }
 
     if (!deepEquals(previousState, nextState)) {
