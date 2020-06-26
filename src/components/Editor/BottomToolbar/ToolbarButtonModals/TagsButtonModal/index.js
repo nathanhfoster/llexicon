@@ -165,7 +165,7 @@ const TagsButtonModal = ({
         <Row className="TagAndPeopleContainer">
           <TagsContainer
             tags={sortedTags}
-            maxHeight={300}
+            maxHeight={250}
             flexWrap="wrap"
             onClickCallback={handleAddTag}
             hoverable
