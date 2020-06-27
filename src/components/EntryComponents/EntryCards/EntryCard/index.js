@@ -1,7 +1,6 @@
-import React, { useMemo, lazy, Fragment } from "react"
+import React, { useMemo, lazy, memo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
 import { GetEntryDetailUrl } from "../../../../redux/router/actions"
 import { BasicCard } from "../../.."
 import EntryCardHtml from "../EntryCardHtml"
@@ -10,8 +9,6 @@ import EntryCardText from "../EntryCardText"
 import "./styles.css"
 
 const EntryOptionsMenu = lazy(() => import("../../EntryOptionsMenu"))
-
-const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 
 const EntryCard = ({
   id,
@@ -31,11 +28,9 @@ const EntryCard = ({
   is_public,
   author,
   _lastUpdated,
-  userId,
   minimal,
 }) => {
   const href = useMemo(() => GetEntryDetailUrl(id), [id])
-  const readOnly = Boolean(author && userId && userId !== author)
 
   const cardHeader = useMemo(
     () => (
@@ -49,8 +44,8 @@ const EntryCard = ({
             entryId={id}
             title={title}
             is_public={is_public}
+            author={author}
             shouldSyncOnUpdate={true}
-            readOnly={readOnly}
           />
         </div>
       </Fragment>
@@ -113,4 +108,4 @@ EntryCard.propTypes = {
 
 EntryCard.defaultProps = { minimal: false }
 
-export default reduxConnect(mapStateToProps)(EntryCard)
+export default memo(EntryCard)
