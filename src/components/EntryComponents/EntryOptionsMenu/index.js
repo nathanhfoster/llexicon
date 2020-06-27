@@ -175,6 +175,7 @@ const EntryOptionsMenu = ({
                   show={showModal}
                   title={"Delete Entry"}
                   footer={basicModalFooter}
+                  toggle={toggleModal}
                 >
                   <span className="Center">
                     Are you sure you want to delete this entry?

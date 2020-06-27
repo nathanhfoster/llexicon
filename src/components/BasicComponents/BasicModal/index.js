@@ -19,14 +19,16 @@ const BasicModal = ({
   saveButton,
   cancelButton,
   size,
+  toggle,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const toggle = () => setIsOpen(!isOpen)
+  const handleToggle = () =>
+    toggle ? toggle() : setIsOpen((prevIsOpen) => !prevIsOpen)
 
   const handleClose = () => {
     onCancelCallback && onCancelCallback()
-    toggle()
+    handleToggle()
   }
 
   const handleSave = () => {
@@ -53,7 +55,7 @@ const BasicModal = ({
           disabled={disabled}
           onClick={() => {
             onClickCallback && onClickCallback()
-            toggle()
+            handleToggle()
           }}
         >
           {button}
@@ -66,17 +68,17 @@ const BasicModal = ({
             const { onClick } = button.props
             onClick && onClick()
             onClickCallback && onClickCallback()
-            toggle()
+            handleToggle()
           },
           onClickCallback: () => {
             onClickCallback && onClickCallback()
-            toggle()
+            handleToggle()
           },
         })
       )}
       <Modal
         isOpen={shouldShowModal}
-        toggle={toggle}
+        toggle={handleToggle}
         className="BasicModal"
         contentClassName={`${dark_mode ? "BasicModalContentDark" : ""}`}
         size={size}
@@ -84,7 +86,7 @@ const BasicModal = ({
         onClosed={onCancelCallback}
       >
         <ModalHeader
-          toggle={toggle}
+          toggle={handleToggle}
           style={{
             justifyContent:
               typeof title === "string" ? "center" : "space-between",
