@@ -170,6 +170,7 @@ const EntriesTable = ({
         filter: "number",
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.views,
+        footer: (items) => items.reduce((count, { views }) => count + views, 0),
       },
       {
         title: <i className="fas fa-star" />,
@@ -210,6 +211,8 @@ const EntriesTable = ({
           EntryFiles.length >= searchValue,
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.EntryFiles,
+        footer: (items) =>
+          items.reduce((count, { EntryFiles }) => count + EntryFiles.length, 0),
       },
       {
         title: <i className="fas fa-lock" />,
