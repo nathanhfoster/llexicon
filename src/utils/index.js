@@ -41,32 +41,6 @@ const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
   return newObj
 }
 
-const isEquivalent = (obj1, obj2) =>
-  JSON.stringify(obj1) === JSON.stringify(obj2)
-
-const isOnline = (last_login) =>
-  new Date() - new Date(last_login) <= 1000 * 60 * 5
-
-const findMaxInt = (arrayOfObjs, prop) =>
-  Math.max(...arrayOfObjs.map((e) => e[prop]))
-
-const sortedMap = (map) =>
-  new Map([...map.entries()].sort().sort((a, b) => b[1] - a[1]))
-
-const removeArrayDuplicates = (array) => [...new Set(array)]
-
-const removeAttributeDuplicates = (array, objAttr = "id") => {
-  let map = new Map()
-
-  for (let i = 0; i < array.length; i++) {
-    try {
-      map.set(array[i][objAttr], array[i])
-    } catch (e) {}
-  }
-
-  return [...map.values()]
-}
-
 const mapObject = (object = {}, props = []) => {
   if (typeof props === "string") {
     // console.log("Object to value")
@@ -91,45 +65,49 @@ const mapObject = (object = {}, props = []) => {
   return object
 }
 
-const filterMapArray = (array = [], uniqueKey = "id", props = false) => {
+const isEquivalent = (obj1, obj2) =>
+  JSON.stringify(obj1) === JSON.stringify(obj2)
+
+const isOnline = (last_login) =>
+  new Date() - new Date(last_login) <= 1000 * 60 * 5
+
+const findMaxInt = (arrayOfObjs, prop) =>
+  Math.max(...arrayOfObjs.map((e) => e[prop]))
+
+const sortedMap = (map) =>
+  new Map([...map.entries()].sort().sort((a, b) => b[1] - a[1]))
+
+const removeArrayDuplicates = (array) => [...new Set(array)]
+
+const removeAttributeDuplicates = (array, objAttr = "id", props) => {
+  let map = new Map()
+
+  if (props) {
+    for (let i = 0, { length } = array; i < length; i++) {
+      try {
+        const newItem = mapObject(array[i], props)
+        map.set(array[i][objAttr], newItem)
+      } catch (e) {}
+    }
+  } else {
+    for (let i = 0, { length } = array; i < length; i++) {
+      try {
+        map.set(array[i][objAttr], array[i])
+      } catch (e) {}
+    }
+  }
+
+  return [...map.values()]
+}
+
+const filterMapArray = (array = [], uniqueKey = "id", props) => {
   if (!uniqueKey && !props) {
     // console.log("return original array")
     return array
   }
 
   if (uniqueKey) {
-    let duplicateMap = {}
-
-    if (!props) {
-      // console.log("Filter but don't map")
-      const filteredArray = array.filter((item) => {
-        if (!duplicateMap[item[uniqueKey]]) {
-          duplicateMap[item[uniqueKey]] = true
-          return false
-        } else {
-          return true
-        }
-      })
-
-      return filteredArray
-    } else if (props) {
-      // console.log("Filter and map")
-      const filteredMappedArray = array.reduce((result, item) => {
-        if (!duplicateMap[item[uniqueKey]]) {
-          duplicateMap[item[uniqueKey]] = true
-          if (props) {
-            const newItem = mapObject(item, props)
-            return result.concat(newItem)
-          } else {
-            return result.concat(item)
-          }
-        } else {
-          return result
-        }
-      }, [])
-
-      return filteredMappedArray
-    }
+    return removeAttributeDuplicates(array, uniqueKey, props)
   } else if (props) {
     // console.log("Don't filter but map")
     const mappedArray = array.map((item) => (item = mapObject(item, props)))
@@ -557,13 +535,13 @@ export {
   arrayToObject,
   objectToArray,
   removeKeyOrValueFromObject,
+  mapObject,
   isEquivalent,
   isOnline,
   findMaxInt,
   sortedMap,
   removeArrayDuplicates,
   removeAttributeDuplicates,
-  mapObject,
   filterMapArray,
   isSubset,
   TopKFrequentStrings,
