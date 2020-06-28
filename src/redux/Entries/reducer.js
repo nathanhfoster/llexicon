@@ -170,6 +170,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           mergeJson(state.items.concat(state.filteredItems), [payload]),
           state.search
         ),
+        isPending: false,
       }
 
     case EntriesActionTypes.ENTRY_UPDATE:
