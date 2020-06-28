@@ -5,7 +5,7 @@ import { connect as reduxConnect } from "react-redux"
 import { Route, Switch, Redirect } from "react-router-dom"
 import { SetLocalStorageUsage } from "./redux/App/actions"
 import { SetWindow } from "./redux/Window/actions"
-import { GetUserSettings } from "./redux/User/actions"
+import { ResetUserError, GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
 import {
   SyncEntries,
@@ -72,6 +72,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   SetWindow,
   SetLocalStorageUsage,
+  ResetUserError,
   GetUserSettings,
   SetCalendar,
   SyncEntries,
@@ -116,6 +117,7 @@ const changeTheme = (darkMode) =>
     : mapThemeProperties(LIGHT_MODE_THEME)
 
 const App = ({
+  ResetUserError,
   GetUserSettings,
   userId,
   userToken,
@@ -139,7 +141,7 @@ const App = ({
   }, [userDarkMode])
   useEffect(() => {
     const activeDate = new Date()
-
+    ResetUserError()
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
     ResetMap()
@@ -264,6 +266,7 @@ App.propTypes = {
   User: UserProps,
   SetWindow: PropTypes.func.isRequired,
   SetLocalStorageUsage: PropTypes.func.isRequired,
+  ResetUserError: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,

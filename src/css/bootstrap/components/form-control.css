@@ -16,3 +16,7 @@
   box-shadow: 0 0 0 0.175rem var(--accentColor);
   background: var(--quinaryColor);
 }
+
+.form-control .is-valid {
+  
+}
