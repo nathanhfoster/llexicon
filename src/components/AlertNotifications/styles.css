@@ -1,8 +1,8 @@
 .Alert {
   position: absolute;
   z-index: 9999;
-  top: var(--navBarHeight);
-  left: 0;
+  top: 0;
+  right: 0;
   background: var(--quinaryColor);
   color: var(--secondaryColor);
 }
