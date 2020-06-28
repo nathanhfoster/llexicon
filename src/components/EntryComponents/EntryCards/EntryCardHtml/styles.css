@@ -9,5 +9,5 @@
 }
 
 .EntryCardHtml .ql-editor img {
-  transform: scale(0.5);
+  max-width: 100%;
 }
