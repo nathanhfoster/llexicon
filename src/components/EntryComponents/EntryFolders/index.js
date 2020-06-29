@@ -62,7 +62,7 @@ const EntryFolders = ({ entries, search }) => {
           entry.tags.some(({ name }) => name === tag)
         )
       ),
-    [entries]
+    [entries, directoryTags]
   )
 
   const filteredEntryTags = useMemo(
@@ -76,7 +76,7 @@ const EntryFolders = ({ entries, search }) => {
 
   const viewableEntries = useMemo(
     () => entryFilteredTags.slice(beginOffset, endOffset),
-    [entryFilteredTags, beginOffset, endOffset, minimizeEntryCards]
+    [entryFilteredTags, beginOffset, endOffset, minimizeEntryCards, search]
   )
 
   const setViewableEntriesRangeThreshold =
@@ -126,7 +126,7 @@ const EntryFolders = ({ entries, search }) => {
           </Col>
         )
       }),
-    [sortedTags]
+    [sortedTags, search]
   )
 
   return (
