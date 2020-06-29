@@ -19,11 +19,14 @@ const MapSearchBox = ({
     searchBoxRef.current = new mapApi.places.SearchBox(searchInputRef.current)
     searchBoxRef.current.addListener("places_changed", handlePlacesChange)
     searchBoxRef.current.bindTo("bounds", map)
-    searchBoxRef.current.focus()
     return () => {
       mapApi.event.clearInstanceListeners(searchInputRef.current)
     }
   }, [])
+
+  useEffect(() => {
+    searchInputRef.current.focus()
+  }, [searchInputRef])
 
   const handlePlacesChange = () => {
     const selected = searchBoxRef.current.getPlaces()
