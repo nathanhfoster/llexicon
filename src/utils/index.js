@@ -563,7 +563,7 @@ const getSHA256 = async (message) => {
   return hashHex
 }
 
-export const showFile = (blob, name, extension) => {
+const showFile = (blob, name, extension) => {
   // It is necessary to create a new blob object with mime-type explicitly set
   // otherwise only Chrome works like it should
   var newBlob = new Blob([blob], { type: DOCUMENT_MIME_TYPE[extension] })
@@ -584,8 +584,8 @@ export const showFile = (blob, name, extension) => {
   link.click()
   setTimeout(() => {
     // For Firefox it is necessary to delay revoking the ObjectURL
-    window.URL.revokeObjectURL(data), 100
-  })
+    window.URL.revokeObjectURL(data)
+  }, 100)
 }
 
 export {

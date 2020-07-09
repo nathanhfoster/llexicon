@@ -26,11 +26,14 @@ const TableHeader = ({
   const headerTitle = typeof title === isType.STRING ? title : headerKey
   const titleFunction = typeof title === isType.FUNCTION
   const shouldShowSortIcon = typeof sortUp === isType.BOOLEAN
+  const headerStyles = { width }
+
+  console.log(headerStyles)
 
   return (
     <th
       className={`BasicTableHeader px-1 ${sortable ? "HeaderHoverable" : ""} `}
-      style={{ width }}
+      style={headerStyles}
       title={headerTitle}
       onClick={sortable ? sortCallback : null}
     >

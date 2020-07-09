@@ -63,7 +63,7 @@ const EntriesTable = ({
       {
         title: <i className="fas fa-keyboard" />,
         key: "html",
-        width: 180,
+        width: 90,
         defaultSortValue: sortMap.html,
         filter: "string",
         filterPlaceholder: "Body",
