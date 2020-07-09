@@ -1,6 +1,41 @@
 import { lazy } from "react"
 import ReactGA from "react-ga"
 
+const DOCUMENT_FORMAT = {
+  xml: "XML",
+  pdf: "PDF",
+  txt: "TXT",
+  json: "JSON",
+  csv: "CSV",
+  url: "URL",
+  gif: "GIF",
+  png: "PNG",
+  jpg: "JPG",
+  jpeg: "JPG",
+  doc: "DOC",
+  docx: "DOCX",
+  xls: "XLS",
+  xlsx: "XLXS",
+  msg: "MSG",
+}
+
+const DOCUMENT_MIME_TYPE = {
+  XML: "application/xml",
+  PDF: "application/pdf",
+  TXT: "text/plain",
+  JSON: "application/json",
+  CSV: "text/csv",
+  URL: "text/url",
+  GIF: "image/gif",
+  PNG: "image/png",
+  JPG: "image/jpeg",
+  DOC: "application/msword",
+  DOCX:
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  XLS: "application/vnd.ms-excel",
+  XLSX: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+}
+
 Number.prototype.toFixedNumber = function (digits, base) {
   var pow = Math.pow(base || 10, digits)
   return Math.round(this * pow) / pow
@@ -528,7 +563,34 @@ const getSHA256 = async (message) => {
   return hashHex
 }
 
+export const showFile = (blob, name, extension) => {
+  // It is necessary to create a new blob object with mime-type explicitly set
+  // otherwise only Chrome works like it should
+  var newBlob = new Blob([blob], { type: DOCUMENT_MIME_TYPE[extension] })
+
+  // IE doesn't allow using a blob object directly as link href
+  // instead it is necessary to use msSaveOrOpenBlob
+  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(newBlob)
+    return
+  }
+
+  // For other browsers:
+  // Create a link pointing to the ObjectURL containing the blob.
+  const data = window.URL.createObjectURL(newBlob)
+  var link = document.createElement("a")
+  link.href = data
+  link.download = `${name}.${extension}`
+  link.click()
+  setTimeout(() => {
+    // For Firefox it is necessary to delay revoking the ObjectURL
+    window.URL.revokeObjectURL(data), 100
+  })
+}
+
 export {
+  DOCUMENT_FORMAT,
+  DOCUMENT_MIME_TYPE,
   DeepClone,
   getObjectLength,
   getRandomInt,
@@ -576,4 +638,5 @@ export {
   shareFile,
   deepParseJson,
   getSHA256,
+  showFile,
 }
