@@ -19,7 +19,7 @@ const entriesDiffer = (e1, e2) => {
     "address",
     // "author",
     // "date_created",
-    // "date_created_by_author",
+    "date_created_by_author",
     // "date_updated",
     // "_lastUpdated",
     "html",
@@ -36,7 +36,7 @@ const entriesDiffer = (e1, e2) => {
     // "views",
   ])
 
-  return !sameUpdateDates || !isEqual
+  return !isEqual
 }
 
 export { getEntryDate, entryDatesAreTheSame, entriesDiffer }
