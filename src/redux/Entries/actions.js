@@ -127,19 +127,22 @@ const GetEntry = (url, id) => (dispatch) => {
       return data
     })
     .catch(({ response }) => {
-      const { status } = response
-      if (status === 401 || status === 404) {
-        dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
-        dispatch(SetApiResponseStatus(status))
-        dispatch(
-          SetAlert({
-            title: "Access Denied",
-            message: "This entry is no longer public",
-          })
-        )
+      if (response) {
+        const { status } = response
+        if (status === 401 || status === 404) {
+          dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
+          dispatch(SetApiResponseStatus(status))
+          dispatch(
+            SetAlert({
+              title: "Access Denied",
+              message: "This entry is no longer public",
+            })
+          )
+        }
+
+        const payload = JSON.parse(JSON.stringify(response))
+        dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
       }
-      const payload = JSON.parse(JSON.stringify(response))
-      dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
 

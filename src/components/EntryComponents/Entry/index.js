@@ -12,7 +12,10 @@ const mapStateToProps = ({ User: { token } }) => ({ userToken: token })
 const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 
 const Entry = ({
+  height,
+  showOptionsMenu,
   entry,
+  toolbarId,
   canToggleToolbars,
   topToolbarIsOpen,
   bottomToolbarIsOpen,
@@ -56,13 +59,14 @@ const Entry = ({
   return (
     <Editor
       readOnly={readOnly}
-      toolbarId={entry.id}
+      toolbarId={toolbarId || entry.id}
       canToggleToolbars={canToggleToolbars}
       topToolbarIsOpen={topToolbarIsOpen}
       bottomToolbarIsOpen={bottomToolbarIsOpen}
       entry={entry}
       theme={theme}
       onChangeCallback={handleEditorChange}
+      height={height}
     >
       <UseDebounce
         onChangeCallback={handleDebounce}
@@ -91,7 +95,8 @@ const Entry = ({
             />
           </InputGroupText>
         </InputGroupAddon>
-        <Fragment>
+
+        {showOptionsMenu && (
           <InputGroupAddon addonType="append">
             <InputGroupText
               className="p-0"
@@ -103,13 +108,16 @@ const Entry = ({
               readOnly={readOnly}
             />
           </InputGroupAddon>
-        </Fragment>
+        )}
       </InputGroup>
     </Editor>
   )
 }
 
 Entry.propTypes = {
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  showOptionsMenu: PropTypes.bool.isRequired,
+  toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   readOnly: PropTypes.bool.isRequired,
   entry: EntryPropTypes.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -124,6 +132,8 @@ Entry.propTypes = {
 }
 
 Entry.defaultProps = {
+  height: "100%",
+  showOptionsMenu: true,
   readOnly: false,
   canToggleToolbars: true,
   topToolbarIsOpen: true,

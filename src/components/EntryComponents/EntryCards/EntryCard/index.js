@@ -1,6 +1,6 @@
 import React, { useMemo, lazy, memo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../../../redux/Entries/propTypes"
+import { EntryPropType } from "../../../../redux/Entries/propTypes"
 import { GetEntryDetailUrl } from "../../../../redux/router/actions"
 import { BasicCard } from "../../.."
 import EntryCardHtml from "../EntryCardHtml"
@@ -28,9 +28,14 @@ const EntryCard = ({
   is_public,
   author,
   _lastUpdated,
+  _size,
+  size,
+  selected,
+  onClickCallback,
   minimal,
 }) => {
   const href = useMemo(() => GetEntryDetailUrl(id), [id])
+  const tag = onClickCallback ? "div" : "a"
 
   const cardHeader = useMemo(
     () => (
@@ -71,7 +76,7 @@ const EntryCard = ({
           date_updated={date_updated}
           views={views}
           rating={rating}
-          is_public={is_public}
+          size={size || _size}
         />
       ),
     [
@@ -81,14 +86,17 @@ const EntryCard = ({
       date_updated,
       views,
       rating,
-      is_public,
+      _size,
+      size,
       minimal,
     ]
   )
 
   return (
     <BasicCard
-      tag="a"
+      selected={selected}
+      tag={tag}
+      onClickCallback={onClickCallback}
       href={href}
       header={cardHeader}
       title={cardTitle}
@@ -102,10 +110,12 @@ const EntryCard = ({
 }
 
 EntryCard.propTypes = {
-  entry: EntryPropTypes,
+  ...EntryPropType,
+  selected: PropTypes.bool.isRequired,
+  onClickCallback: PropTypes.func,
   minimal: PropTypes.bool.isRequired,
 }
 
-EntryCard.defaultProps = { minimal: false }
+EntryCard.defaultProps = { selected: false, minimal: false }
 
 export default memo(EntryCard)

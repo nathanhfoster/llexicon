@@ -4,6 +4,7 @@ import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
+import ResolveConflictModal from "./ResolveConflictModal"
 
 import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
 import { SetCalendar } from "../../redux/Calendar/actions"
@@ -64,6 +65,7 @@ const EntryDetail = ({
 
   return entry ? (
     <Container className="Container">
+      {!readOnly && <ResolveConflictModal entry={entry} />}
       <Row>
         <Col xs={12} className="EntryDetail p-0">
           <Entry

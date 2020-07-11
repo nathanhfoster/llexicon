@@ -28,8 +28,6 @@ const TableHeader = ({
   const shouldShowSortIcon = typeof sortUp === isType.BOOLEAN
   const headerStyles = { width }
 
-  console.log(headerStyles)
-
   return (
     <th
       className={`BasicTableHeader px-1 ${sortable ? "HeaderHoverable" : ""} `}
