@@ -15,11 +15,11 @@ const entriesDiffer = (e1, e2) => {
   const sameUpdateDates = entryDatesAreTheSame(e1, e2)
 
   const isEqual = memoizeProps(e1, e2, [
-    "EntryFiles",
+    // "EntryFiles",
     "address",
     // "author",
     // "date_created",
-    "date_created_by_author",
+    // "date_created_by_author",
     // "date_updated",
     // "_lastUpdated",
     "html",
