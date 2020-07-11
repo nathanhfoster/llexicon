@@ -30,6 +30,7 @@ const entriesDiffer = (e1, e2) => {
     "people",
     "rating",
     "size",
+    "_size",
     "tags",
     "title",
     // "views",
