@@ -7,7 +7,7 @@ import { BasicModal, EntryCard } from "../../../components"
 import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
 import { getEntryDate, entryDatesAreTheSame, entriesDiffer } from "./utils"
 
-const ResolveConflictModal = ({ entry }) => {
+const ResolveEntryConflictModal = ({ entry }) => {
   const dispatch = useDispatch()
   const [show, setShow] = useState(false)
   const [entryToUpdate, setEntryToUpdate] = useState({})
@@ -101,8 +101,8 @@ const ResolveConflictModal = ({ entry }) => {
   )
 }
 
-ResolveConflictModal.propTypes = {
+ResolveEntryConflictModal.propTypes = {
   entry: EntryPropTypes,
 }
 
-export default memo(ResolveConflictModal)
+export default memo(ResolveEntryConflictModal)

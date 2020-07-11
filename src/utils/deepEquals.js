@@ -19,11 +19,12 @@ const deepEquals = (a, b, logging = false) => {
         logging && console.log("length != b.length ", length, b.length)
         return false
       }
-      for (i = length; i-- !== 0; )
+      for (i = length; i-- !== 0; ) {
         if (!deepEquals(a[i], b[i], logging)) {
           logging && console.log("!deepEquals(a[i], b[i]) ", a[i], b[i])
           return false
         }
+      }
       return true
     }
 
