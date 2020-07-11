@@ -6,6 +6,8 @@ import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { UserHeadset } from "../../images/SVG"
 import "./styles.css"
 
+const SUPPORT_EMAIL = "nateinthegame@gmail.com"
+
 const Support = () => {
   const supportCards = [
     {
@@ -16,11 +18,11 @@ const Support = () => {
         <Button
           color="accent"
           tag="a"
-          href="mailto:nateinthegame@gmail.com?subject=Astral%20Tree%20Support"
+          href={`mailto:${SUPPORT_EMAIL}?subject=Astral%20Tree%20Support`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          nateinthegame@gmail.com
+          {SUPPORT_EMAIL}
         </Button>
       ),
     },

@@ -1,7 +1,7 @@
 import { EntriesActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
-import { handleFilterEntries } from "./utils"
-import { getStringBytes, mergeJson } from "../../utils"
+import { mergeJson, handleFilterEntries } from "./utils"
+import { getStringBytes } from "../../utils"
 import { RouteMap } from "../../redux/router/actions"
 import * as AwsImages from "../../images/AWS"
 const { ...entryFiles } = AwsImages
@@ -143,13 +143,14 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       const { count, next, previous, results } = payload
       return {
         ...state,
-        count,
-        next,
-        previous,
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), results),
           state.search
         ),
+        count,
+        next,
+        previous,
+        isPending: false,
       }
 
     case EntriesActionTypes.ENTRIES_SET_BY_DATE:
@@ -159,6 +160,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           mergeJson(state.items.concat(state.filteredItems), payload),
           state.search
         ),
+        isPending: false,
       }
 
     case EntriesActionTypes.ENTRY_SET:
@@ -168,13 +170,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           mergeJson(state.items.concat(state.filteredItems), [payload]),
           state.search
         ),
+        isPending: false,
       }
 
     case EntriesActionTypes.ENTRY_UPDATE:
       return {
         ...state,
-        isPending: false,
-        error: DEFAULT_STATE_ENTRIES.error,
         ...handleFilterEntries(
           state.items.concat(state.filteredItems).map((item) => {
             if (item.id === id) {
@@ -191,6 +192,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           }),
           state.search
         ),
+        isPending: false,
+        error: DEFAULT_STATE_ENTRIES.error,
       }
 
     case EntriesActionTypes.ENTRY_DELETE:

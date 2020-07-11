@@ -21,7 +21,7 @@
 }
 
 .CalendarNavigationButton:hover {
-  color: white;
+  color: var(--tertiarycolor);
 }
 
 .react-calendar__navigation button:nth-child(1) {
@@ -36,7 +36,7 @@
   color: var(--secondaryColor);
   border: 0;
   height: 2em;
-  background: var(--quinaryColor);
+  background: var(--primaryColor);
   opacity: var(--mainOpacity);
   border-top: 1px solid rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -72,7 +72,7 @@
 .react-calendar__month-view__days button {
   max-width: 100% !important;
   padding: 0;
-  color: white;
+  color: var(--secondaryColor);
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
@@ -82,8 +82,8 @@
 }
 
 .react-calendar__month-view__weekdays {
-  border-left: 1px solid var(--dark_border);
-  border-right: 1px solid var(--dark_border);
+  border-left: 1px solid var(--quinaryColor);
+  border-right: 1px solid var(--quinaryColor);
   text-align: center;
   background-color: var(--grey);
   opacity: var(--mainOpacity);
@@ -94,16 +94,8 @@
   position: relative;
   opacity: var(--mainOpacity);
   height: var(--calendarTileHeight);
-  background: var(--quinaryColor);
-  border: 1px solid var(--dark_border);
-  background: var(--quinaryColor);
-}
-
-.react-calendar__century-view__decades__decade:hover,
-.react-calendar__decade-view__years__year:hover,
-.react-calendar__year-view__months__month:hover,
-.react-calendar__month-view button:hover {
   background: var(--primaryColor);
+  border: 0 !important;
 }
 
 .react-calendar__month-view .react-calendar__tile abbr {
@@ -133,7 +125,7 @@ abbr {
 
 .react-calendar__month-view .react-calendar__tile--now abbr {
   background-color: var(--accentColor);
-  color: var(--secondaryColor);
+  color: white;
 }
 
 .react-calendar__year-view {
@@ -143,8 +135,16 @@ abbr {
 .react-calendar__decade-view__years__year,
 .react-calendar__year-view__months__month {
   padding: 20px;
-  background: var(--quinaryColor);
+  background: var(--primaryColor);
   color: var(--secondaryColor);
+  border: 0;
+}
+
+.react-calendar__century-view__decades__decade:hover,
+.react-calendar__decade-view__years__year:hover,
+.react-calendar__year-view__months__month:hover,
+.react-calendar__month-view button:hover {
+  background: var(--quinaryColor);
 }
 
 .react-calendar__tile--active abbr {
@@ -172,7 +172,7 @@ abbr {
   height: calc(var(--calendarTileHeight) * 6 + 86px);
   /* max-height: 100vh; */
   /* box-shadow: var(--primaryBoxShadow); */
-  background: var(--quinaryColor);
+  background: var(--primaryColor);
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -181,7 +181,7 @@ abbr {
 .EventListHeader {
   opacity: var(--mainOpacity);
   border: 1px solid rgba(0, 0, 0, 0.2);
-  background: var(--quinaryColor);
+  background: var(--primaryColor);
   color: var(--secondaryColor);
   height: 64px;
   line-height: 60px;

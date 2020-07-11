@@ -4,7 +4,7 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
 } from "reactstrap"
 import "./styles.css"
 
@@ -13,11 +13,11 @@ const BasicDropDown = ({
   onClickCallback,
   direction,
   value,
-  className
+  className,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
-  const toggle = () => setDropdownOpen(prevState => !prevState)
+  const toggle = () => setDropdownOpen((prevState) => !prevState)
 
   const renderList = () =>
     list.map((l, i) => {
@@ -50,16 +50,16 @@ const BasicDropDown = ({
           setMaxHeight: {
             enabled: true,
             // order: 890,
-            fn: data => ({
+            fn: (data) => ({
               ...data,
               styles: {
                 ...data.styles,
                 overflow: "auto",
-                maxHeight: 200
+                maxHeight: 200,
                 // backgroundColor: "var(--primaryColor)"
-              }
-            })
-          }
+              },
+            }),
+          },
         }}
       >
         {renderList()}
@@ -75,12 +75,12 @@ BasicDropDown.propTypes = {
       value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
-        PropTypes.node
+        PropTypes.node,
       ]),
       otherValue: PropTypes.any,
       header: PropTypes.bool,
       disabled: PropTypes.bool,
-      divider: PropTypes.bool
+      divider: PropTypes.bool,
     }).isRequired
   ),
   onClickCallback: PropTypes.func,
@@ -137,13 +137,13 @@ BasicDropDown.propTypes = {
   onClick: PropTypes.func,
   className: PropTypes.string,
   cssModule: PropTypes.object,
-  toggle: PropTypes.bool // default: true
+  toggle: PropTypes.bool, // default: true
 }
 
 BasicDropDown.defaultProps = {
   list: [],
   direction: "down",
-  value: "value"
+  value: "value",
 }
 
 export default memo(BasicDropDown)

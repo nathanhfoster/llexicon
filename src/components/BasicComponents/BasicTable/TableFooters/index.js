@@ -1,6 +1,7 @@
 import React, { useMemo, memo } from "react"
 import { DataPropType, ColumnsPropType } from "../state/types"
 import { connect } from "../../../../store/provider"
+import "./styles.css"
 
 const mapStateToProps = ({ columns, sortList }) => ({
   columns,
@@ -8,7 +9,9 @@ const mapStateToProps = ({ columns, sortList }) => ({
 })
 
 const TableFooters = ({ data, columns }) => {
-  const shouldRender = useMemo(() => columns.some((column) => column.footer))
+  const shouldRender = useMemo(() => columns.some((column) => column.footer), [
+    columns,
+  ])
 
   const renderTableRows = useMemo(
     () =>
@@ -22,7 +25,7 @@ const TableFooters = ({ data, columns }) => {
 
   return (
     shouldRender && (
-      <tfoot>
+      <tfoot className="BasicTableFooter">
         <tr>{renderTableRows}</tr>
       </tfoot>
     )

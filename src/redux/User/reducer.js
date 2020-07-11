@@ -22,6 +22,7 @@ const DEFAULT_STATE_USER = {
     show_animated_background: true,
     push_messages: false,
     offline_mode: false,
+    dark_mode: true,
   },
   location: {
     accuracy: null,
@@ -33,17 +34,27 @@ const DEFAULT_STATE_USER = {
     speed: null,
     timestamp: null,
   },
+  pending: false,
+  error: null,
 }
 
 const User = (state = DEFAULT_STATE_USER, action) => {
   const { type, payload } = action
   switch (type) {
+    case UserActionTypes.USER_PENDING:
+      return { ...state, pending: true }
+
+    case UserActionTypes.USER_ERROR:
+      return { ...state, error: payload }
+
+    case UserActionTypes.USER_RESET_ERROR:
+      return { ...state, error: DEFAULT_STATE_USER.error }
+
     case UserActionTypes.USER_SET:
       return {
         ...state,
         ...payload,
-        updating: false,
-        updated: true,
+        pending: false,
         error: null,
       }
 
@@ -57,6 +68,8 @@ const User = (state = DEFAULT_STATE_USER, action) => {
       return {
         ...state,
         Settings: { ...state.Settings, ...payload },
+        pending: false,
+        error: null,
       }
 
     case AppActionTypes.REDUX_RESET:

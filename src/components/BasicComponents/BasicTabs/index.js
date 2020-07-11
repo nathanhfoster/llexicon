@@ -78,9 +78,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
       tabsToRender.push(
         <NavItem key={tabId} title={titleIsObject ? title.name : title}>
           <NavLink
-            className={`BasicTabsNavLink p-2 px-sm-3 py-sm-2 ${
-              onTab ? "active" : ""
-            }`}
+            className={`BasicTabsNavLink py-2 px-3 ${onTab ? "active" : ""}`}
             onClick={() =>
               onClickCallback ? onClickCallback(tabId) : handleTabChanged(tabId)
             }

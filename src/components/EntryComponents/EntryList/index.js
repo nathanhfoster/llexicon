@@ -58,7 +58,12 @@ const EntryList = ({ entriesWithinView, activeDate, listHeight }) => {
                 title={title}
               >
                 <div className="Overflow eventTitle">
-                  <Star size={8} color="White" animation={false} opacity={1} />
+                  <Star
+                    size={8}
+                    color="PurpleWhite"
+                    animation={false}
+                    opacity={1}
+                  />
                   <span className="ml-1">{title || "No title"}</span>
                 </div>
 

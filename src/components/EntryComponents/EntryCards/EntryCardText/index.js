@@ -7,6 +7,7 @@ import {
 import { Container, Row, Col } from "reactstrap"
 import { RatingIcon, TagsContainer } from "../../.."
 import Moment from "react-moment"
+import { formatBytes } from "../../../../utils"
 import "./styles.css"
 
 const EntryCardText = ({
@@ -16,6 +17,7 @@ const EntryCardText = ({
   date_updated,
   views,
   rating,
+  size,
 }) => {
   return (
     <Container className="EntryCardText Container">
@@ -49,6 +51,10 @@ const EntryCardText = ({
         <Col xs={12} className="EntryCardTextLeftColumn p-0">
           <i className="fas fa-pencil-alt mr-1" />
           <Moment fromNow>{date_updated}</Moment>
+        </Col>
+        <Col xs={12} className="EntryCardTextLeftColumn p-0">
+          <i className="fas fa-hdd mr-1" />
+          {formatBytes(size)}
         </Col>
       </Row>
     </Container>

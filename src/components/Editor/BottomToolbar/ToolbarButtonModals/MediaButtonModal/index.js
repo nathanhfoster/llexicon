@@ -92,20 +92,18 @@ const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
             </InputGroup>
           </Col>
         </Row>
-        <Row>
-          <Col className="Center">
-            {type === EMBEDED_TYPES[0].id ? (
-              <Media src={url || PLACEHOLDER} height="100%" width="100%" />
-            ) : (
-              <iframe
-                src={cleanUrl(url)}
-                frameBorder="0"
-                height={videoHeight}
-                width="100%"
-              />
-            )}
-          </Col>
-        </Row>
+        <div className="Center">
+          {type === EMBEDED_TYPES[0].id ? (
+            <Media src={url || PLACEHOLDER} className="MediaButtonModalImage" />
+          ) : (
+            <iframe
+              src={cleanUrl(url)}
+              frameBorder="0"
+              height={videoHeight}
+              width="100%"
+            />
+          )}
+        </div>
       </Container>
     </ToolbarModal>
   )

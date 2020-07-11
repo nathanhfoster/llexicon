@@ -14,6 +14,7 @@ import ToolbarModal from "../../ToolbarModal"
 import { TagsContainer, DebounceInput } from "../../../../"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
 import {
+  filterMapArray,
   TopKFrequentStrings,
   removeAttributeDuplicates,
   stringMatch,
@@ -80,6 +81,8 @@ const TagsButtonModal = ({
   const sortedTags = useMemo(
     () =>
       TopKFrequentStrings(entryTags, "name")
+        // filterMapArray(entryTags, "name")
+        //   .sort((a, b) => a.name.localeCompare(b.name))
         .filter((entryPersonName) => {
           if (tags.some(({ name }) => name == entryPersonName)) return false
           else if (!lastTagAsString) return true
@@ -165,7 +168,7 @@ const TagsButtonModal = ({
         <Row className="TagAndPeopleContainer">
           <TagsContainer
             tags={sortedTags}
-            maxHeight={150}
+            maxHeight={200}
             flexWrap="wrap"
             onClickCallback={handleAddTag}
             hoverable

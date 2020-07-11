@@ -49,7 +49,7 @@ BasicTableProvider.defaultProps = {
   striped: false,
   dark: true,
   responsive: true,
-  pageSize: 10,
+  pageSize: 5,
   pageSizes: [5, 10, 15, 20, 25, 50, 100],
   sortList: [],
   sortList: [],

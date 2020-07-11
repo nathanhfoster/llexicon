@@ -1,11 +1,24 @@
-const useScrollable = onScrollEvent => {
-  const { scrollHeight, scrollTop, clientHeight } = onScrollEvent.target
+import { useState } from "react"
 
-  const reachedBottom = scrollHeight - scrollTop === clientHeight
+const useScrollable = (threshold = false) => {
+  const [reachedBottom, setReachedBottom] = useState(false)
 
-  console.log(reachedBottom)
+  const setReachedBottomCallback = ({
+    target: { scrollHeight, scrollTop, clientHeight },
+  }) => {
+    const scrollOffset = clientHeight / 4
 
-  return { reachedBottom }
+    const reachedBottom =
+      threshold && scrollHeight - scrollTop <= clientHeight + scrollOffset
+
+    if (reachedBottom) {
+      setReachedBottom(true)
+    } else {
+      setReachedBottom(false)
+    }
+  }
+
+  return [reachedBottom, setReachedBottomCallback]
 }
 
 export default useScrollable

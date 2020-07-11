@@ -105,10 +105,9 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
       const getState = React.useCallback(() => state, [state])
 
       // Memoize globalState
-      const stateToProps = React.useMemo(
-        () => mapStateToProps(state, ownProps),
-        [state]
-      )
+      const stateToProps = mapStateToProps
+        ? React.useMemo(() => mapStateToProps(state, ownProps), [state])
+        : null
 
       // Memoize globalDispatch
       const dispatchToProps = React.useMemo(

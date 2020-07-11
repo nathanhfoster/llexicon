@@ -1,5 +1,0 @@
-export { default as LocationButtonModal } from "./LocationButtonModal"
-export { default as RatingButtonModal } from "./RatingButtonModal"
-export { default as MediaButtonModal } from "./MediaButtonModal"
-export { default as PeopleButtonModal } from "./PeopleButtonModal"
-export { default as TagsButtonModal } from "./TagsButtonModal"

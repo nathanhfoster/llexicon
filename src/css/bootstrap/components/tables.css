@@ -3,6 +3,6 @@
 }
 
 .table-dark.table-hover tbody tr:hover {
-  background-color: var(--dark_border);
+  background-color: var(--quinaryColor);
   cursor: pointer;
 }

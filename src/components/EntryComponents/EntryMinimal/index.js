@@ -7,7 +7,7 @@ import {
 } from "../../../redux/router/actions"
 import Moment from "react-moment"
 import Star from "../../BackgroundImage/Star"
-import { TagsContainer, EntryDataCellLink } from "../../"
+import { TagsContainer, EntryDataCellLink, EntryOptionsMenu } from "../../"
 
 import "./styles.css"
 
@@ -18,7 +18,6 @@ const EntryMinimal = ({
   date_created_by_author,
   _lastUpdated,
   EntryFiles,
-  author,
   date_create,
   date_updated,
   address,
@@ -28,18 +27,22 @@ const EntryMinimal = ({
   people,
   views,
   rating,
+  is_public,
+  author,
 }) => {
   const showFileIcon = EntryFiles.length > 0
   const showLocationIcon = latitude && longitude
 
   const href = GetEntryDetailUrl(id)
 
+  const handleContainerClick = () => GoToEntryDetail(id)
+
   return (
     <Container
       fluid
       tag={Badge}
       className="EntryMinimal p-2"
-      onClick={() => GoToEntryDetail(id)}
+      onClick={handleContainerClick}
       title={title}
     >
       <Row>
@@ -48,6 +51,18 @@ const EntryMinimal = ({
           <EntryDataCellLink className="ml-1" href={href}>
             {title}
           </EntryDataCellLink>
+          <div
+            className="EntryOptionsMinimalMenuContainer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <EntryOptionsMenu
+              entryId={id}
+              title={title}
+              is_public={is_public}
+              author={author}
+              shouldSyncOnUpdate={true}
+            />
+          </div>
         </Col>
         <Col xs={12} className="EntryMinimalTime mb-2">
           <i

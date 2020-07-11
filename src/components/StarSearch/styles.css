@@ -3,21 +3,27 @@
   border: 0;
 }
 
+.StarSearch i {
+  color: var(--secondaryColor);
+  font-size: 32px;
+}
+
+.StarSearch i:hover {
+  color: var(--accentColor);
+}
+
 .TelescopeIconContainer {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
   background: var(--quinaryColor);
 }
 
-.TelescopeIcon {
-  color: var(--secondaryColor);
-  font-size: 32px;
-}
-
-.TelescopeIcon:hover {
-  color: var(--accentColor);
+.SunIcon {
+  animation: fa-spin 0.8s infinite ease-in;
+  -webkit-animation: fa-spin 0.8s infinite linear;
 }
 
 .StarSearch:focus-within .TelescopeIcon {
   animation: fa-spin 0.8s alternate ease-in;
+  -webkit-animation: fa-spin 0.8s alternate linear;
 }

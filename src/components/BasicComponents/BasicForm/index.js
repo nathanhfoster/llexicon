@@ -1,8 +1,17 @@
 import React, { useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { Button, Form, FormGroup, Label, Input } from "reactstrap"
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormFeedback,
+  FormText,
+} from "reactstrap"
 import { getFormPayload } from "./utils"
 import { BasicFormProps } from "./propTypes"
+import BasicInput from "../BasicInput"
 
 const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
   const formRef = useRef()
@@ -25,42 +34,9 @@ const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
 
   const renderInputs = useMemo(
     () =>
-      inputs.map((input, i) => {
-        const {
-          name,
-          defaultValue,
-          value,
-          check,
-          label,
-          type,
-          placeholder,
-          required,
-          disabled,
-          autoFocus,
-          error,
-          multiline,
-          rows,
-          className,
-        } = input
-        const isCheckOrRadio = check || type === "radio"
-        const id = `${name}-${i}`
-        return (
-          <FormGroup check={isCheckOrRadio} key={id} row>
-            <Label check={check} for={id}>
-              {`${label} ${required ? "*" : ""}`}
-            </Label>
-            <Input
-              defaultValue={defaultValue}
-              value={value}
-              type={type}
-              id={id}
-              name={name}
-              placeholder={placeholder}
-              disabled={disabled}
-            />
-          </FormGroup>
-        )
-      }),
+      inputs.map((input, i) => (
+        <BasicInput key={`${input.name}-${i}`} {...input} />
+      )),
     [inputs]
   )
 

@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, lazy, Fragment } from "react"
-import { EntryPropTypes } from "../../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import React, { useMemo, lazy, memo, Fragment } from "react"
+import PropTypes from "prop-types"
+import { EntryPropType } from "../../../../redux/Entries/propTypes"
 import { GetEntryDetailUrl } from "../../../../redux/router/actions"
 import { BasicCard } from "../../.."
 import EntryCardHtml from "../EntryCardHtml"
@@ -9,8 +9,6 @@ import EntryCardText from "../EntryCardText"
 import "./styles.css"
 
 const EntryOptionsMenu = lazy(() => import("../../EntryOptionsMenu"))
-
-const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 
 const EntryCard = ({
   id,
@@ -30,16 +28,19 @@ const EntryCard = ({
   is_public,
   author,
   _lastUpdated,
-  userId,
+  _size,
+  size,
+  selected,
+  onClickCallback,
+  minimal,
 }) => {
   const href = useMemo(() => GetEntryDetailUrl(id), [id])
-  const readOnly = Boolean(author && userId && userId !== author)
-  const reducedHtml = html.slice(0, 1000)
+  const tag = onClickCallback ? "div" : "a"
 
   const cardHeader = useMemo(
     () => (
       <Fragment>
-        <EntryCardHtml html={reducedHtml} views={views} rating={rating} />
+        <EntryCardHtml html={html} views={views} rating={rating} />
         <div
           className="EntryOptionsMenuContainer"
           onClick={(e) => e.preventDefault()}
@@ -48,13 +49,13 @@ const EntryCard = ({
             entryId={id}
             title={title}
             is_public={is_public}
+            author={author}
             shouldSyncOnUpdate={true}
-            readOnly={readOnly}
           />
         </div>
       </Fragment>
     ),
-    [id, is_public, reducedHtml, views, rating]
+    [id, is_public, html, views, rating]
   )
 
   const cardTitle = useMemo(
@@ -66,17 +67,18 @@ const EntryCard = ({
   )
 
   const cardText = useMemo(
-    () => (
-      <EntryCardText
-        tags={tags}
-        people={people}
-        date_created_by_author={date_created_by_author}
-        date_updated={date_updated}
-        views={views}
-        rating={rating}
-        is_public={is_public}
-      />
-    ),
+    () =>
+      !minimal && (
+        <EntryCardText
+          tags={tags}
+          people={people}
+          date_created_by_author={date_created_by_author}
+          date_updated={date_updated}
+          views={views}
+          rating={rating}
+          size={size || _size}
+        />
+      ),
     [
       tags,
       people,
@@ -84,13 +86,17 @@ const EntryCard = ({
       date_updated,
       views,
       rating,
-      is_public,
+      _size,
+      size,
+      minimal,
     ]
   )
 
   return (
     <BasicCard
-      tag="a"
+      selected={selected}
+      tag={tag}
+      onClickCallback={onClickCallback}
       href={href}
       header={cardHeader}
       title={cardTitle}
@@ -103,8 +109,13 @@ const EntryCard = ({
   )
 }
 
-EntryCard.propTypes = { entry: EntryPropTypes }
+EntryCard.propTypes = {
+  ...EntryPropType,
+  selected: PropTypes.bool.isRequired,
+  onClickCallback: PropTypes.func,
+  minimal: PropTypes.bool.isRequired,
+}
 
-EntryCard.defaultProps = {}
+EntryCard.defaultProps = { selected: false, minimal: false }
 
-export default reduxConnect(mapStateToProps)(EntryCard)
+export default memo(EntryCard)

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
-import { EntriesPropTypes } from "../../redux/Entries/propTypes"
-import { useParams } from "react-router-dom"
+import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
+import ResolveConflictModal from "./ResolveConflictModal"
 
 import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
 import { SetCalendar } from "../../redux/Calendar/actions"
@@ -24,20 +24,21 @@ const mapStateToProps = ({
 const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
 
 const EntryDetail = ({
-  userId,
+  entryId,
   items,
   filteredItems,
+  userId,
   GetUserEntryDetails,
   SyncEntries,
   SetCalendar,
 }) => {
-  const { entryId } = useParams()
-
   let setCalendarDateToEntryDate = useRef(false)
+
   const entry = useMemo(
     () => items.concat(filteredItems).find(({ id }) => id == entryId),
-    [userId, entryId, items, filteredItems]
+    [items, filteredItems]
   )
+
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
   const readOnly = Boolean(entry && entry.author && userId !== entry.author)
@@ -64,6 +65,7 @@ const EntryDetail = ({
 
   return entry ? (
     <Container className="Container">
+      {!readOnly && <ResolveConflictModal entry={entry} />}
       <Row>
         <Col xs={12} className="EntryDetail p-0">
           <Entry
@@ -83,9 +85,8 @@ const EntryDetail = ({
 
 EntryDetail.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  entry: EntryPropTypes,
   userId: PropTypes.number,
-  items: EntriesPropTypes.isRequired,
-  filteredItems: EntriesPropTypes.isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,

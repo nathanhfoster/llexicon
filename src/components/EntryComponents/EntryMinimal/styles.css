@@ -24,3 +24,17 @@
   font-size: 1.25em;
   font-weight: 200;
 }
+
+
+.EntryOptionsMinimalMenuContainer {
+  opacity: 0.05;
+  position: absolute;
+  top: -4px;
+  right: 0;
+  z-index: 999;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.EntryOptionsMinimalMenuContainer:hover {
+  opacity: 1;
+}
