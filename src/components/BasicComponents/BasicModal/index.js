@@ -1,5 +1,6 @@
 import React, { useState, memo, Fragment, cloneElement } from "react"
 import PropTypes from "prop-types"
+import { useSelector, shallowEqual } from "react-redux"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./styles.css"
 
@@ -18,14 +19,16 @@ const BasicModal = ({
   saveButton,
   cancelButton,
   size,
+  toggle,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const toggle = () => setIsOpen(!isOpen)
+  const handleToggle = () =>
+    toggle ? toggle() : setIsOpen((prevIsOpen) => !prevIsOpen)
 
   const handleClose = () => {
     onCancelCallback && onCancelCallback()
-    toggle()
+    handleToggle()
   }
 
   const handleSave = () => {
@@ -35,6 +38,15 @@ const BasicModal = ({
 
   const shouldShowModal = show !== undefined ? show : isOpen
 
+  const dark_mode = useSelector(
+    ({
+      User: {
+        Settings: { dark_mode },
+      },
+    }) => dark_mode,
+    [shallowEqual]
+  )
+
   return (
     <Fragment>
       {button === false ? null : typeof button === "string" ? (
@@ -43,7 +55,7 @@ const BasicModal = ({
           disabled={disabled}
           onClick={() => {
             onClickCallback && onClickCallback()
-            toggle()
+            handleToggle()
           }}
         >
           {button}
@@ -56,24 +68,25 @@ const BasicModal = ({
             const { onClick } = button.props
             onClick && onClick()
             onClickCallback && onClickCallback()
-            toggle()
+            handleToggle()
           },
           onClickCallback: () => {
             onClickCallback && onClickCallback()
-            toggle()
+            handleToggle()
           },
         })
       )}
       <Modal
         isOpen={shouldShowModal}
-        toggle={toggle}
+        toggle={handleToggle}
         className="BasicModal"
+        contentClassName={`${dark_mode ? "BasicModalContentDark" : ""}`}
         size={size}
         centered
         onClosed={onCancelCallback}
       >
         <ModalHeader
-          toggle={toggle}
+          toggle={handleToggle}
           style={{
             justifyContent:
               typeof title === "string" ? "center" : "space-between",
@@ -85,11 +98,13 @@ const BasicModal = ({
         <ModalFooter style={{ justifyContent: "center" }}>
           {footer || (
             <Fragment>
-              {cloneElement(saveButton, {
-                disabled: disabledSave,
-                onClick: handleSave,
-              })}
-              {cloneElement(cancelButton, { onClick: handleClose })}
+              {saveButton &&
+                cloneElement(saveButton, {
+                  disabled: disabledSave,
+                  onClick: handleSave,
+                })}
+              {cancelButton &&
+                cloneElement(cancelButton, { onClick: handleClose })}
             </Fragment>
           )}
         </ModalFooter>

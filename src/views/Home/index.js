@@ -1,4 +1,4 @@
-import React, { useMemo, lazy, } from "react"
+import React, { useMemo, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
@@ -61,8 +61,10 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
       <Row className="mb-3">
         <Col xs={12} className="px-0 pt-3 pt-sm-4">
           <BasicCard
+            cardHeaderClassName="Center"
             header={homeCardHeader}
             title={homeCardTitle}
+            cardTextClassName="Center mb-2"
             text={homeCardText}
             button={homeCardButton}
           />

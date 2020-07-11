@@ -87,25 +87,25 @@ input[type="password"] {
   color: var(--secondaryColor);
 }
 
+input[type="file"] {
+  display: none;
+}
+
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: var(--light_grey);
+  color: var(--tertiarycolor);
   opacity: 1;
   /* Firefox */
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: var(--light_grey);
+  color: var(--tertiarycolor);
 }
 
 ::-ms-input-placeholder {
   /* Microsoft Edge */
-  color: var(--light_grey);
-}
-
-input[type="file"] {
-  display: none;
+  color: var(--tertiarycolor);
 }
 
 /* *:hover {

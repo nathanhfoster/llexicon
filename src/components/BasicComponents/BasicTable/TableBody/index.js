@@ -34,6 +34,7 @@ const TableBody = ({ data, columns, onRowClick, currentPage, pageSize }) => {
       )),
     [slicedData, columns]
   )
+  
   return <tbody>{renderTableRows}</tbody>
 }
 

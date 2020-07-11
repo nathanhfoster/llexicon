@@ -3,7 +3,7 @@ import { connect } from "../../../../store/provider"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import { tableSort, tableFilter } from "../utils"
-import { ColumnsPropType, DataPropType, SortListPropType } from "../state/types"
+import { DataPropType, SortListPropType } from "../state/types"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -15,7 +15,6 @@ const mapStateToProps = ({
   striped,
   dark,
   responsive,
-  columns,
   onRowClick,
 }) => ({
   sortList,
@@ -26,7 +25,6 @@ const mapStateToProps = ({
   striped,
   dark,
   responsive,
-  columns,
   onRowClick,
 })
 
@@ -92,7 +90,6 @@ BasicTable.propTypes = {
   striped: PropTypes.bool.isRequired,
   dark: PropTypes.bool.isRequired,
   responsive: PropTypes.bool.isRequired,
-  columns: ColumnsPropType,
   onRowClick: PropTypes.func.isRequired,
 
   // reactstrap Table

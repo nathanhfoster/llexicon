@@ -2,7 +2,7 @@ import { isType } from "../../../../utils"
 
 const tableSort = (data, sortList) => {
   let sortedData = [...data]
-  
+
   const sorts = sortList.filter(
     ({ sortUp }) => typeof sortUp !== isType.UNDEFINED && sortUp !== null
   )
@@ -42,10 +42,18 @@ const tableSort = (data, sortList) => {
           return sortUp
             ? bValue.join().localeCompare(aValue.join())
             : aValue.join().localeCompare(bValue.join())
-        } else if (valueType === isType.OBJECT) {
-          // console.log(aValue)
-          // console.log("OBJECT")
+        } else {
+          const aString = `${aValue}`
+          const bString = `${bValue}`
+          return sortUp
+            ? bString.localeCompare(aString)
+            : aString.localeCompare(bString)
         }
+
+        // else if (valueType === isType.OBJECT) {
+        //   console.log(aValue)
+        //   console.log("OBJECT")
+        // }
       })
     }
   }

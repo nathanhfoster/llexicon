@@ -6,7 +6,7 @@
 }
 
 .form-control::placeholder {
-  color: var(--light_grey);
+  color: var(--tertiarycolor);
 }
 
 .form-control:focus {
@@ -14,4 +14,9 @@
   border-color: inherit !important;
   outline: 0;
   box-shadow: 0 0 0 0.175rem var(--accentColor);
+  background: var(--quinaryColor);
+}
+
+.form-control .is-valid {
+  
 }

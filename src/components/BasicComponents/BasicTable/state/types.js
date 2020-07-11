@@ -15,7 +15,7 @@ const ColumnPropType = PropTypes.shape({
     PropTypes.func,
   ]),
   key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   render: PropTypes.func,
   footer: PropTypes.func,
   sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["string"])]),

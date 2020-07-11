@@ -69,7 +69,10 @@ const About = ({ userId, prompt, promptToInstall }) => {
       title: "Offline",
       text: "Doesn't require an internet connection",
       button: (
-        <Button color="accent" onClick={() => RouterPush(RouteMap.SETTINGS)}>
+        <Button
+          color="accent"
+          onClick={() => RouterPush(RouteMap.SETTINGS_PREFERENCES)}
+        >
           Go Offline
         </Button>
       ),
@@ -117,7 +120,12 @@ const About = ({ userId, prompt, promptToInstall }) => {
     () =>
       features.map((feature, i) => (
         <Col key={i} xs={12} sm={6} md={4} className="pt-3 pt-sm-4">
-          <BasicCard {...feature} cardBodyClassName="AboutCardBody" />
+          <BasicCard
+            {...feature}
+            cardHeaderClassName="Center"
+            cardBodyClassName="AboutCardBody"
+            cardTitleClassName="Center"
+          />
         </Col>
       )),
     [features]
@@ -149,8 +157,10 @@ const About = ({ userId, prompt, promptToInstall }) => {
       <Row>
         <Col xs={12} className="pt-3 pt-sm-4">
           <BasicCard
+            cardHeaderClassName="Center"
             header={homeCardHeader}
             title={homeCardTitle}
+            cardTextClassName="Center"
             text={homeCardText}
             button={homeCardButton}
           />

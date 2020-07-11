@@ -6,6 +6,7 @@ import { Container, Row, Col } from "reactstrap"
 import { ButtonClearCache } from "../"
 import { formatBytes, getStringBytes } from "../../utils"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
+import { CloudDownload } from "../../images/SVG"
 
 const mapStateToProps = (state) => {
   const {
@@ -71,7 +72,10 @@ const LocalStorage = ({
   return (
     <Container fluid>
       <Row>
-        <Header>Local Storage Usage</Header>
+        <Header>
+          <i className="fas fa-hdd mr-1" />
+          Local Storage Usage
+        </Header>
       </Row>
       <Row>
         <Col xs={12} className="p-0">
@@ -89,7 +93,10 @@ const LocalStorage = ({
         </Col>
       </Row>
       <Row>
-        <Header>Server Usage</Header>
+        <Header height={50}>
+          <CloudDownload className="mr-1" height={37} />
+          Server Usage
+        </Header>
       </Row>
       <Row>
         <Col xs={12} className="p-0">

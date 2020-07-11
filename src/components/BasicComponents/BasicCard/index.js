@@ -1,10 +1,11 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { Card, CardHeader, CardText, CardBody, CardTitle } from "reactstrap"
 import { isType } from "../../../utils"
 import "./styles.css"
 
 const BasicCard = ({
+  selected,
   tag,
   href,
   header,
@@ -19,22 +20,32 @@ const BasicCard = ({
   cardTextClassName,
   onClickCallback,
 }) => {
-  const handleOnClickCallback = () => onClickCallback && onClickCallback()
-  const cardHoverStyles = onClickCallback ? "BasicCardHover" : ""
+  const handleOnClickCallback = (e) => onClickCallback && onClickCallback(e)
+  const cardHref = !onClickCallback ? href : null
+  const cardHoverStyles = useMemo(() => {
+    let hoverStyles = ""
+
+    if (onClickCallback || cardHref) {
+      hoverStyles = `BasicCardHover`
+    }
+
+    if (selected) {
+      hoverStyles = `${hoverStyles} BasicCardSelected`
+    }
+
+    return hoverStyles
+  }, [selected, onClickCallback, cardHref])
+
   const titleIsObject = typeof title === isType.OBJECT
   const cardTitle = titleIsObject ? title.name : title
-  const renderCardTitle = titleIsObject ? (
-    title.render
-  ) : (
-    <CardTitle className={`${cardTitleClassName} Center`}>{title}</CardTitle>
-  )
+
   return (
     <Card
       className={`BasicCard ${cardClassName} ${cardHoverStyles}`}
       onClick={handleOnClickCallback}
       title={cardTitle}
       tag={tag}
-      href={href}
+      href={cardHref}
     >
       <CardHeader
         tag="div"
@@ -50,9 +61,11 @@ const BasicCard = ({
         tag="div"
         className={`BasicCardBodyContainer ${cardBodyClassName}`}
       >
-        {renderCardTitle}
+        <CardTitle className={`BasicCardTitle ${cardTitleClassName}`}>
+          {titleIsObject ? title.render : title}
+        </CardTitle>
         {text && (
-          <CardText tag="div" className={`${cardTextClassName} Center`}>
+          <CardText tag="div" className={`BasicCardText ${cardTextClassName}`}>
             {text}
           </CardText>
         )}
@@ -63,6 +76,7 @@ const BasicCard = ({
 }
 
 BasicCard.propTypes = {
+  selected: PropTypes.bool.isRequired,
   tag: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   href: PropTypes.string,
   header: PropTypes.node,
@@ -82,12 +96,13 @@ BasicCard.propTypes = {
 }
 
 BasicCard.defaultProps = {
+  selected: false,
   tag: "div",
   cardClassName: "",
-  cardHeaderClassName: "Center",
+  cardHeaderClassName: "",
   cardBodyClassName: "",
-  cardTitleClassName: "BasicCardTitle Overflow",
-  cardTextClassName: "BasicCardText",
+  cardTitleClassName: "",
+  cardTextClassName: "",
 }
 
 export default memo(BasicCard)

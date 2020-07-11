@@ -1,9 +1,6 @@
 import { BasicTableActionTypes } from "./types"
 
-const basicTableSort = (onSortCallback, sortKey, sortUp) => (
-  dispatch,
-  getState
-) => {
+const basicTableSort = (onSortCallback, sortKey, sortUp) => (dispatch) => {
   onSortCallback && onSortCallback(sortKey, sortUp)
   const payload = { sortKey, sortUp }
   return dispatch({
@@ -13,8 +10,7 @@ const basicTableSort = (onSortCallback, sortKey, sortUp) => (
 }
 
 const basicTableFilter = (onFilterCallback, filterKey, filterValue) => (
-  dispatch,
-  getState
+  dispatch
 ) => {
   onFilterCallback && onFilterCallback(filterKey, filterValue)
   const payload = { filterKey, filterValue }

@@ -13,6 +13,7 @@ export const StarColorGradients = {
   YellowishWhite: `#f1c40f, #ffffff`,
   PaleYellowOrange: `#f1c40f, #e67e22`,
   LightOrangeRed: `#f39c12, #e74c3c`,
+  PurpleWhite: `#8e44ad, #ffffff`,
 }
 
 const StarColorGradientsList = objectToArray(StarColorGradients)

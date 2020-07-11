@@ -21,13 +21,23 @@ const mapDispatchToProps = {
   UpdateSettings,
 }
 
-const Sections = ({ User, GetUserSettings, PostSettings, UpdateSettings }) => {
+const Preferences = ({
+  User,
+  GetUserSettings,
+  PostSettings,
+  UpdateSettings,
+}) => {
   useEffect(() => {
     if (User.token) GetUserSettings()
   }, [])
 
   const {
-    Settings: { show_animated_background, offline_mode, push_messages },
+    Settings: {
+      show_animated_background,
+      dark_mode,
+      offline_mode,
+      push_messages,
+    },
   } = User
 
   const handleOnClick = useCallback(
@@ -62,6 +72,13 @@ const Sections = ({ User, GetUserSettings, PostSettings, UpdateSettings }) => {
           onClickCallback: handleOnClick,
           title: "Show animated background",
           tooltipTitle: "Toggles showing the the animated background",
+        },
+        {
+          settingKey: "dark_mode",
+          checked: dark_mode,
+          onClickCallback: handleOnClick,
+          title: "Dark Mode",
+          tooltipTitle: "Toggles dark mode",
         },
       ],
     },
@@ -110,11 +127,11 @@ const Sections = ({ User, GetUserSettings, PostSettings, UpdateSettings }) => {
   return <Form>{renderSections}</Form>
 }
 
-Sections.propTypes = {
+Preferences.propTypes = {
   User: UserProps.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   PostSettings: PropTypes.func.isRequired,
   UpdateSettings: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Sections)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Preferences)

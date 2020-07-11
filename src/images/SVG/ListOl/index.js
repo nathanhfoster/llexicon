@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import "../styles.css"
 
-const ListOl = ({ className }) => (
+const ListOl = ({ className, ...styles }) => (
   <svg
     aria-hidden="true"
     focusable="false"
@@ -11,6 +11,7 @@ const ListOl = ({ className }) => (
     xmlns="https://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
     className={className}
+    style={styles}
   >
     <g class="fa-group">
       <path

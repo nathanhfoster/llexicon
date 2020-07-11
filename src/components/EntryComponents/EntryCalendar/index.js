@@ -113,8 +113,8 @@ const EntryCalendar = ({
       <Row>
         <Col
           className="EventList"
-          md={{ size: 3, order: 1 }}
           xs={{ size: 12, order: 2 }}
+          md={{ size: 3, order: 1 }}
         >
           <div className="EventListHeader Center">
             <Button
@@ -139,8 +139,8 @@ const EntryCalendar = ({
           />
         </Col>
         <Col
-          md={{ size: 9, order: 2 }}
           xs={{ size: 12, order: 1 }}
+          md={{ size: 9, order: 2 }}
           className="p-0"
         >
           {/* https://github.com/wojtekmaj/react-calendar#readme */}
