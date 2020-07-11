@@ -35,7 +35,7 @@ const entriesDiffer = (e1, e2) => {
     // "views",
   ])
 
-  return !recentlyViewed && !sameUpdateDates && !isEqual
+  return !isEqual
 }
 
 export { getEntryDate, entryDatesAreTheSame, entriesDiffer }
