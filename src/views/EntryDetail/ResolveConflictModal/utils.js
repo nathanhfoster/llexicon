@@ -18,7 +18,7 @@ const entriesDiffer = (e1, e2) => {
     "EntryFiles",
     "address",
     // "author",
-    "date_created",
+    // "date_created",
     "date_created_by_author",
     // "date_updated",
     // "_lastUpdated",
