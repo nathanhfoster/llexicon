@@ -120,7 +120,7 @@ const renderEntryProp = (prop, propValue) => {
       return propValue
 
     case "html":
-      return <i className="fas fa-keyboard" />
+      return propValue.length
 
     case "tags":
       return getJsonTagsOrPeople(propValue)
