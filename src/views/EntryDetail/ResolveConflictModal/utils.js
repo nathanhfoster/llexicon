@@ -1,7 +1,7 @@
 import memoizeProps from "../../../utils/memoizeProps"
 
 const getEntryDate = (entry) =>
-  new Date(entry._lastUpdated || entry.date_updated)
+  new Date(entry.date_created_by_author || entry._lastUpdated || entry.date_updated)
 
 const entryDatesAreTheSame = (e1, e2) => {
   const d1 = getEntryDate(e1)
@@ -19,7 +19,7 @@ const entriesDiffer = (e1, e2) => {
     "address",
     // "author",
     // "date_created",
-    "date_created_by_author",
+    // "date_created_by_author",
     // "date_updated",
     // "_lastUpdated",
     "html",
@@ -36,7 +36,7 @@ const entriesDiffer = (e1, e2) => {
     // "views",
   ])
 
-  return !isEqual
+  return !sameUpdateDates && !isEqual
 }
 
 export { getEntryDate, entryDatesAreTheSame, entriesDiffer }
