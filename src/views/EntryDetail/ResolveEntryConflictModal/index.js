@@ -56,7 +56,8 @@ const ResolveEntryConflictModal = ({ entry }) => {
 
   return (
     <BasicModal
-      size="lg"
+      size="xl"
+      className="p-0"
       button={false}
       show={show}
       title={"Resolve Entry Conflict"}
