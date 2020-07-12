@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react"
+import React, { useEffect, useState, useRef, useCallback } from "react"
 import { connect as reduxConnect } from "react-redux"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import EntryDifferences from "./EntryDifferences"
@@ -35,7 +35,7 @@ const ResolveEntryConflictModal = ({
   const [hasResolved, setHasResolved] = useState(false)
   const [show, setShow] = useState(false)
   const [entryToUpdate, setEntryToUpdate] = useState({})
-  const localEntry = useMemo(() => entry, [])
+  const { current: previousEntry } = useRef(entry)
 
   const toggleShow = (toggle) => {
     setShow((prevShow) => toggle || !prevShow)
@@ -48,15 +48,19 @@ const ResolveEntryConflictModal = ({
   }, [])
 
   useEffect(() => {
-    if (!hasResolved && findDifferentProps(entryFromServer, localEntry).length > 0) {
+    const userDidNotUpdateEntryInRedux =
+      previousEntry._lastUpdated === entry._lastUpdated
+    const hasDifferentProps =
+      findDifferentProps(entryFromServer, entry).length > 0
+    if (!hasResolved && userDidNotUpdateEntryInRedux && hasDifferentProps) {
       toggleShow(true)
       setEntryToUpdate(entry)
     }
-  }, [entry, localEntry, entryFromServer])
+  }, [entry, entry, entryFromServer])
 
   const handleLocalEntryCardClick = useCallback(() => {
-    setEntryToUpdate(localEntry)
-  }, [localEntry])
+    setEntryToUpdate(entry)
+  }, [entry])
 
   const handleEntryFromServerCardClick = useCallback(() => {
     setEntryToUpdate(entryFromServer)
@@ -70,7 +74,7 @@ const ResolveEntryConflictModal = ({
     await SyncEntries()
   }, [entryToUpdate])
 
-  const localEntryCardSelected = deepEquals(localEntry, entryToUpdate)
+  const localEntryCardSelected = deepEquals(entry, entryToUpdate)
 
   const entryFromServerCardSelected = !localEntryCardSelected
 
@@ -85,7 +89,7 @@ const ResolveEntryConflictModal = ({
       toggle={toggleShow}
       disabledSave={!entryToUpdate.id}
     >
-      {localEntry && entryFromServer && (
+      {entry && entryFromServer && (
         <Container className="Container">
           <Row>
             <Col
@@ -94,7 +98,7 @@ const ResolveEntryConflictModal = ({
               className="p-2 md-p-1"
             >
               <EntryCard
-                {...localEntry}
+                {...entry}
                 onClickCallback={handleLocalEntryCardClick}
                 selected={localEntryCardSelected}
               />
@@ -104,7 +108,7 @@ const ResolveEntryConflictModal = ({
               md={{ size: 12, order: 3 }}
               className="p-2 md-p-1"
             >
-              <EntryDifferences entry1={localEntry} entry2={entryFromServer} />
+              <EntryDifferences entry1={entry} entry2={entryFromServer} />
             </Col>
             <Col
               xs={{ size: 12, order: 2 }}
@@ -126,7 +130,7 @@ const ResolveEntryConflictModal = ({
 
 ResolveEntryConflictModal.propTypes = {
   entry: EntryPropTypes,
-  entryFromServer: EntryPropTypes
+  entryFromServer: EntryPropTypes,
 }
 
 export default reduxConnect(

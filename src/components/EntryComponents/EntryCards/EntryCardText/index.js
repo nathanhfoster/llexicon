@@ -8,6 +8,7 @@ import { Container, Row, Col } from "reactstrap"
 import { RatingIcon, TagsContainer } from "../../.."
 import Moment from "react-moment"
 import { formatBytes } from "../../../../utils"
+
 import "./styles.css"
 
 const EntryCardText = ({

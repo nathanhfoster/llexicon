@@ -1,7 +1,8 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import { Badge, Col } from "reactstrap"
 import PropTypes from "prop-types"
 import { EntryTagsProps } from "../../../redux/Entries/propTypes"
+import { getJsonTagsOrPeople } from "../../../redux/Entries/utils"
 import "./styles.css"
 
 const TagsContainer = ({
@@ -40,21 +41,7 @@ const TagsContainer = ({
     fontSize,
   }
 
-  const renderTags = () =>
-    tags.map(({ name }, i) => (
-      <Badge
-        key={name}
-        className={`TagContainer fade-in ${tagContainerClassName} ${
-          hoverable ? "TagContainerHover" : ""
-        }`}
-        onClick={onClickCallback ? () => onClickCallback(name) : null}
-      >
-        {showTagIcon && <i className={faIcon} style={{ marginRight: 4 }} />}
-        <span className="TagTitle">{name}</span>
-      </Badge>
-    ))
-
-  const renderMinimalTags = () => {
+  const renderMinimalTags = useMemo(() => {
     const initialString = "| "
     const mininmalString = tags.reduce(
       (mininmalString, tag) => mininmalString + `${tag.name} | `,
@@ -62,17 +49,39 @@ const TagsContainer = ({
     )
     if (mininmalString === initialString) return null
     else return <span>{mininmalString}</span>
-  }
+  }, [tags])
+
+  const renderTags = useMemo(
+    () =>
+      tags.map(({ name }, i) => (
+        <Badge
+          key={name}
+          className={`TagContainer fade-in ${tagContainerClassName} ${
+            hoverable ? "TagContainerHover" : ""
+          }`}
+          onClick={onClickCallback ? () => onClickCallback(name) : null}
+        >
+          {showTagIcon && <i className={faIcon} style={{ marginRight: 4 }} />}
+          <span className="TagTitle">{name}</span>
+        </Badge>
+      )),
+    [tags]
+  )
 
   return (
-    <Col className="TagsContainer p-0" {...columnProps} style={styles}>
+    <Col
+      className="TagsContainer ShowScrollBar p-0"
+      {...columnProps}
+      style={styles}
+      title={getJsonTagsOrPeople(tags)}
+    >
       {children}
       {tags.length === 0 ? (
         <span className="p-1">{emptyString}</span>
       ) : minimalView ? (
-        renderMinimalTags()
+        renderMinimalTags
       ) : (
-        renderTags()
+        renderTags
       )}
     </Col>
   )
