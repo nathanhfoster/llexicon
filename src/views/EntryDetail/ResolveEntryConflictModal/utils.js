@@ -1,13 +1,13 @@
-import memoizeProps from "../../../utils/memoizeProps"
+import propsThatDiffer from "../../../utils/propsThatDiffer"
 
 const MEMOIZE_ENTRY_PROPS = [
   "EntryFiles",
   "address",
   // "author",
   // "date_created",
-  "date_created_by_author",
+  // "date_created_by_author",
   // "date_updated",
-  "_lastUpdated",
+  // "_lastUpdated",
   "html",
   "id",
   "is_public",
@@ -28,24 +28,28 @@ const getEntryDate = (entry) =>
   )
 
 const entryDatesAreTheSame = (e1, e2) => {
-  const d1 = getEntryDate(e1)
-  const d2 = getEntryDate(e2)
-  const areEqual = d1 - d2 === 0
-  return areEqual
+  if (e1 && e2) {
+    const d1 = getEntryDate(e1)
+    const d2 = getEntryDate(e2)
+    const areEqual = d1 - d2 === 0
+    return areEqual
+  }
 }
 
-const entriesDiffer = (e1, e2) => {
+const findDifferentProps = (e1, e2) => {
   // const recentlyViewed = Math.abs(e1.views - e2.views) === 1
   // const sameUpdateDates = entryDatesAreTheSame(e1, e2)
 
-  const isEqual = memoizeProps(e1, e2, MEMOIZE_ENTRY_PROPS)
+  const propsThatAreDifferent = propsThatDiffer(e1, e2, MEMOIZE_ENTRY_PROPS)
 
-  return !isEqual
+  // console.log(propsThatAreDifferent)
+
+  return propsThatAreDifferent
 }
 
 export {
   MEMOIZE_ENTRY_PROPS,
   getEntryDate,
   entryDatesAreTheSame,
-  entriesDiffer,
+  findDifferentProps,
 }

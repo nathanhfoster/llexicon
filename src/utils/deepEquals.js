@@ -93,7 +93,12 @@ const deepEquals = (a, b, logging = false) => {
   }
   const strictEquality = a !== a && b !== b
   logging &&
-    console.log("strictEquality ", strictEquality, "a !== a && b !== b ", a, b)
+    console.log(
+      "strictEquality",
+      strictEquality,
+      "a !== a && b !== b \n",
+      `${a} !== ${a} && ${b} !== ${b}`
+    )
   return strictEquality
 }
 

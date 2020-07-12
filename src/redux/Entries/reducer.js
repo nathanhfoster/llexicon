@@ -65,6 +65,7 @@ const DEFAULT_STATE_ENTRIES = {
   count: null,
   next: null,
   previous: null,
+  item: null,
   items: [FIRST_JOUNRAL_ENTRY],
   filteredItems: [],
   isPending: false,
@@ -137,6 +138,16 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         items: mergeJson(state.items, payload),
         error: DEFAULT_STATE_ENTRIES.error,
+      }
+
+    case EntriesActionTypes.ENTRY_CLEAR:
+      return { ...state, item: DEFAULT_STATE_ENTRIES.item }
+
+    case EntriesActionTypes.ENTRY_GET:
+      return {
+        ...state,
+        item: { ...payload, _size: getStringBytes(payload) },
+        isPending: false,
       }
 
     case EntriesActionTypes.ENTRIES_SET:

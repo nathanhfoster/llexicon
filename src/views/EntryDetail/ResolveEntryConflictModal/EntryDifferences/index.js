@@ -3,7 +3,7 @@ import { EntryPropTypes } from "../../../../redux/Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { CloudDownload } from "../../../../images/SVG"
 import propsThatDiffer from "../../../../utils/propsThatDiffer"
-import { MEMOIZE_ENTRY_PROPS } from "../utils"
+import { findDifferentProps } from "../utils"
 import {
   getEntryPropSortOrder,
   getEntryPropIcon,
@@ -12,11 +12,9 @@ import {
 import "./styles.css"
 
 const EntryDifferences = ({ entry1, entry2 }) => {
-  const differntProps = propsThatDiffer(
-    entry1,
-    entry2,
-    MEMOIZE_ENTRY_PROPS
-  ).sort((a, b) => getEntryPropSortOrder(a) > getEntryPropSortOrder(b))
+  const differntProps = findDifferentProps(entry1, entry2).sort(
+    (a, b) => getEntryPropSortOrder(a[0]) > getEntryPropSortOrder(b[0])
+  )
 
   const renderDifferentProps = differntProps.map(([prop, prev, next]) => {
     const propIcon = getEntryPropIcon(prop)

@@ -36,7 +36,7 @@ const EntryCardText = ({
         </Col>
       </Row>
       <Row>
-        <Col xs={12} className="EntryCardTextRightColumn p-0">
+        <Col xs={12} className="EntryCardTextLeftColumn p-0">
           <RatingIcon rating={rating} />
         </Col>
       </Row>
@@ -53,7 +53,7 @@ const EntryCardText = ({
           <i className="fas fa-hdd mr-1" />
           {formatBytes(size)}
         </Col>
-        <Col xs={4} className="EntryCardTextLeftColumn p-0">
+        <Col xs={4} className="EntryCardTextRightColumn p-0">
           <i className="far fa-eye" /> <span>{views}</span>
         </Col>
       </Row>

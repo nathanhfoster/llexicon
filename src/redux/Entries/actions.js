@@ -110,15 +110,19 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
 
+const SetEntryRedux = (entry, _lastUpdated = new Date()) => ({
+  type: EntriesActionTypes.ENTRY_GET,
+  payload: { ...entry, _lastUpdated, _shouldPost: false },
+})
+
+const ClearEntry = () => ({ type: EntriesActionTypes.ENTRY_CLEAR })
+
 const GetEntry = (url, id) => (dispatch) => {
   dispatch(pendingEntries())
   return Axios()
     .get(url)
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRY_SET,
-        payload: data,
-      })
+      dispatch(SetEntryRedux(data))
       ReactGA.event({
         category: "Get Entry",
         action: "User is looking at entry!",
@@ -499,6 +503,8 @@ export {
   CreateEntryTag,
   GetUserEntryTags,
   GetUserEntryPeople,
+  ClearEntry,
+  SetEntryRedux,
   GetUserEntry,
   GetUserEntryDetails,
   GetAllUserEntries,

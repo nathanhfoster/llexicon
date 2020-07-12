@@ -1,15 +1,15 @@
 .EntryCardText {
-    height: auto;
+  height: auto;
 }
 
 .EntryCardTextTags {
-    height: 26px;
+  height: 26px;
 }
 
 .EntryCardTextLeftColumn {
-    text-align: left;
+  text-align: left;
 }
 
 .EntryCardTextRightColumn {
-    text-align: right;
+  text-align: right;
 }

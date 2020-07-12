@@ -1,62 +1,81 @@
-import React, { useEffect, useRef, useState, useCallback, memo } from "react"
-import { useDispatch } from "react-redux"
+import React, { useEffect, useState, useCallback } from "react"
+import { connect as reduxConnect } from "react-redux"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import EntryDifferences from "./EntryDifferences"
 import { Container, Row, Col } from "reactstrap"
 import { BasicModal, EntryCard } from "../../../components"
-import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
-import { getEntryDate, entryDatesAreTheSame, entriesDiffer } from "./utils"
+import {
+  SetEntryRedux,
+  UpdateReduxEntry,
+  SyncEntries,
+  ClearEntry,
+} from "../../../redux/Entries/actions"
+import { findDifferentProps } from "./utils"
+import deepEquals from "../../../utils/deepEquals"
 
-const ResolveEntryConflictModal = ({ entry }) => {
-  const dispatch = useDispatch()
+const mapStateToProps = ({ Entries: { item } }) => ({
+  entryFromServer: item,
+})
+
+const mapDispatchToProps = {
+  SetEntryRedux,
+  UpdateReduxEntry,
+  SyncEntries,
+  ClearEntry,
+}
+
+const ResolveEntryConflictModal = ({
+  entry,
+  entryFromServer,
+  SetEntryRedux,
+  UpdateReduxEntry,
+  SyncEntries,
+  ClearEntry,
+}) => {
+  const [hasResolved, setHasResolved] = useState(false)
   const [show, setShow] = useState(false)
   const [entryToUpdate, setEntryToUpdate] = useState({})
 
   const toggleShow = (toggle) => {
     setShow((prevShow) => toggle || !prevShow)
   }
-  const conflictRef = useRef(false)
-  const prevEntryRef = useRef(entry)
-
-  const handleUpdateEntry = (entryToUpdate) => {
-    setEntryToUpdate(entryToUpdate)
-  }
 
   useEffect(() => {
-    if (!conflictRef.current) {
-      const { current: previousEntry } = prevEntryRef
-
-      if (entriesDiffer(previousEntry, entry)) {
-        conflictRef.current = true
-        toggleShow(true)
-        handleUpdateEntry(entry)
-      }
+    return () => {
+      ClearEntry()
     }
+  }, [])
+
+  useEffect(() => {
+    if (!hasResolved && findDifferentProps(entryFromServer, entry).length > 0) {
+      toggleShow(true)
+      setEntryToUpdate(entry)
+    }
+  }, [entry, entryFromServer])
+
+  const handleLocalEntryCardClick = useCallback(() => {
+    setEntryToUpdate(entry)
   }, [entry])
 
-  const handlePrevEntryCardClick = useCallback(() => {
-    handleUpdateEntry(prevEntryRef.current)
-  }, [prevEntryRef.current])
-
-  const handleCurrentEntryCardClick = useCallback(() => {
-    handleUpdateEntry(entry)
-  }, [entry])
+  const handleEntryFromServerCardClick = useCallback(() => {
+    setEntryToUpdate(entryFromServer)
+  }, [entryFromServer])
 
   const handleSave = useCallback(async () => {
-    await dispatch(UpdateReduxEntry(entryToUpdate.id, entryToUpdate))
-    await dispatch(SyncEntries())
+    setHasResolved(true)
+    const updateDate = new Date()
+    SetEntryRedux(entryToUpdate, updateDate)
+    await UpdateReduxEntry(entryToUpdate.id, entryToUpdate, updateDate)
+    await SyncEntries()
   }, [entryToUpdate])
 
-  const prevEntryCardSelected = entryDatesAreTheSame(
-    prevEntryRef.current,
-    entryToUpdate
-  )
+  const currentEntryCardSelected = deepEquals(entry, entryToUpdate)
 
-  const currentEntryCardSelected = entryDatesAreTheSame(entry, entryToUpdate)
+  const entryFromServerCardSelected = !currentEntryCardSelected
 
   return (
     <BasicModal
-      size="xl"
+      size="lg"
       className="p-0"
       button={false}
       show={show}
@@ -65,39 +84,41 @@ const ResolveEntryConflictModal = ({ entry }) => {
       toggle={toggleShow}
       disabledSave={!entryToUpdate.id}
     >
-      <Container className="Container">
-        <Row>
-          <Col
-            xs={{ size: 12, order: 1 }}
-            md={{ size: 6, order: 1 }}
-            className="p-2 md-p-1"
-          >
-            <EntryCard
-              {...prevEntryRef.current}
-              onClickCallback={handlePrevEntryCardClick}
-              selected={prevEntryCardSelected}
-            />
-          </Col>
-          <Col
-            xs={{ size: 12, order: 2 }}
-            md={{ size: 12, order: 3 }}
-            className="p-2 md-p-1"
-          >
-            <EntryDifferences entry1={prevEntryRef.current} entry2={entry} />
-          </Col>
-          <Col
-            xs={{ size: 12, order: 2 }}
-            md={{ size: 6, order: 1 }}
-            className="p-2 md-p-1"
-          >
-            <EntryCard
-              {...entry}
-              onClickCallback={handleCurrentEntryCardClick}
-              selected={currentEntryCardSelected}
-            />
-          </Col>
-        </Row>
-      </Container>
+      {entry && entryFromServer && (
+        <Container className="Container">
+          <Row>
+            <Col
+              xs={{ size: 12, order: 1 }}
+              md={{ size: 6, order: 1 }}
+              className="p-2 md-p-1"
+            >
+              <EntryCard
+                {...entry}
+                onClickCallback={handleLocalEntryCardClick}
+                selected={currentEntryCardSelected}
+              />
+            </Col>
+            <Col
+              xs={{ size: 12, order: 2 }}
+              md={{ size: 12, order: 3 }}
+              className="p-2 md-p-1"
+            >
+              <EntryDifferences entry1={entry} entry2={entryFromServer} />
+            </Col>
+            <Col
+              xs={{ size: 12, order: 2 }}
+              md={{ size: 6, order: 1 }}
+              className="p-2 md-p-1"
+            >
+              <EntryCard
+                {...entryFromServer}
+                onClickCallback={handleEntryFromServerCardClick}
+                selected={entryFromServerCardSelected}
+              />
+            </Col>
+          </Row>
+        </Container>
+      )}
     </BasicModal>
   )
 }
@@ -106,4 +127,7 @@ ResolveEntryConflictModal.propTypes = {
   entry: EntryPropTypes,
 }
 
-export default memo(ResolveEntryConflictModal)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ResolveEntryConflictModal)
