@@ -57,7 +57,11 @@ const ResolveEntryConflictModal = ({
       toggleShow(true)
       setEntryToUpdate(entry)
     }
-  }, [entry, entry, entryFromServer])
+    else {
+      toggleShow(false)
+      setEntryToUpdate(null)
+    }
+  }, [entry, entryFromServer])
 
   const handleLocalEntryCardClick = useCallback(() => {
     setEntryToUpdate(entry)
