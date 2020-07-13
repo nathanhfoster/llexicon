@@ -1,10 +1,10 @@
-import React, { useMemo, memo } from "react"
+import React, { memo } from "react"
 import ReactQuill from "react-quill"
 import PropTypes from "prop-types"
 import "./styles.css"
 
-const EntryCardHtml = ({ html, modules, styles }) => {
-  const reducedHtml = useMemo(() => html.slice(0, 1000), [html])
+const EntryCardHtml = ({ html, modules, styles, reduceHtml }) => {
+  const reducedHtml = reduceHtml ? html.slice(0, 1000) : html
 
   return (
     <ReactQuill
@@ -21,11 +21,14 @@ const EntryCardHtml = ({ html, modules, styles }) => {
 EntryCardHtml.propTypes = {
   html: PropTypes.string.isRequired,
   modules: PropTypes.object.isRequired,
+  styles: PropTypes.object,
+  reduceHtml: PropTypes.bool.isRequired,
 }
 
 EntryCardHtml.defaultProps = {
   modules: { toolbar: false },
   styles: { height: 160, width: "100%" },
+
 }
 
 export default memo(EntryCardHtml)

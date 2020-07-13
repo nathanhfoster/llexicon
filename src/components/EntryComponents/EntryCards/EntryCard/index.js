@@ -37,6 +37,7 @@ const EntryCard = ({
   cardHeaderClassName,
   cardBodyClassName,
   cardTextClassName,
+  reduceHtml,
 }) => {
   const href = useMemo(() => GetEntryDetailUrl(id), [id])
   const tag = onClickCallback ? "div" : "a"
@@ -44,7 +45,7 @@ const EntryCard = ({
   const cardHeader = useMemo(
     () => (
       <Fragment>
-        <EntryCardHtml html={html} views={views} rating={rating} />
+        <EntryCardHtml html={html} reduceHtml={reduceHtml} />
         <div
           className="EntryOptionsMenuContainer"
           onClick={(e) => e.preventDefault()}
@@ -122,6 +123,7 @@ EntryCard.propTypes = {
   cardHeaderClassName: PropTypes.string.isRequired,
   cardBodyClassName: PropTypes.string.isRequired,
   cardTextClassName: PropTypes.string.isRequired,
+  reduceHtml: PropTypes.bool.isRequired,
 }
 
 EntryCard.defaultProps = {
@@ -131,6 +133,7 @@ EntryCard.defaultProps = {
   cardHeaderClassName: "EntryCardHeader Overflow p-0",
   cardBodyClassName: "px-2 pt-0 pb-2",
   cardTextClassName: "EntryCardText",
+  reduceHtml: true,
 }
 
 export default memo(EntryCard)

@@ -48,6 +48,7 @@ const ResolveEntryConflictModal = ({
   useEffect(() => {
     return () => {
       ClearEntry()
+      handleSave()
     }
   }, [])
 
@@ -63,8 +64,13 @@ const ResolveEntryConflictModal = ({
       userDidNotUpdateEntryInRedux &&
       hasDifferentProps
     ) {
+      const { views } = entryFromServer
+
       toggleShow(true)
-      setEntryToUpdate(entry)
+      setEntryToUpdate({
+        ...entry,
+        views,
+      })
     } else {
       toggleShow(false)
       setEntryToUpdate({})
@@ -115,6 +121,7 @@ const ResolveEntryConflictModal = ({
                 onClickCallback={handleLocalEntryCardClick}
                 selected={localEntryCardSelected}
                 cardHeaderClassName="ResolveEntryConflictCardHeader"
+                reduceHtml={false}
               />
             </Col>
             <Col
@@ -134,6 +141,7 @@ const ResolveEntryConflictModal = ({
                 onClickCallback={handleEntryFromServerCardClick}
                 selected={entryFromServerCardSelected}
                 cardHeaderClassName="ResolveEntryConflictCardHeader"
+                reduceHtml={false}
               />
             </Col>
           </Row>
