@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react"
-import { connect as reduxConnect } from "react-redux"
+import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
+import { connect as reduxConnect } from "react-redux"
 import EntryDifferences from "./EntryDifferences"
 import { Container, Row, Col } from "reactstrap"
 import { BasicModal, EntryCard } from "../../../components"
@@ -14,7 +15,8 @@ import { findDifferentProps } from "./utils"
 import deepEquals from "../../../utils/deepEquals"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { item } }) => ({
+const mapStateToProps = ({ Entries: { isPending, item } }) => ({
+  fetchingEntryFromServer: isPending,
   entryFromServer: item,
 })
 
@@ -26,8 +28,9 @@ const mapDispatchToProps = {
 }
 
 const ResolveEntryConflictModal = ({
-  entry,
+  fetchingEntryFromServer,
   entryFromServer,
+  entry,
   SetEntryRedux,
   UpdateReduxEntry,
   SyncEntries,
@@ -39,7 +42,7 @@ const ResolveEntryConflictModal = ({
   const { current: previousEntry } = useRef(entry)
 
   const toggleShow = (toggle) => {
-    setShow((prevShow) => toggle || !prevShow)
+    setShow((prevShow) => (toggle !== null ? toggle : !prevShow))
   }
 
   useEffect(() => {
@@ -53,15 +56,21 @@ const ResolveEntryConflictModal = ({
       previousEntry._lastUpdated === entry._lastUpdated
     const hasDifferentProps =
       findDifferentProps(entryFromServer, entry).length > 0
-    if (!hasResolved && userDidNotUpdateEntryInRedux && hasDifferentProps) {
+
+    if (
+      !hasResolved &&
+      !fetchingEntryFromServer &&
+      userDidNotUpdateEntryInRedux &&
+      hasDifferentProps
+    ) {
+      console.log("IN HERE")
       toggleShow(true)
+      setEntryToUpdate(entry)
+    } else {
+      toggleShow(false)
       setEntryToUpdate({})
     }
-    else {
-      toggleShow(false)
-      setEntryToUpdate(null)
-    }
-  }, [entry, entryFromServer])
+  }, [hasResolved, fetchingEntryFromServer, entry, entryFromServer])
 
   const handleLocalEntryCardClick = useCallback(() => {
     setEntryToUpdate(entry)
@@ -136,8 +145,13 @@ const ResolveEntryConflictModal = ({
 }
 
 ResolveEntryConflictModal.propTypes = {
-  entry: EntryPropTypes,
+  fetchingEntryFromServer: PropTypes.bool.isRequired,
   entryFromServer: EntryPropTypes,
+  entry: EntryPropTypes,
+  SetEntryRedux: PropTypes.func.isRequired,
+  UpdateReduxEntry: PropTypes.func.isRequired,
+  SyncEntries: PropTypes.func.isRequired,
+  ClearEntry: PropTypes.func.isRequired,
 }
 
 export default reduxConnect(
