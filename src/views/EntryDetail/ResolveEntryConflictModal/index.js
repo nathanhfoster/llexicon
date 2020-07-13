@@ -12,6 +12,7 @@ import {
 } from "../../../redux/Entries/actions"
 import { findDifferentProps } from "./utils"
 import deepEquals from "../../../utils/deepEquals"
+import "./styles.css"
 
 const mapStateToProps = ({ Entries: { item } }) => ({
   entryFromServer: item,
@@ -101,6 +102,7 @@ const ResolveEntryConflictModal = ({
                 {...entry}
                 onClickCallback={handleLocalEntryCardClick}
                 selected={localEntryCardSelected}
+                cardHeaderClassName="ResolveEntryConflictCardHeader"
               />
             </Col>
             <Col
@@ -119,6 +121,7 @@ const ResolveEntryConflictModal = ({
                 {...entryFromServer}
                 onClickCallback={handleEntryFromServerCardClick}
                 selected={entryFromServerCardSelected}
+                cardHeaderClassName="ResolveEntryConflictCardHeader"
               />
             </Col>
           </Row>

@@ -33,6 +33,10 @@ const EntryCard = ({
   selected,
   onClickCallback,
   minimal,
+  cardClassName,
+  cardHeaderClassName,
+  cardBodyClassName,
+  cardTextClassName,
 }) => {
   const href = useMemo(() => GetEntryDetailUrl(id), [id])
   const tag = onClickCallback ? "div" : "a"
@@ -101,10 +105,10 @@ const EntryCard = ({
       header={cardHeader}
       title={cardTitle}
       text={cardText}
-      cardClassName="EntryCardContainer"
-      cardHeaderClassName="EntryCardHeader Overflow p-0"
-      cardBodyClassName="px-2 pt-0 pb-2"
-      cardTextClassName="EntryCardText"
+      cardClassName={cardClassName}
+      cardHeaderClassName={cardHeaderClassName}
+      cardBodyClassName={cardBodyClassName}
+      cardTextClassName={cardTextClassName}
     />
   )
 }
@@ -114,8 +118,19 @@ EntryCard.propTypes = {
   selected: PropTypes.bool.isRequired,
   onClickCallback: PropTypes.func,
   minimal: PropTypes.bool.isRequired,
+  cardClassName: PropTypes.string.isRequired,
+  cardHeaderClassName: PropTypes.string.isRequired,
+  cardBodyClassName: PropTypes.string.isRequired,
+  cardTextClassName: PropTypes.string.isRequired,
 }
 
-EntryCard.defaultProps = { selected: false, minimal: false }
+EntryCard.defaultProps = {
+  selected: false,
+  minimal: false,
+  cardClassName: "EntryCardContainer",
+  cardHeaderClassName: "EntryCardHeader Overflow p-0",
+  cardBodyClassName: "px-2 pt-0 pb-2",
+  cardTextClassName: "EntryCardText",
+}
 
 export default memo(EntryCard)
