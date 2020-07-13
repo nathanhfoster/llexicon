@@ -31,7 +31,7 @@ const ColumnPropType = PropTypes.shape({
 
 const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
 
-const DataPropType = PropTypes.arrayOf(PropTypes.object).isRequired
+const DataPropType = PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
 
 const SortListPropType = PropTypes.arrayOf(
   PropTypes.shape({

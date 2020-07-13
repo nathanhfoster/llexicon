@@ -1,8 +1,9 @@
 import React, { memo } from "react"
 import { EntryPropTypes } from "../../../../redux/Entries/propTypes"
+import { BasicTable } from "../../../../components"
 import { Container, Row, Col } from "reactstrap"
 import { CloudDownload } from "../../../../images/SVG"
-import propsThatDiffer from "../../../../utils/propsThatDiffer"
+import { differenceBetweenStrings } from "../../../../utils"
 import { findDifferentProps } from "../utils"
 import {
   getEntryPropSortOrder,
@@ -16,10 +17,31 @@ const EntryDifferences = ({ entry1, entry2 }) => {
     (a, b) => getEntryPropSortOrder(a[0]) > getEntryPropSortOrder(b[0])
   )
 
+  var tableColumns = []
+
   const renderDifferentProps = differntProps.map(([prop, prev, next]) => {
     const propIcon = getEntryPropIcon(prop)
     const prevString = renderEntryProp(prop, prev)
     const nextString = renderEntryProp(prop, next)
+    const difference = differenceBetweenStrings(prevString, nextString)
+
+    // tableColumns.push(
+    //   {
+    //     title: propIcon,
+    //     key: prop,
+    //     width: 40,
+    //     render: (entry) => prevString,
+    //   },
+    //   {
+    //     title: propIcon,
+    //     key: prop,
+    //     width: 40,
+    //     render: (entry) => nextString,
+    //   }
+    // )
+
+    // console.log(tableColumns)
+
     return (
       <Row>
         <Col xs={2} title={prop}>
@@ -40,6 +62,15 @@ const EntryDifferences = ({ entry1, entry2 }) => {
       <Row tag="h1" className="Center mb-2">
         Differences
       </Row>
+      {/* <Row style={{ border: "1px solid var(--secondaryColor)" }}>
+        <BasicTable
+          sortable
+          filterable
+          columns={tableColumns}
+          data={differntProps}
+        />
+      </Row> */}
+
       <Row>
         <Col xs={2}>Prop</Col>
         <Col xs={5}>

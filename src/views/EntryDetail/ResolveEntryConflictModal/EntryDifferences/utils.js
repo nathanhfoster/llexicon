@@ -146,7 +146,7 @@ const renderEntryProp = (prop, propValue) => {
       return propValue
 
     case "html":
-      return propValue.length
+      return propValue
 
     case "tags":
       return getJsonTagsOrPeople(propValue)

@@ -9,8 +9,7 @@ const tableFilter = (data, filterList) => {
     const item = filters[i]
     const { key, filterValue, filter } = item
     if (!filterValue) return
-
-    if (filter instanceof Function || typeof filter === "function") {
+    else if (filter instanceof Function || typeof filter === "function") {
       filteredData = filteredData.filter(filter(filterValue))
     } else if (filter === "date") {
       filteredData = filteredData.filter((item) => {
@@ -32,6 +31,17 @@ const tableFilter = (data, filterList) => {
       if (filterValue) {
         filteredData = filteredData.filter((item) => item[key] >= filterValue)
       }
+    } else {
+      filteredData = filteredData.filter((item) => {
+        const itemValue = item[key]
+        let itemString = `${itemValue}`
+
+        if (typeof itemValue === isType.OBJECT || Array.isArray(itemValue)) {
+          itemString = JSON.stringify(itemValue)
+        }
+
+        return stringMatch(itemString, filterValue)
+      })
     }
   }
 

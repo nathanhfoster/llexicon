@@ -63,7 +63,6 @@ const ResolveEntryConflictModal = ({
       userDidNotUpdateEntryInRedux &&
       hasDifferentProps
     ) {
-      console.log("IN HERE")
       toggleShow(true)
       setEntryToUpdate(entry)
     } else {

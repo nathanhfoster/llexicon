@@ -11,6 +11,7 @@ const TableHeader = ({
   width,
   column,
   sortable,
+  filterable,
   sortUp,
   sortCallback,
   filter,
@@ -44,11 +45,11 @@ const TableHeader = ({
       <DebounceInput
         className="TableHeaderSortInput"
         defaultValue={defaultFilterValue}
-        disabled={!filter}
+        disabled={!(filter || filterable)}
         onClick={(e) => e.stopPropagation()}
         onChange={handleDebounce}
         placeholder={
-          filter
+          filterable
             ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)} filter`
             : null
         }
@@ -63,6 +64,7 @@ TableHeader.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   column: ColumnPropType,
   sortable: PropTypes.bool.isRequired,
+  filterable: PropTypes.bool.isRequired,
   sortUp: PropTypes.oneOf([true, false, null, undefined]),
   sortCallback: PropTypes.func.isRequired,
   filter: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),

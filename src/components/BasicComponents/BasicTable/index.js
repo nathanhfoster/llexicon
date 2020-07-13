@@ -18,6 +18,7 @@ const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
 
 BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
+  filterable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
   data: DataPropType,
   onSortCallback: PropTypes.func,
@@ -44,6 +45,7 @@ BasicTableProvider.propTypes = {
 BasicTableProvider.defaultProps = {
   hover: false,
   sortable: false,
+  filterable: false,
   bordered: false,
   borderless: true,
   striped: false,

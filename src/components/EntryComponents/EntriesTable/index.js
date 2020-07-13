@@ -246,8 +246,8 @@ const EntriesTable = ({
   )
   return (
     <BasicTable
-      hover
       sortable
+      filterable
       pageSize={pageSize}
       columns={tableColumns}
       data={viewableEntries}
