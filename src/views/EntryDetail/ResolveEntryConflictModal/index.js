@@ -55,7 +55,7 @@ const ResolveEntryConflictModal = ({
       findDifferentProps(entryFromServer, entry).length > 0
     if (!hasResolved && userDidNotUpdateEntryInRedux && hasDifferentProps) {
       toggleShow(true)
-      setEntryToUpdate(entry)
+      setEntryToUpdate({})
     }
     else {
       toggleShow(false)
