@@ -12,7 +12,6 @@ import {
   ClearEntry,
 } from "../../../redux/Entries/actions"
 import { findDifferentProps } from "./utils"
-import deepEquals from "../../../utils/deepEquals"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { isPending, item } }) => ({
@@ -39,6 +38,7 @@ const ResolveEntryConflictModal = ({
   const [hasResolved, setHasResolved] = useState(false)
   const [show, setShow] = useState(false)
   const [entryToUpdate, setEntryToUpdate] = useState({})
+  const [localEntryCardSelected, setLocalEntryCardSelected] = useState(true)
   const { current: previousEntry } = useRef(entry)
 
   const toggleShow = (toggle) => {
@@ -64,11 +64,13 @@ const ResolveEntryConflictModal = ({
       userDidNotUpdateEntryInRedux &&
       hasDifferentProps
     ) {
-      const { views } = entryFromServer
+      const { views, date_updated } = entryFromServer
 
       toggleShow(true)
       setEntryToUpdate({
         ...entry,
+        _lastUpdated: date_updated,
+        date_updated,
         views,
       })
     } else {
@@ -79,21 +81,21 @@ const ResolveEntryConflictModal = ({
 
   const handleLocalEntryCardClick = useCallback(() => {
     setEntryToUpdate(entry)
+    setLocalEntryCardSelected(true)
   }, [entry])
 
   const handleEntryFromServerCardClick = useCallback(() => {
     setEntryToUpdate(entryFromServer)
+    setLocalEntryCardSelected(false)
   }, [entryFromServer])
 
   const handleSave = useCallback(async () => {
     setHasResolved(true)
     const updateDate = new Date()
-    SetEntryRedux(entryToUpdate, updateDate)
+    entryToUpdate.id && SetEntryRedux(entryToUpdate, updateDate)
     await UpdateReduxEntry(entryToUpdate.id, entryToUpdate, updateDate)
     await SyncEntries()
   }, [entryToUpdate])
-
-  const localEntryCardSelected = deepEquals(entry, entryToUpdate)
 
   const entryFromServerCardSelected = !localEntryCardSelected
 
