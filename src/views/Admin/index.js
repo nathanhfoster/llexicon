@@ -34,7 +34,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
       {
         title: <i className="fas fa-id-card-alt" />,
         key: "id",
-        width: 90,
+        width: 120,
         filter: (searchValue) => ({ first_name, last_name }) =>
           stringMatch(`${first_name} ${last_name}`, searchValue),
         filterPlaceholder: "Name",
@@ -43,31 +43,31 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
       {
         title: <i className="fas fa-id-card" />,
         key: "username",
-        width: 90,
+        width: 120,
       },
       {
         title: <i className="fas fa-envelope" />,
         key: "email",
-        width: 90,
+        width: 120,
       },
       {
         title: <i className="fas fa-hiking" />,
         key: "is_active",
-        width: 90,
+        width: 40,
         filterPlaceholder: "Is active",
         render: ({ is_active }) => (is_active ? "Yes" : "No"),
       },
       {
         title: <i className="fas fa-user-check" />,
         key: "opt_in",
-        width: 90,
+        width: 40,
         filterPlaceholder: "Opted in",
         render: ({ opt_in }) => (opt_in ? "Yes" : "No"),
       },
       {
         title: <i className="fas fa-chart-line" />,
         key: "last_login",
-        width: 90,
+        width: 120,
         sort: (a, b, sortUp) =>
           sortUp
             ? new Date(b.last_login) - new Date(a.last_login)
@@ -82,7 +82,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
       {
         title: <i className="fas fa-birthday-cake" />,
         key: "date_joined",
-        width: 90,
+        width: 120,
         sort: (a, b, sortUp) =>
           sortUp
             ? new Date(b.last_login) - new Date(a.last_login)
@@ -97,11 +97,11 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
       {
         title: <i className="fas fa-feather-alt" />,
         key: "entries",
-        width: 90,
+        width: 80,
         //   filter: "date",
         //   filterPlaceholder: "Date joined",
-        render: ({ entries }) => (entries ? entries.length : "--"),
-        footer: (items) => items.reduce((count, { entries }) => entries ? count + entries.length : 0, 0),
+        render: ({ entries }) => (entries ? entries.length : 0),
+        footer: (items) => items.reduce((count, { entries }) => count + entries && entries.length, 0),
       },
     ],
     [users]
