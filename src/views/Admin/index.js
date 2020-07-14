@@ -9,6 +9,8 @@ import { Container, Row, Col } from "reactstrap"
 import { GetAllUsers, GetAllUserEntries } from "../../redux/Admin/actions"
 import { stringMatch } from "../../utils"
 
+const { REACT_APP_API_URL } = process.env
+
 const mapStateToProps = ({
   Admin: {
     users: { isPending, items },
@@ -38,31 +40,42 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         filter: (searchValue) => ({ first_name, last_name }) =>
           stringMatch(`${first_name} ${last_name}`, searchValue),
         filterPlaceholder: "Name",
-        render: ({ first_name, last_name }) => `${first_name} ${last_name}`,
+        render: ({ id, first_name, last_name }) => (
+          <a
+            onClick={(e) => e.stopPropagation()}
+            href={REACT_APP_API_URL.replace(
+              "api/v1/",
+              `user/user/${id}/change/`
+            )}
+            target="_blank"
+          >
+            {`${first_name} ${last_name}`}
+          </a>
+        ),
+        footer: (items) =>
+          items.reduce(
+            (count, { first_name, last_name }) =>
+              count + first_name || last_name ? 1 : 0,
+            0
+          ),
       },
       {
         title: <i className="fas fa-id-card" />,
         key: "username",
         width: 120,
+        footer: (items) =>
+          items.reduce((count, { username }) => (count + username ? 1 : 0), 0),
       },
       {
         title: <i className="fas fa-envelope" />,
         key: "email",
-        width: 120,
-      },
-      {
-        title: <i className="fas fa-hiking" />,
-        key: "is_active",
-        width: 40,
-        filterPlaceholder: "Is active",
-        render: ({ is_active }) => (is_active ? "Yes" : "No"),
-      },
-      {
-        title: <i className="fas fa-user-check" />,
-        key: "opt_in",
-        width: 40,
-        filterPlaceholder: "Opted in",
-        render: ({ opt_in }) => (opt_in ? "Yes" : "No"),
+        width: 140,
+        footer: (items) =>
+          items.reduce(
+            (count, { email }) =>
+              count + email && email.includes("@") ? 1 : 0,
+            0
+          ),
       },
       {
         title: <i className="fas fa-chart-line" />,
@@ -95,13 +108,35 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         ),
       },
       {
+        title: <i className="fas fa-hiking" />,
+        key: "is_active",
+        width: 40,
+        filterPlaceholder: "Active",
+        render: ({ is_active }) => (is_active ? "Yes" : "No"),
+        footer: (items) =>
+          items.reduce((count, { is_active }) => count + is_active, 0),
+      },
+      {
+        title: <i className="fas fa-user-check" />,
+        key: "opt_in",
+        width: 40,
+        filterPlaceholder: "Opt",
+        render: ({ opt_in }) => (opt_in ? "Yes" : "No"),
+        footer: (items) =>
+          items.reduce((count, { opt_in }) => count + opt_in, 0),
+      },
+      {
         title: <i className="fas fa-feather-alt" />,
         key: "entries",
-        width: 80,
+        width: 40,
         //   filter: "date",
         //   filterPlaceholder: "Date joined",
         render: ({ entries }) => (entries ? entries.length : 0),
-        footer: (items) => items.reduce((count, { entries }) => count + entries && entries.length, 0),
+        footer: (items) =>
+          items.reduce(
+            (count, { entries }) => count + entries && entries.length,
+            0
+          ),
       },
     ],
     [users]

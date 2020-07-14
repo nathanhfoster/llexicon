@@ -2,7 +2,12 @@
   background-color: var(--primaryColor);
 }
 
-.table-dark.table-hover tbody tr:hover {
+.table-hover .table-dark:hover {
+  background-color: var(--primaryColor);
+}
+
+.table-dark.table-hover tbody tr:hover,
+.table-dark.table-hover tbody tr tbody tr:hover {
   background-color: var(--quinaryColor);
   cursor: pointer;
 }
