@@ -13,6 +13,8 @@ import { Container, Row, Col } from "reactstrap"
 import { stringMatch, stripHtml, formatBytes } from "../../../utils"
 import { GetUserEntriesDetails } from "../../../redux/Admin/actions"
 
+const { REACT_APP_API_URL } = process.env
+
 const UserEntriesTable = ({ user, entries }) => {
   const dispatch = useDispatch()
   const hasDetails = entries.find((entry) => entry.html)
@@ -31,9 +33,17 @@ const UserEntriesTable = ({ user, entries }) => {
               key: "title",
               width: 180,
               filter: "string",
-              filterPlaceholder: "Title",
               render: ({ id, title }) => (
-                <EntryDataCellLink entryId={id}>{title}</EntryDataCellLink>
+                <a
+                  onClick={(e) => e.stopPropagation()}
+                  href={REACT_APP_API_URL.replace(
+                    "api/v1/",
+                    `diary/entry/${id}/change/`
+                  )}
+                  target="_blank"
+                >
+                  {title}
+                </a>
               ),
             },
             {
