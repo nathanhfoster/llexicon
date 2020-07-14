@@ -20,7 +20,10 @@ BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
   filterable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
+  dataDisplayName: PropTypes.string.isRequired,
   data: DataPropType,
+  getRowValue: PropTypes.func,
+  onRowClick: PropTypes.func,
   onSortCallback: PropTypes.func,
   onFilterCallback: PropTypes.func,
   // reactstrap Table
@@ -85,6 +88,7 @@ BasicTableProvider.defaultProps = {
         stringMatch(item.user_name, filterValue),
     },
   ],
+  dataDisplayName: "Data",
   data: new Array(25).fill().map(
     (e, i) =>
       (e = {

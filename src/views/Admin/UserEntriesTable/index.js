@@ -1,51 +1,17 @@
-import React, { useMemo, useCallback } from "react"
+import React, { useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { stripHtml } from "../../../utils"
-import Moment from "react-moment"
-import { TagsContainer, BasicTable, EntryDataCellLink } from "../../"
-import { GoToEntryDetail } from "../../../redux/router/actions"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { stringMatch, formatBytes } from "../../../utils"
 import {
-  SetEntriesSortMap,
-  SetEntriesFilterMap,
-} from "../../../redux/Entries/actions"
+  BasicTable,
+  Header,
+  EntryDataCellLink,
+  TagsContainer,
+} from "../../../components"
+import Moment from "react-moment"
+import { Container, Row, Col } from "reactstrap"
+import { stringMatch, stripHtml, formatBytes } from "../../../utils"
 
-const mapStateToProps = ({ Entries: { items, sortMap, filterMap } }) => ({
-  items,
-  sortMap,
-  filterMap,
-})
-
-const mapDispatchToProps = {
-  SetEntriesSortMap,
-  SetEntriesFilterMap,
-}
-
-const EntriesTable = ({
-  items,
-  sortMap,
-  filterMap,
-  SetEntriesSortMap,
-  SetEntriesFilterMap,
-  pageSize,
-}) => {
-  const viewableEntries = useMemo(
-    () => items.filter(({ _shouldDelete }) => !_shouldDelete),
-    [items]
-  )
-
-  const handleSortCallback = useCallback(
-    (sortKey, sortUp) => SetEntriesSortMap(sortKey, sortUp),
-    []
-  )
-
-  const handleFilterCallback = useCallback(
-    (filterKey, searchValue) => SetEntriesFilterMap(filterKey, searchValue),
-    []
-  )
-
+const UserEntriesTable = ({ entries }) => {
   const tableColumns = useMemo(
     () => [
       {
@@ -54,8 +20,6 @@ const EntriesTable = ({
         width: 180,
         filter: "string",
         filterPlaceholder: "Title",
-        defaultSortValue: sortMap.title,
-        defaultFilterValue: filterMap.title,
         render: ({ id, title }) => (
           <EntryDataCellLink entryId={id}>{title}</EntryDataCellLink>
         ),
@@ -64,10 +28,8 @@ const EntriesTable = ({
         title: <i className="fas fa-keyboard" />,
         key: "html",
         width: 90,
-        defaultSortValue: sortMap.html,
         filter: "string",
         filterPlaceholder: "Body",
-        defaultFilterValue: filterMap.html,
         render: ({ html }) => stripHtml(html),
       },
       {
@@ -78,13 +40,11 @@ const EntriesTable = ({
           sortUp
             ? b.tags.join().localeCompare(a.tags.join())
             : a.tags.join().localeCompare(b.tags.join()),
-        defaultSortValue: sortMap.tags,
         filter: (searchValue) => ({ tags }) =>
           searchValue
             .split(",")
             .every((value) => tags.some((tag) => stringMatch(tag.name, value))),
 
-        defaultFilterValue: filterMap.tags,
         filterPlaceholder: "Tags",
         render: ({ tags }) => <TagsContainer tags={tags} />,
       },
@@ -96,14 +56,12 @@ const EntriesTable = ({
           sortUp
             ? b.people.join().localeCompare(a.people.join())
             : a.people.join().localeCompare(b.people.join()),
-        defaultSortValue: sortMap.people,
         filter: (searchValue) => ({ people }) =>
           searchValue
             .split(",")
             .every((value) =>
               people.some((person) => stringMatch(person.name, value))
             ),
-        defaultFilterValue: filterMap.people,
         filterPlaceholder: "People",
         render: ({ people }) => (
           <TagsContainer
@@ -117,10 +75,8 @@ const EntriesTable = ({
         title: <i className="fas fa-map-marker-alt" />,
         key: "address",
         width: 180,
-        defaultSortValue: sortMap.address,
         filter: "string",
         filterPlaceholder: "Address",
-        defaultFilterValue: filterMap.address,
       },
       {
         title: <i className="fas fa-calendar-day" />,
@@ -132,10 +88,8 @@ const EntriesTable = ({
               new Date(a.date_created_by_author)
             : new Date(a.date_created_by_author) -
               new Date(b.date_created_by_author),
-        defaultSortValue: sortMap.date_created_by_author,
         filter: "date",
         filterPlaceholder: "Created",
-        defaultFilterValue: filterMap.date_created_by_author,
         render: ({ date_created_by_author }) => (
           <Moment format="D MMM YY hh:mma">{date_created_by_author}</Moment>
         ),
@@ -150,10 +104,8 @@ const EntriesTable = ({
               new Date(a._lastUpdated || a.date_updated)
             : new Date(a._lastUpdated || a.date_updated) -
               new Date(b._lastUpdated || b.date_updated),
-        defaultSortValue: sortMap.date_updated,
         filter: "date",
         filterPlaceholder: "Updated",
-        defaultFilterValue: filterMap.date_updated,
         render: ({ _lastUpdated, date_updated }) => (
           <Moment format="D MMM YY hh:mma">
             {_lastUpdated || date_updated}
@@ -166,10 +118,8 @@ const EntriesTable = ({
         key: "views",
         width: 50,
         render: ({ views }) => <span className="Center">{views}</span>,
-        defaultSortValue: sortMap.views,
         filter: "number",
         filterPlaceholder: "<=",
-        defaultFilterValue: filterMap.views,
         footer: (items) => items.reduce((count, { views }) => count + views, 0),
       },
       {
@@ -190,10 +140,8 @@ const EntriesTable = ({
 
           return <span>{averageRating > 0 ? averageRating : 0}</span>
         },
-        defaultSortValue: sortMap.rating,
         filter: "number",
         filterPlaceholder: "<=",
-        defaultFilterValue: filterMap.rating,
       },
       {
         title: <i className="fas fa-photo-video" />,
@@ -206,11 +154,9 @@ const EntriesTable = ({
           sortUp
             ? b.EntryFiles.length - a.EntryFiles.length
             : a.EntryFiles.length - b.EntryFiles.length,
-        defaultSortValue: sortMap.EntryFiles,
         filter: (searchValue) => ({ EntryFiles }) =>
           EntryFiles.length >= searchValue,
         filterPlaceholder: "<=",
-        defaultFilterValue: filterMap.EntryFiles,
         footer: (items) =>
           items.reduce((count, { EntryFiles }) => count + EntryFiles.length, 0),
       },
@@ -221,8 +167,6 @@ const EntriesTable = ({
         render: ({ is_public }) => (
           <span className="Center">{is_public ? "Yes" : "No"}</span>
         ),
-        defaultSortValue: sortMap.is_public,
-        defaultFilterValue: filterMap.is_public,
       },
       {
         title: <i className="fas fa-hdd" />,
@@ -233,45 +177,46 @@ const EntriesTable = ({
           const bSize = b.size || b._size
           return sortUp ? bSize - aSize : aSize - bSize
         },
-        defaultSortValue: sortMap.id,
         filter: (searchValue) => ({ size, _size }) =>
           stringMatch(formatBytes(size || _size), searchValue),
-        defaultFilterValue: filterMap.id,
         filterPlaceholder: "Size",
 
         render: ({ size, _size }) => formatBytes(size || _size),
       },
     ],
-    [viewableEntries]
+    [entries]
   )
-
-  const onRowClick = useCallback((item) => GoToEntryDetail(item.id), [])
+  const getRowValue = useCallback(
+    (user) => <UserEntriesTable entries={user.entries} />,
+    [entries]
+  )
 
   return (
-    <BasicTable
-      sortable
-      filterable
-      pageSize={pageSize}
-      columns={tableColumns}
-      dataDisplayName="Entries"
-      data={viewableEntries}
-      onRowClick={onRowClick}
-      onSortCallback={handleSortCallback}
-      onFilterCallback={handleFilterCallback}
-    />
+    <Container className="UserEntriesTable Container">
+      <Row className="Center">
+        <Col xs={12} className="p-0">
+          <Header fill="var(--quinaryColor)">User Entries Table</Header>
+        </Col>
+      </Row>
+      <Row className="HomeRow mb-3 pb-1">
+        <BasicTable
+          sortable
+          filterable
+          pageSize={25}
+          columns={tableColumns}
+          dataDisplayName="Users"
+          data={entries}
+          getRowValue={getRowValue}
+          // onSortCallback={handleSortCallback}
+          // onFilterCallback={handleFilterCallback}
+        />
+      </Row>
+    </Container>
   )
 }
 
-EntriesTable.propTypes = {
-  items: EntriesPropTypes,
-  sortMap: PropTypes.object,
-  filterMap: PropTypes.object,
-  SetEntriesSortMap: PropTypes.func.isRequired,
-  SetEntriesFilterMap: PropTypes.func.isRequired,
-}
+UserEntriesTable.propTypes = { entries: EntriesPropTypes }
 
-EntriesTable.defaultProps = {
-  pageSize: 5,
-}
+UserEntriesTable.defaultProps = {}
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesTable)
+export default memo(UserEntriesTable)

@@ -50,7 +50,7 @@ const TableHeader = ({
         onChange={handleDebounce}
         placeholder={
           filterable
-            ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)} filter`
+            ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)}`
             : null
         }
       />

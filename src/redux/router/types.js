@@ -8,6 +8,7 @@ const RouteMap = {
   SETTINGS_STORAGE: "/settings/storage",
   SUPPORT: "/support",
   ABOUT: "/about",
+  ADMIN: "/admin",
   HOME: "/home",
   NEW_ENTRY: "/new-entry",
   ENTRIES_CALENDAR: "/entries/calendar",

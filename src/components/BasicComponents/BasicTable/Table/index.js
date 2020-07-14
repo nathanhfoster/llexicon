@@ -16,6 +16,7 @@ const mapStateToProps = ({
   dark,
   responsive,
   onRowClick,
+  getRowValue,
 }) => ({
   sortList,
   filterList,
@@ -26,6 +27,7 @@ const mapStateToProps = ({
   dark,
   responsive,
   onRowClick,
+  getRowValue,
 })
 
 // Lazy load other child components so BasicTableContext can be initialized before it is used
@@ -45,6 +47,7 @@ const BasicTable = ({
   dark,
   responsive,
   onRowClick,
+  getRowValue,
 }) => {
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
@@ -58,7 +61,7 @@ const BasicTable = ({
     data,
   ])
 
-  const isHoverable = hover || onRowClick ? true : false
+  const isHoverable = hover || onRowClick || getRowValue ? true : false
 
   return (
     <Fragment>
@@ -90,7 +93,7 @@ BasicTable.propTypes = {
   striped: PropTypes.bool.isRequired,
   dark: PropTypes.bool.isRequired,
   responsive: PropTypes.bool.isRequired,
-  onRowClick: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func,
 
   // reactstrap Table
   tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),

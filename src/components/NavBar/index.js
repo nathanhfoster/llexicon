@@ -25,6 +25,7 @@ import "./styles.css"
 
 const {
   ABOUT,
+  ADMIN,
   HOME,
   NEW_ENTRY,
   ENTRIES_CALENDAR,
@@ -82,8 +83,12 @@ export const ENTRY_LINKS = [
   },
 ]
 
-const mapStateToProps = ({ User: { id }, Window: { isMobile } }) => ({
-  UserId: id,
+const mapStateToProps = ({
+  User: { id, is_superuser },
+  Window: { isMobile },
+}) => ({
+  userId: id,
+  userIsSuperUser: is_superuser,
   isMobile,
 })
 
@@ -92,10 +97,17 @@ const mapDispatchToProps = {
   GetUserEntriesByDate,
 }
 
-const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
+const NavBar = ({
+  userId,
+  userIsSuperUser,
+  isMobile,
+  UserLogout,
+  prompt,
+  promptToInstall,
+}) => {
   const [collapsed, setCollapse] = useState(true)
 
-  const navLinks = [
+  let navLinks = [
     {
       route: HOME,
       icon: (
@@ -119,12 +131,12 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
       icon: (
         <span className="NavBarLink">
           <i
-            className={`fas fa-sign-${UserId ? "out" : "in"}-alt NavBarImage`}
+            className={`fas fa-sign-${userId ? "out" : "in"}-alt NavBarImage`}
           />
-          {UserId ? "LOGOUT" : "LOGIN"}
+          {userId ? "LOGOUT" : "LOGIN"}
         </span>
       ),
-      onClick: UserId ? UserLogout : null,
+      onClick: userId ? UserLogout : null,
     },
 
     {
@@ -208,6 +220,18 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
     },
   ]
 
+  if (userIsSuperUser) {
+    navLinks.unshift({
+      route: ADMIN,
+      icon: (
+        <span className="NavBarLink">
+          <i className="fas fa-user-lock NavBarImage" />
+          ADMIN
+        </span>
+      ),
+    })
+  }
+
   const toggleHamburgerMenu = () => setCollapse(!collapsed)
 
   const closeHamburgerMenu = () => setCollapse(true)
@@ -261,7 +285,7 @@ const NavBar = ({ UserId, isMobile, UserLogout, prompt, promptToInstall }) => {
 }
 
 Navbar.propTypes = {
-  UserId: PropTypes.number,
+  userId: PropTypes.number,
   UserLogout: PropTypes.func,
   GetAllEntries: PropTypes.func,
 }

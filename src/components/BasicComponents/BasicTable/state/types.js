@@ -26,7 +26,6 @@ const ColumnPropType = PropTypes.shape({
   ]),
   defaultFilterValue: PropTypes.string,
   filterPlaceholder: PropTypes.string,
-  onRowClick: PropTypes.func,
 })
 
 const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)

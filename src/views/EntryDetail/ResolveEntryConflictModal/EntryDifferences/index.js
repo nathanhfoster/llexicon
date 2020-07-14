@@ -67,6 +67,7 @@ const EntryDifferences = ({ entry1, entry2 }) => {
           sortable
           filterable
           columns={tableColumns}
+          dataDisplayName="Different Props"
           data={differntProps}
         />
       </Row> */}

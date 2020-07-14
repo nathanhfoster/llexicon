@@ -1,0 +1,4 @@
+export const AdminActionTypes = {
+  ADMIN_SET_USERS: "ADMIN_SET_USERS",
+  ADMIN_SET_USERS_ENTRIES: "ADMIN_SET_USERS_ENTRIES",
+}
