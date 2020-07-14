@@ -63,6 +63,18 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         title: <i className="fas fa-id-card" />,
         key: "username",
         width: 120,
+        render: ({ id, username }) => (
+          <a
+            onClick={(e) => e.stopPropagation()}
+            href={REACT_APP_API_URL.replace(
+              "api/v1/",
+              `user/user/${id}/change/`
+            )}
+            target="_blank"
+          >
+            {username}
+          </a>
+        ),
         footer: (items) =>
           items.reduce((count, { username }) => (count + username ? 1 : 0), 0),
       },
@@ -128,13 +140,13 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
       {
         title: <i className="fas fa-feather-alt" />,
         key: "entries",
-        width: 40,
+        width: 80,
         //   filter: "date",
         //   filterPlaceholder: "Date joined",
         render: ({ entries }) => (entries ? entries.length : 0),
         footer: (items) =>
           items.reduce(
-            (count, { entries }) => count + entries && entries.length,
+            (count, { entries }) => count + (entries ? entries.length : 0),
             0
           ),
       },
