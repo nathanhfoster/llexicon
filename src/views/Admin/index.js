@@ -6,7 +6,11 @@ import UserEntriesTable from "./UserEntriesTable"
 import { BasicTable, Header } from "../../components"
 import Moment from "react-moment"
 import { Container, Row, Col } from "reactstrap"
-import { GetAllUsers, GetAllUserEntries } from "../../redux/Admin/actions"
+import {
+  GetAllUsers,
+  GetAllUserEntries,
+  GetUserEntriesDetails,
+} from "../../redux/Admin/actions"
 import { stringMatch } from "../../utils"
 
 const mapStateToProps = ({
@@ -15,9 +19,18 @@ const mapStateToProps = ({
   },
 }) => ({ users: items })
 
-const mapDispatchToProps = { GetAllUsers, GetAllUserEntries }
+const mapDispatchToProps = {
+  GetAllUsers,
+  GetAllUserEntries,
+  GetUserEntriesDetails,
+}
 
-const Admin = ({ users, GetAllUsers, GetAllUserEntries }) => {
+const Admin = ({
+  users,
+  GetAllUsers,
+  GetAllUserEntries,
+  GetUserEntriesDetails,
+}) => {
   useEffect(() => {
     // Using an IIFE
     ;(async function anyNameFunction() {
@@ -104,7 +117,10 @@ const Admin = ({ users, GetAllUsers, GetAllUserEntries }) => {
   )
 
   const getRowValue = useCallback(
-    (user) => <UserEntriesTable entries={user.entries} />,
+    (user) => {
+      GetUserEntriesDetails(user.id)
+      return <UserEntriesTable entries={user.entries} />
+    },
     [users]
   )
 
@@ -132,7 +148,12 @@ const Admin = ({ users, GetAllUsers, GetAllUserEntries }) => {
   )
 }
 
-Admin.propTypes = { users: UsersProps }
+Admin.propTypes = {
+  users: UsersProps,
+  GetAllUsers: PropTypes.func.isRequired,
+  GetAllUserEntries: PropTypes.func.isRequired,
+  GetUserEntriesDetails: PropTypes.func.isRequired,
+}
 
 Admin.defaultProps = {}
 
