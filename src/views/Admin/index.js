@@ -128,7 +128,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
       {
         title: <i className="fas fa-feather-alt" />,
         key: "entries",
-        width: 40,
+        width: 80,
         //   filter: "date",
         //   filterPlaceholder: "Date joined",
         render: ({ entries }) => (entries ? entries.length : 0),
