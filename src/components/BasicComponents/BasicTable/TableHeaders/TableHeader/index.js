@@ -25,7 +25,8 @@ const TableHeader = ({
   )
 
   const headerTitle = typeof title === isType.STRING ? title : headerKey
-  const titleFunction = typeof title === isType.FUNCTION
+  const titleFunction =
+    typeof title === isType.FUNCTION || title instanceof Function
   const shouldShowSortIcon = typeof sortUp === isType.BOOLEAN
   const headerStyles = { width }
 
@@ -37,7 +38,7 @@ const TableHeader = ({
       onClick={sortable ? sortCallback : null}
     >
       <div className="ml-1">
-        {titleFunction ? title(column) : title}
+        {titleFunction ? title(column) : title || headerKey}
         {sortable && shouldShowSortIcon && (
           <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
         )}
