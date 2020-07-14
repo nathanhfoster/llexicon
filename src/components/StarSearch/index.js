@@ -9,17 +9,27 @@ import { DebounceInput } from "../"
 import "./styles.css"
 
 const mapStateToProps = ({
+  Admin: {
+    users: { isPending: adminIsPending },
+  },
   Entries: { search, isPending },
   Window: { isMobile },
 }) => ({
   isMobile,
   search,
+  adminIsPending,
   isPending,
 })
 
 const mapDispatchToProps = { SearchUserEntries }
 
-const StarSearch = ({ isMobile, search, isPending, SearchUserEntries }) => {
+const StarSearch = ({
+  isMobile,
+  search,
+  adminIsPending,
+  isPending,
+  SearchUserEntries,
+}) => {
   const handleSearch = useCallback(
     (searchValue) => SearchUserEntries(searchValue),
     []
@@ -27,8 +37,10 @@ const StarSearch = ({ isMobile, search, isPending, SearchUserEntries }) => {
 
   const iconClassName = useMemo(
     () =>
-      isPending ? "fas fa-sun SunIcon" : "fab fa-wpexplorer TelescopeIcon",
-    [isPending]
+      adminIsPending || isPending
+        ? "fas fa-sun SunIcon"
+        : "fab fa-wpexplorer TelescopeIcon",
+    [adminIsPending, isPending]
   )
 
   return (
@@ -58,7 +70,8 @@ const StarSearch = ({ isMobile, search, isPending, SearchUserEntries }) => {
 StarSearch.propTypes = {
   isMobile: PropTypes.bool,
   search: PropTypes.string,
-  isPending: PropTypes.bool,
+  adminIsPending: PropTypes.bool.isRequired,
+  isPending: PropTypes.bool.isRequired,
   SearchUserEntries: PropTypes.func.isRequired,
 }
 

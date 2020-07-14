@@ -11,13 +11,16 @@ import { stringMatch } from "../../utils"
 
 const mapStateToProps = ({
   Admin: {
-    users: { items },
+    users: { isPending, items },
   },
-}) => ({ users: items })
+}) => ({ isPending, users: items })
 
-const mapDispatchToProps = { GetAllUsers, GetAllUserEntries }
+const mapDispatchToProps = {
+  GetAllUsers,
+  GetAllUserEntries,
+}
 
-const Admin = ({ users, GetAllUsers, GetAllUserEntries }) => {
+const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
   useEffect(() => {
     // Using an IIFE
     ;(async function anyNameFunction() {
@@ -104,7 +107,7 @@ const Admin = ({ users, GetAllUsers, GetAllUserEntries }) => {
   )
 
   const getRowValue = useCallback(
-    (user) => <UserEntriesTable entries={user.entries} />,
+    (user) => <UserEntriesTable user={user} entries={user.entries} />,
     [users]
   )
 
@@ -132,7 +135,12 @@ const Admin = ({ users, GetAllUsers, GetAllUserEntries }) => {
   )
 }
 
-Admin.propTypes = { users: UsersProps }
+Admin.propTypes = {
+  isPending: PropTypes.bool.isRequired,
+  users: UsersProps,
+  GetAllUsers: PropTypes.func.isRequired,
+  GetAllUserEntries: PropTypes.func.isRequired,
+}
 
 Admin.defaultProps = {}
 
