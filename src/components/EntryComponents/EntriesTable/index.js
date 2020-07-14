@@ -29,6 +29,7 @@ const EntriesTable = ({
   filterMap,
   SetEntriesSortMap,
   SetEntriesFilterMap,
+  pageSize,
 }) => {
   const viewableEntries = useMemo(
     () => items.filter(({ _shouldDelete }) => !_shouldDelete),
@@ -62,7 +63,7 @@ const EntriesTable = ({
       {
         title: <i className="fas fa-keyboard" />,
         key: "html",
-        width: 180,
+        width: 90,
         defaultSortValue: sortMap.html,
         filter: "string",
         filterPlaceholder: "Body",
@@ -169,6 +170,7 @@ const EntriesTable = ({
         filter: "number",
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.views,
+        footer: (items) => items.reduce((count, { views }) => count + views, 0),
       },
       {
         title: <i className="fas fa-star" />,
@@ -209,6 +211,8 @@ const EntriesTable = ({
           EntryFiles.length >= searchValue,
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.EntryFiles,
+        footer: (items) =>
+          items.reduce((count, { EntryFiles }) => count + EntryFiles.length, 0),
       },
       {
         title: <i className="fas fa-lock" />,
@@ -234,18 +238,24 @@ const EntriesTable = ({
           stringMatch(formatBytes(size || _size), searchValue),
         defaultFilterValue: filterMap.id,
         filterPlaceholder: "Size",
-        onRowClick: (item) => GoToEntryDetail(item.id),
+
         render: ({ size, _size }) => formatBytes(size || _size),
       },
     ],
-    []
+    [viewableEntries]
   )
+
+  const onRowClick = useCallback((item) => GoToEntryDetail(item.id), [])
+
   return (
     <BasicTable
-      hover
       sortable
+      filterable
+      pageSize={pageSize}
       columns={tableColumns}
+      dataDisplayName="Entries"
       data={viewableEntries}
+      onRowClick={onRowClick}
       onSortCallback={handleSortCallback}
       onFilterCallback={handleFilterCallback}
     />
@@ -258,6 +268,10 @@ EntriesTable.propTypes = {
   filterMap: PropTypes.object,
   SetEntriesSortMap: PropTypes.func.isRequired,
   SetEntriesFilterMap: PropTypes.func.isRequired,
+}
+
+EntriesTable.defaultProps = {
+  pageSize: 5,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesTable)

@@ -1,5 +1,6 @@
-import React, { Fragment, useState, useCallback, useMemo, memo } from "react"
+import React, { Fragment, useState, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import {
   ButtonDropdown,
   DropdownToggle,
@@ -22,13 +23,16 @@ import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
 import { BASE_JOURNAL_ENTRY_ID } from "../../../redux/Entries/reducer"
 import "./styles.css"
 
+const mapStateToProps = ({ User: { id } }) => ({ userId: id })
+
 const EntryOptionsMenu = ({
   entryId,
   title,
   is_public,
+  author,
+  userId,
   shouldSyncOnUpdate,
   shouldRedirectOnDelete,
-  readOnly,
   direction,
 }) => {
   const dispatch = useDispatch()
@@ -36,8 +40,15 @@ const EntryOptionsMenu = ({
   const [urlCopied, setUrlCopied] = useState(false)
   const [showModal, setShowModal] = useState(false)
   // Timeout to allow from onClick events within portal to dispatch first
-  const toggleDropdown = () => setTimeout(() => setOpen(!dropdownOpen), 200)
-  const toggleModal = () => setShowModal(!showModal)
+  const toggleDropdown = () =>
+    setTimeout(() => setOpen((prevropdownOpen) => !prevropdownOpen), 200)
+
+  const toggleModal = () => setShowModal((prevShowModal) => !prevShowModal)
+
+  const readOnly = useMemo(
+    () => Boolean(author && userId && userId !== author),
+    [userId, author]
+  )
 
   const url = useMemo(() => {
     const { origin } = window.location
@@ -88,6 +99,20 @@ const EntryOptionsMenu = ({
 
     shareUrl(sharePayload)
   }, [is_public, url, title])
+
+  const basicModalFooter = useMemo(
+    () => (
+      <Fragment>
+        <Button color="danger" onClick={handleDelete}>
+          Confirm
+        </Button>
+        <Button color="success" onClick={toggleModal}>
+          Cancel
+        </Button>
+      </Fragment>
+    ),
+    []
+  )
 
   return (
     <ButtonDropdown
@@ -149,16 +174,8 @@ const EntryOptionsMenu = ({
                   button={false}
                   show={showModal}
                   title={"Delete Entry"}
-                  footer={
-                    <Fragment>
-                      <Button color="danger" onClick={handleDelete}>
-                        Confirm
-                      </Button>
-                      <Button color="success" onClick={toggleModal}>
-                        Cancel
-                      </Button>
-                    </Fragment>
-                  }
+                  footer={basicModalFooter}
+                  toggle={toggleModal}
                 >
                   <span className="Center">
                     Are you sure you want to delete this entry?
@@ -179,14 +196,12 @@ EntryOptionsMenu.propTypes = {
   is_public: PropTypes.bool.isRequired,
   shouldSyncOnUpdate: PropTypes.bool,
   shouldRedirectOnDelete: PropTypes.bool,
-  readOnly: PropTypes.bool.isRequired,
 }
 
 EntryOptionsMenu.defaultProps = {
   shouldSyncOnUpdate: false,
   shouldRedirectOnDelete: false,
-  readOnly: true,
   direction: "down",
 }
 
-export default memo(EntryOptionsMenu)
+export default reduxConnect(mapStateToProps)(EntryOptionsMenu)

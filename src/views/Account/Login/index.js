@@ -1,13 +1,51 @@
-import React, { memo } from "react"
-import { BasicFormInputsProps } from "../../../components/BasicComponents/BasicForm/propTypes"
-import { useDispatch } from "react-redux"
+import React, { useCallback } from "react"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
 import { UserLogin } from "../../../redux/User/actions"
 
-const Login = ({ inputs }) => {
-  const dispatch = useDispatch()
-  const handleLogin = (payload) => dispatch(UserLogin(payload))
+const mapStateToProps = ({ User: { error } }) => ({
+  userError: error,
+})
+
+const mapDispatchToProps = { UserLogin }
+
+const Login = ({ userError, UserLogin }) => {
+  const errorMessage = userError && "Username or Password is incorrect"
+
+  const handleLogin = useCallback((payload) => UserLogin(payload), [])
+
+  const isInvalid = useCallback(
+    (value) => {
+      if (value && value.length < 3) {
+        return "Required. 3 or more characters."
+      } else {
+        return false
+      }
+    },
+    [userError]
+  )
+
+  const inputs = [
+    {
+      label: "Username",
+      type: "text",
+      name: "username",
+      placeholder: "Username...",
+      invalid: errorMessage,
+      isInvalid,
+      required: true,
+    },
+    {
+      label: "Password",
+      type: "password",
+      name: "password",
+      placeholder: "Password...",
+      isInvalid,
+      required: true,
+    },
+  ]
 
   return (
     <Jumbotron className="LoginFormContainer">
@@ -22,25 +60,15 @@ const Login = ({ inputs }) => {
   )
 }
 
-Login.propTypes = { inputs: BasicFormInputsProps }
-
-Login.defaultProps = {
-  inputs: [
-    {
-      label: "Username",
-      type: "text",
-      name: "username",
-      placeholder: "Username...",
-      required: true,
-    },
-    {
-      label: "Password",
-      type: "password",
-      name: "password",
-      placeholder: "Password...",
-      required: true,
-    },
-  ],
+Login.propTypes = {
+  userError: PropTypes.shape({
+    message: PropTypes.string,
+    name: PropTypes.string,
+    stack: PropTypes.string,
+    status: PropTypes.number,
+    statusText: PropTypes.string,
+  }),
+  UserLogin: PropTypes.func.isRequired,
 }
 
-export default memo(Login)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Login)

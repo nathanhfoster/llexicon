@@ -12,6 +12,8 @@ import qs from "qs"
 import ReactGA from "react-ga"
 import { BASE_JOURNAL_ENTRY_ID } from "./reducer"
 
+const pendingEntries = () => ({ type: EntriesActionTypes.ENTRIES_PENDING })
+
 const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
@@ -67,15 +69,12 @@ const CreateEntryTag = (payload) => (dispatch, getState) => {
 const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
   const { html } = updateEntryPayload
   const base64s = htmlToArrayOfBase64(html)
-  if (base64s.length === 0) {
-    // console.log("base64s.length === 0: ", base64s, updateEntryPayload)
-    return dispatch(UpdateEntry(entry_id, updateEntryPayload))
-  }
   for (let i = 0; i < base64s.length; i++) {
     const base64 = base64s[i]
     const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
     dispatch(AwsUpload(entry_id, file, base64, html))
   }
+  dispatch(UpdateEntry(entry_id, updateEntryPayload))
   return new Promise((resolve) =>
     resolve(dispatch(SetAlert({ title: "Synced", message: "Files" })))
   )
@@ -111,14 +110,19 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetEntry = (url, id) => (dispatch) =>
-  Axios()
+const SetEntryRedux = (entry, _lastUpdated = new Date()) => ({
+  type: EntriesActionTypes.ENTRY_GET,
+  payload: { ...entry, _lastUpdated, _shouldPost: false },
+})
+
+const ClearEntry = () => ({ type: EntriesActionTypes.ENTRY_CLEAR })
+
+const GetEntry = (url, id) => (dispatch) => {
+  dispatch(pendingEntries())
+  return Axios()
     .get(url)
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRY_SET,
-        payload: data,
-      })
+      dispatch(SetEntryRedux(data))
       ReactGA.event({
         category: "Get Entry",
         action: "User is looking at entry!",
@@ -127,20 +131,24 @@ const GetEntry = (url, id) => (dispatch) =>
       return data
     })
     .catch(({ response }) => {
-      const { status } = response
-      if (status === 401 || status === 404) {
-        dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
-        dispatch(SetApiResponseStatus(status))
-        dispatch(
-          SetAlert({
-            title: "Access Denied",
-            message: "This entry is no longer public",
-          })
-        )
+      if (response) {
+        const { status } = response
+        if (status === 401 || status === 404) {
+          dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
+          dispatch(SetApiResponseStatus(status))
+          dispatch(
+            SetAlert({
+              title: "Access Denied",
+              message: "This entry is no longer public",
+            })
+          )
+        }
+
+        const payload = JSON.parse(JSON.stringify(response))
+        dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
       }
-      const payload = JSON.parse(JSON.stringify(response))
-      dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
+}
 
 const GetUserEntry = (id) => (dispatch) =>
   dispatch(GetEntry(`/entries/${id}/`, id))
@@ -149,6 +157,7 @@ const GetUserEntryDetails = (id) => (dispatch) =>
   dispatch(GetEntry(`/entries/${id}/details/`, id))
 
 const GetAllUserEntries = () => (dispatch, getState) => {
+  dispatch(pendingEntries())
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/view/`)
@@ -173,6 +182,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
 }
 
 const GetUserEntries = (pageNumber) => (dispatch, getState) => {
+  dispatch(pendingEntries())
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/page/?page=${pageNumber}`)
@@ -198,6 +208,7 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
 }
 
 const GetUserEntriesByDate = (payload) => (dispatch, getState) => {
+  dispatch(pendingEntries())
   const { id } = getState().User
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify(payload))
@@ -240,8 +251,9 @@ const PostReduxEntry = (payload) => (dispatch, getState) => {
   })
 }
 
-const PostEntry = (payload) => (dispatch) =>
-  Axios()
+const PostEntry = (payload) => (dispatch) => {
+  dispatch(pendingEntries())
+  return Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch(UpdateReduxEntry(payload.id, data, null))
@@ -257,6 +269,7 @@ const PostEntry = (payload) => (dispatch) =>
       console.log(error)
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload: error })
     })
+}
 
 const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
   type: EntriesActionTypes.ENTRY_UPDATE,
@@ -264,11 +277,12 @@ const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
   payload: { ...entry, _lastUpdated, _shouldPost: false },
 })
 
-const UpdateEntry = (id, payload) => (dispatch) =>
-  Axios()
+const UpdateEntry = (id, payload) => (dispatch) => {
+  dispatch(pendingEntries())
+  return Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
-    .then(async ({ data }) => {
-      dispatch(UpdateReduxEntry(id, data, null))
+    .then(({ data }) => {
+      dispatch(UpdateReduxEntry(data.id, data, null))
       ReactGA.event({
         category: "Update Entry",
         action: "User updated a new entry!",
@@ -281,11 +295,13 @@ const UpdateEntry = (id, payload) => (dispatch) =>
       const payload = JSON.parse(JSON.stringify(e.response))
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
+}
 
 const DeleteReduxEntry = (id) => ({ type: EntriesActionTypes.ENTRY_DELETE, id })
 
-const DeleteEntry = (id) => (dispatch) =>
-  Axios()
+const DeleteEntry = (id) => (dispatch) => {
+  dispatch(pendingEntries())
+  return Axios()
     .delete(`/entries/${id}/`)
     .then((res) => {
       dispatch(DeleteReduxEntry(id))
@@ -303,6 +319,7 @@ const DeleteEntry = (id) => (dispatch) =>
       const payload = response
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
+}
 
 const SetSearchEntries = (search, payload = []) => ({
   type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
@@ -313,6 +330,7 @@ const SetSearchEntries = (search, payload = []) => ({
 const ResetSearchEntries = () => (dispatch) => dispatch(SetSearchEntries(""))
 
 const SearchUserEntries = (search) => (dispatch, getState) => {
+  dispatch(pendingEntries())
   dispatch(SetSearchEntries(search))
   const { id } = getState().User
   return Axios()
@@ -337,6 +355,29 @@ const SearchUserEntries = (search) => (dispatch, getState) => {
     })
 }
 
+const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
+  const { items, filteredItems } = getState().Entries
+  let entryToUpdate = items
+    .concat(filteredItems)
+    .find((entry) => entry.id == entry_id)
+
+  if (entryToUpdate) {
+    const payload = {
+      EntryFiles: entryToUpdate.EntryFiles.filter((file) => file.id !== id),
+    }
+    dispatch(UpdateReduxEntry(entry_id, payload))
+  }
+}
+
+const DeleteEntryFile = (id, entry_id) => (dispatch) =>
+  Axios()
+    .delete(`/files/${id}/`)
+    .then((res) => {
+      dispatch(DeleteEntryFileFromRedux(id, entry_id))
+      return res
+    })
+    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
+
 const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
   const {
     User,
@@ -345,7 +386,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
 
   const UserId = User.id
 
-  dispatch({ type: EntriesActionTypes.ENTRIES_PENDING })
+  dispatch(pendingEntries())
 
   const entries = items.concat(filteredItems)
 
@@ -426,6 +467,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
         latitude,
         longitude,
         is_public,
+        views,
       }
       await dispatch(
         ParseBase64(id, cleanObject(updateEntryPayload))
@@ -462,6 +504,8 @@ export {
   CreateEntryTag,
   GetUserEntryTags,
   GetUserEntryPeople,
+  ClearEntry,
+  SetEntryRedux,
   GetUserEntry,
   GetUserEntryDetails,
   GetAllUserEntries,
@@ -477,6 +521,8 @@ export {
   ResetSearchEntries,
   SearchUserEntries,
   SyncEntries,
+  DeleteEntryFileFromRedux,
+  DeleteEntryFile,
   ResetEntriesSortAndFilterMaps,
   SetEntriesSortMap,
   SetEntriesFilterMap,

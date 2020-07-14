@@ -12,6 +12,11 @@
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.4);
 }
 
+.BasicCardSelected {
+  transition: all 0.4s ease-in-out;
+  box-shadow: 0 0 8px 2px var(--accentColor);
+}
+
 .BasicCardHover {
   transition: all 0.4s ease-in-out;
 }

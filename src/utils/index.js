@@ -1,6 +1,46 @@
 import { lazy } from "react"
 import ReactGA from "react-ga"
 
+const DOCUMENT_FORMAT = {
+  xml: "XML",
+  pdf: "PDF",
+  txt: "TXT",
+  json: "JSON",
+  csv: "CSV",
+  url: "URL",
+  gif: "GIF",
+  png: "PNG",
+  jpg: "JPG",
+  jpeg: "JPG",
+  doc: "DOC",
+  docx: "DOCX",
+  xls: "XLS",
+  xlsx: "XLXS",
+  msg: "MSG",
+}
+
+const DOCUMENT_MIME_TYPE = {
+  XML: "application/xml",
+  PDF: "application/pdf",
+  TXT: "text/plain",
+  JSON: "application/json",
+  CSV: "text/csv",
+  URL: "text/url",
+  GIF: "image/gif",
+  PNG: "image/png",
+  JPG: "image/jpeg",
+  DOC: "application/msword",
+  DOCX:
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  XLS: "application/vnd.ms-excel",
+  XLSX: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+}
+
+Number.prototype.toFixedNumber = function (digits, base) {
+  var pow = Math.pow(base || 10, digits)
+  return Math.round(this * pow) / pow
+}
+
 const DeepClone = (arrayOrObj) => JSON.parse(JSON.stringify(arrayOrObj))
 
 const getObjectLength = (obj) => Object.keys(obj).length
@@ -9,7 +49,7 @@ const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min
 
 const getRandomFloat = (min, max, fix = 3) =>
-  (Math.random() * (min - max) + max).toFixed(fix)
+  (Math.random() * (min - max) + max).toFixedNumber(fix)
 
 const arrayToObject = (arr, keyField) =>
   Object.assign({}, ...arr.map((item) => ({ [item[keyField]]: item })))
@@ -36,32 +76,6 @@ const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
   return newObj
 }
 
-const isEquivalent = (obj1, obj2) =>
-  JSON.stringify(obj1) === JSON.stringify(obj2)
-
-const isOnline = (last_login) =>
-  new Date() - new Date(last_login) <= 1000 * 60 * 5
-
-const findMaxInt = (arrayOfObjs, prop) =>
-  Math.max(...arrayOfObjs.map((e) => e[prop]))
-
-const sortedMap = (map) =>
-  new Map([...map.entries()].sort().sort((a, b) => b[1] - a[1]))
-
-const removeArrayDuplicates = (array) => [...new Set(array)]
-
-const removeAttributeDuplicates = (array, objAttr = "id") => {
-  let map = new Map()
-
-  for (let i = 0; i < array.length; i++) {
-    try {
-      map.set(array[i][objAttr], array[i])
-    } catch (e) {}
-  }
-
-  return [...map.values()]
-}
-
 const mapObject = (object = {}, props = []) => {
   if (typeof props === "string") {
     // console.log("Object to value")
@@ -86,45 +100,49 @@ const mapObject = (object = {}, props = []) => {
   return object
 }
 
-const filterMapArray = (array = [], uniqueKey = "id", props = false) => {
+const isEquivalent = (obj1, obj2) =>
+  JSON.stringify(obj1) === JSON.stringify(obj2)
+
+const isOnline = (last_login) =>
+  new Date() - new Date(last_login) <= 1000 * 60 * 5
+
+const findMaxInt = (arrayOfObjs, prop) =>
+  Math.max(...arrayOfObjs.map((e) => e[prop]))
+
+const sortedMap = (map) =>
+  new Map([...map.entries()].sort().sort((a, b) => b[1] - a[1]))
+
+const removeArrayDuplicates = (array) => [...new Set(array)]
+
+const removeAttributeDuplicates = (array, objAttr = "id", props) => {
+  let map = new Map()
+
+  if (props) {
+    for (let i = 0, { length } = array; i < length; i++) {
+      try {
+        const newItem = mapObject(array[i], props)
+        map.set(array[i][objAttr], newItem)
+      } catch (e) {}
+    }
+  } else {
+    for (let i = 0, { length } = array; i < length; i++) {
+      try {
+        map.set(array[i][objAttr], array[i])
+      } catch (e) {}
+    }
+  }
+
+  return [...map.values()]
+}
+
+const filterMapArray = (array = [], uniqueKey = "id", props) => {
   if (!uniqueKey && !props) {
     // console.log("return original array")
     return array
   }
 
   if (uniqueKey) {
-    let duplicateMap = {}
-
-    if (!props) {
-      // console.log("Filter but don't map")
-      const filteredArray = array.filter((item) => {
-        if (!duplicateMap[item[uniqueKey]]) {
-          duplicateMap[item[uniqueKey]] = true
-          return false
-        } else {
-          return true
-        }
-      })
-
-      return filteredArray
-    } else if (props) {
-      // console.log("Filter and map")
-      const filteredMappedArray = array.reduce((result, item) => {
-        if (!duplicateMap[item[uniqueKey]]) {
-          duplicateMap[item[uniqueKey]] = true
-          if (props) {
-            const newItem = mapObject(item, props)
-            return result.concat(newItem)
-          } else {
-            return result.concat(item)
-          }
-        } else {
-          return result
-        }
-      }, [])
-
-      return filteredMappedArray
-    }
+    return removeAttributeDuplicates(array, uniqueKey, props)
   } else if (props) {
     // console.log("Don't filter but map")
     const mappedArray = array.map((item) => (item = mapObject(item, props)))
@@ -276,48 +294,6 @@ const splitStrings = (value) => {
     default:
       return value
   }
-}
-
-const getMostRecent = (reduxData, newData) => {
-  const reduxDataLastUpdated = new Date(
-    reduxData._lastUpdated || reduxData.date_updated
-  )
-  const newDataLastUpdated = new Date(newData.date_updated)
-
-  // const reduxViews = reduxData.views
-  // const newDataViews = newData.views
-
-  // console.log(newDataLastUpdated - reduxDataLastUpdated)
-  // console.log(newDataLastUpdated - 0 > reduxDataLastUpdated - 0)
-
-  // || newDataViews > reduxViews
-  if (newDataLastUpdated > reduxDataLastUpdated) {
-    delete reduxData._lastUpdated
-    // delete reduxData._shouldDelete
-    return { ...reduxData, ...newData }
-  } else {
-    return { ...newData, ...reduxData }
-  }
-}
-
-const mergeJson = (reduxData, newData) => {
-  // Order matters. You want to merge the reduxData into the newData
-  const allData = reduxData.concat(newData)
-  let mergeMap = {}
-
-  for (let i = 0, { length } = allData; i < length; i++) {
-    const item = allData[i]
-    const { id } = item
-
-    if (!mergeMap[id]) {
-      mergeMap[id] = item
-    } else {
-      // Merge
-      mergeMap[id] = getMostRecent(mergeMap[id], item)
-    }
-  }
-
-  return objectToArray(mergeMap)
 }
 
 const importTextFileEntries = (files) => {}
@@ -479,6 +455,7 @@ const stringMatch = (s1, s2, caseSensitive = false) => {
   const cleanString = escapeRegExp(s2)
 
   const regexMatch = new RegExp(cleanString, flags)
+
   return s1.match(regexMatch)
 }
 
@@ -586,7 +563,46 @@ const getSHA256 = async (message) => {
   return hashHex
 }
 
+const showFile = (blob, name, extension) => {
+  // It is necessary to create a new blob object with mime-type explicitly set
+  // otherwise only Chrome works like it should
+  var newBlob = new Blob([blob], { type: DOCUMENT_MIME_TYPE[extension] })
+
+  // IE doesn't allow using a blob object directly as link href
+  // instead it is necessary to use msSaveOrOpenBlob
+  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(newBlob)
+    return
+  }
+
+  // For other browsers:
+  // Create a link pointing to the ObjectURL containing the blob.
+  const data = window.URL.createObjectURL(newBlob)
+  var link = document.createElement("a")
+  link.href = data
+  link.download = `${name}.${extension}`
+  link.click()
+  setTimeout(() => {
+    // For Firefox it is necessary to delay revoking the ObjectURL
+    window.URL.revokeObjectURL(data)
+  }, 100)
+}
+
+const differenceBetweenStrings = (s1, s2) => {
+  if (typeof s1 !== isType.STRING) {
+    s1 = JSON.stringify(s1)
+  }
+  if (typeof s2 !== isType.STRING) {
+    s2 = JSON.stringify(s2)
+  }
+  return s2
+    .split("")
+    .reduce((diff, val, i) => (val != s1.charAt(i) ? (diff += val) : diff), "")
+}
+
 export {
+  DOCUMENT_FORMAT,
+  DOCUMENT_MIME_TYPE,
   DeepClone,
   getObjectLength,
   getRandomInt,
@@ -594,13 +610,13 @@ export {
   arrayToObject,
   objectToArray,
   removeKeyOrValueFromObject,
+  mapObject,
   isEquivalent,
   isOnline,
   findMaxInt,
   sortedMap,
   removeArrayDuplicates,
   removeAttributeDuplicates,
-  mapObject,
   filterMapArray,
   isSubset,
   TopKFrequentStrings,
@@ -614,7 +630,6 @@ export {
   getFileFromBase64,
   joinStrings,
   splitStrings,
-  mergeJson,
   importTextFileEntries,
   readmultifiles,
   lazyLoadWithTimeOut,
@@ -635,4 +650,6 @@ export {
   shareFile,
   deepParseJson,
   getSHA256,
+  showFile,
+  differenceBetweenStrings,
 }

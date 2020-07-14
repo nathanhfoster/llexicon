@@ -1,33 +1,28 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { ColumnsPropType } from "../../../state/types"
-import { isType } from "../../../../../../utils"
 
-const TableDataCell = ({ scope, render, item, itemKey }) => {
-  const itemValue = item[itemKey]
-  const handleRender = render ? render(item) : itemValue
-  const title =
-    typeof handleRender === isType.STRING
-      ? handleRender
-      : typeof itemValue === isType.STRING
-      ? itemValue
-      : ""
-
-  return scope === "row" ? (
-    <th scope="row" title={title}>
-      {handleRender}
+const TableDataCell = ({ className, scope, title, colSpan, children }) =>
+  scope === "row" ? (
+    <th className={className} scope="row" title={title} colSpan={colSpan}>
+      {children}
     </th>
   ) : (
-    <td title={title}>{handleRender}</td>
+    <td className={className} title={title} colSpan={colSpan}>
+      {children}
+    </td>
   )
-}
 
 TableDataCell.propTypes = {
+  className: PropTypes.string,
   scope: PropTypes.string,
-  render: PropTypes.func,
-  item: PropTypes.object,
-  itemKey: PropTypes.any,
+  colSpan: PropTypes.number,
   columns: ColumnsPropType,
+  colSpan: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 }
 
 export default memo(TableDataCell)

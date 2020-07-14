@@ -24,6 +24,10 @@ const MapSearchBox = ({
     }
   }, [])
 
+  useEffect(() => {
+    searchInputRef.current.focus()
+  }, [searchInputRef])
+
   const handlePlacesChange = () => {
     const selected = searchBoxRef.current.getPlaces()
     const { 0: place } = selected

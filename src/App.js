@@ -5,7 +5,7 @@ import { connect as reduxConnect } from "react-redux"
 import { Route, Switch, Redirect } from "react-router-dom"
 import { SetLocalStorageUsage } from "./redux/App/actions"
 import { SetWindow } from "./redux/Window/actions"
-import { GetUserSettings } from "./redux/User/actions"
+import { ResetUserError, GetUserSettings } from "./redux/User/actions"
 import { SetCalendar } from "./redux/Calendar/actions"
 import {
   SyncEntries,
@@ -18,7 +18,7 @@ import {
 } from "./redux/Entries/actions"
 import { ResetMap } from "./redux/Map/actions"
 import { RouteMap, RouterGoBack } from "./redux/router/actions"
-import { About, Home, Entries, PrivacyPolicy } from "./views"
+import { Admin, About, Home, Entries, PrivacyPolicy } from "./views"
 import { NavBar } from "./components"
 import { RouterLinkPush } from "./redux/router/actions"
 import memoizeProps from "./utils/memoizeProps"
@@ -33,6 +33,7 @@ const EntryDetail = lazy(() => import("./views/EntryDetail"))
 const PageNotFound = lazy(() => import("./views/PageNotFound"))
 
 const {
+  ADMIN,
   ABOUT,
   HOME,
   ROOT,
@@ -62,16 +63,19 @@ const mapStateToProps = ({
     id,
     token,
     Settings: { dark_mode },
+    is_superuser,
   },
 }) => ({
   userId: id,
   userToken: token,
+  userIsSuperUser: is_superuser,
   userDarkMode: dark_mode,
 })
 
 const mapDispatchToProps = {
   SetWindow,
   SetLocalStorageUsage,
+  ResetUserError,
   GetUserSettings,
   SetCalendar,
   SyncEntries,
@@ -116,9 +120,11 @@ const changeTheme = (darkMode) =>
     : mapThemeProperties(LIGHT_MODE_THEME)
 
 const App = ({
+  ResetUserError,
   GetUserSettings,
   userId,
   userToken,
+  userIsSuperUser,
   userDarkMode,
   SetWindow,
   SetLocalStorageUsage,
@@ -139,7 +145,7 @@ const App = ({
   }, [userDarkMode])
   useEffect(() => {
     const activeDate = new Date()
-
+    ResetUserError()
     SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
     ResetMap()
@@ -180,6 +186,15 @@ const App = ({
       <div className="App RouteOverlay">
         <BackgroundImage />
         <Switch>
+          <Route
+            exact={true}
+            path={[ADMIN]}
+            component={renderRedirectOrComponent(
+              !userIsSuperUser,
+              Admin,
+              "GoBack"
+            )}
+          />
           <Route
             exact={true}
             strict={false}
@@ -227,7 +242,11 @@ const App = ({
             exact={true}
             strict={false}
             path={[ENTRY_DETAIL]}
-            render={() => <EntryDetail />}
+            render={({
+              match: {
+                params: { entryId },
+              },
+            }) => <EntryDetail entryId={entryId} />}
           />
           <Route
             exact={true}
@@ -257,9 +276,13 @@ const App = ({
 }
 
 App.propTypes = {
-  User: UserProps,
+  userId: PropTypes.number,
+  userToken: PropTypes.string,
+  userIsSuperUser: PropTypes.bool,
+  userDarkMode: PropTypes.bool,
   SetWindow: PropTypes.func.isRequired,
   SetLocalStorageUsage: PropTypes.func.isRequired,
+  ResetUserError: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,

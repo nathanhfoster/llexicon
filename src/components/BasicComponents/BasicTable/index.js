@@ -18,8 +18,12 @@ const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
 
 BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
+  filterable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
+  dataDisplayName: PropTypes.string.isRequired,
   data: DataPropType,
+  getRowValue: PropTypes.func,
+  onRowClick: PropTypes.func,
   onSortCallback: PropTypes.func,
   onFilterCallback: PropTypes.func,
   // reactstrap Table
@@ -44,12 +48,13 @@ BasicTableProvider.propTypes = {
 BasicTableProvider.defaultProps = {
   hover: false,
   sortable: false,
+  filterable: false,
   bordered: false,
   borderless: true,
   striped: false,
   dark: true,
   responsive: true,
-  pageSize: 10,
+  pageSize: 5,
   pageSizes: [5, 10, 15, 20, 25, 50, 100],
   sortList: [],
   sortList: [],
@@ -83,6 +88,7 @@ BasicTableProvider.defaultProps = {
         stringMatch(item.user_name, filterValue),
     },
   ],
+  dataDisplayName: "Data",
   data: new Array(25).fill().map(
     (e, i) =>
       (e = {

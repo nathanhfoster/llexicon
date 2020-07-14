@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, memo, Fragment } from "react"
+import React, { useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { BasicModal } from "../"
 import { Button } from "reactstrap"
@@ -12,13 +12,19 @@ const ConfirmAction = ({
   size,
   disabled,
 }) => {
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     onConfirm && onConfirm()
-  }
-
-  const handleCancel = () => {
+  }, [])
+  const handleCancel = useCallback(() => {
     onCancel && onCancel()
-  }
+  }, [])
+
+  const saveButton = useMemo(() => <Button color="danger">Confirm</Button>, [])
+
+  const cancelButton = useMemo(
+    () => <Button color="primary">Cancel</Button>,
+    []
+  )
 
   return (
     <BasicModal
@@ -28,8 +34,8 @@ const ConfirmAction = ({
       onSaveCallback={handleConfirm}
       onCancelCallback={handleCancel}
       disabled={disabled}
-      saveButton={<Button color="danger">Confirm</Button>}
-      cancelButton={<Button color="primary">Cancel</Button>}
+      saveButton={saveButton}
+      cancelButton={cancelButton}
     >
       <span className="Center">{message}</span>
     </BasicModal>

@@ -11,6 +11,7 @@ const TableHeader = ({
   width,
   column,
   sortable,
+  filterable,
   sortUp,
   sortCallback,
   filter,
@@ -26,11 +27,12 @@ const TableHeader = ({
   const headerTitle = typeof title === isType.STRING ? title : headerKey
   const titleFunction = typeof title === isType.FUNCTION
   const shouldShowSortIcon = typeof sortUp === isType.BOOLEAN
+  const headerStyles = { width }
 
   return (
     <th
       className={`BasicTableHeader px-1 ${sortable ? "HeaderHoverable" : ""} `}
-      style={{ width }}
+      style={headerStyles}
       title={headerTitle}
       onClick={sortable ? sortCallback : null}
     >
@@ -43,12 +45,12 @@ const TableHeader = ({
       <DebounceInput
         className="TableHeaderSortInput"
         defaultValue={defaultFilterValue}
-        disabled={!filter}
+        disabled={!(filter || filterable)}
         onClick={(e) => e.stopPropagation()}
         onChange={handleDebounce}
         placeholder={
-          filter
-            ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)} filter`
+          filterable
+            ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)}`
             : null
         }
       />
@@ -62,6 +64,7 @@ TableHeader.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   column: ColumnPropType,
   sortable: PropTypes.bool.isRequired,
+  filterable: PropTypes.bool.isRequired,
   sortUp: PropTypes.oneOf([true, false, null, undefined]),
   sortCallback: PropTypes.func.isRequired,
   filter: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),

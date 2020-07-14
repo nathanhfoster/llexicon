@@ -173,7 +173,7 @@ const PeopleButtonModal = ({
         <Row className="TagAndPeopleContainer">
           <TagsContainer
             tags={sortedPeople}
-            maxHeight={150}
+            maxHeight={200}
             flexWrap="wrap"
             onClickCallback={handleAddPerson}
             hoverable
@@ -192,7 +192,7 @@ const PeopleButtonModal = ({
             faIcon="fas fa-user-times"
           />
         </Row>
-        <Row>xxs
+        <Row>
           <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
             <InputGroupAddon addonType="append">
               <InputGroupText
@@ -202,7 +202,10 @@ const PeopleButtonModal = ({
                 disabled={!personsName}
                 onClick={handleCreatePeople}
               >
-                <i className="fas fa-user-plus" style={{ fontSize: 20, color: 'var(--accentColor)' }} />
+                <i
+                  className="fas fa-user-plus"
+                  style={{ fontSize: 20, color: "var(--accentColor)" }}
+                />
               </InputGroupText>
             </InputGroupAddon>
             <DebounceInput

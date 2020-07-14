@@ -1,13 +1,47 @@
-import React, { memo } from "react"
-import { BasicFormInputsProps } from "../../../components/BasicComponents/BasicForm/propTypes"
-import { useDispatch } from "react-redux"
+import React, { useCallback } from "react"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
 import { PasswordReset } from "../../../redux/User/actions"
 
-const ForgotPassword = ({ inputs }) => {
-  const dispatch = useDispatch()
-  const handlePasswordReset = (payload) => dispatch(PasswordReset(payload))
+const mapStateToProps = ({ User: { error } }) => ({
+  userError: error,
+})
+
+const mapDispatchToProps = {
+  PasswordReset,
+}
+
+const ForgotPassword = ({ userError, PasswordReset }) => {
+  const errorMessage = userError && "Please confirm email"
+  const handlePasswordReset = useCallback(
+    (payload) => PasswordReset(payload),
+    []
+  )
+
+  const isInvalid = useCallback(
+    (value) => {
+      if (value && value.length < 3) {
+        return "Required. 3 or more characters."
+      } else {
+        return false
+      }
+    },
+    [userError]
+  )
+
+  const inputs = [
+    {
+      label: "Email",
+      type: "email",
+      name: "email",
+      placeholder: "Email...",
+      required: true,
+      invalid: errorMessage,
+      isInvalid,
+    },
+  ]
 
   return (
     <Jumbotron className="LoginFormContainer">
@@ -22,18 +56,17 @@ const ForgotPassword = ({ inputs }) => {
   )
 }
 
-ForgotPassword.propTypes = { inputs: BasicFormInputsProps }
-
-ForgotPassword.defaultProps = {
-  inputs: [
-    {
-      label: "Email",
-      type: "email",
-      name: "email",
-      placeholder: "Email...",
-      required: true,
-    },
-  ],
+ForgotPassword.propTypes = {
+  userError: PropTypes.shape({
+    message: PropTypes.string,
+    name: PropTypes.string,
+    stack: PropTypes.string,
+    status: PropTypes.number,
+    statusText: PropTypes.string,
+  }),
+  PasswordReset: PropTypes.func.isRequired,
 }
 
-export default memo(ForgotPassword)
+ForgotPassword.defaultProps = {}
+
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(ForgotPassword)

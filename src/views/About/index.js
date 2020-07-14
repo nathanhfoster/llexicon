@@ -69,7 +69,10 @@ const About = ({ userId, prompt, promptToInstall }) => {
       title: "Offline",
       text: "Doesn't require an internet connection",
       button: (
-        <Button color="accent" onClick={() => RouterPush(RouteMap.SETTINGS)}>
+        <Button
+          color="accent"
+          onClick={() => RouterPush(RouteMap.SETTINGS_PREFERENCES)}
+        >
           Go Offline
         </Button>
       ),
