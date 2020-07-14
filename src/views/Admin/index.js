@@ -103,7 +103,6 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         render: ({ entries }) => (entries ? entries.length : "--"),
         footer: (items) => items.reduce((count, { entries }) => entries ? count + entries.length : 0, 0),
       },
-      },
     ],
     [users]
   )
