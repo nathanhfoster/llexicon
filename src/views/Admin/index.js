@@ -6,31 +6,21 @@ import UserEntriesTable from "./UserEntriesTable"
 import { BasicTable, Header } from "../../components"
 import Moment from "react-moment"
 import { Container, Row, Col } from "reactstrap"
-import {
-  GetAllUsers,
-  GetAllUserEntries,
-  GetUserEntriesDetails,
-} from "../../redux/Admin/actions"
+import { GetAllUsers, GetAllUserEntries } from "../../redux/Admin/actions"
 import { stringMatch } from "../../utils"
 
 const mapStateToProps = ({
   Admin: {
-    users: { items },
+    users: { isPending, items },
   },
-}) => ({ users: items })
+}) => ({ isPending, users: items })
 
 const mapDispatchToProps = {
   GetAllUsers,
   GetAllUserEntries,
-  GetUserEntriesDetails,
 }
 
-const Admin = ({
-  users,
-  GetAllUsers,
-  GetAllUserEntries,
-  GetUserEntriesDetails,
-}) => {
+const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
   useEffect(() => {
     // Using an IIFE
     ;(async function anyNameFunction() {
@@ -117,10 +107,7 @@ const Admin = ({
   )
 
   const getRowValue = useCallback(
-    (user) => {
-      GetUserEntriesDetails(user.id)
-      return <UserEntriesTable entries={user.entries} />
-    },
+    (user) => <UserEntriesTable user={user} entries={user.entries} />,
     [users]
   )
 
@@ -149,10 +136,10 @@ const Admin = ({
 }
 
 Admin.propTypes = {
+  isPending: PropTypes.bool.isRequired,
   users: UsersProps,
   GetAllUsers: PropTypes.func.isRequired,
   GetAllUserEntries: PropTypes.func.isRequired,
-  GetUserEntriesDetails: PropTypes.func.isRequired,
 }
 
 Admin.defaultProps = {}

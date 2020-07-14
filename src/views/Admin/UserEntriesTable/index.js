@@ -1,7 +1,7 @@
-import React, { useCallback, useMemo } from "react"
+import React, { useEffect, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { useDispatch } from "react-redux"
 import {
   BasicTable,
   Header,
@@ -11,17 +11,19 @@ import {
 import Moment from "react-moment"
 import { Container, Row, Col } from "reactstrap"
 import { stringMatch, stripHtml, formatBytes } from "../../../utils"
+import { GetUserEntriesDetails } from "../../../redux/Admin/actions"
 
-const mapStateToProps = ({
-  Admin: {
-    users: { isPending },
-  },
-}) => ({ isPending })
+const UserEntriesTable = ({ user, entries }) => {
+  const dispatch = useDispatch()
+  const hasDetails = entries.find((entry) => entry.html)
 
-const UserEntriesTable = ({ entries, isPending }) => {
+  useEffect(() => {
+    dispatch(GetUserEntriesDetails(user.id))
+  }, [])
+
   const tableColumns = useMemo(
     () =>
-      isPending
+      !hasDetails
         ? null
         : [
             {
@@ -202,14 +204,16 @@ const UserEntriesTable = ({ entries, isPending }) => {
               render: ({ size, _size }) => formatBytes(size || _size),
             },
           ],
-    [entries, isPending]
+    [hasDetails, entries]
   )
 
   const onRowClick = useCallback((entry) => {
     console.log(entry)
   }, [])
 
-  return isPending ? null : (
+  if (!hasDetails) return null
+
+  return (
     <Container className="UserEntriesTable Container">
       <Row className="Center">
         <Col xs={12} className="p-0">
@@ -237,4 +241,4 @@ UserEntriesTable.propTypes = { entries: EntriesPropTypes }
 
 UserEntriesTable.defaultProps = {}
 
-export default reduxConnect(mapStateToProps)(UserEntriesTable)
+export default memo(UserEntriesTable)
