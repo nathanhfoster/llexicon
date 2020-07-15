@@ -36,7 +36,7 @@ const BasicForm = ({
     target: { id, name, value, type, checked, files },
   }) => {
     const newState = [...state].map((input) => {
-      if (input.type === type) {
+      if (input.name === name) {
         switch (type) {
           case "file":
             return { ...input, files }

@@ -30,7 +30,9 @@ const BasicInput = ({
 
   const isCheckOrRadio = type === "checkbox" || type === "radio"
 
-  const handleChange = ({ target: { value } }) => setValue(value)
+  const handleChange = ({ target: { value } }) => {
+    setValue(value)
+  }
 
   const valid =
     restOfProps.valid || (typeof isValid === "function" && isValid(value))
