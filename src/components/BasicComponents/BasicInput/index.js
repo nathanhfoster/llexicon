@@ -1,14 +1,14 @@
-import React, { useState, memo } from "react"
+import React, { useState, memo, Fragment } from "react"
 import { inputProps } from "./propTypes"
 import { FormGroup, Label, Input, FormFeedback, FormText } from "reactstrap"
 
-const getInitialState = ({ value }) => {
-  return value || ""
+const getInitialState = ({ value, defaultValue }) => {
+  return defaultValue || value || ""
 }
 
 const BasicInput = ({
   name,
-  defaultValue,
+  // defaultValue,
   check,
   label,
   type,
@@ -27,7 +27,7 @@ const BasicInput = ({
   ...restOfProps
 }) => {
   const [value, setValue] = useState(getInitialState(restOfProps))
-  const isCheckOrRadio = check || type === "radio"
+  const isCheckOrRadio = type === "checkbox" || type === "radio"
 
   const handleChange = ({ target: { value } }) => setValue(value)
 
@@ -38,21 +38,29 @@ const BasicInput = ({
 
   return (
     <FormGroup check={isCheckOrRadio} row={row}>
-      <Label check={check} for={name}>
-        {`${label} ${required ? "*" : ""}`}
-      </Label>
-      <Input
-        id={name}
-        defaultValue={defaultValue}
-        value={value}
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        disabled={disabled}
-        valid={Boolean(valid)}
-        invalid={Boolean(invalid)}
-        onChange={handleChange}
-      />
+      {isCheckOrRadio ? (
+        <Label check={isCheckOrRadio} for={name}>
+          <Input type="checkbox" /> {`${label} ${required ? "*" : ""}`}
+        </Label>
+      ) : (
+        <Fragment>
+          <Label check={isCheckOrRadio} for={name}>
+            {`${label} ${required ? "*" : ""}`}
+          </Label>
+          <Input
+            id={name}
+            // defaultValue={defaultValue}
+            value={value}
+            type={type}
+            name={name}
+            placeholder={placeholder}
+            disabled={disabled}
+            valid={Boolean(valid)}
+            invalid={Boolean(invalid)}
+            onChange={handleChange}
+          />
+        </Fragment>
+      )}
       {typeof valid === "string" && (
         <FormFeedback valid={!valid}>{valid}</FormFeedback>
       )}
