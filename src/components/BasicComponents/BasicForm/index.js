@@ -37,18 +37,12 @@ const BasicForm = ({
   }) => {
     const newState = [...state].map((input) => {
       if (input.name === name) {
-        switch (type) {
-          case "file":
-            return { ...input, files }
-
-          case "checkbox":
-            return { ...input, checked }
-
-          case "radio":
-            return { ...input, checked }
-
-          default:
-            return { ...input, value }
+        if (type === "radio" || type === "checkbox") {
+          return { ...input, checked }
+        } else if (type === "file") {
+          return { ...input, files }
+        } else {
+          return { ...input, value }
         }
       } else {
         return input

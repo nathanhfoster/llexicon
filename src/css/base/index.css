@@ -87,9 +87,9 @@ input[type="password"] {
   color: var(--secondaryColor);
 }
 
-input[type="file"] {
+/* input[type="file"] {
   display: none;
-}
+} */
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
