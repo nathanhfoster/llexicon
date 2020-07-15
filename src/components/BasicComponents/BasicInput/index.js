@@ -25,42 +25,60 @@ const BasicInput = ({
   const [value, setValue] = useState(restOfProps.value)
 
   useEffect(() => {
-    setValue(value)
+    if (value !== restOfProps.value) {
+      setValue(value)
+    }
   }, [restOfProps.value])
 
   const isCheckOrRadio = type === "checkbox" || type === "radio"
 
-  const handleChange = ({ target: { value } }) => setValue(value)
+  const handleChange = ({ target: { type, value, checked, files } }) => {
+    if (type === "radio" || type === "checkbox") {
+      setValue(checked)
+    } else if (type === "file") {
+      // setValue(files)
+      setValue(value)
+    } else {
+      setValue(value)
+    }
+  }
 
   const valid =
     restOfProps.valid || (typeof isValid === "function" && isValid(value))
   const invalid =
     restOfProps.invalid || (typeof isInvalid === "function" && isInvalid(value))
 
+  const renderLabel = `${label} ${required ? "*" : ""}`
+
+  const renderInput = (
+    <Input
+      id={name}
+      defaultValue={defaultValue}
+      value={value}
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      disabled={disabled}
+      valid={Boolean(valid)}
+      invalid={Boolean(invalid)}
+      onChange={handleChange}
+    />
+  )
+
   return (
     <FormGroup check={isCheckOrRadio} row={row}>
       {isCheckOrRadio ? (
         <Label check={isCheckOrRadio} for={name}>
-          <Input type={type} value={value} defaultChecked={defaultValue} />{" "}
-          {`${label} ${required ? "*" : ""}`}
+          {renderInput} {renderLabel}
         </Label>
       ) : (
         <Fragment>
-          <Label check={isCheckOrRadio} for={name}>
-            {`${label} ${required ? "*" : ""}`}
-          </Label>
-          <Input
-            id={name}
-            defaultValue={defaultValue}
-            value={value}
-            type={type}
-            name={name}
-            placeholder={placeholder}
-            disabled={disabled}
-            valid={Boolean(valid)}
-            invalid={Boolean(invalid)}
-            onChange={handleChange}
-          />
+          {label && (
+            <Label check={isCheckOrRadio} for={name}>
+              {renderLabel}
+            </Label>
+          )}
+          {renderInput}
         </Fragment>
       )}
       {typeof valid === "string" && (
