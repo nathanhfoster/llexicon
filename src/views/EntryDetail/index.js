@@ -4,7 +4,7 @@ import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
-import ResolveConflictModal from "./ResolveConflictModal"
+import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
 
 import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
 import { SetCalendar } from "../../redux/Calendar/actions"
@@ -12,11 +12,12 @@ import PageNotFound from "../PageNotFound"
 import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
-const mapStateToProps = ({
-  User: { id },
-  Entries: { items, filteredItems },
-}) => ({
+const mapStateToProps = (
+  { User: { id }, Entries: { items, filteredItems } },
+  { entryId }
+) => ({
   userId: id,
+  entry: items.concat(filteredItems).find(({ id }) => id == entryId),
   items,
   filteredItems,
 })
@@ -25,19 +26,13 @@ const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
 
 const EntryDetail = ({
   entryId,
-  items,
-  filteredItems,
+  entry,
   userId,
   GetUserEntryDetails,
   SyncEntries,
   SetCalendar,
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
-
-  const entry = useMemo(
-    () => items.concat(filteredItems).find(({ id }) => id == entryId),
-    [items, filteredItems]
-  )
 
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
@@ -65,7 +60,7 @@ const EntryDetail = ({
 
   return entry ? (
     <Container className="Container">
-      {!readOnly && <ResolveConflictModal entry={entry} />}
+      {!readOnly && <ResolveEntryConflictModal entry={entry} />}
       <Row>
         <Col xs={12} className="EntryDetail p-0">
           <Entry

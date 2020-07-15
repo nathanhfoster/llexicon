@@ -26,12 +26,11 @@ const ColumnPropType = PropTypes.shape({
   ]),
   defaultFilterValue: PropTypes.string,
   filterPlaceholder: PropTypes.string,
-  onRowClick: PropTypes.func,
 })
 
 const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
 
-const DataPropType = PropTypes.arrayOf(PropTypes.object).isRequired
+const DataPropType = PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
 
 const SortListPropType = PropTypes.arrayOf(
   PropTypes.shape({

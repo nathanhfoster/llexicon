@@ -588,6 +588,18 @@ const showFile = (blob, name, extension) => {
   }, 100)
 }
 
+const differenceBetweenStrings = (s1, s2) => {
+  if (typeof s1 !== isType.STRING) {
+    s1 = JSON.stringify(s1)
+  }
+  if (typeof s2 !== isType.STRING) {
+    s2 = JSON.stringify(s2)
+  }
+  return s2
+    .split("")
+    .reduce((diff, val, i) => (val != s1.charAt(i) ? (diff += val) : diff), "")
+}
+
 export {
   DOCUMENT_FORMAT,
   DOCUMENT_MIME_TYPE,
@@ -639,4 +651,5 @@ export {
   deepParseJson,
   getSHA256,
   showFile,
+  differenceBetweenStrings,
 }

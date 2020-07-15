@@ -7,16 +7,9 @@ const getInitialState = ({ columns, pageSize, pageSizes, ...restOfProps }) => {
   let firstRowClickFound = null
 
   for (let i = 0, { length } = columns; i < length; i++) {
-    const {
-      key,
-      sort,
-      filter,
-      defaultSortValue,
-      defaultFilterValue,
-      onRowClick,
-    } = columns[i]
-
-    if (!firstRowClickFound && onRowClick) firstRowClickFound = onRowClick
+    const { key, sort, filter, defaultSortValue, defaultFilterValue } = columns[
+      i
+    ]
 
     const sortItem = { key, sortUp: defaultSortValue, sort }
     sortList.push(sortItem)
@@ -30,7 +23,6 @@ const getInitialState = ({ columns, pageSize, pageSizes, ...restOfProps }) => {
     columns,
     sortList,
     filterList,
-    onRowClick: firstRowClickFound,
     currentPage: 0,
     pageSize,
     pageSizes: [{ id: 0, header: true, value: "Page Sizes" }].concat(

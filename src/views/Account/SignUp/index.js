@@ -38,7 +38,6 @@ const SignUp = ({ userError, CreateUser }) => {
       invalid: errorMessage,
       isInvalid,
       required: true,
-      disabled: false,
     },
     {
       label: "Email",
@@ -47,7 +46,6 @@ const SignUp = ({ userError, CreateUser }) => {
       placeholder: "Email...",
       isInvalid,
       required: true,
-      disabled: false,
     },
     {
       label: "Password",
@@ -56,7 +54,12 @@ const SignUp = ({ userError, CreateUser }) => {
       placeholder: "Password...",
       isInvalid,
       required: true,
-      disabled: false,
+    },
+    {
+      label: "Opt in",
+      type: "checkbox",
+      name: "opt_in",
+      // defaultValue: true,
     },
   ]
 

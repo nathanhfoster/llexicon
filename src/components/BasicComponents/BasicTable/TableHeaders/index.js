@@ -11,7 +11,15 @@ const mapStateToProps = ({
   onSortCallback,
   onFilterCallback,
   sortable,
-}) => ({ columns, sortList, onSortCallback, onFilterCallback, sortable })
+  filterable,
+}) => ({
+  columns,
+  sortList,
+  onSortCallback,
+  onFilterCallback,
+  sortable,
+  filterable,
+})
 
 const mapDispatchToProps = { basicTableSort, basicTableFilter }
 
@@ -19,6 +27,7 @@ const TableHeaders = ({
   onSortCallback,
   onFilterCallback,
   sortable,
+  filterable,
   columns,
   sortList,
   basicTableSort,
@@ -53,6 +62,9 @@ const TableHeaders = ({
           defaultFilterValue,
           filterValue,
         } = column
+        const isSortable = sortable || Boolean(sort)
+        const isFilterable = filterable || Boolean(filter)
+     
         const { sortUp } = sortMap[key]
         const sortCallback = () => {
           if (sortUp === false) {
@@ -69,7 +81,8 @@ const TableHeaders = ({
             title={title}
             width={width}
             column={column}
-            sortable={sortable}
+            sortable={isSortable}
+            filterable={isFilterable}
             sortUp={sortUp}
             sortCallback={sortCallback}
             filter={filter}

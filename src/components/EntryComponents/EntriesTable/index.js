@@ -238,19 +238,24 @@ const EntriesTable = ({
           stringMatch(formatBytes(size || _size), searchValue),
         defaultFilterValue: filterMap.id,
         filterPlaceholder: "Size",
-        onRowClick: (item) => GoToEntryDetail(item.id),
+
         render: ({ size, _size }) => formatBytes(size || _size),
       },
     ],
-    []
+    [viewableEntries]
   )
+
+  const onRowClick = useCallback((item) => GoToEntryDetail(item.id), [])
+
   return (
     <BasicTable
-      hover
       sortable
+      filterable
       pageSize={pageSize}
       columns={tableColumns}
+      dataDisplayName="Entries"
       data={viewableEntries}
+      onRowClick={onRowClick}
       onSortCallback={handleSortCallback}
       onFilterCallback={handleFilterCallback}
     />

@@ -12,7 +12,7 @@ import qs from "qs"
 import ReactGA from "react-ga"
 import { BASE_JOURNAL_ENTRY_ID } from "./reducer"
 
-const pendingEntries = () => ({ type: EntriesActionTypes.ENTRIES_PENDING })
+const PendingEntries = () => ({ type: EntriesActionTypes.ENTRIES_PENDING })
 
 const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -110,15 +110,19 @@ const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
 
+const SetEntryRedux = (entry, _lastUpdated = new Date()) => ({
+  type: EntriesActionTypes.ENTRY_GET,
+  payload: { ...entry, _lastUpdated, _shouldPost: false },
+})
+
+const ClearEntry = () => ({ type: EntriesActionTypes.ENTRY_CLEAR })
+
 const GetEntry = (url, id) => (dispatch) => {
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
   return Axios()
     .get(url)
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRY_SET,
-        payload: data,
-      })
+      dispatch(SetEntryRedux(data))
       ReactGA.event({
         category: "Get Entry",
         action: "User is looking at entry!",
@@ -153,7 +157,7 @@ const GetUserEntryDetails = (id) => (dispatch) =>
   dispatch(GetEntry(`/entries/${id}/details/`, id))
 
 const GetAllUserEntries = () => (dispatch, getState) => {
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/view/`)
@@ -178,7 +182,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
 }
 
 const GetUserEntries = (pageNumber) => (dispatch, getState) => {
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/page/?page=${pageNumber}`)
@@ -204,7 +208,7 @@ const GetUserEntries = (pageNumber) => (dispatch, getState) => {
 }
 
 const GetUserEntriesByDate = (payload) => (dispatch, getState) => {
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify(payload))
@@ -248,7 +252,7 @@ const PostReduxEntry = (payload) => (dispatch, getState) => {
 }
 
 const PostEntry = (payload) => (dispatch) => {
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
   return Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
@@ -274,7 +278,7 @@ const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
 })
 
 const UpdateEntry = (id, payload) => (dispatch) => {
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
   return Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
@@ -296,7 +300,7 @@ const UpdateEntry = (id, payload) => (dispatch) => {
 const DeleteReduxEntry = (id) => ({ type: EntriesActionTypes.ENTRY_DELETE, id })
 
 const DeleteEntry = (id) => (dispatch) => {
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
   return Axios()
     .delete(`/entries/${id}/`)
     .then((res) => {
@@ -326,7 +330,7 @@ const SetSearchEntries = (search, payload = []) => ({
 const ResetSearchEntries = () => (dispatch) => dispatch(SetSearchEntries(""))
 
 const SearchUserEntries = (search) => (dispatch, getState) => {
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
   dispatch(SetSearchEntries(search))
   const { id } = getState().User
   return Axios()
@@ -382,7 +386,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
 
   const UserId = User.id
 
-  dispatch(pendingEntries())
+  dispatch(PendingEntries())
 
   const entries = items.concat(filteredItems)
 
@@ -463,6 +467,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
         latitude,
         longitude,
         is_public,
+        views,
       }
       await dispatch(
         ParseBase64(id, cleanObject(updateEntryPayload))
@@ -499,6 +504,8 @@ export {
   CreateEntryTag,
   GetUserEntryTags,
   GetUserEntryPeople,
+  ClearEntry,
+  SetEntryRedux,
   GetUserEntry,
   GetUserEntryDetails,
   GetAllUserEntries,

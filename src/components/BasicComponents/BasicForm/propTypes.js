@@ -9,6 +9,7 @@ const BasicFormProps = {
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,
   submitLabel: PropTypes.string,
+  method: PropTypes.string.isRequired,
 }
 
 export { BasicFormInputProps, BasicFormProps }

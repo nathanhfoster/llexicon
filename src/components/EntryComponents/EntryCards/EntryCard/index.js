@@ -33,6 +33,11 @@ const EntryCard = ({
   selected,
   onClickCallback,
   minimal,
+  cardClassName,
+  cardHeaderClassName,
+  cardBodyClassName,
+  cardTextClassName,
+  reduceHtml,
 }) => {
   const href = useMemo(() => GetEntryDetailUrl(id), [id])
   const tag = onClickCallback ? "div" : "a"
@@ -40,7 +45,7 @@ const EntryCard = ({
   const cardHeader = useMemo(
     () => (
       <Fragment>
-        <EntryCardHtml html={html} views={views} rating={rating} />
+        <EntryCardHtml html={html} reduceHtml={reduceHtml} />
         <div
           className="EntryOptionsMenuContainer"
           onClick={(e) => e.preventDefault()}
@@ -101,10 +106,10 @@ const EntryCard = ({
       header={cardHeader}
       title={cardTitle}
       text={cardText}
-      cardClassName="EntryCardContainer"
-      cardHeaderClassName="EntryCardHeader Overflow p-0"
-      cardBodyClassName="px-2 pt-0 pb-2"
-      cardTextClassName="EntryCardText"
+      cardClassName={cardClassName}
+      cardHeaderClassName={cardHeaderClassName}
+      cardBodyClassName={cardBodyClassName}
+      cardTextClassName={cardTextClassName}
     />
   )
 }
@@ -114,8 +119,21 @@ EntryCard.propTypes = {
   selected: PropTypes.bool.isRequired,
   onClickCallback: PropTypes.func,
   minimal: PropTypes.bool.isRequired,
+  cardClassName: PropTypes.string.isRequired,
+  cardHeaderClassName: PropTypes.string.isRequired,
+  cardBodyClassName: PropTypes.string.isRequired,
+  cardTextClassName: PropTypes.string.isRequired,
+  reduceHtml: PropTypes.bool.isRequired,
 }
 
-EntryCard.defaultProps = { selected: false, minimal: false }
+EntryCard.defaultProps = {
+  selected: false,
+  minimal: false,
+  cardClassName: "EntryCardContainer",
+  cardHeaderClassName: "EntryCardHeader Overflow p-0",
+  cardBodyClassName: "px-2 pt-0 pb-2",
+  cardTextClassName: "EntryCardText",
+  reduceHtml: true,
+}
 
 export default memo(EntryCard)

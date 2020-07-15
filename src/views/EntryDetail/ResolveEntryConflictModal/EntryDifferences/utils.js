@@ -4,6 +4,26 @@ import { CloudDownload } from "../../../../images/SVG"
 import { formatBytes } from "../../../../utils"
 import { getJsonTagsOrPeople } from "../../../../redux/Entries/utils"
 
+const ORDER_PROPS = [
+  "title",
+  "html",
+  "tags",
+  "people",
+  "address",
+  "date_created",
+  "date_created_by_author",
+  "date_updated",
+  "_lastUpdated",
+  "views",
+  "rating",
+  "EntryFiles",
+  "is_public",
+  "latitude",
+  "longitude",
+  "_size",
+  "size",
+]
+
 const getEntryPropSortOrder = (prop) => {
   switch (prop) {
     case "title":
@@ -30,29 +50,32 @@ const getEntryPropSortOrder = (prop) => {
     case "date_updated":
       return 9
 
-    case "views":
+    case "_lastUpdated":
       return 8
 
-    case "rating":
+    case "views":
       return 7
 
-    case "EntryFiles":
+    case "rating":
       return 6
 
-    case "is_public":
+    case "EntryFiles":
       return 5
 
-    case "latitude":
+    case "is_public":
       return 4
 
-    case "longitude":
+    case "latitude":
       return 3
 
-    case "_size":
+    case "longitude":
       return 2
 
-    case "size":
+    case "_size":
       return 1
+
+    case "size":
+      return 0
 
     default:
       return -1
@@ -83,6 +106,9 @@ const getEntryPropIcon = (prop) => {
       return <i className="fas fa-calendar-day" />
 
     case "date_updated":
+      return <i className="fas fa-pencil-alt" />
+
+    case "_lastUpdated":
       return <i className="fas fa-pencil-alt" />
 
     case "views":
@@ -120,7 +146,7 @@ const renderEntryProp = (prop, propValue) => {
       return propValue
 
     case "html":
-      return <i className="fas fa-keyboard" />
+      return propValue
 
     case "tags":
       return getJsonTagsOrPeople(propValue)
@@ -138,6 +164,9 @@ const renderEntryProp = (prop, propValue) => {
       return <Moment format="D MMM YY hh:mm:ssa">{propValue}</Moment>
 
     case "date_updated":
+      return <Moment format="D MMM YY hh:mm:ssa">{propValue}</Moment>
+
+    case "_lastUpdated":
       return <Moment format="D MMM YY hh:mm:ssa">{propValue}</Moment>
 
     case "views":

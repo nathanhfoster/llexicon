@@ -50,7 +50,6 @@ const Entry = ({
   const handleEditorChange = useCallback(
     ({ ...payload }) => {
       if (entry.author && !userToken) return
-
       UpdateReduxEntry(entry.id, payload)
     },
     [entry.id, entry.author, userToken]
