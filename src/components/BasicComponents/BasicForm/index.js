@@ -13,13 +13,6 @@ import { getFormPayload } from "./utils"
 import { BasicFormProps } from "./propTypes"
 import BasicInput from "../BasicInput"
 
-const getInitialState = (inputs) =>
-  inputs.map((input) => ({
-    ...input,
-    value: input.defaultValue,
-    checked: input.defaultValue,
-  }))
-
 const BasicForm = ({
   title,
   inputs,
@@ -28,7 +21,7 @@ const BasicForm = ({
   onSubmit,
   onChange,
 }) => {
-  const [state, setState] = useState(getInitialState(inputs))
+  const [state, setState] = useState(inputs)
 
   const handleSubmit = (e) => {
     e.preventDefault()

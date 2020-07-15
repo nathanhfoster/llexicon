@@ -1,14 +1,10 @@
-import React, { useState, memo, Fragment } from "react"
+import React, { useState, useEffect, memo, Fragment } from "react"
 import { inputProps } from "./propTypes"
 import { FormGroup, Label, Input, FormFeedback, FormText } from "reactstrap"
 
-const getInitialState = ({ value, defaultValue }) => {
-  return defaultValue || value || ""
-}
-
 const BasicInput = ({
   name,
-  // defaultValue,
+  defaultValue,
   check,
   label,
   type,
@@ -26,7 +22,12 @@ const BasicInput = ({
   className,
   ...restOfProps
 }) => {
-  const [value, setValue] = useState(getInitialState(restOfProps))
+  const [value, setValue] = useState(restOfProps.value)
+
+  useEffect(() => {
+    setValue(value)
+  }, [restOfProps.value])
+
   const isCheckOrRadio = type === "checkbox" || type === "radio"
 
   const handleChange = ({ target: { value } }) => setValue(value)
@@ -40,7 +41,7 @@ const BasicInput = ({
     <FormGroup check={isCheckOrRadio} row={row}>
       {isCheckOrRadio ? (
         <Label check={isCheckOrRadio} for={name}>
-          <Input type="checkbox" value={value} />{" "}
+          <Input type={type} value={value} defaultChecked={defaultValue} />{" "}
           {`${label} ${required ? "*" : ""}`}
         </Label>
       ) : (
@@ -50,7 +51,7 @@ const BasicInput = ({
           </Label>
           <Input
             id={name}
-            // defaultValue={defaultValue}
+            defaultValue={defaultValue}
             value={value}
             type={type}
             name={name}
