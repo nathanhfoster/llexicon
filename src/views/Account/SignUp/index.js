@@ -58,6 +58,11 @@ const SignUp = ({ userError, CreateUser }) => {
       required: true,
       disabled: false,
     },
+    {
+      label: "Opt in",
+      type: "checkbox",
+      name: "opt_in",
+    },
   ]
 
   return (

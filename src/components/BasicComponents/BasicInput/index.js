@@ -40,7 +40,8 @@ const BasicInput = ({
     <FormGroup check={isCheckOrRadio} row={row}>
       {isCheckOrRadio ? (
         <Label check={isCheckOrRadio} for={name}>
-          <Input type="checkbox" /> {`${label} ${required ? "*" : ""}`}
+          <Input type="checkbox" value={value} />{" "}
+          {`${label} ${required ? "*" : ""}`}
         </Label>
       ) : (
         <Fragment>

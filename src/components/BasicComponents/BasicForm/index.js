@@ -35,6 +35,7 @@ const BasicForm = ({
     if (!onSubmit) return
 
     const payload = getFormPayload(state)
+
     onSubmit(payload)
   }
 
@@ -42,7 +43,7 @@ const BasicForm = ({
     target: { id, name, value, type, checked, files },
   }) => {
     const newState = [...state].map((input) => {
-      if (input.name === name) {
+      if (input.type === type) {
         switch (type) {
           case "file":
             return { ...input, files }
@@ -70,7 +71,7 @@ const BasicForm = ({
     onChange(payload)
   }
 
-  const renderInputs = inputs.map((input, i) => (
+  const renderInputs = state.map((input, i) => (
     <BasicInput key={`${input.name}-${i}`} {...input} />
   ))
 

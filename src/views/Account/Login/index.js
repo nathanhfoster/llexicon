@@ -45,12 +45,6 @@ const Login = ({ userError, UserLogin }) => {
       isInvalid,
       required: true,
     },
-    {
-      label: "Opt in",
-      type: "checkbox",
-      name: "opt_in",
-      // placeholder: "Opt in...",
-    },
   ]
 
   return (
