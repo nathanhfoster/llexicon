@@ -23,8 +23,6 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
   let peopleCountMap = {}
   let viewCount = 0
 
-  console.log(count)
-
   const entries = items.concat(filteredItems)
 
   let validRatedEntries = 0
