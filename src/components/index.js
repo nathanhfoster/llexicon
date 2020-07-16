@@ -23,6 +23,8 @@ export { default as EntriesMostViewed } from "./EntryComponents/EntriesMostViewe
 export { default as EntriesRandom } from "./EntryComponents/EntriesRandom"
 export { default as EntriesRediscover } from "./EntryComponents/EntriesRediscover"
 export { default as EntriesTable } from "./EntryComponents/EntriesTable"
+export { default as EntriesMap } from "./EntryComponents/EntriesMap"
+export { default as EntriesToggleShowOnlyPublic } from "./EntryComponents/EntriesToggleShowOnlyPublic"
 export { default as Entry } from "./EntryComponents/Entry"
 export { default as EntryCalendar } from "./EntryComponents/EntryCalendar"
 export { default as EntryCards } from "./EntryComponents/EntryCards"
@@ -31,7 +33,7 @@ export { default as EntryDataCellLink } from "./EntryComponents/EntryDataCellLin
 export { default as EntryFilesCarousel } from "./EntryComponents/EntryFilesCarousel"
 export { default as EntryFolders } from "./EntryComponents/EntryFolders"
 export { default as EntryList } from "./EntryComponents/EntryList"
-export { default as EntriesMap } from "./EntryComponents/EntriesMap"
+
 export { default as EntryMinimal } from "./EntryComponents/EntryMinimal"
 export { default as EntryNavButtons } from "./EntryComponents/EntryNavButtons"
 export { default as EntryOptionsMenu } from "./EntryComponents/EntryOptionsMenu"

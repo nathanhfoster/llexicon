@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
+import { useDispatch } from "react-redux"
 import { stripHtml } from "../../../utils"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable, EntryDataCellLink } from "../../"
@@ -11,11 +12,10 @@ import {
   SetEntriesSortMap,
   SetEntriesFilterMap,
 } from "../../../redux/Entries/actions"
+import { DEFAULT_STATE_ENTRIES } from "../../../redux/Entries/reducer"
 
-const mapStateToProps = ({ Entries: { items, sortMap, filterMap } }) => ({
-  items,
-  sortMap,
-  filterMap,
+const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
+  showOnlyPublic,
 })
 
 const mapDispatchToProps = {
@@ -24,16 +24,20 @@ const mapDispatchToProps = {
 }
 
 const EntriesTable = ({
-  items,
-  sortMap,
-  filterMap,
+  showOnlyPublic,
   SetEntriesSortMap,
   SetEntriesFilterMap,
+  entries,
+  sortMap,
+  filterMap,
   pageSize,
 }) => {
   const viewableEntries = useMemo(
-    () => items.filter(({ _shouldDelete }) => !_shouldDelete),
-    [items]
+    () =>
+      entries.filter(({ _shouldDelete, is_public }) =>
+        showOnlyPublic ? is_public : !_shouldDelete
+      ),
+    [showOnlyPublic, entries]
   )
 
   const handleSortCallback = useCallback(
@@ -170,16 +174,17 @@ const EntriesTable = ({
         filter: "number",
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.views,
-        footer: (items) => items.reduce((count, { views }) => count + views, 0),
+        footer: (entries) =>
+          entries.reduce((count, { views }) => count + views, 0),
       },
       {
         title: <i className="fas fa-star" />,
         key: "rating",
         width: 50,
         render: ({ rating }) => <span className="ml-2">{rating}</span>,
-        footer: (items) => {
+        footer: (entries) => {
           let validItems = 0
-          const ratingSum = items.reduce((count, { rating }) => {
+          const ratingSum = entries.reduce((count, { rating }) => {
             if (rating !== 0) {
               count += rating
               validItems += 1
@@ -211,11 +216,14 @@ const EntriesTable = ({
           EntryFiles.length >= searchValue,
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.EntryFiles,
-        footer: (items) =>
-          items.reduce((count, { EntryFiles }) => count + EntryFiles.length, 0),
+        footer: (entries) =>
+          entries.reduce(
+            (count, { EntryFiles }) => count + EntryFiles.length,
+            0
+          ),
       },
       {
-        title: <i className="fas fa-lock" />,
+        title: <i className="fas fa-lock-open" />,
         key: "is_public",
         width: 40,
         render: ({ is_public }) => (
@@ -263,15 +271,17 @@ const EntriesTable = ({
 }
 
 EntriesTable.propTypes = {
-  items: EntriesPropTypes,
-  sortMap: PropTypes.object,
-  filterMap: PropTypes.object,
+  entries: EntriesPropTypes,
+  sortMap: PropTypes.object.isRequired,
+  filterMap: PropTypes.object.isRequired,
   SetEntriesSortMap: PropTypes.func.isRequired,
   SetEntriesFilterMap: PropTypes.func.isRequired,
 }
 
 EntriesTable.defaultProps = {
   pageSize: 5,
+  sortMap: DEFAULT_STATE_ENTRIES.sortMap,
+  filterMap: DEFAULT_STATE_ENTRIES.filterMap,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesTable)

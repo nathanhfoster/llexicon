@@ -103,11 +103,15 @@ const DEFAULT_STATE_ENTRIES = {
     date_updated: true,
   },
   filterMap: {},
+  showOnlyPublic: false,
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   const { id, type, payload, search } = action
   switch (type) {
+    case EntriesActionTypes.ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC:
+      return { ...state, showOnlyPublic: !state.showOnlyPublic }
+
     case EntriesActionTypes.ENTRIES_SET_TAGS:
       return { ...state, EntryTags: payload }
 

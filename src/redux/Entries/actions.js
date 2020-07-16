@@ -12,6 +12,10 @@ import qs from "qs"
 import ReactGA from "react-ga"
 import { BASE_JOURNAL_ENTRY_ID } from "./reducer"
 
+const ToggleShowOnlyPublic = () => ({
+  type: EntriesActionTypes.ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
+})
+
 const PendingEntries = () => ({ type: EntriesActionTypes.ENTRIES_PENDING })
 
 const GetUserEntryTags = () => (dispatch, getState) => {
@@ -501,6 +505,7 @@ const SetEntriesFilterMap = (filterKey, searchValue) => ({
 })
 
 export {
+  ToggleShowOnlyPublic,
   CreateEntryTag,
   GetUserEntryTags,
   GetUserEntryPeople,

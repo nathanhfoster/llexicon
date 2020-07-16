@@ -121,7 +121,7 @@ const getEntryPropIcon = (prop) => {
       return <i className="fas fa-photo-video" />
 
     case "is_public":
-      return <i className="fas fa-lock" />
+      return <i className="fas fa-lock-open" />
 
     case "latitude":
       return <i className="fas fa-compass" />
