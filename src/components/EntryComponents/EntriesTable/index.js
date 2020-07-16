@@ -35,7 +35,7 @@ const EntriesTable = ({
   const viewableEntries = useMemo(
     () =>
       entries.filter(({ _shouldDelete, is_public }) =>
-        showOnlyPublic ? is_public : !_shouldDelete
+        !_shouldDelete && is_public === showOnlyPublic
       ),
     [showOnlyPublic, entries]
   )
