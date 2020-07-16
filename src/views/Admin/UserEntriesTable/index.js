@@ -17,7 +17,7 @@ const { REACT_APP_API_URL } = process.env
 
 const UserEntriesTable = ({ user, entries }) => {
   const dispatch = useDispatch()
-  const hasDetails = entries.find((entry) => entry.html)
+  const hasDetails = entries && entries.find((entry) => entry.html)
 
   useEffect(() => {
     dispatch(GetUserEntriesDetails(user.id))
