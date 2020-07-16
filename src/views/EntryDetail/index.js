@@ -13,21 +13,21 @@ import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
 const mapStateToProps = (
-  { User: { id }, Entries: { items, filteredItems } },
+  { User: { id }, Entries: { items, filteredItems, isPending } },
   { entryId }
 ) => ({
   userId: id,
   entry: items.concat(filteredItems).find(({ id }) => id == entryId),
-  items,
-  filteredItems,
+  isPending,
 })
 
 const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
 
 const EntryDetail = ({
   entryId,
-  entry,
   userId,
+  entry,
+  isPending,
   GetUserEntryDetails,
   SyncEntries,
   SetCalendar,
@@ -60,11 +60,11 @@ const EntryDetail = ({
 
   return entry ? (
     <Container className="Container">
-      {!readOnly && <ResolveEntryConflictModal entry={entry} />}
+      {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
         <Col xs={12} className="EntryDetail p-0">
           <Entry
-            readOnly={readOnly}
+            readOnly={!isPending && readOnly}
             entry={entry}
             shouldRedirectOnDelete={true}
           />
@@ -80,8 +80,9 @@ const EntryDetail = ({
 
 EntryDetail.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  entry: EntryPropTypes,
   userId: PropTypes.number,
+  entry: EntryPropTypes,
+  isPending: PropTypes.bool.isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
