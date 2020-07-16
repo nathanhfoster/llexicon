@@ -18,9 +18,8 @@ const EntriesMostViewed = ({ items, filteredItems, showOnlyPublic }) => {
     () =>
       items
         .concat(filteredItems)
-        .filter(
-          ({ _shouldDelete, is_public }) =>
-            !_shouldDelete && is_public === showOnlyPublic
+        .filter(({ _shouldDelete, is_public }) =>
+          showOnlyPublic ? is_public : !_shouldDelete
         )
         .sort((a, b) => b.views - a.views)
         .slice(0, NUMBER_OF_MOST_VIEWED_ENTRIES),

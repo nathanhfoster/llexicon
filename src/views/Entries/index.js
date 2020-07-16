@@ -59,9 +59,8 @@ const Entries = ({
   const viewableEntries = useMemo(
     () =>
       entries
-        .filter(
-          ({ _shouldDelete, is_public }) =>
-            !_shouldDelete && is_public === showOnlyPublic
+        .filter(({ _shouldDelete, is_public }) =>
+          showOnlyPublic ? is_public : !_shouldDelete
         )
         .sort(
           (a, b) =>

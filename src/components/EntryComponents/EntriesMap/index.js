@@ -22,9 +22,8 @@ const mapDispatchToProps = {
 const EntriesMap = ({ entries, showOnlyPublic, height }) => {
   const viewableEntries = useMemo(
     () =>
-      entries.filter(
-        ({ _shouldDelete, is_public }) =>
-          !_shouldDelete && is_public === showOnlyPublic
+      entries.filter(({ _shouldDelete, is_public }) =>
+        showOnlyPublic ? is_public : !_shouldDelete
       ),
     [entries, showOnlyPublic]
   )
