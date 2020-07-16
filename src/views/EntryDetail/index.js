@@ -36,7 +36,9 @@ const EntryDetail = ({
 
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
-  const readOnly = Boolean(entry && entry.author && userId !== entry.author)
+  const readOnly = Boolean(
+    (!isPending && entry && entry.author && !userId) || userId !== entry.author
+  )
 
   useEffect(() => {
     if (!entryIsLocalOnly) {
@@ -64,7 +66,7 @@ const EntryDetail = ({
       <Row>
         <Col xs={12} className="EntryDetail p-0">
           <Entry
-            readOnly={!isPending && readOnly}
+            readOnly={readOnly}
             entry={entry}
             shouldRedirectOnDelete={true}
           />

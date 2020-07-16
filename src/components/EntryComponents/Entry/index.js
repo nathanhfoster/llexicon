@@ -1,15 +1,11 @@
-import React, { useCallback, Fragment } from "react"
+import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { useDispatch } from "react-redux"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { Editor, EntryOptionsMenu, ReactDatePicker, UseDebounce } from "../../"
 import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
 import "./styles.css"
-
-const mapStateToProps = ({ User: { token } }) => ({ userToken: token })
-
-const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
 
 const Entry = ({
   height,
@@ -22,17 +18,17 @@ const Entry = ({
   shouldRedirectOnDelete,
   theme,
   readOnly,
-  userToken,
-  UpdateReduxEntry,
-  SyncEntries,
 }) => {
+  const dispatch = useDispatch()
   const activeDate = new Date(
     entry.date_created_by_author || entry._lastUpdated || 0
   )
 
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 
-  const handleDebounce = () => SyncEntries()
+  const handleDebounce = () => {
+    dispatch(SyncEntries())
+  }
 
   const handleTitleChange = ({ target: { value } }) =>
     handleEditorChange({ id: entry.id, title: value })
@@ -49,10 +45,10 @@ const Entry = ({
 
   const handleEditorChange = useCallback(
     ({ ...payload }) => {
-      if (entry.author && !userToken) return
-      UpdateReduxEntry(entry.id, payload)
+      if (readOnly) return
+      dispatch(UpdateReduxEntry(entry.id, payload))
     },
-    [entry.id, entry.author, userToken]
+    [entry.id, readOnly]
   )
 
   return (
@@ -125,9 +121,6 @@ Entry.propTypes = {
   staticContext: PropTypes.any,
   topToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,
-  userToken: PropTypes.string,
-  UpdateReduxEntry: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
 }
 
 Entry.defaultProps = {
@@ -141,4 +134,4 @@ Entry.defaultProps = {
   theme: "snow",
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Entry)
+export default memo(Entry)
