@@ -1,8 +1,7 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { useDispatch } from "react-redux"
-import { stripHtml } from "../../../utils"
+import { stripHtml, TopKFrequentStrings } from "../../../utils"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable, EntryDataCellLink } from "../../"
 import { GoToEntryDetail } from "../../../redux/router/actions"
@@ -91,6 +90,13 @@ const EntriesTable = ({
         defaultFilterValue: filterMap.tags,
         filterPlaceholder: "Tags",
         render: ({ tags }) => <TagsContainer tags={tags} />,
+        footer: (entries) => {
+          const mostFrequent = TopKFrequentStrings(
+            entries.map((entry) => entry.tags).flat(1),
+            "name"
+          )
+          return mostFrequent.length > 0 ? mostFrequent[0] : null
+        },
       },
       {
         title: <i className="fas fa-users" />,
@@ -116,6 +122,13 @@ const EntriesTable = ({
             emptyString="No People..."
           />
         ),
+        footer: (entries) => {
+          const mostFrequent = TopKFrequentStrings(
+            entries.map((entry) => entry.people).flat(1),
+            "name"
+          )
+          return mostFrequent.length > 0 ? mostFrequent[0] : null
+        },
       },
       {
         title: <i className="fas fa-map-marker-alt" />,
@@ -199,6 +212,11 @@ const EntriesTable = ({
         filter: "number",
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.rating,
+        footer: (entries) =>
+          (
+            entries.reduce((count, { rating }) => count + rating, 0) /
+            entries.length
+          ).toFixed(2),
       },
       {
         title: <i className="fas fa-photo-video" />,
@@ -231,6 +249,8 @@ const EntriesTable = ({
         ),
         defaultSortValue: sortMap.is_public,
         defaultFilterValue: filterMap.is_public,
+        footer: (entries) =>
+          entries.reduce((count, { is_public }) => count + is_public, 0),
       },
       {
         title: <i className="fas fa-hdd" />,
@@ -246,8 +266,11 @@ const EntriesTable = ({
           stringMatch(formatBytes(size || _size), searchValue),
         defaultFilterValue: filterMap.id,
         filterPlaceholder: "Size",
-
         render: ({ size, _size }) => formatBytes(size || _size),
+        footer: (entries) =>
+          formatBytes(
+            entries.reduce((count, { size, _size }) => count + size || _size, 0)
+          ),
       },
     ],
     [viewableEntries]
