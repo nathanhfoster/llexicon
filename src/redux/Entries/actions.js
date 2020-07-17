@@ -126,7 +126,8 @@ const GetEntry = (url, id) => (dispatch) => {
   return Axios()
     .get(url)
     .then(({ data }) => {
-      dispatch(SetEntryRedux(data))
+      // dispatch(SetEntryRedux(data))
+      dispatch(SetEntry(data))
       ReactGA.event({
         category: "Get Entry",
         action: "User is looking at entry!",
@@ -242,17 +243,21 @@ const ImportReduxEntry = (payload) => ({
   payload,
 })
 
+const SetEntry = (entry) => ({
+  type: EntriesActionTypes.ENTRY_SET,
+  payload: entry,
+})
+
 const PostReduxEntry = (payload) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
   const { length } = items.concat(filteredItems)
-  return dispatch({
-    type: EntriesActionTypes.ENTRY_SET,
-    payload: {
+  return dispatch(
+    SetEntry({
       ...payload,
       id: `${BASE_JOURNAL_ENTRY_ID}-${length}`,
       _shouldPost: true,
-    },
-  })
+    })
+  )
 }
 
 const PostEntry = (payload) => (dispatch) => {

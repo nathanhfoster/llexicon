@@ -21,7 +21,9 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
     () =>
       items
         .concat(filteredItems)
-        .filter(({ _shouldDelete, is_public }) => !_shouldDelete && is_public === showOnlyPublic),
+        .filter(({ _shouldDelete, is_public }) =>
+          showOnlyPublic ? is_public : !_shouldDelete
+        ),
     [items, filteredItems, shouldRerender, showOnlyPublic]
   )
 
