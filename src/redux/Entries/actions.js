@@ -476,7 +476,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
         latitude,
         longitude,
         is_public,
-        views,
+      //  views,
       }
       await dispatch(
         ParseBase64(id, cleanObject(updateEntryPayload))
