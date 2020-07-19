@@ -1,6 +1,6 @@
-import React, { memo, Fragment } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { Collapse, Button } from "reactstrap"
+import { Collapse } from "reactstrap"
 import Headers from "./QuillSelect/Headers"
 import Sizes from "./QuillSelect/Sizes"
 import QuillButtons from "./QuillButtons"
@@ -9,7 +9,6 @@ import Colors from "./QuillSelect/Colors"
 import Align from "./QuillSelect/Align"
 import Fonts from "./QuillSelect/Fonts"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../../redux/TextEditor/reducer"
-import memoizeProps from "../../../utils/memoizeProps"
 import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR
@@ -25,8 +24,6 @@ const TopToolbar = ({ toolbarId, editorRef, isOpen, onChangeCallback }) => {
   const handleGetTAble = () => {
     // module.insertTable(3, 3)
   }
-
-  console.log(editorSelection)
 
   return (
     <Collapse id={toolbarId} isOpen={isOpen}>
@@ -66,7 +63,4 @@ TopToolbar.propTypes = {
   onChangeCallback: PropTypes.func.isRequired,
 }
 
-const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, ["editorRef", "isOpen"])
-
-export default memo(TopToolbar, )
+export default memo(TopToolbar)

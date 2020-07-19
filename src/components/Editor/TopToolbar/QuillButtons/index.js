@@ -42,7 +42,6 @@ const QuillButtons = ({
     ],
     [{ name: "link" }, { name: "image" }, { name: "video" }],
     [{ name: "clean" }],
-    [{ name: "insert-table" }],
   ],
 }) => renderButtons(buttons)
 
