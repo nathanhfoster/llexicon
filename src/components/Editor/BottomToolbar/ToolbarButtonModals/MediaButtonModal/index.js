@@ -31,7 +31,7 @@ const mapStateToProps = ({ Window: { innerHeight } }) => ({
 })
 
 const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
-  const [url, setUrl] = useState("")
+  const [url, setUrl] = useState(PLACEHOLDER)
   const [type, setType] = useState(EMBEDED_TYPES[0].id)
   const [value, setValue] = useState(EMBEDED_TYPES[0].value)
 
@@ -73,6 +73,8 @@ const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
 
   const handleModalCancel = () => setUrl("")
 
+  const handleOnFocus = ({ target }) => target.select()
+
   return (
     <ToolbarModal
       className="p-0"
@@ -110,6 +112,7 @@ const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
                 placeholder={PLACEHOLDER}
                 value={url}
                 onChange={handleInputChange}
+                onFocus={handleOnFocus}
               />
             </InputGroup>
           </Col>
