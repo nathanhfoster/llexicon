@@ -144,6 +144,11 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         //   filter: "date",
         //   filterPlaceholder: "Date joined",
         render: ({ entries }) => (entries ? entries.length : 0),
+        sort: (a, b, sortUp) => {
+          const aLength = a.entries ? a.entries.length : 0
+          const bLength = b.entries ? b.entries.length : 0
+          return sortUp ? bLength - aLength : aLength - bLength
+        },
         footer: (items) =>
           items.reduce(
             (count, { entries }) => count + (entries ? entries.length : 0),

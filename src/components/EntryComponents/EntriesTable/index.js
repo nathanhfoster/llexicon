@@ -55,7 +55,6 @@ const EntriesTable = ({
         title: <i className="fas fa-heading" />,
         key: "title",
         width: 180,
-        filter: "string",
         filterPlaceholder: "Title",
         defaultSortValue: sortMap.title,
         defaultFilterValue: filterMap.title,
@@ -68,7 +67,6 @@ const EntriesTable = ({
         key: "html",
         width: 90,
         defaultSortValue: sortMap.html,
-        filter: "string",
         filterPlaceholder: "Body",
         defaultFilterValue: filterMap.html,
         render: ({ html }) => stripHtml(html),
@@ -135,7 +133,6 @@ const EntriesTable = ({
         key: "address",
         width: 180,
         defaultSortValue: sortMap.address,
-        filter: "string",
         filterPlaceholder: "Address",
         defaultFilterValue: filterMap.address,
       },
@@ -184,7 +181,6 @@ const EntriesTable = ({
         width: 50,
         render: ({ views }) => <span className="Center">{views}</span>,
         defaultSortValue: sortMap.views,
-        filter: "number",
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.views,
         footer: (entries) =>
@@ -209,7 +205,6 @@ const EntriesTable = ({
           return <span>{averageRating > 0 ? averageRating : 0}</span>
         },
         defaultSortValue: sortMap.rating,
-        filter: "number",
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.rating,
         footer: (entries) =>
@@ -225,10 +220,11 @@ const EntriesTable = ({
         render: ({ EntryFiles }) => (
           <span className="Center">{EntryFiles.length}</span>
         ),
-        sort: (a, b, sortUp) =>
-          sortUp
-            ? b.EntryFiles.length - a.EntryFiles.length
-            : a.EntryFiles.length - b.EntryFiles.length,
+        sort: (a, b, sortUp) => {
+          const aLength = a.EntryFiles.length
+          const bLength = b.EntryFiles.length
+          return sortUp ? bLength - aLength : aLength - bLength
+        },
         defaultSortValue: sortMap.EntryFiles,
         filter: (searchValue) => ({ EntryFiles }) =>
           EntryFiles.length >= searchValue,

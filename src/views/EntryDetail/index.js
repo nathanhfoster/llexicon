@@ -36,8 +36,12 @@ const EntryDetail = ({
 
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
+  const entryFound = Boolean(entry)
+
+  const entryAuthor = entry ? entry.author : null
+
   const readOnly = Boolean(
-    (!isPending && entry && entry.author && !userId) || userId !== entry.author
+    (!isPending && entryAuthor && !userId) || userId !== entryAuthor
   )
 
   useEffect(() => {
@@ -50,7 +54,7 @@ const EntryDetail = ({
 
   useEffect(() => {
     if (
-      entry &&
+      entryFound &&
       entry.date_created_by_author &&
       !setCalendarDateToEntryDate.current
     ) {
@@ -60,7 +64,7 @@ const EntryDetail = ({
     }
   }, [entry])
 
-  return entry ? (
+  return entryFound ? (
     <Container className="Container">
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
