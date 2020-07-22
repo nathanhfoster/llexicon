@@ -30,7 +30,7 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
   let randomEntries = []
 
   const numberOfRandomEntries =
-    viewableEntries.length < 4 ? viewableEntries.length : 4
+    viewableEntries.length < 4 ? viewableEntries.length : 6
 
   let uniqueEntryIndices = [...viewableEntries]
 
