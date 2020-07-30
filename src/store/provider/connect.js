@@ -106,7 +106,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
 
       // Memoize globalState
       const stateToProps = mapStateToProps
-        ? React.useMemo(() => mapStateToProps(state, ownProps), [state])
+        ? React.useMemo(() => mapStateToProps(state, ownProps), [state, ownProps])
         : null
 
       // Memoize globalDispatch

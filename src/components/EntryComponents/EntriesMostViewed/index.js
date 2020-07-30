@@ -3,7 +3,7 @@ import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { EntryCards, Header } from "../.."
 
-const NUMBER_OF_MOST_VIEWED_ENTRIES = 4
+const NUMBER_OF_MOST_VIEWED_ENTRIES = 6
 
 const mapStateToProps = ({
   Entries: { items, filteredItems, showOnlyPublic },
