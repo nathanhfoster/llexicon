@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from "react"
+import React, { useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { DataPropType, ColumnsPropType } from "../state/types"
 import TableRow from "./TableRow"
@@ -24,6 +24,7 @@ const TableBody = ({
   dataDisplayName,
   colSpan,
 }) => {
+  const bodyRef = useRef()
   const sliceStart = currentPage * pageSize
 
   const sliceEnd = sliceStart + pageSize
@@ -40,14 +41,20 @@ const TableBody = ({
   )
 
   return (
-    <tbody>
-      {renderTableRows}
-      {slicedData.length === 0 && (
-        <tr>
+    <tbody ref={bodyRef}>
+      {renderTableRows.length === 0 ? (
+        <tr
+          style={{
+            height: bodyRef.current ? bodyRef.current.clientHeight : 40,
+            pointerEvents: "none",
+          }}
+        >
           <TableDataCell scope="row" colSpan={colSpan}>
             <span className="Center">{`No ${dataDisplayName} Found`}</span>
           </TableDataCell>
         </tr>
+      ) : (
+        renderTableRows
       )}
     </tbody>
   )
