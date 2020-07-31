@@ -40,22 +40,39 @@ const TableBody = ({
     [slicedData]
   )
 
-  return (
-    <tbody ref={bodyRef}>
-      {renderTableRows.length === 0 ? (
+  const renderNoDataRow = useMemo(() => {
+    const empyRowHeight = bodyRef.current
+      ? bodyRef.current.clientHeight / pageSize
+      : 40
+
+    let emptyRows = [
+      <tr
+        style={{
+          height: empyRowHeight,
+          pointerEvents: "none",
+        }}
+      >
+        <TableDataCell scope="row" colSpan={colSpan}>
+          <span className="Center">{`No ${dataDisplayName} Found`}</span>
+        </TableDataCell>
+      </tr>,
+    ].concat(
+      new Array(pageSize - 1).fill(
         <tr
           style={{
-            height: bodyRef.current ? bodyRef.current.clientHeight : 40,
+            height: empyRowHeight,
             pointerEvents: "none",
           }}
-        >
-          <TableDataCell scope="row" colSpan={colSpan}>
-            <span className="Center">{`No ${dataDisplayName} Found`}</span>
-          </TableDataCell>
-        </tr>
-      ) : (
-        renderTableRows
-      )}
+        />
+      )
+    )
+
+    return emptyRows
+  }, [bodyRef.current, colSpan, pageSize])
+
+  return (
+    <tbody ref={bodyRef}>
+      {renderTableRows.length === 0 ? renderNoDataRow : renderTableRows}
     </tbody>
   )
 }
