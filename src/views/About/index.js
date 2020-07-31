@@ -26,95 +26,98 @@ const Footer = lazy(() => import("../../components/Footer"))
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 
 const About = ({ userId, prompt, promptToInstall }) => {
-  const features = [
-    {
-      faIcon: "fas fa-download",
-      title: "Installable",
-      text:
-        "Install this app to your device just like you would in an app store",
+  const features = useMemo(
+    () => [
+      {
+        faIcon: "fas fa-download",
+        title: "Installable",
+        text:
+          "Install this app to your device just like you would in an app store",
 
-      button: (
-        <AddToHomeScreen prompt={prompt} promptToInstall={promptToInstall} />
-      ),
-    },
-    {
-      faIcon: "fas fa-sync-alt",
-      title: "Sync",
-      text: "Automatically sync your entries across all devices",
-      button: (
-        <Button
-          color="accent"
-          onClick={() => RouterPush(RouteMap.SIGNUP)}
-          disabled={userId ? true : false}
-        >
-          Sign Up
-        </Button>
-      ),
-    },
-    {
-      header: <Bell className="AboutFeatureImage" />,
-      title: "Notifications",
-      text: "Daily motivation to journal your life",
-      button: (
-        <Button
-          color="accent"
-          onClick={() => RouterPush(RouteMap.SETTINGS_PUSH_NOTIFICATIONS)}
-        >
-          Grant Access
-        </Button>
-      ),
-    },
-    {
-      header: <WifiSlash className="AboutFeatureImage" />,
-      title: "Offline",
-      text: "Doesn't require an internet connection",
-      button: (
-        <Button
-          color="accent"
-          onClick={() => RouterPush(RouteMap.SETTINGS_PREFERENCES)}
-        >
-          Go Offline
-        </Button>
-      ),
-    },
-    {
-      header: <UserHeadset className="AboutFeatureImage" />,
-      title: "Support",
-      text: "Open to feature suggestions, bug reports, or conversation!",
-      button: (
-        <Button color="accent" onClick={() => RouterPush(RouteMap.SUPPORT)}>
-          Support Page
-        </Button>
-      ),
-    },
+        button: (
+          <AddToHomeScreen prompt={prompt} promptToInstall={promptToInstall} />
+        ),
+      },
+      {
+        faIcon: "fas fa-sync-alt",
+        title: "Sync",
+        text: "Automatically sync your entries across all devices",
+        button: (
+          <Button
+            color="accent"
+            onClick={() => RouterPush(RouteMap.SIGNUP)}
+            disabled={userId ? true : false}
+          >
+            Sign Up
+          </Button>
+        ),
+      },
+      {
+        header: <Bell className="AboutFeatureImage" />,
+        title: "Notifications",
+        text: "Daily motivation to journal your life",
+        button: (
+          <Button
+            color="accent"
+            onClick={() => RouterPush(RouteMap.SETTINGS_PUSH_NOTIFICATIONS)}
+          >
+            Grant Access
+          </Button>
+        ),
+      },
+      {
+        header: <WifiSlash className="AboutFeatureImage" />,
+        title: "Offline",
+        text: "Doesn't require an internet connection",
+        button: (
+          <Button
+            color="accent"
+            onClick={() => RouterPush(RouteMap.SETTINGS_PREFERENCES)}
+          >
+            Go Offline
+          </Button>
+        ),
+      },
+      {
+        header: <UserHeadset className="AboutFeatureImage" />,
+        title: "Support",
+        text: "Open to feature suggestions, bug reports, or conversation!",
+        button: (
+          <Button color="accent" onClick={() => RouterPush(RouteMap.SUPPORT)}>
+            Support Page
+          </Button>
+        ),
+      },
 
-    {
-      faIcon: "fas fa-link",
-      title: "Linkable",
-      text: "Share any public view you want with your friends and family",
-      // button: <Button color="accent">Learn More</Button>
-    },
-    {
-      header: <PhoneLaptop className="AboutFeatureImage" />,
-      title: "Responsive",
-      text: "UI fits the screen dimensions of any device",
-    },
-    {
-      header: <CloudDownload className="AboutFeatureImage" />,
-      title: "Fresh",
-      text: "Always get the latest verision of the app",
-    },
-    {
-      header: <Mobile className="AboutFeatureImage" />,
-      title: "App-like",
-      text: "Looks and interacts like a native app",
-    },
-    {
-      header: <ShieldCheck className="AboutFeatureImage" />,
-      title: "Secure",
-      text: "Always served over HTTPS",
-    },
-  ]
+      {
+        faIcon: "fas fa-link",
+        title: "Linkable",
+        text: "Share any public view you want with your friends and family",
+        // button: <Button color="accent">Learn More</Button>
+      },
+      {
+        header: <PhoneLaptop className="AboutFeatureImage" />,
+        title: "Responsive",
+        text: "UI fits the screen dimensions of any device",
+      },
+      {
+        header: <CloudDownload className="AboutFeatureImage" />,
+        title: "Fresh",
+        text: "Always get the latest verision of the app",
+      },
+      {
+        header: <Mobile className="AboutFeatureImage" />,
+        title: "App-like",
+        text: "Looks and interacts like a native app",
+      },
+      {
+        header: <ShieldCheck className="AboutFeatureImage" />,
+        title: "Secure",
+        text: "Always served over HTTPS",
+      },
+    ],
+    [userId, prompt, promptToInstall]
+  )
 
   const renderFeatures = useMemo(
     () =>
@@ -125,6 +128,7 @@ const About = ({ userId, prompt, promptToInstall }) => {
             cardHeaderClassName="Center"
             cardBodyClassName="AboutCardBody"
             cardTitleClassName="Center"
+            cardTextClassName="Center"
           />
         </Col>
       )),
