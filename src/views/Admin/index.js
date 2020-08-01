@@ -156,12 +156,12 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
           items.reduce((count, { opt_in }) => count + opt_in, 0),
       },
     ],
-    [users]
+    []
   )
 
   const getRowValue = useCallback(
     (user) => <UserEntriesTable user={user} entries={user.entries} />,
-    [users]
+    []
   )
 
   return (
