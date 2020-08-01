@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Jumbotron } from "reactstrap"
@@ -18,50 +18,50 @@ const SignUp = ({ userError, CreateUser }) => {
     userError && "Please confirm Username, Email, or Password"
   const handleSignUp = useCallback((payload) => CreateUser(payload), [])
 
-  const isInvalid = useCallback(
-    (value) => {
-      if (value && value.length < 3) {
-        return "Required. 3 or more characters."
-      } else {
-        return false
-      }
-    },
-    [userError]
-  )
+  const isInvalid = useCallback((value) => {
+    if (value && value.length < 3) {
+      return "Required. 3 or more characters."
+    } else {
+      return false
+    }
+  }, [])
 
-  const inputs = [
-    {
-      label: "Username",
-      type: "text",
-      name: "username",
-      placeholder: "Username...",
-      invalid: errorMessage,
-      isInvalid,
-      required: true,
-    },
-    {
-      label: "Email",
-      type: "email",
-      name: "email",
-      placeholder: "Email...",
-      isInvalid,
-      required: true,
-    },
-    {
-      label: "Password",
-      type: "password",
-      name: "password",
-      placeholder: "Password...",
-      isInvalid,
-      required: true,
-    },
-    {
-      label: "Opt in",
-      type: "checkbox",
-      name: "opt_in",
-      // defaultValue: true,
-    },
-  ]
+  const inputs = useMemo(
+    () => [
+      {
+        label: "Username",
+        type: "text",
+        name: "username",
+        placeholder: "Username...",
+        invalid: errorMessage,
+        isInvalid,
+        required: true,
+      },
+      {
+        label: "Email",
+        type: "email",
+        name: "email",
+        placeholder: "Email...",
+        isInvalid,
+        required: true,
+      },
+      {
+        label: "Password",
+        type: "password",
+        name: "password",
+        placeholder: "Password...",
+        isInvalid,
+        required: true,
+      },
+      {
+        label: "Opt in",
+        type: "checkbox",
+        name: "opt_in",
+        // defaultValue: true,
+      },
+    ],
+    [errorMessage]
+  )
 
   return (
     <Jumbotron className="LoginFormContainer">

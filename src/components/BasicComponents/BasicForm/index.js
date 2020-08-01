@@ -1,14 +1,6 @@
-import React, { useRef, useState, memo } from "react"
+import React, { useRef, useState, useEffect, memo } from "react"
 import PropTypes from "prop-types"
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormFeedback,
-  FormText,
-} from "reactstrap"
+import { Button, Form } from "reactstrap"
 import { getFormPayload } from "./utils"
 import { BasicFormProps } from "./propTypes"
 import BasicInput from "../BasicInput"
@@ -21,7 +13,15 @@ const BasicForm = ({
   onSubmit,
   onChange,
 }) => {
+  const mounted = useRef(false)
   const [state, setState] = useState(inputs)
+
+  useEffect(() => {
+    if (mounted.current) {
+      setState(inputs)
+    }
+    mounted.current = true
+  }, [inputs])
 
   const handleSubmit = (e) => {
     e.preventDefault()
