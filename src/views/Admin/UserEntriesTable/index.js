@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo, memo } from "react"
+import React, { useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { useDispatch } from "react-redux"
@@ -22,10 +22,6 @@ const UserEntriesTable = ({ user, entries }) => {
 
   useEffect(() => {
     dispatch(GetUserEntriesDetails(user.id))
-  }, [])
-
-  const onRowClick = useCallback((entry) => {
-    console.log(entry)
   }, [])
 
   if (!hasDetails) return null
