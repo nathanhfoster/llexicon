@@ -33,10 +33,10 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
 
   const tableColumns = useMemo(
     () => [
-    {
+      {
         title: <i className="fas fa-feather-alt" />,
         key: "entries",
-        width: 80,
+        width: 50,
         //   filter: "date",
         //   filterPlaceholder: "Date joined",
         render: ({ entries }) => (entries ? entries.length : 0),
