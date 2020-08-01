@@ -35,15 +35,19 @@ const TableBody = ({
     sliceEnd,
   ])
 
-  const renderTableRows = useMemo(
+  let renderTableRows = useMemo(
     () => slicedData.map((item, i) => <TableRow key={i} item={item} />),
     [slicedData]
   )
 
-  const renderNoDataRow = useMemo(() => {
+  const renderNoDataRows = useMemo(() => {
     const empyRowHeight = bodyRef.current
       ? bodyRef.current.clientHeight / pageSize
       : 40
+
+    const rowDifference = pageSize - slicedData.length
+    const isARowDifference = rowDifference !== pageSize
+    const remainingRows = rowDifference - 1 >= 0 ? rowDifference - 1 : 0
 
     let emptyRows = [
       <tr
@@ -53,11 +57,13 @@ const TableBody = ({
         }}
       >
         <TableDataCell scope="row" colSpan={colSpan}>
-          <span className="Center">{`No ${dataDisplayName} Found`}</span>
+          <span className="Center">{`No ${
+            isARowDifference ? "More" : ""
+          } ${dataDisplayName} Found`}</span>
         </TableDataCell>
       </tr>,
     ].concat(
-      new Array(pageSize - 1).fill(
+      new Array(remainingRows).fill(
         <tr
           style={{
             height: empyRowHeight,
@@ -68,13 +74,13 @@ const TableBody = ({
     )
 
     return emptyRows
-  }, [bodyRef.current, colSpan, pageSize])
+  }, [bodyRef.current, slicedData, colSpan])
 
-  return (
-    <tbody ref={bodyRef}>
-      {renderTableRows.length === 0 ? renderNoDataRow : renderTableRows}
-    </tbody>
-  )
+  if (renderTableRows.length < pageSize) {
+    renderTableRows = renderTableRows.concat(renderNoDataRows)
+  }
+
+  return <tbody ref={bodyRef}>{renderTableRows}</tbody>
 }
 
 TableBody.propTypes = {
