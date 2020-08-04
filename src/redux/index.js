@@ -16,7 +16,7 @@ const persistConfig = {
   storage,
   stateReconciler: autoMergeLevel2,
   writeFailHandler: handleQuotaExceeded,
-  // blacklist: ["Admin"], // Admin reducer will not be persisted
+  blacklist: ["Admin"], // Admin reducer will not be persisted
 }
 
 const persistedReducer = persistReducer(persistConfig, RootReducer(history))
