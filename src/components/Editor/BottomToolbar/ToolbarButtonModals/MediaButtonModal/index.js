@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useEffect, useState, useCallback, memo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import {
@@ -18,7 +18,11 @@ import { cleanUrl } from "../../../../Editor/modules/Video"
 import { Logo } from "../../../../../images/AWS"
 import "./styles.css"
 
-const EMBEDED_TYPES = [{ id: "Image" }, { id: "Video" }]
+const EMBEDED_TYPES = [
+  { id: "image", value: "Image" },
+  { id: "video", value: "Video" },
+  { id: "video", value: "iFrame" },
+]
 
 const PLACEHOLDER = Logo
 
@@ -27,14 +31,31 @@ const mapStateToProps = ({ Window: { innerHeight } }) => ({
 })
 
 const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
-  const [url, setUrl] = useState("")
+  const [url, setUrl] = useState(PLACEHOLDER)
   const [type, setType] = useState(EMBEDED_TYPES[0].id)
+  const [value, setValue] = useState(EMBEDED_TYPES[0].value)
+
+  const handleDropDownClick = useCallback((id, value) => {
+    setType(id)
+    setValue(value)
+  }, [])
+
+  useEffect(() => {
+    if (value === "iFrame" && url) {
+      const regex = /<iframe.*?s*src="(.*?)".*?<\/iframe>/
+      const splitString = regex.exec(url)
+
+      if (splitString && splitString.length > 0) {
+        const src = splitString[1]
+        setUrl(src)
+      }
+    }
+  }, [url, type])
 
   const addUrlDisabled = false
 
   const handleAddUrl = () => {
     let cursorIndex = 0
-    const lowerCaseType = type.toLowerCase()
 
     if (editorRef.current) {
       if (editorSelection) {
@@ -43,13 +64,16 @@ const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
       }
     }
 
-    editorRef.current.getEditor().insertEmbed(cursorIndex, lowerCaseType, url)
+    editorRef.current.getEditor().insertEmbed(cursorIndex, type, url)
 
     setUrl("")
   }
 
   const handleInputChange = ({ target: { value } }) => setUrl(value)
+
   const handleModalCancel = () => setUrl("")
+
+  const handleOnFocus = ({ target }) => target.select()
 
   return (
     <ToolbarModal
@@ -75,9 +99,9 @@ const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
                 <InputGroupText className="p-0">
                   <BasicDropDown
                     className="MediaDropDown"
-                    value={type}
+                    value={value}
                     list={EMBEDED_TYPES}
-                    onClickCallback={setType}
+                    onClickCallback={handleDropDownClick}
                   />
                 </InputGroupText>
               </InputGroupAddon>
@@ -88,6 +112,7 @@ const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
                 placeholder={PLACEHOLDER}
                 value={url}
                 onChange={handleInputChange}
+                onFocus={handleOnFocus}
               />
             </InputGroup>
           </Col>

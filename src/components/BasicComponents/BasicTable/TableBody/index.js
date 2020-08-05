@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from "react"
+import React, { useRef, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { DataPropType, ColumnsPropType } from "../state/types"
 import TableRow from "./TableRow"
@@ -24,6 +24,7 @@ const TableBody = ({
   dataDisplayName,
   colSpan,
 }) => {
+  const bodyRef = useRef()
   const sliceStart = currentPage * pageSize
 
   const sliceEnd = sliceStart + pageSize
@@ -34,23 +35,52 @@ const TableBody = ({
     sliceEnd,
   ])
 
-  const renderTableRows = useMemo(
+  let renderTableRows = useMemo(
     () => slicedData.map((item, i) => <TableRow key={i} item={item} />),
     [slicedData]
   )
 
-  return (
-    <tbody>
-      {renderTableRows}
-      {slicedData.length === 0 && (
-        <tr>
-          <TableDataCell scope="row" colSpan={colSpan}>
-            <span className="Center">{`No ${dataDisplayName} Found`}</span>
-          </TableDataCell>
-        </tr>
-      )}
-    </tbody>
-  )
+  const renderNoDataRows = useMemo(() => {
+    const empyRowHeight = bodyRef.current
+      ? bodyRef.current.clientHeight / pageSize
+      : 40
+
+    const rowDifference = pageSize - slicedData.length
+    const isARowDifference = rowDifference !== pageSize
+    const remainingRows = rowDifference - 1 >= 0 ? rowDifference - 1 : 0
+
+    let emptyRows = [
+      <tr
+        style={{
+          height: empyRowHeight,
+          pointerEvents: "none",
+        }}
+      >
+        <TableDataCell scope="row" colSpan={colSpan}>
+          <span className="Center">{`No ${
+            isARowDifference ? "More" : ""
+          } ${dataDisplayName} Found`}</span>
+        </TableDataCell>
+      </tr>,
+    ].concat(
+      new Array(remainingRows).fill(
+        <tr
+          style={{
+            height: empyRowHeight,
+            pointerEvents: "none",
+          }}
+        />
+      )
+    )
+
+    return emptyRows
+  }, [bodyRef.current, slicedData, colSpan])
+
+  if (renderTableRows.length < pageSize) {
+    renderTableRows = renderTableRows.concat(renderNoDataRows)
+  }
+
+  return <tbody ref={bodyRef}>{renderTableRows}</tbody>
 }
 
 TableBody.propTypes = {

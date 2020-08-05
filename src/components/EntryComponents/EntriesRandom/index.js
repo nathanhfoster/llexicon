@@ -6,24 +6,31 @@ import { ButtonGroup, Button } from "reactstrap"
 import { getRandomInt } from "../../../utils"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
+const mapStateToProps = ({
+  Entries: { items, filteredItems, showOnlyPublic },
+}) => ({
   items,
   filteredItems,
+  showOnlyPublic,
 })
 
-const EntriesRandom = ({ items, filteredItems }) => {
+const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
   const [shouldRerender, forceUpdate] = useState(false)
   const handleRefresh = () => forceUpdate(!shouldRerender)
   const viewableEntries = useMemo(
     () =>
-      items.concat(filteredItems).filter(({ _shouldDelete }) => !_shouldDelete),
-    [items, filteredItems, shouldRerender]
+      items
+        .concat(filteredItems)
+        .filter(({ _shouldDelete, is_public }) =>
+          showOnlyPublic ? is_public : !_shouldDelete
+        ),
+    [items, filteredItems, shouldRerender, showOnlyPublic]
   )
 
   let randomEntries = []
 
   const numberOfRandomEntries =
-    viewableEntries.length < 4 ? viewableEntries.length : 4
+    viewableEntries.length < 4 ? viewableEntries.length : 6
 
   let uniqueEntryIndices = [...viewableEntries]
 

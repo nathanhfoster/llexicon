@@ -24,7 +24,7 @@ const BasicDropDown = ({
       const { id, value, header, disabled, divider } = l
       return (
         <DropdownItem
-          key={id || i}
+          key={`${id}-${i}`}
           divider={divider}
           header={header}
           disabled={disabled}

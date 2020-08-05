@@ -125,9 +125,9 @@ class Editor extends PureComponent {
     // console.log("delta: ", delta)
     // console.log("source: ", source)
     // console.log("editor: ", editor)
-    if (source === "user") {
-      this.handleEditorChange({ html })
-    }
+    // if (source === "user") {
+    this.handleEditorChange({ html })
+    // }
   }
 
   handleEditorChange = ({ ...payload }) => {

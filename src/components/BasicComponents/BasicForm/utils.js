@@ -2,12 +2,16 @@ const getFormPayload = (elements) => {
   let payload = {}
 
   for (let i = 0, { length } = elements; i < length; i++) {
-    const { id, name, value, type, check } = elements[i]
+    const { id, name, value, type, checked, files } = elements[i]
 
     if (name) {
-      payload[name] = value
-    } else if (type === "checkbox" || type === "radio") {
-      payload[name] = check
+      if (type === "radio" || type === "checkbox") {
+        payload[name] = checked
+      } else if (type === "file") {
+        payload[name] = files
+      } else {
+        payload[name] = value
+      }
     }
   }
 

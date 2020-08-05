@@ -9,7 +9,7 @@ const renderButtonGroup = (key, buttons) => (
   </span>
 )
 
-const renderButtons = buttons =>
+const renderButtons = (buttons) =>
   buttons.map((button, i) => {
     if (Array.isArray(button)) {
       return renderButtonGroup(i, button)
@@ -27,22 +27,22 @@ const QuillButtons = ({
       { name: "underline" },
       { name: "strike" },
       { name: "blockquote" },
-      { name: "code-block" }
+      { name: "code-block" },
     ],
     [
       { name: "script", value: "sub" },
-      { name: "script", value: "super" }
+      { name: "script", value: "super" },
     ],
     [
       { name: "list", value: "ordered" },
       { name: "list", value: "bullet" },
       { name: "indent", value: "-1" },
       { name: "indent", value: "+1" },
-      { name: "direction", value: "rtl" }
+      { name: "direction", value: "rtl" },
     ],
     [{ name: "link" }, { name: "image" }, { name: "video" }],
-    [{ name: "clean" }]
-  ]
+    [{ name: "clean" }],
+  ],
 }) => renderButtons(buttons)
 
 export default memo(QuillButtons)

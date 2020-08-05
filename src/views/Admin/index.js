@@ -34,6 +34,24 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
   const tableColumns = useMemo(
     () => [
       {
+        title: <i className="fas fa-feather-alt" />,
+        key: "entries",
+        width: 50,
+        //   filter: "date",
+        //   filterPlaceholder: "Date joined",
+        render: ({ entries }) => (entries ? entries.length : 0),
+        sort: (a, b, sortUp) => {
+          const aLength = a.entries ? a.entries.length : 0
+          const bLength = b.entries ? b.entries.length : 0
+          return sortUp ? bLength - aLength : aLength - bLength
+        },
+        footer: (items) =>
+          items.reduce(
+            (count, { entries }) => count + (entries ? entries.length : 0),
+            0
+          ),
+      },
+      {
         title: <i className="fas fa-id-card-alt" />,
         key: "id",
         width: 120,
@@ -63,6 +81,18 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         title: <i className="fas fa-id-card" />,
         key: "username",
         width: 120,
+        render: ({ id, username }) => (
+          <a
+            onClick={(e) => e.stopPropagation()}
+            href={REACT_APP_API_URL.replace(
+              "api/v1/",
+              `user/user/${id}/change/`
+            )}
+            target="_blank"
+          >
+            {username}
+          </a>
+        ),
         footer: (items) =>
           items.reduce((count, { username }) => (count + username ? 1 : 0), 0),
       },
@@ -125,26 +155,13 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         footer: (items) =>
           items.reduce((count, { opt_in }) => count + opt_in, 0),
       },
-      {
-        title: <i className="fas fa-feather-alt" />,
-        key: "entries",
-        width: 40,
-        //   filter: "date",
-        //   filterPlaceholder: "Date joined",
-        render: ({ entries }) => (entries ? entries.length : 0),
-        footer: (items) =>
-          items.reduce(
-            (count, { entries }) => count + entries && entries.length,
-            0
-          ),
-      },
     ],
-    [users]
+    []
   )
 
   const getRowValue = useCallback(
     (user) => <UserEntriesTable user={user} entries={user.entries} />,
-    [users]
+    []
   )
 
   return (

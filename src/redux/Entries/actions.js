@@ -12,6 +12,10 @@ import qs from "qs"
 import ReactGA from "react-ga"
 import { BASE_JOURNAL_ENTRY_ID } from "./reducer"
 
+const ToggleShowOnlyPublic = () => ({
+  type: EntriesActionTypes.ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
+})
+
 const PendingEntries = () => ({ type: EntriesActionTypes.ENTRIES_PENDING })
 
 const GetUserEntryTags = () => (dispatch, getState) => {
@@ -122,7 +126,8 @@ const GetEntry = (url, id) => (dispatch) => {
   return Axios()
     .get(url)
     .then(({ data }) => {
-      dispatch(SetEntryRedux(data))
+      // dispatch(SetEntryRedux(data))
+      dispatch(SetEntry(data))
       ReactGA.event({
         category: "Get Entry",
         action: "User is looking at entry!",
@@ -238,17 +243,21 @@ const ImportReduxEntry = (payload) => ({
   payload,
 })
 
+const SetEntry = (entry) => ({
+  type: EntriesActionTypes.ENTRY_SET,
+  payload: entry,
+})
+
 const PostReduxEntry = (payload) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
   const { length } = items.concat(filteredItems)
-  return dispatch({
-    type: EntriesActionTypes.ENTRY_SET,
-    payload: {
+  return dispatch(
+    SetEntry({
       ...payload,
       id: `${BASE_JOURNAL_ENTRY_ID}-${length}`,
       _shouldPost: true,
-    },
-  })
+    })
+  )
 }
 
 const PostEntry = (payload) => (dispatch) => {
@@ -467,7 +476,7 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
         latitude,
         longitude,
         is_public,
-        views,
+      //  views,
       }
       await dispatch(
         ParseBase64(id, cleanObject(updateEntryPayload))
@@ -501,6 +510,7 @@ const SetEntriesFilterMap = (filterKey, searchValue) => ({
 })
 
 export {
+  ToggleShowOnlyPublic,
   CreateEntryTag,
   GetUserEntryTags,
   GetUserEntryPeople,

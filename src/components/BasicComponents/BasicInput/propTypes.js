@@ -1,11 +1,18 @@
 import PropTypes from "prop-types"
 const inputProps = {
   name: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string,
-  value: PropTypes.string,
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   check: PropTypes.bool,
   label: PropTypes.string,
-  type: PropTypes.oneOf(["email", "text", "password", "checkbox", "radio"]),
+  type: PropTypes.oneOf([
+    "email",
+    "text",
+    "password",
+    "checkbox",
+    "radio",
+    "file",
+  ]),
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   disabled: PropTypes.bool,

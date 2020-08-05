@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { BasicMap } from "../.."
@@ -10,15 +10,24 @@ import {
   GoToEntryDetail,
 } from "../../../redux/router/actions"
 
-const mapStateToProps = ({ Entries: { items } }) => ({
+const mapStateToProps = ({ Entries: { items, showOnlyPublic } }) => ({
   entries: items,
+  showOnlyPublic,
 })
 
 const mapDispatchToProps = {
   SetEditorState,
 }
 
-const EntriesMap = ({ height, entries }) => {
+const EntriesMap = ({ entries, showOnlyPublic, height }) => {
+  const viewableEntries = useMemo(
+    () =>
+      entries.filter(({ _shouldDelete, is_public }) =>
+        showOnlyPublic ? is_public : !_shouldDelete
+      ),
+    [entries, showOnlyPublic]
+  )
+
   const handleOnChange = useCallback(
     ({ entryId, address, latitude, longitude }) => {
       if (!entryId) return
@@ -44,7 +53,7 @@ const EntriesMap = ({ height, entries }) => {
     <BasicMap
       height={height}
       getAddressOnMarkerClick
-      locations={entries}
+      locations={viewableEntries}
       onChangeCallback={handleOnChange}
     />
   )

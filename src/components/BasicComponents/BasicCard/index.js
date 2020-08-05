@@ -10,6 +10,7 @@ const BasicCard = ({
   href,
   header,
   title,
+  children,
   text,
   faIcon,
   button,
@@ -64,6 +65,7 @@ const BasicCard = ({
         <CardTitle className={`BasicCardTitle ${cardTitleClassName}`}>
           {titleIsObject ? title.render : title}
         </CardTitle>
+        {children}
         {text && (
           <CardText tag="div" className={`BasicCardText ${cardTextClassName}`}>
             {text}
@@ -76,6 +78,7 @@ const BasicCard = ({
 }
 
 BasicCard.propTypes = {
+  children: PropTypes.any,
   selected: PropTypes.bool.isRequired,
   tag: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   href: PropTypes.string,

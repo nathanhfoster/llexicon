@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Jumbotron } from "reactstrap"
@@ -20,28 +20,28 @@ const ForgotPassword = ({ userError, PasswordReset }) => {
     []
   )
 
-  const isInvalid = useCallback(
-    (value) => {
-      if (value && value.length < 3) {
-        return "Required. 3 or more characters."
-      } else {
-        return false
-      }
-    },
+  const isInvalid = useCallback((value) => {
+    if (value && value.length < 3) {
+      return "Required. 3 or more characters."
+    } else {
+      return false
+    }
+  }, [])
+
+  const inputs = useMemo(
+    () => [
+      {
+        label: "Email",
+        type: "email",
+        name: "email",
+        placeholder: "Email...",
+        required: true,
+        invalid: errorMessage,
+        isInvalid,
+      },
+    ],
     [userError]
   )
-
-  const inputs = [
-    {
-      label: "Email",
-      type: "email",
-      name: "email",
-      placeholder: "Email...",
-      required: true,
-      invalid: errorMessage,
-      isInvalid,
-    },
-  ]
 
   return (
     <Jumbotron className="LoginFormContainer">

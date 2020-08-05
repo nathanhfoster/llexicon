@@ -1,6 +1,6 @@
-import React, { memo, Fragment } from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { Collapse, Button } from "reactstrap"
+import { Collapse } from "reactstrap"
 import Headers from "./QuillSelect/Headers"
 import Sizes from "./QuillSelect/Sizes"
 import QuillButtons from "./QuillButtons"
@@ -9,15 +9,21 @@ import Colors from "./QuillSelect/Colors"
 import Align from "./QuillSelect/Align"
 import Fonts from "./QuillSelect/Fonts"
 import { DEFAULT_STATE_TEXT_EDITOR } from "../../../redux/TextEditor/reducer"
-import memoizeProps from "../../../utils/memoizeProps"
 import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR
 
 const TopToolbar = ({ toolbarId, editorRef, isOpen, onChangeCallback }) => {
+  const editorSelection =
+    editorRef && editorRef.current
+      ? editorRef.current.getEditorSelection()
+      : null
   const handleUndo = () => editorRef.current.editor.history.undo()
   const handleRedo = () => editorRef.current.editor.history.redo()
   const handleClear = () => onChangeCallback({ html })
+  const handleGetTAble = () => {
+    // module.insertTable(3, 3)
+  }
 
   return (
     <Collapse id={toolbarId} isOpen={isOpen}>
@@ -42,6 +48,9 @@ const TopToolbar = ({ toolbarId, editorRef, isOpen, onChangeCallback }) => {
         <button className="ql-clear" onClick={handleClear}>
           <i className="fas fa-times-circle" />
         </button>
+        {/* <button className="ql-better-table">
+          <i className="fas fa-table" />
+        </button> */}
       </span>
     </Collapse>
   )
@@ -51,10 +60,7 @@ TopToolbar.propTypes = {
   toolbarId: PropTypes.PropTypes.string.isRequired,
   editorRef: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
-const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, ["editorRef", "isOpen"])
-
-export default memo(TopToolbar, isEqual)
+export default memo(TopToolbar)
