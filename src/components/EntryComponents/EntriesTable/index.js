@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { stripHtml } from "../../../utils"
+import { stripHtml, TopKFrequentStrings } from "../../../utils"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable, EntryDataCellLink } from "../../"
 import { GoToEntryDetail } from "../../../redux/router/actions"
@@ -11,11 +11,10 @@ import {
   SetEntriesSortMap,
   SetEntriesFilterMap,
 } from "../../../redux/Entries/actions"
+import { DEFAULT_STATE_ENTRIES } from "../../../redux/Entries/reducer"
 
-const mapStateToProps = ({ Entries: { items, sortMap, filterMap } }) => ({
-  items,
-  sortMap,
-  filterMap,
+const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
+  showOnlyPublic,
 })
 
 const mapDispatchToProps = {
@@ -24,15 +23,20 @@ const mapDispatchToProps = {
 }
 
 const EntriesTable = ({
-  items,
-  sortMap,
-  filterMap,
+  showOnlyPublic,
   SetEntriesSortMap,
   SetEntriesFilterMap,
+  entries,
+  sortMap,
+  filterMap,
+  pageSize,
 }) => {
   const viewableEntries = useMemo(
-    () => items.filter(({ _shouldDelete }) => !_shouldDelete),
-    [items]
+    () =>
+      entries.filter(({ _shouldDelete, is_public }) =>
+        showOnlyPublic ? is_public : !_shouldDelete
+      ),
+    [showOnlyPublic, entries]
   )
 
   const handleSortCallback = useCallback(
@@ -51,7 +55,6 @@ const EntriesTable = ({
         title: <i className="fas fa-heading" />,
         key: "title",
         width: 180,
-        filter: "string",
         filterPlaceholder: "Title",
         defaultSortValue: sortMap.title,
         defaultFilterValue: filterMap.title,
@@ -62,9 +65,8 @@ const EntriesTable = ({
       {
         title: <i className="fas fa-keyboard" />,
         key: "html",
-        width: 180,
+        width: 90,
         defaultSortValue: sortMap.html,
-        filter: "string",
         filterPlaceholder: "Body",
         defaultFilterValue: filterMap.html,
         render: ({ html }) => stripHtml(html),
@@ -86,6 +88,13 @@ const EntriesTable = ({
         defaultFilterValue: filterMap.tags,
         filterPlaceholder: "Tags",
         render: ({ tags }) => <TagsContainer tags={tags} />,
+        footer: (entries) => {
+          const mostFrequent = TopKFrequentStrings(
+            entries.map((entry) => entry.tags).flat(1),
+            "name"
+          )
+          return mostFrequent.length > 0 ? mostFrequent[0] : null
+        },
       },
       {
         title: <i className="fas fa-users" />,
@@ -111,13 +120,19 @@ const EntriesTable = ({
             emptyString="No People..."
           />
         ),
+        footer: (entries) => {
+          const mostFrequent = TopKFrequentStrings(
+            entries.map((entry) => entry.people).flat(1),
+            "name"
+          )
+          return mostFrequent.length > 0 ? mostFrequent[0] : null
+        },
       },
       {
         title: <i className="fas fa-map-marker-alt" />,
         key: "address",
         width: 180,
         defaultSortValue: sortMap.address,
-        filter: "string",
         filterPlaceholder: "Address",
         defaultFilterValue: filterMap.address,
       },
@@ -166,18 +181,19 @@ const EntriesTable = ({
         width: 50,
         render: ({ views }) => <span className="Center">{views}</span>,
         defaultSortValue: sortMap.views,
-        filter: "number",
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.views,
+        footer: (entries) =>
+          entries.reduce((count, { views }) => count + views, 0),
       },
       {
         title: <i className="fas fa-star" />,
         key: "rating",
         width: 50,
         render: ({ rating }) => <span className="ml-2">{rating}</span>,
-        footer: (items) => {
+        footer: (entries) => {
           let validItems = 0
-          const ratingSum = items.reduce((count, { rating }) => {
+          const ratingSum = entries.reduce((count, { rating }) => {
             if (rating !== 0) {
               count += rating
               validItems += 1
@@ -189,9 +205,13 @@ const EntriesTable = ({
           return <span>{averageRating > 0 ? averageRating : 0}</span>
         },
         defaultSortValue: sortMap.rating,
-        filter: "number",
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.rating,
+        footer: (entries) =>
+          (
+            entries.reduce((count, { rating }) => count + rating, 0) /
+            entries.length
+          ).toFixed(2),
       },
       {
         title: <i className="fas fa-photo-video" />,
@@ -200,18 +220,24 @@ const EntriesTable = ({
         render: ({ EntryFiles }) => (
           <span className="Center">{EntryFiles.length}</span>
         ),
-        sort: (a, b, sortUp) =>
-          sortUp
-            ? b.EntryFiles.length - a.EntryFiles.length
-            : a.EntryFiles.length - b.EntryFiles.length,
+        sort: (a, b, sortUp) => {
+          const aLength = a.EntryFiles.length
+          const bLength = b.EntryFiles.length
+          return sortUp ? bLength - aLength : aLength - bLength
+        },
         defaultSortValue: sortMap.EntryFiles,
         filter: (searchValue) => ({ EntryFiles }) =>
           EntryFiles.length >= searchValue,
         filterPlaceholder: "<=",
         defaultFilterValue: filterMap.EntryFiles,
+        footer: (entries) =>
+          entries.reduce(
+            (count, { EntryFiles }) => count + EntryFiles.length,
+            0
+          ),
       },
       {
-        title: <i className="fas fa-lock" />,
+        title: <i className="fas fa-lock-open" />,
         key: "is_public",
         width: 40,
         render: ({ is_public }) => (
@@ -219,6 +245,8 @@ const EntriesTable = ({
         ),
         defaultSortValue: sortMap.is_public,
         defaultFilterValue: filterMap.is_public,
+        footer: (entries) =>
+          entries.reduce((count, { is_public }) => count + is_public, 0),
       },
       {
         title: <i className="fas fa-hdd" />,
@@ -234,18 +262,27 @@ const EntriesTable = ({
           stringMatch(formatBytes(size || _size), searchValue),
         defaultFilterValue: filterMap.id,
         filterPlaceholder: "Size",
-        onRowClick: (item) => GoToEntryDetail(item.id),
         render: ({ size, _size }) => formatBytes(size || _size),
+        footer: (entries) =>
+          formatBytes(
+            entries.reduce((count, { size, _size }) => count + size || _size, 0)
+          ),
       },
     ],
-    []
+    [viewableEntries]
   )
+
+  const onRowClick = useCallback((item) => GoToEntryDetail(item.id), [])
+
   return (
     <BasicTable
-      hover
       sortable
+      filterable
+      pageSize={pageSize}
       columns={tableColumns}
+      dataDisplayName="Entries"
       data={viewableEntries}
+      onRowClick={onRowClick}
       onSortCallback={handleSortCallback}
       onFilterCallback={handleFilterCallback}
     />
@@ -253,11 +290,17 @@ const EntriesTable = ({
 }
 
 EntriesTable.propTypes = {
-  items: EntriesPropTypes,
-  sortMap: PropTypes.object,
-  filterMap: PropTypes.object,
+  entries: EntriesPropTypes,
+  sortMap: PropTypes.object.isRequired,
+  filterMap: PropTypes.object.isRequired,
   SetEntriesSortMap: PropTypes.func.isRequired,
   SetEntriesFilterMap: PropTypes.func.isRequired,
+}
+
+EntriesTable.defaultProps = {
+  pageSize: 5,
+  sortMap: DEFAULT_STATE_ENTRIES.sortMap,
+  filterMap: DEFAULT_STATE_ENTRIES.filterMap,
 }
 
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesTable)

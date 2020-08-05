@@ -15,7 +15,7 @@ const ColumnPropType = PropTypes.shape({
     PropTypes.func,
   ]),
   key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   render: PropTypes.func,
   footer: PropTypes.func,
   sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["string"])]),
@@ -26,12 +26,11 @@ const ColumnPropType = PropTypes.shape({
   ]),
   defaultFilterValue: PropTypes.string,
   filterPlaceholder: PropTypes.string,
-  onRowClick: PropTypes.func,
 })
 
 const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
 
-const DataPropType = PropTypes.arrayOf(PropTypes.object).isRequired
+const DataPropType = PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
 
 const SortListPropType = PropTypes.arrayOf(
   PropTypes.shape({

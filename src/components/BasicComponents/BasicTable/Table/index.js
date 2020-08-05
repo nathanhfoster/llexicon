@@ -3,7 +3,7 @@ import { connect } from "../../../../store/provider"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import { tableSort, tableFilter } from "../utils"
-import { ColumnsPropType, DataPropType, SortListPropType } from "../state/types"
+import { DataPropType, SortListPropType } from "../state/types"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -15,8 +15,8 @@ const mapStateToProps = ({
   striped,
   dark,
   responsive,
-  columns,
   onRowClick,
+  getRowValue,
 }) => ({
   sortList,
   filterList,
@@ -26,8 +26,8 @@ const mapStateToProps = ({
   striped,
   dark,
   responsive,
-  columns,
   onRowClick,
+  getRowValue,
 })
 
 // Lazy load other child components so BasicTableContext can be initialized before it is used
@@ -47,6 +47,7 @@ const BasicTable = ({
   dark,
   responsive,
   onRowClick,
+  getRowValue,
 }) => {
   const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
 
@@ -60,7 +61,7 @@ const BasicTable = ({
     data,
   ])
 
-  const isHoverable = hover || onRowClick ? true : false
+  const isHoverable = hover || onRowClick || getRowValue ? true : false
 
   return (
     <Fragment>
@@ -92,8 +93,7 @@ BasicTable.propTypes = {
   striped: PropTypes.bool.isRequired,
   dark: PropTypes.bool.isRequired,
   responsive: PropTypes.bool.isRequired,
-  columns: ColumnsPropType,
-  onRowClick: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func,
 
   // reactstrap Table
   tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),

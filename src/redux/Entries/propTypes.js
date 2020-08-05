@@ -34,7 +34,7 @@ const EntryFilesProps = PropTypes.arrayOf(EntryFileProps)
 
 const EntryRatingProps = PropTypes.oneOf([0, 1, 2, 3, 4, 5])
 
-const EntryPropTypes = PropTypes.shape({
+const EntryPropType = {
   size: PropTypes.number,
   author: PropTypes.number,
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -70,7 +70,9 @@ const EntryPropTypes = PropTypes.shape({
     PropTypes.string,
     PropTypes.instanceOf(Date),
   ]),
-})
+}
+
+const EntryPropTypes = PropTypes.shape(EntryPropType)
 
 const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)
 
@@ -82,6 +84,7 @@ export {
   EntryFileProps,
   EntryFilesProps,
   EntryRatingProps,
+  EntryPropType,
   EntryPropTypes,
   EntriesPropTypes,
 }

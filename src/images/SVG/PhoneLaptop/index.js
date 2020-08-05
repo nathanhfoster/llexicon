@@ -1,12 +1,13 @@
 import React, { memo } from "react"
 import "../styles.css"
 
-const PhoneLaptop = ({ className }) => (
+const PhoneLaptop = ({ className, ...styles }) => (
   <svg
     aria-hidden="true"
     focusable="false"
     viewBox="0 0 640 512"
     className={className}
+    style={styles}
   >
     <path
       fill="currentColor"
@@ -17,7 +18,7 @@ const PhoneLaptop = ({ className }) => (
 )
 
 PhoneLaptop.defaultProps = {
-  className: "DefaultSvgClass"
+  className: "DefaultSvgClass",
 }
 
 export default memo(PhoneLaptop)

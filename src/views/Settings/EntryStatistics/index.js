@@ -7,12 +7,13 @@ import deepEquals from "../../../utils/deepEquals"
 import { formatBytes } from "../../../utils"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
+const mapStateToProps = ({ Entries: { items, filteredItems, count } }) => ({
   items,
   filteredItems,
+  count,
 })
 
-const EntryStatistics = ({ items, filteredItems }) => {
+const EntryStatistics = ({ items, filteredItems, count }) => {
   let sumRating = 0
   let sumRatingTimeUpdatingEntries = 0
   let previousDate = false

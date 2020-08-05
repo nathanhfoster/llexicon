@@ -1,76 +1,69 @@
-import React, { useRef, useMemo, memo } from "react"
+import React, { useRef, useState, useEffect, memo } from "react"
 import PropTypes from "prop-types"
-import { Button, Form, FormGroup, Label, Input } from "reactstrap"
+import { Button, Form } from "reactstrap"
 import { getFormPayload } from "./utils"
 import { BasicFormProps } from "./propTypes"
+import BasicInput from "../BasicInput"
 
-const BasicForm = ({ title, inputs, submitLabel, onSubmit, onChange }) => {
-  const formRef = useRef()
+const BasicForm = ({
+  title,
+  inputs,
+  submitLabel,
+  method,
+  onSubmit,
+  onChange,
+}) => {
+  const mounted = useRef(false)
+  const [state, setState] = useState(inputs)
+
+  useEffect(() => {
+    if (mounted.current) {
+      setState(inputs)
+    }
+    mounted.current = true
+  }, [inputs])
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!onSubmit) return
 
-    const payload = getFormPayload(e.target.elements)
+    const payload = getFormPayload(state)
+
     onSubmit(payload)
   }
 
-  const handleChange = (e) => {
-    e.preventDefault()
+  const handleChange = ({
+    target: { id, name, value, type, checked, files },
+  }) => {
+    const newState = [...state].map((input) => {
+      if (input.name === name) {
+        if (type === "radio" || type === "checkbox") {
+          return { ...input, checked }
+        } else if (type === "file") {
+          return { ...input, files }
+        } else {
+          return { ...input, value }
+        }
+      } else {
+        return input
+      }
+    })
+
+    setState(newState)
+
     if (!onChange) return
 
-    const payload = getFormPayload(formRef.current.elements)
+    const payload = getFormPayload(newState)
+
     onChange(payload)
   }
 
-  const renderInputs = useMemo(
-    () =>
-      inputs.map((input, i) => {
-        const {
-          name,
-          defaultValue,
-          value,
-          check,
-          label,
-          type,
-          placeholder,
-          required,
-          disabled,
-          autoFocus,
-          error,
-          multiline,
-          rows,
-          className,
-        } = input
-        const isCheckOrRadio = check || type === "radio"
-        const id = `${name}-${i}`
-        return (
-          <FormGroup check={isCheckOrRadio} key={id} row>
-            <Label check={check} for={id}>
-              {`${label} ${required ? "*" : ""}`}
-            </Label>
-            <Input
-              defaultValue={defaultValue}
-              value={value}
-              type={type}
-              id={id}
-              name={name}
-              placeholder={placeholder}
-              disabled={disabled}
-            />
-          </FormGroup>
-        )
-      }),
-    [inputs]
-  )
+  const renderInputs = state.map((input, i) => (
+    <BasicInput key={`${input.name}-${i}`} {...input} />
+  ))
 
   return (
-    <Form
-      innerRef={formRef}
-      onSubmit={handleSubmit}
-      method="post"
-      onChange={handleChange}
-    >
+    <Form onSubmit={handleSubmit} method={method} onChange={handleChange}>
       {typeof title === "object" ? title : <h2 className="Center">{title}</h2>}
       {renderInputs}
       {onSubmit && (
@@ -114,5 +107,6 @@ BasicForm.defaultProps = {
     },
   ],
   submitLabel: "Submit",
+  method: "post",
 }
 export default memo(BasicForm)

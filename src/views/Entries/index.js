@@ -4,19 +4,28 @@ import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Row } from "reactstrap"
 import { RouteMap, RouterPush } from "../../redux/router/actions"
-import { BasicTabs, NewEntryButton, EntriesTable } from "../../components"
+import { BasicTabs, NewEntryButton } from "../../components"
+import { UserEntriesTable } from "../../containers"
 import NewEntry from "../NewEntry"
 import { GetUserEntries } from "../../redux/Entries/actions"
 import "./styles.css"
 
-const EntryCalendar = lazy(() => import("../../components/EntryComponents/EntryCalendar"))
-const EntryFolders = lazy(() => import("../../components/EntryComponents/EntryFolders"))
-const EntriesList = lazy(() => import("../../components/EntryComponents/EntriesList"))
-const EntriesMap = lazy(() => import("../../components/EntryComponents/EntriesMap"))
+const EntryCalendar = lazy(() =>
+  import("../../components/EntryComponents/EntryCalendar")
+)
+const EntryFolders = lazy(() =>
+  import("../../components/EntryComponents/EntryFolders")
+)
+const EntriesList = lazy(() =>
+  import("../../components/EntryComponents/EntriesList")
+)
+const EntriesMap = lazy(() =>
+  import("../../components/EntryComponents/EntriesMap")
+)
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items },
+  Entries: { items, showOnlyPublic },
   TextEditor,
   Window: { innerHeight, navBarHeight },
   router: {
@@ -25,6 +34,7 @@ const mapStateToProps = ({
 }) => ({
   userId: id,
   entries: items,
+  showOnlyPublic,
   TextEditor,
   viewPortHeight: innerHeight - navBarHeight,
   pathname,
@@ -37,6 +47,7 @@ const mapDispatchToProps = {
 const Entries = ({
   userId,
   entries,
+  showOnlyPublic,
   TextEditor,
   viewPortHeight,
   GetUserEntries,
@@ -48,13 +59,15 @@ const Entries = ({
   const viewableEntries = useMemo(
     () =>
       entries
-        .filter(({ _shouldDelete }) => !_shouldDelete)
+        .filter(({ _shouldDelete, is_public }) =>
+          showOnlyPublic ? is_public : !_shouldDelete
+        )
         .sort(
           (a, b) =>
             new Date(b.date_created_by_author) -
             new Date(a.date_created_by_author)
         ),
-    [entries]
+    [entries, showOnlyPublic]
   )
 
   const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
@@ -155,7 +168,7 @@ const Entries = ({
         </Row>
       ) : (
         <Row className="ShowScrollBar">
-          <EntriesTable />
+          <UserEntriesTable pageSize={10} />
         </Row>
       ),
       onClickCallback: handleTabChange,

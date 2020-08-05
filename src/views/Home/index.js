@@ -1,8 +1,13 @@
-import React, { useMemo, lazy } from "react"
+import React, { useMemo, lazy, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { Container, Row, Col, Button } from "reactstrap"
-import { AddToHomeScreen, BasicCard, Header } from "../../components"
+import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
+import {
+  AddToHomeScreen,
+  BasicCard,
+  Header,
+  EntriesToggleShowOnlyPublic,
+} from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { RouterPush, RouteMap } from "../../redux/router/actions"
 import "./styles.css"
@@ -10,9 +15,8 @@ import "./styles.css"
 const EntryNavButtons = lazy(() =>
   import("../../components/EntryComponents/EntryNavButtons")
 )
-const EntriesTable = lazy(() =>
-  import("../../components/EntryComponents/EntriesTable")
-)
+const UserEntriesTable = lazy(() => import("../../containers/UserEntriesTable"))
+
 const EntriesMostViewed = lazy(() =>
   import("../../components/EntryComponents/EntriesMostViewed")
 )
@@ -40,16 +44,19 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
 
   const homeCardText = useMemo(
     () => (
-      <Button
-        color={!userIsLoggedIn ? "info" : "success"}
-        onClick={() =>
-          RouterPush(
-            !userIsLoggedIn ? RouteMap.ABOUT : RouteMap.SETTINGS_ENTRIES
-          )
-        }
-      >
-        {!userIsLoggedIn ? "Learn More" : "Settings"}
-      </Button>
+      <ButtonGroup aria-label="Navigation" size="lg">
+        <Button
+          color={!userIsLoggedIn ? "info" : "success"}
+          onClick={() =>
+            RouterPush(
+              !userIsLoggedIn ? RouteMap.ABOUT : RouteMap.SETTINGS_ENTRIES
+            )
+          }
+        >
+          {!userIsLoggedIn ? "Learn More" : "Settings"}
+        </Button>
+        <EntriesToggleShowOnlyPublic />
+      </ButtonGroup>
     ),
     [userIsLoggedIn]
   )
@@ -74,7 +81,7 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
         <Col xs={12} className="p-0">
           <Header fill="var(--quinaryColor)">Entries Table</Header>
         </Col>
-        <EntriesTable />
+        <UserEntriesTable />
       </Row>
       <Row className="HomeRow mb-3 pb-1">
         <EntriesRediscover />

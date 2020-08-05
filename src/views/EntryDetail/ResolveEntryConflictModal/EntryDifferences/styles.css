@@ -1,0 +1,13 @@
+.EntryDifferences [class*="col-"] {
+  border: 1px solid var(--secondaryColor);
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  white-space: nowrap;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.EntryDifferences [class*="col-12"] {
+  text-align: center;
+}

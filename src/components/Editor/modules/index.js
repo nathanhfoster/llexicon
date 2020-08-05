@@ -1,5 +1,8 @@
 import { Quill } from "react-quill"
 import ImageResize from "quill-image-resize-module-react"
+// import QuillBetterTable from "quill-better-table"
+// import * as QuillTableUI from "quill-table-ui"
+
 // import * as QuillTableUI from "quill-table-ui"
 import Font from "./Font"
 import Size from "./Size"
@@ -11,6 +14,18 @@ Quill.register(Font, true)
 Quill.register("formats/video", Video)
 Quill.register("formats/Image", Image)
 Quill.register({ "modules/imageResize": ImageResize }, true)
+// Quill.register(
+//   {
+//     "modules/better-table": QuillBetterTable,
+//   },
+//   true
+// )
+// Quill.register(
+//   {
+//     "modules/tableUI": QuillTableUI.default,
+//   },
+//   true
+// )
 // Quill.register({ "modules/tableUI": QuillTableUI }, true)
 // Quill.setAttribute('spellcheck', true)
 
@@ -64,7 +79,24 @@ const getModules = (toolbarId, topToolbarIsOpen) => ({
     parchment: Quill.import("parchment"),
     // See optional "config" below
   },
-  // table: true,
+
+  // "better-table": {
+  //   operationMenu: {
+  //     items: {
+  //       unmergeCells: {
+  //         text: "Another unmerge cells name",
+  //       },
+  //     },
+  //     color: {
+  //       colors: ["#fff", "red", "rgb(0, 0, 0)"], // colors in operationMenu
+  //       text: "Background Colors", // subtitle
+  //     },
+  //   },
+  // },
+  // keyboard: {
+  //   bindings: QuillBetterTable.keyboardBindings,
+  // },
+  table: false,
   // tableUI: true,
   // imageDrop: {}
 })

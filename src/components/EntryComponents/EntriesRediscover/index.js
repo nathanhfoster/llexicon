@@ -4,19 +4,22 @@ import { connect as reduxConnect } from "react-redux"
 import { EntryCards, Header } from "../.."
 import Moment from "react-moment"
 
-const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
+const mapStateToProps = ({
+  Entries: { items, filteredItems, showOnlyPublic },
+}) => ({
   items,
   filteredItems,
+  showOnlyPublic,
 })
 
-const EntriesRediscover = ({ items, filteredItems }) => {
+const EntriesRediscover = ({ items, filteredItems, showOnlyPublic }) => {
   const today = new Date()
   const entriesOnThisDay = useMemo(
     () =>
       items
         .concat(filteredItems)
-        .filter(({ date_created_by_author, _shouldDelete }) => {
-          if (_shouldDelete) return false
+        .filter(({ date_created_by_author, _shouldDelete, is_public }) => {
+          if (_shouldDelete || is_public !== showOnlyPublic) return false
           const entryDate = new Date(date_created_by_author)
           const isOnThisDay =
             entryDate.getMonth() === today.getMonth() &&
@@ -28,7 +31,7 @@ const EntriesRediscover = ({ items, filteredItems }) => {
           const bDate = new Date(b.date_created_by_author)
           return bDate - aDate
         }),
-    [items, filteredItems]
+    [items, filteredItems, showOnlyPublic]
   )
 
   return (

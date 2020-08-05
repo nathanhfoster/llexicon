@@ -30,7 +30,7 @@ const EntryNavButtons = ({ size }) => {
 }
 
 EntryNavButtons.propTypes = {
-  size: PropTypes.oneOfType(["xs", "sm", "md", "lg", "xl"]),
+  size: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
 }
 
 EntryNavButtons.defaultProps = { size: "lg" }

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, InputGroupAddon, InputGroupText } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
@@ -8,17 +8,39 @@ import { SearchUserEntries } from "../../redux/Entries/actions"
 import { DebounceInput } from "../"
 import "./styles.css"
 
-const mapStateToProps = ({ Entries: { search }, Window: { isMobile } }) => ({
+const mapStateToProps = ({
+  Admin: {
+    users: { isPending: adminIsPending },
+  },
+  Entries: { search, isPending },
+  Window: { isMobile },
+}) => ({
   isMobile,
   search,
+  adminIsPending,
+  isPending,
 })
 
 const mapDispatchToProps = { SearchUserEntries }
 
-const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
+const StarSearch = ({
+  isMobile,
+  search,
+  adminIsPending,
+  isPending,
+  SearchUserEntries,
+}) => {
   const handleSearch = useCallback(
     (searchValue) => SearchUserEntries(searchValue),
     []
+  )
+
+  const iconClassName = useMemo(
+    () =>
+      adminIsPending || isPending
+        ? "fas fa-sun SunIcon"
+        : "fab fa-wpexplorer TelescopeIcon",
+    [adminIsPending, isPending]
   )
 
   return (
@@ -31,7 +53,7 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
         className="TelescopeIconContainer Center"
       >
         <InputGroupText tag={Link} to={RouteMap.HOME}>
-          <i className="fab fa-wpexplorer TelescopeIcon" />
+          <i className={iconClassName} />
         </InputGroupText>
       </InputGroupAddon>
 
@@ -46,8 +68,10 @@ const StarSearch = ({ search, SearchUserEntries, isMobile }) => {
 }
 
 StarSearch.propTypes = {
-  search: PropTypes.string,
   isMobile: PropTypes.bool,
+  search: PropTypes.string,
+  adminIsPending: PropTypes.bool.isRequired,
+  isPending: PropTypes.bool.isRequired,
   SearchUserEntries: PropTypes.func.isRequired,
 }
 

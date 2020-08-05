@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy } from "react"
+import React, { useEffect, useState, useCallback, useMemo, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
@@ -12,7 +12,7 @@ import {
 } from "reactstrap"
 import { NavLink } from "react-router-dom"
 import { RouterPush } from "../../../redux/router/actions"
-import { TopKFrequentStrings } from "../../../utils"
+import { filterMapArray, TopKFrequentStrings } from "../../../utils"
 import { useScrollable } from "../../../hooks"
 import "./styles.css"
 
@@ -39,26 +39,45 @@ const EntryFolders = ({ entries, search }) => {
 
   const [minimizeEntryCards, setMinimizeEntryCards] = useState(true)
 
-  const handleMinimizeEntryCardsToggle = () =>
-    setMinimizeEntryCards(!minimizeEntryCards)
+  const handleMinimizeEntryCardsToggle = useCallback(
+    () =>
+      setMinimizeEntryCards(
+        (prevMinimizeEntryCards) => !prevMinimizeEntryCards
+      ),
+    []
+  )
 
   const [beginOffset, endOffset] = viewableEntriesRange
 
-  const directoryPath = search.replace("?folder=", "").split("+")
-  const directoryTags = directoryPath.slice(1)
+  const directoryPath = useMemo(
+    () => search.replace("?folder=", "").split("+"),
+    [search]
+  )
+  const directoryTags = useMemo(() => directoryPath.slice(1), [directoryPath])
 
-  const entryFilteredTags = entries.filter((entry) =>
-    directoryTags.every((tag) => entry.tags.some(({ name }) => name === tag))
+  const entryFilteredTags = useMemo(
+    () =>
+      entries.filter((entry) =>
+        directoryTags.every((tag) =>
+          entry.tags.some(({ name }) => name === tag)
+        )
+      ),
+    [entries, directoryTags]
   )
 
-  const filteredEntryTags = entryFilteredTags
-    .map((entry) => entry.tags)
-    .flat(1)
-    .filter(({ name }) => !directoryTags.includes(name))
+  const filteredEntryTags = useMemo(
+    () =>
+      entryFilteredTags
+        .map((entry) => entry.tags)
+        .flat(1)
+        .filter(({ name }) => !directoryTags.includes(name)),
+    [entryFilteredTags, directoryTags]
+  )
 
-  const viewableEntries = entryFilteredTags.slice(beginOffset, endOffset)
-
-  const sortedTags = TopKFrequentStrings(filteredEntryTags, "name")
+  const viewableEntries = useMemo(
+    () => entryFilteredTags.slice(beginOffset, endOffset),
+    [entryFilteredTags, beginOffset, endOffset, minimizeEntryCards, search]
+  )
 
   const setViewableEntriesRangeThreshold =
     viewableEntries.length < entryFilteredTags.length
@@ -71,30 +90,44 @@ const EntryFolders = ({ entries, search }) => {
     setViewableEntriesRange([beginOffset, endOffset + ENTRIES_RENDER_OFFSET])
   }, [reachedBottom])
 
-  const renderFolderBreadCrumbs = () =>
-    directoryPath.map((directory, i) => {
-      const newDirectory = directoryPath.slice(0, i + 1).join("+")
-      const path = `?folder=${newDirectory}`
-      return (
-        <BreadcrumbItem key={`${directory}-${i}`}>
-          <NavLink to={path}>{directory}</NavLink>
-        </BreadcrumbItem>
-      )
-    })
+  const renderFolderBreadCrumbs = useMemo(
+    () =>
+      directoryPath.map((directory, i) => {
+        const newDirectory = directoryPath.slice(0, i + 1).join("+")
+        const path = `?folder=${newDirectory}`
+        return (
+          <BreadcrumbItem key={`${directory}-${i}`}>
+            <NavLink to={path}>{directory}</NavLink>
+          </BreadcrumbItem>
+        )
+      }),
+    [directoryPath]
+  )
 
-  const renderFolders = () =>
-    sortedTags.map((name, i) => {
-      const handleOnClickCallback = () => {
-        RouterPush(search.concat(`+${name}`))
-        setViewableEntriesRange(DEFAULT_VIEWABLE_ENTRIES_RANGE)
-      }
+  const sortedTags = useMemo(() => {
+    // TODO: Make a dropdown toggle
+    // return TopKFrequentStrings(filteredEntryTags, "name")
+    return filterMapArray(filteredEntryTags, "name", "name").sort((a, b) =>
+      a.localeCompare(b)
+    )
+  }, [filteredEntryTags])
 
-      return (
-        <Col key={`${name}-${i}`} xs={4} sm={3} md={2} className="p-0">
-          <EntryFolder title={name} onClickCallback={handleOnClickCallback} />
-        </Col>
-      )
-    })
+  const renderFolders = useMemo(
+    () =>
+      sortedTags.map((name, i) => {
+        const handleOnClickCallback = () => {
+          RouterPush(search.concat(`+${name}`))
+          setViewableEntriesRange(DEFAULT_VIEWABLE_ENTRIES_RANGE)
+        }
+
+        return (
+          <Col key={`${name}-${i}`} xs={4} sm={3} md={2} className="p-0">
+            <EntryFolder title={name} onClickCallback={handleOnClickCallback} />
+          </Col>
+        )
+      }),
+    [sortedTags, search]
+  )
 
   return (
     <Container className="EntryFolders">
@@ -104,7 +137,7 @@ const EntryFolders = ({ entries, search }) => {
           tag={Breadcrumb}
           className="FolderBreadCrumbsContainer p-0"
         >
-          {renderFolderBreadCrumbs()}
+          {renderFolderBreadCrumbs}
         </Col>
         <Col
           xs={1}
@@ -120,7 +153,7 @@ const EntryFolders = ({ entries, search }) => {
         className="EntryFoldersContainer Container"
         onScroll={setReachedBottomCallback}
       >
-        {renderFolders()}
+        {renderFolders}
         <Container className="EntryCards">
           <Row>
             <EntryCards

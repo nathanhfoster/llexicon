@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import "../styles.css"
 
-const CloudDownload = ({ className }) => (
+const CloudDownload = ({ className, ...styles }) => (
   <svg
     aria-hidden="true"
     focusable="false"
@@ -11,6 +11,7 @@ const CloudDownload = ({ className }) => (
     xmlns="https://www.w3.org/2000/svg"
     viewBox="0 0 640 512"
     className={className}
+    style={styles}
   >
     <g className="fa-group">
       <path

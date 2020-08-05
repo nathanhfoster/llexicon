@@ -37,7 +37,7 @@ const EntriesList = ({
   GetUserEntries,
 }) => {
   const listLength = entries.length
-  const GetEntries = useCallback(() => {
+  const handleOnScrollToBottomOfListCallback = useCallback(() => {
     if (entriesSearch || !nextEntryPage) {
       return
     }
@@ -56,7 +56,7 @@ const EntriesList = ({
       itemSize={itemSize}
       onItemsRendered={onItemsRendered}
       render={renderMinimalEntries}
-      onScrollToBottomOfListCallback={GetEntries}
+      onScrollToBottomOfListCallback={handleOnScrollToBottomOfListCallback}
     />
   )
 }

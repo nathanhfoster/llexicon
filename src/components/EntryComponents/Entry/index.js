@@ -1,37 +1,34 @@
-import React, { useCallback, useState, memo, Fragment } from "react"
+import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { useDispatch } from "react-redux"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { Editor, EntryOptionsMenu, ReactDatePicker, UseDebounce } from "../../"
 import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
-import memoizeProps from "../../../utils/memoizeProps"
 import "./styles.css"
 
-const mapStateToProps = ({ User: { token } }) => ({ userToken: token })
-
-const mapDispatchToProps = { UpdateReduxEntry, SyncEntries }
-
 const Entry = ({
+  height,
+  showOptionsMenu,
   entry,
+  toolbarId,
   canToggleToolbars,
   topToolbarIsOpen,
   bottomToolbarIsOpen,
   shouldRedirectOnDelete,
   theme,
   readOnly,
-  userToken,
-  UpdateReduxEntry,
-  SyncEntries,
 }) => {
+  const dispatch = useDispatch()
   const activeDate = new Date(
     entry.date_created_by_author || entry._lastUpdated || 0
   )
-  
 
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 
-  const handleDebounce = () => SyncEntries()
+  const handleDebounce = () => {
+    dispatch(SyncEntries())
+  }
 
   const handleTitleChange = ({ target: { value } }) =>
     handleEditorChange({ id: entry.id, title: value })
@@ -48,23 +45,23 @@ const Entry = ({
 
   const handleEditorChange = useCallback(
     ({ ...payload }) => {
-      if (entry.author && !userToken) return
-
-      UpdateReduxEntry(entry.id, payload)
+      if (readOnly) return
+      dispatch(UpdateReduxEntry(entry.id, payload))
     },
-    [entry.id, entry.author, userToken]
+    [entry.id, readOnly]
   )
 
   return (
     <Editor
       readOnly={readOnly}
-      toolbarId={entry.id}
+      toolbarId={toolbarId || entry.id}
       canToggleToolbars={canToggleToolbars}
       topToolbarIsOpen={topToolbarIsOpen}
       bottomToolbarIsOpen={bottomToolbarIsOpen}
       entry={entry}
       theme={theme}
       onChangeCallback={handleEditorChange}
+      height={height}
     >
       <UseDebounce
         onChangeCallback={handleDebounce}
@@ -93,7 +90,8 @@ const Entry = ({
             />
           </InputGroupText>
         </InputGroupAddon>
-        <Fragment>
+
+        {showOptionsMenu && (
           <InputGroupAddon addonType="append">
             <InputGroupText
               className="p-0"
@@ -105,13 +103,16 @@ const Entry = ({
               readOnly={readOnly}
             />
           </InputGroupAddon>
-        </Fragment>
+        )}
       </InputGroup>
     </Editor>
   )
 }
 
 Entry.propTypes = {
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  showOptionsMenu: PropTypes.bool.isRequired,
+  toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   readOnly: PropTypes.bool.isRequired,
   entry: EntryPropTypes.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -120,12 +121,11 @@ Entry.propTypes = {
   staticContext: PropTypes.any,
   topToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,
-  userToken: PropTypes.string,
-  UpdateReduxEntry: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
 }
 
 Entry.defaultProps = {
+  height: "100%",
+  showOptionsMenu: true,
   readOnly: false,
   canToggleToolbars: true,
   topToolbarIsOpen: true,
@@ -134,15 +134,4 @@ Entry.defaultProps = {
   theme: "snow",
 }
 
-const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, [
-    "entry",
-    "itemSize",
-    "width",
-    "userToken",
-  ])
-
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(memo(Entry, isEqual))
+export default memo(Entry)

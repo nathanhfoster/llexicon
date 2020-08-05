@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment, createRef, lazy } from "react"
+import React, { PureComponent, Fragment, createRef } from "react"
 import ReactQuill from "react-quill"
 import { THEMES, FORMATS, getModules } from "./modules"
 import "react-quill/dist/quill.snow.css"
@@ -8,17 +8,17 @@ import "react-quill/dist/quill.core.css"
 // import "quill-mention/dist/quill.mention.min.css"
 import "./styles.css"
 import TopToolbar from "./TopToolbar"
+import BottomToolbar from "./BottomToolbar"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import deepEquals from "../../utils/deepEquals"
-
-const BottomToolbar = lazy(() => import("./BottomToolbar"))
 
 class Editor extends PureComponent {
   constructor(props) {
     super(props)
 
     const {
+      entry,
       toolbarId,
       theme,
       topToolbarIsOpen,
@@ -32,6 +32,7 @@ class Editor extends PureComponent {
     const modules = getModules(newToolbarId, topToolbarIsOpen)
 
     this.state = {
+      entry,
       quillId: toolbarId.toString(),
       toolbarId: newToolbarId,
       theme,
@@ -101,14 +102,16 @@ class Editor extends PureComponent {
       ? "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
       : "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
 
+    const editorStyles = { height: editorHeight }
+
     const previousState = {
       entry: prevState.entry,
-      editorHeight: prevState.editorHeight
+      editorStyles: prevState.editorStyles,
     }
 
     const nextState = {
       entry,
-      editorHeight
+      editorStyles,
     }
 
     if (!deepEquals(previousState, nextState)) {
@@ -118,12 +121,18 @@ class Editor extends PureComponent {
     return null
   }
 
-  handleEditorStateChange = (html) => {
+  handleEditorStateChange = (html, delta, source, editor) => {
+    // console.log("delta: ", delta)
+    // console.log("source: ", source)
+    // console.log("editor: ", editor)
+    // if (source === "user") {
     this.handleEditorChange({ html })
+    // }
   }
 
   handleEditorChange = ({ ...payload }) => {
     const { toolbarId, onChangeCallback } = this.props
+
     onChangeCallback({ id: toolbarId, ...payload })
   }
 
@@ -145,21 +154,14 @@ class Editor extends PureComponent {
 
   render() {
     const { editorRef } = this
-    const {
-      children,
-      onChangeCallback,
-      height,
-      width,
-      placeholder,
-      readOnly,
-    } = this.props
+    const { children, height, width, placeholder, readOnly } = this.props
     const {
       toolbarId,
       entry,
       theme,
       quillId,
       topToolbarIsOpen,
-      editorHeight,
+      editorStyles,
       bottomToolbarIsOpen,
       modules,
       canToggleToolbars,
@@ -173,15 +175,15 @@ class Editor extends PureComponent {
             toolbarId={toolbarId}
             editorRef={editorRef}
             isOpen={topToolbarIsOpen}
-            onChangeCallback={onChangeCallback}
+            onChangeCallback={this.handleEditorChange}
           />
           <ReactQuill
             id={quillId}
             readOnly={readOnly}
-            bounds={"app"}
+            bounds="app"
             ref={editorRef}
             className="Editor"
-            style={{ height: editorHeight }}
+            style={editorStyles}
             theme={theme}
             formats={FORMATS}
             modules={modules}

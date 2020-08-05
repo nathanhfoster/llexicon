@@ -9,6 +9,22 @@ import { clearReduxStoreFromLocalStorage } from "../localState"
 import qs from "qs"
 import ReactGA from "react-ga"
 
+const setPendingUser = () => ({ type: UserActionTypes.USER_PENDING })
+
+const setUserError = ({ config, response, message, name, stack }) => (
+  dispatch
+) => {
+  const { status, statusText } = response
+  const payload = { message, name, stack, status, statusText }
+
+  dispatch({
+    type: UserActionTypes.USER_ERROR,
+    payload,
+  })
+}
+
+const ResetUserError = () => ({ type: UserActionTypes.USER_RESET_ERROR })
+
 const SetUser = (payload) => ({
   type: UserActionTypes.USER_SET,
   payload,
@@ -16,8 +32,9 @@ const SetUser = (payload) => ({
 
 const ChangeUser = (payload) => ({ type: UserActionTypes.USER_SET, payload })
 
-const UserLogin = (payload, rememberMe) => async (dispatch) =>
-  await AxiosOffline()
+const UserLogin = (payload, rememberMe) => async (dispatch) => {
+  dispatch(setPendingUser())
+  return await AxiosOffline()
     .post("login/", qs.stringify(payload))
     .then(async ({ data }) => {
       const { id, token } = data
@@ -31,10 +48,12 @@ const UserLogin = (payload, rememberMe) => async (dispatch) =>
       })
       return data
     })
-    .catch((e) => console.log("UserLogin: ", e))
+    .catch((e) => dispatch(setUserError(e)))
+}
 
-const RefreshPatchUser = (id) => (dispatch) =>
-  AxiosOffline()
+const RefreshPatchUser = (id) => (dispatch) => {
+  dispatch(setPendingUser())
+  return AxiosOffline()
     .get(`users/${id}/refresh/`)
     .then(({ data }) => {
       dispatch({
@@ -47,19 +66,22 @@ const RefreshPatchUser = (id) => (dispatch) =>
       })
       return data
     })
-    .catch((e) =>
+    .catch((e) => {
+      dispatch(setUserError(e))
       e.response && e.response.status == 401
         ? dispatch({
             type: AppActionTypes.REDUX_RESET,
             payload: null,
           })
         : console.log(e)
-    )
+    })
+}
 
 const UserLogout = () => (dispatch) => dispatch(ResetRedux())
 
-const CreateUser = (payload, rememberMe) => (dispatch) =>
-  AxiosOffline()
+const CreateUser = (payload, rememberMe) => (dispatch) => {
+  dispatch(setPendingUser())
+  return AxiosOffline()
     .post("users/", qs.stringify(payload))
     .then((res) => {
       dispatch(UserLogin(payload, rememberMe))
@@ -68,9 +90,11 @@ const CreateUser = (payload, rememberMe) => (dispatch) =>
         action: "User signed up!",
       })
     })
-    .catch((e) => console.log("CreateUser: ", e.response))
+    .catch((e) => dispatch(setUserError(e)))
+}
 
 const UpdateUser = (payload) => (dispatch, getState) => {
+  dispatch(setPendingUser())
   const { id } = getState().User
   return Axios()
     .patch(`users/${id}/`, qs.stringify(payload))
@@ -83,10 +107,11 @@ const UpdateUser = (payload) => (dispatch, getState) => {
       })
       return data
     })
-    .catch((e) => console.log("UpdateUser ERROR: ", e))
+    .catch((e) => dispatch(setUserError(e)))
 }
 
 const UpdateProfile = (payload) => (dispatch, getState) => {
+  dispatch(setPendingUser())
   const { id } = getState().User
   // await dispatch({ type: USER_UPDATE_LOADING })
   return AxiosForm(payload)
@@ -102,7 +127,7 @@ const UpdateProfile = (payload) => (dispatch, getState) => {
       })
       return data
     })
-    .catch((e) => console.log("UpdateProfile: ", e.response))
+    .catch((e) => dispatch(setUserError(e)))
 }
 
 const SetUserLocation = (position) => (dispatch) => {
@@ -189,10 +214,7 @@ const PasswordReset = (payload) => (dispatch) =>
         action: "User requested a password reset!",
       })
     })
-    .catch((e) => {
-      console.log(JSON.parse(JSON.stringify(e)))
-      dispatch(SetAlert({ title: "Password Reset Error", message: "ERROR" }))
-    })
+    .catch((e) => dispatch(setUserError(e)))
 
 const GetUserSettings = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -274,6 +296,7 @@ const SearchForUsers = (search) =>
     .catch((e) => console.log("SearchForUsers: ", e.response))
 
 export {
+  ResetUserError,
   SetUser,
   ChangeUser,
   UserLogin,
