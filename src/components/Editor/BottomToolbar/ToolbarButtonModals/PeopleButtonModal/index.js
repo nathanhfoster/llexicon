@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, memo } from "react"
+import React, { useState, useEffect, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import {
   Container,
@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Button,
+  Button
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -16,27 +16,27 @@ import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,
   removeAttributeDuplicates,
-  stringMatch,
+  stringMatch
 } from "../../../../../utils"
 import memoizeProps from "../../../../../utils/memoizeProps"
 import { validateTagOrPeopleString, validatedPersonNameString } from "../utlis"
 import {
   EntriesPropTypes,
-  EntryPeopleProps,
+  EntryPeopleProps
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryPeople },
+  Entries: { items, filteredItems, EntryPeople }
 }) => ({ items, filteredItems, UserId: id, EntryPeople })
 
 const mapDispatchToProps = {
-  GetUserEntryPeople,
+  GetUserEntryPeople
 }
 
 const getInitialState = ({ people }) => ({
   personsName: "",
-  people,
+  people
 })
 
 const PeopleButtonModal = ({
@@ -46,6 +46,7 @@ const PeopleButtonModal = ({
   filteredItems,
   EntryPeople,
   entryId,
+  html,
   xs,
   onChangeCallback,
   ...restOfProps
@@ -53,6 +54,9 @@ const PeopleButtonModal = ({
   useEffect(() => {
     if (UserId) GetUserEntryPeople()
   }, [])
+
+  const [show, setShow] = useState(false)
+  const handleToogle = useCallback(() => setShow((prevShow) => !prevShow))
 
   const [{ people, personsName }, setState] = useState(
     getInitialState(restOfProps)
@@ -69,26 +73,31 @@ const PeopleButtonModal = ({
 
   const entryPeople = useMemo(
     () =>
-      Object.values(
-        items
-          .concat(filteredItems)
-          .map((entry) => entry.people)
-          .flat(1)
-          .concat(EntryPeople)
-      ),
+      show
+        ? Object.values(
+            items
+              .concat(filteredItems)
+              .map((entry) => entry.people)
+              .flat(1)
+              .concat(EntryPeople)
+          )
+        : [],
     [
+      show,
       items,
       filteredItems,
       EntryPeople,
       personsName,
       people,
-      splitPeopleAsString,
+      splitPeopleAsString
     ]
   )
 
-  const sortedPeople = useMemo(
-    () =>
-      TopKFrequentStrings(entryPeople, "name")
+  const [suggestedPeople, frequentPeople] = useMemo(() => {
+    if (!show) return [[], []]
+    else {
+      const h = html.toLowerCase()
+      const f = TopKFrequentStrings(entryPeople, "name")
         .filter((entryPersonName) => {
           if (people.some(({ name }) => name == entryPersonName)) return false
           else if (!lastPeopleAsString) return true
@@ -96,24 +105,44 @@ const PeopleButtonModal = ({
           else if (stringMatch(entryPersonName, lastPeopleAsString)) return true
           else return false
         })
+        .map((name) => ({ name }))
 
-        .map((name) => ({ name })),
-    [entryPeople]
-  )
+      let suggestedPeople = []
+      let frequentPeople = []
+
+      for (let i = 0, { length } = f; i < length; i++) {
+        const person = f[i]
+        const names = person.name.split(" ")
+
+        if (
+          names.some((name) => {
+            const n = name.toLowerCase()
+            return n && h.includes(n)
+          })
+        ) {
+          suggestedPeople.push(person)
+        } else {
+          frequentPeople.push(person)
+        }
+      }
+
+      return [suggestedPeople, frequentPeople]
+    }
+  }, [show, entryPeople])
 
   const handlePeopleInputChange = (value) => {
     const validatedTagsAsString = validatedPersonNameString(value)
 
     setState((prevState) => ({
       ...prevState,
-      personsName: validatedTagsAsString,
+      personsName: validatedTagsAsString
     }))
   }
 
   const handleSavePeople = () => {
     const payload = {
       id: entryId,
-      people,
+      people
     }
 
     onChangeCallback(payload)
@@ -131,7 +160,7 @@ const PeopleButtonModal = ({
       return {
         ...prevState,
         people: newPeople,
-        personsName: newPersonsName,
+        personsName: newPersonsName
       }
     })
   }
@@ -155,13 +184,27 @@ const PeopleButtonModal = ({
 
       return {
         ...getInitialState(prevState),
-        people: newPeople,
+        people: newPeople
       }
     })
   }
 
+  const placeholder = useMemo(() => {
+    const people = suggestedPeople.concat(frequentPeople)
+    if (!show || people.length === 0) {
+      return "John Doe,Jane Doe"
+    }
+
+    return people
+      .slice(0, 2)
+      .map(({ name }) => name)
+      .join(",")
+  }, [suggestedPeople, frequentPeople])
+
   return (
     <ToolbarModal
+      show={show}
+      toggle={handleToogle}
       title="Add People"
       onSaveCallback={handleSavePeople}
       onCancelCallback={resetState}
@@ -170,9 +213,24 @@ const PeopleButtonModal = ({
       xs={xs}
     >
       <Container className="PeopleButtonModal Container">
-        <Row className="TagAndPeopleContainer">
+        {suggestedPeople.length > 0 && (
+          <Row className="TagAndPeopleContainer">
+            <h4>Suggested</h4>
+            <TagsContainer
+              tags={suggestedPeople}
+              maxHeight={200}
+              flexWrap="wrap"
+              onClickCallback={handleAddPerson}
+              hoverable
+              emptyString="No people found..."
+              faIcon="fas fa-user-plus"
+            />
+          </Row>
+        )}
+        <Row className="TagAndPeopleContainer mt-2 mb-1">
+          <h4>Frequent</h4>
           <TagsContainer
-            tags={sortedPeople}
+            tags={frequentPeople}
             maxHeight={200}
             flexWrap="wrap"
             onClickCallback={handleAddPerson}
@@ -182,6 +240,7 @@ const PeopleButtonModal = ({
           />
         </Row>
         <Row className="TagAndPeopleContainer mt-2 mb-1">
+          <h4>Attached</h4>
           <TagsContainer
             tags={people}
             maxHeight={150}
@@ -212,7 +271,7 @@ const PeopleButtonModal = ({
               type="text"
               value={personsName}
               onChange={handlePeopleInputChange}
-              placeholder="John Doe,Jane Doe"
+              placeholder={placeholder}
               focusOnMount
             />
           </Col>
@@ -230,11 +289,11 @@ PeopleButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   people: EntryPeopleProps.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChangeCallback: PropTypes.func.isRequired
 }
 
 PeopleButtonModal.defaultProps = {
-  people: [],
+  people: []
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -245,7 +304,7 @@ const isEqual = (prevProps, nextProps) =>
     "EntryPeople",
     "entryId",
     "people",
-    "xs",
+    "xs"
   ])
 
 export default reduxConnect(

@@ -24,7 +24,7 @@ class Editor extends PureComponent {
       topToolbarIsOpen,
       bottomToolbarIsOpen,
       canToggleToolbars,
-      readOnly,
+      readOnly
     } = props
 
     this.editorRef = createRef()
@@ -39,7 +39,7 @@ class Editor extends PureComponent {
       topToolbarIsOpen: !readOnly && topToolbarIsOpen,
       bottomToolbarIsOpen: !readOnly && bottomToolbarIsOpen,
       canToggleToolbars: !readOnly && canToggleToolbars,
-      modules,
+      modules
     }
   }
 
@@ -75,7 +75,7 @@ class Editor extends PureComponent {
     onKeyUp: PropTypes.func,
     modules: PropTypes.object,
     formats: PropTypes.array,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
   }
 
   static defaultProps = {
@@ -88,7 +88,7 @@ class Editor extends PureComponent {
     canToggleToolbars: true,
     topToolbarIsOpen: true,
     bottomToolbarIsOpen: true,
-    readOnly: false,
+    readOnly: false
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -106,12 +106,12 @@ class Editor extends PureComponent {
 
     const previousState = {
       entry: prevState.entry,
-      editorStyles: prevState.editorStyles,
+      editorStyles: prevState.editorStyles
     }
 
     const nextState = {
       entry,
-      editorStyles,
+      editorStyles
     }
 
     if (!deepEquals(previousState, nextState)) {
@@ -141,7 +141,7 @@ class Editor extends PureComponent {
       bottomToolbarIsOpen:
         toggle === true || toggle === false
           ? toggle
-          : !currentState.bottomToolbarIsOpen,
+          : !currentState.bottomToolbarIsOpen
     }))
 
   handleOnFocus = (range) => {
@@ -164,7 +164,7 @@ class Editor extends PureComponent {
       editorStyles,
       bottomToolbarIsOpen,
       modules,
-      canToggleToolbars,
+      canToggleToolbars
     } = this.state
 
     return (

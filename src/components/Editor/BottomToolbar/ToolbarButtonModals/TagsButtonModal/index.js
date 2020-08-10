@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, memo } from "react"
+import React, { useState, useEffect, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import {
   Container,
@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Button,
+  Button
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -17,27 +17,27 @@ import {
   filterMapArray,
   TopKFrequentStrings,
   removeAttributeDuplicates,
-  stringMatch,
+  stringMatch
 } from "../../../../../utils"
 import memoizeProps from "../../../../../utils/memoizeProps"
 import { validateTagOrPeopleString, validatedTagString } from "../utlis"
 import {
   EntriesPropTypes,
-  EntryTagsProps,
+  EntryTagsProps
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryTags },
+  Entries: { items, filteredItems, EntryTags }
 }) => ({ items, filteredItems, UserId: id, EntryTags })
 
 const mapDispatchToProps = {
-  GetUserEntryTags,
+  GetUserEntryTags
 }
 
 const getInitialState = ({ tags }) => ({
   tagName: "",
-  tags,
+  tags
 })
 
 const TagsButtonModal = ({
@@ -47,6 +47,7 @@ const TagsButtonModal = ({
   filteredItems,
   EntryTags,
   entryId,
+  html,
   xs,
   onChangeCallback,
   ...restOfProps
@@ -54,6 +55,9 @@ const TagsButtonModal = ({
   useEffect(() => {
     if (UserId) GetUserEntryTags()
   }, [])
+
+  const [show, setShow] = useState(false)
+  const handleToogle = useCallback(() => setShow((prevShow) => !prevShow))
 
   const [{ tags, tagName }, setState] = useState(getInitialState(restOfProps))
 
@@ -68,21 +72,23 @@ const TagsButtonModal = ({
 
   const entryTags = useMemo(
     () =>
-      Object.values(
-        items
-          .concat(filteredItems)
-          .map((entry) => entry.tags)
-          .flat(1)
-          .concat(EntryTags)
-      ),
-    [items, filteredItems, EntryTags, tagName, tags, splitTagsAsString]
+      show
+        ? Object.values(
+            items
+              .concat(filteredItems)
+              .map((entry) => entry.tags)
+              .flat(1)
+              .concat(EntryTags)
+          )
+        : [],
+    [show, items, filteredItems, EntryTags, tagName, tags, splitTagsAsString]
   )
 
-  const sortedTags = useMemo(
-    () =>
-      TopKFrequentStrings(entryTags, "name")
-        // filterMapArray(entryTags, "name")
-        //   .sort((a, b) => a.name.localeCompare(b.name))
+  const [suggestedTags, frequentTags] = useMemo(() => {
+    if (!show) return [[], []]
+    else {
+      const h = html.toLowerCase()
+      const t = TopKFrequentStrings(entryTags, "name")
         .filter((entryPersonName) => {
           if (tags.some(({ name }) => name == entryPersonName)) return false
           else if (!lastTagAsString) return true
@@ -90,24 +96,43 @@ const TagsButtonModal = ({
           else if (stringMatch(entryPersonName, lastTagAsString)) return true
           else return false
         })
+        .map((name) => ({ name }))
 
-        .map((name) => ({ name })),
-    [entryTags]
-  )
+      let suggestedTags = []
+      let frequentTags = []
+
+      for (let i = 0, { length } = t; i < length; i++) {
+        const tag = t[i]
+        const names = tag.name.split(" ")
+        if (
+          names.some((name) => {
+            const n = name.toLowerCase()
+            return n && h.includes(n)
+          })
+        ) {
+          suggestedTags.push(tag)
+        } else {
+          frequentTags.push(tag)
+        }
+      }
+
+      return [suggestedTags, frequentTags]
+    }
+  }, [show, entryTags])
 
   const handleTagsInputChange = (value) => {
     const validatedTagsAsString = validatedTagString(value)
 
     setState((prevState) => ({
       ...prevState,
-      tagName: validatedTagsAsString,
+      tagName: validatedTagsAsString
     }))
   }
 
   const handleSaveTags = () => {
     const payload = {
       id: entryId,
-      tags,
+      tags
     }
 
     onChangeCallback(payload)
@@ -126,7 +151,7 @@ const TagsButtonModal = ({
       return {
         ...prevState,
         tags: newTags,
-        tagName: newTagName,
+        tagName: newTagName
       }
     })
   }
@@ -150,13 +175,27 @@ const TagsButtonModal = ({
 
       return {
         ...getInitialState(prevState),
-        tags: newTags,
+        tags: newTags
       }
     })
   }
 
+  const placeholder = useMemo(() => {
+    const tags = suggestedTags.concat(frequentTags)
+    if (!show || tags.length === 0) {
+      return "Document,Dream,Family,Friends,Quote,Vacation"
+    }
+
+    return tags
+      .slice(0, 6)
+      .map(({ name }) => name)
+      .join(",")
+  }, [suggestedTags, frequentTags])
+
   return (
     <ToolbarModal
+      show={show}
+      toggle={handleToogle}
       title="Add Tags"
       onSaveCallback={handleSaveTags}
       onCancelCallback={resetState}
@@ -165,9 +204,24 @@ const TagsButtonModal = ({
       xs={xs}
     >
       <Container className="TagsButtonModal Container">
-        <Row className="TagAndPeopleContainer">
+        {suggestedTags.length > 0 && (
+          <Row className="TagAndPeopleContainer">
+            <h4>Suggested</h4>
+            <TagsContainer
+              tags={suggestedTags}
+              maxHeight={200}
+              flexWrap="wrap"
+              onClickCallback={handleAddTag}
+              hoverable
+              emptyString="No people found..."
+              faIcon="fas fa-user-plus"
+            />
+          </Row>
+        )}
+        <Row className="TagAndPeopleContainer mt-2 mb-1">
+          <h4>Frequent</h4>
           <TagsContainer
-            tags={sortedTags}
+            tags={frequentTags}
             maxHeight={200}
             flexWrap="wrap"
             onClickCallback={handleAddTag}
@@ -177,6 +231,7 @@ const TagsButtonModal = ({
           />
         </Row>
         <Row className="TagAndPeopleContainer mt-2 mb-1">
+          <h4>Attached</h4>
           <TagsContainer
             tags={tags}
             maxHeight={150}
@@ -204,7 +259,7 @@ const TagsButtonModal = ({
               type="text"
               value={tagName}
               onChange={handleTagsInputChange}
-              placeholder="Document,Dream,Family,Friends,Quote,Vacation"
+              placeholder={placeholder}
               focusOnMount
             />
           </Col>
@@ -222,11 +277,11 @@ TagsButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChangeCallback: PropTypes.func.isRequired
 }
 
 TagsButtonModal.defaultProps = {
-  tags: [],
+  tags: []
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -237,7 +292,7 @@ const isEqual = (prevProps, nextProps) =>
     "EntryTags",
     "entryId",
     "tags",
-    "xs",
+    "xs"
   ])
 
 export default reduxConnect(
