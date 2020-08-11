@@ -93,7 +93,6 @@ const TagsButtonModal = ({
           if (tags.some(({ name }) => name == entryPersonName)) return false
           else if (!lastTagAsString) return true
           else if (stringMatch(entryPersonName, lastTagAsString)) return true
-          else if (stringMatch(entryPersonName, lastTagAsString)) return true
           else return false
         })
         .map((name) => ({ name }))
@@ -279,7 +278,7 @@ const TagsButtonModal = ({
                 onClickCallback={handleAddTag}
                 hoverable
                 emptyString="No people found..."
-                faIcon="fas fa-user-plus"
+                faIcon="fas fa-tag add-plus"
               />
             </Row>
           )}
