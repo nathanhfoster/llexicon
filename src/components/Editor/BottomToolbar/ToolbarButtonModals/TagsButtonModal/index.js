@@ -274,7 +274,7 @@ const TagsButtonModal = ({
               <h4>Suggested</h4>
               <TagsContainer
                 tags={suggestedTags}
-                maxHeight={200}
+                maxHeight={150}
                 flexWrap="wrap"
                 onClickCallback={handleAddTag}
                 hoverable
@@ -287,7 +287,7 @@ const TagsButtonModal = ({
             <h4>Frequent</h4>
             <TagsContainer
               tags={frequentTags}
-              maxHeight={200}
+              maxHeight={150}
               flexWrap="wrap"
               onClickCallback={handleAddTag}
               hoverable
