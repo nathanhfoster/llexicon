@@ -135,7 +135,7 @@ const TagsButtonModal = ({
         Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
         Facebook: ["facebook"],
         Gaming: ["game", "theverge"],
-        Email: ["mail"],
+        Email: ["mail", "message"],
         Image: ["<img src", "instagram", "pintrest", "image", "photo", "file"],
         Instagram: ["instagram"],
         Twitter: ["twitter"],
@@ -143,6 +143,7 @@ const TagsButtonModal = ({
         Review: ["yelp", "review"],
         Shopping: ["amazon", "bestbuy", "lowes", "shop", "target"],
         Support: ["support"],
+        Text: ["text", "message"],
         Video: ["youtube", "<iframe", "file"]
       }
 
