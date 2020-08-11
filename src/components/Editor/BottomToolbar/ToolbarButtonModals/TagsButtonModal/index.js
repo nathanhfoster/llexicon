@@ -70,7 +70,7 @@ const TagsButtonModal = ({
   const splitTagsAsString = tagName.split(",")
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
-  const entryTags = useMemo(
+  let entryTags = useMemo(
     () =>
       show
         ? Object.values(
@@ -101,6 +101,65 @@ const TagsButtonModal = ({
       let suggestedTags = []
       let frequentTags = []
 
+      const suggested = {
+        Amazon: ["amazon"],
+        Apple: ["apple"],
+        Article: [
+          "quora",
+          "article",
+          "medium",
+          "forbes",
+          "fox",
+          "cnn",
+          "nytimes",
+          "express",
+          "politic",
+          "cbs",
+          "theverge",
+          "yahoo",
+          "fortune",
+          "post"
+        ],
+        Cloud: ["doc", "drive", "aws", "dropbox", "cloud", "box"],
+        Development: [
+          "app",
+          "css",
+          "react",
+          "angular",
+          "ionic",
+          "vue",
+          "material",
+          "pwa"
+        ],
+        Document: ["doc", "drive", "aws", "dropbox", "cloud", "box"],
+        Facebook: ["facebook"],
+        Gaming: ["game", "theverge"],
+        Image: ["<img src", "instagram", "pintrest", "image", "photo"],
+        Instagram: ["instagram"],
+        Twitter: ["twitter"],
+        Link: ["http", ".com"],
+        Review: ["yelp", "review"],
+        Shopping: ["amazon", "bestbuy", "lowes", "shop", "target"],
+        Support: ["support"],
+        Video: ["youtube", "<iframe"]
+      }
+
+      for (const [key, conditions] of Object.entries(suggested)) {
+        const notInFrequentTags = !frequentTags.some(({ name }) => name === key)
+        const notInTags = !tags.some(({ name }) => name === key)
+        const conditionMet =
+          conditions.length === 0
+            ? true
+            : conditions.reduce(
+                (htmlContainsCondition, condition) =>
+                  h.includes(condition) ? true : htmlContainsCondition,
+                false
+              )
+        if (notInFrequentTags && notInTags && conditionMet) {
+          suggestedTags.push({ name: key })
+        }
+      }
+
       for (let i = 0, { length } = t; i < length; i++) {
         const tag = t[i]
         const names = tag.name.split(" ")
@@ -110,15 +169,17 @@ const TagsButtonModal = ({
             return n && h.includes(n)
           })
         ) {
-          suggestedTags.push(tag)
-        } else {
+          if (!suggestedTags.some(({ name }) => name === tag.name)) {
+            suggestedTags.push(tag)
+          }
+        } else if (!frequentTags.some(({ name }) => name === tag.name)) {
           frequentTags.push(tag)
         }
       }
 
       return [suggestedTags, frequentTags]
     }
-  }, [show, entryTags])
+  }, [show, html, entryTags, tags])
 
   const handleTagsInputChange = (value) => {
     const validatedTagsAsString = validatedTagString(value)
@@ -203,68 +264,70 @@ const TagsButtonModal = ({
       button="Add Tags"
       xs={xs}
     >
-      <Container className="TagsButtonModal Container">
-        {suggestedTags.length > 0 && (
-          <Row className="TagAndPeopleContainer">
-            <h4>Suggested</h4>
+      {show && (
+        <Container className="TagsButtonModal Container">
+          {suggestedTags.length > 0 && (
+            <Row className="TagAndPeopleContainer">
+              <h4>Suggested</h4>
+              <TagsContainer
+                tags={suggestedTags}
+                maxHeight={200}
+                flexWrap="wrap"
+                onClickCallback={handleAddTag}
+                hoverable
+                emptyString="No people found..."
+                faIcon="fas fa-user-plus"
+              />
+            </Row>
+          )}
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Frequent</h4>
             <TagsContainer
-              tags={suggestedTags}
+              tags={frequentTags}
               maxHeight={200}
               flexWrap="wrap"
               onClickCallback={handleAddTag}
               hoverable
-              emptyString="No people found..."
-              faIcon="fas fa-user-plus"
+              emptyString="No tags found..."
+              faIcon="fas fa-tag add-plus"
             />
           </Row>
-        )}
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <h4>Frequent</h4>
-          <TagsContainer
-            tags={frequentTags}
-            maxHeight={200}
-            flexWrap="wrap"
-            onClickCallback={handleAddTag}
-            hoverable
-            emptyString="No tags found..."
-            faIcon="fas fa-tag add-plus"
-          />
-        </Row>
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <h4>Attached</h4>
-          <TagsContainer
-            tags={tags}
-            maxHeight={150}
-            flexWrap="wrap"
-            onClickCallback={handleRemoveTag}
-            hoverable
-            emptyString="No tags added..."
-            faIcon="fas fa-tag add-minus"
-          />
-        </Row>
-        <Row>
-          <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                tag={Button}
-                className="SaveButton"
-                color="primary"
-                disabled={!tagName}
-                onClick={handleCreateTag}
-              >
-                <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
-              </InputGroupText>
-            </InputGroupAddon>
-            <DebounceInput
-              type="text"
-              value={tagName}
-              onChange={handleTagsInputChange}
-              placeholder={placeholder}
-              focusOnMount
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Attached</h4>
+            <TagsContainer
+              tags={tags}
+              maxHeight={150}
+              flexWrap="wrap"
+              onClickCallback={handleRemoveTag}
+              hoverable
+              emptyString="No tags added..."
+              faIcon="fas fa-tag add-minus"
             />
-          </Col>
-        </Row>
-      </Container>
+          </Row>
+          <Row>
+            <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  tag={Button}
+                  className="SaveButton"
+                  color="primary"
+                  disabled={!tagName}
+                  onClick={handleCreateTag}
+                >
+                  <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
+                </InputGroupText>
+              </InputGroupAddon>
+              <DebounceInput
+                type="text"
+                value={tagName}
+                onChange={handleTagsInputChange}
+                placeholder={placeholder}
+                focusOnMount
+              />
+            </Col>
+          </Row>
+        </Container>
+      )}
     </ToolbarModal>
   )
 }
@@ -292,7 +355,8 @@ const isEqual = (prevProps, nextProps) =>
     "EntryTags",
     "entryId",
     "tags",
-    "xs"
+    "xs",
+    "html"
   ])
 
 export default reduxConnect(

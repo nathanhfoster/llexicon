@@ -212,12 +212,26 @@ const PeopleButtonModal = ({
       button="Add People"
       xs={xs}
     >
-      <Container className="PeopleButtonModal Container">
-        {suggestedPeople.length > 0 && (
-          <Row className="TagAndPeopleContainer">
-            <h4>Suggested</h4>
+      {show && (
+        <Container className="PeopleButtonModal Container">
+          {suggestedPeople.length > 0 && (
+            <Row className="TagAndPeopleContainer">
+              <h4>Suggested</h4>
+              <TagsContainer
+                tags={suggestedPeople}
+                maxHeight={200}
+                flexWrap="wrap"
+                onClickCallback={handleAddPerson}
+                hoverable
+                emptyString="No people found..."
+                faIcon="fas fa-user-plus"
+              />
+            </Row>
+          )}
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Frequent</h4>
             <TagsContainer
-              tags={suggestedPeople}
+              tags={frequentPeople}
               maxHeight={200}
               flexWrap="wrap"
               onClickCallback={handleAddPerson}
@@ -226,57 +240,45 @@ const PeopleButtonModal = ({
               faIcon="fas fa-user-plus"
             />
           </Row>
-        )}
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <h4>Frequent</h4>
-          <TagsContainer
-            tags={frequentPeople}
-            maxHeight={200}
-            flexWrap="wrap"
-            onClickCallback={handleAddPerson}
-            hoverable
-            emptyString="No people found..."
-            faIcon="fas fa-user-plus"
-          />
-        </Row>
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <h4>Attached</h4>
-          <TagsContainer
-            tags={people}
-            maxHeight={150}
-            flexWrap="wrap"
-            onClickCallback={handleRemovePerson}
-            hoverable
-            emptyString="No people added..."
-            faIcon="fas fa-user-times"
-          />
-        </Row>
-        <Row>
-          <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                tag={Button}
-                className="SaveButton"
-                color="primary"
-                disabled={!personsName}
-                onClick={handleCreatePeople}
-              >
-                <i
-                  className="fas fa-user-plus"
-                  style={{ fontSize: 20, color: "var(--accentColor)" }}
-                />
-              </InputGroupText>
-            </InputGroupAddon>
-            <DebounceInput
-              type="text"
-              value={personsName}
-              onChange={handlePeopleInputChange}
-              placeholder={placeholder}
-              focusOnMount
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Attached</h4>
+            <TagsContainer
+              tags={people}
+              maxHeight={150}
+              flexWrap="wrap"
+              onClickCallback={handleRemovePerson}
+              hoverable
+              emptyString="No people added..."
+              faIcon="fas fa-user-times"
             />
-          </Col>
-        </Row>
-      </Container>
+          </Row>
+          <Row>
+            <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  tag={Button}
+                  className="SaveButton"
+                  color="primary"
+                  disabled={!personsName}
+                  onClick={handleCreatePeople}
+                >
+                  <i
+                    className="fas fa-user-plus"
+                    style={{ fontSize: 20, color: "var(--accentColor)" }}
+                  />
+                </InputGroupText>
+              </InputGroupAddon>
+              <DebounceInput
+                type="text"
+                value={personsName}
+                onChange={handlePeopleInputChange}
+                placeholder={placeholder}
+                focusOnMount
+              />
+            </Col>
+          </Row>
+        </Container>
+      )}
     </ToolbarModal>
   )
 }
