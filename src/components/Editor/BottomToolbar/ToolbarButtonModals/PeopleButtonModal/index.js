@@ -219,7 +219,7 @@ const PeopleButtonModal = ({
               <h4>Suggested</h4>
               <TagsContainer
                 tags={suggestedPeople}
-                maxHeight={200}
+                maxHeight={150}
                 flexWrap="wrap"
                 onClickCallback={handleAddPerson}
                 hoverable
@@ -232,7 +232,7 @@ const PeopleButtonModal = ({
             <h4>Frequent</h4>
             <TagsContainer
               tags={frequentPeople}
-              maxHeight={200}
+              maxHeight={150}
               flexWrap="wrap"
               onClickCallback={handleAddPerson}
               hoverable
