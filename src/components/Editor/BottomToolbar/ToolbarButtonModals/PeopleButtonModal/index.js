@@ -102,7 +102,6 @@ const PeopleButtonModal = ({
           if (people.some(({ name }) => name == entryPersonName)) return false
           else if (!lastPeopleAsString) return true
           else if (stringMatch(entryPersonName, lastPeopleAsString)) return true
-          else if (stringMatch(entryPersonName, lastPeopleAsString)) return true
           else return false
         })
         .map((name) => ({ name }))
