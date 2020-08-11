@@ -118,9 +118,10 @@ const TagsButtonModal = ({
           "theverge",
           "yahoo",
           "fortune",
-          "post"
+          "post",
+          "file"
         ],
-        Cloud: ["doc", "drive", "aws", "dropbox", "cloud", "box"],
+        Cloud: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
         Development: [
           "app",
           "css",
@@ -131,18 +132,18 @@ const TagsButtonModal = ({
           "material",
           "pwa"
         ],
-        Document: ["doc", "drive", "aws", "dropbox", "cloud", "box"],
+        Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
         Facebook: ["facebook"],
         Gaming: ["game", "theverge"],
         Email: ["mail"],
-        Image: ["<img src", "instagram", "pintrest", "image", "photo"],
+        Image: ["<img src", "instagram", "pintrest", "image", "photo", "file"],
         Instagram: ["instagram"],
         Twitter: ["twitter"],
         Link: ["http", ".com"],
         Review: ["yelp", "review"],
         Shopping: ["amazon", "bestbuy", "lowes", "shop", "target"],
         Support: ["support"],
-        Video: ["youtube", "<iframe"]
+        Video: ["youtube", "<iframe", "file"]
       }
 
       for (const [key, conditions] of Object.entries(suggested)) {
