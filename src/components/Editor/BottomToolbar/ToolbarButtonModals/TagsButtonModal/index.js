@@ -134,6 +134,7 @@ const TagsButtonModal = ({
         Document: ["doc", "drive", "aws", "dropbox", "cloud", "box"],
         Facebook: ["facebook"],
         Gaming: ["game", "theverge"],
+        Email: ["mail"],
         Image: ["<img src", "instagram", "pintrest", "image", "photo"],
         Instagram: ["instagram"],
         Twitter: ["twitter"],
