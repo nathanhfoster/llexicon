@@ -277,7 +277,7 @@ const TagsButtonModal = ({
                 flexWrap="wrap"
                 onClickCallback={handleAddTag}
                 hoverable
-                emptyString="No people found..."
+                emptyString="No tags found..."
                 faIcon="fas fa-tag add-plus"
               />
             </Row>
