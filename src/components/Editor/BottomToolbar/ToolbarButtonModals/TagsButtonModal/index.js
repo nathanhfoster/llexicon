@@ -129,7 +129,9 @@ const TagsButtonModal = ({
           "ionic",
           "vue",
           "material",
-          "pwa"
+          "pwa",
+          "code",
+          "program"
         ],
         Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
         Dream: ["dream", "vision"],
