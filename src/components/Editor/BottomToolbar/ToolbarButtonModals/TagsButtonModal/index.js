@@ -132,6 +132,7 @@ const TagsButtonModal = ({
           "pwa"
         ],
         Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
+        Dream: ["dream", "vision"],
         Facebook: ["facebook"],
         Gaming: ["game", "theverge"],
         Email: ["mail", "message"],
@@ -143,7 +144,8 @@ const TagsButtonModal = ({
         Shopping: ["amazon", "bestbuy", "lowes", "shop", "target"],
         Support: ["support"],
         Text: ["text", "message"],
-        Video: ["youtube", "<iframe", "file"]
+        Video: ["youtube", "<iframe", "file"],
+        Vision: ["dream", "vision"]
       }
 
       for (const [key, conditions] of Object.entries(suggested)) {
