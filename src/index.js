@@ -13,7 +13,8 @@ import { PersistGate } from "redux-persist/integration/react"
 import * as serviceWorker from "./serviceWorker"
 import { GetAppVersion } from "./redux/App/actions"
 import ReactGA from "react-ga"
-
+import prototypes from "./prototypes"
+prototypes()
 // import { ContextProvider } from "./store/provider/provider"
 // import rootReducer from "./store/containers"
 
@@ -37,8 +38,8 @@ ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
     userId,
     version,
     appVersion,
-    userIdUsernameEmail,
-  },
+    userIdUsernameEmail
+  }
 })
 // Initialize google analytics page view tracking
 history.listen((location) => {
