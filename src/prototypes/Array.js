@@ -22,6 +22,10 @@ const ArrayPrototypes = () => {
 
     return randomValue
   }
+
+  Array.prototype.max = function () {
+   return Math.max.apply(Math, this)
+ }
 }
 
 export default ArrayPrototypes
