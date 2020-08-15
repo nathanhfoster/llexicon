@@ -38,8 +38,8 @@ ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
     userId,
     version,
     appVersion,
-    userIdUsernameEmail
-  }
+    userIdUsernameEmail,
+  },
 })
 // Initialize google analytics page view tracking
 history.listen((location) => {

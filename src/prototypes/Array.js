@@ -23,9 +23,14 @@ const ArrayPrototypes = () => {
     return randomValue
   }
 
-  Array.prototype.max = function () {
-   return Math.max.apply(Math, this)
- }
+  Array.prototype.max = function (key) {
+    return key
+      ? this.reduce((max, e) => {
+          const value = e[key]
+          return value > max ? value : max
+        }, -Infinity)
+      : Math.max.apply(Math, this)
+  }
 }
 
 export default ArrayPrototypes
