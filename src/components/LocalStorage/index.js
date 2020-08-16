@@ -8,6 +8,8 @@ import { formatBytes, getStringBytes } from "../../utils"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { CloudDownload } from "../../images/SVG"
 
+const LOCAL_STORAGE_LIMIT = 5 *1024 * 1024 * 2
+
 const mapStateToProps = (state) => {
   const {
     App: {
@@ -46,9 +48,8 @@ const LocalStorage = ({
   localStorageQuota,
   localStorageUsageDetails,
 }) => {
-  const localStorageLimit = 5 * 1024 * 1024
   const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(
-    localStorageLimit
+    LOCAL_STORAGE_LIMIT
   )}`
 
   const serverUsage = useMemo(
@@ -83,7 +84,7 @@ const LocalStorage = ({
             label={reduxStorageLabel}
             showPercentage
             value={reduxStoreUsage}
-            max={localStorageLimit}
+            max={LOCAL_STORAGE_LIMIT}
           />
         </Col>
       </Row>
