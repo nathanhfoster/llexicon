@@ -37,7 +37,7 @@ const BottomToolbar = ({
   canToggleToolbars,
   toggleBottomToolbar,
   onChangeCallback,
-  xs
+  xs,
 }) => {
   // editorRef.current.focus()
   const editorSelection =
@@ -49,12 +49,12 @@ const BottomToolbar = ({
       [
         {
           Component: MediaButtonModal,
-          props: { editorRef, editorSelection }
+          props: { editorRef, editorSelection },
         },
         {
           Component: RatingButtonModal,
-          props: { rating: entry.rating, onChangeCallback, xs }
-        }
+          props: { rating: entry.rating, onChangeCallback, xs },
+        },
       ],
       [
         {
@@ -63,9 +63,10 @@ const BottomToolbar = ({
             entryId: entry.id,
             tags: entry.tags,
             html: entry.html,
+            title: entry.title,
             onChangeCallback,
-            xs
-          }
+            xs,
+          },
         },
         {
           Component: PeopleButtonModal,
@@ -73,15 +74,16 @@ const BottomToolbar = ({
             entryId: entry.id,
             people: entry.people,
             html: entry.html,
+            title: entry.title,
             onChangeCallback,
-            xs
-          }
+            xs,
+          },
         },
         {
           Component: LocationButtonModal,
-          props: { entry, onChangeCallback, xs }
-        }
-      ]
+          props: { entry, onChangeCallback, xs },
+        },
+      ],
     ],
     [entry, editorRef, editorSelection]
   )
@@ -102,7 +104,7 @@ const BottomToolbar = ({
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
     trackMouse: true,
-    delta: 40
+    delta: 40,
   })
 
   return (
@@ -160,7 +162,7 @@ BottomToolbar.propTypes = {
   entry: EntryPropTypes.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleBottomToolbar: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 export default memo(BottomToolbar)

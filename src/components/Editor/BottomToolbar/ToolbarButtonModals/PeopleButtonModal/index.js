@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Button
+  Button,
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -16,27 +16,27 @@ import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,
   removeAttributeDuplicates,
-  stringMatch
+  stringMatch,
 } from "../../../../../utils"
 import memoizeProps from "../../../../../utils/memoizeProps"
 import { validateTagOrPeopleString, validatedPersonNameString } from "../utlis"
 import {
   EntriesPropTypes,
-  EntryPeopleProps
+  EntryPeopleProps,
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryPeople }
+  Entries: { items, filteredItems, EntryPeople },
 }) => ({ items, filteredItems, UserId: id, EntryPeople })
 
 const mapDispatchToProps = {
-  GetUserEntryPeople
+  GetUserEntryPeople,
 }
 
 const getInitialState = ({ people }) => ({
   personsName: "",
-  people
+  people,
 })
 
 const PeopleButtonModal = ({
@@ -47,6 +47,7 @@ const PeopleButtonModal = ({
   EntryPeople,
   entryId,
   html,
+  title,
   xs,
   onChangeCallback,
   ...restOfProps
@@ -89,7 +90,7 @@ const PeopleButtonModal = ({
       EntryPeople,
       personsName,
       people,
-      splitPeopleAsString
+      splitPeopleAsString,
     ]
   )
 
@@ -97,6 +98,7 @@ const PeopleButtonModal = ({
     if (!show) return [[], []]
     else {
       const h = html.toLowerCase()
+      const t = title.toLowerCase()
       const f = TopKFrequentStrings(entryPeople, "name")
         .filter((entryPersonName) => {
           if (people.some(({ name }) => name == entryPersonName)) return false
@@ -116,7 +118,7 @@ const PeopleButtonModal = ({
         if (
           names.some((name) => {
             const n = name.toLowerCase()
-            return n && h.includes(n)
+            return (n && h.includes(n)) || (t && t.includes(n))
           })
         ) {
           suggestedPeople.push(person)
@@ -127,21 +129,21 @@ const PeopleButtonModal = ({
 
       return [suggestedPeople, frequentPeople]
     }
-  }, [show, entryPeople])
+  }, [show, html, title, entryPeople])
 
   const handlePeopleInputChange = (value) => {
     const validatedTagsAsString = validatedPersonNameString(value)
 
     setState((prevState) => ({
       ...prevState,
-      personsName: validatedTagsAsString
+      personsName: validatedTagsAsString,
     }))
   }
 
   const handleSavePeople = () => {
     const payload = {
       id: entryId,
-      people
+      people,
     }
 
     onChangeCallback(payload)
@@ -159,7 +161,7 @@ const PeopleButtonModal = ({
       return {
         ...prevState,
         people: newPeople,
-        personsName: newPersonsName
+        personsName: newPersonsName,
       }
     })
   }
@@ -183,7 +185,7 @@ const PeopleButtonModal = ({
 
       return {
         ...getInitialState(prevState),
-        people: newPeople
+        people: newPeople,
       }
     })
   }
@@ -290,11 +292,11 @@ PeopleButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   people: EntryPeopleProps.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 PeopleButtonModal.defaultProps = {
-  people: []
+  people: [],
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -305,7 +307,9 @@ const isEqual = (prevProps, nextProps) =>
     "EntryPeople",
     "entryId",
     "people",
-    "xs"
+    "xs",
+    "html",
+    "title",
   ])
 
 export default reduxConnect(

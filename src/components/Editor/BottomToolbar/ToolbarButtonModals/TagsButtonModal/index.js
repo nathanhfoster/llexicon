@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Button
+  Button,
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -17,27 +17,27 @@ import {
   filterMapArray,
   TopKFrequentStrings,
   removeAttributeDuplicates,
-  stringMatch
+  stringMatch,
 } from "../../../../../utils"
 import memoizeProps from "../../../../../utils/memoizeProps"
 import { validateTagOrPeopleString, validatedTagString } from "../utlis"
 import {
   EntriesPropTypes,
-  EntryTagsProps
+  EntryTagsProps,
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryTags }
+  Entries: { items, filteredItems, EntryTags },
 }) => ({ items, filteredItems, UserId: id, EntryTags })
 
 const mapDispatchToProps = {
-  GetUserEntryTags
+  GetUserEntryTags,
 }
 
 const getInitialState = ({ tags }) => ({
   tagName: "",
-  tags
+  tags,
 })
 
 const TagsButtonModal = ({
@@ -48,6 +48,7 @@ const TagsButtonModal = ({
   EntryTags,
   entryId,
   html,
+  title,
   xs,
   onChangeCallback,
   ...restOfProps
@@ -88,7 +89,8 @@ const TagsButtonModal = ({
     if (!show) return [[], []]
     else {
       const h = html.toLowerCase()
-      const t = TopKFrequentStrings(entryTags, "name")
+      const t = title.toLowerCase()
+      const f = TopKFrequentStrings(entryTags, "name")
         .filter((entryPersonName) => {
           if (tags.some(({ name }) => name == entryPersonName)) return false
           else if (!lastTagAsString) return true
@@ -118,7 +120,7 @@ const TagsButtonModal = ({
           "yahoo",
           "fortune",
           "post",
-          "file"
+          "file",
         ],
         Cloud: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
         Development: [
@@ -131,7 +133,7 @@ const TagsButtonModal = ({
           "material",
           "pwa",
           "code",
-          "program"
+          "program",
         ],
         Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
         Dream: ["dream", "vision"],
@@ -147,7 +149,7 @@ const TagsButtonModal = ({
         Support: ["support"],
         Text: ["text", "message"],
         Video: ["youtube", "<iframe", "file"],
-        Vision: ["dream", "vision"]
+        Vision: ["dream", "vision"],
       }
 
       for (const [key, conditions] of Object.entries(suggested)) {
@@ -158,7 +160,9 @@ const TagsButtonModal = ({
             ? true
             : conditions.reduce(
                 (htmlContainsCondition, condition) =>
-                  h.includes(condition) ? true : htmlContainsCondition,
+                  h.includes(condition) || t.includes(condition)
+                    ? true
+                    : htmlContainsCondition,
                 false
               )
         if (notInFrequentTags && notInTags && conditionMet) {
@@ -166,13 +170,13 @@ const TagsButtonModal = ({
         }
       }
 
-      for (let i = 0, { length } = t; i < length; i++) {
-        const tag = t[i]
+      for (let i = 0, { length } = f; i < length; i++) {
+        const tag = f[i]
         const names = tag.name.split(" ")
         if (
           names.some((name) => {
             const n = name.toLowerCase()
-            return n && h.includes(n)
+            return (n && h.includes(n)) || (t && t.includes(n))
           })
         ) {
           if (!suggestedTags.some(({ name }) => name === tag.name)) {
@@ -185,21 +189,21 @@ const TagsButtonModal = ({
 
       return [suggestedTags, frequentTags]
     }
-  }, [show, html, entryTags, tags])
+  }, [show, html, title, entryTags, tags])
 
   const handleTagsInputChange = (value) => {
     const validatedTagsAsString = validatedTagString(value)
 
     setState((prevState) => ({
       ...prevState,
-      tagName: validatedTagsAsString
+      tagName: validatedTagsAsString,
     }))
   }
 
   const handleSaveTags = () => {
     const payload = {
       id: entryId,
-      tags
+      tags,
     }
 
     onChangeCallback(payload)
@@ -218,7 +222,7 @@ const TagsButtonModal = ({
       return {
         ...prevState,
         tags: newTags,
-        tagName: newTagName
+        tagName: newTagName,
       }
     })
   }
@@ -242,7 +246,7 @@ const TagsButtonModal = ({
 
       return {
         ...getInitialState(prevState),
-        tags: newTags
+        tags: newTags,
       }
     })
   }
@@ -346,11 +350,11 @@ TagsButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 TagsButtonModal.defaultProps = {
-  tags: []
+  tags: [],
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -362,7 +366,8 @@ const isEqual = (prevProps, nextProps) =>
     "entryId",
     "tags",
     "xs",
-    "html"
+    "html",
+    "title",
   ])
 
 export default reduxConnect(
