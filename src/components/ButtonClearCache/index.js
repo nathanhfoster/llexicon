@@ -12,12 +12,12 @@ const ButtonClearCache = () => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .getRegistrations()
-        .then(function (registrations) {
+        .then((registrations) => {
           for (let registration of registrations) {
             registration.unregister()
           }
         })
-        .catch(function (err) {
+        .catch((err) => {
           console.log("Service Worker registration failed: ", err)
         })
     }
