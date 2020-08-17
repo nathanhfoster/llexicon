@@ -53,12 +53,12 @@ const EntryDetail = ({
   )
 
   useEffect(() => {
-    if (!entryIsLocalOnly && serviceWorkerController) {
+    if (!entryIsLocalOnly) {
       SyncEntries(
         () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
       )
     }
-  }, [serviceWorkerController])
+  }, [])
 
   useEffect(() => {
     if (

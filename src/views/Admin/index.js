@@ -128,8 +128,8 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         width: 120,
         sort: (a, b, sortUp) =>
           sortUp
-            ? new Date(b.last_login) - new Date(a.last_login)
-            : new Date(a.last_login) - new Date(b.last_login),
+            ? new Date(b.date_joined) - new Date(a.date_joined)
+            : new Date(a.date_joined) - new Date(b.date_joined),
 
         filter: "date",
         filterPlaceholder: "Date joined",
