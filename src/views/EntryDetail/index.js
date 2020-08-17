@@ -57,7 +57,7 @@ const EntryDetail = ({
 
   useEffect(() => {
     if (previousServiceWorkerController !== serviceWorkerController) {
-      window.reload()
+      location.reload()
     }
   }, [serviceWorkerController])
 
