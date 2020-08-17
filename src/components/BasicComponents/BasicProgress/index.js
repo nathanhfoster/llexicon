@@ -23,14 +23,14 @@ const BasicProgress = ({ label, showPercentage, bars, ...restOfProps }) => {
 
   const renderLabel = !label || showPercentage ? `${percentage}%` : null
 
-  const renderBars = bars.map(({ value, label, showPercentage }, i) => {
+  const renderBars = bars.map(({ animated, value, label, showPercentage }, i) => {
     const percentage = getPercentageDone(value, restOfProps.max)
     const color = getColor(percentage)
 
     const renderLabel = showPercentage ? `${label} ${percentage}%` : label
 
     return (
-      <Progress bar color={colors[(i + 1) % colors.length]} value={value}>
+      <Progress bar animated={animated} color={colors[(i + 1) % colors.length]} value={value}>
         {renderLabel}
       </Progress>
     )
@@ -53,6 +53,7 @@ const BasicProgress = ({ label, showPercentage, bars, ...restOfProps }) => {
 }
 
 BasicProgress.propTypes = {
+  animated: PropTypes.bool.isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   showPercentage: PropTypes.bool,
   bars: PropTypes.arrayOf(
@@ -75,6 +76,6 @@ BasicProgress.propTypes = {
   barClassName: PropTypes.string,
 }
 
-BasicProgress.defaultProps = { className: `BasicProgress`, bars: [] }
+BasicProgress.defaultProps = { className: `BasicProgress`, animated: true, bars: [] }
 
 export default memo(BasicProgress)
