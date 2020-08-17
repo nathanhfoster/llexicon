@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react"
+import React, { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
@@ -13,11 +13,18 @@ import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
 const mapStateToProps = (
-  { User: { id }, Entries: { items, filteredItems, isPending } },
+  {
+    User: { id },
+    Entries: { items, filteredItems, isPending },
+    Window: {
+      navigator: { serviceWorker },
+    },
+  },
   { entryId }
 ) => ({
   userId: id,
   entry: items.concat(filteredItems).find(({ id }) => id == entryId),
+  serviceWorkerController: serviceWorker?.controller,
   isPending,
 })
 
@@ -27,12 +34,16 @@ const EntryDetail = ({
   entryId,
   userId,
   entry,
+  serviceWorkerController,
   isPending,
   GetUserEntryDetails,
   SyncEntries,
   SetCalendar,
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
+  const { current: previousServiceWorkerController } = useRef(
+    serviceWorkerController
+  )
 
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
@@ -43,6 +54,12 @@ const EntryDetail = ({
   const readOnly = Boolean(
     (!isPending && entryAuthor && !userId) || userId !== entryAuthor
   )
+
+  useEffect(() => {
+    if (previousServiceWorkerController !== serviceWorkerController) {
+      window.reload()
+    }
+  }, [serviceWorkerController])
 
   useEffect(() => {
     if (!entryIsLocalOnly) {

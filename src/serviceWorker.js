@@ -13,6 +13,7 @@
 import serviceWorkerConfig from "./serviceWorkerConfig"
 import { SetAlert } from "./redux/Alerts/actions"
 import { GetAppVersion } from "./redux/App/actions"
+import { SetWindow } from "./redux/Window/actions"
 
 const { PUBLIC_URL } = process.env
 
@@ -91,6 +92,8 @@ const registerValidSW = (swUrl, config) => {
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log("Content is cached for offline use.")
+
+              console.log(config.store.dispatch(SetWindow()))
 
               config.store.dispatch(GetAppVersion())
 
