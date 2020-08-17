@@ -58,7 +58,7 @@ const EntryDetail = ({
         () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
       )
     }
-  }, [entryIsLocalOnly, serviceWorkerController])
+  }, [serviceWorkerController])
 
   useEffect(() => {
     if (
