@@ -41,10 +41,7 @@ const EntryDetail = ({
   SetCalendar,
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
-  const { current: previousServiceWorkerController } = useRef(
-    serviceWorkerController
-  )
-
+  
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
   const entryFound = Boolean(entry)
@@ -54,12 +51,6 @@ const EntryDetail = ({
   const readOnly = Boolean(
     (!isPending && entryAuthor && !userId) || userId !== entryAuthor
   )
-
-  useEffect(() => {
-    if (previousServiceWorkerController !== serviceWorkerController) {
-      location.reload()
-    }
-  }, [serviceWorkerController])
 
   useEffect(() => {
     if (!entryIsLocalOnly) {
