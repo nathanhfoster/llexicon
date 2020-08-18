@@ -54,7 +54,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
         title,
         onClickCallback,
         render,
-        mountTabOnlyWhenActive,
+        mountTabOnlyWhenActive = true,
         className,
       } = tab
 

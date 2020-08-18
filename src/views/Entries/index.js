@@ -91,7 +91,6 @@ const Entries = ({
   const tabs = [
     {
       tabId: RouteMap.NEW_ENTRY,
-      mountTabOnlyWhenActive: true,
       title: {
         name: "Create Entry",
         render: <i className="fas fa-feather-alt" />,
@@ -106,7 +105,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_CALENDAR,
-      mountTabOnlyWhenActive: true,
       title: {
         name: "Entries Calendar",
         render: <i className="fas fa-calendar-alt" />,
@@ -121,7 +119,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_FOLDERS,
-      mountTabOnlyWhenActive: true,
       title: {
         name: "Entries Folders",
         render: <i className="fas fa-folder" />,
@@ -140,7 +137,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_LIST,
-      mountTabOnlyWhenActive: true,
       title: { name: "Entries List", render: <i className="fas fa-th-list" /> },
       className: "fade-in",
       render: shouldRenderNewEntryButton ? (
@@ -159,7 +155,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_TABLE,
-      mountTabOnlyWhenActive: true,
       title: { name: "Entries Table", render: <i className="fas fa-table" /> },
       className: "fade-in",
       render: shouldRenderNewEntryButton ? (
@@ -175,7 +170,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_MAP,
-      mountTabOnlyWhenActive: true,
       title: {
         name: "Entries Map",
         render: <i className="fas fa-map-marked-alt" />,
