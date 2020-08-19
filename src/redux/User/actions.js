@@ -286,6 +286,7 @@ const DeleteAccount = () => (dispatch, getState) => {
         category: "Delete Account",
         action: "User deleted their account!",
       })
+      return res
     })
     .catch((e) => console.log("DeleteAccount: ", e.response))
 }
