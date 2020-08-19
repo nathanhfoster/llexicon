@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import ShareUrl from "../"
 
 const ShareOnLinkedIn = ({ url, ...restOfProps }) => (
-  <ShareUrl href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`} {...restOfProps}>
+  <ShareUrl href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`} url={url} {...restOfProps}>
     <i className="fab fa-linkedin" />
   </ShareUrl>
 )

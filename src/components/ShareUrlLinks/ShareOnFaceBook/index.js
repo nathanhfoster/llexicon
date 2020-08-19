@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import ShareUrl from "../"
 
 const ShareOnFacebook = ({ url, restOfProps }) => (
-  <ShareUrl href={`https://www.facebook.com/sharer/sharer.php?u=${url}`} {...restOfProps}>
+  <ShareUrl href={`https://www.facebook.com/sharer/sharer.php?u=${url}`} url={url} {...restOfProps}>
     <i className="fab fa-facebook-square" />
   </ShareUrl>
 )

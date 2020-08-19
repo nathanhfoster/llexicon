@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import ShareUrl from "../"
 
 const ShareOnTwitter = ({ text, ...restOfProps }) => (
-  <ShareUrl href={`https://twitter.com/intent/tweet?text=${text}`} {...restOfProps}>
+  <ShareUrl href={`https://twitter.com/intent/tweet?text=${text}`} text={text} {...restOfProps}>
     <i className="fab fa-twitter-square" />
   </ShareUrl>
 )
