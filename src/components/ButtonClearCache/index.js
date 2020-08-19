@@ -9,6 +9,8 @@ import { Button } from "reactstrap"
 const ButtonClearCache = () => {
   const dispatch = useDispatch()
   const handleClearCache = useCallback(() => {
+    clearReduxStoreFromLocalStorage()
+    dispatch(UserLogout())
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .getRegistrations()
@@ -16,13 +18,12 @@ const ButtonClearCache = () => {
           for (let registration of registrations) {
             registration.unregister()
           }
+          window.location.reload()
         })
         .catch((err) => {
           console.log("Service Worker registration failed: ", err)
         })
     }
-    clearReduxStoreFromLocalStorage()
-    dispatch(UserLogout())
   }, [])
   return (
     <ConfirmAction
