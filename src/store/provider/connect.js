@@ -52,7 +52,7 @@ const bindActionCreators = (actionCreators, dispatch, getState) => {
   if (typeof actionCreators !== "object" || actionCreators === null) {
     throw new Error(
       `bindActionCreators expected an object or a function, instead received ${
-        actionCreators === null ? "null" : typeof actionCreators
+      actionCreators === null ? "null" : typeof actionCreators
       }.`
     )
   }
@@ -116,7 +116,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
             ? null
             : mapDispatchToProps instanceof Function ||
               typeof mapDispatchToProps === "function"
-            ? /**
+              ? /**
                * pass dispatch and getState to the mapDispatchToProps function
                *
                * example:
@@ -131,7 +131,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
                *
                */
               mapDispatchToProps(dispatch, getState)
-            : /**
+              : /**
                * For convenience, append (dispatch, getState) => function to the orginal (arguments) => function
                * Or if the action returns an object, wrap it in a dispatch
                * example: const mapDispatchToProps = { basicTableSort, basicTableFilter }
@@ -144,8 +144,8 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
       // Memoize the Component's combined props
       const combinedComponentProps = React.useMemo(
         () => ({
-          ...stateToProps,
           ...ownProps,
+          ...stateToProps,
           // not all components need to dispatch actions so its optional
           ...(mapDispatchToProps && {
             ...dispatchToProps,
@@ -154,13 +154,9 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
         [ownProps, stateToProps, dispatchToProps]
       )
 
-      const renderComponent = React.useMemo(
-        // Pass all the key value combinedComponentProps to Component
-        () => <Component {...combinedComponentProps} />,
-        [combinedComponentProps]
-      )
 
-      return renderComponent
+      // Pass all the key value combinedComponentProps to Component
+      return <Component {...combinedComponentProps} />
     }
 
 export default connect

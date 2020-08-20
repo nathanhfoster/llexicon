@@ -40,55 +40,55 @@ const getInitialState = ({ tags }) => ({
   tags,
 })
 
-const suggested = {
-        Amazon: ["amazon"],
-        Apple: ["apple"],
-        Article: [
-          "quora",
-          "article",
-          "medium",
-          "forbes",
-          "fox",
-          "cnn",
-          "nytimes",
-          "express",
-          "politic",
-          "cbs",
-          "theverge",
-          "yahoo",
-          "fortune",
-          "post",
-          "file",
-        ],
-        Cloud: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
-        Development: [
-          "app",
-          "css",
-          "react",
-          "angular",
-          "ionic",
-          "vue",
-          "material",
-          "pwa",
-          "code",
-          "program",
-        ],
-        Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
-        Dream: ["dream", "vision"],
-        Facebook: ["facebook"],
-        Gaming: ["game", "theverge"],
-        Email: ["mail", "message"],
-        Image: ["<img src", "instagram", "pintrest", "image", "photo", "file"],
-        Instagram: ["instagram"],
-        Twitter: ["twitter"],
-        Link: ["http", ".com"],
-        Review: ["yelp", "review"],
-        Shopping: ["amazon", "bestbuy", "lowes", "shop", "target", "$"],
-        Support: ["support"],
-        Text: ["text", "message"],
-        Video: ["youtube", "<iframe", "file"],
-        Vision: ["dream", "vision"],
-      }
+const SUGGESTED = {
+  Amazon: ["amazon"],
+  Apple: ["apple"],
+  Article: [
+    "quora",
+    "article",
+    "medium",
+    "forbes",
+    "fox",
+    "cnn",
+    "nytimes",
+    "express",
+    "politic",
+    "cbs",
+    "theverge",
+    "yahoo",
+    "fortune",
+    "post",
+    "file",
+  ],
+  Cloud: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
+  Development: [
+    "app",
+    "css",
+    "react",
+    "angular",
+    "ionic",
+    "vue",
+    "material",
+    "pwa",
+    "code",
+    "program",
+  ],
+  Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
+  Dream: ["dream", "vision"],
+  Facebook: ["facebook"],
+  Gaming: ["game", "theverge"],
+  Email: ["mail", "message"],
+  Image: ["<img src", "instagram", "pintrest", "image", "photo", "file"],
+  Instagram: ["instagram"],
+  Twitter: ["twitter"],
+  Link: ["http", ".com"],
+  Review: ["yelp", "review"],
+  Shopping: ["amazon", "bestbuy", "lowes", "shop", "target", "$"],
+  Support: ["support"],
+  Text: ["text", "message"],
+  Video: ["youtube", "<iframe", "file"],
+  Vision: ["dream", "vision"],
+}
 
 const TagsButtonModal = ({
   UserId,
@@ -125,12 +125,12 @@ const TagsButtonModal = ({
     () =>
       show
         ? Object.values(
-            items
-              .concat(filteredItems)
-              .map((entry) => entry.tags)
-              .flat(1)
-              .concat(EntryTags)
-          )
+          items
+            .concat(filteredItems)
+            .map((entry) => entry.tags)
+            .flat(1)
+            .concat(EntryTags)
+        )
         : [],
     [show, items, filteredItems, EntryTags, tagName, tags, splitTagsAsString]
   )
@@ -152,19 +152,19 @@ const TagsButtonModal = ({
       let suggestedTags = []
       let frequentTags = []
 
-      for (const [key, conditions] of Object.entries(suggested)) {
+      for (const [key, conditions] of Object.entries(SUGGESTED)) {
         const notInFrequentTags = !frequentTags.some(({ name }) => name === key)
         const notInTags = !tags.some(({ name }) => name === key)
         const conditionMet =
           conditions.length === 0
             ? true
             : conditions.reduce(
-                (htmlContainsCondition, condition) =>
-                  h.includes(condition) || t.includes(condition)
-                    ? true
-                    : htmlContainsCondition,
-                false
-              )
+              (htmlContainsCondition, condition) =>
+                h.includes(condition) || t.includes(condition)
+                  ? true
+                  : htmlContainsCondition,
+              false
+            )
         if (notInFrequentTags && notInTags && conditionMet) {
           suggestedTags.push({ name: key })
         }
