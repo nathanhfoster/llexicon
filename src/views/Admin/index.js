@@ -176,7 +176,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         <BasicTable
           sortable
           filterable
-          pageSize={25}
+          pageSize={15}
           columns={tableColumns}
           dataDisplayName="Users"
           data={users}
