@@ -3,6 +3,8 @@ import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import storeFactory from "./redux"
+import rootReducer from './redux/RootReducer'
+import { ContextProvider, store as otherStore } from "./store/provider"
 import { history } from "./redux/router/reducer"
 import { getUserClientId, PersistedStorageReduxKey } from "./redux/localState"
 import { Provider } from "react-redux"
@@ -15,12 +17,11 @@ import { GetAppVersion } from "./redux/App/actions"
 import ReactGA from "react-ga"
 import prototypes from "./prototypes"
 prototypes()
-// import { ContextProvider } from "./store/provider/provider"
-// import rootReducer from "./store/containers"
 
-// const persistedState = deepParseJson(
-//   localStorage.getItem(PersistedStorageReduxKey)
-// )
+
+const persistedState = deepParseJson(
+  localStorage.getItem(PersistedStorageReduxKey)
+)
 
 const { store, persistor } = storeFactory()
 
@@ -29,6 +30,8 @@ const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 const inDevelopmentMode = NODE_ENV === "development"
 
 const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
+
+console.log(otherStore)
 
 ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
   // debug: inDevelopmentMode,

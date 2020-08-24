@@ -1,11 +1,14 @@
-import * as React from "react"
+import React, { createContext, useMemo, useReducer, useEffect } from "react"
 import PropTypes from "prop-types"
+import storeFactory from '../'
 
 import { combineReducers } from "../utils"
 
-const AppStateProvider = React.createContext({})
+const AppStateProvider = createContext({})
 
 const defaultInitializer = (state) => state
+
+const store = storeFactory()
 
 const ContextProvider = ({
   rootReducer,
@@ -14,29 +17,39 @@ const ContextProvider = ({
   persistKey,
   children,
 }) => {
-  const reducers = React.useCallback(
+
+  // call the function to get initial state and global reducer
+  const [mainState, mainReducer] = useMemo(
     () => combineReducers(rootReducer, initialState),
     []
   )
 
-  // call the function to get initial state and global reducer
-  const [mainState, mainReducer] = reducers()
-
-  // setup useReducer with the returned value of the reducers function
-  const [state, dispatch] = React.useReducer(
+  // setup useReducer with the returned values of the combineReducers
+  const [state, dispatch] = useReducer(
     mainReducer,
     mainState,
     initializer
   )
 
-  React.useEffect(() => {
+  // Update store object to potentially access it outside of a component
+  if (!store.isReady) {
+    store.isReady = true
+    store.state = state
+    store.dispatch = params => dispatch(params)
+    Object.freeze(store)
+  }
+
+  console.log(store)
+
+  // persist storage if persistKey exists
+  useEffect(() => {
     if (persistKey) {
       localStorage.setItem(persistKey, JSON.stringify(state))
     }
-  }, [state])
+  }, [state, persistKey])
 
   // pass in the returned value of useReducer
-  const contextValue = React.useMemo(() => ({ state, dispatch }), [
+  const contextValue = useMemo(() => ({ state, dispatch }), [
     state,
     dispatch,
   ])
@@ -66,4 +79,4 @@ ContextProvider.defaultProps = {
   initializer: defaultInitializer,
 }
 
-export { ContextProvider, AppStateProvider as ContextConsumer }
+export { ContextProvider, AppStateProvider as ContextConsumer, store }
