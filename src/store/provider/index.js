@@ -1,9 +1,22 @@
 import { useContext } from "react"
 import connect from "./connect"
-import { ContextProvider, ContextConsumer, store} from "./provider"
+import { ContextProvider, ContextConsumer, store } from "./provider"
 
-const useState = (context = ContextConsumer) => useContext(context).state
+// TODO dependencies
+const useSelector = (mapState, dependencies) => {
+  const { state } = useContext(ContextConsumer)
+  const returnedState = mapState(state)
 
-const useDispatch = (context = ContextConsumer) => useContext(context).dispatch
+  return returnedState
+}
 
-export { connect, ContextProvider, ContextConsumer, useState, useDispatch, store}
+const useDispatch = () => useContext(ContextConsumer).dispatch
+
+export {
+  connect,
+  ContextProvider,
+  ContextConsumer,
+  useSelector,
+  useDispatch,
+  store,
+}
