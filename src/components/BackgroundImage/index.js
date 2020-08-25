@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { useLocation } from "react-router-dom"
 import { RouteMap } from "../../redux/router/actions"
 import { Media } from "reactstrap"
@@ -63,4 +63,4 @@ const BackgroundImage = ({ show_animated_background, starLength }) => {
   )
 }
 
-export default reduxConnect(mapStateToProps)(BackgroundImage)
+export default connect(mapStateToProps)(BackgroundImage)

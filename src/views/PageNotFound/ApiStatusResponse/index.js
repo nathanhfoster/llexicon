@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { useLocation } from "react-router-dom"
 import { RouteMap, RouterGoBack } from "../../../redux/router/actions"
 import { SetApiResponseStatus } from "../../../redux/Alerts/actions"
@@ -71,7 +71,4 @@ ApiStatusResponse.propTypes = {
 
 ApiStatusResponse.defaultProps = { apiResponseStatus: 404 }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ApiStatusResponse)
+export default connect(mapStateToProps, mapDispatchToProps)(ApiStatusResponse)

@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import {
   ButtonDropdown,
   DropdownToggle,
@@ -204,4 +204,4 @@ EntryOptionsMenu.defaultProps = {
   direction: "down",
 }
 
-export default reduxConnect(mapStateToProps)(EntryOptionsMenu)
+export default connect(mapStateToProps)(EntryOptionsMenu)

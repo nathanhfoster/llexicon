@@ -1,6 +1,6 @@
 import React, { useMemo, lazy, Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import {
   AddToHomeScreen,
@@ -102,4 +102,4 @@ Home.propTypes = {
 
 Home.defaultProps = { userIsLoggedIn: false }
 
-export default reduxConnect(mapStateToProps)(Home)
+export default connect(mapStateToProps)(Home)

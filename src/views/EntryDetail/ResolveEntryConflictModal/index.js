@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import EntryDifferences from "./EntryDifferences"
 import { Container, Row, Col } from "reactstrap"
 import { BasicModal, EntryCard } from "../../../components"
@@ -163,7 +163,7 @@ ResolveEntryConflictModal.propTypes = {
   ClearEntry: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ResolveEntryConflictModal)

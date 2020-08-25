@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col, Button } from "reactstrap"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import Calendar from "react-calendar"
 import Moment from "react-moment"
 import MomentJS from "moment"
@@ -200,4 +200,4 @@ EntryCalendar.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryCalendar)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryCalendar)

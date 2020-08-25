@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
@@ -102,4 +102,4 @@ EntryDetail.propTypes = {
   SetCalendar: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryDetail)

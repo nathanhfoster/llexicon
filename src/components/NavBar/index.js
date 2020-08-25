@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { RouteMap } from "../../redux/router/actions"
 import PropTypes from "prop-types"
 
@@ -290,4 +290,4 @@ Navbar.propTypes = {
   GetAllEntries: PropTypes.func,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(NavBar)
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar)

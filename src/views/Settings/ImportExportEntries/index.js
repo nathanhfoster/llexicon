@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import { ImportEntries } from "../../../components"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { copyStringToClipboard } from "../../../utils"
 import { SyncEntries, GetAllUserEntries } from "../../../redux/Entries/actions"
 import MomentJs from "moment"
@@ -111,7 +111,4 @@ ImportExportEntries.propTypes = {
 
 ImportExportEntries.defaultProps = { userIsLoggedIn: false }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ImportExportEntries)
+export default connect(mapStateToProps, mapDispatchToProps)(ImportExportEntries)

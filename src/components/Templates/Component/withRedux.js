@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { Container, Row, Col } from "reactstrap"
 
 const mapStateToProps = ({}) => ({})
@@ -52,4 +52,4 @@ class Template extends Component {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Template)
+export default connect(mapStateToProps, mapDispatchToProps)(Template)

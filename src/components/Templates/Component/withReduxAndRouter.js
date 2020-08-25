@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { withRouter } from "react-router-dom"
 import { Container, Row, Col } from "reactstrap"
 
@@ -53,7 +53,7 @@ class Template extends Component {
     )
   }
 }
-export default reduxConnect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(Template))

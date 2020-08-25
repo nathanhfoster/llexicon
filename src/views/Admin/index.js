@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { UsersProps } from "../../redux/Admin/propTypes"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import UserEntriesTable from "./UserEntriesTable"
 import { BasicTable, Header } from "../../components"
 import Moment from "react-moment"
@@ -198,4 +198,4 @@ Admin.propTypes = {
 
 Admin.defaultProps = {}
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Admin)
+export default connect(mapStateToProps, mapDispatchToProps)(Admin)

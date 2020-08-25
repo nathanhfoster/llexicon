@@ -1,6 +1,6 @@
 import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { Col } from "reactstrap"
 import { BasicList, EntryMinimal } from "../.."
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
@@ -77,7 +77,7 @@ EntriesList.defaultProps = {
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
 
-export default reduxConnect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(memo(EntriesList, isEqual))

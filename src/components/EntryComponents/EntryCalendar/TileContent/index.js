@@ -1,6 +1,6 @@
 import React, { useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { RouteMap, RouterPush } from "../../../../redux/router/actions"
 import { GetUserEntriesByDate } from "../../../../redux/Entries/actions"
 import EntryPreview from "./EntryPreview"
@@ -91,4 +91,4 @@ TileContent.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)
+export default connect(mapStateToProps, mapDispatchToProps)(TileContent)

@@ -1,6 +1,6 @@
 import React, { useMemo, Fragment } from "react"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { EntryCards, Header } from "../.."
 
 const NUMBER_OF_MOST_VIEWED_ENTRIES = 6
@@ -39,4 +39,4 @@ EntriesMostViewed.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(EntriesMostViewed)
+export default connect(mapStateToProps)(EntriesMostViewed)

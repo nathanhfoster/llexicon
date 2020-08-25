@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { Button } from "reactstrap"
 import { ToggleShowOnlyPublic } from "../../../redux/Entries/actions"
 
@@ -31,7 +31,7 @@ EntriesToggleShowOnlyPublic.propTypes = {}
 
 EntriesToggleShowOnlyPublic.defaultProps = {}
 
-export default reduxConnect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(EntriesToggleShowOnlyPublic)

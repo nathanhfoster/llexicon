@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { stripHtml, TopKFrequentStrings } from "../../../utils"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable, EntryDataCellLink } from "../../"
@@ -303,4 +303,4 @@ EntriesTable.defaultProps = {
   filterMap: DEFAULT_STATE_ENTRIES.filterMap,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesTable)
+export default connect(mapStateToProps, mapDispatchToProps)(EntriesTable)

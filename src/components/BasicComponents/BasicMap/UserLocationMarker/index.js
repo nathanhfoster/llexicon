@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import Marker from "../Marker"
 import { WatchUserLocation } from "../../../redux/User/actions"
 
@@ -35,7 +35,4 @@ UserLocationMarker.propTypes = {
   WatchUserLocation: PropTypes.func,
 }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserLocationMarker)
+export default connect(mapStateToProps, mapDispatchToProps)(UserLocationMarker)

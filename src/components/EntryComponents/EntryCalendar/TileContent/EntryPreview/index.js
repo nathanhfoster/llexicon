@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { EntryTagsProps } from "../../../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { GoToEntryDetail } from "../../../../../redux/router/actions"
 import Moment from "react-moment"
 import Star from "../../../../BackgroundImage/Star"
@@ -72,4 +72,4 @@ EntryPreview.propTypes = {
   views: PropTypes.number,
 }
 
-export default reduxConnect(mapStateToProps)(EntryPreview)
+export default connect(mapStateToProps)(EntryPreview)

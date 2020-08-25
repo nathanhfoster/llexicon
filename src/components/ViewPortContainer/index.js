@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 
 const mapStateToProps = ({
   Window: {
@@ -29,4 +29,4 @@ ViewPortContainer.defaultProps = {
   className: "ViewPortContainer",
 }
 
-export default reduxConnect(mapStateToProps)(ViewPortContainer)
+export default connect(mapStateToProps)(ViewPortContainer)

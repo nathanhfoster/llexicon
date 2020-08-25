@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, lazy } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { useLocation } from "react-router-dom"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Row } from "reactstrap"
@@ -210,4 +210,4 @@ Entries.propTypes = {
   GetUserEntries: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Entries)
+export default connect(mapStateToProps, mapDispatchToProps)(Entries)

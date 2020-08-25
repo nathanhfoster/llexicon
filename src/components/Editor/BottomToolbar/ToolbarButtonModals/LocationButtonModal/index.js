@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useEffect } from "react"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../../../../redux/Entries/propTypes"
 import { Container } from "reactstrap"
@@ -126,7 +126,4 @@ LocationButtonModal.propTypes = {
   WatchUserLocation: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LocationButtonModal)
+export default connect(mapStateToProps, mapDispatchToProps)(LocationButtonModal)

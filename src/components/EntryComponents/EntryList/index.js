@@ -1,7 +1,7 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { BasicList } from "../.."
 import Moment from "react-moment"
 import MomentJS from "moment"
@@ -105,4 +105,4 @@ EntryList.propTypes = {
   entriesWithinView: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(EntryList)
+export default connect(mapStateToProps)(EntryList)

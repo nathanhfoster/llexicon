@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { BasicImageCarousel, ConfirmAction } from "../.."
 import { Container, Row, Col, Button } from "reactstrap"
 import { EntryFilesProps } from "../../../redux/Entries/propTypes"
@@ -129,7 +129,7 @@ EntryFilesCarousel.defaultProps = {
 const isEqual = (prevProps, nextProps) =>
   memoizeProps(prevProps, nextProps, ["items", "filteredItems", "files"])
 
-export default reduxConnect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(memo(EntryFilesCarousel, isEqual))

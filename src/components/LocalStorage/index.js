@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import { BasicProgress, Header } from "../"
 import { Container, Row, Col } from "reactstrap"
 import { ButtonClearCache } from "../"
@@ -171,4 +171,4 @@ LocalStorage.propTypes = {
 
 LocalStorage.defaultProps = {}
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(LocalStorage)
+export default connect(mapStateToProps, mapDispatchToProps)(LocalStorage)

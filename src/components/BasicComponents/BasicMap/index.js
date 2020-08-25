@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import GoogleMapReact from "google-map-react"
 import MarkerCluster from "./MarkerCluster"
 import Marker from "./Marker"
@@ -263,4 +263,4 @@ class BasicMap extends PureComponent {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(BasicMap)
+export default connect(mapStateToProps, mapDispatchToProps)(BasicMap)

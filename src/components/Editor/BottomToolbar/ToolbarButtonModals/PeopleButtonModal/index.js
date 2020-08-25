@@ -9,7 +9,7 @@ import {
   InputGroupText,
   Button,
 } from "reactstrap"
-import { connect as reduxConnect } from "store/provider"
+import { connect } from "store/provider"
 import ToolbarModal from "../../ToolbarModal"
 import { TagsContainer, DebounceInput } from "../../../../"
 import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
@@ -312,7 +312,7 @@ const isEqual = (prevProps, nextProps) =>
     "title",
   ])
 
-export default reduxConnect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(memo(PeopleButtonModal, isEqual))
