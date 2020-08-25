@@ -3,7 +3,7 @@ import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
 import { connect } from "store/provider"
 import { Container, Row, Col } from "reactstrap"
 import MomentJs from "moment"
-import deepEquals from "../../../utils/deepEquals"
+import deepEquals from "utils//deepEquals"
 import { formatBytes } from "../../../utils"
 import "./styles.css"
 

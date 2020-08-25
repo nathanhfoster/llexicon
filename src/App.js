@@ -20,7 +20,7 @@ import { RouteMap, RouterGoBack } from "store/reducers/router/actions"
 import { Admin, About, Home, Entries, PrivacyPolicy } from "./views"
 import { NavBar } from "./components"
 import { RouterLinkPush } from "store/reducers/router/actions"
-import memoizeProps from "./utils/memoizeProps"
+import memoizeProps from "utils/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 
 const AlertNotifications = lazy(() => import("./components/AlertNotifications"))

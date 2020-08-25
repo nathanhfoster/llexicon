@@ -13,7 +13,7 @@ import {
 } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import { BasicDropDown } from "../../../../"
-import memoizeProps from "../../../../../utils/memoizeProps"
+import memoizeProps from "utils//memoizeProps"
 import { cleanUrl } from "../../../../Editor/modules/Video"
 import { Logo } from "../../../../../images/AWS"
 import "./styles.css"
