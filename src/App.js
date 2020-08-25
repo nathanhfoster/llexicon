@@ -2,10 +2,10 @@ import React, { useEffect, lazy, memo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import { Route, Switch, Redirect } from "react-router-dom"
-import { SetLocalStorageUsage } from "store/reducers/App/actions"
-import { SetWindow } from "store/reducers/Window/actions"
-import { ResetUserError, GetUserSettings } from "store/reducers/User/actions"
-import { SetCalendar } from "store/reducers/Calendar/actions"
+import { SetLocalStorageUsage } from "reducers//App/actions"
+import { SetWindow } from "reducers//Window/actions"
+import { ResetUserError, GetUserSettings } from "reducers//User/actions"
+import { SetCalendar } from "reducers//Calendar/actions"
 import {
   SyncEntries,
   GetUserEntries,
@@ -14,12 +14,12 @@ import {
   GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
-} from "store/reducers/Entries/actions"
-import { ResetMap } from "store/reducers/Map/actions"
-import { RouteMap, RouterGoBack } from "store/reducers/router/actions"
+} from "reducers//Entries/actions"
+import { ResetMap } from "reducers//Map/actions"
+import { RouteMap, RouterGoBack } from "reducers//router/actions"
 import { Admin, About, Home, Entries, PrivacyPolicy } from "./views"
 import { NavBar } from "./components"
-import { RouterLinkPush } from "store/reducers/router/actions"
+import { RouterLinkPush } from "reducers//router/actions"
 import memoizeProps from "utils/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 

@@ -7,7 +7,7 @@ import {
   Header,
   NewEntryButton,
 } from "../../components"
-import { RouteMap, RouterPush } from "store/reducers/router/actions"
+import { RouteMap, RouterPush } from "reducers//router/actions"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect } from "store/provider"
 import {

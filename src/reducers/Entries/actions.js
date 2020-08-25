@@ -95,7 +95,7 @@ const AwsUpload = (dispatch, entry_id, file, base64, html) => {
 
   // console.log("AwsUpload: ", entry_id, file, lastModifiedDate.toJSON())
 
-  return AxiosForm(payload)
+  return AxiosForm({payload})
     .post(`/files/`, payload)
     .then(({ data }) => {
       const updateEntryPayload = {

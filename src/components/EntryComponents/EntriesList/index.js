@@ -3,8 +3,8 @@ import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import { Col } from "reactstrap"
 import { BasicList, EntryMinimal } from "../.."
-import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
-import { GetUserEntries } from "store/reducers/Entries/actions"
+import { EntriesPropTypes } from "reducers//Entries/propTypes"
+import { GetUserEntries } from "reducers//Entries/actions"
 import deepEquals from "utils//deepEquals"
 
 const renderMinimalEntries = ({ data, index, style, isScrolling }) => {

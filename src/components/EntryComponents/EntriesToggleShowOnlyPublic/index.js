@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import { Button } from "reactstrap"
-import { ToggleShowOnlyPublic } from "store/reducers/Entries/actions"
+import { ToggleShowOnlyPublic } from "reducers//Entries/actions"
 
 const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
   showOnlyPublic,

@@ -1,9 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import {
-  EntryTagsProps,
-  EntryPeopleProps,
-} from "store/reducers/Entries/propTypes"
+import { EntryTagsProps, EntryPeopleProps } from "reducers//Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { RatingIcon, TagsContainer } from "../../.."
 import Moment from "react-moment"

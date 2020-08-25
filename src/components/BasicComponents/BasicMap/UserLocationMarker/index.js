@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react"
 import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import Marker from "../Marker"
-import { WatchUserLocation } from "store/reducers/User/actions"
+import { WatchUserLocation } from "reducers//User/actions"
 
 const mapStateToProps = ({ User: { location } }) => ({ userLocation: location })
 

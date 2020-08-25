@@ -8,7 +8,7 @@ import Backgrounds from "./QuillSelect/Backgrounds"
 import Colors from "./QuillSelect/Colors"
 import Align from "./QuillSelect/Align"
 import Fonts from "./QuillSelect/Fonts"
-import { DEFAULT_STATE_TEXT_EDITOR } from "store/reducers/TextEditor/reducer"
+import { DEFAULT_STATE_TEXT_EDITOR } from "reducers//TextEditor/reducer"
 import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR

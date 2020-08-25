@@ -4,14 +4,14 @@ import { connect } from "store/provider"
 import { stripHtml, TopKFrequentStrings } from "../../../utils"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable, EntryDataCellLink } from "../../"
-import { GoToEntryDetail } from "store/reducers/router/actions"
-import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
+import { GoToEntryDetail } from "reducers//router/actions"
+import { EntriesPropTypes } from "reducers//Entries/propTypes"
 import { stringMatch, formatBytes } from "../../../utils"
 import {
   SetEntriesSortMap,
   SetEntriesFilterMap,
-} from "store/reducers/Entries/actions"
-import { DEFAULT_STATE_ENTRIES } from "store/reducers/Entries/reducer"
+} from "reducers//Entries/actions"
+import { DEFAULT_STATE_ENTRIES } from "reducers//Entries/reducer"
 
 const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
   showOnlyPublic,

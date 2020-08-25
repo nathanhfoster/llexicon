@@ -1,7 +1,7 @@
 import { TextEditorActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
 import { DEFAULT_ENTRY_FILES } from "../Entries/reducer"
-import { getStringBytes } from "../../../utils"
+import { getStringBytes } from "utils"
 
 const defaultTextEditor = {
   _clearedOn: "",

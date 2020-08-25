@@ -2,13 +2,9 @@ import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import { BasicMap } from "../.."
-import { EntryPropTypes } from "store/reducers/Entries/propTypes"
-import { SetEditorState } from "store/reducers/TextEditor/actions"
-import {
-  RouteMap,
-  RouterPush,
-  GoToEntryDetail,
-} from "store/reducers/router/actions"
+import { EntryPropTypes } from "reducers//Entries/propTypes"
+import { SetEditorState } from "reducers//TextEditor/actions"
+import { RouteMap, RouterPush, GoToEntryDetail } from "reducers//router/actions"
 
 const mapStateToProps = ({ Entries: { items, showOnlyPublic } }) => ({
   entries: items,

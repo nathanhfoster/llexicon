@@ -1,12 +1,12 @@
 import React, { useEffect, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { UsersProps } from "store/reducers/Admin/propTypes"
+import { UsersProps } from "reducers//Admin/propTypes"
 import { connect } from "store/provider"
 import UserEntriesTable from "./UserEntriesTable"
 import { BasicTable, Header } from "../../components"
 import Moment from "react-moment"
 import { Container, Row, Col } from "reactstrap"
-import { GetAllUsers, GetAllUserEntries } from "store/reducers/Admin/actions"
+import { GetAllUsers, GetAllUserEntries } from "reducers//Admin/actions"
 import { stringMatch } from "../../utils"
 
 const { REACT_APP_API_URL } = process.env
