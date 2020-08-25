@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import { connect } from "store/provider"
 import EntryDifferences from "./EntryDifferences"
 import { Container, Row, Col } from "reactstrap"
@@ -10,7 +10,7 @@ import {
   UpdateReduxEntry,
   SyncEntries,
   ClearEntry,
-} from "../../../redux/Entries/actions"
+} from "store/reducers/Entries/actions"
 import { findDifferentProps } from "./utils"
 import "./styles.css"
 

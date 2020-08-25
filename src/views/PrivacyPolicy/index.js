@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import { Container, Row, Col } from "reactstrap"
 import { Header } from "../../components"
-import { RouteMap } from "../../redux/router/actions"
+import { RouteMap } from "store/reducers/router/actions"
 import "./styles.css"
 
 const PrivacyPolicy = () => (

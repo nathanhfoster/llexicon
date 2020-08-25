@@ -1,4 +1,4 @@
-import { AlertActionTypes } from "../Alerts/types"
+import { AlertActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
 
 const DEFAULT_STATE_ALERTS = {

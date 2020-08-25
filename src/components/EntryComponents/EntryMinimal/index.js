@@ -1,10 +1,10 @@
 import React, { Fragment, memo } from "react"
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import { Badge, Container, Row, Col } from "reactstrap"
 import {
   GoToEntryDetail,
   GetEntryDetailUrl,
-} from "../../../redux/router/actions"
+} from "store/reducers/router/actions"
 import Moment from "react-moment"
 import Star from "../../BackgroundImage/Star"
 import { TagsContainer, EntryDataCellLink, EntryOptionsMenu } from "../../"

@@ -12,7 +12,7 @@ import {
 import { connect } from "store/provider"
 import ToolbarModal from "../../ToolbarModal"
 import { TagsContainer, DebounceInput } from "../../../../"
-import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
+import { GetUserEntryTags } from "store/reducers/Entries/actions"
 import {
   filterMapArray,
   TopKFrequentStrings,
@@ -24,7 +24,7 @@ import { validateTagOrPeopleString, validatedTagString } from "../utlis"
 import {
   EntriesPropTypes,
   EntryTagsProps,
-} from "../../../../../redux/Entries/propTypes"
+} from "store/reducers/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },

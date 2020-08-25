@@ -1,8 +1,8 @@
 import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
 import { useDispatch } from "store/provider"
-import { ResetRedux } from "../../redux/App/actions"
-import { clearReduxStoreFromLocalStorage } from "../../redux/localState"
+import { ResetRedux } from "store/reducers/App/actions"
+import { clearReduxStoreFromLocalStorage } from "store/reducers/localState"
 import { ConfirmAction } from "../"
 import { Button } from "reactstrap"
 

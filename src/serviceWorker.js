@@ -11,9 +11,9 @@
 // opt-in, read https://bit.ly/CRA-PWA
 
 import serviceWorkerConfig from "./serviceWorkerConfig"
-import { SetAlert } from "./redux/Alerts/actions"
-import { GetAppVersion } from "./redux/App/actions"
-import { SetWindow } from "./redux/Window/actions"
+import { SetAlert } from "store/reducers/Alerts/actions"
+import { GetAppVersion } from "store/reducers/App/actions"
+import { SetWindow } from "store/reducers/Window/actions"
 
 const { PUBLIC_URL } = process.env
 

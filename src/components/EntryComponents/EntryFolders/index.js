@@ -7,7 +7,7 @@ import React, {
   lazy,
 } from "react"
 import PropTypes from "prop-types"
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
+import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
 import {
   Container,
   Row,
@@ -17,7 +17,7 @@ import {
   Button,
 } from "reactstrap"
 import { NavLink, useLocation } from "react-router-dom"
-import { RouterPush } from "../../../redux/router/actions"
+import { RouterPush } from "store/reducers/router/actions"
 import { filterMapArray, TopKFrequentStrings } from "../../../utils"
 import { useScrollable } from "../../../hooks"
 import "./styles.css"

@@ -1,6 +1,6 @@
 import React, { useMemo, memo, lazy } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import { Collapse, Container, Row, Col, Button } from "reactstrap"
 import { TagsContainer } from "../../"
 import EntryFilesCarousel from "../../EntryComponents/EntryFilesCarousel"

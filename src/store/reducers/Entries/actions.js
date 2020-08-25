@@ -1,11 +1,7 @@
 import { Axios, AxiosForm } from "../Actions"
 import { SetApiResponseStatus, SetAlert } from "../Alerts/actions"
 import { EntriesActionTypes } from "./types"
-import {
-  getFileFromBase64,
-  htmlToArrayOfBase64,
-  cleanObject,
-} from "../../utils"
+import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from "utils"
 import { getJsonTagsOrPeople } from "./utils"
 import FormData from "form-data"
 import qs from "qs"

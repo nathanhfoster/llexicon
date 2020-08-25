@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
-import { UserLogin } from "../../../redux/User/actions"
+import { UserLogin } from "store/reducers/User/actions"
 
 const mapStateToProps = ({ User: { error } }) => ({
   userError: error,

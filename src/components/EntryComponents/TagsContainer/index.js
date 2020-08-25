@@ -1,8 +1,8 @@
 import React, { useMemo, memo } from "react"
 import { Badge, Col } from "reactstrap"
 import PropTypes from "prop-types"
-import { EntryTagsProps } from "../../../redux/Entries/propTypes"
-import { getJsonTagsOrPeople } from "../../../redux/Entries/utils"
+import { EntryTagsProps } from "store/reducers/Entries/propTypes"
+import { getJsonTagsOrPeople } from "store/reducers/Entries/utils"
 import "./styles.css"
 
 const TagsContainer = ({

@@ -2,15 +2,18 @@ import "./css/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
-import { Reducers } from "./redux/RootReducer"
+import { Reducers } from "store/reducers/RootReducer"
 import { ContextProvider, store } from "./store/provider"
-import { history } from "./redux/router/reducer"
-import { getUserClientId, PersistedStorageReduxKey } from "./redux/localState"
+import { history } from "store/reducers/router/reducer"
+import {
+  getUserClientId,
+  PersistedStorageReduxKey,
+} from "store/reducers/localState"
 import { Router as ConnectedRouter } from "react-router-dom"
 import { deepParseJson, getRandomInt } from "./utils"
 import { LoadingScreen } from "./components"
 import * as serviceWorker from "./serviceWorker"
-import { GetAppVersion } from "./redux/App/actions"
+import { GetAppVersion } from "store/reducers/App/actions"
 import ReactGA from "react-ga"
 import prototypes from "./prototypes"
 prototypes()

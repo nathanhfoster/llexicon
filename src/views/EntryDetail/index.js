@@ -1,15 +1,18 @@
 import React, { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import { connect } from "store/provider"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
 
-import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
-import { SetCalendar } from "../../redux/Calendar/actions"
+import {
+  GetUserEntryDetails,
+  SyncEntries,
+} from "store/reducers/Entries/actions"
+import { SetCalendar } from "store/reducers/Calendar/actions"
 import PageNotFound from "../PageNotFound"
-import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
+import { BASE_JOURNAL_ENTRY_ID } from "store/reducers/Entries/reducer"
 import "./styles.css"
 
 const mapStateToProps = (

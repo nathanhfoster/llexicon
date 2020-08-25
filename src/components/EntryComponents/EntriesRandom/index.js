@@ -1,5 +1,5 @@
 import React, { useMemo, useState, Fragment } from "react"
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
+import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
 import { connect } from "store/provider"
 import { EntryCards, Header } from "../.."
 import { ButtonGroup, Button } from "reactstrap"
