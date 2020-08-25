@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { EntryTagsProps } from "../../../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { GoToEntryDetail } from "../../../../../redux/router/actions"
 import Moment from "react-moment"
 import Star from "../../../../BackgroundImage/Star"
@@ -46,7 +46,13 @@ const EntryPreview = ({
       </div>
     </div>
   ) : view == "month" ? (
-    <Star bottom="8px" size={8} color="PurpleWhite" animation={false} opacity={1} />
+    <Star
+      bottom="8px"
+      size={8}
+      color="PurpleWhite"
+      animation={false}
+      opacity={1}
+    />
   ) : null
 
 EntryPreview.propTypes = {

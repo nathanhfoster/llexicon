@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { useDispatch } from "react-redux"
+import { useDispatch } from "store/provider"
 import { BasicTabs } from "../../components"
 import { RouterPush, RouteMap } from "../../redux/router/actions"
 import Login from "./Login"

@@ -1,16 +1,16 @@
 import React, { useMemo, useState, Fragment } from "react"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { EntryCards, Header } from "../.."
 import { ButtonGroup, Button } from "reactstrap"
 import "./styles.css"
 
 const mapStateToProps = ({
-  Entries: { items, filteredItems, showOnlyPublic }
+  Entries: { items, filteredItems, showOnlyPublic },
 }) => ({
   items,
   filteredItems,
-  showOnlyPublic
+  showOnlyPublic,
 })
 
 const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
@@ -56,7 +56,7 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
 
 EntriesRandom.propTypes = {
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes
+  filteredItems: EntriesPropTypes,
 }
 
 export default reduxConnect(mapStateToProps)(EntriesRandom)

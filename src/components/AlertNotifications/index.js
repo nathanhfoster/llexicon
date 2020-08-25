@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
 import { UseDebounce } from ".."
 import { ClearAlerts } from "../../redux/Alerts/actions"

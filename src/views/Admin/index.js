@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { UsersProps } from "../../redux/Admin/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import UserEntriesTable from "./UserEntriesTable"
 import { BasicTable, Header } from "../../components"
 import Moment from "react-moment"

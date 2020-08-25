@@ -3,12 +3,11 @@ import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import storeFactory from "./redux"
-import rootReducer from './redux/RootReducer'
-import { ContextProvider, store as otherStore } from "./store/provider"
+import { Reducers } from "./redux/RootReducer"
+import { ContextProvider, store } from "./store/provider"
 import { history } from "./redux/router/reducer"
 import { getUserClientId, PersistedStorageReduxKey } from "./redux/localState"
-import { Provider } from "react-redux"
-import { ConnectedRouter } from "connected-react-router"
+import { BrowserRouter as ConnectedRouter } from "react-router-dom"
 import { deepParseJson, getRandomInt } from "./utils"
 import { LoadingScreen } from "./components"
 import { PersistGate } from "redux-persist/integration/react"
@@ -18,20 +17,15 @@ import ReactGA from "react-ga"
 import prototypes from "./prototypes"
 prototypes()
 
-
 const persistedState = deepParseJson(
   localStorage.getItem(PersistedStorageReduxKey)
 )
-
-const { store, persistor } = storeFactory()
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
 const inDevelopmentMode = NODE_ENV === "development"
 
 const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
-
-console.log(otherStore)
 
 ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
   // debug: inDevelopmentMode,
@@ -67,23 +61,21 @@ history.listen((location) => {
 // const ReduxStore = storeFactory(initialState)
 
 ReactDOM.render(
-  // <React.StrictMode>
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      {/* <ContextProvider rootReducer={rootReducer} initialState={persistedState}> */}
-      <Suspense fallback={<LoadingScreen />}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
-      </Suspense>
-      {/* </ContextProvider>, */}
-    </PersistGate>
-  </Provider>,
-  // </React.StrictMode>,
+  <ContextProvider
+    rootReducer={Reducers}
+    persistKey={PersistedStorageReduxKey}
+    initialState={persistedState}
+  >
+    <Suspense fallback={<LoadingScreen />}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </Suspense>
+  </ContextProvider>,
   document.getElementById("root")
 )
 
 // Doesn't get called in development since there is no service worker
-inDevelopmentMode && store.dispatch(GetAppVersion())
+inDevelopmentMode && store.isReady && store.dispatch(GetAppVersion())
 
 serviceWorker.register(serviceWorker.serviceWorkerConfig(store))

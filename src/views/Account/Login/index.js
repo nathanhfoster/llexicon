@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
 import { UserLogin } from "../../../redux/User/actions"

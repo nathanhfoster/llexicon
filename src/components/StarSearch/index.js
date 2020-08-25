@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, InputGroupAddon, InputGroupText } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { Link } from "react-router-dom"
 import { RouteMap } from "../../redux/router/actions"
 import { SearchUserEntries } from "../../redux/Entries/actions"

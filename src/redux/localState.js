@@ -157,7 +157,7 @@ const getUser = () => {
     const { User } = persistedReduxStoreObject
     if (!User) return { token: null, offline_mode: null }
     else if (typeof User === "string") {
-      userFromLocalStorage = JSON.parse(User)
+      userFromLocalStorage = User
     } else {
       userFromLocalStorage = User
     }
@@ -168,18 +168,18 @@ const getUser = () => {
 
 const getUserClientId = () => {
   let userClientId = {}
-  const persistedStore = localStorage.getItem(PersistedStorageReduxKey)
+  const persistedReduxStore = localStorage.getItem(PersistedStorageReduxKey)
 
-  if (persistedStore) {
-    const { App, Window } = JSON.parse(persistedStore)
+  if (persistedReduxStore) {
+    const { App, Window } = JSON.parse(persistedReduxStore)
 
     const User = getUser()
 
-    const { version } = JSON.parse(App)
+    const { version } = App
     const { id, username, email } = User
     const {
       navigator: { appVersion },
-    } = JSON.parse(Window)
+    } = Window
 
     const userId = id
     const clientId = appVersion

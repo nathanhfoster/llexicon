@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { RouteMap } from "../../redux/router/actions"
 import { Media } from "reactstrap"
 import StarGenerator from "./StarGenerator"

@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import ApiStatusResponse from "./ApiStatusResponse"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import StarGenerator from "../../components/BackgroundImage/StarGenerator"

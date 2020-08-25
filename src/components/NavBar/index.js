@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { RouteMap } from "../../redux/router/actions"
 import PropTypes from "prop-types"
 

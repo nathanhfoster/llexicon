@@ -57,7 +57,7 @@ const config = (store) => ({
     if (waitingServiceWorker) {
       waitingServiceWorker.addEventListener("statechange", (event) => {
         if (event.target.state === "activated") {
-          if (store) {
+          if (store.isReady) {
             store
               .dispatch(GetAppVersion())
               .then(({ currentVersion, latestVersion }) => {

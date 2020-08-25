@@ -3,7 +3,6 @@ import { UserActionTypes } from "../User/types"
 import { AppActionTypes } from "../App/types"
 import { ResetRedux } from "../App/actions"
 import { SetAlert } from "../Alerts/actions"
-import { persistReduxState } from "../localState"
 import { GetUserEntries } from "../Entries/actions"
 import { clearReduxStoreFromLocalStorage } from "../localState"
 import qs from "qs"
@@ -40,7 +39,6 @@ const UserLogin = (payload, rememberMe) => async (dispatch) => {
       const { id, token } = data
       await dispatch(RefreshPatchUser(id))
       await dispatch(SetUser(data))
-      await dispatch(persistReduxState())
       await dispatch(GetUserEntries(1))
       ReactGA.event({
         category: "Login",

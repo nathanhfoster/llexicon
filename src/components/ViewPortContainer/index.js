@@ -1,14 +1,14 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 
 const mapStateToProps = ({
   Window: {
-    screen: { availHeight, availWidth }
-  }
+    screen: { availHeight, availWidth },
+  },
 }) => ({
   height: availHeight,
-  width: availWidth
+  width: availWidth,
 })
 
 const ViewPortContainer = ({ height, width, className, children }) => {
@@ -22,11 +22,11 @@ const ViewPortContainer = ({ height, width, className, children }) => {
 
 ViewPortContainer.propTypes = {
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 ViewPortContainer.defaultProps = {
-  className: "ViewPortContainer"
+  className: "ViewPortContainer",
 }
 
 export default reduxConnect(mapStateToProps)(ViewPortContainer)

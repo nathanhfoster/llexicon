@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useEffect } from "react"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "../../../../../redux/Entries/propTypes"
 import { Container } from "reactstrap"

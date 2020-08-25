@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { stripHtml, TopKFrequentStrings } from "../../../utils"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable, EntryDataCellLink } from "../../"

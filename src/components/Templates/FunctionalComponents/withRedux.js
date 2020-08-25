@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { Container, Row, Col } from "reactstrap"
 
 const mapStateToProps = ({}) => ({})
@@ -11,7 +11,7 @@ const getInitialState = ({}) => {
   return {}
 }
 
-const Template = props => {
+const Template = (props) => {
   const [state, setState] = useState(getInitialState(props))
 
   const {} = state

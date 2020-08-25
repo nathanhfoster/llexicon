@@ -1,6 +1,6 @@
 import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { useDispatch } from "react-redux"
+import { useDispatch } from "store/provider"
 import { UserLogout } from "../../redux/User/actions"
 import { clearReduxStoreFromLocalStorage } from "../../redux/localState"
 import { ConfirmAction } from "../"

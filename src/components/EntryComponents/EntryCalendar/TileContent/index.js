@@ -1,6 +1,6 @@
 import React, { useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { RouteMap, RouterPush } from "../../../../redux/router/actions"
 import { GetUserEntriesByDate } from "../../../../redux/Entries/actions"
 import EntryPreview from "./EntryPreview"

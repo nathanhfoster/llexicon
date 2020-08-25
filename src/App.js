@@ -1,7 +1,7 @@
 import React, { useEffect, lazy, memo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "./redux/User/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { Route, Switch, Redirect } from "react-router-dom"
 import { SetLocalStorageUsage } from "./redux/App/actions"
 import { SetWindow } from "./redux/Window/actions"

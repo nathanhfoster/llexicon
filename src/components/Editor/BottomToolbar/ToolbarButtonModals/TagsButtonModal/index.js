@@ -9,7 +9,7 @@ import {
   InputGroupText,
   Button,
 } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import ToolbarModal from "../../ToolbarModal"
 import { TagsContainer, DebounceInput } from "../../../../"
 import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
@@ -125,12 +125,12 @@ const TagsButtonModal = ({
     () =>
       show
         ? Object.values(
-          items
-            .concat(filteredItems)
-            .map((entry) => entry.tags)
-            .flat(1)
-            .concat(EntryTags)
-        )
+            items
+              .concat(filteredItems)
+              .map((entry) => entry.tags)
+              .flat(1)
+              .concat(EntryTags)
+          )
         : [],
     [show, items, filteredItems, EntryTags, tagName, tags, splitTagsAsString]
   )
@@ -159,12 +159,12 @@ const TagsButtonModal = ({
           conditions.length === 0
             ? true
             : conditions.reduce(
-              (htmlContainsCondition, condition) =>
-                h.includes(condition) || t.includes(condition)
-                  ? true
-                  : htmlContainsCondition,
-              false
-            )
+                (htmlContainsCondition, condition) =>
+                  h.includes(condition) || t.includes(condition)
+                    ? true
+                    : htmlContainsCondition,
+                false
+              )
         if (notInFrequentTags && notInTags && conditionMet) {
           suggestedTags.push({ name: key })
         }

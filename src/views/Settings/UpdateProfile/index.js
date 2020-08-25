@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "../../../redux/User/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { BasicForm, ConfirmAction, ButtonClearCache } from "../../../components"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import { UpdateUser, DeleteAccount } from "../../../redux/User/actions"

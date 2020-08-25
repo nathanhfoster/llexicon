@@ -84,7 +84,7 @@ const RouterGoBack = (
     if (shouldRedirect) return <Redirect push to={RouterLinkPush(route)} />
     else return RouterPush(route)
   } catch {
-    return history.goBack()
+    return history.push("/")
   }
 }
 

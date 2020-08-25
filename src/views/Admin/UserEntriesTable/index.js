@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { useDispatch } from "react-redux"
+import { useDispatch } from "store/provider"
 import {
   BasicTable,
   Header,

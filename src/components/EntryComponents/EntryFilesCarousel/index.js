@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { BasicImageCarousel, ConfirmAction } from "../.."
 import { Container, Row, Col, Button } from "reactstrap"
 import { EntryFilesProps } from "../../../redux/Entries/propTypes"

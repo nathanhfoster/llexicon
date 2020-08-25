@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { Container, Row, Col, Button } from "reactstrap"
 import getBrowserIcon from "./getBrowserIcon"
 import { BasicModal } from "../"

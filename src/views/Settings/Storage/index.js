@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { Container, Row, Col } from "reactstrap"
 import { LocalStorage } from "../../../components"
 

@@ -9,7 +9,7 @@ import {
   InputGroupText,
   Button,
 } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import ToolbarModal from "../../ToolbarModal"
 import { TagsContainer, DebounceInput } from "../../../../"
 import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"

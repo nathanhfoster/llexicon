@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo, lazy } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import {
   Container,

@@ -1,6 +1,6 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnect } from "store/provider"
 import { UserProps } from "../../redux/User/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { BasicTabs, Header, PushNotifications } from "../../components"
