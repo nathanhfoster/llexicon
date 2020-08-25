@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, lazy } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "store/provider"
+import { useLocation } from "react-router-dom"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { Row } from "reactstrap"
 import { RouteMap, RouterPush } from "../../redux/router/actions"
@@ -28,16 +29,12 @@ const mapStateToProps = ({
   Entries: { items, showOnlyPublic },
   TextEditor,
   Window: { innerHeight, navBarHeight },
-  router: {
-    location: { pathname },
-  },
 }) => ({
   userId: id,
   entries: items,
   showOnlyPublic,
   TextEditor,
   viewPortHeight: innerHeight - navBarHeight,
-  pathname,
 })
 
 const mapDispatchToProps = {
@@ -51,8 +48,8 @@ const Entries = ({
   TextEditor,
   viewPortHeight,
   GetUserEntries,
-  pathname,
 }) => {
+  const { pathname } = useLocation()
   useEffect(() => {
     if (userId) GetUserEntries(1)
   }, [])

@@ -1,6 +1,12 @@
-import React, { useEffect, useState, useCallback, useMemo, lazy } from "react"
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  memo,
+  lazy,
+} from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "store/provider"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import {
   Container,
@@ -10,7 +16,7 @@ import {
   BreadcrumbItem,
   Button,
 } from "reactstrap"
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 import { RouterPush } from "../../../redux/router/actions"
 import { filterMapArray, TopKFrequentStrings } from "../../../utils"
 import { useScrollable } from "../../../hooks"
@@ -22,13 +28,8 @@ const BASE_FOLDER_DIRECTORY_URL = "folders?folder=All"
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
-const mapStateToProps = ({
-  router: {
-    location: { search },
-  },
-}) => ({ search })
-
-const EntryFolders = ({ entries, search }) => {
+const EntryFolders = ({ entries }) => {
+  const { search } = useLocation()
   useEffect(() => {
     if (!search) RouterPush(BASE_FOLDER_DIRECTORY_URL)
   }, [])
@@ -174,4 +175,4 @@ EntryFolders.propTypes = {
 
 EntryFolders.defaultProps = { search: "" }
 
-export default reduxConnect(mapStateToProps)(EntryFolders)
+export default memo(EntryFolders)

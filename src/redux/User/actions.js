@@ -31,9 +31,9 @@ const SetUser = (payload) => ({
 
 const ChangeUser = (payload) => ({ type: UserActionTypes.USER_SET, payload })
 
-const UserLogin = (payload, rememberMe) => async (dispatch) => {
+const UserLogin = (payload, rememberMe) => (dispatch) => {
   dispatch(setPendingUser())
-  return await AxiosOffline()
+  return AxiosOffline()
     .post("login/", qs.stringify(payload))
     .then(async ({ data }) => {
       const { id, token } = data
@@ -75,18 +75,16 @@ const RefreshPatchUser = (id) => (dispatch) => {
     })
 }
 
-const UserLogout = () => (dispatch) => dispatch(ResetRedux())
-
 const CreateUser = (payload, rememberMe) => (dispatch) => {
   dispatch(setPendingUser())
   return AxiosOffline()
     .post("users/", qs.stringify(payload))
     .then((res) => {
-      dispatch(UserLogin(payload, rememberMe))
       ReactGA.event({
         category: "Sign Up",
         action: "User signed up!",
       })
+      return res
     })
     .catch((e) => dispatch(setUserError(e)))
 }
@@ -279,7 +277,7 @@ const DeleteAccount = () => (dispatch, getState) => {
     .then((res) => {
       dispatch(SetAlert({ title: "Deleted", message: "Account" }))
       clearReduxStoreFromLocalStorage()
-      dispatch(UserLogout())
+      dispatch(ResetRedux())
       ReactGA.event({
         category: "Delete Account",
         action: "User deleted their account!",
@@ -300,7 +298,6 @@ export {
   ChangeUser,
   UserLogin,
   RefreshPatchUser,
-  UserLogout,
   CreateUser,
   UpdateUser,
   UpdateProfile,

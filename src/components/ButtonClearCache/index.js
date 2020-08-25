@@ -1,7 +1,7 @@
 import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
 import { useDispatch } from "store/provider"
-import { UserLogout } from "../../redux/User/actions"
+import { ResetRedux } from "../../redux/App/actions"
 import { clearReduxStoreFromLocalStorage } from "../../redux/localState"
 import { ConfirmAction } from "../"
 import { Button } from "reactstrap"
@@ -10,7 +10,7 @@ const ButtonClearCache = () => {
   const dispatch = useDispatch()
   const handleClearCache = useCallback(() => {
     clearReduxStoreFromLocalStorage()
-    dispatch(UserLogout())
+    dispatch(ResetRedux())
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .getRegistrations()

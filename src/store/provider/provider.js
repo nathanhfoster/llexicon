@@ -1,8 +1,7 @@
 import React, { createContext, useMemo, useReducer, useEffect } from "react"
 import PropTypes from "prop-types"
 import storeFactory from "../"
-
-import { combineReducers } from "../utils"
+import { combineReducers, isQuotaExceeded } from "../utils"
 
 const AppStateProvider = createContext({})
 
@@ -37,7 +36,15 @@ const ContextProvider = ({
   // persist storage if persistKey exists
   useEffect(() => {
     if (persistKey) {
-      localStorage.setItem(persistKey, JSON.stringify(state))
+      let stringifiedState = JSON.stringify(state)
+      try {
+        localStorage.setItem(persistKey, stringifiedState)
+      } catch (e) {
+        if (isQuotaExceeded(e)) {
+          stringifiedState = JSON.stringify(mainState)
+          localStorage.setItem(persistKey, stringifiedState)
+        }
+      }
     }
   }, [state, persistKey])
 

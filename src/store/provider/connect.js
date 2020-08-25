@@ -3,7 +3,6 @@ import { ContextConsumer } from "./provider"
 
 const bindActionCreator = (actionCreator, dispatch, getState) => {
   function boundAction() {
-    const args = arguments
     try {
       /**
        * If the action returns a function, append => (dispatch, getState) to the orginal function
@@ -11,15 +10,7 @@ const bindActionCreator = (actionCreator, dispatch, getState) => {
        * example:
        * const basicTableSetPage = (payload) => (dispatch, getState) => dispatch({ type: "SOME_ACTION_TYPE", payload })
        */
-      const actionPromise = new Promise((resolve, reject) => {
-        const valueOfAction = actionCreator.apply(this, args)(
-          dispatch,
-          getState
-        )
-        return resolve(valueOfAction)
-      })
-
-      return actionPromise
+      return actionCreator.apply(this, arguments)(dispatch, getState)
     } catch {
       /**
        * If the action returns an object, wrap it in a dispatch
@@ -27,12 +18,7 @@ const bindActionCreator = (actionCreator, dispatch, getState) => {
        * example:
        * const basicTableSetPage = (payload) => ({ type: "SOME_ACTION_TYPE", payload })
        */
-      const actionPromise = new Promise((resolve, reject) => {
-        const valueOfAction = dispatch(actionCreator.apply(this, args))
-        return resolve(valueOfAction)
-      })
-      console.log(actionPromise, arguments)
-      return actionPromise
+      return dispatch(actionCreator.apply(this, arguments))
     } finally {
     }
   }
@@ -157,8 +143,6 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
               bindActionCreators(mapDispatchToProps, dispatch, getState),
         [mapDispatchToProps]
       )
-
-      console.log(dispatchToProps)
 
       // Memoize the Component's combined props
       const combinedComponentProps = React.useMemo(

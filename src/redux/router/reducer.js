@@ -1,4 +1,3 @@
-import { connectRouter } from "connected-react-router"
 import { createBrowserHistory } from "history"
 const history = createBrowserHistory()
 
@@ -14,6 +13,4 @@ const DEFAULT_STATE_ROUTER = {
   ...history,
 }
 
-const router = connectRouter(DEFAULT_STATE_ROUTER)
-
-export { history, router }
+export { history }

@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "store/provider"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
-import { CreateUser } from "../../../redux/User/actions"
+import { CreateUser, UserLogin } from "../../../redux/User/actions"
 
 const mapStateToProps = ({ User: { error } }) => ({
   userError: error,
@@ -11,12 +11,16 @@ const mapStateToProps = ({ User: { error } }) => ({
 
 const mapDispatchToProps = {
   CreateUser,
+  UserLogin,
 }
 
-const SignUp = ({ userError, CreateUser }) => {
+const SignUp = ({ userError, CreateUser, UserLogin }) => {
   const errorMessage =
     userError && "Please confirm Username, Email, or Password"
-  const handleSignUp = useCallback((payload) => CreateUser(payload), [])
+  const handleSignUp = useCallback(async (payload) => {
+    await CreateUser(payload)
+    await UserLogin(payload)
+  }, [])
 
   const isInvalid = useCallback((value) => {
     if (value && value.length < 3) {

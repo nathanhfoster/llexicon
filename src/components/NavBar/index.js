@@ -16,7 +16,7 @@ import {
 } from "reactstrap"
 import { AddToHomeScreen, StarSearch } from "../"
 import { GetUserEntriesByDate } from "../../redux/Entries/actions"
-import { UserLogout } from "../../redux/User/actions"
+import { ResetRedux } from "../../redux/App/actions"
 import Hamburger from "./Hamburger"
 import NavItemLink from "./NavItemLink"
 import { Logo } from "../../images/AWS"
@@ -93,7 +93,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatchToProps = {
-  UserLogout,
+  ResetRedux,
   GetUserEntriesByDate,
 }
 
@@ -101,7 +101,7 @@ const NavBar = ({
   userId,
   userIsSuperUser,
   isMobile,
-  UserLogout,
+  ResetRedux,
   prompt,
   promptToInstall,
 }) => {
@@ -136,7 +136,7 @@ const NavBar = ({
           {userId ? "LOGOUT" : "LOGIN"}
         </span>
       ),
-      onClick: userId ? UserLogout : null,
+      onClick: userId ? ResetRedux : null,
     },
 
     {
@@ -286,7 +286,7 @@ const NavBar = ({
 
 Navbar.propTypes = {
   userId: PropTypes.number,
-  UserLogout: PropTypes.func,
+  ResetRedux: PropTypes.func,
   GetAllEntries: PropTypes.func,
 }
 
