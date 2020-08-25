@@ -1,8 +1,8 @@
 import React, { memo } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch } from "store/provider"
 import PropTypes from "prop-types"
 import FileUpload from "../../FileUpload"
-import { ImportReduxEntry } from "../../../redux/Entries/actions"
+import { ImportReduxEntry } from "store/reducers/Entries/actions"
 
 const ImportEntries = () => {
   const dispatch = useDispatch()
@@ -33,7 +33,7 @@ const ImportEntries = () => {
           html: html.join(""),
           date_created: date_created_by_author,
           date_created_by_author,
-          date_updated:date_created_by_author,
+          date_updated: date_created_by_author,
           EntryFiles: [],
           tags: [],
           people: [],

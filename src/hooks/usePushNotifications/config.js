@@ -1,4 +1,4 @@
-import { Axios } from "../../redux/Actions"
+import { Axios } from "store/reducers/Actions"
 import qs from "qs"
 import { getSHA256 } from "../../utils"
 import { Logo } from "../../images/AWS"

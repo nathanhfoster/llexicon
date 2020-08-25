@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import GoogleMapReact from "google-map-react"
 import MarkerCluster from "./MarkerCluster"
 import Marker from "./Marker"
-import { SetMapBoundsCenterZoom } from "../../../redux/Map/actions"
-import { WatchUserLocation } from "../../../redux/User/actions"
+import { SetMapBoundsCenterZoom } from "store/reducers/Map/actions"
+import { WatchUserLocation } from "store/reducers/User/actions"
 
 import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from "./constants"
 import MapControl from "./MapControl"
@@ -13,7 +13,7 @@ import MapSearchBox from "./MapControl/Controls/MapSearchBox"
 import UserLocationButton from "./MapControl/Controls/Buttons/UserLocationButton"
 import createClusters from "./functions/createClusters"
 import formatLocations from "./functions/formatLocations"
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
@@ -263,4 +263,4 @@ class BasicMap extends PureComponent {
     )
   }
 }
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(BasicMap)
+export default connect(mapStateToProps, mapDispatchToProps)(BasicMap)

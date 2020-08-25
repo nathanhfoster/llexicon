@@ -1,4 +1,4 @@
-import { AppActionTypes } from "../App/types"
+import { AppActionTypes } from "./types"
 import axios from "axios"
 import ReactGA from "react-ga"
 const { PUBLIC_URL } = process.env
@@ -19,8 +19,7 @@ const SetLocalStorageUsage = () => (dispatch) => {
   }
 }
 
-const ResetRedux = () => (dispatch) =>
-  dispatch({ type: AppActionTypes.REDUX_RESET })
+const ResetRedux = () => ({ type: AppActionTypes.REDUX_RESET })
 
 const GetAppVersion = () => (dispatch, getState) => {
   const {

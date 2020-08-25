@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom"
 import {
   RouterLinkPush,
   GetEntryDetailUrl,
-} from "../../../redux/router/actions"
+} from "store/reducers/router/actions"
 
 const EntryDataCellLink = ({ className, entryId, children }) => {
   const entryDetailUrl = GetEntryDetailUrl(entryId)

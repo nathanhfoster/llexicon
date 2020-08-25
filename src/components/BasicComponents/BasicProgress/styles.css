@@ -1,2 +1,3 @@
-.BasicProgress {}
-
+.BasicProgress {
+  transition: all 2s linear 1s;
+}

@@ -106,7 +106,10 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
 
       // Memoize globalState
       const stateToProps = mapStateToProps
-        ? React.useMemo(() => mapStateToProps(state, ownProps), [state, ownProps])
+        ? React.useMemo(() => mapStateToProps(state, ownProps), [
+            state,
+            ownProps,
+          ])
         : null
 
       // Memoize globalDispatch
@@ -144,8 +147,8 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
       // Memoize the Component's combined props
       const combinedComponentProps = React.useMemo(
         () => ({
-          ...stateToProps,
           ...ownProps,
+          ...stateToProps,
           // not all components need to dispatch actions so its optional
           ...(mapDispatchToProps && {
             ...dispatchToProps,
@@ -154,13 +157,8 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
         [ownProps, stateToProps, dispatchToProps]
       )
 
-      const renderComponent = React.useMemo(
-        // Pass all the key value combinedComponentProps to Component
-        () => <Component {...combinedComponentProps} />,
-        [combinedComponentProps]
-      )
-
-      return renderComponent
+      // Pass all the key value combinedComponentProps to Component
+      return <Component {...combinedComponentProps} />
     }
 
 export default connect

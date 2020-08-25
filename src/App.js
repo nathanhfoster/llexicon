@@ -1,12 +1,11 @@
 import React, { useEffect, lazy, memo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { UserProps } from "./redux/User/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import { Route, Switch, Redirect } from "react-router-dom"
-import { SetLocalStorageUsage } from "./redux/App/actions"
-import { SetWindow } from "./redux/Window/actions"
-import { ResetUserError, GetUserSettings } from "./redux/User/actions"
-import { SetCalendar } from "./redux/Calendar/actions"
+import { SetLocalStorageUsage } from "store/reducers/App/actions"
+import { SetWindow } from "store/reducers/Window/actions"
+import { ResetUserError, GetUserSettings } from "store/reducers/User/actions"
+import { SetCalendar } from "store/reducers/Calendar/actions"
 import {
   SyncEntries,
   GetUserEntries,
@@ -15,12 +14,12 @@ import {
   GetUserEntriesByDate,
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
-} from "./redux/Entries/actions"
-import { ResetMap } from "./redux/Map/actions"
-import { RouteMap, RouterGoBack } from "./redux/router/actions"
+} from "store/reducers/Entries/actions"
+import { ResetMap } from "store/reducers/Map/actions"
+import { RouteMap, RouterGoBack } from "store/reducers/router/actions"
 import { Admin, About, Home, Entries, PrivacyPolicy } from "./views"
 import { NavBar } from "./components"
-import { RouterLinkPush } from "./redux/router/actions"
+import { RouterLinkPush } from "store/reducers/router/actions"
 import memoizeProps from "./utils/memoizeProps"
 import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
 
@@ -259,7 +258,6 @@ const App = ({
               ENTRIES_LIST,
               ENTRIES_TABLE,
               ENTRIES_MAP,
-              NEW_ENTRY,
             ]}
             render={() => <Entries />}
           />
@@ -296,7 +294,4 @@ App.propTypes = {
 const isEqual = (prevProps, nextProps) =>
   memoizeProps(prevProps, nextProps, ["userId", "userToken", "userDarkMode"])
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(memo(App, isEqual))
+export default connect(mapStateToProps, mapDispatchToProps)(memo(App, isEqual))

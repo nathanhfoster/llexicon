@@ -53,7 +53,7 @@ const Axios = (responseType = "json") => {
   return axios.create({
     withCredentials: true,
     baseURL: REACT_APP_API_URL,
-    //timeout: 25000,
+    timeout: 0,
     crossDomain: true,
     responseType,
     headers: token
@@ -77,7 +77,7 @@ const AxiosOffline = (responseType = "json") => {
   return axios.create({
     withCredentials: token ? true : false,
     baseURL: REACT_APP_API_URL,
-    //timeout: 25000,
+    timeout: 0,
     crossDomain: true,
     responseType,
     headers: token

@@ -1,23 +1,33 @@
-import React, { useEffect, useRef, useMemo } from "react"
+import React, { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
+import { connect } from "store/provider"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
 
-import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
-import { SetCalendar } from "../../redux/Calendar/actions"
+import {
+  GetUserEntryDetails,
+  SyncEntries,
+} from "store/reducers/Entries/actions"
+import { SetCalendar } from "store/reducers/Calendar/actions"
 import PageNotFound from "../PageNotFound"
-import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
+import { BASE_JOURNAL_ENTRY_ID } from "store/reducers/Entries/reducer"
 import "./styles.css"
 
 const mapStateToProps = (
-  { User: { id }, Entries: { items, filteredItems, isPending } },
+  {
+    User: { id },
+    Entries: { items, filteredItems, isPending },
+    Window: {
+      navigator: { serviceWorker },
+    },
+  },
   { entryId }
 ) => ({
   userId: id,
   entry: items.concat(filteredItems).find(({ id }) => id == entryId),
+  serviceWorkerController: serviceWorker?.controller || {},
   isPending,
 })
 
@@ -27,6 +37,7 @@ const EntryDetail = ({
   entryId,
   userId,
   entry,
+  serviceWorkerController,
   isPending,
   GetUserEntryDetails,
   SyncEntries,
@@ -94,4 +105,4 @@ EntryDetail.propTypes = {
   SetCalendar: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryDetail)

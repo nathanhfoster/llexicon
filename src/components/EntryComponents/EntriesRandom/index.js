@@ -1,9 +1,8 @@
 import React, { useMemo, useState, Fragment } from "react"
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
+import { connect } from "store/provider"
 import { EntryCards, Header } from "../.."
 import { ButtonGroup, Button } from "reactstrap"
-import { getRandomInt } from "../../../utils"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -35,8 +34,7 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
   let uniqueEntryIndices = [...viewableEntries]
 
   for (let i = 0; i < numberOfRandomEntries; i++) {
-    const randomIndex = getRandomInt(0, uniqueEntryIndices.length - 1)
-    const [entry] = uniqueEntryIndices.splice(randomIndex, 1)
+    const entry = uniqueEntryIndices.popRandomValue()
 
     randomEntries.push(entry)
   }
@@ -61,4 +59,4 @@ EntriesRandom.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(EntriesRandom)
+export default connect(mapStateToProps)(EntriesRandom)

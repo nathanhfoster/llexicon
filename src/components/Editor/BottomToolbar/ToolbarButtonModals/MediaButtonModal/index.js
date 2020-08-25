@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import {
   Container,
   Row,
@@ -150,4 +150,4 @@ const isEqual = (prevProps, nextProps) =>
     "filteredItems",
   ])
 
-export default reduxConnect(mapStateToProps)(memo(MediaButtonModal, isEqual))
+export default connect(mapStateToProps)(memo(MediaButtonModal, isEqual))

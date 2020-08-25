@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
-import { UserLogin } from "../../../redux/User/actions"
+import { UserLogin } from "store/reducers/User/actions"
 
 const mapStateToProps = ({ User: { error } }) => ({
   userError: error,
@@ -71,4 +71,4 @@ Login.propTypes = {
   UserLogin: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

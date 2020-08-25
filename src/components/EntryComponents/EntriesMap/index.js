@@ -1,14 +1,14 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import { BasicMap } from "../.."
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
-import { SetEditorState } from "../../../redux/TextEditor/actions"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
+import { SetEditorState } from "store/reducers/TextEditor/actions"
 import {
   RouteMap,
   RouterPush,
   GoToEntryDetail,
-} from "../../../redux/router/actions"
+} from "store/reducers/router/actions"
 
 const mapStateToProps = ({ Entries: { items, showOnlyPublic } }) => ({
   entries: items,
@@ -69,4 +69,4 @@ EntryPropTypes.defaultProps = {
   height: 500,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesMap)
+export default connect(mapStateToProps, mapDispatchToProps)(EntriesMap)

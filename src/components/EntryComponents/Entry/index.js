@@ -1,10 +1,10 @@
 import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { useDispatch } from "react-redux"
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
+import { useDispatch } from "store/provider"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
 import { Editor, EntryOptionsMenu, ReactDatePicker, UseDebounce } from "../../"
-import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
+import { UpdateReduxEntry, SyncEntries } from "store/reducers/Entries/actions"
 import "./styles.css"
 
 const Entry = ({

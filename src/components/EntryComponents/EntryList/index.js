@@ -1,11 +1,11 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
+import { connect } from "store/provider"
 import { BasicList } from "../.."
 import Moment from "react-moment"
 import MomentJS from "moment"
-import { GoToEntryDetail } from "../../../redux/router/actions"
+import { GoToEntryDetail } from "store/reducers/router/actions"
 import Star from "../../BackgroundImage/Star"
 import TagsContainer from "../TagsContainer"
 import "./styles.css"
@@ -105,4 +105,4 @@ EntryList.propTypes = {
   entriesWithinView: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(EntryList)
+export default connect(mapStateToProps)(EntryList)

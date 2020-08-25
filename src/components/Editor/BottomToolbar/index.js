@@ -1,6 +1,6 @@
 import React, { useMemo, memo, lazy } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import { Collapse, Container, Row, Col, Button } from "reactstrap"
 import { TagsContainer } from "../../"
 import EntryFilesCarousel from "../../EntryComponents/EntryFilesCarousel"
@@ -59,13 +59,22 @@ const BottomToolbar = ({
       [
         {
           Component: TagsButtonModal,
-          props: { entryId: entry.id, tags: entry.tags, onChangeCallback, xs },
+          props: {
+            entryId: entry.id,
+            tags: entry.tags,
+            html: entry.html,
+            title: entry.title,
+            onChangeCallback,
+            xs,
+          },
         },
         {
           Component: PeopleButtonModal,
           props: {
             entryId: entry.id,
             people: entry.people,
+            html: entry.html,
+            title: entry.title,
             onChangeCallback,
             xs,
           },

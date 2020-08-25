@@ -10,7 +10,7 @@ import "./styles.css"
 import TopToolbar from "./TopToolbar"
 import BottomToolbar from "./BottomToolbar"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import deepEquals from "../../utils/deepEquals"
 
 class Editor extends PureComponent {

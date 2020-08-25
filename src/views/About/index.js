@@ -7,9 +7,9 @@ import {
   Header,
   NewEntryButton,
 } from "../../components"
-import { RouteMap, RouterPush } from "../../redux/router/actions"
+import { RouteMap, RouterPush } from "store/reducers/router/actions"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import {
   Bell,
   CloudDownload,
@@ -184,4 +184,4 @@ About.propTypes = {
   userId: PropTypes.number,
 }
 
-export default reduxConnect(mapStateToProps)(About)
+export default connect(mapStateToProps)(About)

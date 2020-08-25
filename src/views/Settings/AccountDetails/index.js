@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { UserProps } from "../../../redux/User/propTypes"
+import { UserProps } from "store/reducers/User/propTypes"
 import { Container, Row, Col, Media } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import Moment from "react-moment"
 
 const mapStateToProps = ({ User }) => ({
@@ -40,4 +40,4 @@ AccountDetails.propTypes = { User: UserProps.isRequired }
 
 AccountDetails.defaultProps = {}
 
-export default reduxConnect(mapStateToProps)(AccountDetails)
+export default connect(mapStateToProps)(AccountDetails)

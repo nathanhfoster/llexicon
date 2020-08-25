@@ -1,4 +1,5 @@
 import useScrollable from "./useScrollable"
 import usePushNotifications from "./usePushNotifications"
+import useInput from "./useInput"
 
-export { useScrollable, usePushNotifications }
+export { useScrollable, usePushNotifications, useInput }

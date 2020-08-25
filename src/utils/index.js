@@ -161,7 +161,7 @@ const TopKFrequentStrings = (
 ) => {
   if (!arrayOfObjs) return []
   let map = new Map()
-  for (let i = 0; i < arrayOfObjs.length; i++) {
+  for (let i = 0, { length } = arrayOfObjs; i < length; i++) {
     const s = arrayOfObjs[i][prop]
     if (s != undefined && s.length > 0)
       map.has(s) ? map.set(s, map.get(s) + 1) : map.set(s, 1)

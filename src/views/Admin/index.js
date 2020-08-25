@@ -1,12 +1,12 @@
 import React, { useEffect, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { UsersProps } from "../../redux/Admin/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { UsersProps } from "store/reducers/Admin/propTypes"
+import { connect } from "store/provider"
 import UserEntriesTable from "./UserEntriesTable"
 import { BasicTable, Header } from "../../components"
 import Moment from "react-moment"
 import { Container, Row, Col } from "reactstrap"
-import { GetAllUsers, GetAllUserEntries } from "../../redux/Admin/actions"
+import { GetAllUsers, GetAllUserEntries } from "store/reducers/Admin/actions"
 import { stringMatch } from "../../utils"
 
 const { REACT_APP_API_URL } = process.env
@@ -126,10 +126,11 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         title: <i className="fas fa-birthday-cake" />,
         key: "date_joined",
         width: 120,
+        defaultSortValue: true,
         sort: (a, b, sortUp) =>
           sortUp
-            ? new Date(b.last_login) - new Date(a.last_login)
-            : new Date(a.last_login) - new Date(b.last_login),
+            ? new Date(b.date_joined) - new Date(a.date_joined)
+            : new Date(a.date_joined) - new Date(b.date_joined),
 
         filter: "date",
         filterPlaceholder: "Date joined",
@@ -175,7 +176,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         <BasicTable
           sortable
           filterable
-          pageSize={25}
+          pageSize={15}
           columns={tableColumns}
           dataDisplayName="Users"
           data={users}
@@ -197,4 +198,4 @@ Admin.propTypes = {
 
 Admin.defaultProps = {}
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Admin)
+export default connect(mapStateToProps, mapDispatchToProps)(Admin)

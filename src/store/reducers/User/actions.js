@@ -3,7 +3,6 @@ import { UserActionTypes } from "../User/types"
 import { AppActionTypes } from "../App/types"
 import { ResetRedux } from "../App/actions"
 import { SetAlert } from "../Alerts/actions"
-import { persistReduxState } from "../localState"
 import { GetUserEntries } from "../Entries/actions"
 import { clearReduxStoreFromLocalStorage } from "../localState"
 import qs from "qs"
@@ -32,15 +31,14 @@ const SetUser = (payload) => ({
 
 const ChangeUser = (payload) => ({ type: UserActionTypes.USER_SET, payload })
 
-const UserLogin = (payload, rememberMe) => async (dispatch) => {
+const UserLogin = (payload, rememberMe) => (dispatch) => {
   dispatch(setPendingUser())
-  return await AxiosOffline()
+  return AxiosOffline()
     .post("login/", qs.stringify(payload))
     .then(async ({ data }) => {
       const { id, token } = data
       await dispatch(RefreshPatchUser(id))
       await dispatch(SetUser(data))
-      await dispatch(persistReduxState())
       await dispatch(GetUserEntries(1))
       ReactGA.event({
         category: "Login",
@@ -77,18 +75,16 @@ const RefreshPatchUser = (id) => (dispatch) => {
     })
 }
 
-const UserLogout = () => (dispatch) => dispatch(ResetRedux())
-
 const CreateUser = (payload, rememberMe) => (dispatch) => {
   dispatch(setPendingUser())
   return AxiosOffline()
     .post("users/", qs.stringify(payload))
     .then((res) => {
-      dispatch(UserLogin(payload, rememberMe))
       ReactGA.event({
         category: "Sign Up",
         action: "User signed up!",
       })
+      return res
     })
     .catch((e) => dispatch(setUserError(e)))
 }
@@ -281,11 +277,12 @@ const DeleteAccount = () => (dispatch, getState) => {
     .then((res) => {
       dispatch(SetAlert({ title: "Deleted", message: "Account" }))
       clearReduxStoreFromLocalStorage()
-      dispatch(UserLogout())
+      dispatch(ResetRedux())
       ReactGA.event({
         category: "Delete Account",
         action: "User deleted their account!",
       })
+      return res
     })
     .catch((e) => console.log("DeleteAccount: ", e.response))
 }
@@ -301,7 +298,6 @@ export {
   ChangeUser,
   UserLogin,
   RefreshPatchUser,
-  UserLogout,
   CreateUser,
   UpdateUser,
   UpdateProfile,

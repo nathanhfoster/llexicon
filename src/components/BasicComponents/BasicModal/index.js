@@ -1,6 +1,6 @@
 import React, { useState, memo, Fragment, cloneElement } from "react"
 import PropTypes from "prop-types"
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector } from "store/provider"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./styles.css"
 
@@ -43,8 +43,7 @@ const BasicModal = ({
       User: {
         Settings: { dark_mode },
       },
-    }) => dark_mode,
-    [shallowEqual]
+    }) => dark_mode
   )
 
   return (

@@ -1,8 +1,8 @@
 import React, { useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { RouteMap, RouterPush } from "../../../../redux/router/actions"
-import { GetUserEntriesByDate } from "../../../../redux/Entries/actions"
+import { connect } from "store/provider"
+import { RouteMap, RouterPush } from "store/reducers/router/actions"
+import { GetUserEntriesByDate } from "store/reducers/Entries/actions"
 import EntryPreview from "./EntryPreview"
 import MomentJS from "moment"
 import "./styles.css"
@@ -91,4 +91,4 @@ TileContent.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)
+export default connect(mapStateToProps, mapDispatchToProps)(TileContent)

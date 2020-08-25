@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { RouteMap, RouterGoBack } from "../../../redux/router/actions"
-import { SetApiResponseStatus } from "../../../redux/Alerts/actions"
+import { connect } from "store/provider"
+import { useLocation } from "react-router-dom"
+import { RouteMap, RouterGoBack } from "store/reducers/router/actions"
+import { SetApiResponseStatus } from "store/reducers/Alerts/actions"
 import { stringMatch } from "../../../utils"
 import "./styles.css"
 
@@ -21,23 +22,14 @@ const getSubtitles = (apiResponseStatus) => {
   }
 }
 
-const mapStateToProps = ({
-  Alerts: { apiResponseStatus },
-  router: {
-    location: { pathname },
-  },
-}) => ({
+const mapStateToProps = ({ Alerts: { apiResponseStatus } }) => ({
   apiResponseStatus,
-  pathname,
 })
 
 const mapDispatchToProps = { SetApiResponseStatus }
 
-const ApiStatusResponse = ({
-  apiResponseStatus,
-  SetApiResponseStatus,
-  pathname,
-}) => {
+const ApiStatusResponse = ({ apiResponseStatus, SetApiResponseStatus }) => {
+  const { pathname } = useLocation()
   useEffect(() => {
     const isOnEntryDetailView = stringMatch(
       pathname,
@@ -79,7 +71,4 @@ ApiStatusResponse.propTypes = {
 
 ApiStatusResponse.defaultProps = { apiResponseStatus: 404 }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ApiStatusResponse)
+export default connect(mapStateToProps, mapDispatchToProps)(ApiStatusResponse)

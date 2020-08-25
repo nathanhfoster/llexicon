@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, memo } from "react"
+import React, { useState, useEffect, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import {
   Container,
@@ -9,10 +9,10 @@ import {
   InputGroupText,
   Button,
 } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import ToolbarModal from "../../ToolbarModal"
 import { TagsContainer, DebounceInput } from "../../../../"
-import { GetUserEntryTags } from "../../../../../redux/Entries/actions"
+import { GetUserEntryTags } from "store/reducers/Entries/actions"
 import {
   filterMapArray,
   TopKFrequentStrings,
@@ -24,7 +24,7 @@ import { validateTagOrPeopleString, validatedTagString } from "../utlis"
 import {
   EntriesPropTypes,
   EntryTagsProps,
-} from "../../../../../redux/Entries/propTypes"
+} from "store/reducers/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
@@ -40,6 +40,56 @@ const getInitialState = ({ tags }) => ({
   tags,
 })
 
+const SUGGESTED = {
+  Amazon: ["amazon"],
+  Apple: ["apple"],
+  Article: [
+    "quora",
+    "article",
+    "medium",
+    "forbes",
+    "fox",
+    "cnn",
+    "nytimes",
+    "express",
+    "politic",
+    "cbs",
+    "theverge",
+    "yahoo",
+    "fortune",
+    "post",
+    "file",
+  ],
+  Cloud: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
+  Development: [
+    "app",
+    "css",
+    "react",
+    "angular",
+    "ionic",
+    "vue",
+    "material",
+    "pwa",
+    "code",
+    "program",
+  ],
+  Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
+  Dream: ["dream", "vision"],
+  Facebook: ["facebook"],
+  Gaming: ["game", "theverge"],
+  Email: ["mail", "message"],
+  Image: ["<img src", "instagram", "pintrest", "image", "photo", "file"],
+  Instagram: ["instagram"],
+  Twitter: ["twitter"],
+  Link: ["http", ".com"],
+  Review: ["yelp", "review"],
+  Shopping: ["amazon", "bestbuy", "lowes", "shop", "target", "$"],
+  Support: ["support"],
+  Text: ["text", "message"],
+  Video: ["youtube", "<iframe", "file"],
+  Vision: ["dream", "vision"],
+}
+
 const TagsButtonModal = ({
   UserId,
   GetUserEntryTags,
@@ -47,6 +97,8 @@ const TagsButtonModal = ({
   filteredItems,
   EntryTags,
   entryId,
+  html,
+  title,
   xs,
   onChangeCallback,
   ...restOfProps
@@ -54,6 +106,9 @@ const TagsButtonModal = ({
   useEffect(() => {
     if (UserId) GetUserEntryTags()
   }, [])
+
+  const [show, setShow] = useState(false)
+  const handleToogle = useCallback(() => setShow((prevShow) => !prevShow))
 
   const [{ tags, tagName }, setState] = useState(getInitialState(restOfProps))
 
@@ -66,34 +121,75 @@ const TagsButtonModal = ({
   const splitTagsAsString = tagName.split(",")
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
-  const entryTags = useMemo(
+  let entryTags = useMemo(
     () =>
-      Object.values(
-        items
-          .concat(filteredItems)
-          .map((entry) => entry.tags)
-          .flat(1)
-          .concat(EntryTags)
-      ),
-    [items, filteredItems, EntryTags, tagName, tags, splitTagsAsString]
+      show
+        ? Object.values(
+            items
+              .concat(filteredItems)
+              .map((entry) => entry.tags)
+              .flat(1)
+              .concat(EntryTags)
+          )
+        : [],
+    [show, items, filteredItems, EntryTags, tagName, tags, splitTagsAsString]
   )
 
-  const sortedTags = useMemo(
-    () =>
-      TopKFrequentStrings(entryTags, "name")
-        // filterMapArray(entryTags, "name")
-        //   .sort((a, b) => a.name.localeCompare(b.name))
+  const [suggestedTags, frequentTags] = useMemo(() => {
+    if (!show) return [[], []]
+    else {
+      const h = html.toLowerCase()
+      const t = title.toLowerCase()
+      const f = TopKFrequentStrings(entryTags, "name")
         .filter((entryPersonName) => {
           if (tags.some(({ name }) => name == entryPersonName)) return false
           else if (!lastTagAsString) return true
           else if (stringMatch(entryPersonName, lastTagAsString)) return true
-          else if (stringMatch(entryPersonName, lastTagAsString)) return true
           else return false
         })
+        .map((name) => ({ name }))
 
-        .map((name) => ({ name })),
-    [entryTags]
-  )
+      let suggestedTags = []
+      let frequentTags = []
+
+      for (const [key, conditions] of Object.entries(SUGGESTED)) {
+        const notInFrequentTags = !frequentTags.some(({ name }) => name === key)
+        const notInTags = !tags.some(({ name }) => name === key)
+        const conditionMet =
+          conditions.length === 0
+            ? true
+            : conditions.reduce(
+                (htmlContainsCondition, condition) =>
+                  h.includes(condition) || t.includes(condition)
+                    ? true
+                    : htmlContainsCondition,
+                false
+              )
+        if (notInFrequentTags && notInTags && conditionMet) {
+          suggestedTags.push({ name: key })
+        }
+      }
+
+      for (let i = 0, { length } = f; i < length; i++) {
+        const tag = f[i]
+        const names = tag.name.split(" ")
+        if (
+          names.some((name) => {
+            const n = name.toLowerCase()
+            return (n && h.includes(n)) || (t && t.includes(n))
+          })
+        ) {
+          if (!suggestedTags.some(({ name }) => name === tag.name)) {
+            suggestedTags.push(tag)
+          }
+        } else if (!frequentTags.some(({ name }) => name === tag.name)) {
+          frequentTags.push(tag)
+        }
+      }
+
+      return [suggestedTags, frequentTags]
+    }
+  }, [show, html, title, entryTags, tags])
 
   const handleTagsInputChange = (value) => {
     const validatedTagsAsString = validatedTagString(value)
@@ -155,8 +251,22 @@ const TagsButtonModal = ({
     })
   }
 
+  const placeholder = useMemo(() => {
+    const tags = suggestedTags.concat(frequentTags)
+    if (!show || tags.length === 0) {
+      return "Document,Dream,Family,Friends,Quote,Vacation"
+    }
+
+    return tags
+      .slice(0, 6)
+      .map(({ name }) => name)
+      .join(",")
+  }, [suggestedTags, frequentTags])
+
   return (
     <ToolbarModal
+      show={show}
+      toggle={handleToogle}
       title="Add Tags"
       onSaveCallback={handleSaveTags}
       onCancelCallback={resetState}
@@ -164,52 +274,70 @@ const TagsButtonModal = ({
       button="Add Tags"
       xs={xs}
     >
-      <Container className="TagsButtonModal Container">
-        <Row className="TagAndPeopleContainer">
-          <TagsContainer
-            tags={sortedTags}
-            maxHeight={200}
-            flexWrap="wrap"
-            onClickCallback={handleAddTag}
-            hoverable
-            emptyString="No tags found..."
-            faIcon="fas fa-tag add-plus"
-          />
-        </Row>
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <TagsContainer
-            tags={tags}
-            maxHeight={150}
-            flexWrap="wrap"
-            onClickCallback={handleRemoveTag}
-            hoverable
-            emptyString="No tags added..."
-            faIcon="fas fa-tag add-minus"
-          />
-        </Row>
-        <Row>
-          <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                tag={Button}
-                className="SaveButton"
-                color="primary"
-                disabled={!tagName}
-                onClick={handleCreateTag}
-              >
-                <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
-              </InputGroupText>
-            </InputGroupAddon>
-            <DebounceInput
-              type="text"
-              value={tagName}
-              onChange={handleTagsInputChange}
-              placeholder="Document,Dream,Family,Friends,Quote,Vacation"
-              focusOnMount
+      {show && (
+        <Container className="TagsButtonModal Container">
+          {suggestedTags.length > 0 && (
+            <Row className="TagAndPeopleContainer">
+              <h4>Suggested</h4>
+              <TagsContainer
+                tags={suggestedTags}
+                maxHeight={150}
+                flexWrap="wrap"
+                onClickCallback={handleAddTag}
+                hoverable
+                emptyString="No tags found..."
+                faIcon="fas fa-tag add-plus"
+              />
+            </Row>
+          )}
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Frequent</h4>
+            <TagsContainer
+              tags={frequentTags}
+              maxHeight={150}
+              flexWrap="wrap"
+              onClickCallback={handleAddTag}
+              hoverable
+              emptyString="No tags found..."
+              faIcon="fas fa-tag add-plus"
             />
-          </Col>
-        </Row>
-      </Container>
+          </Row>
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Attached</h4>
+            <TagsContainer
+              tags={tags}
+              maxHeight={150}
+              flexWrap="wrap"
+              onClickCallback={handleRemoveTag}
+              hoverable
+              emptyString="No tags added..."
+              faIcon="fas fa-tag add-minus"
+            />
+          </Row>
+          <Row>
+            <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  tag={Button}
+                  className="SaveButton"
+                  color="primary"
+                  disabled={!tagName}
+                  onClick={handleCreateTag}
+                >
+                  <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
+                </InputGroupText>
+              </InputGroupAddon>
+              <DebounceInput
+                type="text"
+                value={tagName}
+                onChange={handleTagsInputChange}
+                placeholder={placeholder}
+                focusOnMount
+              />
+            </Col>
+          </Row>
+        </Container>
+      )}
     </ToolbarModal>
   )
 }
@@ -238,9 +366,11 @@ const isEqual = (prevProps, nextProps) =>
     "entryId",
     "tags",
     "xs",
+    "html",
+    "title",
   ])
 
-export default reduxConnect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(memo(TagsButtonModal, isEqual))

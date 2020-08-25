@@ -1,9 +1,9 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 
 import { EntriesTable } from "../../components"
-import { EntriesPropTypes } from "../../redux/Entries/propTypes"
+import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
 
 const mapStateToProps = ({ Entries: { items, sortMap, filterMap } }) => ({
   items,
@@ -31,4 +31,4 @@ UserEntriesTable.defaultProps = {
   pageSize: 5,
 }
 
-export default reduxConnect(mapStateToProps)(UserEntriesTable)
+export default connect(mapStateToProps)(UserEntriesTable)

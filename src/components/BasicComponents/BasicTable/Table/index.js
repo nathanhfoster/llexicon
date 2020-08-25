@@ -116,7 +116,7 @@ BasicTable.propTypes = {
 
 BasicTable.defaultProps = {
   pageSize: 10,
-  pageSizes: [5, 10, 15, 20, 25, 50, 100],
+  pageSizes: [5, 15, 25, 50, 100],
 }
 
 export default connect(mapStateToProps)(memo(BasicTable))

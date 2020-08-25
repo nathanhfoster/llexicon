@@ -1,13 +1,13 @@
 import React, { useRef, useMemo, useEffect } from "react"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../../../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import { BasicMap } from "../../../../"
-import { WatchUserLocation } from "../../../../../redux/User/actions"
-import { SetMapBoundsCenterZoom } from "../../../../../redux/Map/actions"
-import { GetAddress } from "../../../../../redux/Actions/Google"
+import { WatchUserLocation } from "store/reducers/User/actions"
+import { SetMapBoundsCenterZoom } from "store/reducers/Map/actions"
+import { GetAddress } from "store/reducers/Actions/Google"
 import "./styles.css"
 
 const mapStateToProps = ({ Map, User: { location } }) => ({
@@ -126,7 +126,4 @@ LocationButtonModal.propTypes = {
   WatchUserLocation: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LocationButtonModal)
+export default connect(mapStateToProps, mapDispatchToProps)(LocationButtonModal)

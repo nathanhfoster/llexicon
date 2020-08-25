@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import {
   ButtonDropdown,
   DropdownToggle,
@@ -17,10 +17,10 @@ import {
   Portal,
 } from "../.."
 import { copyStringToClipboard, shareUrl } from "../../../utils"
-import { RouterGoBack, GetEntryDetailUrl } from "../../../redux/router/actions"
-import { useDispatch } from "react-redux"
-import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
-import { BASE_JOURNAL_ENTRY_ID } from "../../../redux/Entries/reducer"
+import { RouterGoBack, GetEntryDetailUrl } from "store/reducers/router/actions"
+import { useDispatch } from "store/provider"
+import { UpdateReduxEntry, SyncEntries } from "store/reducers/Entries/actions"
+import { BASE_JOURNAL_ENTRY_ID } from "store/reducers/Entries/reducer"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
@@ -204,4 +204,4 @@ EntryOptionsMenu.defaultProps = {
   direction: "down",
 }
 
-export default reduxConnect(mapStateToProps)(EntryOptionsMenu)
+export default connect(mapStateToProps)(EntryOptionsMenu)

@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { UserProps } from "../../redux/User/propTypes"
+import { useLocation } from "react-router-dom"
+import { UserProps } from "store/reducers/User/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { BasicTabs, Header, PushNotifications } from "../../components"
 import EntryStatistics from "./EntryStatistics"
@@ -10,7 +10,7 @@ import AccountDetails from "./AccountDetails"
 import UpdateProfile from "./UpdateProfile"
 import Storage from "./Storage"
 import Preferences from "./Preferences"
-import { RouterPush, RouteMap } from "../../redux/router/actions"
+import { RouterPush, RouteMap } from "store/reducers/router/actions"
 import "./styles.css"
 
 const {
@@ -22,13 +22,8 @@ const {
   SETTINGS_STORAGE,
 } = RouteMap
 
-const mapStateToProps = ({
-  router: {
-    location: { pathname },
-  },
-}) => ({ pathname })
-
-const Settings = ({ pathname }) => {
+const Settings = ({}) => {
+  const { pathname } = useLocation()
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
   const activeTab = pathname
 
@@ -105,4 +100,4 @@ Settings.propTypes = {
   User: UserProps,
 }
 
-export default reduxConnect(mapStateToProps)(Settings)
+export default memo(Settings)

@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import ApiStatusResponse from "./ApiStatusResponse"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import StarGenerator from "../../components/BackgroundImage/StarGenerator"
@@ -42,4 +42,4 @@ PageNotFound.propTypes = {
 
 PageNotFound.defaultProps = {}
 
-export default reduxConnect(mapStateToProps)(PageNotFound)
+export default connect(mapStateToProps)(PageNotFound)

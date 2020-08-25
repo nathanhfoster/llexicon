@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { EntryTagsProps } from "../../../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
-import { GoToEntryDetail } from "../../../../../redux/router/actions"
+import { EntryTagsProps } from "store/reducers/Entries/propTypes"
+import { connect } from "store/provider"
+import { GoToEntryDetail } from "store/reducers/router/actions"
 import Moment from "react-moment"
 import Star from "../../../../BackgroundImage/Star"
 import "./styles.css"
@@ -46,7 +46,13 @@ const EntryPreview = ({
       </div>
     </div>
   ) : view == "month" ? (
-    <Star bottom="8px" size={8} color="PurpleWhite" animation={false} opacity={1} />
+    <Star
+      bottom="8px"
+      size={8}
+      color="PurpleWhite"
+      animation={false}
+      opacity={1}
+    />
   ) : null
 
 EntryPreview.propTypes = {
@@ -66,4 +72,4 @@ EntryPreview.propTypes = {
   views: PropTypes.number,
 }
 
-export default reduxConnect(mapStateToProps)(EntryPreview)
+export default connect(mapStateToProps)(EntryPreview)

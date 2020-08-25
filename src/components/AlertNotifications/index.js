@@ -1,9 +1,9 @@
 import React, { useCallback } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
 import { UseDebounce } from ".."
-import { ClearAlerts } from "../../redux/Alerts/actions"
+import { ClearAlerts } from "store/reducers/Alerts/actions"
 import "./styles.css"
 
 const mapStateToProps = ({
@@ -95,7 +95,4 @@ AlertNotifications.defaultProps = {
   timeout: 3000,
 }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AlertNotifications)
+export default connect(mapStateToProps, mapDispatchToProps)(AlertNotifications)

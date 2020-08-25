@@ -1,10 +1,10 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, InputGroupAddon, InputGroupText } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import { Link } from "react-router-dom"
-import { RouteMap } from "../../redux/router/actions"
-import { SearchUserEntries } from "../../redux/Entries/actions"
+import { RouteMap } from "store/reducers/router/actions"
+import { SearchUserEntries } from "store/reducers/Entries/actions"
 import { DebounceInput } from "../"
 import "./styles.css"
 
@@ -75,4 +75,4 @@ StarSearch.propTypes = {
   SearchUserEntries: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(StarSearch)
+export default connect(mapStateToProps, mapDispatchToProps)(StarSearch)

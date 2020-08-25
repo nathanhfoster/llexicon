@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import { EntryPropTypes } from "../../../../redux/Entries/propTypes"
+import { EntryPropTypes } from "store/reducers/Entries/propTypes"
 import { BasicTable } from "../../../../components"
 import { Container, Row, Col } from "reactstrap"
 import { CloudDownload } from "../../../../images/SVG"

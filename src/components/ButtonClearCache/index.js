@@ -1,8 +1,8 @@
 import React, { useCallback, memo } from "react"
 import PropTypes from "prop-types"
-import { useDispatch } from "react-redux"
-import { UserLogout } from "../../redux/User/actions"
-import { clearReduxStoreFromLocalStorage } from "../../redux/localState"
+import { useDispatch } from "store/provider"
+import { ResetRedux } from "store/reducers/App/actions"
+import { clearReduxStoreFromLocalStorage } from "store/reducers/localState"
 import { ConfirmAction } from "../"
 import { Button } from "reactstrap"
 
@@ -10,7 +10,20 @@ const ButtonClearCache = () => {
   const dispatch = useDispatch()
   const handleClearCache = useCallback(() => {
     clearReduxStoreFromLocalStorage()
-    dispatch(UserLogout())
+    dispatch(ResetRedux())
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) => {
+          for (let registration of registrations) {
+            registration.unregister()
+          }
+          window.location.reload()
+        })
+        .catch((err) => {
+          console.log("Service Worker registration failed: ", err)
+        })
+    }
   }, [])
   return (
     <ConfirmAction

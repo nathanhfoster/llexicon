@@ -1,8 +1,8 @@
 import React, { useMemo, memo } from "react"
 import { Badge, Col } from "reactstrap"
 import PropTypes from "prop-types"
-import { EntryTagsProps } from "../../../redux/Entries/propTypes"
-import { getJsonTagsOrPeople } from "../../../redux/Entries/utils"
+import { EntryTagsProps } from "store/reducers/Entries/propTypes"
+import { getJsonTagsOrPeople } from "store/reducers/Entries/utils"
 import "./styles.css"
 
 const TagsContainer = ({
@@ -73,7 +73,7 @@ const TagsContainer = ({
       className="TagsContainer ShowScrollBar p-0"
       {...columnProps}
       style={styles}
-      title={getJsonTagsOrPeople(tags)}
+      // title={getJsonTagsOrPeople(tags)}
     >
       {children}
       {tags.length === 0 ? (

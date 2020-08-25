@@ -1,11 +1,7 @@
 import { Axios, AxiosForm } from "../Actions"
 import { SetApiResponseStatus, SetAlert } from "../Alerts/actions"
 import { EntriesActionTypes } from "./types"
-import {
-  getFileFromBase64,
-  htmlToArrayOfBase64,
-  cleanObject,
-} from "../../utils"
+import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from "utils"
 import { getJsonTagsOrPeople } from "./utils"
 import FormData from "form-data"
 import qs from "qs"
@@ -29,6 +25,7 @@ const GetUserEntryTags = () => (dispatch, getState) => {
         action: "User got their entry tags!",
         value: id,
       })
+      return data
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -44,6 +41,7 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
         action: "User got their entry people!",
         value: id,
       })
+      return data
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -66,6 +64,7 @@ const CreateEntryTag = (payload) => (dispatch, getState) => {
         action: "User created a entry tag!",
         value: id,
       })
+      return data
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -76,7 +75,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
   for (let i = 0; i < base64s.length; i++) {
     const base64 = base64s[i]
     const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
-    dispatch(AwsUpload(entry_id, file, base64, html))
+    dispatch(AwsUpload(dispatch, entry_id, file, base64, html))
   }
   dispatch(UpdateEntry(entry_id, updateEntryPayload))
   return new Promise((resolve) =>
@@ -84,7 +83,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
   )
 }
 
-const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
+const AwsUpload = (dispatch, entry_id, file, base64, html) => {
   const { lastModified, lastModifiedDate, name, size, type } = file
   let payload = new FormData()
   payload.append("entry_id", entry_id)
@@ -421,7 +420,9 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
     } = entries[i]
 
     if (_shouldDelete) {
-      await dispatch(DeleteEntry(id)).then((res) =>
+      await new Promise((resolve) =>
+        resolve(dispatch(DeleteEntry(id)))
+      ).then((res) =>
         dispatch(SetAlert({ title: "Deleted", message: "Entry" }))
       )
       continue
@@ -438,7 +439,9 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
         is_public,
       }
 
-      await dispatch(PostEntry(postPayload)).then(async (entry) => {
+      await new Promise((resolve) =>
+        resolve(dispatch(PostEntry(postPayload)))
+      ).then(async (entry) => {
         dispatch(SetAlert({ title: "Saved", message: "Entry" }))
         if (!entry) return
         const {
@@ -476,10 +479,10 @@ const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
         latitude,
         longitude,
         is_public,
-      //  views,
+        //  views,
       }
-      await dispatch(
-        ParseBase64(id, cleanObject(updateEntryPayload))
+      await new Promise((resolve) =>
+        resolve(dispatch(ParseBase64(id, cleanObject(updateEntryPayload))))
       ).then((res) =>
         dispatch(SetAlert({ title: "Updated", message: "Entry" }))
       )

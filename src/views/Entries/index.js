@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, lazy } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { EntriesPropTypes } from "../../redux/Entries/propTypes"
+import { connect } from "store/provider"
+import { useLocation } from "react-router-dom"
+import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
 import { Row } from "reactstrap"
-import { RouteMap, RouterPush } from "../../redux/router/actions"
+import { RouteMap, RouterPush } from "store/reducers/router/actions"
 import { BasicTabs, NewEntryButton } from "../../components"
 import { UserEntriesTable } from "../../containers"
 import NewEntry from "../NewEntry"
-import { GetUserEntries } from "../../redux/Entries/actions"
+import { GetUserEntries } from "store/reducers/Entries/actions"
 import "./styles.css"
 
 const EntryCalendar = lazy(() =>
@@ -28,16 +29,12 @@ const mapStateToProps = ({
   Entries: { items, showOnlyPublic },
   TextEditor,
   Window: { innerHeight, navBarHeight },
-  router: {
-    location: { pathname },
-  },
 }) => ({
   userId: id,
   entries: items,
   showOnlyPublic,
   TextEditor,
   viewPortHeight: innerHeight - navBarHeight,
-  pathname,
 })
 
 const mapDispatchToProps = {
@@ -51,8 +48,8 @@ const Entries = ({
   TextEditor,
   viewPortHeight,
   GetUserEntries,
-  pathname,
 }) => {
+  const { pathname } = useLocation()
   useEffect(() => {
     if (userId) GetUserEntries(1)
   }, [])
@@ -91,7 +88,6 @@ const Entries = ({
   const tabs = [
     {
       tabId: RouteMap.NEW_ENTRY,
-      mountTabOnlyWhenActive: true,
       title: {
         name: "Create Entry",
         render: <i className="fas fa-feather-alt" />,
@@ -106,7 +102,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_CALENDAR,
-      mountTabOnlyWhenActive: true,
       title: {
         name: "Entries Calendar",
         render: <i className="fas fa-calendar-alt" />,
@@ -121,7 +116,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_FOLDERS,
-      mountTabOnlyWhenActive: true,
       title: {
         name: "Entries Folders",
         render: <i className="fas fa-folder" />,
@@ -140,7 +134,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_LIST,
-      mountTabOnlyWhenActive: true,
       title: { name: "Entries List", render: <i className="fas fa-th-list" /> },
       className: "fade-in",
       render: shouldRenderNewEntryButton ? (
@@ -159,7 +152,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_TABLE,
-      mountTabOnlyWhenActive: true,
       title: { name: "Entries Table", render: <i className="fas fa-table" /> },
       className: "fade-in",
       render: shouldRenderNewEntryButton ? (
@@ -175,7 +167,6 @@ const Entries = ({
     },
     {
       tabId: RouteMap.ENTRIES_MAP,
-      mountTabOnlyWhenActive: true,
       title: {
         name: "Entries Map",
         render: <i className="fas fa-map-marked-alt" />,
@@ -219,4 +210,4 @@ Entries.propTypes = {
   GetUserEntries: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Entries)
+export default connect(mapStateToProps, mapDispatchToProps)(Entries)

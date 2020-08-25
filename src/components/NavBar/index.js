@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { connect as reduxConnect } from "react-redux"
-import { RouteMap } from "../../redux/router/actions"
+import { connect } from "store/provider"
+import { RouteMap } from "store/reducers/router/actions"
 import PropTypes from "prop-types"
 
 import { useSwipeable } from "react-swipeable"
@@ -15,8 +15,8 @@ import {
   NavItem,
 } from "reactstrap"
 import { AddToHomeScreen, StarSearch } from "../"
-import { GetUserEntriesByDate } from "../../redux/Entries/actions"
-import { UserLogout } from "../../redux/User/actions"
+import { GetUserEntriesByDate } from "store/reducers/Entries/actions"
+import { ResetRedux } from "store/reducers/App/actions"
 import Hamburger from "./Hamburger"
 import NavItemLink from "./NavItemLink"
 import { Logo } from "../../images/AWS"
@@ -93,7 +93,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatchToProps = {
-  UserLogout,
+  ResetRedux,
   GetUserEntriesByDate,
 }
 
@@ -101,7 +101,7 @@ const NavBar = ({
   userId,
   userIsSuperUser,
   isMobile,
-  UserLogout,
+  ResetRedux,
   prompt,
   promptToInstall,
 }) => {
@@ -136,7 +136,7 @@ const NavBar = ({
           {userId ? "LOGOUT" : "LOGIN"}
         </span>
       ),
-      onClick: userId ? UserLogout : null,
+      onClick: userId ? ResetRedux : null,
     },
 
     {
@@ -286,8 +286,8 @@ const NavBar = ({
 
 Navbar.propTypes = {
   userId: PropTypes.number,
-  UserLogout: PropTypes.func,
+  ResetRedux: PropTypes.func,
   GetAllEntries: PropTypes.func,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(NavBar)
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar)

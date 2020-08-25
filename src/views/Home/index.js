@@ -1,6 +1,6 @@
 import React, { useMemo, lazy, Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "store/provider"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import {
   AddToHomeScreen,
@@ -9,7 +9,7 @@ import {
   EntriesToggleShowOnlyPublic,
 } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
-import { RouterPush, RouteMap } from "../../redux/router/actions"
+import { RouterPush, RouteMap } from "store/reducers/router/actions"
 import "./styles.css"
 
 const EntryNavButtons = lazy(() =>
@@ -102,4 +102,4 @@ Home.propTypes = {
 
 Home.defaultProps = { userIsLoggedIn: false }
 
-export default reduxConnect(mapStateToProps)(Home)
+export default connect(mapStateToProps)(Home)

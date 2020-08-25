@@ -1,7 +1,9 @@
 import React, { Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { RouteMap } from "../../redux/router/actions"
+import { connect } from "store/provider"
+import { useLocation } from "react-router-dom"
+import { RouteMap } from "store/reducers/router/actions"
+import { Media } from "reactstrap"
 import StarGenerator from "./StarGenerator"
 import BackgroundObjects from "./BackgroundObjects"
 import Rocket from "./Rocket"
@@ -9,6 +11,9 @@ import Earth from "./Earth"
 import Moon from "./Moon"
 import CrecentMoon from "./CrecentMoon"
 import "./styles.css"
+
+const BACKGROUND_IMAGE =
+  "https://steamuserimages-a.akamaihd.net/ugc/1490082213003709148/10EB3DC850188A66E73C17AD9538DF8A1FE5FD9F/"
 
 const RocketEarthMoon = () => (
   <BackgroundObjects>
@@ -38,26 +43,19 @@ const mapStateToProps = ({
     Settings: { show_animated_background },
   },
   Window: { innerHeight, innerWidth },
-  router: {
-    location: { pathname },
-  },
 }) => ({
   show_animated_background,
   starLength: Math.ceil((innerHeight + innerWidth) / 10),
-  pathname,
 })
 
-const BackgroundImage = ({
-  show_animated_background,
-  starLength,
-  pathname,
-}) => {
+const BackgroundImage = ({ show_animated_background, starLength }) => {
+  const { pathname } = useLocation()
   const background = backgroundImageRouteMap(pathname)
 
   return (
     <Fragment>
       <div className="BackgroundImage">
-        {/* <Media src={bgImage} /> */}
+        {/* <Media src={BACKGROUND_IMAGE} style={{ opacity: 0.1 }} /> */}
         {show_animated_background && <StarGenerator length={starLength} />}
       </div>
       {show_animated_background && background}
@@ -65,4 +63,4 @@ const BackgroundImage = ({
   )
 }
 
-export default reduxConnect(mapStateToProps)(BackgroundImage)
+export default connect(mapStateToProps)(BackgroundImage)
