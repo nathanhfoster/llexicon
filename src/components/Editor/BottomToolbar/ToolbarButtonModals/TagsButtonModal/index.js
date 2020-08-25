@@ -19,7 +19,7 @@ import {
   removeAttributeDuplicates,
   stringMatch,
 } from "../../../../../utils"
-import memoizeProps from "../../../../../utils/memoizeProps"
+import memoizeProps from "utils//memoizeProps"
 import { validateTagOrPeopleString, validatedTagString } from "../utlis"
 import {
   EntriesPropTypes,

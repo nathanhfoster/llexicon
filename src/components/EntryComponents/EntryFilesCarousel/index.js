@@ -6,7 +6,7 @@ import { Container, Row, Col, Button } from "reactstrap"
 import { EntryFilesProps } from "store/reducers/Entries/propTypes"
 import { removeAttributeDuplicates } from "../../../utils"
 import { DeleteEntryFile } from "store/reducers/Entries/actions"
-import memoizeProps from "../../../utils/memoizeProps"
+import memoizeProps from "utils//memoizeProps"
 import "./styles.css"
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({

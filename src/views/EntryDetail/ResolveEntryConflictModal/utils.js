@@ -1,4 +1,4 @@
-import propsThatDiffer from "../../../utils/propsThatDiffer"
+import propsThatDiffer from "utils//propsThatDiffer"
 
 const MEMOIZE_ENTRY_PROPS = [
   "EntryFiles",
