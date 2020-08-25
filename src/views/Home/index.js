@@ -15,7 +15,7 @@ import "./styles.css"
 const EntryNavButtons = lazy(() =>
   import("../../components/EntryComponents/EntryNavButtons")
 )
-const UserEntriesTable = lazy(() => import("../../containers/UserEntriesTable"))
+const UserEntriesTable = lazy(() => import("containers/UserEntriesTable"))
 
 const EntriesMostViewed = lazy(() =>
   import("../../components/EntryComponents/EntriesMostViewed")
