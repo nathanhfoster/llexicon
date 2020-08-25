@@ -1,7 +1,9 @@
 import * as React from "react"
 import { ContextConsumer } from "./provider"
 
-const bindActionCreator = (actionCreator, dispatch, getState) => {
+const bindActionCreator = (actionCreator, dispatch, state) => {
+  const getState = () => state
+  // Closure function
   function boundAction() {
     try {
       /**
@@ -44,9 +46,9 @@ const bindActionCreator = (actionCreator, dispatch, getState) => {
  * @param {Function} state The `state` value / object derived from ContextConsumer
  */
 
-const bindActionCreators = (actionCreators, dispatch, getState) => {
+const bindActionCreators = (actionCreators, dispatch, state) => {
   if (typeof actionCreators === "function") {
-    return bindActionCreator(actionCreators, dispatch, getState)
+    return bindActionCreator(actionCreators, dispatch, state)
   }
 
   if (typeof actionCreators !== "object" || actionCreators === null) {
@@ -62,7 +64,7 @@ const bindActionCreators = (actionCreators, dispatch, getState) => {
   for (const key in actionCreators) {
     const action = actionCreators[key]
     if (typeof action === "function") {
-      boundActionCreators[key] = bindActionCreator(action, dispatch, getState)
+      boundActionCreators[key] = bindActionCreator(action, dispatch, state)
     }
   }
 
@@ -102,8 +104,6 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
        */
       const { state, dispatch } = React.useContext(ContextConsumer)
 
-      const getState = React.useCallback(() => state, [state])
-
       // Memoize globalState
       const stateToProps = mapStateToProps
         ? React.useMemo(() => mapStateToProps(state, ownProps), [
@@ -133,15 +133,15 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
                * })
                *
                */
-              mapDispatchToProps(dispatch, getState)
+              mapDispatchToProps(dispatch, ownProps)
             : /**
                * For convenience, append (dispatch, getState) => function to the orginal (arguments) => function
                * Or if the action returns an object, wrap it in a dispatch
                * example: const mapDispatchToProps = { basicTableSort, basicTableFilter }
                *
                */
-              bindActionCreators(mapDispatchToProps, dispatch, getState),
-        [mapDispatchToProps]
+              bindActionCreators(mapDispatchToProps, dispatch, state),
+        [mapDispatchToProps, ownProps]
       )
 
       // Memoize the Component's combined props

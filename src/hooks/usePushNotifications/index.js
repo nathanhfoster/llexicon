@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Axios } from "store/reducers/Actions"
+import { Axios } from "reducers//Actions"
 import qs from "qs"
 //the function to call the push server: https://github.com/Spyna/push-notification-demo/blob/master/front-end-react/src/utils/Axios().js
 import { getSHA256 } from "../../utils"

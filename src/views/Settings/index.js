@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
 import { useLocation } from "react-router-dom"
-import { UserProps } from "store/reducers/User/propTypes"
+import { UserProps } from "reducers//User/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { BasicTabs, Header, PushNotifications } from "../../components"
 import EntryStatistics from "./EntryStatistics"
@@ -10,7 +10,7 @@ import AccountDetails from "./AccountDetails"
 import UpdateProfile from "./UpdateProfile"
 import Storage from "./Storage"
 import Preferences from "./Preferences"
-import { RouterPush, RouteMap } from "store/reducers/router/actions"
+import { RouterPush, RouteMap } from "reducers//router/actions"
 import "./styles.css"
 
 const {

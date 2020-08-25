@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { UserProps } from "store/reducers/User/propTypes"
+import { UserProps } from "reducers//User/propTypes"
 import { connect } from "store/provider"
 import { Form, FormGroup } from "reactstrap"
 import SettingInput from "./SettingInput"
@@ -9,7 +9,7 @@ import {
   GetUserSettings,
   PostSettings,
   UpdateSettings,
-} from "store/reducers/User/actions"
+} from "reducers//User/actions"
 
 const mapStateToProps = ({ User }) => ({
   User,

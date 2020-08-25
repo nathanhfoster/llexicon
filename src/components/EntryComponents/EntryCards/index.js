@@ -1,6 +1,6 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
+import { EntriesPropTypes } from "reducers//Entries/propTypes"
 import { Col } from "reactstrap"
 import EntryCard from "./EntryCard"
 

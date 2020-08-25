@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
 import { UseDebounce } from ".."
-import { ClearAlerts } from "store/reducers/Alerts/actions"
+import { ClearAlerts } from "reducers//Alerts/actions"
 import "./styles.css"
 
 const mapStateToProps = ({

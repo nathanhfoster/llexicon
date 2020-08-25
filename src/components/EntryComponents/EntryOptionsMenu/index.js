@@ -17,10 +17,10 @@ import {
   Portal,
 } from "../.."
 import { copyStringToClipboard, shareUrl } from "../../../utils"
-import { RouterGoBack, GetEntryDetailUrl } from "store/reducers/router/actions"
+import { RouterGoBack, GetEntryDetailUrl } from "reducers//router/actions"
 import { useDispatch } from "store/provider"
-import { UpdateReduxEntry, SyncEntries } from "store/reducers/Entries/actions"
-import { BASE_JOURNAL_ENTRY_ID } from "store/reducers/Entries/reducer"
+import { UpdateReduxEntry, SyncEntries } from "reducers//Entries/actions"
+import { BASE_JOURNAL_ENTRY_ID } from "reducers//Entries/reducer"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })

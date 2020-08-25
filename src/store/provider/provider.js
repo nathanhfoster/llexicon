@@ -3,11 +3,19 @@ import PropTypes from "prop-types"
 import storeFactory from "../"
 import { combineReducers, isQuotaExceeded } from "../utils"
 
-const AppStateProvider = createContext({})
+const StateProvider = createContext({})
 
 const defaultInitializer = (state) => state
 
 const store = storeFactory()
+
+// This allows actions to dispatch other actions and pass (dispatch, getState)
+const augmentDispatch = (dispatch, state) => (input) => {
+  const getState = () => state
+  return input instanceof Function || typeof input === "function"
+    ? input(dispatch, getState)
+    : dispatch(input)
+}
 
 const ContextProvider = ({
   rootReducer,
@@ -25,11 +33,13 @@ const ContextProvider = ({
   // setup useReducer with the returned values of the combineReducers
   const [state, dispatch] = useReducer(mainReducer, mainState, initializer)
 
+  const augmentedDispatch = augmentDispatch(dispatch, state)
+
   // Update store object to potentially access it outside of a component
   if (!store.isReady) {
     store.isReady = true
     store.state = state
-    store.dispatch = (params) => dispatch(params)
+    store.dispatch = augmentedDispatch
     Object.freeze(store)
   }
 
@@ -49,12 +59,15 @@ const ContextProvider = ({
   }, [state, persistKey])
 
   // pass in the returned value of useReducer
-  const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch])
+  const contextValue = useMemo(() => ({ state, dispatch: augmentedDispatch }), [
+    state,
+    dispatch,
+  ])
 
   return (
-    <AppStateProvider.Provider value={contextValue}>
+    <StateProvider.Provider value={contextValue}>
       {children}
-    </AppStateProvider.Provider>
+    </StateProvider.Provider>
   )
 }
 
@@ -76,4 +89,4 @@ ContextProvider.defaultProps = {
   initializer: defaultInitializer,
 }
 
-export { ContextProvider, AppStateProvider as ContextConsumer, store }
+export { ContextProvider, StateProvider as ContextConsumer, store }

@@ -12,7 +12,7 @@ import {
 import { connect } from "store/provider"
 import ToolbarModal from "../../ToolbarModal"
 import { TagsContainer, DebounceInput } from "../../../../"
-import { GetUserEntryTags } from "store/reducers/Entries/actions"
+import { GetUserEntryTags } from "reducers//Entries/actions"
 import {
   filterMapArray,
   TopKFrequentStrings,
@@ -21,10 +21,7 @@ import {
 } from "../../../../../utils"
 import memoizeProps from "utils//memoizeProps"
 import { validateTagOrPeopleString, validatedTagString } from "../utlis"
-import {
-  EntriesPropTypes,
-  EntryTagsProps,
-} from "store/reducers/Entries/propTypes"
+import { EntriesPropTypes, EntryTagsProps } from "reducers//Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },

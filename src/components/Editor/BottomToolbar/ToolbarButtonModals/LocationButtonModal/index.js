@@ -1,13 +1,13 @@
 import React, { useRef, useMemo, useEffect } from "react"
 import { connect } from "store/provider"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "store/reducers/Entries/propTypes"
+import { EntryPropTypes } from "reducers//Entries/propTypes"
 import { Container } from "reactstrap"
 import ToolbarModal from "../../ToolbarModal"
 import { BasicMap } from "../../../../"
-import { WatchUserLocation } from "store/reducers/User/actions"
-import { SetMapBoundsCenterZoom } from "store/reducers/Map/actions"
-import { GetAddress } from "store/reducers/Actions/Google"
+import { WatchUserLocation } from "reducers//User/actions"
+import { SetMapBoundsCenterZoom } from "reducers//Map/actions"
+import { GetAddress } from "reducers//Actions/Google"
 import "./styles.css"
 
 const mapStateToProps = ({ Map, User: { location } }) => ({

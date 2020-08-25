@@ -11,9 +11,9 @@
 // opt-in, read https://bit.ly/CRA-PWA
 
 import serviceWorkerConfig from "./serviceWorkerConfig"
-import { SetAlert } from "store/reducers/Alerts/actions"
-import { GetAppVersion } from "store/reducers/App/actions"
-import { SetWindow } from "store/reducers/Window/actions"
+import { SetAlert } from "reducers//Alerts/actions"
+import { GetAppVersion } from "reducers//App/actions"
+import { SetWindow } from "reducers//Window/actions"
 
 const { PUBLIC_URL } = process.env
 

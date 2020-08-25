@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "store/provider"
 
 import { EntriesTable } from "../../components"
-import { EntriesPropTypes } from "store/reducers/Entries/propTypes"
+import { EntriesPropTypes } from "reducers//Entries/propTypes"
 
 const mapStateToProps = ({ Entries: { items, sortMap, filterMap } }) => ({
   items,

@@ -1,6 +1,6 @@
 import ReactGA from "react-ga"
-import { SetAlert } from "store/reducers/Alerts/actions"
-import { GetAppVersion } from "store/reducers/App/actions"
+import { SetAlert } from "reducers//Alerts/actions"
+import { GetAppVersion } from "reducers//App/actions"
 const { PUBLIC_URL } = process.env
 
 const receivePushNotification = (event, registration) => {

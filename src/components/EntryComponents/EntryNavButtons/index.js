@@ -1,7 +1,7 @@
 import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { ButtonGroup, Button } from "reactstrap"
-import { RouterPush } from "store/reducers/router/actions"
+import { RouterPush } from "reducers//router/actions"
 
 import { ENTRY_LINKS } from "../../NavBar"
 

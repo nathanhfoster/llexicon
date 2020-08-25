@@ -1,9 +1,9 @@
 import { EntriesActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
 import { mergeJson, handleFilterEntries } from "./utils"
-import { getStringBytes } from "../../../utils"
-import { RouteMap } from "store/reducers/router/actions"
-import * as AwsImages from "../../../images/AWS"
+import { getStringBytes } from "utils"
+import { RouteMap } from "reducers//router/actions"
+import * as AwsImages from "../../images/AWS"
 const { ...entryFiles } = AwsImages
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`

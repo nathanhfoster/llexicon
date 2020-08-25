@@ -4,7 +4,10 @@ import { AppActionTypes } from "../App/types"
 import { ResetRedux } from "../App/actions"
 import { SetAlert } from "../Alerts/actions"
 import { GetUserEntries } from "../Entries/actions"
-import { clearReduxStoreFromLocalStorage } from "../localState"
+import {
+  clearReduxStoreFromLocalStorage,
+  persistReduxState,
+} from "../localState"
 import qs from "qs"
 import ReactGA from "react-ga"
 
@@ -39,6 +42,7 @@ const UserLogin = (payload, rememberMe) => (dispatch) => {
       const { id, token } = data
       await dispatch(RefreshPatchUser(id))
       await dispatch(SetUser(data))
+      await dispatch(persistReduxState())
       await dispatch(GetUserEntries(1))
       ReactGA.event({
         category: "Login",
@@ -110,7 +114,7 @@ const UpdateProfile = (payload) => (dispatch, getState) => {
   dispatch(setPendingUser())
   const { id } = getState().User
   // await dispatch({ type: USER_UPDATE_LOADING })
-  return AxiosForm(payload)
+  return AxiosForm({ payload })
     .patch(`users/${id}/`, payload)
     .then(({ data }) => {
       dispatch({

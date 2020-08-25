@@ -1,10 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { NavLink } from "react-router-dom"
-import {
-  RouterLinkPush,
-  GetEntryDetailUrl,
-} from "store/reducers/router/actions"
+import { RouterLinkPush, GetEntryDetailUrl } from "reducers//router/actions"
 
 const EntryDataCellLink = ({ className, entryId, children }) => {
   const entryDetailUrl = GetEntryDetailUrl(entryId)

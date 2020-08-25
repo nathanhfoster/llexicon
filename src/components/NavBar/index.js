@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { connect } from "store/provider"
-import { RouteMap } from "store/reducers/router/actions"
+import { RouteMap } from "reducers//router/actions"
 import PropTypes from "prop-types"
 
 import { useSwipeable } from "react-swipeable"
@@ -15,8 +15,8 @@ import {
   NavItem,
 } from "reactstrap"
 import { AddToHomeScreen, StarSearch } from "../"
-import { GetUserEntriesByDate } from "store/reducers/Entries/actions"
-import { ResetRedux } from "store/reducers/App/actions"
+import { GetUserEntriesByDate } from "reducers//Entries/actions"
+import { ResetRedux } from "reducers//App/actions"
 import Hamburger from "./Hamburger"
 import NavItemLink from "./NavItemLink"
 import { Logo } from "../../images/AWS"

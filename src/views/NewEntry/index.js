@@ -1,7 +1,7 @@
 import React, { useEffect, lazy } from "react"
 import { connect } from "store/provider"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "store/reducers/Entries/propTypes"
+import { EntryPropTypes } from "reducers//Entries/propTypes"
 import { ReactDatePicker } from "../../components"
 import {
   Container,
@@ -14,18 +14,15 @@ import {
   InputGroupText,
   Button,
 } from "reactstrap"
-import { SetCalendar } from "store/reducers/Calendar/actions"
-import { PostReduxEntry, SyncEntries } from "store/reducers/Entries/actions"
+import { SetCalendar } from "reducers//Calendar/actions"
+import { PostReduxEntry, SyncEntries } from "reducers//Entries/actions"
 
-import {
-  SetEditorState,
-  ClearEditorState,
-} from "store/reducers/TextEditor/actions"
+import { SetEditorState, ClearEditorState } from "reducers//TextEditor/actions"
 
-import { DEFAULT_STATE_TEXT_EDITOR } from "store/reducers/TextEditor/reducer"
+import { DEFAULT_STATE_TEXT_EDITOR } from "reducers//TextEditor/reducer"
 import { getStringBytes } from "../../utils"
 import "./styles.css"
-import { ResetMap } from "store/reducers/Map/actions"
+import { ResetMap } from "reducers//Map/actions"
 
 const Editor = lazy(() => import("../../components/Editor"))
 
