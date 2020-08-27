@@ -3,10 +3,14 @@ import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import storeFactory from "./redux"
-import rootReducer from './redux/RootReducer'
-import { ContextProvider, store as otherStore } from "./store/provider"
+import rootReducer from "./redux/RootReducer"
+import { ContextProvider } from "./store/provider"
 import { history } from "./redux/router/reducer"
-import { getUserClientId, PersistedStorageReduxKey } from "./redux/localState"
+import {
+  getUserClientId,
+  PersistedStorageReduxKey,
+  clearLocalStorage,
+} from "./redux/localState"
 import { Provider } from "react-redux"
 import { ConnectedRouter } from "connected-react-router"
 import { deepParseJson, getRandomInt } from "./utils"
@@ -18,10 +22,17 @@ import ReactGA from "react-ga"
 import prototypes from "./prototypes"
 prototypes()
 
+const getPersistedState = () => {
+  let state
 
-const persistedState = deepParseJson(
-  localStorage.getItem(PersistedStorageReduxKey)
-)
+  try {
+    state = JSON.parse(localStorage.getItem(PersistedStorageReduxKey))
+  } catch (e) {
+    clearLocalStorage()
+  }
+  return state
+}
+const persistedState = getPersistedState()
 
 const { store, persistor } = storeFactory()
 
@@ -30,8 +41,6 @@ const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 const inDevelopmentMode = NODE_ENV === "development"
 
 const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
-
-console.log(otherStore)
 
 ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
   // debug: inDevelopmentMode,

@@ -1,7 +1,10 @@
 import * as React from "react"
+import { useContext } from "./"
 import { ContextConsumer } from "./provider"
 
-const bindActionCreator = (actionCreator, dispatch, getState) => {
+const bindActionCreator = (actionCreator, dispatch, state) => {
+  const getState = () => state
+  // Closure function
   function boundAction() {
     try {
       /**
@@ -44,15 +47,15 @@ const bindActionCreator = (actionCreator, dispatch, getState) => {
  * @param {Function} state The `state` value / object derived from ContextConsumer
  */
 
-const bindActionCreators = (actionCreators, dispatch, getState) => {
+const bindActionCreators = (actionCreators, dispatch, state) => {
   if (typeof actionCreators === "function") {
-    return bindActionCreator(actionCreators, dispatch, getState)
+    return bindActionCreator(actionCreators, dispatch, state)
   }
 
   if (typeof actionCreators !== "object" || actionCreators === null) {
     throw new Error(
       `bindActionCreators expected an object or a function, instead received ${
-      actionCreators === null ? "null" : typeof actionCreators
+        actionCreators === null ? "null" : typeof actionCreators
       }.`
     )
   }
@@ -62,7 +65,7 @@ const bindActionCreators = (actionCreators, dispatch, getState) => {
   for (const key in actionCreators) {
     const action = actionCreators[key]
     if (typeof action === "function") {
-      boundActionCreators[key] = bindActionCreator(action, dispatch, getState)
+      boundActionCreators[key] = bindActionCreator(action, dispatch, state)
     }
   }
 
@@ -100,13 +103,14 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
        * To prevent this, we will use the useContext hook which allows us to use other hooks
        * This allows us to memoize our stateToProps and dispatchToProps using the useMemo hook
        */
-      const { state, dispatch } = React.useContext(ContextConsumer)
-
-      const getState = React.useCallback(() => state, [state])
+      const { state, dispatch } = useContext(ContextConsumer)
 
       // Memoize globalState
       const stateToProps = mapStateToProps
-        ? React.useMemo(() => mapStateToProps(state, ownProps), [state, ownProps])
+        ? React.useMemo(() => mapStateToProps(state, ownProps), [
+            state,
+            ownProps,
+          ])
         : null
 
       // Memoize globalDispatch
@@ -116,7 +120,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
             ? null
             : mapDispatchToProps instanceof Function ||
               typeof mapDispatchToProps === "function"
-              ? /**
+            ? /**
                * pass dispatch and getState to the mapDispatchToProps function
                *
                * example:
@@ -130,15 +134,15 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
                * })
                *
                */
-              mapDispatchToProps(dispatch, getState)
-              : /**
+              mapDispatchToProps(dispatch, ownProps)
+            : /**
                * For convenience, append (dispatch, getState) => function to the orginal (arguments) => function
                * Or if the action returns an object, wrap it in a dispatch
                * example: const mapDispatchToProps = { basicTableSort, basicTableFilter }
                *
                */
-              bindActionCreators(mapDispatchToProps, dispatch, getState),
-        [mapDispatchToProps]
+              bindActionCreators(mapDispatchToProps, dispatch, state),
+        [mapDispatchToProps, ownProps]
       )
 
       // Memoize the Component's combined props
@@ -153,7 +157,6 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
         }),
         [ownProps, stateToProps, dispatchToProps]
       )
-
 
       // Pass all the key value combinedComponentProps to Component
       return <Component {...combinedComponentProps} />

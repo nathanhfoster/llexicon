@@ -56,9 +56,10 @@ const combineReducers = (reducers, initialState) => {
     }
     return hasStateChanged ? updatedStateByReducers : state
   }
+  let combinedStateAndReducers
 
   if (initialState) {
-    return [initialState, reducerFunction]
+    combinedStateAndReducers = [initialState, reducerFunction]
   } else {
     // set default state returned by reducer and its reducer
     let globalState = {}
@@ -74,8 +75,10 @@ const combineReducers = (reducers, initialState) => {
     }
 
     // return the initial state and the global reducer
-    return [globalState, reducerFunction]
+    combinedStateAndReducers = [globalState, reducerFunction]
   }
+
+  return combinedStateAndReducers
 }
 
 export { combineReducers }
