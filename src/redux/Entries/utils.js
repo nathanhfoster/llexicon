@@ -1,5 +1,4 @@
-import React from "react"
-import { objectToArray, stringMatch } from "../../utils"
+import { objectToArray, stringMatch } from "utils"
 
 const getMostRecent = (reduxData, newData) => {
   const reduxDataLastUpdated = new Date(

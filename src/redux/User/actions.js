@@ -89,6 +89,7 @@ const CreateUser = (payload, rememberMe) => (dispatch) => {
         category: "Sign Up",
         action: "User signed up!",
       })
+      return res
     })
     .catch((e) => dispatch(setUserError(e)))
 }
@@ -114,7 +115,7 @@ const UpdateProfile = (payload) => (dispatch, getState) => {
   dispatch(setPendingUser())
   const { id } = getState().User
   // await dispatch({ type: USER_UPDATE_LOADING })
-  return AxiosForm(payload)
+  return AxiosForm({ payload })
     .patch(`users/${id}/`, payload)
     .then(({ data }) => {
       dispatch({
@@ -281,7 +282,7 @@ const DeleteAccount = () => (dispatch, getState) => {
     .then((res) => {
       dispatch(SetAlert({ title: "Deleted", message: "Account" }))
       clearReduxStoreFromLocalStorage()
-      dispatch(UserLogout())
+      dispatch(ResetRedux())
       ReactGA.event({
         category: "Delete Account",
         action: "User deleted their account!",
