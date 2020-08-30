@@ -33,7 +33,6 @@ const isQuotaExceeded = (e) => {
 export {
   actionTypes,
   combineReducers,
-  // createStore,
   isPlainObject,
   isAFunction,
   isQuotaExceeded,
