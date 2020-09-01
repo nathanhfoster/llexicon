@@ -11,7 +11,10 @@ import {
 import qs from "qs"
 import ReactGA from "react-ga"
 
-const setPendingUser = () => ({ type: UserActionTypes.USER_PENDING })
+const setPendingUser = (payload = true) => ({
+  type: UserActionTypes.USER_PENDING,
+  payload,
+})
 
 const setUserError = ({ config, response, message, name, stack }) => (
   dispatch
@@ -199,8 +202,9 @@ const WatchUserLocation = (watchId) => (dispatch) => {
   )
 }
 
-const PasswordReset = (payload) => (dispatch) =>
-  AxiosOffline()
+const PasswordReset = (payload) => (dispatch) => {
+  dispatch(setPendingUser())
+  return AxiosOffline()
     .post("rest-auth/password/reset/", qs.stringify(payload))
     .then(({ data: { detail } }) => {
       dispatch(
@@ -213,8 +217,10 @@ const PasswordReset = (payload) => (dispatch) =>
         category: "Password Reset",
         action: "User requested a password reset!",
       })
+      dispatch(setPendingUser(false))
     })
     .catch((e) => dispatch(setUserError(e)))
+}
 
 const GetUserSettings = () => (dispatch, getState) => {
   const { id } = getState().User

@@ -1,12 +1,13 @@
-import React, { useCallback, useMemo } from "react"
+import React, { useCallback, useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
 import { CreateUser, UserLogin } from "reducers//User/actions"
 
-const mapStateToProps = ({ User: { error } }) => ({
+const mapStateToProps = ({ User: { error, pending } }) => ({
   userError: error,
+  userPending: pending,
 })
 
 const mapDispatchToProps = {
@@ -14,7 +15,7 @@ const mapDispatchToProps = {
   UserLogin,
 }
 
-const SignUp = ({ userError, CreateUser, UserLogin }) => {
+const SignUp = ({ userError, userPending, CreateUser }) => {
   const errorMessage =
     userError && "Please confirm Username, Email, or Password"
   const handleSignUp = useCallback(async (payload) => {
@@ -67,12 +68,22 @@ const SignUp = ({ userError, CreateUser, UserLogin }) => {
     [errorMessage]
   )
 
+  const formSubmitLabel = useMemo(
+    () => (
+      <Fragment>
+        {userPending && <i className={`fas fa-sun SunIcon`} />}
+        <span className="ml-1">Sign Up</span>
+      </Fragment>
+    ),
+    [userPending]
+  )
+
   return (
     <Jumbotron className="LoginFormContainer">
       <BasicForm
         title="Sign Up"
         onSubmit={handleSignUp}
-        submitLabel="Sign Up"
+        submitLabel={formSubmitLabel}
         inputs={inputs}
       />
       <FacebookGoogleLogin />

@@ -4,7 +4,7 @@ import Table from "./Table"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
-import { ContextProvider } from "../../../store/provider"
+import { ContextProvider } from "store/provider"
 
 const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
   <ContextProvider

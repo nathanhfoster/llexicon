@@ -1,7 +1,7 @@
 import React, { createContext, useMemo, useReducer, useEffect } from "react"
 import PropTypes from "prop-types"
-import storeFactory from "../"
-import { combineReducers, isQuotaExceeded } from "../utils"
+import { storeFactory } from "../"
+import { combineReducers, isAFunction } from "../utils"
 
 const StateProvider = createContext({})
 
@@ -11,23 +11,21 @@ const store = storeFactory()
 
 // This allows actions to dispatch other actions and pass (dispatch, getState)
 const augmentDispatch = (dispatch, state) => (input) => {
+  // console.log(isAFunction(input), input)
   const getState = () => state
-  return input instanceof Function || typeof input === "function"
-    ? input(dispatch, getState)
-    : dispatch(input)
+  return isAFunction(input) ? input(dispatch, getState) : dispatch(input)
 }
 
 const ContextProvider = ({
   rootReducer,
   initialState,
   initializer,
-  persistKey,
   children,
 }) => {
   // call the function to get initial state and global reducer
-  const [mainState, mainReducer] = useMemo(
+  let [mainState, mainReducer] = useMemo(
     () => combineReducers(rootReducer, initialState),
-    []
+    [rootReducer, initialState]
   )
 
   // setup useReducer with the returned values of the combineReducers
@@ -36,27 +34,16 @@ const ContextProvider = ({
   const augmentedDispatch = augmentDispatch(dispatch, state)
 
   // Update store object to potentially access it outside of a component
-  if (!store.isReady) {
-    store.isReady = true
-    store.state = state
-    store.dispatch = augmentedDispatch
-    Object.freeze(store)
-  }
-
-  // persist storage if persistKey exists
   useEffect(() => {
-    if (persistKey) {
-      let stringifiedState = JSON.stringify(state)
-      try {
-        localStorage.setItem(persistKey, stringifiedState)
-      } catch (e) {
-        if (isQuotaExceeded(e)) {
-          stringifiedState = JSON.stringify(mainState)
-          localStorage.setItem(persistKey, stringifiedState)
-        }
-      }
+    if (!store.isReady) {
+      store.isReady = true
+      store.dispatch = augmentedDispatch
+      // Object.freeze(store); // don't freeze the object, or store.isReady can't be re-assigned
     }
-  }, [state, persistKey])
+    return () => {
+      store.isReady = false
+    }
+  }, [augmentedDispatch])
 
   // pass in the returned value of useReducer
   const contextValue = useMemo(() => ({ state, dispatch: augmentedDispatch }), [

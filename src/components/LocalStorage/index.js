@@ -80,10 +80,9 @@ const LocalStorage = ({
     } catch (e) {
       if (isQuotaExceeded(e)) {
         const previousLocalStorageBytes = getStringBytes(previousLocalStorage)
-        if (previousLocalStorageBytes !== localStorageLimitBytes) {
-          setLocalStorageLimitBytes(previousLocalStorageBytes)
-          localStorage.removeItem(LOCAL_STORAGE_QOUTA_LIMIT_TEST)
-        }
+
+        setLocalStorageLimitBytes(previousLocalStorageBytes)
+        localStorage.removeItem(LOCAL_STORAGE_QOUTA_LIMIT_TEST)
       }
     }
   }, [localStorageLimitBytes])

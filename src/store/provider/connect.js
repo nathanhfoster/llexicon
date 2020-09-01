@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useContext } from "./"
 import { ContextConsumer } from "./provider"
 
 const bindActionCreator = (actionCreator, dispatch, state) => {
@@ -102,7 +103,7 @@ const connect = (mapStateToProps, mapDispatchToProps) =>
        * To prevent this, we will use the useContext hook which allows us to use other hooks
        * This allows us to memoize our stateToProps and dispatchToProps using the useMemo hook
        */
-      const { state, dispatch } = React.useContext(ContextConsumer)
+      const { state, dispatch } = useContext(ContextConsumer)
 
       // Memoize globalState
       const stateToProps = mapStateToProps

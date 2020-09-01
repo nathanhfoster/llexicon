@@ -2,11 +2,17 @@ import "./css/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
-import { Reducers } from "reducers//RootReducer"
-import { ContextProvider, store } from "./store/provider"
-import { history } from "reducers//router/reducer"
-import { getUserClientId, PersistedStorageReduxKey } from "reducers//localState"
-import { Router as ConnectedRouter } from "react-router-dom"
+import storeFactory from "./redux"
+import rootReducer from "./redux/RootReducer"
+import { ContextProvider } from "store/provider"
+import { history } from "./redux/router/reducer"
+import {
+  getUserClientId,
+  PersistedStorageReduxKey,
+  clearLocalStorage,
+} from "./redux/localState"
+import { Provider } from "react-redux"
+import { ConnectedRouter } from "connected-react-router"
 import { deepParseJson, getRandomInt } from "./utils"
 import { LoadingScreen } from "./components"
 import * as serviceWorker from "./serviceWorker"
@@ -15,9 +21,17 @@ import ReactGA from "react-ga"
 import prototypes from "./prototypes"
 prototypes()
 
-const persistedState = deepParseJson(
-  localStorage.getItem(PersistedStorageReduxKey)
-)
+const getPersistedState = () => {
+  let state
+
+  try {
+    state = JSON.parse(localStorage.getItem(PersistedStorageReduxKey))
+  } catch (e) {
+    clearLocalStorage()
+  }
+  return state
+}
+const persistedState = getPersistedState()
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 

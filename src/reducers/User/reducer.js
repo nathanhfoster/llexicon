@@ -42,10 +42,10 @@ const User = (state = DEFAULT_STATE_USER, action) => {
   const { type, payload } = action
   switch (type) {
     case UserActionTypes.USER_PENDING:
-      return { ...state, pending: true }
+      return { ...state, pending: payload }
 
     case UserActionTypes.USER_ERROR:
-      return { ...state, error: payload }
+      return { ...state, error: payload, pending: false }
 
     case UserActionTypes.USER_RESET_ERROR:
       return { ...state, error: DEFAULT_STATE_USER.error }
