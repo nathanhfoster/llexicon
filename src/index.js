@@ -4,7 +4,7 @@ import ReactDOM from "react-dom"
 import App from "./App"
 import storeFactory from "./redux"
 import rootReducer from "./redux/RootReducer"
-import { ContextProvider } from "./store/provider"
+import { ContextProvider } from "store/provider"
 import { history } from "./redux/router/reducer"
 import {
   getUserClientId,

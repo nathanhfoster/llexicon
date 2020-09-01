@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { DataPropType, ColumnsPropType } from "../state/types"
 import TableRow from "./TableRow"
 import TableDataCell from "./TableRow/TableDataCell"
-import { connect } from "../../../../store/provider"
+import { connect } from "store/provider"
 
 const mapStateToProps = ({
   currentPage,

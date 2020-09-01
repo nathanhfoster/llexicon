@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import TableDataCell from "./TableDataCell"
 import { Collapse } from "reactstrap"
 import { ColumnsPropType } from "../../state/types"
-import { connect } from "../../../../../store/provider"
+import { connect } from "store/provider"
 import { isType } from "../../../../../utils"
 
 const mapStateToProps = ({ getRowValue, onRowClick, columns }) => ({

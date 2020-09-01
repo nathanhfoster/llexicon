@@ -1,5 +1,5 @@
 import React, { useMemo, memo, lazy, Fragment } from "react"
-import { connect } from "../../../../store/provider"
+import { connect } from "store/provider"
 import PropTypes from "prop-types"
 import { Table } from "reactstrap"
 import { tableSort, tableFilter } from "../utils"
