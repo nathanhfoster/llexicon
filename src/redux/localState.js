@@ -218,4 +218,5 @@ export {
   getUser,
   getUserClientId,
   handleQuotaExceeded,
+  isQuotaExceeded,
 }

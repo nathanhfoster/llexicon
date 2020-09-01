@@ -29,6 +29,7 @@ const GetUserEntryTags = () => (dispatch, getState) => {
         action: "User got their entry tags!",
         value: id,
       })
+      return data
     })
     .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }

@@ -126,10 +126,11 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         title: <i className="fas fa-birthday-cake" />,
         key: "date_joined",
         width: 120,
+        defaultSortValue: true,
         sort: (a, b, sortUp) =>
           sortUp
-            ? new Date(b.last_login) - new Date(a.last_login)
-            : new Date(a.last_login) - new Date(b.last_login),
+            ? new Date(b.date_joined) - new Date(a.date_joined)
+            : new Date(a.date_joined) - new Date(b.date_joined),
 
         filter: "date",
         filterPlaceholder: "Date joined",
@@ -175,7 +176,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
         <BasicTable
           sortable
           filterable
-          pageSize={25}
+          pageSize={15}
           columns={tableColumns}
           dataDisplayName="Users"
           data={users}

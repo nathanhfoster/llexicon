@@ -4,7 +4,7 @@ import Table from "./Table"
 import { getInitialState, BasicTableReducer } from "./state/reducer"
 import { ColumnsPropType, DataPropType } from "./state/types"
 import { stringMatch } from "../../../utils"
-import { ContextProvider } from "../../../store/provider"
+import { ContextProvider } from "store/provider"
 
 const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
   <ContextProvider
@@ -55,7 +55,7 @@ BasicTableProvider.defaultProps = {
   dark: true,
   responsive: true,
   pageSize: 5,
-  pageSizes: [5, 10, 15, 25, 50],
+  pageSizes: [5, 15, 25, 50],
   sortList: [],
   sortList: [],
   columns: [

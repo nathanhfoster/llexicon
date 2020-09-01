@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { useEffect, useState, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { BasicProgress, Header } from "../"
@@ -7,6 +7,15 @@ import { ButtonClearCache } from "../"
 import { formatBytes, getStringBytes } from "../../utils"
 import { EntriesPropTypes } from "../../redux/Entries/propTypes"
 import { CloudDownload } from "../../images/SVG"
+import {
+  PersistedStorageReduxKey,
+  isQuotaExceeded,
+} from "../../redux/localState"
+
+const LOCAL_STORAGE_LIMIT = 10 * 1024 * 1024
+const SERVER_STORAGE_LIMIT = 500 * 1024 * 1024
+const LOCAL_STORAGE_QOUTA_LIMIT_TEST = "qoutaLimitTest"
+const LOCAL_STORAGE_QOUTA_LIMIT_TEST_ITERATIONS = ~~(LOCAL_STORAGE_LIMIT / 100)
 
 const mapStateToProps = (state) => {
   const {
@@ -46,9 +55,43 @@ const LocalStorage = ({
   localStorageQuota,
   localStorageUsageDetails,
 }) => {
-  const localStorageLimit = 5 * 1024 * 1024
+  const [localStorageLimitBytes, setLocalStorageLimitBytes] = useState(
+    reduxStoreUsage
+  )
+
+  useEffect(() => {
+    var i = 0
+    var previousLocalStorage = ""
+    try {
+      for (
+        i = LOCAL_STORAGE_QOUTA_LIMIT_TEST_ITERATIONS;
+        i <= LOCAL_STORAGE_LIMIT;
+        i += LOCAL_STORAGE_QOUTA_LIMIT_TEST_ITERATIONS
+      ) {
+        const currentLocalStorageTest =
+          localStorage.getItem(LOCAL_STORAGE_QOUTA_LIMIT_TEST) || ""
+        const currentReduxLocalStorage =
+          localStorage.getItem(PersistedStorageReduxKey) || ""
+        previousLocalStorage = currentLocalStorageTest.concat(
+          currentReduxLocalStorage
+        )
+        localStorage.setItem(
+          LOCAL_STORAGE_QOUTA_LIMIT_TEST,
+          new Array(i).join("a")
+        )
+      }
+    } catch (e) {
+      if (isQuotaExceeded(e)) {
+        const previousLocalStorageBytes = getStringBytes(previousLocalStorage)
+
+        setLocalStorageLimitBytes(previousLocalStorageBytes)
+        localStorage.removeItem(LOCAL_STORAGE_QOUTA_LIMIT_TEST)
+      }
+    }
+  }, [localStorageLimitBytes])
+
   const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(
-    localStorageLimit
+    localStorageLimitBytes
   )}`
 
   const serverUsage = useMemo(
@@ -59,9 +102,8 @@ const LocalStorage = ({
     [items, filteredItems]
   )
 
-  const serverStorageLimit = 5 * 1024 * 1024 * 100
   const serverStorageLabel = `${formatBytes(serverUsage)} / ${formatBytes(
-    serverStorageLimit
+    SERVER_STORAGE_LIMIT
   )}`
 
   // const bars = [
@@ -83,7 +125,7 @@ const LocalStorage = ({
             label={reduxStorageLabel}
             showPercentage
             value={reduxStoreUsage}
-            max={localStorageLimit}
+            max={localStorageLimitBytes}
           />
         </Col>
       </Row>
@@ -104,7 +146,7 @@ const LocalStorage = ({
             label={serverStorageLabel}
             showPercentage
             value={serverUsage}
-            max={serverStorageLimit}
+            max={SERVER_STORAGE_LIMIT}
           />
         </Col>
       </Row>

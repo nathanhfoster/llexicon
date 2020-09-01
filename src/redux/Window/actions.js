@@ -1,8 +1,7 @@
 import { WindowActionTypes } from "./types"
 
-const SetWindow = (payload) => ({
+const SetWindow = () => ({
   type: WindowActionTypes.SET_WINDOW,
-  payload,
 })
 
 export { SetWindow }

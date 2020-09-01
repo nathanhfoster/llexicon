@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Button
+  Button,
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -17,28 +17,78 @@ import {
   filterMapArray,
   TopKFrequentStrings,
   removeAttributeDuplicates,
-  stringMatch
+  stringMatch,
 } from "../../../../../utils"
 import memoizeProps from "../../../../../utils/memoizeProps"
 import { validateTagOrPeopleString, validatedTagString } from "../utlis"
 import {
   EntriesPropTypes,
-  EntryTagsProps
+  EntryTagsProps,
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryTags }
+  Entries: { items, filteredItems, EntryTags },
 }) => ({ items, filteredItems, UserId: id, EntryTags })
 
 const mapDispatchToProps = {
-  GetUserEntryTags
+  GetUserEntryTags,
 }
 
 const getInitialState = ({ tags }) => ({
   tagName: "",
-  tags
+  tags,
 })
+
+const SUGGESTED = {
+  Amazon: ["amazon"],
+  Apple: ["apple"],
+  Article: [
+    "quora",
+    "article",
+    "medium",
+    "forbes",
+    "fox",
+    "cnn",
+    "nytimes",
+    "express",
+    "politic",
+    "cbs",
+    "theverge",
+    "yahoo",
+    "fortune",
+    "post",
+    "file",
+  ],
+  Cloud: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
+  Development: [
+    "app",
+    "css",
+    "react",
+    "angular",
+    "ionic",
+    "vue",
+    "material",
+    "pwa",
+    "code",
+    "program",
+  ],
+  Document: ["doc", "drive", "aws", "dropbox", "cloud", "box", "file"],
+  Dream: ["dream", "vision"],
+  Facebook: ["facebook"],
+  Gaming: ["game", "theverge"],
+  Email: ["mail", "message"],
+  Image: ["<img src", "instagram", "pintrest", "image", "photo", "file"],
+  Instagram: ["instagram"],
+  Twitter: ["twitter"],
+  Link: ["http", ".com"],
+  Review: ["yelp", "review"],
+  Shopping: ["amazon", "bestbuy", "lowes", "shop", "target", "$"],
+  Support: ["support"],
+  Text: ["text", "message"],
+  Video: ["youtube", "<iframe", "file"],
+  Vision: ["dream", "vision"],
+}
 
 const TagsButtonModal = ({
   UserId,
@@ -48,6 +98,7 @@ const TagsButtonModal = ({
   EntryTags,
   entryId,
   html,
+  title,
   xs,
   onChangeCallback,
   ...restOfProps
@@ -70,16 +121,16 @@ const TagsButtonModal = ({
   const splitTagsAsString = tagName.split(",")
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
-  const entryTags = useMemo(
+  let entryTags = useMemo(
     () =>
       show
         ? Object.values(
-            items
-              .concat(filteredItems)
-              .map((entry) => entry.tags)
-              .flat(1)
-              .concat(EntryTags)
-          )
+          items
+            .concat(filteredItems)
+            .map((entry) => entry.tags)
+            .flat(1)
+            .concat(EntryTags)
+        )
         : [],
     [show, items, filteredItems, EntryTags, tagName, tags, splitTagsAsString]
   )
@@ -88,11 +139,11 @@ const TagsButtonModal = ({
     if (!show) return [[], []]
     else {
       const h = html.toLowerCase()
-      const t = TopKFrequentStrings(entryTags, "name")
+      const t = title.toLowerCase()
+      const f = TopKFrequentStrings(entryTags, "name")
         .filter((entryPersonName) => {
           if (tags.some(({ name }) => name == entryPersonName)) return false
           else if (!lastTagAsString) return true
-          else if (stringMatch(entryPersonName, lastTagAsString)) return true
           else if (stringMatch(entryPersonName, lastTagAsString)) return true
           else return false
         })
@@ -101,38 +152,58 @@ const TagsButtonModal = ({
       let suggestedTags = []
       let frequentTags = []
 
-      for (let i = 0, { length } = t; i < length; i++) {
-        const tag = t[i]
+      for (const [key, conditions] of Object.entries(SUGGESTED)) {
+        const notInFrequentTags = !frequentTags.some(({ name }) => name === key)
+        const notInTags = !tags.some(({ name }) => name === key)
+        const conditionMet =
+          conditions.length === 0
+            ? true
+            : conditions.reduce(
+              (htmlContainsCondition, condition) =>
+                h.includes(condition) || t.includes(condition)
+                  ? true
+                  : htmlContainsCondition,
+              false
+            )
+        if (notInFrequentTags && notInTags && conditionMet) {
+          suggestedTags.push({ name: key })
+        }
+      }
+
+      for (let i = 0, { length } = f; i < length; i++) {
+        const tag = f[i]
         const names = tag.name.split(" ")
         if (
           names.some((name) => {
             const n = name.toLowerCase()
-            return n && h.includes(n)
+            return (n && h.includes(n)) || (t && t.includes(n))
           })
         ) {
-          suggestedTags.push(tag)
-        } else {
+          if (!suggestedTags.some(({ name }) => name === tag.name)) {
+            suggestedTags.push(tag)
+          }
+        } else if (!frequentTags.some(({ name }) => name === tag.name)) {
           frequentTags.push(tag)
         }
       }
 
       return [suggestedTags, frequentTags]
     }
-  }, [show, entryTags])
+  }, [show, html, title, entryTags, tags])
 
   const handleTagsInputChange = (value) => {
     const validatedTagsAsString = validatedTagString(value)
 
     setState((prevState) => ({
       ...prevState,
-      tagName: validatedTagsAsString
+      tagName: validatedTagsAsString,
     }))
   }
 
   const handleSaveTags = () => {
     const payload = {
       id: entryId,
-      tags
+      tags,
     }
 
     onChangeCallback(payload)
@@ -151,7 +222,7 @@ const TagsButtonModal = ({
       return {
         ...prevState,
         tags: newTags,
-        tagName: newTagName
+        tagName: newTagName,
       }
     })
   }
@@ -175,7 +246,7 @@ const TagsButtonModal = ({
 
       return {
         ...getInitialState(prevState),
-        tags: newTags
+        tags: newTags,
       }
     })
   }
@@ -203,68 +274,70 @@ const TagsButtonModal = ({
       button="Add Tags"
       xs={xs}
     >
-      <Container className="TagsButtonModal Container">
-        {suggestedTags.length > 0 && (
-          <Row className="TagAndPeopleContainer">
-            <h4>Suggested</h4>
+      {show && (
+        <Container className="TagsButtonModal Container">
+          {suggestedTags.length > 0 && (
+            <Row className="TagAndPeopleContainer">
+              <h4>Suggested</h4>
+              <TagsContainer
+                tags={suggestedTags}
+                maxHeight={150}
+                flexWrap="wrap"
+                onClickCallback={handleAddTag}
+                hoverable
+                emptyString="No tags found..."
+                faIcon="fas fa-tag add-plus"
+              />
+            </Row>
+          )}
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Frequent</h4>
             <TagsContainer
-              tags={suggestedTags}
-              maxHeight={200}
+              tags={frequentTags}
+              maxHeight={150}
               flexWrap="wrap"
               onClickCallback={handleAddTag}
               hoverable
-              emptyString="No people found..."
-              faIcon="fas fa-user-plus"
+              emptyString="No tags found..."
+              faIcon="fas fa-tag add-plus"
             />
           </Row>
-        )}
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <h4>Frequent</h4>
-          <TagsContainer
-            tags={frequentTags}
-            maxHeight={200}
-            flexWrap="wrap"
-            onClickCallback={handleAddTag}
-            hoverable
-            emptyString="No tags found..."
-            faIcon="fas fa-tag add-plus"
-          />
-        </Row>
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <h4>Attached</h4>
-          <TagsContainer
-            tags={tags}
-            maxHeight={150}
-            flexWrap="wrap"
-            onClickCallback={handleRemoveTag}
-            hoverable
-            emptyString="No tags added..."
-            faIcon="fas fa-tag add-minus"
-          />
-        </Row>
-        <Row>
-          <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                tag={Button}
-                className="SaveButton"
-                color="primary"
-                disabled={!tagName}
-                onClick={handleCreateTag}
-              >
-                <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
-              </InputGroupText>
-            </InputGroupAddon>
-            <DebounceInput
-              type="text"
-              value={tagName}
-              onChange={handleTagsInputChange}
-              placeholder={placeholder}
-              focusOnMount
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Attached</h4>
+            <TagsContainer
+              tags={tags}
+              maxHeight={150}
+              flexWrap="wrap"
+              onClickCallback={handleRemoveTag}
+              hoverable
+              emptyString="No tags added..."
+              faIcon="fas fa-tag add-minus"
             />
-          </Col>
-        </Row>
-      </Container>
+          </Row>
+          <Row>
+            <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  tag={Button}
+                  className="SaveButton"
+                  color="primary"
+                  disabled={!tagName}
+                  onClick={handleCreateTag}
+                >
+                  <i className="fas fa-tag add-plus" style={{ fontSize: 20 }} />
+                </InputGroupText>
+              </InputGroupAddon>
+              <DebounceInput
+                type="text"
+                value={tagName}
+                onChange={handleTagsInputChange}
+                placeholder={placeholder}
+                focusOnMount
+              />
+            </Col>
+          </Row>
+        </Container>
+      )}
     </ToolbarModal>
   )
 }
@@ -277,11 +350,11 @@ TagsButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 TagsButtonModal.defaultProps = {
-  tags: []
+  tags: [],
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -292,7 +365,9 @@ const isEqual = (prevProps, nextProps) =>
     "EntryTags",
     "entryId",
     "tags",
-    "xs"
+    "xs",
+    "html",
+    "title",
   ])
 
 export default reduxConnect(

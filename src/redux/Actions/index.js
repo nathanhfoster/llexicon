@@ -44,16 +44,18 @@ Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/R
 }
 */
 
-const Axios = (responseType = "json") => {
+const Axios = (props) => {
+  const { authToken, responseType = "json" } = props ? props : {}
   const {
-    token,
+    token: userToken,
     Settings: { offline_mode },
   } = getUser()
+  const token = authToken || userToken
   if (offline_mode) return isNotLoggedInAxios()
   return axios.create({
     withCredentials: true,
     baseURL: REACT_APP_API_URL,
-    //timeout: 25000,
+    timeout: 0,
     crossDomain: true,
     responseType,
     headers: token
@@ -64,12 +66,6 @@ const Axios = (responseType = "json") => {
       : baseHeaders,
   })
 }
-
-const AxiosCors = (responseType = "json") =>
-  axios.create({
-    baseURL: REACT_APP_API_URL,
-    responseType,
-  })
 
 const AxiosOffline = (responseType = "json") => {
   const { token } = getUser()
@@ -77,7 +73,7 @@ const AxiosOffline = (responseType = "json") => {
   return axios.create({
     withCredentials: token ? true : false,
     baseURL: REACT_APP_API_URL,
-    //timeout: 25000,
+    timeout: 0,
     crossDomain: true,
     responseType,
     headers: token
@@ -89,8 +85,10 @@ const AxiosOffline = (responseType = "json") => {
   })
 }
 
-const AxiosForm = (payload) => {
-  const { token } = getUser()
+const AxiosForm = (props) => {
+  const { authToken, payload } = props ? props : {}
+  const { token: userToken } = getUser()
+  const token = authToken || userToken
   return axios.create({
     baseURL: REACT_APP_API_URL,
     // timeout: 25000,
@@ -139,4 +137,4 @@ const Sync = (dispatchActions) => async (dispatch) => {
     })
 }
 
-export { Axios, AxiosCors, AxiosOffline, AxiosForm, AxiosData, Sync }
+export { Axios, AxiosOffline, AxiosForm, AxiosData, Sync }

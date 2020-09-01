@@ -3,8 +3,14 @@ import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import storeFactory from "./redux"
+import rootReducer from "./redux/RootReducer"
+import { ContextProvider } from "store/provider"
 import { history } from "./redux/router/reducer"
-import { getUserClientId, PersistedStorageReduxKey } from "./redux/localState"
+import {
+  getUserClientId,
+  PersistedStorageReduxKey,
+  clearLocalStorage,
+} from "./redux/localState"
 import { Provider } from "react-redux"
 import { ConnectedRouter } from "connected-react-router"
 import { deepParseJson, getRandomInt } from "./utils"
@@ -13,13 +19,20 @@ import { PersistGate } from "redux-persist/integration/react"
 import * as serviceWorker from "./serviceWorker"
 import { GetAppVersion } from "./redux/App/actions"
 import ReactGA from "react-ga"
+import prototypes from "./prototypes"
+prototypes()
 
-// import { ContextProvider } from "./store/provider/provider"
-// import rootReducer from "./store/containers"
+const getPersistedState = () => {
+  let state
 
-// const persistedState = deepParseJson(
-//   localStorage.getItem(PersistedStorageReduxKey)
-// )
+  try {
+    state = JSON.parse(localStorage.getItem(PersistedStorageReduxKey))
+  } catch (e) {
+    clearLocalStorage()
+  }
+  return state
+}
+const persistedState = getPersistedState()
 
 const { store, persistor } = storeFactory()
 

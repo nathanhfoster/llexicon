@@ -2,16 +2,18 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import ShareUrl from "../"
 
-const ShareOnLinkedIn = ({ url }) => (
-  <ShareUrl href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`}>
+const ShareOnLinkedIn = ({ url, ...restOfProps }) => (
+  <ShareUrl href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`} url={url} {...restOfProps}>
     <i className="fab fa-linkedin" />
   </ShareUrl>
 )
 
 ShareOnLinkedIn.propTypes = {
+  title: PropTypes.string,
+  text: PropTypes.string,
   url: PropTypes.string.isRequired,
 }
 
-ShareOnLinkedIn.defaultProps = { url: window.location.href }
+ShareOnLinkedIn.defaultProps = { title: 'LinkedIn', text: 'LinedIn', url: window.location.href }
 
 export default memo(ShareOnLinkedIn)

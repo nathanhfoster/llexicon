@@ -1,17 +1,18 @@
-import React, { useCallback, useMemo } from "react"
+import React, { useCallback, useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "../../../components"
 import { UserLogin } from "../../../redux/User/actions"
 
-const mapStateToProps = ({ User: { error } }) => ({
+const mapStateToProps = ({ User: { error, pending } }) => ({
   userError: error,
+  userPending: pending,
 })
 
 const mapDispatchToProps = { UserLogin }
 
-const Login = ({ userError, UserLogin }) => {
+const Login = ({ userError, userPending, UserLogin }) => {
   const errorMessage = userError && "Username or Password is incorrect"
 
   const handleLogin = useCallback((payload) => UserLogin(payload), [])
@@ -47,12 +48,22 @@ const Login = ({ userError, UserLogin }) => {
     [errorMessage]
   )
 
+  const formSubmitLabel = useMemo(
+    () => (
+      <Fragment>
+        {userPending && <i className={`fas fa-sun SunIcon`} />}
+        <span className="ml-1">Login</span>
+      </Fragment>
+    ),
+    [userPending]
+  )
+
   return (
     <Jumbotron className="LoginFormContainer">
       <BasicForm
         title="Login"
         onSubmit={handleLogin}
-        submitLabel="Login"
+        submitLabel={formSubmitLabel}
         inputs={inputs}
       />
       <FacebookGoogleLogin />

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react"
+import React, { useCallback, useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { UserProps } from "../../../redux/User/propTypes"
 import { connect as reduxConnect } from "react-redux"
@@ -78,6 +78,17 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
     ],
     [User]
   )
+
+  const formSubmitLabel = useMemo(
+    () => (
+      <Fragment>
+        {User.pending && <i className={`fas fa-sun SunIcon`} />}
+        <span className="ml-1">Update</span>
+      </Fragment>
+    ),
+    [User.pending]
+  )
+
   return User.id ? (
     <Container>
       <Row className="mb-3">
@@ -85,7 +96,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
           <BasicForm
             title="Update Profile"
             onSubmit={handleChangeUser}
-            submitLabel="Update"
+            submitLabel={formSubmitLabel}
             inputs={inputs}
           />
         </Col>

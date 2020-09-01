@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Button
+  Button,
 } from "reactstrap"
 import { connect as reduxConnect } from "react-redux"
 import ToolbarModal from "../../ToolbarModal"
@@ -16,27 +16,27 @@ import { GetUserEntryPeople } from "../../../../../redux/Entries/actions"
 import {
   TopKFrequentStrings,
   removeAttributeDuplicates,
-  stringMatch
+  stringMatch,
 } from "../../../../../utils"
 import memoizeProps from "../../../../../utils/memoizeProps"
 import { validateTagOrPeopleString, validatedPersonNameString } from "../utlis"
 import {
   EntriesPropTypes,
-  EntryPeopleProps
+  EntryPeopleProps,
 } from "../../../../../redux/Entries/propTypes"
 
 const mapStateToProps = ({
   User: { id },
-  Entries: { items, filteredItems, EntryPeople }
+  Entries: { items, filteredItems, EntryPeople },
 }) => ({ items, filteredItems, UserId: id, EntryPeople })
 
 const mapDispatchToProps = {
-  GetUserEntryPeople
+  GetUserEntryPeople,
 }
 
 const getInitialState = ({ people }) => ({
   personsName: "",
-  people
+  people,
 })
 
 const PeopleButtonModal = ({
@@ -47,6 +47,7 @@ const PeopleButtonModal = ({
   EntryPeople,
   entryId,
   html,
+  title,
   xs,
   onChangeCallback,
   ...restOfProps
@@ -89,7 +90,7 @@ const PeopleButtonModal = ({
       EntryPeople,
       personsName,
       people,
-      splitPeopleAsString
+      splitPeopleAsString,
     ]
   )
 
@@ -97,11 +98,11 @@ const PeopleButtonModal = ({
     if (!show) return [[], []]
     else {
       const h = html.toLowerCase()
+      const t = title.toLowerCase()
       const f = TopKFrequentStrings(entryPeople, "name")
         .filter((entryPersonName) => {
           if (people.some(({ name }) => name == entryPersonName)) return false
           else if (!lastPeopleAsString) return true
-          else if (stringMatch(entryPersonName, lastPeopleAsString)) return true
           else if (stringMatch(entryPersonName, lastPeopleAsString)) return true
           else return false
         })
@@ -117,7 +118,7 @@ const PeopleButtonModal = ({
         if (
           names.some((name) => {
             const n = name.toLowerCase()
-            return n && h.includes(n)
+            return (n && h.includes(n)) || (t && t.includes(n))
           })
         ) {
           suggestedPeople.push(person)
@@ -128,21 +129,21 @@ const PeopleButtonModal = ({
 
       return [suggestedPeople, frequentPeople]
     }
-  }, [show, entryPeople])
+  }, [show, html, title, entryPeople])
 
   const handlePeopleInputChange = (value) => {
     const validatedTagsAsString = validatedPersonNameString(value)
 
     setState((prevState) => ({
       ...prevState,
-      personsName: validatedTagsAsString
+      personsName: validatedTagsAsString,
     }))
   }
 
   const handleSavePeople = () => {
     const payload = {
       id: entryId,
-      people
+      people,
     }
 
     onChangeCallback(payload)
@@ -160,7 +161,7 @@ const PeopleButtonModal = ({
       return {
         ...prevState,
         people: newPeople,
-        personsName: newPersonsName
+        personsName: newPersonsName,
       }
     })
   }
@@ -184,7 +185,7 @@ const PeopleButtonModal = ({
 
       return {
         ...getInitialState(prevState),
-        people: newPeople
+        people: newPeople,
       }
     })
   }
@@ -212,13 +213,27 @@ const PeopleButtonModal = ({
       button="Add People"
       xs={xs}
     >
-      <Container className="PeopleButtonModal Container">
-        {suggestedPeople.length > 0 && (
-          <Row className="TagAndPeopleContainer">
-            <h4>Suggested</h4>
+      {show && (
+        <Container className="PeopleButtonModal Container">
+          {suggestedPeople.length > 0 && (
+            <Row className="TagAndPeopleContainer">
+              <h4>Suggested</h4>
+              <TagsContainer
+                tags={suggestedPeople}
+                maxHeight={150}
+                flexWrap="wrap"
+                onClickCallback={handleAddPerson}
+                hoverable
+                emptyString="No people found..."
+                faIcon="fas fa-user-plus"
+              />
+            </Row>
+          )}
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Frequent</h4>
             <TagsContainer
-              tags={suggestedPeople}
-              maxHeight={200}
+              tags={frequentPeople}
+              maxHeight={150}
               flexWrap="wrap"
               onClickCallback={handleAddPerson}
               hoverable
@@ -226,57 +241,45 @@ const PeopleButtonModal = ({
               faIcon="fas fa-user-plus"
             />
           </Row>
-        )}
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <h4>Frequent</h4>
-          <TagsContainer
-            tags={frequentPeople}
-            maxHeight={200}
-            flexWrap="wrap"
-            onClickCallback={handleAddPerson}
-            hoverable
-            emptyString="No people found..."
-            faIcon="fas fa-user-plus"
-          />
-        </Row>
-        <Row className="TagAndPeopleContainer mt-2 mb-1">
-          <h4>Attached</h4>
-          <TagsContainer
-            tags={people}
-            maxHeight={150}
-            flexWrap="wrap"
-            onClickCallback={handleRemovePerson}
-            hoverable
-            emptyString="No people added..."
-            faIcon="fas fa-user-times"
-          />
-        </Row>
-        <Row>
-          <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
-            <InputGroupAddon addonType="append">
-              <InputGroupText
-                tag={Button}
-                className="SaveButton"
-                color="primary"
-                disabled={!personsName}
-                onClick={handleCreatePeople}
-              >
-                <i
-                  className="fas fa-user-plus"
-                  style={{ fontSize: 20, color: "var(--accentColor)" }}
-                />
-              </InputGroupText>
-            </InputGroupAddon>
-            <DebounceInput
-              type="text"
-              value={personsName}
-              onChange={handlePeopleInputChange}
-              placeholder={placeholder}
-              focusOnMount
+          <Row className="TagAndPeopleContainer mt-2 mb-1">
+            <h4>Attached</h4>
+            <TagsContainer
+              tags={people}
+              maxHeight={150}
+              flexWrap="wrap"
+              onClickCallback={handleRemovePerson}
+              hoverable
+              emptyString="No people added..."
+              faIcon="fas fa-user-times"
             />
-          </Col>
-        </Row>
-      </Container>
+          </Row>
+          <Row>
+            <Col className="EntryInput p-1" xs={12} tag={InputGroup}>
+              <InputGroupAddon addonType="append">
+                <InputGroupText
+                  tag={Button}
+                  className="SaveButton"
+                  color="primary"
+                  disabled={!personsName}
+                  onClick={handleCreatePeople}
+                >
+                  <i
+                    className="fas fa-user-plus"
+                    style={{ fontSize: 20, color: "var(--accentColor)" }}
+                  />
+                </InputGroupText>
+              </InputGroupAddon>
+              <DebounceInput
+                type="text"
+                value={personsName}
+                onChange={handlePeopleInputChange}
+                placeholder={placeholder}
+                focusOnMount
+              />
+            </Col>
+          </Row>
+        </Container>
+      )}
     </ToolbarModal>
   )
 }
@@ -289,11 +292,11 @@ PeopleButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   people: EntryPeopleProps.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired
+  onChangeCallback: PropTypes.func.isRequired,
 }
 
 PeopleButtonModal.defaultProps = {
-  people: []
+  people: [],
 }
 
 const isEqual = (prevProps, nextProps) =>
@@ -304,7 +307,9 @@ const isEqual = (prevProps, nextProps) =>
     "EntryPeople",
     "entryId",
     "people",
-    "xs"
+    "xs",
+    "html",
+    "title",
   ])
 
 export default reduxConnect(

@@ -19,8 +19,7 @@ const SetLocalStorageUsage = () => (dispatch) => {
   }
 }
 
-const ResetRedux = () => (dispatch) =>
-  dispatch({ type: AppActionTypes.REDUX_RESET })
+const ResetRedux = () => ({ type: AppActionTypes.REDUX_RESET })
 
 const GetAppVersion = () => (dispatch, getState) => {
   const {
