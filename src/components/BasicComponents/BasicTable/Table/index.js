@@ -1,10 +1,10 @@
-import React, { useMemo, memo, lazy, Fragment } from "react"
-import { connect } from "store/provider"
-import PropTypes from "prop-types"
-import { Table } from "reactstrap"
-import { tableSort, tableFilter } from "../utils"
-import { DataPropType, SortListPropType } from "../state/types"
-import "./styles.css"
+import React, { useMemo, memo, lazy, Fragment } from 'react';
+import { connect } from 'store';
+import PropTypes from 'prop-types';
+import { Table } from 'reactstrap';
+import { tableSort, tableFilter } from '../utils';
+import { DataPropType, SortListPropType } from '../state/types';
+import './styles.css';
 
 const mapStateToProps = ({
   sortList,
@@ -28,13 +28,13 @@ const mapStateToProps = ({
   responsive,
   onRowClick,
   getRowValue,
-})
+});
 
 // Lazy load other child components so BasicTableContext can be initialized before it is used
-const TableHeaders = lazy(() => import("../TableHeaders"))
-const TableBody = lazy(() => import("../TableBody"))
-const TableFooters = lazy(() => import("../TableFooters"))
-const TablePaginator = lazy(() => import("../TablePaginator"))
+const TableHeaders = lazy(() => import('../TableHeaders'));
+const TableBody = lazy(() => import('../TableBody'));
+const TableFooters = lazy(() => import('../TableFooters'));
+const TablePaginator = lazy(() => import('../TablePaginator'));
 
 const BasicTable = ({
   data,
@@ -49,24 +49,24 @@ const BasicTable = ({
   onRowClick,
   getRowValue,
 }) => {
-  const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
+  const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList]);
 
   const sortedAndFilteredData = useMemo(
     () => tableFilter(sortedData, filterList),
-    [sortedData, filterList]
-  )
+    [sortedData, filterList],
+  );
 
   const dataLength = useMemo(() => (sortedAndFilteredData || data).length, [
     sortedAndFilteredData,
     data,
-  ])
+  ]);
 
-  const isHoverable = hover || onRowClick || getRowValue ? true : false
+  const isHoverable = hover || onRowClick || getRowValue ? true : false;
 
   return (
     <Fragment>
       <Table
-        className="BasicTable m-0"
+        className='BasicTable m-0'
         bordered={bordered}
         borderless={borderless}
         striped={striped}
@@ -80,8 +80,8 @@ const BasicTable = ({
       </Table>
       <TablePaginator dataLength={dataLength} />
     </Fragment>
-  )
-}
+  );
+};
 
 BasicTable.propTypes = {
   data: DataPropType,
@@ -112,11 +112,11 @@ BasicTable.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]),
-}
+};
 
 BasicTable.defaultProps = {
   pageSize: 10,
   pageSizes: [5, 15, 25, 50, 100],
-}
+};
 
-export default connect(mapStateToProps)(memo(BasicTable))
+export default connect(mapStateToProps)(memo(BasicTable));

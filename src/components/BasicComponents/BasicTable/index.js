@@ -1,10 +1,10 @@
-import React, { memo } from "react"
-import PropTypes from "prop-types"
-import Table from "./Table"
-import { getInitialState, BasicTableReducer } from "./state/reducer"
-import { ColumnsPropType, DataPropType } from "./state/types"
-import { stringMatch } from "../../../utils"
-import { ContextProvider } from "store/provider"
+import React, { memo } from 'react';
+import PropTypes from 'prop-types';
+import Table from './Table';
+import { getInitialState, BasicTableReducer } from './state/reducer';
+import { ColumnsPropType, DataPropType } from './state/types';
+import { stringMatch } from '../../../utils';
+import { ContextProvider } from 'store';
 
 const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
   <ContextProvider
@@ -14,7 +14,7 @@ const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
   >
     <Table data={data} />
   </ContextProvider>
-)
+);
 
 BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
@@ -43,7 +43,7 @@ BasicTableProvider.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]),
-}
+};
 
 BasicTableProvider.defaultProps = {
   hover: false,
@@ -60,35 +60,34 @@ BasicTableProvider.defaultProps = {
   sortList: [],
   columns: [
     {
-      title: "#",
-      key: "id",
+      title: '#',
+      key: 'id',
       width: 25,
     },
     {
-      title: "First Name",
-      key: "first_name",
+      title: 'First Name',
+      key: 'first_name',
       width: 100,
-      filter: "string",
+      filter: 'string',
     },
     {
-      title: "Last Name",
-      key: "last_name",
+      title: 'Last Name',
+      key: 'last_name',
       width: 200,
-      filter: "string",
+      filter: 'string',
     },
     {
-      title: "Username",
-      key: "user_name",
-      render: (item) => <a href="#">{`Delete ${item.user_name}`}</a>,
+      title: 'Username',
+      key: 'user_name',
+      render: item => <a href='#'>{`Delete ${item.user_name}`}</a>,
       sort: (a, b, sortUp) =>
         sortUp
           ? b.user_name.localeCompare(a.user_name)
           : a.user_name.localeCompare(b.user_name),
-      filter: (filterValue) => (item) =>
-        stringMatch(item.user_name, filterValue),
+      filter: filterValue => item => stringMatch(item.user_name, filterValue),
     },
   ],
-  dataDisplayName: "Data",
+  dataDisplayName: 'Data',
   data: new Array(25).fill().map(
     (e, i) =>
       (e = {
@@ -96,7 +95,7 @@ BasicTableProvider.defaultProps = {
         first_name: `first_name${i}`,
         last_name: `last_name${i}`,
         user_name: `user_name${i}`,
-      })
+      }),
   ),
-}
-export default memo(BasicTableProvider)
+};
+export default memo(BasicTableProvider);

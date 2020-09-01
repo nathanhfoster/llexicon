@@ -1,26 +1,18 @@
+import { useSelector, useDispatch } from './hooks'
+import connect  from './provider/connect'
 import {
-  connect,
   ContextProvider,
   ContextConsumer,
-  useSelector,
-  useDispatch,
   store,
-} from "./provider"
-
-const storeFactory = () => ({
-  isReady: false,
-  state: null,
-  dispatch: () => {
-    console.error("Store is NOT ready!")
-  },
-})
+  storeFactory,
+} from './provider'
 
 export {
+  useSelector,
+  useDispatch,
   connect,
   ContextProvider,
   ContextConsumer,
-  useSelector,
-  useDispatch,
   store,
   storeFactory,
 }

@@ -1,6 +1,6 @@
 import * as React from "react"
-import { useContext } from "./"
-import { ContextConsumer } from "./provider"
+import { useContext } from "../hooks"
+import { ContextConsumer } from "./"
 
 const bindActionCreator = (actionCreator, dispatch, state) => {
   const getState = () => state
