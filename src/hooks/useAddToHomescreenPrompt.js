@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 
-export const useAddToHomescreenPrompt = () => {
+const useAddToHomescreenPrompt = () => {
   const [prompt, setPrompt] = useState(null)
   const promptToInstall = () => {
     if (prompt) {
@@ -8,8 +8,8 @@ export const useAddToHomescreenPrompt = () => {
     }
     return Promise.reject(
       new Error(
-        'Tried installing before browser sent "beforeinstallprompt" event'
-      )
+        'Tried installing before browser sent "beforeinstallprompt" event',
+      ),
     )
   }
   useEffect(() => {
@@ -17,10 +17,12 @@ export const useAddToHomescreenPrompt = () => {
       e.preventDefault()
       setPrompt(e)
     }
-    window.addEventListener("beforeinstallprompt", ready)
+    window.addEventListener('beforeinstallprompt', ready)
     return () => {
-      window.removeEventListener("beforeinstallprompt", ready)
+      window.removeEventListener('beforeinstallprompt', ready)
     }
   }, [])
   return [prompt, promptToInstall]
 }
+
+export default useAddToHomescreenPrompt

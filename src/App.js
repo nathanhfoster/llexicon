@@ -22,7 +22,7 @@ import { Admin, About, Home, Entries, PrivacyPolicy } from "./views"
 import { NavBar } from "./components"
 import { RouterLinkPush } from "./redux/router/actions"
 import memoizeProps from "./utils/memoizeProps"
-import { useAddToHomescreenPrompt } from "./components/AddToHomeScreen/prompt"
+import { useAddToHomescreenPrompt } from "hooks"
 
 const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
 const Account = lazy(() => import("./views/Account"))
