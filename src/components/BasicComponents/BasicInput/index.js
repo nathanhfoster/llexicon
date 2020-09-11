@@ -21,6 +21,7 @@ const BasicInput = ({
   row,
   className,
   value,
+  onChange,
   ...restOfProps
 }) => {
   const isCheckOrRadio = type === 'checkbox' || type === 'radio'
