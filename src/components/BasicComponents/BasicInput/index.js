@@ -1,8 +1,9 @@
-import React, { memo, Fragment } from 'react'
+import React, { useMemo, memo, Fragment } from 'react'
 import { inputProps } from './propTypes'
 import { FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap'
 
 const BasicInput = ({
+  id,
   name,
   defaultValue,
   check,
@@ -22,30 +23,50 @@ const BasicInput = ({
   className,
   value,
   onChange,
+  children,
+  options,
   ...restOfProps
 }) => {
+  // console.log(name, ' rendered')
   const isCheckOrRadio = type === 'checkbox' || type === 'radio'
 
   const valid =
     restOfProps.valid || (typeof isValid === 'function' && isValid(value))
+
   const invalid =
     restOfProps.invalid ||
     (typeof isInvalid === 'function' && isInvalid(value))
 
   const renderLabel = `${label} ${required ? '*' : ''}`
 
-  const renderInput = (
-    <Input
-      id={name}
-      defaultValue={defaultValue}
-      value={value}
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      disabled={disabled}
-      valid={Boolean(valid)}
-      invalid={Boolean(invalid)}
-    />
+  const renderOptions = useMemo(
+    () =>
+      type === 'select'
+        ? options?.map(({ name }, i) => (
+            <option key={`option-${name}-${i}`}>{name}</option>
+          ))
+        : undefined,
+    [options, type],
+  )
+
+  const renderInput = useMemo(
+    () => (
+      <Input
+        id={id || name}
+        defaultValue={defaultValue}
+        value={value}
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        disabled={disabled}
+        valid={Boolean(valid)}
+        invalid={Boolean(invalid)}
+        onChange={onChange}
+      >
+        {renderOptions}
+      </Input>
+    ),
+    [value, renderOptions, disabled, valid, invalid, type, placeholder],
   )
 
   return (
@@ -76,7 +97,5 @@ const BasicInput = ({
 }
 
 BasicInput.propTypes = inputProps
-
-BasicInput.defaultProps = {}
 
 export default memo(BasicInput)

@@ -58,7 +58,7 @@ const BasicForm = ({
   )
 
   return (
-    <Form onSubmit={handleSubmit} method={method} onChange={handleChange}>
+    <Form onSubmit={handleSubmit} method={method}>
       {typeof title === 'object' ? title : <h2 className='Center'>{title}</h2>}
       {renderInputs}
       {onSubmit && (
