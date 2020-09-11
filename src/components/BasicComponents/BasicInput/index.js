@@ -1,6 +1,6 @@
-import React, { useState, useEffect, memo, Fragment } from "react"
-import { inputProps } from "./propTypes"
-import { FormGroup, Label, Input, FormFeedback, FormText } from "reactstrap"
+import React, { memo, Fragment } from 'react'
+import { inputProps } from './propTypes'
+import { FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap'
 
 const BasicInput = ({
   name,
@@ -20,35 +20,18 @@ const BasicInput = ({
   multiline,
   row,
   className,
+  value,
   ...restOfProps
 }) => {
-  const [value, setValue] = useState(restOfProps.value)
-
-  useEffect(() => {
-    if (value !== restOfProps.value) {
-      setValue(value)
-    }
-  }, [restOfProps.value])
-
-  const isCheckOrRadio = type === "checkbox" || type === "radio"
-
-  const handleChange = ({ target: { type, value, checked, files } }) => {
-    if (type === "radio" || type === "checkbox") {
-      setValue(checked)
-    } else if (type === "file") {
-      // setValue(files)
-      setValue(value)
-    } else {
-      setValue(value)
-    }
-  }
+  const isCheckOrRadio = type === 'checkbox' || type === 'radio'
 
   const valid =
-    restOfProps.valid || (typeof isValid === "function" && isValid(value))
+    restOfProps.valid || (typeof isValid === 'function' && isValid(value))
   const invalid =
-    restOfProps.invalid || (typeof isInvalid === "function" && isInvalid(value))
+    restOfProps.invalid ||
+    (typeof isInvalid === 'function' && isInvalid(value))
 
-  const renderLabel = `${label} ${required ? "*" : ""}`
+  const renderLabel = `${label} ${required ? '*' : ''}`
 
   const renderInput = (
     <Input
@@ -61,7 +44,6 @@ const BasicInput = ({
       disabled={disabled}
       valid={Boolean(valid)}
       invalid={Boolean(invalid)}
-      onChange={handleChange}
     />
   )
 
@@ -81,10 +63,10 @@ const BasicInput = ({
           {renderInput}
         </Fragment>
       )}
-      {typeof valid === "string" && (
+      {typeof valid === 'string' && (
         <FormFeedback valid={!valid}>{valid}</FormFeedback>
       )}
-      {typeof invalid === "string" && (
+      {typeof invalid === 'string' && (
         <FormFeedback valid={!invalid}>{invalid}</FormFeedback>
       )}
       {helpText && <FormText>{helpText}</FormText>}
