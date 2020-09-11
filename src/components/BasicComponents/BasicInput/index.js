@@ -1,6 +1,7 @@
 import React, { useMemo, memo, Fragment } from 'react'
 import { inputProps } from './propTypes'
 import { FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap'
+import BasicOption from '../BasicOption'
 
 const BasicInput = ({
   id,
@@ -42,8 +43,8 @@ const BasicInput = ({
   const renderOptions = useMemo(
     () =>
       type === 'select'
-        ? options?.map(({ name }, i) => (
-            <option key={`option-${name}-${i}`}>{name}</option>
+        ? options?.map((option, i) => (
+            <BasicOption key={`option-${name}-${i}`} {...option} />
           ))
         : undefined,
     [options, type],
