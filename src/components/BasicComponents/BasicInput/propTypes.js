@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { optionProps } from '../BasicOption/propTypes'
 
 const inputTypes = [
   'email',
@@ -18,11 +19,7 @@ const inputProps = {
   check: PropTypes.bool,
   label: PropTypes.string,
   type: PropTypes.oneOf(inputTypes),
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    }),
-  ),
+  options: PropTypes.arrayOf(PropTypes.shape(optionProps)),
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
