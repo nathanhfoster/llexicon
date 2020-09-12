@@ -2,7 +2,23 @@ import filterSort from './filterSort';
 import tableSort from './tableSort';
 import tableFilter from './tableFilter';
 
-const getInitialState = ({ columns, pageSize, pageSizes, data,  ...restOfProps }) => {
+const getSortedAndFilteredData = (data, sortList, filterList) => {
+  const sortedData = tableSort(data, sortList);
+
+  const sortedAndFilteredData = tableFilter(sortedData, filterList);
+
+  const dataLength = (sortedAndFilteredData || data).length;
+
+  return { data, sortedAndFilteredData, dataLength, sortList, filterList };
+};
+
+const getInitialState = ({
+  columns,
+  pageSize,
+  pageSizes,
+  data,
+  ...restOfProps
+}) => {
   let sortList = [];
   let filterList = [];
   let firstRowClickFound = null;
@@ -21,12 +37,8 @@ const getInitialState = ({ columns, pageSize, pageSizes, data,  ...restOfProps }
 
   return {
     ...restOfProps,
-    data,
-    sortedAndFilteredData: data,
-    dataLength: data.length,
+    ...getSortedAndFilteredData(data, sortList, filterList),
     columns,
-    sortList,
-    filterList,
     currentPage: 0,
     pageSize,
     pageSizes: [{ id: 0, header: true, value: 'Page Sizes' }].concat(
@@ -35,25 +47,10 @@ const getInitialState = ({ columns, pageSize, pageSizes, data,  ...restOfProps }
   };
 };
 
-const getSortedAndFilteredData = (data, sortList, filterList ) => {
-  const sortedData = tableSort(data, sortList);
-
-  const sortedAndFilteredData = tableFilter(sortedData, filterList);
-
-  const dataLength = (sortedAndFilteredData || data).length;
-
-  return {
-    sortedAndFilteredData,
-    dataLength,
-    sortList,
-    filterList
-  };
-};
-
 export {
+  getSortedAndFilteredData,
   filterSort,
   tableSort,
   tableFilter,
   getInitialState,
-  getSortedAndFilteredData,
 };

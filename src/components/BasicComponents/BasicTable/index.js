@@ -25,7 +25,7 @@ const BasicTableProvider = props => {
   );
 
   return (
-    <Provider  context={BasicTableContext}  store={store}>
+    <Provider context={BasicTableContext}  store={store}>
       <Table />
     </Provider>
   );
