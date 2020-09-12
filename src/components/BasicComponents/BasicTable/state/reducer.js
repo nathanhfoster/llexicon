@@ -1,8 +1,9 @@
 import { BasicTableActionTypes } from './types';
 import { filterSort, getSortedAndFilteredData } from './utils';
 
-const BasicTableReducer = (state , action) => {
+const BasicTableReducer = (state, action) => {
   const { type, payload } = action;
+ 
 
   switch (type) {
     case BasicTableActionTypes.BASIC_TABLE_SORT:
@@ -31,6 +32,12 @@ const BasicTableReducer = (state , action) => {
 
     case BasicTableActionTypes.BASIC_TABLE_SET_PAGE_SIZE:
       return { ...state, pageSize: payload, currentPage: 0 };
+
+    case BasicTableActionTypes.BASIC_TABLE_SET_DATA:
+      return {
+        ...state,
+        ...getSortedAndFilteredData(payload, state.sortList, state.filterList),
+      };
 
     default:
       return state;

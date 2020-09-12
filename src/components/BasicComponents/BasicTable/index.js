@@ -1,15 +1,16 @@
 import BasicTableContext from './state/context';
-import React, { useMemo, memo } from 'react';
+import React, { useRef, useEffect, useMemo, lazy, memo } from 'react';
 import { createStore, applyMiddleware } from 'redux';
-import { Provider, ReactReduxContext } from 'react-redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import PropTypes from 'prop-types';
-import Table from './Table';
 import { BasicTableReducer } from './state/reducer';
+import { basicTableSetData } from './state/actions';
 import { getInitialState } from './state/utils';
 import { ColumnsPropType, DataPropType } from './state/types';
 import { stringMatch } from '../../../utils';
+const Table = lazy(() => import('./Table'));
 const { NODE_ENV } = process.env;
 
 const inDevelopmentMode = NODE_ENV == 'development';
@@ -19,13 +20,22 @@ const middleWares = inDevelopmentMode
   : applyMiddleware(thunk);
 
 const BasicTableProvider = props => {
+  let mounted = useRef(false);
+
   const store = useMemo(
     () => createStore(BasicTableReducer, getInitialState(props), middleWares),
-    [props.data],
+    [],
   );
 
+  useEffect(() => {
+    if (mounted.current) {
+      store.dispatch(basicTableSetData(props.data));
+    }
+    mounted.current = true;
+  }, [props.data]);
+
   return (
-    <Provider context={BasicTableContext}  store={store}>
+    <Provider context={BasicTableContext} store={store}>
       <Table />
     </Provider>
   );

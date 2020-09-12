@@ -3,10 +3,6 @@ import React, { lazy, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table } from 'reactstrap';
-// import TableHeaders from '../TableHeaders';
-// import TableBody from '../TableBody';
-// import TableFooters from '../TableFooters';
-// import TablePaginator from '../TablePaginator';
 import { DataPropType, SortListPropType } from '../state/types';
 import './styles.css';
 
