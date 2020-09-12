@@ -1,14 +1,15 @@
-import React, { useMemo, memo } from 'react';
+import BasicTableContext from '../state/context'
+import React, { useMemo } from 'react';
 import { DataPropType, ColumnsPropType } from '../state/types';
 import { connect } from 'react-redux';
 import './styles.css';
 
-const mapStateToProps = ({ columns, sortList }) => ({
+const mapStateToProps = ({ columns, sortedAndFilteredData }) => ({
   columns,
-  sortList,
+  sortedAndFilteredData,
 });
 
-const TableFooters = ({ data, columns }) => {
+const TableFooters = ({ columns, sortedAndFilteredData }) => {
   const shouldRender = useMemo(() => columns.some(column => column.footer), [
     columns,
   ]);
@@ -18,9 +19,13 @@ const TableFooters = ({ data, columns }) => {
       columns.map((column, i) => {
         const { footer } = column;
 
-        return footer ? <td key={i}>{footer(data)}</td> : <td key={i}></td>;
+        return footer ? (
+          <td key={i}>{footer(sortedAndFilteredData)}</td>
+        ) : (
+          <td key={i}></td>
+        );
       }),
-    [columns, data],
+    [columns, sortedAndFilteredData],
   );
 
   return (
@@ -33,8 +38,10 @@ const TableFooters = ({ data, columns }) => {
 };
 
 TableFooters.propTypes = {
-  data: DataPropType,
+  sortedAndFilteredData: DataPropType,
   columns: ColumnsPropType,
 };
 
-export default connect(mapStateToProps)(memo(TableFooters));
+export default connect(mapStateToProps, null, null, {
+  context: BasicTableContext,
+})(TableFooters);

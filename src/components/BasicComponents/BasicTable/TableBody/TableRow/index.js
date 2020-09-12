@@ -1,3 +1,4 @@
+import BasicTableContext from '../../state/context'
 import React, { useState, useCallback, useMemo, memo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TableDataCell from './TableDataCell';
@@ -78,4 +79,6 @@ TableRow.propTypes = {
   columns: ColumnsPropType,
 };
 
-export default connect(mapStateToProps)(memo(TableRow));
+export default connect(mapStateToProps, null, null, {
+  context: BasicTableContext,
+})(memo(TableRow));

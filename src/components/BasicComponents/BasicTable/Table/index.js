@@ -1,15 +1,22 @@
-import React, { useMemo, memo, lazy, Fragment } from 'react';
-import { connect } from 'react-redux';
+import BasicTableContext from '../state/context';
+import React, { lazy, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Table } from 'reactstrap';
-import { tableSort, tableFilter } from '../utils';
+// import TableHeaders from '../TableHeaders';
+// import TableBody from '../TableBody';
+// import TableFooters from '../TableFooters';
+// import TablePaginator from '../TablePaginator';
 import { DataPropType, SortListPropType } from '../state/types';
 import './styles.css';
 
+// Lazy load other child components so BasicTableContext can be initialized before it is used
+const TableHeaders = lazy(() => import('../TableHeaders'));
+const TableBody = lazy(() => import('../TableBody'));
+const TableFooters = lazy(() => import('../TableFooters'));
+const TablePaginator = lazy(() => import('../TablePaginator'));
+
 const mapStateToProps = ({
-  data,
-  sortList,
-  filterList,
   hover,
   borderless,
   bordered,
@@ -19,9 +26,6 @@ const mapStateToProps = ({
   onRowClick,
   getRowValue,
 }) => ({
-  data,
-  sortList,
-  filterList,
   hover,
   borderless,
   bordered,
@@ -32,16 +36,7 @@ const mapStateToProps = ({
   getRowValue,
 });
 
-// Lazy load other child components so BasicTableContext can be initialized before it is used
-const TableHeaders = lazy(() => import('../TableHeaders'));
-const TableBody = lazy(() => import('../TableBody'));
-const TableFooters = lazy(() => import('../TableFooters'));
-const TablePaginator = lazy(() => import('../TablePaginator'));
-
 const BasicTable = ({
-  data,
-  sortList,
-  filterList,
   hover,
   borderless,
   bordered,
@@ -51,18 +46,6 @@ const BasicTable = ({
   onRowClick,
   getRowValue,
 }) => {
-  const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList]);
-
-  const sortedAndFilteredData = useMemo(
-    () => tableFilter(sortedData, filterList),
-    [sortedData, filterList],
-  );
-
-  const dataLength = useMemo(() => (sortedAndFilteredData || data).length, [
-    sortedAndFilteredData,
-    data,
-  ]);
-
   const isHoverable = hover || onRowClick || getRowValue ? true : false;
 
   return (
@@ -77,10 +60,10 @@ const BasicTable = ({
         responsive={responsive}
       >
         <TableHeaders />
-        <TableBody data={sortedAndFilteredData} />
-        <TableFooters data={sortedAndFilteredData} />
+        <TableBody />
+        <TableFooters />
       </Table>
-      <TablePaginator dataLength={dataLength} />
+      <TablePaginator />
     </Fragment>
   );
 };
@@ -121,4 +104,6 @@ BasicTable.defaultProps = {
   pageSizes: [5, 15, 25, 50, 100],
 };
 
-export default connect(mapStateToProps)(memo(BasicTable));
+export default connect(mapStateToProps, null, null, {
+  context: BasicTableContext,
+})(BasicTable);

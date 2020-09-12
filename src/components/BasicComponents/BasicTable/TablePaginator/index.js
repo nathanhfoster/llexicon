@@ -1,12 +1,14 @@
-import React, { useCallback, useMemo, memo } from 'react';
+import BasicTableContext from '../state/context'
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
 import { Container, Row, Col, Button } from 'reactstrap';
 import BasicDropDown from '../../BasicDropDown';
 import PropTypes from 'prop-types';
 import { basicTableSetPage, basicTableSetPageSize } from '../state/actions';
-import { connect } from 'react-redux';
 import './styles.css';
 
-const mapStateToProps = ({ currentPage, pageSize, pageSizes }) => ({
+const mapStateToProps = ({ dataLength, currentPage, pageSize, pageSizes }) => ({
+  dataLength,
   currentPage,
   pageSize,
   pageSizes,
@@ -140,7 +142,6 @@ TablePaginator.propTypes = {
   ),
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(memo(TablePaginator));
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  context: BasicTableContext,
+})(TablePaginator);

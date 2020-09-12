@@ -1,37 +1,7 @@
 import { BasicTableActionTypes } from './types';
-import { filterSort } from '../utils';
+import { filterSort, getSortedAndFilteredData } from './utils';
 
-const getInitialState = ({ columns, pageSize, pageSizes, ...restOfProps }) => {
-  let sortList = [];
-  let filterList = [];
-  let firstRowClickFound = null;
-
-  for (let i = 0, { length } = columns; i < length; i++) {
-    const { key, sort, filter, defaultSortValue, defaultFilterValue } = columns[
-      i
-    ];
-
-    const sortItem = { key, sortUp: defaultSortValue, sort };
-    sortList.push(sortItem);
-
-    const filterItem = { key, filterValue: defaultFilterValue || '', filter };
-    filterList.push(filterItem);
-  }
-
-  return {
-    ...restOfProps,
-    columns,
-    sortList,
-    filterList,
-    currentPage: 0,
-    pageSize,
-    pageSizes: [{ id: 0, header: true, value: 'Page Sizes' }].concat(
-      pageSizes.map((value, i) => ({ id: i + 1, value })),
-    ),
-  };
-};
-
-const BasicTableReducer = (state, action) => {
+const BasicTableReducer = (state , action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -42,7 +12,7 @@ const BasicTableReducer = (state, action) => {
 
       return {
         ...state,
-        sortList: newSortList,
+        ...getSortedAndFilteredData(state.data, newSortList, state.filterList),
       };
 
     case BasicTableActionTypes.BASIC_TABLE_FILTER:
@@ -52,7 +22,7 @@ const BasicTableReducer = (state, action) => {
 
       return {
         ...state,
-        filterList: newFilterList,
+        ...getSortedAndFilteredData(state.data, state.sortList, newFilterList),
         currentPage: 0,
       };
 
@@ -67,4 +37,4 @@ const BasicTableReducer = (state, action) => {
   }
 };
 
-export { getInitialState, BasicTableReducer };
+export { BasicTableReducer };

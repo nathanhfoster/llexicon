@@ -1,4 +1,4 @@
-import { stringMatch, isType } from "../../../../utils"
+import { stringMatch, isType } from "../../../../../utils"
 
 const tableFilter = (data, filterList) => {
   let filteredData = [...data]

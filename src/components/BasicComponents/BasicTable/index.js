@@ -1,11 +1,13 @@
+import BasicTableContext from './state/context';
 import React, { useMemo, memo } from 'react';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider, ReactReduxContext } from 'react-redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import PropTypes from 'prop-types';
 import Table from './Table';
-import { getInitialState, BasicTableReducer } from './state/reducer';
+import { BasicTableReducer } from './state/reducer';
+import { getInitialState } from './state/utils';
 import { ColumnsPropType, DataPropType } from './state/types';
 import { stringMatch } from '../../../utils';
 const { NODE_ENV } = process.env;
@@ -23,7 +25,7 @@ const BasicTableProvider = props => {
   );
 
   return (
-    <Provider store={store}>
+    <Provider  context={BasicTableContext}  store={store}>
       <Table />
     </Provider>
   );
