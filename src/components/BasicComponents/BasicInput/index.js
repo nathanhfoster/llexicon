@@ -1,5 +1,5 @@
 import React, { useMemo, memo, Fragment } from 'react'
-import { inputProps } from './propTypes'
+import { InputProps } from './propTypes'
 import { FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap'
 import BasicOption from '../BasicOption'
 
@@ -97,6 +97,6 @@ const BasicInput = ({
   )
 }
 
-BasicInput.propTypes = inputProps
+BasicInput.propTypes = InputProps
 
 export default memo(BasicInput)
