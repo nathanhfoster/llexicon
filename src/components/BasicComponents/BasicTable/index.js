@@ -1,20 +1,33 @@
-import React, { memo } from 'react';
+import React, { useMemo, memo } from 'react';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import PropTypes from 'prop-types';
 import Table from './Table';
 import { getInitialState, BasicTableReducer } from './state/reducer';
 import { ColumnsPropType, DataPropType } from './state/types';
 import { stringMatch } from '../../../utils';
-import { ContextProvider } from 'store';
+const { NODE_ENV } = process.env;
 
-const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
-  <ContextProvider
-    rootReducer={BasicTableReducer}
-    initialState={propsUsedToDeriveContextValue}
-    initializer={getInitialState}
-  >
-    <Table data={data} />
-  </ContextProvider>
-);
+const inDevelopmentMode = NODE_ENV == 'development';
+
+const middleWares = inDevelopmentMode
+  ? composeWithDevTools(applyMiddleware(thunk))
+  : applyMiddleware(thunk);
+
+const BasicTableProvider = props => {
+  const store = useMemo(
+    () => createStore(BasicTableReducer, getInitialState(props), middleWares),
+    [props.data],
+  );
+
+  return (
+    <Provider store={store}>
+      <Table />
+    </Provider>
+  );
+};
 
 BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
@@ -56,8 +69,6 @@ BasicTableProvider.defaultProps = {
   responsive: true,
   pageSize: 5,
   pageSizes: [5, 15, 25, 50],
-  sortList: [],
-  sortList: [],
   columns: [
     {
       title: '#',

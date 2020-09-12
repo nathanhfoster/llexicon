@@ -3,8 +3,6 @@ import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import storeFactory from './redux';
-import rootReducer from './redux/RootReducer';
-import { ContextProvider } from 'store';
 import { history } from './redux/router/reducer';
 import {
   getUserClientId,
@@ -13,7 +11,6 @@ import {
 } from './redux/localState';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { deepParseJson, getRandomInt } from './utils';
 import { LoadingScreen } from './components';
 import { PersistGate } from 'redux-persist/integration/react';
 import * as serviceWorker from './serviceWorker';
@@ -32,7 +29,6 @@ const getPersistedState = () => {
   }
   return state;
 };
-const persistedState = getPersistedState();
 
 const { store, persistor } = storeFactory();
 
@@ -81,19 +77,15 @@ history.listen(location => {
 // const ReduxStore = storeFactory(initialState)
 
 ReactDOM.render(
-  // <React.StrictMode>
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      {/* <ContextProvider rootReducer={rootReducer} initialState={persistedState}> */}
       <Suspense fallback={<LoadingScreen />}>
         <ConnectedRouter history={history}>
           <App />
         </ConnectedRouter>
       </Suspense>
-      {/* </ContextProvider>, */}
     </PersistGate>
   </Provider>,
-  // </React.StrictMode>,
   document.getElementById('root'),
 );
 

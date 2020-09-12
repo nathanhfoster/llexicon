@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import BasicDropDown from '../../BasicDropDown';
 import PropTypes from 'prop-types';
 import { basicTableSetPage, basicTableSetPageSize } from '../state/actions';
-import { connect } from 'store';
+import { connect } from 'react-redux';
 import './styles.css';
 
 const mapStateToProps = ({ currentPage, pageSize, pageSizes }) => ({

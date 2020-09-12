@@ -1,5 +1,5 @@
 import React, { useMemo, memo, lazy, Fragment } from 'react';
-import { connect } from 'store';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Table } from 'reactstrap';
 import { tableSort, tableFilter } from '../utils';
@@ -7,6 +7,7 @@ import { DataPropType, SortListPropType } from '../state/types';
 import './styles.css';
 
 const mapStateToProps = ({
+  data,
   sortList,
   filterList,
   hover,
@@ -18,6 +19,7 @@ const mapStateToProps = ({
   onRowClick,
   getRowValue,
 }) => ({
+  data,
   sortList,
   filterList,
   hover,
