@@ -38,8 +38,6 @@ const BasicInput = ({
     restOfProps.invalid ||
     (typeof isInvalid === 'function' && isInvalid(value))
 
-  const renderLabel = `${label} ${required ? '*' : ''}`
-
   const renderOptions = useMemo(
     () =>
       type === 'select'
@@ -70,22 +68,28 @@ const BasicInput = ({
     [value, renderOptions, disabled, valid, invalid, type, placeholder],
   )
 
+  const renderLabel = useMemo(() => {
+    const labelText = `${label} ${required ? '*' : ''}`
+
+    return isCheckOrRadio ? (
+      <Label check={isCheckOrRadio} for={name}>
+        {renderInput} {labelText}
+      </Label>
+    ) : (
+      <Fragment>
+        {label && (
+          <Label check={isCheckOrRadio} for={name}>
+            {labelText}
+          </Label>
+        )}
+        {renderInput}
+      </Fragment>
+    )
+  }, [renderInput, label, required, name])
+
   return (
     <FormGroup check={isCheckOrRadio} row={row}>
-      {isCheckOrRadio ? (
-        <Label check={isCheckOrRadio} for={name}>
-          {renderInput} {renderLabel}
-        </Label>
-      ) : (
-        <Fragment>
-          {label && (
-            <Label check={isCheckOrRadio} for={name}>
-              {renderLabel}
-            </Label>
-          )}
-          {renderInput}
-        </Fragment>
-      )}
+      {renderLabel}
       {typeof valid === 'string' && (
         <FormFeedback valid={!valid}>{valid}</FormFeedback>
       )}
