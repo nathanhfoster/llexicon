@@ -1,39 +1,36 @@
-import React, { useState, memo } from "react"
-import PropTypes from "prop-types"
+import React, { useState, useMemo, memo } from 'react';
+import PropTypes from 'prop-types';
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-} from "reactstrap"
-import "./styles.css"
+} from 'reactstrap';
+import './styles.css';
 
-const BasicDropDown = ({
-  list,
-  onClickCallback,
-  direction,
-  value,
-  className,
-}) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+const BasicDropDown = ({ options, onChange, direction, value, className }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const toggle = () => setDropdownOpen((prevState) => !prevState)
+  const toggle = () => setDropdownOpen(prevState => !prevState);
 
-  const renderList = () =>
-    list.map((l, i) => {
-      const { id, value, header, disabled, divider } = l
-      return (
-        <DropdownItem
-          key={`${id}-${i}`}
-          divider={divider}
-          header={header}
-          disabled={disabled}
-          onClick={() => onClickCallback && onClickCallback(id, value)}
-        >
-          {value || id}
-        </DropdownItem>
-      )
-    })
+  const renderOptions = useMemo(
+    () =>
+      options.map((l, i) => {
+        const { id, value, header, disabled, divider } = l;
+        return (
+          <DropdownItem
+            key={`${id}-${i}`}
+            divider={divider}
+            header={header}
+            disabled={disabled}
+            onClick={() => onChange && onChange(id, value)}
+          >
+            {value || id}
+          </DropdownItem>
+        );
+      }),
+    [options],
+  );
 
   return (
     <Dropdown
@@ -42,7 +39,7 @@ const BasicDropDown = ({
       direction={direction}
       className={`BasicDropDown ${className}`}
     >
-      <DropdownToggle caret color="primary" className={`BasicDropDownToggle`}>
+      <DropdownToggle caret color='primary' className={`BasicDropDownToggle`}>
         {value}
       </DropdownToggle>
       <DropdownMenu
@@ -50,11 +47,11 @@ const BasicDropDown = ({
           setMaxHeight: {
             enabled: true,
             // order: 890,
-            fn: (data) => ({
+            fn: data => ({
               ...data,
               styles: {
                 ...data.styles,
-                overflow: "auto",
+                overflow: 'auto',
                 maxHeight: 200,
                 // backgroundColor: "var(--primaryColor)"
               },
@@ -62,14 +59,14 @@ const BasicDropDown = ({
           },
         }}
       >
-        {renderList()}
+        {renderOptions}
       </DropdownMenu>
     </Dropdown>
-  )
-}
+  );
+};
 
 BasicDropDown.propTypes = {
-  list: PropTypes.arrayOf(
+  options: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       value: PropTypes.oneOfType([
@@ -81,15 +78,15 @@ BasicDropDown.propTypes = {
       header: PropTypes.bool,
       disabled: PropTypes.bool,
       divider: PropTypes.bool,
-    }).isRequired
+    }).isRequired,
   ),
-  onClickCallback: PropTypes.func,
+  onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 
   // ---Dropdown---
   a11y: PropTypes.bool, // defaults to true. Set to false to enable more bootstrap like tabbing behavior
   disabled: PropTypes.bool,
-  direction: PropTypes.oneOf(["up", "down", "left", "right"]),
+  direction: PropTypes.oneOf(['up', 'down', 'left', 'right']),
   group: PropTypes.bool,
   isOpen: PropTypes.bool,
   // For Dropdown usage inside a Nav
@@ -107,8 +104,8 @@ BasicDropDown.propTypes = {
   className: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
-  "data-toggle": PropTypes.string,
-  "aria-haspopup": PropTypes.bool,
+  'data-toggle': PropTypes.string,
+  'aria-haspopup': PropTypes.bool,
   // For DropdownToggle usage inside a Nav
   nav: PropTypes.bool,
   // Defaults to Button component
@@ -138,12 +135,12 @@ BasicDropDown.propTypes = {
   className: PropTypes.string,
   cssModule: PropTypes.object,
   toggle: PropTypes.bool, // default: true
-}
+};
 
 BasicDropDown.defaultProps = {
-  list: [],
-  direction: "down",
-  value: "value",
-}
+  options: [],
+  direction: 'down',
+  value: 'value',
+};
 
-export default memo(BasicDropDown)
+export default memo(BasicDropDown);

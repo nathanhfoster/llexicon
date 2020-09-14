@@ -95,16 +95,16 @@ const TablePaginator = ({
         </Col>
         <Col xs={3} className='p-0'>
           <BasicDropDown
-            list={pageList}
+            options={pageList}
             value={renderCurrentPage}
-            onClickCallback={navigateWithDropDown}
+            onChange={navigateWithDropDown}
           />
         </Col>
         <Col xs={3} className='p-0'>
           <BasicDropDown
-            list={pageSizes}
+            options={pageSizes}
             value={renderPageSize}
-            onClickCallback={handleSetPageSize}
+            onChange={handleSetPageSize}
           />
         </Col>
         <Col
