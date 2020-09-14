@@ -49,6 +49,16 @@ const BasicForm = ({
     }
   }, [])
 
+  const renderTitle = useMemo(
+    () =>
+      !title ? undefined : typeof title === 'object' ? (
+        title
+      ) : (
+        <h2 className='text-center'>{title}</h2>
+      ),
+    [title],
+  )
+
   const renderInputs = useMemo(
     () =>
       (onChange ? inputs : state).map((input, i) => (
@@ -63,15 +73,11 @@ const BasicForm = ({
 
   return (
     <Form onSubmit={handleSubmit} method={method}>
-      {!title ? undefined : typeof title === 'object' ? (
-        title
-      ) : (
-        <h2 className='text-center'>{title}</h2>
-      )}
+      {renderTitle}
       {renderInputs}
       {onSubmit && (
         <div className='text-center'>
-          <Button color='accent' type='submit'>
+          <Button color='primary' type='submit'>
             {submitLabel}
           </Button>
         </div>
