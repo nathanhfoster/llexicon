@@ -8,6 +8,24 @@ import {
 } from 'reactstrap';
 import './styles.css';
 
+const FUNCTION_MODIFIER = data => ({
+  ...data,
+  styles: {
+    ...data.styles,
+    overflow: 'auto',
+    maxHeight: 200,
+    // backgroundColor: "var(--primaryColor)"
+  },
+});
+
+const MODIFIERS = {
+  setMaxHeight: {
+    enabled: true,
+    // order: 890,
+    fn: FUNCTION_MODIFIER,
+  },
+};
+
 const BasicDropDown = ({ options, onChange, direction, value, className }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -42,25 +60,7 @@ const BasicDropDown = ({ options, onChange, direction, value, className }) => {
       <DropdownToggle caret color='primary' className={`BasicDropDownToggle`}>
         {value}
       </DropdownToggle>
-      <DropdownMenu
-        modifiers={{
-          setMaxHeight: {
-            enabled: true,
-            // order: 890,
-            fn: data => ({
-              ...data,
-              styles: {
-                ...data.styles,
-                overflow: 'auto',
-                maxHeight: 200,
-                // backgroundColor: "var(--primaryColor)"
-              },
-            }),
-          },
-        }}
-      >
-        {renderOptions}
-      </DropdownMenu>
+      <DropdownMenu modifiers={MODIFIERS}>{renderOptions}</DropdownMenu>
     </Dropdown>
   );
 };
