@@ -16,7 +16,6 @@ const TableDataCell = ({ className, scope, title, colSpan, children }) =>
 TableDataCell.propTypes = {
   className: PropTypes.string,
   scope: PropTypes.string,
-  colSpan: PropTypes.number,
   columns: ColumnsPropType,
   colSpan: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   children: PropTypes.oneOfType([
