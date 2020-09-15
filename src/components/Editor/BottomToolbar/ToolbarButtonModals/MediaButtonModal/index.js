@@ -100,8 +100,8 @@ const MediaButtonModal = ({ xs, editorRef, editorSelection, videoHeight }) => {
                   <BasicDropDown
                     className="MediaDropDown"
                     value={value}
-                    list={EMBEDED_TYPES}
-                    onClickCallback={handleDropDownClick}
+                    options={EMBEDED_TYPES}
+                    onChange={handleDropDownClick}
                   />
                 </InputGroupText>
               </InputGroupAddon>
