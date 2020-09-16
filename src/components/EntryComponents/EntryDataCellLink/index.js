@@ -9,11 +9,12 @@ import {
 const EntryDataCellLink = ({ className, entryId, children }) => {
   const entryDetailUrl = GetEntryDetailUrl(entryId)
   const route = RouterLinkPush(entryDetailUrl)
+  const handleOnClick = e => e.stopPropagation()
   return (
     <NavLink
       className={className}
       to={route}
-      onClick={(e) => e.stopPropagation()}
+      onClick={handleOnClick}
     >
       {children}
     </NavLink>
