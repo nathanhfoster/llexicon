@@ -22,18 +22,22 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
     [items, filteredItems, shouldRerender, showOnlyPublic],
   )
 
-  let randomEntries = []
+  const randomEntries = useMemo(() => {
+    const uniqueEntryIndices = [...viewableEntries]
+    const numberOfRandomEntries = uniqueEntryIndices.length > 6 ? 6 : uniqueEntryIndices.length
 
-  const numberOfRandomEntries = viewableEntries.length > 6 ? 6 : viewableEntries.length
+    let entries = []
 
-  let uniqueEntryIndices = [...viewableEntries]
+    for (let i = 0; i < numberOfRandomEntries; i++) {
+      const entry = uniqueEntryIndices.popRandomValue()
+  
+      entries.push(entry)
+    }
 
-  for (let i = 0; i < numberOfRandomEntries; i++) {
-    const entry = uniqueEntryIndices.popRandomValue()
+    return entries
 
-    randomEntries.push(entry)
-  }
-
+  }, [viewableEntries])
+  
   return (
     <Fragment>
       <Header fill='var(--quinaryColor)' display='inline-block'>
