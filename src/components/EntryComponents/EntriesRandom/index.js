@@ -1,16 +1,14 @@
-import React, { useMemo, useState, Fragment } from "react"
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
-import { EntryCards, Header } from "../.."
-import { ButtonGroup, Button } from "reactstrap"
-import "./styles.css"
+import React, { useMemo, useState, Fragment } from 'react'
+import { EntriesPropTypes } from '../../../redux/Entries/propTypes'
+import { connect as reduxConnect } from 'react-redux'
+import { EntryCards, Header } from '../..'
+import { ButtonGroup, Button } from 'reactstrap'
+import './styles.css'
 
-const mapStateToProps = ({
-  Entries: { items, filteredItems, showOnlyPublic }
-}) => ({
+const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) => ({
   items,
   filteredItems,
-  showOnlyPublic
+  showOnlyPublic,
 })
 
 const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
@@ -20,16 +18,13 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
     () =>
       items
         .concat(filteredItems)
-        .filter(({ _shouldDelete, is_public }) =>
-          showOnlyPublic ? is_public : !_shouldDelete
-        ),
-    [items, filteredItems, shouldRerender, showOnlyPublic]
+        .filter(({ _shouldDelete, is_public }) => (showOnlyPublic ? is_public : !_shouldDelete)),
+    [items, filteredItems, shouldRerender, showOnlyPublic],
   )
 
   let randomEntries = []
 
-  const numberOfRandomEntries =
-    viewableEntries.length < 4 ? viewableEntries.length : 6
+  const numberOfRandomEntries = viewableEntries.length > 6 ? 6 : viewableEntries.length
 
   let uniqueEntryIndices = [...viewableEntries]
 
@@ -41,11 +36,11 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
 
   return (
     <Fragment>
-      <Header fill="var(--quinaryColor)" display="inline-block">
+      <Header fill='var(--quinaryColor)' display='inline-block'>
         Random Entries
-        <ButtonGroup className="EntriesRandomRefreshButtonContainer">
-          <Button color="accent" onClick={handleRefresh}>
-            <i className="fas fa-sync-alt" />
+        <ButtonGroup className='EntriesRandomRefreshButtonContainer'>
+          <Button color='accent' onClick={handleRefresh}>
+            <i className='fas fa-sync-alt' />
           </Button>
         </ButtonGroup>
       </Header>
@@ -56,7 +51,7 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
 
 EntriesRandom.propTypes = {
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes
+  filteredItems: EntriesPropTypes,
 }
 
 export default reduxConnect(mapStateToProps)(EntriesRandom)
