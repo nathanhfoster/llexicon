@@ -1,20 +1,20 @@
-import { EntriesActionTypes } from "./types"
-import { AppActionTypes } from "../App/types"
-import { mergeJson, handleFilterEntries } from "./utils"
-import { getStringBytes } from "../../utils"
-import { RouteMap } from "../../redux/router/actions"
-import * as AwsImages from "../../images/AWS"
+import { EntriesActionTypes } from './types'
+import { AppActionTypes } from '../App/types'
+import { mergeJson, handleFilterEntries } from './utils'
+import { getStringBytes } from '../../utils'
+import { RouteMap } from '../../redux/router/actions'
+import * as AwsImages from '../../images/AWS'
 const { ...entryFiles } = AwsImages
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
-const BASE_JOURNAL_ENTRY_ID = "Entry"
+const BASE_JOURNAL_ENTRY_ID = 'Entry'
 
 const DEFAULT_JOUNRAL_ENTRY_ID = `${BASE_JOURNAL_ENTRY_ID}-0`
 
 const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
   id,
-  file_type: "image/jpeg",
+  file_type: 'image/jpeg',
   name,
   size: 870,
   url: entryFiles[name],
@@ -26,19 +26,19 @@ const defaultEntry = {
   id: DEFAULT_JOUNRAL_ENTRY_ID,
   tags: [
     {
-      name: "Excited",
+      name: 'Excited',
     },
     {
-      name: "Inspired",
+      name: 'Inspired',
     },
   ],
   people: [
     {
-      name: "Me",
+      name: 'Me',
     },
   ],
   EntryFiles: DEFAULT_ENTRY_FILES,
-  title: "My First Journal Entry",
+  title: 'My First Journal Entry',
   html: `<p class="ql-align-center"><img src="${entryFiles.Logo}" width="140"></p><br><p>After I've installed Astral Tree today, I will make a diary entry every day from now on. In case I forget to make an entry, the app will remind me with a notification in the evening. Besides pictures, videos, audio recordings or other files, I can add a location, tags or people to my journal entries.</p><p><br></p><p>If I <a href="${LINK_TO_SIGN_UP}" rel="noopener noreferrer" target="_blank">sign up</a>, my journal entries will be synced across all my devices. I am already looking forward to revisiting all those memories in a few months or years.</p>`,
   date_created: new Date(),
   date_created_by_author: new Date(),
@@ -70,33 +70,33 @@ const DEFAULT_STATE_ENTRIES = {
   filteredItems: [],
   isPending: false,
   error: null,
-  search: "",
+  search: '',
   EntryTags: [
     {
-      name: "Family",
+      name: 'Family',
     },
     {
-      name: "Friends",
+      name: 'Friends',
     },
     {
-      name: "Document",
+      name: 'Document',
     },
     {
-      name: "Link",
+      name: 'Link',
     },
     {
-      name: "Music",
+      name: 'Music',
     },
     {
-      name: "Vacation",
+      name: 'Vacation',
     },
     {
-      name: "Video",
+      name: 'Video',
     },
   ],
   EntryPeople: [
     {
-      name: "Me",
+      name: 'Me',
     },
   ],
   sortMap: {
@@ -121,10 +121,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case EntriesActionTypes.ENTRIES_SEARCH_FILTER:
       return {
         ...state,
-        ...handleFilterEntries(
-          mergeJson(state.items.concat(state.filteredItems), payload),
-          search
-        ),
+        ...handleFilterEntries(mergeJson(state.items.concat(state.filteredItems), payload), search),
         search,
       }
 
@@ -160,7 +157,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), results),
-          state.search
+          state.search,
         ),
         count,
         next,
@@ -173,7 +170,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), payload),
-          state.search
+          state.search,
         ),
         isPending: false,
       }
@@ -183,7 +180,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), [payload]),
-          state.search
+          state.search,
         ),
         isPending: false,
       }
@@ -192,7 +189,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         ...handleFilterEntries(
-          state.items.concat(state.filteredItems).map((item) => {
+          state.items.concat(state.filteredItems).map(item => {
             if (item.id === id) {
               const mergedItem = {
                 ...item,
@@ -205,7 +202,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
               return newItem
             } else return item
           }),
-          state.search
+          state.search,
         ),
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
@@ -213,13 +210,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
 
     case EntriesActionTypes.ENTRY_DELETE:
       const hasArrayOfIds = Array.isArray(payload)
-      const filterCondition = (item) =>
-        hasArrayOfIds ? payload.includes(item.id) : item.id != id
+      const filterCondition = item => (hasArrayOfIds ? payload.includes(item.id) : item.id != id)
       return {
         ...state,
         ...handleFilterEntries(
           state.items.concat(state.filteredItems).filter(filterCondition),
-          state.search
+          state.search,
         ),
       }
 
@@ -255,9 +251,4 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   }
 }
 
-export {
-  BASE_JOURNAL_ENTRY_ID,
-  DEFAULT_ENTRY_FILES,
-  DEFAULT_STATE_ENTRIES,
-  Entries,
-}
+export { BASE_JOURNAL_ENTRY_ID, DEFAULT_ENTRY_FILES, DEFAULT_STATE_ENTRIES, Entries }
