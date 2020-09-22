@@ -148,7 +148,8 @@ const About = ({ userId, prompt, promptToInstall }) => {
   const homeCardText = useMemo(
     () => (
       <div>
-        <h3>The first progressive web app journal</h3>
+        <h4>Capture the essence of your life</h4>
+        <h4>with a free online journal and diary app</h4>
       </div>
     ),
     []
