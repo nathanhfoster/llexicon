@@ -297,6 +297,9 @@ const readmultifiles = e => {
   })
 }
 
+const lazyDelay = time => promiseResult =>
+  new Promise(resolve => setTimeout(() => resolve(promiseResult), time))
+
 const lazyLoadWithTimeOut = (min, max, componentPath) =>
   lazy(() => {
     return new Promise(resolve => setTimeout(resolve, getRandomInt(min, max))).then(
@@ -624,6 +627,7 @@ export {
   splitStrings,
   importTextFileEntries,
   readmultifiles,
+  lazyDelay,
   lazyLoadWithTimeOut,
   addDynamicScript,
   capitalizeFirstLetter,
