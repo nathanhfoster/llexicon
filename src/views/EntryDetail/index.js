@@ -97,13 +97,7 @@ const EntryDetail = ({
       </Row>
     </Container>
   ) : (
-    <PageNotFound
-      title={
-        isPending
-          ? "Loading Entry..."
-          : "Entry Not Found. It is either deleted or no longer public."
-      }
-    />
+    <PageNotFound />
   )
 }
 
