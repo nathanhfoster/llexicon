@@ -5,6 +5,8 @@ import { EntryCards, Header } from '../..'
 import { ButtonGroup, Button } from 'reactstrap'
 import './styles.css'
 
+const NUMBER_OF_MOST_VIEWED_ENTRIES = 8
+
 const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) => ({
   items,
   filteredItems,
@@ -18,26 +20,29 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
     () =>
       items
         .concat(filteredItems)
-        .filter(({ _shouldDelete, is_public }) => (showOnlyPublic ? is_public : !_shouldDelete)),
+        .filter(({ _shouldDelete, is_public }) => (showOnlyPublic ? is_public : !_shouldDelete))
+        .slice(0, NUMBER_OF_MOST_VIEWED_ENTRIES),
     [items, filteredItems, shouldRerender, showOnlyPublic],
   )
 
   const randomEntries = useMemo(() => {
     const uniqueEntryIndices = [...viewableEntries]
-    const numberOfRandomEntries = uniqueEntryIndices.length > 6 ? 6 : uniqueEntryIndices.length
+    const numberOfRandomEntries =
+      uniqueEntryIndices.length > NUMBER_OF_MOST_VIEWED_ENTRIES
+        ? NUMBER_OF_MOST_VIEWED_ENTRIES
+        : uniqueEntryIndices.length
 
     let entries = []
 
     for (let i = 0; i < numberOfRandomEntries; i++) {
       const entry = uniqueEntryIndices.popRandomValue()
-  
+
       entries.push(entry)
     }
 
     return entries
-
   }, [viewableEntries])
-  
+
   return (
     <Fragment>
       <Header fill='var(--quinaryColor)' display='inline-block'>
