@@ -95,96 +95,10 @@ const HelmetContainer = ({ entryDetail }) => {
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
 
-      <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-      <link rel="shortcut icon" href="%PUBLIC_URL%/assets/favicon.ico?v=2" />
-
-      <link
-        rel="apple-touch-icon"
-        sizes="180x180"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="apple-touch-startup-image"
-        media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
-        href="%PUBLIC_URL%/assets/apple-touch-icon.png"
-      />
-
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="%PUBLIC_URL%/assets/favicon-32x32.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="16x16"
-        href="%PUBLIC_URL%/assets/favicon-16x16.png"
-      />
-      <link
-        href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Varela+Round&display=swap"
-        rel="stylesheet"
-      />
-      {/* <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
-      integrity=""
-      crossorigin="anonymous"
-    />  */}
       <script
         src="https://kit.fontawesome.com/d1e21014e5.js"
         crossorigin="anonymous"
       ></script>
-      {/* <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=default,Array.prototype.includes,Array.prototype.find"></script> */}
       <script
         type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTKkZ7BWNgMkbjmagpiXbWgRHszSZfLHo&libraries=places"
