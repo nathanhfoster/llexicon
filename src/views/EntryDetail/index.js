@@ -6,29 +6,35 @@ import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
 
-import { GetUserEntryDetails, SyncEntries } from "../../redux/Entries/actions"
+import {
+  GetUserEntryDetails,
+  ClearEntry,
+  SyncEntries,
+} from "../../redux/Entries/actions"
 import { SetCalendar } from "../../redux/Calendar/actions"
 import PageNotFound from "../PageNotFound"
 import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
-const mapStateToProps = (
-  {
-    User: { id },
-    Entries: { items, filteredItems, isPending },
-    Window: {
-      navigator: { serviceWorker },
-    },
+const mapStateToProps = ({
+  User: { id },
+  Entries: { item, isPending },
+  Window: {
+    navigator: { serviceWorker },
   },
-  { entryId }
-) => ({
+}) => ({
   userId: id,
-  entry: items.concat(filteredItems).find(({ id }) => id == entryId),
+  entry: item,
   serviceWorkerController: serviceWorker?.controller || {},
   isPending,
 })
 
-const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
+const mapDispatchToProps = {
+  GetUserEntryDetails,
+  ClearEntry,
+  SyncEntries,
+  SetCalendar,
+}
 
 const EntryDetail = ({
   entryId,
@@ -37,6 +43,7 @@ const EntryDetail = ({
   serviceWorkerController,
   isPending,
   GetUserEntryDetails,
+  ClearEntry,
   SyncEntries,
   SetCalendar,
 }) => {
@@ -57,6 +64,10 @@ const EntryDetail = ({
       SyncEntries(
         () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
       )
+    }
+
+    return () => {
+      ClearEntry()
     }
   }, [])
 
@@ -98,6 +109,7 @@ EntryDetail.propTypes = {
   entry: EntryPropTypes,
   isPending: PropTypes.bool.isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,
+  ClearEntry: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
 }

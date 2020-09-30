@@ -65,7 +65,6 @@ const BasicTable = ({
 };
 
 BasicTable.propTypes = {
-  data: DataPropType,
   sortList: SortListPropType,
   filterList: PropTypes.array,
   hover: PropTypes.bool.isRequired,
