@@ -49,7 +49,7 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
+  // const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
   const entryFound = Boolean(entry)
 
@@ -60,11 +60,11 @@ const EntryDetail = ({
   )
 
   useEffect(() => {
-    if (!entryIsLocalOnly) {
+    // if (!entryIsLocalOnly) {
       SyncEntries(
         () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
       )
-    }
+    // }
 
     return () => {
       ClearEntry()

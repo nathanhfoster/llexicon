@@ -1,5 +1,4 @@
 export const EntriesActionTypes = {
-  ENTRY_GET: "ENTRY_GET",
   ENTRY_CLEAR: "ENTRY_CLEAR",
   ENTRY_SET: "ENTRY_SET",
   ENTRY_CLEAR: "ENTRY_CLEAR",

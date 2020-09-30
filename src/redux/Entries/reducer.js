@@ -147,13 +147,6 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case EntriesActionTypes.ENTRY_CLEAR:
       return { ...state, item: DEFAULT_STATE_ENTRIES.item }
 
-    case EntriesActionTypes.ENTRY_GET:
-      return {
-        ...state,
-        item: { ...payload, _size: getStringBytes(payload) },
-        isPending: false,
-      }
-
     case EntriesActionTypes.ENTRIES_SET:
       const { count, next, previous, results } = payload
       return {
