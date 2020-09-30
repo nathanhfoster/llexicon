@@ -51,7 +51,7 @@ const EntryDetail = ({
 
   // const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
-  const entryFound = Boolean(entry)
+  const entryFound = !isPending && Boolean(entry)
 
   const entryAuthor = entry ? entry.author : null
 
