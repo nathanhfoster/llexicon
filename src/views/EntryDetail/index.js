@@ -51,7 +51,7 @@ const EntryDetail = ({
 
   // const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
-  const entryFound = !isPending && Boolean(entry)
+  const entryFound = Boolean(entry)
 
   const entryAuthor = entry ? entry.author : null
 
@@ -61,9 +61,9 @@ const EntryDetail = ({
 
   useEffect(() => {
     // if (!entryIsLocalOnly) {
-      SyncEntries(
-        () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
-      )
+    SyncEntries(
+      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
+    )
     // }
 
     return () => {
@@ -98,7 +98,11 @@ const EntryDetail = ({
     </Container>
   ) : (
     <PageNotFound
-      title={"Entry Not Found. It is either deleted or no longer public."}
+      title={
+        isPending
+          ? "Loading Entry..."
+          : "Entry Not Found. It is either deleted or no longer public."
+      }
     />
   )
 }
