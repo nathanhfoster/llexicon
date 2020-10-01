@@ -5,7 +5,6 @@ import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
-
 import {
   GetUserEntryDetails,
   ClearEntry,
@@ -16,18 +15,21 @@ import PageNotFound from "../PageNotFound"
 import { BASE_JOURNAL_ENTRY_ID } from "../../redux/Entries/reducer"
 import "./styles.css"
 
-const mapStateToProps = ({
-  User: { id },
-  Entries: { item, isPending },
-  Window: {
-    navigator: { serviceWorker },
+const mapStateToProps = (
+  {
+    User: { id },
+    Entries: { items, filteredItems, isPending },
+    Window: {
+      navigator: { serviceWorker },
+    },
   },
-}) => ({
-  userId: id,
-  entry: item,
-  serviceWorkerController: serviceWorker?.controller || {},
-  isPending,
-})
+  { entryId }
+) => ({
+    userId: id,
+    entry: items.concat(filteredItems).find(({ id }) => id == entryId),
+    serviceWorkerController: serviceWorker?.controller || {},
+    isPending,
+  })
 
 const mapDispatchToProps = {
   GetUserEntryDetails,
@@ -61,9 +63,9 @@ const EntryDetail = ({
 
   useEffect(() => {
     // if (!entryIsLocalOnly) {
-      SyncEntries(
-        () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
-      )
+    SyncEntries(
+      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
+    )
     // }
 
     return () => {
@@ -97,9 +99,7 @@ const EntryDetail = ({
       </Row>
     </Container>
   ) : (
-    <PageNotFound
-      title={"Entry Not Found. It is either deleted or no longer public."}
-    />
+    <PageNotFound />
   )
 }
 
