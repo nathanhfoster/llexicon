@@ -18,7 +18,7 @@ import "./styles.css"
 const mapStateToProps = (
   {
     User: { id },
-    Entries: { item, items, filteredItems, isPending },
+    Entries: { items, filteredItems, isPending },
     Window: {
       navigator: { serviceWorker },
     },
@@ -29,7 +29,7 @@ const mapStateToProps = (
   const entryInFilteredItems = filteredItems.find(({ id }) => id == entryId)
   return {
     userId: id,
-    entry: item || entryInItems || entryInFilteredItems,
+    entry: entryInItems || entryInFilteredItems,
     serviceWorkerController: serviceWorker?.controller || {},
     isPending,
   }
