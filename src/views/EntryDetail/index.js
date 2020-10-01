@@ -56,7 +56,7 @@ const EntryDetail = ({
   const entryAuthor = entry ? entry.author : null
 
   const readOnly = Boolean(
-    (!isPending && entryAuthor && !userId) || userId !== entryAuthor
+    (!isPending && entryAuthor && !userId) || entryAuthor && userId !== entryAuthor
   )
 
   useEffect(() => {

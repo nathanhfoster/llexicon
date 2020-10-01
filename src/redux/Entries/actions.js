@@ -109,9 +109,9 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const SetEntry = (entry, _lastUpdated = new Date()) => ({
+const SetEntry = entry => ({
   type: EntriesActionTypes.ENTRY_SET,
-  payload: { ...entry, _lastUpdated, _shouldPost: false },
+  payload: { ...entry, _lastUpdated: new Date()},
 })
 
 const GetEntry = (url, id) => (dispatch, getState) => {

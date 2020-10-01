@@ -84,9 +84,8 @@ const ResolveEntryConflictModal = ({
 
   const handleSave = useCallback(async () => {
     setHasResolved(true)
-    const updateDate = new Date()
-    entryToUpdate.id && SetEntry(entryToUpdate, updateDate)
-    await UpdateReduxEntry(entryToUpdate.id, entryToUpdate, updateDate)
+    entryToUpdate.id && SetEntry(entryToUpdate)
+    await UpdateReduxEntry(entryToUpdate.id, entryToUpdate)
     await SyncEntries()
   }, [entryToUpdate])
 
