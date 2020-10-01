@@ -24,16 +24,12 @@ const mapStateToProps = (
     },
   },
   { entryId }
-) => {
-  const entryInItems = items.find(({ id }) => id == entryId)
-  const entryInFilteredItems = filteredItems.find(({ id }) => id == entryId)
-  return {
+) => ({
     userId: id,
-    entry: entryInItems || entryInFilteredItems,
+    entry: items.concat(filteredItems).find(({ id }) => id == entryId),
     serviceWorkerController: serviceWorker?.controller || {},
     isPending,
-  }
-}
+  })
 
 const mapDispatchToProps = {
   GetUserEntryDetails,
