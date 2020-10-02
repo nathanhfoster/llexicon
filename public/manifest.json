@@ -21,6 +21,15 @@
       "type": "image/png"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "Open Settings",
+      "short_name": "Settings",
+      "description": "View your settings",
+      "url": "/settings?utm_source=homescreen",
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+    }
+  ],
   "background_color": "#29303b",
   "theme_color": "#29303b",
   "start_url": "/home",
