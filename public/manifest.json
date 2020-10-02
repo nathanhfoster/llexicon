@@ -26,7 +26,7 @@
       "name": "Open Settings",
       "short_name": "Settings",
       "description": "View your settings",
-      "url": "/settings?utm_source=homescreen",
+      "url": "/settings/entries",
       "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
     }
   ],
