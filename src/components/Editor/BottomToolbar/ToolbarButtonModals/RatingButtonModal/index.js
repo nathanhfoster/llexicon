@@ -33,7 +33,7 @@ const RatingButtonModal = props => {
     [],
   )
 
-  const handleSave = useCallback(() => onChangeCallback({ rating }), [])
+  const handleSave = useCallback(() => onChangeCallback({ rating }), [rating])
 
   const handleStarClicked = useCallback(
     rating => setState(prevState => ({ ...prevState, rating, savedRating: true })),
