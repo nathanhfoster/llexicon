@@ -46,7 +46,6 @@ const PeopleButtonModal = ({
   onChangeCallback,
   ...restOfProps
 }) => {
-  console.log('kjhg')
   useEffect(() => {
     if (UserId) GetUserEntryPeople()
   }, [])

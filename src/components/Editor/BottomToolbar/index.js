@@ -65,7 +65,6 @@ const BottomToolbar = ({
           <Row className='BottomToolBarFiles'>
             <Col xs={12} className='p-1'>
               <EntryFilesCarousel
-                html={entry.html}
                 files={entry.EntryFiles}
                 onChangeCallback={onChangeCallback}
                 handleInsertEmbeded={handleInsertEmbeded}
