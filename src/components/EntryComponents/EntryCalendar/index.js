@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react"
+import React, { useEffect, useRef, useMemo, lazy } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
 import { Container, Row, Col, Button } from "reactstrap"
@@ -9,10 +9,11 @@ import MomentJS from "moment"
 import { RouterPush, RouteMap } from "../../../redux/router/actions"
 import { SetCalendar } from "../../../redux/Calendar/actions"
 import { GetUserEntriesByDate } from "../../../redux/Entries/actions"
-import TileContent from "./TileContent"
 import EntryList from "../EntryList"
 import "./styles.css"
 import "./stylesM.css"
+
+const TileContent = lazy(() => import("./TileContent"))
 
 const mapStateToProps = ({
   Calendar: { activeDate, view },
