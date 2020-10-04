@@ -110,7 +110,13 @@ const MediaButtonModal = ({ xs, handleInsertEmbeded, videoHeight }) => {
           {type === EMBEDED_TYPES[0].id ? (
             <Media src={url || PLACEHOLDER} className='MediaButtonModalImage' />
           ) : (
-            <iframe src={cleanUrl(url)} frameBorder='0' height={videoHeight} width='100%' />
+            <iframe
+              title='Image'
+              src={cleanUrl(url)}
+              frameBorder='0'
+              height={videoHeight}
+              width='100%'
+            />
           )}
         </div>
       </Container>

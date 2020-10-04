@@ -7,19 +7,18 @@ import './styles.css'
 
 const getInitialState = ({ rating }) => ({ rating, savedRating: false })
 
-const RatingButtonModal = props => {
-  const { xs, onChangeCallback } = props
-  const [state, setState] = useState(getInitialState(props))
-  const { rating, savedRating } = state
+const RatingButtonModal = ({ xs, onChangeCallback, ...restOfProps }) => {
+  const [{ rating, savedRating }, setState] = useState(getInitialState(restOfProps))
 
-  const previousPropsRating = useRef(props.rating)
-  const ratingChanged = previousPropsRating.current !== props.rating && props.ratring !== rating
+  const previousPropsRating = useRef(restOfProps.rating)
+  const ratingChanged =
+    previousPropsRating.current !== restOfProps.rating && restOfProps.ratring !== rating
 
   useEffect(() => {
     if (ratingChanged) {
-      setState(prevState => ({ ...prevState, rating: props.rating }))
+      setState(prevState => ({ ...prevState, rating: restOfProps.rating }))
     }
-  }, [props.rating])
+  }, [restOfProps.rating])
 
   const handleClick = useCallback(() => {}, [])
 
@@ -27,10 +26,10 @@ const RatingButtonModal = props => {
     () =>
       setState(prevState => ({
         ...prevState,
-        rating: props.rating,
+        rating: restOfProps.rating,
         savedRating: false,
       })),
-    [],
+    [restOfProps.rating],
   )
 
   const handleSave = useCallback(() => onChangeCallback({ rating }), [rating])
@@ -75,7 +74,7 @@ const RatingButtonModal = props => {
     }
 
     return stars
-  }, [rating])
+  }, [rating, handleMouseEnter, handleMouseLeave, handleStarClicked])
 
   const ButtonIcon = useMemo(() => <RatingIcon rating={rating} />, [rating])
 
