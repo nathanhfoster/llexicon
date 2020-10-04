@@ -1,17 +1,17 @@
-import React, { PureComponent, Fragment, createRef } from "react"
-import ReactQuill from "react-quill"
-import { THEMES, FORMATS, getModules } from "./modules"
-import "react-quill/dist/quill.snow.css"
-import "react-quill/dist/quill.bubble.css"
-import "react-quill/dist/quill.core.css"
+import React, { PureComponent, Fragment, createRef } from 'react'
+import ReactQuill from 'react-quill'
+import { THEMES, FORMATS, getModules } from './modules'
+import 'react-quill/dist/quill.snow.css'
+import 'react-quill/dist/quill.bubble.css'
+import 'react-quill/dist/quill.core.css'
 // import "quill-emoji/dist/quill-emoji.css"
 // import "quill-mention/dist/quill.mention.min.css"
-import "./styles.css"
-import TopToolbar from "./TopToolbar"
-import BottomToolbar from "./BottomToolbar"
-import PropTypes from "prop-types"
-import { EntryPropTypes } from "../../redux/Entries/propTypes"
-import deepEquals from "../../utils/deepEquals"
+import './styles.css'
+import TopToolbar from './TopToolbar'
+import BottomToolbar from './BottomToolbar'
+import PropTypes from 'prop-types'
+import { EntryPropTypes } from '../../redux/Entries/propTypes'
+import deepEquals from '../../utils/deepEquals'
 
 class Editor extends PureComponent {
   constructor(props) {
@@ -24,7 +24,7 @@ class Editor extends PureComponent {
       topToolbarIsOpen,
       bottomToolbarIsOpen,
       canToggleToolbars,
-      readOnly
+      readOnly,
     } = props
 
     this.editorRef = createRef()
@@ -39,7 +39,7 @@ class Editor extends PureComponent {
       topToolbarIsOpen: !readOnly && topToolbarIsOpen,
       bottomToolbarIsOpen: !readOnly && bottomToolbarIsOpen,
       canToggleToolbars: !readOnly && canToggleToolbars,
-      modules
+      modules,
     }
   }
 
@@ -48,8 +48,7 @@ class Editor extends PureComponent {
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     entry: EntryPropTypes.isRequired,
     onChangeCallback: PropTypes.func,
-    toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-      .isRequired,
+    toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     canToggleToolbars: PropTypes.bool.isRequired,
     topToolbarIsOpen: PropTypes.bool,
     bottomToolbarIsOpen: PropTypes.bool,
@@ -75,20 +74,20 @@ class Editor extends PureComponent {
     onKeyUp: PropTypes.func,
     modules: PropTypes.object,
     formats: PropTypes.array,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   }
 
   static defaultProps = {
     theme: THEMES.SNOW,
 
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
     toolbarId: 1,
-    placeholder: "Today I have...",
+    placeholder: 'Today I have...',
     canToggleToolbars: true,
     topToolbarIsOpen: true,
     bottomToolbarIsOpen: true,
-    readOnly: false
+    readOnly: false,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -97,21 +96,21 @@ class Editor extends PureComponent {
     const { topToolbarIsOpen, bottomToolbarIsOpen } = prevState
 
     const editorHeight = readOnly
-      ? "100%"
+      ? '100%'
       : bottomToolbarIsOpen
-      ? "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
-      : "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
+      ? 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))'
+      : 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))'
 
     const editorStyles = { height: editorHeight }
 
     const previousState = {
       entry: prevState.entry,
-      editorStyles: prevState.editorStyles
+      editorStyles: prevState.editorStyles,
     }
 
     const nextState = {
       entry,
-      editorStyles
+      editorStyles,
     }
 
     if (!deepEquals(previousState, nextState)) {
@@ -136,19 +135,30 @@ class Editor extends PureComponent {
     onChangeCallback({ id: toolbarId, ...payload })
   }
 
-  toggleBottomToolbar = (toggle) =>
-    this.setState((currentState) => ({
+  toggleBottomToolbar = toggle =>
+    this.setState(currentState => ({
       bottomToolbarIsOpen:
-        toggle === true || toggle === false
-          ? toggle
-          : !currentState.bottomToolbarIsOpen
+        toggle === true || toggle === false ? toggle : !currentState.bottomToolbarIsOpen,
     }))
 
-  handleOnFocus = (range) => {
+  handleOnFocus = range => {
     const { editorRef } = this
 
     if (editorRef && editorRef.current) {
       editorRef.current.setEditorSelection(editorRef.current.editor, range)
+    }
+  }
+
+  handleInsertEmbeded = (type, url) => {
+    let cursorIndex = 0
+    const editorSelection = this.editorRef?.current?.getEditorSelection()
+
+    if (editorSelection) {
+      const { index, length } = editorSelection
+
+      cursorIndex = index
+
+      this.editorRef.current.editor.insertEmbed(cursorIndex, type, url)
     }
   }
 
@@ -164,13 +174,13 @@ class Editor extends PureComponent {
       editorStyles,
       bottomToolbarIsOpen,
       modules,
-      canToggleToolbars
+      canToggleToolbars,
     } = this.state
 
     return (
       <Fragment>
         {children}
-        <div id="TextEditor" style={{ height, width }}>
+        <div id='TextEditor' style={{ height, width }}>
           <TopToolbar
             toolbarId={toolbarId}
             editorRef={editorRef}
@@ -180,9 +190,9 @@ class Editor extends PureComponent {
           <ReactQuill
             id={quillId}
             readOnly={readOnly}
-            bounds="app"
+            bounds='app'
             ref={editorRef}
-            className="Editor"
+            className='Editor'
             style={editorStyles}
             theme={theme}
             formats={FORMATS}
@@ -200,6 +210,7 @@ class Editor extends PureComponent {
             onChangeCallback={this.handleEditorChange}
             id={this.props.toolbarId}
             editorRef={editorRef}
+            handleInsertEmbeded={this.handleInsertEmbeded}
           />
         </div>
       </Fragment>
