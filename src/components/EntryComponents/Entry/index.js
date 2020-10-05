@@ -26,12 +26,20 @@ const Entry = ({
 
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 
-  const handleDebounce = () => {
-    dispatch(SyncEntries())
-  }
+  const handleEditorChange = useCallback(
+    ({ ...payload }) => {
+      if (readOnly) return
+      dispatch(UpdateReduxEntry(entry.id, payload))
+    },
+    [entry.id, readOnly]
+  )
 
-  const handleTitleChange = ({ target: { value } }) =>
-    handleEditorChange({ id: entry.id, title: value })
+  const handleDebounce = useCallback(() => {
+    dispatch(SyncEntries())
+  }, [])
+
+  const handleTitleChange = useCallback(({ target: { value } }) =>
+    handleEditorChange({ id: entry.id, title: value }), [])
 
   const handleDateChange = useCallback(
     (date_created_by_author) =>
@@ -41,14 +49,6 @@ const Entry = ({
         _lastUpdated: date_created_by_author,
       }),
     []
-  )
-
-  const handleEditorChange = useCallback(
-    ({ ...payload }) => {
-      if (readOnly) return
-      dispatch(UpdateReduxEntry(entry.id, payload))
-    },
-    [entry.id, readOnly]
   )
 
   return (
