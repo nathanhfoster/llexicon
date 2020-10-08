@@ -21,6 +21,29 @@
       "type": "image/png"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "Create Entry",
+      "short_name": "Create",
+      "description": "Create a new entry",
+      "url": "/new-entry",
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Calendar View",
+      "short_name": "Calendar",
+      "description": "Calendar View",
+      "url": "/entries/calendar",
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Open Settings",
+      "short_name": "Settings",
+      "description": "View your settings",
+      "url": "/settings/entries",
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+    }
+  ],
   "background_color": "#29303b",
   "theme_color": "#29303b",
   "start_url": "/home",

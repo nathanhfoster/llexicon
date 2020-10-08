@@ -1,7 +1,7 @@
-import React, { useMemo, memo } from "react"
-import PropTypes from "prop-types"
-import ToolbarButton from "../ToolbarButton"
-import { BasicModal } from "../../../"
+import React, { useMemo, memo } from 'react'
+import PropTypes from 'prop-types'
+import ToolbarButton from '../ToolbarButton'
+import { BasicModal } from '../../../'
 
 const ToolbarModal = ({
   ButtonIcon,
@@ -14,16 +14,11 @@ const ToolbarModal = ({
 }) => {
   const modalButton = useMemo(
     () => (
-      <ToolbarButton
-        xs={xs}
-        ButtonIcon={ButtonIcon}
-        title={button}
-        disabled={disabled}
-      >
+      <ToolbarButton xs={xs} ButtonIcon={ButtonIcon} title={button} disabled={disabled}>
         {Component && <Component />}
       </ToolbarButton>
     ),
-    [Component, children]
+    [Component, children],
   )
   return (
     <BasicModal {...restOfProps} button={modalButton}>
@@ -42,7 +37,7 @@ ToolbarModal.propTypes = {
   xs: PropTypes.number,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  disabledSave: PropTypes.bool
+  disabledSave: PropTypes.bool,
 }
 
 export default memo(ToolbarModal)

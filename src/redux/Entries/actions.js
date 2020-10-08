@@ -109,9 +109,9 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const SetEntry = (entry, _lastUpdated = new Date()) => ({
+const SetEntry = entry => ({
   type: EntriesActionTypes.ENTRY_SET,
-  payload: { ...entry, _lastUpdated, _shouldPost: false },
+  payload: { ...entry, _lastUpdated: new Date() },
 })
 
 const GetEntry = (url, id) => (dispatch, getState) => {
@@ -178,6 +178,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
     })
     .catch(e => {
       console.log(e)
+      return e
       // const payload = JSON.parse(JSON.stringify(e.response))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
@@ -207,6 +208,20 @@ const GetUserEntries = pageNumber => (dispatch, getState) => {
       // const payload = JSON.parse(JSON.stringify(e.response))
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
+}
+
+const GetAllUserEntryPages = (pageNumber = 1) => dispatch => {
+  if (pageNumber) {
+    dispatch(GetUserEntries(pageNumber))
+      .then(({ next }) => {
+        const split = next?.split('page=')
+        if (split?.length > 0) {
+          const nextPage = split[1]
+          dispatch(GetAllUserEntryPages(nextPage))
+        }
+      })
+      .catch(e => console.log(e))
+  }
 }
 
 const GetUserEntriesByDate = payload => (dispatch, getState) => {
@@ -507,6 +522,7 @@ export {
   GetUserEntry,
   GetUserEntryDetails,
   GetAllUserEntries,
+  GetAllUserEntryPages,
   GetUserEntries,
   GetUserEntriesByDate,
   ImportReduxEntry,

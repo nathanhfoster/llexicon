@@ -18,22 +18,18 @@ import "./styles.css"
 const mapStateToProps = (
   {
     User: { id },
-    Entries: { item, items, filteredItems, isPending },
+    Entries: { items, filteredItems, isPending },
     Window: {
       navigator: { serviceWorker },
     },
   },
   { entryId }
-) => {
-  const entryInItems = items.find(({ id }) => id == entryId)
-  const entryInFilteredItems = filteredItems.find(({ id }) => id == entryId)
-  return {
+) => ({
     userId: id,
-    entry: item || entryInItems || entryInFilteredItems,
+    entry: items.concat(filteredItems).find(({ id }) => id == entryId),
     serviceWorkerController: serviceWorker?.controller || {},
     isPending,
-  }
-}
+  })
 
 const mapDispatchToProps = {
   GetUserEntryDetails,
@@ -62,7 +58,7 @@ const EntryDetail = ({
   const entryAuthor = entry ? entry.author : null
 
   const readOnly = Boolean(
-    (!isPending && entryAuthor && !userId) || userId !== entryAuthor
+    (!isPending && entryAuthor && !userId) || entryAuthor && userId !== entryAuthor
   )
 
   useEffect(() => {
