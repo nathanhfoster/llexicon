@@ -7,7 +7,7 @@ import './styles.css'
 
 const getInitialState = ({ rating }) => ({ rating, savedRating: false })
 
-const RatingButtonModal = ({ xs, onChangeCallback, ...restOfProps }) => {
+const RatingButtonModal = ({ xs, onChange, ...restOfProps }) => {
   const [{ rating, savedRating }, setState] = useState(getInitialState(restOfProps))
 
   const previousPropsRating = useRef(restOfProps.rating)
@@ -32,7 +32,7 @@ const RatingButtonModal = ({ xs, onChangeCallback, ...restOfProps }) => {
     [restOfProps.rating],
   )
 
-  const handleSave = useCallback(() => onChangeCallback({ rating }), [rating])
+  const handleSave = useCallback(() => onChange({ rating }), [rating])
 
   const handleStarClicked = useCallback(
     rating => setState(prevState => ({ ...prevState, rating, savedRating: true })),
@@ -98,7 +98,7 @@ const RatingButtonModal = ({ xs, onChangeCallback, ...restOfProps }) => {
 
 RatingButtonModal.propTypes = {
   rating: PropTypes.number.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default memo(RatingButtonModal)

@@ -1,11 +1,11 @@
-import React, { useCallback, memo } from "react"
-import PropTypes from "prop-types"
-import { useDispatch } from "react-redux"
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
-import { InputGroup, Input, InputGroupAddon, InputGroupText } from "reactstrap"
-import { Editor, EntryOptionsMenu, ReactDatePicker, UseDebounce } from "../../"
-import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
-import "./styles.css"
+import React, { useCallback, memo } from 'react'
+import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { EntryPropTypes } from '../../../redux/Entries/propTypes'
+import { InputGroup, Input, InputGroupAddon, InputGroupText } from 'reactstrap'
+import { Editor, EntryOptionsMenu, ReactDatePicker, UseDebounce } from '../../'
+import { UpdateReduxEntry, SyncEntries } from '../../../redux/Entries/actions'
+import './styles.css'
 
 const Entry = ({
   height,
@@ -20,9 +20,7 @@ const Entry = ({
   readOnly,
 }) => {
   const dispatch = useDispatch()
-  const activeDate = new Date(
-    entry.date_created_by_author || entry._lastUpdated || 0
-  )
+  const activeDate = new Date(entry.date_created_by_author || entry._lastUpdated || 0)
 
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 
@@ -31,24 +29,26 @@ const Entry = ({
       if (readOnly) return
       dispatch(UpdateReduxEntry(entry.id, payload))
     },
-    [entry.id, readOnly]
+    [entry.id, readOnly],
   )
 
   const handleDebounce = useCallback(() => {
     dispatch(SyncEntries())
   }, [])
 
-  const handleTitleChange = useCallback(({ target: { value } }) =>
-    handleEditorChange({ id: entry.id, title: value }), [])
+  const handleTitleChange = useCallback(
+    ({ target: { value } }) => handleEditorChange({ id: entry.id, title: value }),
+    [],
+  )
 
   const handleDateChange = useCallback(
-    (date_created_by_author) =>
+    date_created_by_author =>
       handleEditorChange({
         id: entry.id,
         date_created_by_author,
         _lastUpdated: date_created_by_author,
       }),
-    []
+    [],
   )
 
   return (
@@ -60,29 +60,22 @@ const Entry = ({
       bottomToolbarIsOpen={bottomToolbarIsOpen}
       entry={entry}
       theme={theme}
-      onChangeCallback={handleEditorChange}
+      onChange={handleEditorChange}
       height={height}
     >
-      <UseDebounce
-        onChangeCallback={handleDebounce}
-        value={entry}
-        delay={3200}
-      />
-      <InputGroup
-        key={`EntryTitle-${entry.id}`}
-        className="EntryInput EntryInputTitle"
-      >
+      <UseDebounce onChange={handleDebounce} value={entry} delay={3200} />
+      <InputGroup key={`EntryTitle-${entry.id}`} className='EntryInput EntryInputTitle'>
         <Input
-          type="text"
-          name="title"
-          id="title"
-          placeholder="Entry title..."
+          type='text'
+          name='title'
+          id='title'
+          placeholder='Entry title...'
           value={entry.title}
           onChange={handleTitleChange}
           disabled={readOnly}
         />
-        <InputGroupAddon addonType="append">
-          <InputGroupText className="p-0">
+        <InputGroupAddon addonType='append'>
+          <InputGroupText className='p-0'>
             <ReactDatePicker
               readOnly={readOnly}
               selected={activeDate}
@@ -92,11 +85,11 @@ const Entry = ({
         </InputGroupAddon>
 
         {showOptionsMenu && (
-          <InputGroupAddon addonType="append">
+          <InputGroupAddon addonType='append'>
             <InputGroupText
-              className="p-0"
+              className='p-0'
               tag={EntryOptionsMenu}
-              onChangeCallback={handleEditorChange}
+              onChange={handleEditorChange}
               entryId={entry.id}
               is_public={entry.is_public}
               shouldRedirectOnDelete={shouldRedirectOnDelete}
@@ -124,14 +117,14 @@ Entry.propTypes = {
 }
 
 Entry.defaultProps = {
-  height: "100%",
+  height: '100%',
   showOptionsMenu: true,
   readOnly: false,
   canToggleToolbars: true,
   topToolbarIsOpen: true,
   bottomToolbarIsOpen: true,
   shouldRedirectOnDelete: false,
-  theme: "snow",
+  theme: 'snow',
 }
 
 export default memo(Entry)

@@ -49,7 +49,7 @@ const TagsButtonModal = ({
   html,
   title,
   xs,
-  onChangeCallback,
+  onChange,
   ...restOfProps
 }) => {
   useEffect(() => {
@@ -154,7 +154,7 @@ const TagsButtonModal = ({
       tags,
     }
 
-    onChangeCallback(payload)
+    onChange(payload)
     resetState()
   }, [entryId, tags, resetState])
 
@@ -291,7 +291,7 @@ TagsButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 TagsButtonModal.defaultProps = {

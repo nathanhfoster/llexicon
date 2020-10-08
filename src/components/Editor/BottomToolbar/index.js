@@ -21,7 +21,7 @@ const BottomToolbar = ({
   isOpen,
   canToggleToolbars,
   toggleBottomToolbar,
-  onChangeCallback,
+  onChange,
   xs,
 }) => {
   // editorRef.current.focus()
@@ -66,14 +66,14 @@ const BottomToolbar = ({
             <Col xs={12} className='p-1'>
               <EntryFilesCarousel
                 files={entry.EntryFiles}
-                onChangeCallback={onChangeCallback}
+                onChange={onChange}
                 handleInsertEmbeded={handleInsertEmbeded}
               />
             </Col>
           </Row>
           <Row className='BottomToolButtonRow'>
             <MediaButtonModal xs={6} handleInsertEmbeded={handleInsertEmbeded} />
-            <RatingButtonModal xs={6} rating={entry.rating} onChangeCallback={onChangeCallback} />
+            <RatingButtonModal xs={6} rating={entry.rating} onChange={onChange} />
           </Row>
           <Row className='BottomToolButtonRow'>
             <TagsButtonModal
@@ -82,7 +82,7 @@ const BottomToolbar = ({
               tags={entry.tags}
               html={entry.html}
               title={entry.title}
-              onChangeCallback={onChangeCallback}
+              onChange={onChange}
             />
             <PeopleButtonModal
               xs={4}
@@ -90,9 +90,9 @@ const BottomToolbar = ({
               people={entry.people}
               html={entry.html}
               title={entry.title}
-              onChangeCallback={onChangeCallback}
+              onChange={onChange}
             />
-            <LocationButtonModal xs={4} entry={entry} onChangeCallback={onChangeCallback} />
+            <LocationButtonModal xs={4} entry={entry} onChange={onChange} />
           </Row>
         </Container>
       </Collapse>
@@ -106,7 +106,7 @@ BottomToolbar.propTypes = {
   entry: EntryPropTypes.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleBottomToolbar: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default memo(BottomToolbar)

@@ -43,7 +43,7 @@ const PeopleButtonModal = ({
   html,
   title,
   xs,
-  onChangeCallback,
+  onChange,
   ...restOfProps
 }) => {
   useEffect(() => {
@@ -131,7 +131,7 @@ const PeopleButtonModal = ({
       people,
     }
 
-    onChangeCallback(payload)
+    onChange(payload)
     resetState()
   }, [entryId, people, resetState])
 
@@ -270,7 +270,7 @@ PeopleButtonModal.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   people: EntryPeopleProps.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 PeopleButtonModal.defaultProps = {

@@ -20,7 +20,7 @@ const Editor = ({
   width,
   placeholder,
   readOnly,
-  onChangeCallback,
+  onChange,
   ...restOfProps
 }) => {
   const editorRef = useRef()
@@ -61,7 +61,7 @@ const Editor = ({
 
   const handleEditorChange = useCallback(
     ({ ...payload }) => {
-      onChangeCallback({ id: restOfProps.toolbarId, ...payload })
+      onChange({ id: restOfProps.toolbarId, ...payload })
     },
     [restOfProps.toolbarId],
   )
@@ -99,7 +99,7 @@ const Editor = ({
           toolbarId={toolbarId}
           editorRef={editorRef}
           isOpen={topToolbarIsOpen}
-          onChangeCallback={handleEditorChange}
+          onChange={handleEditorChange}
         />
         <ReactQuill
           id={quillId}
@@ -121,7 +121,7 @@ const Editor = ({
           canToggleToolbars={canToggleToolbars}
           isOpen={bottomToolbarIsOpen}
           toggleBottomToolbar={toggleBottomToolbar}
-          onChangeCallback={handleEditorChange}
+          onChange={handleEditorChange}
           id={restOfProps.toolbarId}
           editorRef={editorRef}
         />
@@ -134,7 +134,7 @@ Editor.propTypes = {
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   entry: EntryPropTypes.isRequired,
-  onChangeCallback: PropTypes.func,
+  onChange: PropTypes.func,
   toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   canToggleToolbars: PropTypes.bool.isRequired,
   topToolbarIsOpen: PropTypes.bool,

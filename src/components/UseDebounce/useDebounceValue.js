@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import PropTypes from "prop-types"
+import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 const useDebounceValue = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value)
@@ -14,13 +14,13 @@ const useDebounceValue = (value, delay) => {
 }
 
 UseDebounce.propTypes = {
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   value: PropTypes.any,
-  delay: PropTypes.number
+  delay: PropTypes.number,
 }
 
 UseDebounce.defaultProps = {
-  delay: 400
+  delay: 400,
 }
 
 export default useDebounceValue

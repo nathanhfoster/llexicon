@@ -1,14 +1,10 @@
-import React, { useMemo, useCallback } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { BasicMap } from "../.."
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
-import { SetEditorState } from "../../../redux/TextEditor/actions"
-import {
-  RouteMap,
-  RouterPush,
-  GoToEntryDetail,
-} from "../../../redux/router/actions"
+import React, { useMemo, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { connect as reduxConnect } from 'react-redux'
+import { BasicMap } from '../..'
+import { EntryPropTypes } from '../../../redux/Entries/propTypes'
+import { SetEditorState } from '../../../redux/TextEditor/actions'
+import { RouteMap, RouterPush, GoToEntryDetail } from '../../../redux/router/actions'
 
 const mapStateToProps = ({ Entries: { items, showOnlyPublic } }) => ({
   entries: items,
@@ -23,38 +19,35 @@ const EntriesMap = ({ entries, showOnlyPublic, height }) => {
   const viewableEntries = useMemo(
     () =>
       entries.filter(({ _shouldDelete, is_public }) =>
-        showOnlyPublic ? is_public : !_shouldDelete
+        showOnlyPublic ? is_public : !_shouldDelete,
       ),
-    [entries, showOnlyPublic]
+    [entries, showOnlyPublic],
   )
 
-  const handleOnChange = useCallback(
-    ({ entryId, address, latitude, longitude }) => {
-      if (!entryId) return
-      else {
-        SetEditorState({
-          id: entryId,
-          title: "",
-          address,
-          latitude,
-          longitude,
-        })
-        if (entryId === "MyLocation") {
-          return RouterPush(RouteMap.NEW_ENTRY)
-        } else {
-          return GoToEntryDetail(entryId)
-        }
+  const handleOnChange = useCallback(({ entryId, address, latitude, longitude }) => {
+    if (!entryId) return
+    else {
+      SetEditorState({
+        id: entryId,
+        title: '',
+        address,
+        latitude,
+        longitude,
+      })
+      if (entryId === 'MyLocation') {
+        return RouterPush(RouteMap.NEW_ENTRY)
+      } else {
+        return GoToEntryDetail(entryId)
       }
-    },
-    []
-  )
+    }
+  }, [])
 
   return (
     <BasicMap
       height={height}
       getAddressOnMarkerClick
       locations={viewableEntries}
-      onChangeCallback={handleOnChange}
+      onChange={handleOnChange}
     />
   )
 }

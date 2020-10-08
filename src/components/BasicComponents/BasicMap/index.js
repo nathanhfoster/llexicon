@@ -1,26 +1,28 @@
-import React, { PureComponent } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import GoogleMapReact from "google-map-react"
-import MarkerCluster from "./MarkerCluster"
-import Marker from "./Marker"
-import { SetMapBoundsCenterZoom } from "../../../redux/Map/actions"
-import { WatchUserLocation } from "../../../redux/User/actions"
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { connect as reduxConnect } from 'react-redux'
+import GoogleMapReact from 'google-map-react'
+import MarkerCluster from './MarkerCluster'
+import Marker from './Marker'
+import { SetMapBoundsCenterZoom } from '../../../redux/Map/actions'
+import { WatchUserLocation } from '../../../redux/User/actions'
 
-import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from "./constants"
-import MapControl from "./MapControl"
-import MapSearchBox from "./MapControl/Controls/MapSearchBox"
-import UserLocationButton from "./MapControl/Controls/Buttons/UserLocationButton"
-import createClusters from "./functions/createClusters"
-import formatLocations from "./functions/formatLocations"
-import { EntryPropTypes } from "../../../redux/Entries/propTypes"
+import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from './constants'
+import MapControl from './MapControl'
+import MapSearchBox from './MapControl/Controls/MapSearchBox'
+import UserLocationButton from './MapControl/Controls/Buttons/UserLocationButton'
+import createClusters from './functions/createClusters'
+import formatLocations from './functions/formatLocations'
+import { EntryPropTypes } from '../../../redux/Entries/propTypes'
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
-const mapStateToProps = ({
-  Map: { bounds, center, zoom },
-  User: { location },
-}) => ({ bounds, center, zoom, UserLocation: location })
+const mapStateToProps = ({ Map: { bounds, center, zoom }, User: { location } }) => ({
+  bounds,
+  center,
+  zoom,
+  UserLocation: location,
+})
 
 const mapDispatchToProps = { SetMapBoundsCenterZoom, WatchUserLocation }
 
@@ -30,7 +32,7 @@ class BasicMap extends PureComponent {
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     SetMapBoundsCenterZoom: PropTypes.func.isRequired,
     WatchUserLocation: PropTypes.func.isRequired,
-    onChangeCallback: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     locations: PropTypes.arrayOf(PropTypes.object),
     getAddressOnMarkerClick: PropTypes.bool.isRequired,
     entry: EntryPropTypes,
@@ -39,7 +41,7 @@ class BasicMap extends PureComponent {
   static defaultProps = {
     renderUserLocation: true,
     height: 500,
-    width: "100%",
+    width: '100%',
     options: DEFAULT_MAP_OPTIONS,
     locations: [],
     getAddressOnMarkerClick: false,
@@ -97,7 +99,7 @@ class BasicMap extends PureComponent {
     this.panTo(boundsCenterZoom)
   }
 
-  panTo = (boundsCenterZoom) => {
+  panTo = boundsCenterZoom => {
     const { SetMapBoundsCenterZoom } = this.props
     if (
       boundsCenterZoom.bounds &&
@@ -110,12 +112,12 @@ class BasicMap extends PureComponent {
   }
 
   getMapControls = () => {
-    const { onChangeCallback, UserLocation, WatchUserLocation } = this.props
+    const { onChange, UserLocation, WatchUserLocation } = this.props
 
     const mapControls = [
       {
         controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
-        props: { width: "calc(100% - 48px)", onChangeCallback },
+        props: { width: 'calc(100% - 48px)', onChange },
         items: [
           {
             Component: MapSearchBox,
@@ -125,7 +127,7 @@ class BasicMap extends PureComponent {
       {
         controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
         props: {
-          width: "auto",
+          width: 'auto',
           UserLocation,
           WatchUserLocation,
           panTo: this.panTo,
@@ -141,12 +143,12 @@ class BasicMap extends PureComponent {
     return mapControls
   }
 
-  renderControls = (controls) => {
+  renderControls = controls => {
     const { mapInstance, mapApi } = this.state
     if (!mapInstance) return null
     return controls.map((control, i) => {
       const { controlPosition, items, props } = control
-      const handlePanTo = (boundsCenterZoom) => this.panTo(boundsCenterZoom)
+      const handlePanTo = boundsCenterZoom => this.panTo(boundsCenterZoom)
 
       return (
         <MapControl
@@ -166,13 +168,13 @@ class BasicMap extends PureComponent {
     })
   }
 
-  renderMarkerClusters = (markerClusters) => {
-    const { onChangeCallback, getAddressOnMarkerClick, zoom } = this.props
+  renderMarkerClusters = markerClusters => {
+    const { onChange, getAddressOnMarkerClick, zoom } = this.props
     const { mapInstance } = this.state
     if (!mapInstance) {
       return null
     }
-    return markerClusters.map((item) => {
+    return markerClusters.map(item => {
       const { id, numPoints, points, ...props } = item
       if (numPoints === 1) {
         const { id, ...props } = points[0]
@@ -181,7 +183,7 @@ class BasicMap extends PureComponent {
             {...props}
             key={id}
             zoom={zoom}
-            onChangeCallback={onChangeCallback}
+            onChange={onChange}
             getAddressOnMarkerClick={getAddressOnMarkerClick}
           />
         )
@@ -193,7 +195,7 @@ class BasicMap extends PureComponent {
             points={points}
             zoom={zoom}
             getAddressOnMarkerClick={getAddressOnMarkerClick}
-            onChangeCallback={onChangeCallback}
+            onChange={onChange}
           />
         )
       }
@@ -207,7 +209,7 @@ class BasicMap extends PureComponent {
       height,
       width,
       options,
-      onChangeCallback,
+      onChange,
       renderUserLocation,
       getAddressOnMarkerClick,
       UserLocation,
@@ -243,17 +245,17 @@ class BasicMap extends PureComponent {
               lng={entry.longitude}
               renderUserLocation={false}
               getAddressOnMarkerClick={getAddressOnMarkerClick}
-              onChangeCallback={onChangeCallback}
+              onChange={onChange}
             />
           )}
           {shouldRenderUserLocation && (
             <Marker
-              key="MyLocation"
+              key='MyLocation'
               lat={UserLocation.latitude}
               lng={UserLocation.longitude}
               renderUserLocation={renderUserLocation}
               getAddressOnMarkerClick={getAddressOnMarkerClick}
-              onChangeCallback={onChangeCallback}
+              onChange={onChange}
             />
           )}
           {this.renderMarkerClusters(markerClusters)}

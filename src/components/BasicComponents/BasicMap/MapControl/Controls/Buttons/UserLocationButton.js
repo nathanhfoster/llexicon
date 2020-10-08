@@ -1,17 +1,17 @@
-import React, { useRef, useEffect, memo } from "react"
-import PropTypes from "prop-types"
-import { Button } from "reactstrap"
-import defaultStyles from "./defaultStyles"
-import { CENTER_OF_US, DEFAULT_ZOOM } from "../../../constants"
+import React, { useRef, useEffect, memo } from 'react'
+import PropTypes from 'prop-types'
+import { Button } from 'reactstrap'
+import defaultStyles from './defaultStyles'
+import { CENTER_OF_US, DEFAULT_ZOOM } from '../../../constants'
 
 const UserLocationButton = ({
   panTo,
   UserLocation: { latitude, longitude },
   WatchUserLocation,
-  onChangeCallback,
+  onChange,
 }) => {
   const watchId = useRef()
-  
+
   useEffect(() => {
     return () => {
       if (watchId.current) {
@@ -34,12 +34,8 @@ const UserLocationButton = ({
   }
 
   return (
-    <Button color="white" style={{ ...defaultStyles, padding: 0 }}>
-      <i
-        className="fas fa-user-circle fa-2x"
-        aria-label="myLocation"
-        onClick={handleOnClick}
-      />
+    <Button color='white' style={{ ...defaultStyles, padding: 0 }}>
+      <i className='fas fa-user-circle fa-2x' aria-label='myLocation' onClick={handleOnClick} />
     </Button>
   )
 }

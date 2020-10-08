@@ -1,24 +1,16 @@
-import React, { useEffect, useRef, memo } from "react"
-import PropTypes from "prop-types"
-import fitCoordsToBounds from "../../../functions/fitCoordsToBounds"
-import "./styles.css"
+import React, { useEffect, useRef, memo } from 'react'
+import PropTypes from 'prop-types'
+import fitCoordsToBounds from '../../../functions/fitCoordsToBounds'
+import './styles.css'
 
-const MapSearchBox = ({
-  map,
-  mapApi,
-  onChangeCallback,
-  panTo,
-  $geoService,
-  $onMouseAllow,
-  $prerender,
-}) => {
+const MapSearchBox = ({ map, mapApi, onChange, panTo, $geoService, $onMouseAllow, $prerender }) => {
   let searchBoxRef = useRef()
   let searchInputRef = useRef()
 
   useEffect(() => {
     searchBoxRef.current = new mapApi.places.SearchBox(searchInputRef.current)
-    searchBoxRef.current.addListener("places_changed", handlePlacesChange)
-    searchBoxRef.current.bindTo("bounds", map)
+    searchBoxRef.current.addListener('places_changed', handlePlacesChange)
+    searchBoxRef.current.bindTo('bounds', map)
     return () => {
       mapApi.event.clearInstanceListeners(searchInputRef.current)
     }
@@ -68,8 +60,8 @@ const MapSearchBox = ({
 
     // console.log(formatted_address)
 
-    onChangeCallback({
-      entryId: "NewEntry",
+    onChange({
+      entryId: 'NewEntry',
       latitude: newPosition.lat,
       longitude: newPosition.lng,
       address: formatted_address,
@@ -107,20 +99,20 @@ const MapSearchBox = ({
   }
 
   const clearSearchBox = () => {
-    searchInputRef.current.value = ""
+    searchInputRef.current.value = ''
   }
 
   const selectSearchBox = ({ target }) => target.select()
 
   return (
-    <div className="mapBoxSearchBoxContainer">
+    <div className='mapBoxSearchBoxContainer'>
       <input
         ref={searchInputRef}
-        className="mapBoxSearchBoxInput"
-        type="text"
+        className='mapBoxSearchBoxInput'
+        type='text'
         onFocus={selectSearchBox}
         // onBlur={(e) => e.preventDefault()}
-        placeholder="Enter a location"
+        placeholder='Enter a location'
         // onChange={handleInputChange}
       />
     </div>
@@ -130,7 +122,7 @@ const MapSearchBox = ({
 MapSearchBox.propTypes = {
   map: PropTypes.object.isRequired,
   mapApi: PropTypes.object.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   panTo: PropTypes.func.isRequired,
   $geoService: PropTypes.object,
   $onMouseAllow: PropTypes.func,

@@ -22,7 +22,7 @@ const LocationButtonModal = ({
   entry,
   UserLocation,
   xs,
-  onChangeCallback,
+  onChange,
   WatchUserLocation,
   SetMapBoundsCenterZoom,
 }) => {
@@ -59,13 +59,19 @@ const LocationButtonModal = ({
     const longitude = userLongitude || entryLongitude
     if (!address && latitude && longitude) {
       await GetAddress(latitude, longitude).then(address =>
-        onChangeCallback({ address, latitude, longitude }),
+        onChange({ address, latitude, longitude }),
       )
     } else {
-      onChangeCallback({ address, latitude, longitude })
+      onChange({ address, latitude, longitude })
     }
     handleCancel()
-  }, [entry.address, entry.latitude, entry.longitude, UserLocation.latitude, UserLocation.longitude])
+  }, [
+    entry.address,
+    entry.latitude,
+    entry.longitude,
+    UserLocation.latitude,
+    UserLocation.longitude,
+  ])
 
   const handleCancel = useCallback(() => {
     if (watchId.current) {
@@ -87,12 +93,7 @@ const LocationButtonModal = ({
       disabledSave={saveDisabeld}
     >
       <Container fluid className='LocationButtonModal p-0'>
-        <BasicMap
-          renderUserLocation
-          entry={entry}
-          getAddressOnMarkerClick
-          onChangeCallback={onChangeCallback}
-        />
+        <BasicMap renderUserLocation entry={entry} getAddressOnMarkerClick onChange={onChange} />
       </Container>
     </ToolbarModal>
   )
@@ -112,7 +113,7 @@ LocationButtonModal.propTypes = {
   UserLocation: PropTypes.object,
   xs: PropTypes.number,
   entry: EntryPropTypes,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   WatchUserLocation: PropTypes.func.isRequired,
 }
 

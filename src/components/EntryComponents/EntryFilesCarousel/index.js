@@ -101,7 +101,6 @@ const EntryFilesCarousel = ({
 
 EntryFilesCarousel.propTypes = {
   files: EntryFilesProps.isRequired,
-  editorRef: PropTypes.object.isRequired,
 }
 
 EntryFilesCarousel.defaultProps = {
