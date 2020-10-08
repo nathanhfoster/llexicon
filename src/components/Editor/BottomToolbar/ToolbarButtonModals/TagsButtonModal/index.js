@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, memo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import {
   Container,
@@ -19,7 +19,6 @@ import {
   removeAttributeDuplicates,
   stringMatch,
 } from '../../../../../utils'
-import memoizeProps from '../../../../../utils/memoizeProps'
 import { validateTagOrPeopleString, validatedTagString } from '../utlis'
 import { EntriesPropTypes, EntryTagsProps } from '../../../../../redux/Entries/propTypes'
 import { SUGGESTED } from './utils'
@@ -58,11 +57,12 @@ const TagsButtonModal = ({
   }, [])
 
   const [show, setShow] = useState(false)
-  const handleToogle = useCallback(() => setShow(prevShow => !prevShow))
+
+  const handleToogle = useCallback(() => setShow(prevShow => !prevShow), [])
 
   const [{ tags, tagName }, setState] = useState(getInitialState(restOfProps))
 
-  const resetState = () => setState(getInitialState(restOfProps))
+  const resetState = useCallback(() => setState(getInitialState(restOfProps)), [restOfProps])
 
   useEffect(() => {
     setState(prevState => ({ ...prevState, tags: restOfProps.tags }))
@@ -82,7 +82,7 @@ const TagsButtonModal = ({
               .concat(EntryTags),
           )
         : [],
-    [show, items, filteredItems, EntryTags, tagName, tags, splitTagsAsString],
+    [EntryTags, filteredItems, items, show],
   )
 
   const [suggestedTags, frequentTags] = useMemo(() => {
@@ -137,18 +137,18 @@ const TagsButtonModal = ({
 
       return [suggestedTags, frequentTags]
     }
-  }, [show, html, title, entryTags, tags])
+  }, [show, html, title, entryTags, tags, lastTagAsString])
 
-  const handleTagsInputChange = value => {
+  const handleTagsInputChange = useCallback(value => {
     const validatedTagsAsString = validatedTagString(value)
 
     setState(prevState => ({
       ...prevState,
       tagName: validatedTagsAsString,
     }))
-  }
+  }, [])
 
-  const handleSaveTags = () => {
+  const handleSaveTags = useCallback(() => {
     const payload = {
       id: entryId,
       tags,
@@ -156,16 +156,14 @@ const TagsButtonModal = ({
 
     onChangeCallback(payload)
     resetState()
-  }
+  }, [entryId, tags, resetState])
 
-  const handleAddTag = clickedName => {
+  const handleAddTag = useCallback(clickedName => {
     setState(prevState => {
       const newTags = prevState.tags.concat({ name: clickedName })
       const removeLastTag = prevState.tagName.split(',').slice(0, -1)
 
-      const newTagName = removeLastTag
-        // .concat(`${clickedName},`)
-        .join(',')
+      const newTagName = removeLastTag.join(',')
 
       return {
         ...prevState,
@@ -173,16 +171,16 @@ const TagsButtonModal = ({
         tagName: newTagName,
       }
     })
-  }
+  }, [])
 
-  const handleRemoveTag = clickedName => {
+  const handleRemoveTag = useCallback(clickedName => {
     setState(prevState => {
       const filteredTags = prevState.tags.filter(({ name }) => name != clickedName)
       return { ...prevState, tags: filteredTags }
     })
-  }
+  }, [])
 
-  const handleCreateTag = () => {
+  const handleCreateTag = useCallback(() => {
     setState(prevState => {
       const tagsFromString = validateTagOrPeopleString(splitTagsAsString)
       const newTags = removeAttributeDuplicates(prevState.tags.concat(tagsFromString), 'name')
@@ -192,7 +190,7 @@ const TagsButtonModal = ({
         tags: newTags,
       }
     })
-  }
+  }, [splitTagsAsString])
 
   const placeholder = useMemo(() => {
     const tags = suggestedTags.concat(frequentTags)
@@ -204,7 +202,7 @@ const TagsButtonModal = ({
       .slice(0, 6)
       .map(({ name }) => name)
       .join(',')
-  }, [suggestedTags, frequentTags])
+  }, [show, suggestedTags, frequentTags])
 
   return (
     <ToolbarModal
@@ -300,17 +298,4 @@ TagsButtonModal.defaultProps = {
   tags: [],
 }
 
-const isEqual = (prevProps, nextProps) =>
-  memoizeProps(prevProps, nextProps, [
-    'UserId',
-    'items',
-    'filteredItems',
-    'EntryTags',
-    'entryId',
-    'tags',
-    'xs',
-    'html',
-    'title',
-  ])
-
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(memo(TagsButtonModal, isEqual))
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(TagsButtonModal)

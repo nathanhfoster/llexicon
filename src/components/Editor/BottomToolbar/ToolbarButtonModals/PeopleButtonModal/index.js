@@ -51,11 +51,12 @@ const PeopleButtonModal = ({
   }, [])
 
   const [show, setShow] = useState(false)
+
   const handleToogle = useCallback(() => setShow(prevShow => !prevShow), [])
 
   const [{ people, personsName }, setState] = useState(getInitialState(restOfProps))
 
-  const resetState = () => setState(getInitialState(restOfProps))
+  const resetState = useCallback(() => setState(getInitialState(restOfProps)), [restOfProps])
 
   useEffect(() => {
     setState(prevState => ({ ...prevState, people: restOfProps.people }))
@@ -75,7 +76,7 @@ const PeopleButtonModal = ({
               .concat(EntryPeople),
           )
         : [],
-    [show, items, filteredItems, EntryPeople, personsName, people, splitPeopleAsString],
+    [show, items, filteredItems, EntryPeople],
   )
 
   const [suggestedPeople, frequentPeople] = useMemo(() => {
@@ -113,18 +114,18 @@ const PeopleButtonModal = ({
 
       return [suggestedPeople, frequentPeople]
     }
-  }, [show, html, title, entryPeople])
+  }, [show, html, title, entryPeople, people, lastPeopleAsString])
 
-  const handlePeopleInputChange = value => {
+  const handlePeopleInputChange = useCallback(value => {
     const validatedTagsAsString = validatedPersonNameString(value)
 
     setState(prevState => ({
       ...prevState,
       personsName: validatedTagsAsString,
     }))
-  }
+  }, [])
 
-  const handleSavePeople = () => {
+  const handleSavePeople = useCallback(() => {
     const payload = {
       id: entryId,
       people,
@@ -132,32 +133,30 @@ const PeopleButtonModal = ({
 
     onChangeCallback(payload)
     resetState()
-  }
+  }, [entryId, people, resetState])
 
-  const handleAddPerson = clickedName => {
+  const handleAddPerson = useCallback(clickedName => {
     setState(prevState => {
       const newPeople = prevState.people.concat({ name: clickedName })
       const removeLastPerson = prevState.personsName.split(',').slice(0, -1)
 
-      const newPersonsName = removeLastPerson
-        // .concat(`${clickedName},`)
-        .join(',')
+      const newPersonsName = removeLastPerson.join(',')
       return {
         ...prevState,
         people: newPeople,
         personsName: newPersonsName,
       }
     })
-  }
+  }, [])
 
-  const handleRemovePerson = clickedName => {
+  const handleRemovePerson = useCallback(clickedName => {
     setState(prevState => {
       const filteredPeople = prevState.people.filter(({ name }) => name != clickedName)
       return { ...prevState, people: filteredPeople }
     })
-  }
+  }, [])
 
-  const handleCreatePeople = () => {
+  const handleCreatePeople = useCallback(() => {
     setState(prevState => {
       const peopleFromString = validateTagOrPeopleString(splitPeopleAsString)
       const newPeople = removeAttributeDuplicates(prevState.people.concat(peopleFromString), 'name')
@@ -167,7 +166,7 @@ const PeopleButtonModal = ({
         people: newPeople,
       }
     })
-  }
+  }, [])
 
   const placeholder = useMemo(() => {
     const people = suggestedPeople.concat(frequentPeople)
