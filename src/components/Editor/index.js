@@ -61,9 +61,9 @@ const Editor = ({
 
   const handleEditorChange = useCallback(
     ({ ...payload }) => {
-      onChangeCallback({ id: toolbarId, ...payload })
+      onChangeCallback({ id: restOfProps.toolbarId, ...payload })
     },
-    [toolbarId],
+    [restOfProps.toolbarId],
   )
 
   const handleEditorStateChange = useCallback((html, delta, source, editor) => {
