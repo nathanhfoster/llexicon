@@ -1,6 +1,7 @@
 import ActionTypes from "./types"
 
-const IMAGE_OFFSET = 3
+const IMAGE_OFFSET = 10
+
 const getInitialState = ({ images, photoIndex, isOpen }) => ({
   images,
   photoIndex,

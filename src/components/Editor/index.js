@@ -98,6 +98,16 @@ const Editor = ({
     [editorRef]
   )
 
+  const handleUndo = useCallback(
+    () => editorRef?.current?.editor?.history.undo(),
+    [editorRef]
+  )
+
+  const handleRedo = useCallback(
+    () => editorRef?.current?.editor?.history.redo(),
+    [editorRef]
+  )
+
   return (
     <Fragment>
       {children}
@@ -106,7 +116,9 @@ const Editor = ({
           toolbarId={toolbarId}
           editorRef={editorRef}
           isOpen={topToolbarIsOpen}
-          onChange={handleEditorChange}
+          handleUndo={handleUndo}
+          handleRedo={handleRedo}
+          handleEditorChange={handleEditorChange}
         />
         <ReactQuill
           id={quillId}
@@ -128,9 +140,8 @@ const Editor = ({
           canToggleToolbars={canToggleToolbars}
           isOpen={bottomToolbarIsOpen}
           toggleBottomToolbar={toggleBottomToolbar}
-          onChange={handleEditorChange}
+          handleEditorChange={handleEditorChange}
           id={restOfProps.toolbarId}
-          editorRef={editorRef}
         />
       </div>
     </Fragment>

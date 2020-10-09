@@ -20,7 +20,7 @@ const BasicImageCarousel = ({
 }) => {
   const mounted = useRef(false)
   const [state, dispatch] = useReducer(reducer, getInitialState(restOfProps))
-
+  const { images, photoIndex, isOpen, imageOffset } = state
   useEffect(() => {
     if (mounted.current) {
       dispatch({ type: ActionTypes.SET_INDEX_AND_OPEN, payload: restOfProps })
@@ -32,9 +32,8 @@ const BasicImageCarousel = ({
     if (mounted.current) {
       dispatch({ type: ActionTypes.SET_IS_OPEN, payload: restOfProps })
     }
+    mounted.current = true
   }, [restOfProps.images])
-
-  const { images, photoIndex, isOpen, imageOffset } = state
 
   const [mainSrc, prevSrc, nextSrc] = useMemo(() => {
     let mainSrc = null

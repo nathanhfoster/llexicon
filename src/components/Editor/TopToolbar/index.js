@@ -10,17 +10,15 @@ import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR
 
-const TopToolbar = ({ toolbarId, editorRef, isOpen, onChange }) => {
-  const handleUndo = useCallback(
-    () => editorRef?.current?.editor?.history.undo(),
-    [editorRef]
-  )
-  const handleRedo = useCallback(
-    () => editorRef?.current?.editor?.history.redo(),
-    [editorRef]
-  )
-  const handleClear = useCallback(() => onChange({ html }), [])
-  
+const TopToolbar = ({
+  toolbarId,
+  isOpen,
+  handleUndo,
+  handleRedo,
+  handleEditorChange,
+}) => {
+  const handleClear = useCallback(() => handleEditorChange({ html }), [])
+
   const handleGetTAble = useCallback(() => {
     // module.insertTable(3, 3)
   }, [])
@@ -52,7 +50,7 @@ TopToolbar.propTypes = {
   toolbarId: PropTypes.PropTypes.string.isRequired,
   editorRef: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
+  handleEditorChange: PropTypes.func.isRequired,
 }
 
 export default memo(TopToolbar)
