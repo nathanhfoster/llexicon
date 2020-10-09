@@ -1,12 +1,23 @@
-import React, { useRef, useReducer, useEffect, useMemo, memo } from 'react'
-import PropTypes from 'prop-types'
-import { ActionTypes, getInitialState, reducer } from './state'
-import Lightbox from 'react-image-lightbox'
-import { Media } from 'reactstrap'
+import React, {
+  useRef,
+  useReducer,
+  useEffect,
+  useMemo,
+  useCallback,
+  memo,
+} from "react"
+import PropTypes from "prop-types"
+import { ActionTypes, getInitialState, reducer } from "./state"
+import Lightbox from "react-image-lightbox"
+import { Media } from "reactstrap"
 
-import './styles.css'
+import "./styles.css"
 
-const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps }) => {
+const BasicImageCarousel = ({
+  toolbarButtons,
+  imageClickCallback,
+  ...restOfProps
+}) => {
   const mounted = useRef(false)
   const [state, dispatch] = useReducer(reducer, getInitialState(restOfProps))
 
@@ -23,33 +34,45 @@ const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps
     }
   }, [restOfProps.images])
 
-  const { images, photoIndex, isOpen } = state
+  const { images, photoIndex, isOpen, imageOffset } = state
 
-  let mainSrc = null
+  const [mainSrc, prevSrc, nextSrc] = useMemo(() => {
+    let mainSrc = null
+    let prevSrc = null
+    let nextSrc = null
 
-  let prevSrc = null
+    if (images.length > 0) {
+      mainSrc = images[photoIndex].url
+      prevSrc = images[(photoIndex + images.length - 1) % images.length].url
+      nextSrc = images[(photoIndex + 1) % images.length].url
+    }
 
-  let nextSrc = null
+    return [mainSrc, prevSrc, nextSrc]
+  }, [photoIndex, images.length])
 
-  if (images.length > 0) {
-    mainSrc = images[photoIndex].url
+  const handleOpen = useCallback(
+    () => dispatch({ type: ActionTypes.SET_OPEN }),
+    []
+  )
 
-    prevSrc = images[(photoIndex + images.length - 1) % images.length].url
+  const handleClose = useCallback(
+    () => dispatch({ type: ActionTypes.SET_CLOSE }),
+    []
+  )
 
-    nextSrc = images[(photoIndex + 1) % images.length].url
-  }
+  const handleMovePrev = useCallback(
+    () => dispatch({ type: ActionTypes.SET_PREV }),
+    []
+  )
 
-  const handleOpen = () => dispatch({ type: ActionTypes.SET_OPEN })
-
-  const handleClose = () => dispatch({ type: ActionTypes.SET_CLOSE })
-
-  const handleMovePrev = () => dispatch({ type: ActionTypes.SET_PREV })
-
-  const handleMoveNext = () => dispatch({ type: ActionTypes.SET_NEXT })
+  const handleMoveNext = useCallback(
+    () => dispatch({ type: ActionTypes.SET_NEXT }),
+    []
+  )
 
   const renderImageFiles = useMemo(
     () =>
-      images.map((image, i) => {
+      images.slice(0, imageOffset).map((image, i) => {
         const { url, name, file_type } = image
         const handleOnClick = () => {
           handleOpen()
@@ -61,23 +84,23 @@ const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps
             key={i}
             type={file_type}
             src={url}
-            className='EntryFilesCarouselImage p-1'
+            className="EntryFilesCarouselImage p-1"
             alt={name}
             onClick={handleOnClick}
           />
         )
       }),
-    [images],
+    [images, imageOffset]
   )
 
   const toolBarImagesWithCallback = useMemo(
     () =>
-      React.Children.map(toolbarButtons, child =>
+      React.Children.map(toolbarButtons, (child) =>
         React.cloneElement(child, {
           onClick: () => child.props.onClick(state),
-        }),
+        })
       ),
-    [state, toolbarButtons],
+    [state, toolbarButtons]
   )
 
   return (
@@ -109,7 +132,7 @@ BasicImageCarousel.propTypes = {
       url: PropTypes.string.isRequired,
       name: PropTypes.string,
       file_type: PropTypes.string,
-    }),
+    })
   ),
   isOpen: PropTypes.bool.isRequired,
   photoIndex: PropTypes.number.isRequired,

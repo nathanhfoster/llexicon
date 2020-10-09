@@ -174,7 +174,6 @@ Editor.propTypes = {
 
 Editor.defaultProps = {
   theme: THEMES.SNOW,
-
   height: "100%",
   width: "100%",
   toolbarId: 1,
