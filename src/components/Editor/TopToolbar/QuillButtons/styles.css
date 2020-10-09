@@ -8,5 +8,24 @@
 } */
 
 .ql-editor li:not(.ql-direction-rtl)::before {
-    margin-right: 0.75rem;
+  margin-right: 0.75rem;
+}
+
+/* .ql-toolbar [class*="ql-"] {
+  color: var(--secondaryColor);
+  fill: var(--secondaryColor);
+} */
+
+.ql-toolbar .ql-stroke {
+  fill: none;
+  stroke: var(--secondaryColor);
+}
+
+.ql-toolbar .ql-fill {
+  fill: var(--secondaryColor);
+  /* stroke: none; */
+}
+
+.ql-toolbar .ql-picker {
+  color: var(--secondaryColor);
 }
