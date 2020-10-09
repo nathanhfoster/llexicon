@@ -50,6 +50,7 @@ NavItemLink.propTypes = {
   title: PropTypes.string,
   icon: PropTypes.node,
   onClick: PropTypes.func,
+  closeHamburgerMenu: PropTypes.func,
   render: PropTypes.node,
 }
 
