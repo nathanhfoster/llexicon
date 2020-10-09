@@ -123,7 +123,7 @@ const NavBar = ({ userId, userIsSuperUser, isMobile, UserLogout, prompt, promptT
         link.links ? (
           renderDropDownMenu(`Dropdown-${i}`, link.icon, link.links)
         ) : (
-          <NavItemLink key={i} {...link} onClick={closeHamburgerMenu} />
+          <NavItemLink key={i} {...link} closeHamburgerMenu={closeHamburgerMenu} />
         ),
       )
 
