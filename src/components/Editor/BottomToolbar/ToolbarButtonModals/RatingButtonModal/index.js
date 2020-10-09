@@ -68,7 +68,7 @@ const RatingButtonModal = ({ xs, onChange, ...restOfProps }) => {
           filled={i <= rating}
           onMouseEnterCallback={handleMouseEnter}
           onMouseLeaveCallback={handleMouseLeave}
-          onClickCallback={handleStarClicked}
+          onClick={handleStarClicked}
         />,
       )
     }
@@ -82,7 +82,7 @@ const RatingButtonModal = ({ xs, onChange, ...restOfProps }) => {
     <ToolbarModal
       className='Center p-0'
       title='Add Rating'
-      onClickCallback={handleClick}
+      onClick={handleClick}
       onCancelCallback={handleCancel}
       onSaveCallback={handleSave}
       ButtonIcon={ButtonIcon}

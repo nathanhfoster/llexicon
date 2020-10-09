@@ -29,7 +29,7 @@ const ToolbarModal = ({
 
 ToolbarModal.propTypes = {
   title: PropTypes.string,
-  onClickCallback: PropTypes.func,
+  onClick: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
   ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

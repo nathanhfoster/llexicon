@@ -200,7 +200,7 @@ const PeopleButtonModal = ({
                 tags={suggestedPeople}
                 maxHeight={150}
                 flexWrap='wrap'
-                onClickCallback={handleAddPerson}
+                onClick={handleAddPerson}
                 hoverable
                 emptyString='No people found...'
                 faIcon='fas fa-user-plus'
@@ -213,7 +213,7 @@ const PeopleButtonModal = ({
               tags={frequentPeople}
               maxHeight={150}
               flexWrap='wrap'
-              onClickCallback={handleAddPerson}
+              onClick={handleAddPerson}
               hoverable
               emptyString='No people found...'
               faIcon='fas fa-user-plus'
@@ -225,7 +225,7 @@ const PeopleButtonModal = ({
               tags={people}
               maxHeight={150}
               flexWrap='wrap'
-              onClickCallback={handleRemovePerson}
+              onClick={handleRemovePerson}
               hoverable
               emptyString='No people added...'
               faIcon='fas fa-user-times'

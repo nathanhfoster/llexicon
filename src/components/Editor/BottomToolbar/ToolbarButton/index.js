@@ -1,25 +1,19 @@
-import React, { cloneElement, memo } from "react"
-import PropTypes from "prop-types"
-import { Col, Button } from "reactstrap"
-import "./styles.css"
+import React, { cloneElement, memo } from 'react'
+import PropTypes from 'prop-types'
+import { Col, Button } from 'reactstrap'
+import './styles.css'
 
-const ToolbarButton = ({
-  xs,
-  onClickCallback,
-  ButtonIcon,
-  title,
-  disabled,
-}) => {
+const ToolbarButton = ({ xs, onClick, ButtonIcon, title, disabled }) => {
   return (
     <Col
       tag={Button}
-      className="ToolbarButton p-0"
-      color="inherit"
+      className='ToolbarButton p-0'
+      color='inherit'
       xs={xs}
-      onClick={onClickCallback}
+      onClick={onClick}
       disabled={disabled}
     >
-      {typeof ButtonIcon === "string" ? (
+      {typeof ButtonIcon === 'string' ? (
         <i className={ButtonIcon} />
       ) : (
         cloneElement(ButtonIcon, {
@@ -34,7 +28,7 @@ const ToolbarButton = ({
 
 ToolbarButton.propTypes = {
   xs: PropTypes.number,
-  onClickCallback: PropTypes.func,
+  onClick: PropTypes.func,
   ButtonIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   title: PropTypes.string,
   disabled: PropTypes.bool,

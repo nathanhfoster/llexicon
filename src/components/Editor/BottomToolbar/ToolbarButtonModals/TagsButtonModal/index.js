@@ -224,7 +224,7 @@ const TagsButtonModal = ({
                 tags={suggestedTags}
                 maxHeight={150}
                 flexWrap='wrap'
-                onClickCallback={handleAddTag}
+                onClick={handleAddTag}
                 hoverable
                 emptyString='No tags found...'
                 faIcon='fas fa-tag add-plus'
@@ -237,7 +237,7 @@ const TagsButtonModal = ({
               tags={frequentTags}
               maxHeight={150}
               flexWrap='wrap'
-              onClickCallback={handleAddTag}
+              onClick={handleAddTag}
               hoverable
               emptyString='No tags found...'
               faIcon='fas fa-tag add-plus'
@@ -249,7 +249,7 @@ const TagsButtonModal = ({
               tags={tags}
               maxHeight={150}
               flexWrap='wrap'
-              onClickCallback={handleRemoveTag}
+              onClick={handleRemoveTag}
               hoverable
               emptyString='No tags added...'
               faIcon='fas fa-tag add-minus'

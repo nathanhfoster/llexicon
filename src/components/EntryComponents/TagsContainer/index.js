@@ -1,8 +1,8 @@
-import React, { useMemo, memo } from "react"
-import { Badge, Col } from "reactstrap"
-import PropTypes from "prop-types"
-import { EntryTagsProps } from "../../../redux/Entries/propTypes"
-import "./styles.css"
+import React, { useMemo, memo } from 'react'
+import { Badge, Col } from 'reactstrap'
+import PropTypes from 'prop-types'
+import { EntryTagsProps } from '../../../redux/Entries/propTypes'
+import './styles.css'
 
 const TagsContainer = ({
   children,
@@ -15,7 +15,7 @@ const TagsContainer = ({
   alignItems,
   overflowX,
   overflowY,
-  onClickCallback,
+  onClick,
   hoverable,
   showTagIcon,
   tagContainerClassName,
@@ -23,9 +23,9 @@ const TagsContainer = ({
   emptyString,
   faIcon,
 }) => {
-  if (flexWrap === "wrap") {
-    overflowX = "auto"
-    overflowY = "auto"
+  if (flexWrap === 'wrap') {
+    overflowX = 'auto'
+    overflowY = 'auto'
   }
 
   const styles = {
@@ -33,18 +33,18 @@ const TagsContainer = ({
     maxHeight,
     flexWrap,
     alignItems,
-    alignContent: "flex-start",
-    flexStart: "space-around",
+    alignContent: 'flex-start',
+    flexStart: 'space-around',
     overflowX,
     overflowY,
     fontSize,
   }
 
   const renderMinimalTags = useMemo(() => {
-    const initialString = "| "
+    const initialString = '| '
     const mininmalString = tags.reduce(
       (mininmalString, tag) => mininmalString + `${tag.name} | `,
-      initialString
+      initialString,
     )
     if (mininmalString === initialString) return null
     else return <span>{mininmalString}</span>
@@ -56,27 +56,27 @@ const TagsContainer = ({
         <Badge
           key={name}
           className={`TagContainer fade-in ${tagContainerClassName} ${
-            hoverable ? "TagContainerHover" : ""
+            hoverable ? 'TagContainerHover' : ''
           }`}
-          onClick={onClickCallback ? () => onClickCallback(name) : null}
+          onClick={onClick ? () => onClick(name) : null}
         >
           {showTagIcon && <i className={faIcon} style={{ marginRight: 4 }} />}
-          <span className="TagTitle">{name}</span>
+          <span className='TagTitle'>{name}</span>
         </Badge>
       )),
-    [tags]
+    [tags],
   )
 
   return (
     <Col
-      className="TagsContainer ShowScrollBar p-0"
+      className='TagsContainer ShowScrollBar p-0'
       {...columnProps}
       style={styles}
       // title={getJsonTagsOrPeople(tags)}
     >
       {children}
       {tags.length === 0 ? (
-        <span className="p-1">{emptyString}</span>
+        <span className='p-1'>{emptyString}</span>
       ) : minimalView ? (
         renderMinimalTags
       ) : (
@@ -91,10 +91,10 @@ TagsContainer.propTypes = {
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   maxHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  flexWrap: PropTypes.oneOf(["wrap", "nowrap"]),
+  flexWrap: PropTypes.oneOf(['wrap', 'nowrap']),
   overflowX: PropTypes.string,
   overflowY: PropTypes.string,
-  onClickCallback: PropTypes.func,
+  onClick: PropTypes.func,
   minimalView: PropTypes.bool,
   hoverable: PropTypes.bool,
   showTagIcon: PropTypes.bool,
@@ -104,20 +104,20 @@ TagsContainer.propTypes = {
 }
 
 TagsContainer.defaultProps = {
-  height: "auto",
-  maxHeight: "auto",
-  fontSize: "inherit",
-  flexWrap: "nowrap",
-  alignItems: "center",
-  overflowX: "auto",
-  overflowY: "hidden",
+  height: 'auto',
+  maxHeight: 'auto',
+  fontSize: 'inherit',
+  flexWrap: 'nowrap',
+  alignItems: 'center',
+  overflowX: 'auto',
+  overflowY: 'hidden',
   minimalView: false,
   hoverable: false,
   showTagIcon: true,
-  tagContainerClassName: "",
+  tagContainerClassName: '',
   columnProps: { xs: 12 },
-  emptyString: "No tags...",
-  faIcon: "fas fa-tag",
+  emptyString: 'No tags...',
+  faIcon: 'fas fa-tag',
 }
 
 export default memo(TagsContainer)

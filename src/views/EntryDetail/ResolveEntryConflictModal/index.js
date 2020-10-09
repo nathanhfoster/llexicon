@@ -108,7 +108,7 @@ const ResolveEntryConflictModal = ({
             <Col xs={{ size: 12, order: 1 }} md={{ size: 6, order: 1 }} className='p-2 md-p-1'>
               <EntryCard
                 {...entry}
-                onClickCallback={handleLocalEntryCardClick}
+                onClick={handleLocalEntryCardClick}
                 selected={localEntryCardSelected}
                 cardHeaderClassName='ResolveEntryConflictCardHeader'
                 reduceHtml={false}
@@ -120,7 +120,7 @@ const ResolveEntryConflictModal = ({
             <Col xs={{ size: 12, order: 2 }} md={{ size: 6, order: 1 }} className='p-2 md-p-1'>
               <EntryCard
                 {...entryFromServer}
-                onClickCallback={handleEntryFromServerCardClick}
+                onClick={handleEntryFromServerCardClick}
                 selected={entryFromServerCardSelected}
                 cardHeaderClassName='ResolveEntryConflictCardHeader'
                 reduceHtml={false}

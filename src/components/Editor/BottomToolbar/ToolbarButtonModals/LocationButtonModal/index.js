@@ -84,7 +84,7 @@ const LocationButtonModal = ({
     <ToolbarModal
       className='p-0'
       title='Add Location'
-      onClickCallback={handleClick}
+      onClick={handleClick}
       onCancelCallback={handleCancel}
       onSaveCallback={handleSave}
       ButtonIcon='fas fa-map-marker-alt'
