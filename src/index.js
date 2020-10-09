@@ -1,22 +1,22 @@
-import "./css/index.css"
+import "css/index.css"
 import React, { Suspense } from "react"
 import ReactDOM from "react-dom"
 import storeFactory from "./redux"
-import App from "./App"
-import { history } from "./redux/router/reducer"
+import App from "App"
+import { history } from "redux/router/reducer"
 import {
   getUserClientId,
   PersistedStorageReduxKey,
   clearLocalStorage,
-} from "./redux/localState"
+} from "redux/localState"
 import { Provider } from "react-redux"
 import { ConnectedRouter } from "connected-react-router"
-import { LoadingScreen } from "./components"
+import { LoadingScreen } from "components"
 import { PersistGate } from "redux-persist/integration/react"
-import * as serviceWorker from "./serviceWorker"
-import { GetAppVersion } from "./redux/App/actions"
+import * as serviceWorker from "serviceWorker"
+import { GetAppVersion } from "redux/App/actions"
 import ReactGA from "react-ga"
-import prototypes from "./prototypes"
+import prototypes from "prototypes"
 
 prototypes()
 
