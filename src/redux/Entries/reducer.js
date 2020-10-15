@@ -234,7 +234,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case AppActionTypes.REDUX_RESET:
       return {
         ...DEFAULT_STATE_ENTRIES,
-        items: state.items.concat(state.filteredItems).filter(({ _shouldPost }) => _shouldPost),
+        items: state.items
+          .concat(state.filteredItems)
+          .filter(
+            ({ _shouldDelete, _shouldPost, _lastUpdated }) =>
+              _shouldDelete || _shouldPost || _lastUpdated,
+          ),
       }
 
     default:
