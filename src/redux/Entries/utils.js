@@ -1,9 +1,7 @@
-import { objectToArray, stringMatch } from "utils"
+import { objectToArray, stringMatch } from 'utils'
 
 const getMostRecent = (reduxData, newData) => {
-  const reduxDataLastUpdated = new Date(
-    reduxData._lastUpdated || reduxData.date_updated
-  )
+  const reduxDataLastUpdated = new Date(reduxData._lastUpdated || reduxData.date_updated)
   const newDataLastUpdated = new Date(newData.date_updated)
 
   // const reduxViews = reduxData.views
@@ -22,14 +20,14 @@ const getMostRecent = (reduxData, newData) => {
   }
 }
 
-const mergeJson = (reduxData, newData) => {
+const mergeJson = (reduxData, newData, key = 'id') => {
   // Order matters. You want to merge the reduxData into the newData
   const allData = reduxData.concat(newData)
   let mergeMap = {}
 
   for (let i = 0, { length } = allData; i < length; i++) {
     const item = allData[i]
-    const { id } = item
+    const id = item[key]
 
     if (!mergeMap[id]) {
       mergeMap[id] = item
@@ -46,10 +44,10 @@ const handleFilterEntries = (entries, search) => {
   if (!search) return { items: entries, filteredItems: [] }
   let cachedFilteredEntries = []
 
-  const tagOrPeopleMatch = (tagsOrPeople) =>
+  const tagOrPeopleMatch = tagsOrPeople =>
     tagsOrPeople.some(({ name }) => stringMatch(name, search))
 
-  const filteredEntries = entries.filter((item) => {
+  const filteredEntries = entries.filter(item => {
     const { title, html, tags, people, address } = item
 
     if (
@@ -72,7 +70,6 @@ const handleFilterEntries = (entries, search) => {
   }
 }
 
-const getJsonTagsOrPeople = (tagsOrPeople) =>
-  tagsOrPeople.map(({ name }) => name).join(",")
+const getJsonTagsOrPeople = tagsOrPeople => tagsOrPeople.map(({ name }) => name).join(',')
 
 export { mergeJson, handleFilterEntries, getJsonTagsOrPeople }

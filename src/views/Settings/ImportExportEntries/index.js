@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { EntriesPropTypes } from '../../../redux/Entries/propTypes'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
-import { ImportEntries } from '../../../components'
+import { ImportEntries } from 'components'
 import { connect as reduxConnect } from 'react-redux'
-import { copyStringToClipboard } from '../../../utils'
+import { copyStringToClipboard, loadJSON, exportJSON } from 'utils'
 import {
   SyncEntries,
   GetAllUserEntries,
@@ -50,6 +50,7 @@ const ImportExportEntries = ({
         views,
         latitude,
         longitude,
+        EntryFiles,
       } = entry
       const dateFormat = 'YYYY-MM-DD hh:mm:ss'
 
@@ -66,10 +67,11 @@ const ImportExportEntries = ({
         views,
         latitude,
         longitude,
+        EntryFiles,
       }
     })
-    copyStringToClipboard(JSON.stringify(formattedEntries))
-    alert('Entries copied to clipboard as a JSON.')
+
+    exportJSON(formattedEntries)
   }
 
   return (
@@ -81,7 +83,7 @@ const ImportExportEntries = ({
           </Button>
           <ImportEntries />
           <Button color='accent' onClick={handleExportEntries} disabled={totalEntries === 0}>
-            <i className='fas fa-clipboard' /> Export Entries
+            <i className='fas fa-file-export' /> Export Entries
           </Button>
         </Col>
       </Row>

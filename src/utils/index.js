@@ -192,6 +192,27 @@ const getImageBase64 = image =>
     reader.onerror = error => reject(error)
   })
 
+const exportJSON = (exportObj, name = 'formattedJson') => {
+  var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportObj))
+  var downloadAnchorNode = document.createElement('a')
+  downloadAnchorNode.setAttribute('href', dataStr)
+  downloadAnchorNode.setAttribute('download', name + '.json')
+  document.body.appendChild(downloadAnchorNode) // required for firefox
+  downloadAnchorNode.click()
+  downloadAnchorNode.remove()
+}
+
+const loadJSON = file =>
+  new Promise((resolve, reject) => {
+    var reader = new FileReader()
+    reader.readAsText(file)
+    reader.onload = ({ target: { result } }) => {
+      const json = JSON.parse(result)
+      return resolve(json)
+    }
+    reader.onerror = error => reject(error)
+  })
+
 const htmlToArrayOfBase64 = html => {
   const [first, ...data] = html.split('data:')
   const arrayOfBase64 = data.reduce((result, e) => {
@@ -618,6 +639,8 @@ export {
   getUrlImageBase64,
   getCanvasImageBase64,
   getImageBase64,
+  exportJSON,
+  loadJSON,
   htmlToArrayOfBase64,
   isDecodable,
   htmlToArrayOfFiles,

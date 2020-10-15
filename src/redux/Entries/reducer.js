@@ -113,7 +113,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return { ...state, showOnlyPublic: !state.showOnlyPublic }
 
     case EntriesActionTypes.ENTRIES_SET_TAGS:
-      return { ...state, EntryTags: payload }
+      return { ...state, EntryTags: mergeJson(state.EntryTags, payload, 'name') }
 
     case EntriesActionTypes.ENTRIES_SET_PEOPLE:
       return { ...state, EntryPeople: payload }
@@ -134,13 +134,6 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case EntriesActionTypes.ENTRIES_COMPLETE:
       return { ...state, isPending: false, error: DEFAULT_STATE_ENTRIES.error }
 
-    case EntriesActionTypes.ENTRY_IMPORT:
-      return {
-        ...state,
-        items: mergeJson(state.items, payload),
-        error: DEFAULT_STATE_ENTRIES.error,
-      }
-
     case EntriesActionTypes.ENTRY_CLEAR:
       return { ...state, item: DEFAULT_STATE_ENTRIES.item }
 
@@ -149,13 +142,14 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         ...handleFilterEntries(
-          mergeJson(state.items.concat(state.filteredItems), results),
+          mergeJson(state.items.concat(state.filteredItems), results || payload),
           state.search,
         ),
-        count,
-        next,
-        previous,
+        count: count || state.count,
+        next: next || state.next,
+        previous: previous || state.previous,
         isPending: false,
+        error: DEFAULT_STATE_ENTRIES.error,
       }
 
     case EntriesActionTypes.ENTRIES_SET_BY_DATE:

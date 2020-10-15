@@ -16,7 +16,15 @@ const FileUpload = ({ title, value, onChange }) => {
       <FormText color='white'>
         <Label className='FileUpload mr-1' for='fileUpload'>
           {!value ? <i className='fas fa-file-import' /> : <Media src={value} />}
-          <Input hidden type='file' name={value} id='fileUpload' onChange={onChange} multiple />
+          <Input
+            hidden
+            type='file'
+            name={value}
+            id='fileUpload'
+            onChange={onChange}
+            accept='.json'
+            multiple={false}
+          />
         </Label>
         {title}
       </FormText>

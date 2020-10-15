@@ -14,12 +14,56 @@ const ToggleShowOnlyPublic = () => ({
 
 const PendingEntries = () => ({ type: EntriesActionTypes.ENTRIES_PENDING })
 
+const ResetEntriesSortAndFilterMaps = () => ({
+  type: EntriesActionTypes.ENTRIES_RESET_SORT_AND_FILTER_MAP,
+})
+
+const SetEntriesSortMap = (sortKey, sortUp) => ({
+  type: EntriesActionTypes.ENTRIES_SET_SORT_MAP,
+  payload: { sortKey, sortUp },
+})
+
+const SetEntriesFilterMap = (filterKey, searchValue) => ({
+  type: EntriesActionTypes.ENTRIES_SET_FILTER_MAP,
+  payload: { filterKey, searchValue },
+})
+
+const SetEntry = entry => ({
+  type: EntriesActionTypes.ENTRY_SET,
+  payload: { ...entry, _lastUpdated: new Date() },
+})
+
+const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
+  type: EntriesActionTypes.ENTRY_UPDATE,
+  id,
+  payload: { ...entry, _lastUpdated, _shouldPost: false },
+})
+
+const SetEntriesByDate = payload => ({
+  type: EntriesActionTypes.ENTRIES_SET_BY_DATE,
+  payload,
+})
+
+const SetEntries = payload => ({ type: EntriesActionTypes.ENTRIES_SET, payload })
+
+const SetEntriesTags = payload => ({ type: EntriesActionTypes.ENTRIES_SET_TAGS, payload })
+
+const SetEntriesPeople = payload => ({ type: EntriesActionTypes.ENTRIES_SET_PEOPLE, payload })
+
+const SetSearchEntries = (search, payload = []) => ({
+  type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
+  payload,
+  search,
+})
+
+const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(''))
+
 const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`tags/${id}/view/`)
     .then(({ data }) => {
-      dispatch({ type: EntriesActionTypes.ENTRIES_SET_TAGS, payload: data })
+      dispatch(SetEntriesTags(data))
       ReactGA.event({
         category: 'Get User Entry Tags',
         action: 'User got their entry tags!',
@@ -35,7 +79,7 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
   return Axios()
     .get(`people/${id}/view/`)
     .then(({ data }) => {
-      dispatch({ type: EntriesActionTypes.ENTRIES_SET_PEOPLE, payload: data })
+      dispatch(SetEntriesPeople(data))
       ReactGA.event({
         category: 'Get User Entry People',
         action: 'User got their entry people!',
@@ -48,16 +92,12 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
 const CreateEntryTag = payload => (dispatch, getState) => {
   const {
     User: { id },
-    Entries,
   } = getState()
   const newPayload = { ...payload, authors: id }
   return Axios()
     .post(`tags/`, qs.stringify(newPayload))
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRIES_SET_TAGS,
-        payload: Entries.concat(data),
-      })
+      dispatch(SetEntriesTags(data))
       ReactGA.event({
         category: 'Create Entry Tag',
         action: 'User created a entry tag!',
@@ -109,13 +149,11 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const SetEntry = entry => ({
-  type: EntriesActionTypes.ENTRY_SET,
-  payload: { ...entry, _lastUpdated: new Date() },
-})
-
 const GetEntry = (url, id) => (dispatch, getState) => {
-  const { items, filteredItems } = getState().Entries
+  const {
+    Entries: { items, filteredItems },
+    User: { id: userLoggedIn },
+  } = getState()
   const entry = items.concat(filteredItems).find(entry => entry.id == id)
   if (entry) {
     dispatch(SetEntry(entry))
@@ -135,7 +173,7 @@ const GetEntry = (url, id) => (dispatch, getState) => {
       return data
     })
     .catch(({ response }) => {
-      if (response) {
+      if (userLoggedIn && response) {
         const { status } = response
         if (status === 401 || status === 404) {
           dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
@@ -164,10 +202,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
   return Axios()
     .get(`/entries/${id}/view/`)
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRY_IMPORT,
-        payload: data,
-      })
+      dispatch(SetEntries(data))
       ReactGA.event({
         category: 'Get All User Entries',
         action: 'User is got all their entries!',
@@ -190,10 +225,7 @@ const GetUserEntries = pageNumber => (dispatch, getState) => {
   return Axios()
     .get(`/entries/${id}/page/?page=${pageNumber}`)
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRIES_SET,
-        payload: data,
-      })
+      dispatch(SetEntries(data))
       ReactGA.event({
         category: 'Get User Entries Page',
         action: 'User got a entry page!',
@@ -230,10 +262,7 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch({
-        type: EntriesActionTypes.ENTRIES_SET_BY_DATE,
-        payload: data,
-      })
+      dispatch(SetEntriesByDate(data))
       ReactGA.event({
         category: 'Get User Entries By Date',
         action: 'User got a entry page!',
@@ -249,11 +278,6 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
       // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
-
-const ImportReduxEntry = payload => ({
-  type: EntriesActionTypes.ENTRY_IMPORT,
-  payload,
-})
 
 const ClearEntry = () => ({ type: EntriesActionTypes.ENTRY_CLEAR })
 
@@ -289,12 +313,6 @@ const PostEntry = payload => dispatch => {
     })
 }
 
-const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
-  type: EntriesActionTypes.ENTRY_UPDATE,
-  id,
-  payload: { ...entry, _lastUpdated, _shouldPost: false },
-})
-
 const UpdateEntry = (id, payload) => dispatch => {
   dispatch(PendingEntries())
   return Axios()
@@ -310,8 +328,10 @@ const UpdateEntry = (id, payload) => dispatch => {
       return data
     })
     .catch(e => {
-      const payload = JSON.parse(JSON.stringify(e.response))
-      dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
+      if (e.response) {
+        const payload = JSON.parse(JSON.stringify(e.response))
+        dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
+      }
     })
 }
 
@@ -338,14 +358,6 @@ const DeleteEntry = id => dispatch => {
       dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
-
-const SetSearchEntries = (search, payload = []) => ({
-  type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-  payload,
-  search,
-})
-
-const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(''))
 
 const SearchUserEntries = search => (dispatch, getState) => {
   dispatch(PendingEntries())
@@ -498,20 +510,6 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
   dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
 }
 
-const ResetEntriesSortAndFilterMaps = () => ({
-  type: EntriesActionTypes.ENTRIES_RESET_SORT_AND_FILTER_MAP,
-})
-
-const SetEntriesSortMap = (sortKey, sortUp) => ({
-  type: EntriesActionTypes.ENTRIES_SET_SORT_MAP,
-  payload: { sortKey, sortUp },
-})
-
-const SetEntriesFilterMap = (filterKey, searchValue) => ({
-  type: EntriesActionTypes.ENTRIES_SET_FILTER_MAP,
-  payload: { filterKey, searchValue },
-})
-
 export {
   ToggleShowOnlyPublic,
   CreateEntryTag,
@@ -519,13 +517,13 @@ export {
   GetUserEntryPeople,
   ClearEntry,
   SetEntry,
+  SetEntries,
   GetUserEntry,
   GetUserEntryDetails,
   GetAllUserEntries,
   GetAllUserEntryPages,
   GetUserEntries,
   GetUserEntriesByDate,
-  ImportReduxEntry,
   PostReduxEntry,
   PostEntry,
   UpdateReduxEntry,
