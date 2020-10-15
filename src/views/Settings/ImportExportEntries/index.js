@@ -51,6 +51,7 @@ const ImportExportEntries = ({
         latitude,
         longitude,
         EntryFiles,
+        ...restOfProps
       } = entry
       const dateFormat = 'YYYY-MM-DD hh:mm:ss'
 
@@ -68,6 +69,7 @@ const ImportExportEntries = ({
         latitude,
         longitude,
         EntryFiles,
+        ...restOfProps
       }
     })
 
