@@ -47,7 +47,7 @@ const Entries = ({
 }) => {
   useEffect(() => {
     if (userId) GetUserEntries(1)
-  }, [])
+  }, [userId])
   const viewableEntries = useMemo(
     () =>
       entries
@@ -74,98 +74,102 @@ const Entries = ({
 
   const handleTabChange = tabId => RouterPush(tabId)
 
-  const tabs = [
-    {
-      tabId: RouteMap.NEW_ENTRY,
-      title: {
-        name: 'Create Entry',
-        render: <i className='fas fa-feather-alt' />,
+  const tabs = useMemo(
+    () => [
+      {
+        tabId: RouteMap.NEW_ENTRY,
+        title: {
+          name: 'Create Entry',
+          render: <i className='fas fa-feather-alt' />,
+        },
+        className: 'fade-in',
+        render: (
+          <Row>
+            <NewEntry />
+          </Row>
+        ),
+        onClick: handleTabChange,
       },
-      className: 'fade-in',
-      render: (
-        <Row>
-          <NewEntry />
-        </Row>
-      ),
-      onClick: handleTabChange,
-    },
-    {
-      tabId: RouteMap.ENTRIES_CALENDAR,
-      title: {
-        name: 'Entries Calendar',
-        render: <i className='fas fa-calendar-alt' />,
+      {
+        tabId: RouteMap.ENTRIES_CALENDAR,
+        title: {
+          name: 'Entries Calendar',
+          render: <i className='fas fa-calendar-alt' />,
+        },
+        className: 'fade-in',
+        render: (
+          <Row>
+            <EntryCalendar />
+          </Row>
+        ),
+        onClick: handleTabChange,
       },
-      className: 'fade-in',
-      render: (
-        <Row>
-          <EntryCalendar />
-        </Row>
-      ),
-      onClick: handleTabChange,
-    },
-    {
-      tabId: RouteMap.ENTRIES_FOLDERS,
-      title: {
-        name: 'Entries Folders',
-        render: <i className='fas fa-folder' />,
+      {
+        tabId: RouteMap.ENTRIES_FOLDERS,
+        title: {
+          name: 'Entries Folders',
+          render: <i className='fas fa-folder' />,
+        },
+        className: 'fade-in',
+        render: (
+          <Row>
+            {shouldRenderNewEntryButton ? (
+              <NewEntryButton />
+            ) : (
+              <EntryFolders entries={viewableEntries} />
+            )}
+          </Row>
+        ),
+        onClick: handleTabChange,
       },
-      className: 'fade-in',
-      render: (
-        <Row>
-          {shouldRenderNewEntryButton ? (
+      {
+        tabId: RouteMap.ENTRIES_LIST,
+        title: { name: 'Entries List', render: <i className='fas fa-th-list' /> },
+        className: 'fade-in',
+        render: shouldRenderNewEntryButton ? (
+          <Row>
             <NewEntryButton />
-          ) : (
-            <EntryFolders entries={viewableEntries} />
-          )}
-        </Row>
-      ),
-      onClick: handleTabChange,
-    },
-    {
-      tabId: RouteMap.ENTRIES_LIST,
-      title: { name: 'Entries List', render: <i className='fas fa-th-list' /> },
-      className: 'fade-in',
-      render: shouldRenderNewEntryButton ? (
-        <Row>
-          <NewEntryButton />
-        </Row>
-      ) : (
-        <Row>
-          <EntriesList height={minimalEntriesListHeight} entries={viewableEntries} />
-        </Row>
-      ),
-      onClick: handleTabChange,
-    },
-    {
-      tabId: RouteMap.ENTRIES_TABLE,
-      title: { name: 'Entries Table', render: <i className='fas fa-table' /> },
-      className: 'fade-in',
-      render: shouldRenderNewEntryButton ? (
-        <Row>
-          <NewEntryButton />
-        </Row>
-      ) : (
-        <Row className='ShowScrollBar'>
-          <UserEntriesTable pageSize={10} />
-        </Row>
-      ),
-      onClick: handleTabChange,
-    },
-    {
-      tabId: RouteMap.ENTRIES_MAP,
-      title: {
-        name: 'Entries Map',
-        render: <i className='fas fa-map-marked-alt' />,
+          </Row>
+        ) : (
+          <Row>
+            <EntriesList height={minimalEntriesListHeight} entries={viewableEntries} />
+          </Row>
+        ),
+        onClick: handleTabChange,
       },
-      className: 'fade-in',
-      render: (
-        <Row>
-          <EntriesMap height={viewPortHeight - 46} />
-        </Row>
-      ),
-      onClick: handleTabChange,
-    },
-  ]
+      {
+        tabId: RouteMap.ENTRIES_TABLE,
+        title: { name: 'Entries Table', render: <i className='fas fa-table' /> },
+        className: 'fade-in',
+        render: shouldRenderNewEntryButton ? (
+          <Row>
+            <NewEntryButton />
+          </Row>
+        ) : (
+          <Row className='ShowScrollBar'>
+            <UserEntriesTable pageSize={10} />
+          </Row>
+        ),
+        onClick: handleTabChange,
+      },
+      {
+        tabId: RouteMap.ENTRIES_MAP,
+        title: {
+          name: 'Entries Map',
+          render: <i className='fas fa-map-marked-alt' />,
+        },
+        className: 'fade-in',
+        render: (
+          <Row>
+            <EntriesMap height={viewPortHeight - 46} />
+          </Row>
+        ),
+        onClick: handleTabChange,
+      },
+    ],
+    [minimalEntriesListHeight, shouldRenderNewEntryButton, viewPortHeight, viewableEntries],
+  )
+
   const fluid = useMemo(
     () =>
       activeTab === RouteMap.ENTRIES_CALENDAR ||
