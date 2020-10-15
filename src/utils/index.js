@@ -192,14 +192,34 @@ const getImageBase64 = image =>
     reader.onerror = error => reject(error)
   })
 
-const exportJSON = (exportObj, name = 'formattedJson') => {
-  var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportObj))
-  var downloadAnchorNode = document.createElement('a')
-  downloadAnchorNode.setAttribute('href', dataStr)
-  downloadAnchorNode.setAttribute('download', name + '.json')
-  document.body.appendChild(downloadAnchorNode) // required for firefox
-  downloadAnchorNode.click()
-  downloadAnchorNode.remove()
+const exportJSON = (data, name = 'formattedJson') => {
+  const fileName = `${name}.json`
+  // const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
+  // var downloadAnchorNode = document.createElement('a')
+  // downloadAnchorNode.setAttribute('href', dataStr)
+  // downloadAnchorNode.setAttribute('download', fileName)
+  // document.body.appendChild(downloadAnchorNode) // required for firefox
+  // downloadAnchorNode.click()
+  // downloadAnchorNode.remove()
+
+  if (!data) {
+    console.error('No data')
+    return
+  }
+
+  if (typeof data === 'object') {
+    data = JSON.stringify(data, undefined, 4)
+  }
+
+  var blob = new Blob([data], { type: 'text/json' }),
+    e = document.createEvent('MouseEvents'),
+    a = document.createElement('a')
+
+  a.download = fileName
+  a.href = window.URL.createObjectURL(blob)
+  a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+  e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+  a.dispatchEvent(e)
 }
 
 const loadJSON = file =>
