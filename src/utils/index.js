@@ -36,7 +36,7 @@ const DOCUMENT_MIME_TYPE = {
 }
 
 Number.prototype.toFixedNumber = function (digits, base) {
-  var pow = Math.pow(base || 10, digits)
+  let pow = Math.pow(base || 10, digits)
   return Math.round(this * pow) / pow
 }
 
@@ -174,18 +174,18 @@ const getUrlImageBase64 = url =>
 
 const getCanvasImageBase64 = (img, outputFormat = 'image/jpeg', quality = 1) =>
   new Promise((resolve, reject) => {
-    var canvas = document.createElement('canvas')
+    let canvas = document.createElement('canvas')
     canvas.width = img.width
     canvas.height = img.height
-    var ctx = canvas.getContext('2d')
+    let ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0)
-    var dataURL = canvas.toDataURL(outputFormat, quality)
+    let dataURL = canvas.toDataURL(outputFormat, quality)
     resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ''))
   })
 
 const getImageBase64 = image =>
   new Promise((resolve, reject) => {
-    const reader = new FileReader()
+    let reader = new FileReader()
     if (!image) reject(image)
     reader.readAsDataURL(image)
     reader.onload = () => resolve(reader.result)
@@ -195,7 +195,7 @@ const getImageBase64 = image =>
 const exportJSON = (data, name = 'formattedJson') => {
   const fileName = `${name}.json`
   // const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
-  // var downloadAnchorNode = document.createElement('a')
+  // let downloadAnchorNode = document.createElement('a')
   // downloadAnchorNode.setAttribute('href', dataStr)
   // downloadAnchorNode.setAttribute('download', fileName)
   // document.body.appendChild(downloadAnchorNode) // required for firefox
@@ -203,7 +203,7 @@ const exportJSON = (data, name = 'formattedJson') => {
   // downloadAnchorNode.remove()
 
   if (!data) {
-    console.error('No data')
+    alert('No data')
     return
   }
 
@@ -211,7 +211,7 @@ const exportJSON = (data, name = 'formattedJson') => {
     data = JSON.stringify(data, undefined, 4)
   }
 
-  var blob = new Blob([data], { type: 'text/json' }),
+  let blob = new Blob([data], { type: 'text/json' }),
     e = document.createEvent('MouseEvents'),
     a = document.createElement('a')
 
@@ -224,7 +224,7 @@ const exportJSON = (data, name = 'formattedJson') => {
 
 const loadJSON = file =>
   new Promise((resolve, reject) => {
-    var reader = new FileReader()
+    let reader = new FileReader()
     reader.readAsText(file)
     reader.onload = ({ target: { result } }) => {
       const json = JSON.parse(result)
@@ -256,8 +256,8 @@ const isDecodable = (str, opts) => {
     return false
   }
 
-  var regex = '(?:[A-Za-z0-9+\\/]{4})*(?:[A-Za-z0-9+\\/]{2}==|[A-Za-z0-9+/]{3}=)?'
-  var mimeRegex = '(data:\\w+\\/[a-zA-Z\\+\\-\\.]+;base64,)'
+  let regex = '(?:[A-Za-z0-9+\\/]{4})*(?:[A-Za-z0-9+\\/]{2}==|[A-Za-z0-9+/]{3}=)?'
+  let mimeRegex = '(data:\\w+\\/[a-zA-Z\\+\\-\\.]+;base64,)'
 
   if (opts.mimeRequired === true) {
     regex = mimeRegex + regex
@@ -282,7 +282,7 @@ const getImageBlob = image =>
   new Promise((resolve, reject) => resolve(window.URL.createObjectURL(image)))
 
 const getFileFromBase64 = (dataurl, filename) => {
-  var arr = dataurl.split(','),
+  let arr = dataurl.split(','),
     mime = arr[0].match(/:(.*?);/)[1],
     type = mime.split('/')[1],
     bstr = atob(arr[1]),
@@ -438,7 +438,7 @@ const cleanObject = (obj, truthyCheck = false) => {
 }
 
 const stripHtml = html => {
-  var tmp = document.createElement('DIV')
+  let tmp = document.createElement('DIV')
   tmp.innerHTML = html
   return tmp.textContent || tmp.innerText || ''
 }
@@ -480,7 +480,7 @@ const fuzzySearch = (s, p, caseSensitive = false, maxLength = 1000) => {
 }
 
 const replaceAll = (str, mapObj) => {
-  var re = new RegExp(Object.keys(mapObj).join('|'), 'gi')
+  let re = new RegExp(Object.keys(mapObj).join('|'), 'gi')
 
   return str.replace(re, matched => mapObj[matched.toLowerCase()])
 }
@@ -604,7 +604,7 @@ const getSHA256 = async message => {
 const showFile = (blob, name, extension) => {
   // It is necessary to create a new blob object with mime-type explicitly set
   // otherwise only Chrome works like it should
-  var newBlob = new Blob([blob], { type: DOCUMENT_MIME_TYPE[extension] })
+  let newBlob = new Blob([blob], { type: DOCUMENT_MIME_TYPE[extension] })
 
   // IE doesn't allow using a blob object directly as link href
   // instead it is necessary to use msSaveOrOpenBlob
@@ -616,7 +616,7 @@ const showFile = (blob, name, extension) => {
   // For other browsers:
   // Create a link pointing to the ObjectURL containing the blob.
   const data = window.URL.createObjectURL(newBlob)
-  var link = document.createElement('a')
+  let link = document.createElement('a')
   link.href = data
   link.download = `${name}.${extension}`
   link.click()
