@@ -28,9 +28,9 @@ const SetEntriesFilterMap = (filterKey, searchValue) => ({
   payload: { filterKey, searchValue },
 })
 
-const SetEntry = entry => ({
+const SetEntry = payload => ({
   type: EntriesActionTypes.ENTRY_SET,
-  payload: { ...entry, _lastUpdated: new Date() },
+  payload,
 })
 
 const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
@@ -163,7 +163,6 @@ const GetEntry = (url, id) => (dispatch, getState) => {
   return Axios()
     .get(url)
     .then(({ data }) => {
-      // dispatch(SetEntry(data))
       dispatch(SetEntry(data))
       ReactGA.event({
         category: 'Get Entry',
