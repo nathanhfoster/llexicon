@@ -72,7 +72,7 @@ const TagsContainer = ({
       className='TagsContainer ShowScrollBar p-0'
       {...columnProps}
       style={styles}
-      // title={getJsonTagsOrPeople(tags)}
+      // title={getTagStringFromObject(tags)}
     >
       {children}
       {tags.length === 0 ? (
