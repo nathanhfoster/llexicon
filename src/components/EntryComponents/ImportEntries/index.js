@@ -5,14 +5,7 @@ import { loadJSON } from 'utils'
 import FileUpload from '../../FileUpload'
 import { SetEntries, SyncEntries } from 'redux/Entries/actions'
 import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/reducer'
-
-const getTagsOrPeople = string =>
-  string.split(',').reduce((acc, name) => {
-    if (name) {
-      acc.push({ name })
-    }
-    return acc
-  }, [])
+import { getTagObjectFromString } from 'redux/Entries/utils'
 
 const ImportEntries = () => {
   const dispatch = useDispatch()
@@ -22,8 +15,8 @@ const ImportEntries = () => {
       const payload = json.map(entry => {
         let newEntry = {
           ...entry,
-          tags: getTagsOrPeople(entry.tags),
-          people: getTagsOrPeople(entry.people),
+          tags: getTagObjectFromString(entry.tags),
+          people: getTagObjectFromString(entry.people),
           EntryFiles: entry.EntryFiles || [],
         }
         if (entry.id.toString().includes(BASE_JOURNAL_ENTRY_ID)) {

@@ -75,7 +75,24 @@ const handleFilterEntries = (entries, search) => {
   }
 }
 
-const getJsonTagsOrPeople = tagsOrPeople => tagsOrPeople.map(({ name }) => name).join(',')
+const getTagStringFromObject = obj =>
+  obj.reduce((acc, { name }, i, { length }) => {
+    if (length === 1 || i === length - 1) {
+      acc += name
+    } else {
+      acc += `${name},`
+    }
+
+    return acc
+  }, '')
+
+const getTagObjectFromString = s =>
+  s.split(',').reduce((acc, name) => {
+    if (name) {
+      acc.push({ name })
+    }
+    return acc
+  }, [])
 
 export {
   LINK_TO_SIGN_UP,
@@ -84,5 +101,6 @@ export {
   getReduxEntryId,
   mergeJson,
   handleFilterEntries,
-  getJsonTagsOrPeople,
+  getTagStringFromObject,
+  getTagObjectFromString,
 }
