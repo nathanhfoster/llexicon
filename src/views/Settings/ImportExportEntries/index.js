@@ -38,38 +38,22 @@ const ImportExportEntries = ({
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
-        id,
-        author,
         tags,
         people,
-        title,
-        html,
         date_created,
         date_created_by_author,
         date_updated,
-        views,
-        latitude,
-        longitude,
-        EntryFiles,
         ...restOfProps
       } = entry
       const dateFormat = 'YYYY-MM-DD hh:mm:ss'
 
       return {
-        id,
-        author,
+        ...restOfProps,
         tags: tags.reduce((tagString, tag) => (tagString += `${tag.name},`), ''),
         people: people.reduce((peopleString, person) => (peopleString += `${person.name},`), ''),
-        title,
-        html,
         date_created: MomentJs(date_created).format(dateFormat),
         date_created_by_author: MomentJs(date_created_by_author).format(dateFormat),
         date_updated: MomentJs(date_updated).format(dateFormat),
-        views,
-        latitude,
-        longitude,
-        EntryFiles,
-        ...restOfProps
       }
     })
 

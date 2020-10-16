@@ -51,7 +51,7 @@ const EntryFilesCarousel = ({
           size,
           url,
         } = file
-        // console.log(file_type)
+
         if (file_type.includes('image')) {
           arrayOfImages.push(file)
         }
@@ -64,7 +64,6 @@ const EntryFilesCarousel = ({
     const { url, file_type } = images[photoIndex]
     const type = file_type.split('/')[0]
     handleInsertEmbeded(type, url)
-
   }, [])
 
   const handleImageDelete = useCallback(({ images, photoIndex, isOpen }) => {

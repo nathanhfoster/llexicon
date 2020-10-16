@@ -1,5 +1,5 @@
-import { getObjectLength, removeKeyOrValueFromObject } from "../utils"
-import { deepParseJson } from "../utils"
+import { getObjectLength, removeKeyOrValueFromObject } from '../utils'
+import { deepParseJson } from '../utils'
 import {
   DEFAULT_STATE_ALERTS,
   DEFAULT_STATE_CALENDAR,
@@ -7,19 +7,19 @@ import {
   DEFAULT_STATE_TEXT_EDITOR,
   DEFAULT_STATE_ENTRIES,
   DEFAULT_STATE_WINDOW,
-} from "./RootReducer"
+} from './RootReducer'
 
-const LocalStorageReduxKey = "ReduxStore"
+const LocalStorageReduxKey = 'ReduxStore'
 const PersistedStorageReduxKey = `persist:${LocalStorageReduxKey}`
-const LocalStorageFilesKey = "Files"
+const LocalStorageFilesKey = 'Files'
 
-const cleanHtml = (array) =>
+const cleanHtml = array =>
   array.map(
-    (item) =>
+    item =>
       (item = {
         ...item,
-        html: "<p></p>",
-      })
+        html: '<p></p>',
+      }),
   )
 
 const saveState = (localStorageKey, value, dispatch) => {
@@ -46,7 +46,7 @@ const saveState = (localStorageKey, value, dispatch) => {
   }
 }
 
-const getState = (localStorageKey) => {
+const getState = localStorageKey => {
   let state = null
 
   const localStateString = localStorage.getItem(localStorageKey)
@@ -62,8 +62,7 @@ const getState = (localStorageKey) => {
 
 const clearLocalStorage = () => localStorage.clear()
 
-const clearReduxStoreFromLocalStorage = () =>
-  localStorage.removeItem(PersistedStorageReduxKey)
+const clearReduxStoreFromLocalStorage = () => localStorage.removeItem(PersistedStorageReduxKey)
 
 const removeState = (localStorageKey, keyOrValueToRemove) => {
   if (keyOrValueToRemove) {
@@ -75,14 +74,11 @@ const removeState = (localStorageKey, keyOrValueToRemove) => {
   }
 }
 
-const getBlob = (key) => getState(LocalStorageFilesKey)[key]
+const getBlob = key => getState(LocalStorageFilesKey)[key]
 
-const getFile = (key) => {
-  // console.log("key: ", key)
+const getFile = key => {
   const state = getFilesState()
-  // console.log("state: ", state)
   const file = state[key]
-  // console.log("file: ", file)
   return file
 }
 
@@ -90,7 +86,7 @@ const getFilesState = () => getState(LocalStorageFilesKey)
 
 const getFilesStateLength = () => getObjectLength(getFilesState())
 
-const saveFileState = (files) => saveState(LocalStorageFilesKey, files)
+const saveFileState = files => saveState(LocalStorageFilesKey, files)
 
 const appendFileToState = (key, imageBase64) => {
   let state = getState(LocalStorageFilesKey)
@@ -102,30 +98,29 @@ const appendFileToState = (key, imageBase64) => {
 
 const removeFilesFromState = () => removeState(LocalStorageFilesKey)
 
-const removeFileFromState = (file) => removeState(LocalStorageFilesKey, file)
+const removeFileFromState = file => removeState(LocalStorageFilesKey, file)
 
 const getReduxState = () => getState(LocalStorageReduxKey)
 
 const getPersistedReduxStore = () => getState(PersistedStorageReduxKey)
 
-const saveReduxState = () => (dispatch, getState) =>
-  saveState(LocalStorageReduxKey, getState())
+const saveReduxState = () => (dispatch, getState) => saveState(LocalStorageReduxKey, getState())
 
 const persistReduxState = () => (dispatch, getState) =>
   saveState(PersistedStorageReduxKey, getState())
 
 const removeReduxState = () => removeState(LocalStorageReduxKey)
 
-const Clean = (array) => {
+const Clean = array => {
   for (let i = 0; i < array.length; i++) {
     const item = array[i]
-    if (item.hasOwnProperty("html")) delete item.html
-    if (item.hasOwnProperty("image")) delete item.image
+    if (item.hasOwnProperty('html')) delete item.html
+    if (item.hasOwnProperty('image')) delete item.image
   }
-  return array.filter((e) => e)
+  return array.filter(e => e)
 }
 
-const isQuotaExceeded = (e) => {
+const isQuotaExceeded = e => {
   let quotaExceeded = false
   if (e) {
     if (e.code) {
@@ -135,7 +130,7 @@ const isQuotaExceeded = (e) => {
           break
         case 1014:
           // Firefox
-          if (e.name == "NS_ERROR_DOM_QUOTA_REACHED") {
+          if (e.name == 'NS_ERROR_DOM_QUOTA_REACHED') {
             quotaExceeded = true
           }
           break
@@ -156,7 +151,7 @@ const getUser = () => {
     const persistedReduxStoreObject = JSON.parse(persistedReduxStore)
     const { User } = persistedReduxStoreObject
     if (!User) return { token: null, offline_mode: null }
-    else if (typeof User === "string") {
+    else if (typeof User === 'string') {
       userFromLocalStorage = JSON.parse(User)
     } else {
       userFromLocalStorage = User
@@ -191,9 +186,7 @@ const getUserClientId = () => {
   return userClientId
 }
 
-const handleQuotaExceeded = (e) => {
-  // console.log("--------------------handleQuotaExceeded", JSON.stringify(e))
-
+const handleQuotaExceeded = e => {
   if (isQuotaExceeded(e)) {
   }
 }

@@ -42,12 +42,12 @@ const Entry = ({
   )
 
   const handleDateChange = useCallback(
-    date_created_by_author =>
+    date_created_by_author =>{
       handleEditorChange({
         id: entry.id,
         date_created_by_author,
         _lastUpdated: date_created_by_author,
-      }),
+      })},
     [],
   )
 

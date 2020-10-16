@@ -1,12 +1,12 @@
 import { Axios, AxiosForm } from '../Actions'
 import { SetApiResponseStatus, SetAlert } from '../Alerts/actions'
+import { RouterPush } from '../router/actions'
 import { EntriesActionTypes } from './types'
 import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from '../../utils'
-import { getJsonTagsOrPeople } from './utils'
+import { getJsonTagsOrPeople, getReduxEntryId } from './utils'
 import FormData from 'form-data'
 import qs from 'qs'
 import ReactGA from 'react-ga'
-import { BASE_JOURNAL_ENTRY_ID } from './reducer'
 
 const ToggleShowOnlyPublic = () => ({
   type: EntriesActionTypes.ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
@@ -33,16 +33,35 @@ const SetEntry = payload => ({
   payload,
 })
 
-const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => ({
-  type: EntriesActionTypes.ENTRY_UPDATE,
-  id,
-  payload: { ...entry, _lastUpdated, _shouldPost: false },
-})
+const PostReduxEntry = payload => (dispatch, getState) => {
+  const {
+    items: { length: itemsLength },
+    filteredItems: { length: filteredItemsLength },
+  } = getState().Entries
 
-const SetEntriesByDate = payload => ({
-  type: EntriesActionTypes.ENTRIES_SET_BY_DATE,
-  payload,
-})
+  const length = itemsLength + filteredItemsLength
+
+  return dispatch(
+    SetEntry({
+      ...payload,
+      id: getReduxEntryId(length),
+      _shouldPost: true,
+    }),
+  )
+}
+
+const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => {
+  let payload = { ...entry, _lastUpdated }
+  return {
+    type: EntriesActionTypes.ENTRY_UPDATE,
+    id,
+    payload,
+  }
+}
+
+const ClearEntry = () => ({ type: EntriesActionTypes.ENTRY_CLEAR })
+
+const DeleteReduxEntry = id => ({ type: EntriesActionTypes.ENTRY_DELETE, id })
 
 const SetEntries = payload => ({ type: EntriesActionTypes.ENTRIES_SET, payload })
 
@@ -129,15 +148,12 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
   payload.append('date_modified', lastModifiedDate.toJSON())
   payload.append('url', file)
 
-  // console.log("AwsUpload: ", entry_id, file, lastModifiedDate.toJSON())
-
   return AxiosForm({ payload })
     .post(`/files/`, payload)
     .then(({ data }) => {
       const updateEntryPayload = {
         html: html.replace(base64, data.url),
       }
-      // console.log("updateEntryPayload: ", updateEntryPayload)
       dispatch(UpdateEntry(entry_id, updateEntryPayload))
       ReactGA.event({
         category: 'Aws Upload',
@@ -174,8 +190,8 @@ const GetEntry = (url, id) => (dispatch, getState) => {
     .catch(({ response }) => {
       if (userLoggedIn && response) {
         const { status } = response
-        if (status === 401 || status === 404) {
-          dispatch({ type: EntriesActionTypes.ENTRY_DELETE, id })
+        if (entry && !entry._shouldPost && (status === 401 || status === 404)) {
+          dispatch(DeleteReduxEntry(id))
           dispatch(SetApiResponseStatus(status))
           dispatch(
             SetAlert({
@@ -261,7 +277,7 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
   return Axios()
     .post(`/entries/${id}/view_by_date/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch(SetEntriesByDate(data))
+      dispatch(SetEntries(data))
       ReactGA.event({
         category: 'Get User Entries By Date',
         action: 'User got a entry page!',
@@ -278,25 +294,21 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
     })
 }
 
-const ClearEntry = () => ({ type: EntriesActionTypes.ENTRY_CLEAR })
-
-const PostReduxEntry = payload => (dispatch, getState) => {
-  const { items, filteredItems } = getState().Entries
-  const { length } = items.concat(filteredItems)
-  return dispatch(
-    SetEntry({
-      ...payload,
-      id: `${BASE_JOURNAL_ENTRY_ID}-${length}`,
-      _shouldPost: true,
-    }),
-  )
-}
-
-const PostEntry = payload => dispatch => {
+const PostEntry = payload => (dispatch, getState) => {
   dispatch(PendingEntries())
   return Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
+      const {
+        router: {
+          location: { pathname },
+        },
+      } = getState()
+
+      if (pathname.includes(payload.id)) {
+        const newRoute = pathname.replace(payload.id, data.id)
+        RouterPush(newRoute)
+      }
       dispatch(UpdateReduxEntry(payload.id, data, null))
       ReactGA.event({
         category: 'Post Entry',
@@ -333,8 +345,6 @@ const UpdateEntry = (id, payload) => dispatch => {
       }
     })
 }
-
-const DeleteReduxEntry = id => ({ type: EntriesActionTypes.ENTRY_DELETE, id })
 
 const DeleteEntry = id => dispatch => {
   dispatch(PendingEntries())
@@ -386,13 +396,20 @@ const SearchUserEntries = search => (dispatch, getState) => {
 
 const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
-  let entryToUpdate = items.concat(filteredItems).find(entry => entry.id == entry_id)
+  const entryToUpdate = items.concat(filteredItems).find(entry => entry.id == entry_id)
 
   if (entryToUpdate) {
-    const payload = {
-      EntryFiles: entryToUpdate.EntryFiles.filter(file => file.id !== id),
+    let { EntryFiles } = entryToUpdate
+    const indexToUpdate = EntryFiles.findIndex(file => file.id === id)
+    console.log(indexToUpdate)
+    if (indexToUpdate) {
+      delete EntryFiles[indexToUpdate]
+      const payload = {
+        EntryFiles,
+        _shouldDelete: true,
+      }
+      dispatch(UpdateReduxEntry(entry_id, payload, null))
     }
-    dispatch(UpdateReduxEntry(entry_id, payload))
   }
 }
 

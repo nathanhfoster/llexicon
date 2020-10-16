@@ -54,34 +54,28 @@ const arrayToObject = (arr, keyField) =>
 const objectToArray = obj => Object.values(obj)
 
 const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
-  // console.log("removeKeyOrValueFromObject: ", keyOrValueToRemove)
   let newObj = DeepClone(obj)
   const keyFound = newObj[keyOrValueToRemove] ? true : false
   const isValue = !keyFound
   if (keyFound) {
     delete newObj[keyOrValueToRemove]
-    // console.log("keyFound: ", newObj)
   } else if (isValue) {
     newObj = {}
 
     Object.keys(newObj).forEach(key => {
       if (newObj[key] !== keyOrValueToRemove) newObj[key] = newObj[key]
     })
-
-    // console.log("ELSE: ", newObj)
   }
   return newObj
 }
 
 const mapObject = (object = {}, props = []) => {
   if (typeof props === 'string') {
-    // console.log("Object to value")
     if (object[props]) {
       const value = object[props]
       return value
     }
   } else if (Array.isArray(props)) {
-    // console.log("New Object with specific props")
     const newObject = props.reduce((result, prop) => {
       if (object[prop]) {
         result[prop] = object[prop]
@@ -130,14 +124,12 @@ const removeAttributeDuplicates = (array, objAttr = 'id', props) => {
 
 const filterMapArray = (array = [], uniqueKey = 'id', props) => {
   if (!uniqueKey && !props) {
-    // console.log("return original array")
     return array
   }
 
   if (uniqueKey) {
     return removeAttributeDuplicates(array, uniqueKey, props)
   } else if (props) {
-    // console.log("Don't filter but map")
     const mappedArray = array.map(item => (item = mapObject(item, props)))
     return mappedArray
   }

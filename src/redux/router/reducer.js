@@ -1,14 +1,14 @@
-import { connectRouter } from "connected-react-router"
-import { createBrowserHistory } from "history"
+import { connectRouter } from 'connected-react-router'
+import { createBrowserHistory } from 'history'
 const history = createBrowserHistory()
 
 const DEFAULT_STATE_ROUTER = {
   location: {
-    hash: "",
-    key: "",
-    pathname: "",
-    search: "",
-    state: { previousRoute: "", pathHistory: [] },
+    hash: '',
+    key: '',
+    pathname: '',
+    search: '',
+    state: { previousRoute: '', pathHistory: [] },
   },
   action: null,
   ...history,

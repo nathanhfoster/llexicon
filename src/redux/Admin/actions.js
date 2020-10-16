@@ -43,7 +43,6 @@ const GetAllUserEntries = () => (dispatch) => {
   return Axios()
     .get("entries/all/")
     .then(({ data }) => {
-      // console.log(data)
       dispatch(SetUserEntries(data))
       return data
     })

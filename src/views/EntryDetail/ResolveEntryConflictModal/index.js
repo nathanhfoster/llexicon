@@ -5,7 +5,7 @@ import { connect as reduxConnect } from 'react-redux'
 import EntryDifferences from './EntryDifferences'
 import { Container, Row, Col } from 'reactstrap'
 import { BasicModal, EntryCard } from '../../../components'
-import { SetEntry, UpdateReduxEntry, SyncEntries, ClearEntry } from '../../../redux/Entries/actions'
+import { UpdateReduxEntry, SyncEntries, ClearEntry } from '../../../redux/Entries/actions'
 import { findDifferentProps } from './utils'
 import './styles.css'
 
@@ -15,7 +15,6 @@ const mapStateToProps = ({ Entries: { isPending, item } }) => ({
 })
 
 const mapDispatchToProps = {
-  SetEntry,
   UpdateReduxEntry,
   SyncEntries,
   ClearEntry,
@@ -25,7 +24,6 @@ const ResolveEntryConflictModal = ({
   fetchingEntryFromServer,
   entryFromServer,
   entry,
-  SetEntry,
   UpdateReduxEntry,
   SyncEntries,
   ClearEntry,
@@ -84,7 +82,6 @@ const ResolveEntryConflictModal = ({
 
   const handleSave = useCallback(async () => {
     setHasResolved(true)
-    entryToUpdate.id && SetEntry(entryToUpdate)
     await UpdateReduxEntry(entryToUpdate.id, entryToUpdate)
     await SyncEntries()
   }, [entryToUpdate])

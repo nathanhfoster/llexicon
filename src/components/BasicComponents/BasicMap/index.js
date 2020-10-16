@@ -91,11 +91,6 @@ class BasicMap extends PureComponent {
   handleChange = ({ bounds, center, marginBounds, size, zoom }) => {
     const boundsCenterZoom = { center, zoom, bounds }
 
-    // console.log("bounds: ", bounds)
-    // console.log("center: ", center)
-    // console.log("marginBounds: ", marginBounds)
-    // console.log("size: ", size)
-    // console.log("zoom: ", zoom)
     this.panTo(boundsCenterZoom)
   }
 

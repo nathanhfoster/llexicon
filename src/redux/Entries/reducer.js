@@ -1,16 +1,15 @@
 import { EntriesActionTypes } from './types'
 import { AppActionTypes } from '../App/types'
-import { mergeJson, handleFilterEntries } from './utils'
+import {
+  LINK_TO_SIGN_UP,
+  BASE_JOURNAL_ENTRY_ID,
+  DEFAULT_JOUNRAL_ENTRY_ID,
+  mergeJson,
+  handleFilterEntries,
+} from './utils'
 import { getStringBytes } from '../../utils'
-import { RouteMap } from '../../redux/router/actions'
 import * as AwsImages from '../../images/AWS'
 const { ...entryFiles } = AwsImages
-
-const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
-
-const BASE_JOURNAL_ENTRY_ID = 'Entry'
-
-const DEFAULT_JOUNRAL_ENTRY_ID = `${BASE_JOURNAL_ENTRY_ID}-0`
 
 const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
   id,
@@ -152,20 +151,10 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         error: DEFAULT_STATE_ENTRIES.error,
       }
 
-    case EntriesActionTypes.ENTRIES_SET_BY_DATE:
-      return {
-        ...state,
-        ...handleFilterEntries(
-          mergeJson(state.items.concat(state.filteredItems), payload),
-          state.search,
-        ),
-        isPending: false,
-      }
-
     case EntriesActionTypes.ENTRY_SET:
       return {
         ...state,
-        item: { ...payload, _size: getStringBytes(payload) },
+        item: { ...state.item, ...payload, _size: getStringBytes(payload) },
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), [payload]),
           state.search,
@@ -174,27 +163,20 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case EntriesActionTypes.ENTRY_UPDATE:
-      return {
-        ...state,
-        ...handleFilterEntries(
-          state.items.concat(state.filteredItems).map(item => {
-            if (item.id === id) {
-              const mergedItem = {
-                ...item,
-                ...payload,
-              }
-              const newItem = {
-                ...mergedItem,
-                _size: getStringBytes(mergedItem),
-              }
-              return newItem
-            } else return item
-          }),
-          state.search,
-        ),
-        isPending: false,
-        error: DEFAULT_STATE_ENTRIES.error,
+      let nextState = state.items.concat(state.filteredItems)
+      const indexToUpdate = nextState.findIndex(entry => entry.id === id)
+      if (indexToUpdate) {
+        const mergedItem = { ...nextState[indexToUpdate], ...payload }
+        nextState[indexToUpdate] = { ...mergedItem, _size: getStringBytes(mergedItem) }
+        return {
+          ...state,
+          ...handleFilterEntries(nextState, state.search),
+          item: state.item?.id === mergedItem.id ? mergedItem : state.item,
+          isPending: false,
+          error: DEFAULT_STATE_ENTRIES.error,
+        }
       }
+      return state
 
     case EntriesActionTypes.ENTRY_DELETE:
       const hasArrayOfIds = Array.isArray(payload)
