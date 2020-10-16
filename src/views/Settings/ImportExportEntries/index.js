@@ -18,7 +18,7 @@ const mapStateToProps = ({
   User: { id },
   Entries: { items, filteredItems },
 }) => ({
-  userIsLoggedIn: !!id,
+  userId: id,
   items,
   filteredItems,
 })
@@ -26,7 +26,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = { SyncEntries, GetAllUserEntryPages }
 
 const ImportExportEntries = ({
-  userIsLoggedIn,
+  userId,
   items,
   filteredItems,
   SyncEntries,
@@ -54,7 +54,7 @@ const ImportExportEntries = ({
         ...restOfProps
       } = entry
 
-      return {
+      let entries = {
         ...restOfProps,
         tags: tags.reduce(
           (tagString, tag) => (tagString += `${tag.name},`),
@@ -70,6 +70,12 @@ const ImportExportEntries = ({
         ),
         date_updated: MomentJs(date_updated).format(DATE_FORMAT),
       }
+
+      if (userId) {
+        entries["author"] = userId
+      }
+
+      return entries
     })
 
     exportJSON(
@@ -82,11 +88,7 @@ const ImportExportEntries = ({
     <Container fluid>
       <Row className="py-2">
         <Col xs={12} tag={ButtonGroup} className="p-0">
-          <Button
-            color="accent"
-            onClick={GetAllEntries}
-            disabled={!userIsLoggedIn}
-          >
+          <Button color="accent" onClick={GetAllEntries} disabled={!userId}>
             <i className="fas fa-cloud-download-alt" /> Download and Sync All
             Entries
           </Button>
@@ -105,12 +107,12 @@ const ImportExportEntries = ({
 }
 
 ImportExportEntries.propTypes = {
-  userIsLoggedIn: PropTypes.bool.isRequired,
+  userId: PropTypes.number.isRequired,
   items: EntriesPropTypes,
   filteredItems: EntriesPropTypes,
 }
 
-ImportExportEntries.defaultProps = { userIsLoggedIn: false }
+ImportExportEntries.defaultProps = { userId: null }
 
 export default reduxConnect(
   mapStateToProps,
