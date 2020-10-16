@@ -92,8 +92,8 @@ const registerValidSW = (swUrl, config) => {
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log("Content is cached for offline use.")
-
-              console.log(config.store.dispatch(SetWindow()))
+              
+              config.store.dispatch(SetWindow())
 
               config.store.dispatch(GetAppVersion())
 

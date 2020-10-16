@@ -1,14 +1,14 @@
-import React, { useRef, useMemo, useEffect } from "react"
-import { connect } from "store/provider"
-import PropTypes from "prop-types"
-import { EntryPropTypes } from "reducers//Entries/propTypes"
-import { Container } from "reactstrap"
-import ToolbarModal from "../../ToolbarModal"
-import { BasicMap } from "../../../../"
-import { WatchUserLocation } from "reducers//User/actions"
-import { SetMapBoundsCenterZoom } from "reducers//Map/actions"
-import { GetAddress } from "reducers//Actions/Google"
-import "./styles.css"
+import React, { useRef, useMemo, useEffect, useCallback } from 'react'
+import { connect as reduxConnect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { EntryPropTypes } from 'redux/Entries/propTypes'
+import { Container } from 'reactstrap'
+import ToolbarModal from '../../ToolbarModal'
+import { BasicMap } from 'components'
+import { WatchUserLocation } from 'redux/User/actions'
+import { SetMapBoundsCenterZoom } from 'redux/Map/actions'
+import { GetAddress } from 'redux/Actions/Google'
+import './styles.css'
 
 const mapStateToProps = ({ Map, User: { location } }) => ({
   Map,
@@ -22,21 +22,15 @@ const LocationButtonModal = ({
   entry,
   UserLocation,
   xs,
-  onChangeCallback,
+  onChange,
   WatchUserLocation,
   SetMapBoundsCenterZoom,
 }) => {
   let watchId = useRef(null)
   const prevMap = useMemo(() => Map, [])
   const saveDisabeld = useMemo(
-    () =>
-      !(
-        entry.latitude ||
-        entry.longitude ||
-        UserLocation.latitude ||
-        UserLocation.longitude
-      ),
-    [entry, UserLocation]
+    () => !(entry.latitude || entry.longitude || UserLocation.latitude || UserLocation.longitude),
+    [entry, UserLocation],
   )
 
   useEffect(() => {
@@ -45,7 +39,7 @@ const LocationButtonModal = ({
     }
   }, [])
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     const { latitude, longitude } = entry
     if (!watchId.current) {
       watchId.current = WatchUserLocation()
@@ -56,53 +50,50 @@ const LocationButtonModal = ({
         zoom: 16,
       })
     }
-  }
+  }, [watchId.current, entry.latitude, entry.longitude])
 
-  const handleSave = async () => {
-    const {
-      address,
-      latitude: entryLatitude,
-      longitude: entryLongitude,
-    } = entry
+  const handleSave = useCallback(async () => {
+    const { address, latitude: entryLatitude, longitude: entryLongitude } = entry
     const { latitude: userLatitude, longitude: userLongitude } = UserLocation
     const latitude = userLatitude || entryLatitude
     const longitude = userLongitude || entryLongitude
     if (!address && latitude && longitude) {
-      await GetAddress(latitude, longitude).then((address) =>
-        onChangeCallback({ address, latitude, longitude })
+      await GetAddress(latitude, longitude).then(address =>
+        onChange({ address, latitude, longitude }),
       )
     } else {
-      onChangeCallback({ address, latitude, longitude })
+      onChange({ address, latitude, longitude })
     }
     handleCancel()
-  }
+  }, [
+    entry.address,
+    entry.latitude,
+    entry.longitude,
+    UserLocation.latitude,
+    UserLocation.longitude,
+  ])
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     if (watchId.current) {
       watchId.current = WatchUserLocation(watchId.current)
     }
     SetMapBoundsCenterZoom(prevMap)
-  }
+  }, [watchId.current])
 
   return (
     <ToolbarModal
-      className="p-0"
-      title="Add Location"
-      onClickCallback={handleClick}
+      className='p-0'
+      title='Add Location'
+      onClick={handleClick}
       onCancelCallback={handleCancel}
       onSaveCallback={handleSave}
-      ButtonIcon="fas fa-map-marker-alt"
-      button="Add Location"
+      ButtonIcon='fas fa-map-marker-alt'
+      button='Add Location'
       xs={xs}
       disabledSave={saveDisabeld}
     >
-      <Container fluid className="LocationButtonModal p-0">
-        <BasicMap
-          renderUserLocation
-          entry={entry}
-          getAddressOnMarkerClick
-          onChangeCallback={onChangeCallback}
-        />
+      <Container fluid className='LocationButtonModal p-0'>
+        <BasicMap renderUserLocation entry={entry} getAddressOnMarkerClick onChange={onChange} />
       </Container>
     </ToolbarModal>
   )
@@ -122,8 +113,8 @@ LocationButtonModal.propTypes = {
   UserLocation: PropTypes.object,
   xs: PropTypes.number,
   entry: EntryPropTypes,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   WatchUserLocation: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LocationButtonModal)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(LocationButtonModal)

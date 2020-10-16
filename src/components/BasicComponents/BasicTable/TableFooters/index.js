@@ -1,40 +1,47 @@
-import React, { useMemo, memo } from "react"
-import { DataPropType, ColumnsPropType } from "../state/types"
-import { connect } from "store/provider"
-import "./styles.css"
+import BasicTableContext from '../state/context'
+import React, { useMemo } from 'react';
+import { DataPropType, ColumnsPropType } from '../state/types';
+import { connect } from 'react-redux';
+import './styles.css';
 
-const mapStateToProps = ({ columns, sortList }) => ({
+const mapStateToProps = ({ columns, sortedAndFilteredData }) => ({
   columns,
-  sortList,
-})
+  sortedAndFilteredData,
+});
 
-const TableFooters = ({ data, columns }) => {
-  const shouldRender = useMemo(() => columns.some((column) => column.footer), [
+const TableFooters = ({ columns, sortedAndFilteredData }) => {
+  const shouldRender = useMemo(() => columns.some(column => column.footer), [
     columns,
-  ])
+  ]);
 
   const renderTableRows = useMemo(
     () =>
       columns.map((column, i) => {
-        const { footer } = column
+        const { footer } = column;
 
-        return footer ? <td key={i}>{footer(data)}</td> : <td key={i}></td>
+        return footer ? (
+          <td key={i}>{footer(sortedAndFilteredData)}</td>
+        ) : (
+          <td key={i}></td>
+        );
       }),
-    [columns, data]
-  )
+    [columns, sortedAndFilteredData],
+  );
 
   return (
     shouldRender && (
-      <tfoot className="BasicTableFooter">
+      <tfoot className='BasicTableFooter'>
         <tr>{renderTableRows}</tr>
       </tfoot>
     )
-  )
-}
+  );
+};
 
 TableFooters.propTypes = {
-  data: DataPropType,
+  sortedAndFilteredData: DataPropType,
   columns: ColumnsPropType,
-}
+};
 
-export default connect(mapStateToProps)(memo(TableFooters))
+export default connect(mapStateToProps, null, null, {
+  context: BasicTableContext,
+})(TableFooters);

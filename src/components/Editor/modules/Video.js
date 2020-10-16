@@ -30,7 +30,6 @@ class Video extends BlockEmbed {
       }
     }
 
-    // console.log(iFrameHeight, iFrameWidth)
 
     let node = super.create(value)
     let iframe = document.createElement("iframe")

@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { Button } from "reactstrap"
-import { RouteMap, RouterPush } from "reducers//router/actions"
+import { RouteMap, RouterPush } from "redux/router/actions"
 
 const NewEntryButton = () => (
   <Button color="accent" onClick={() => RouterPush(RouteMap.NEW_ENTRY)}>

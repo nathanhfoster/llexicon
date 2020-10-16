@@ -1,58 +1,61 @@
-import React from "react"
+import React, { useCallback } from "react"
 import PropTypes from "prop-types"
-import { EntriesPropTypes } from "reducers//Entries/propTypes"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
-import { ImportEntries } from "../../../components"
-import { connect } from "store/provider"
-import { copyStringToClipboard } from "../../../utils"
-import { SyncEntries, GetAllUserEntries } from "reducers//Entries/actions"
+import { ImportEntries } from "components"
+import { connect as reduxConnect } from "react-redux"
+import { copyStringToClipboard, loadJSON, exportJSON } from "utils"
+import {
+  SyncEntries,
+  GetAllUserEntries,
+  GetAllUserEntryPages,
+} from "redux/Entries/actions"
 import MomentJs from "moment"
+
+const DATE_FORMAT = "YYYY-MM-DD hh:mm:ss"
 
 const mapStateToProps = ({
   User: { id },
   Entries: { items, filteredItems },
 }) => ({
-  userIsLoggedIn: !!id,
+  userId: id,
   items,
   filteredItems,
 })
 
-const mapDispatchToProps = { SyncEntries, GetAllUserEntries }
+const mapDispatchToProps = { SyncEntries, GetAllUserEntryPages }
 
 const ImportExportEntries = ({
-  userIsLoggedIn,
+  userId,
   items,
   filteredItems,
   SyncEntries,
-  GetAllUserEntries,
+  GetAllUserEntryPages,
 }) => {
   const entries = items.concat(filteredItems)
   const totalEntries = entries.length
 
-  const GetAllEntries = () =>
-    SyncEntries(() => new Promise((resolve) => resolve(GetAllUserEntries())))
+  const GetAllEntries = useCallback(
+    () =>
+      SyncEntries(
+        () => new Promise((resolve) => resolve(GetAllUserEntryPages()))
+      ),
+    []
+  )
 
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
-        id,
-        author,
         tags,
         people,
-        title,
-        html,
         date_created,
         date_created_by_author,
         date_updated,
-        views,
-        latitude,
-        longitude,
+        ...restOfProps
       } = entry
-      const dateFormat = "YYYY-MM-DD hh:mm:ss"
 
-      return {
-        id,
-        author,
+      let entries = {
+        ...restOfProps,
         tags: tags.reduce(
           (tagString, tag) => (tagString += `${tag.name},`),
           ""
@@ -61,31 +64,31 @@ const ImportExportEntries = ({
           (peopleString, person) => (peopleString += `${person.name},`),
           ""
         ),
-        title,
-        html,
-        date_created: MomentJs(date_created).format(dateFormat),
+        date_created: MomentJs(date_created).format(DATE_FORMAT),
         date_created_by_author: MomentJs(date_created_by_author).format(
-          dateFormat
+          DATE_FORMAT
         ),
-        date_updated: MomentJs(date_updated).format(dateFormat),
-        views,
-        latitude,
-        longitude,
+        date_updated: MomentJs(date_updated).format(DATE_FORMAT),
       }
+
+      if (userId) {
+        entries["author"] = userId
+      }
+
+      return entries
     })
-    copyStringToClipboard(JSON.stringify(formattedEntries))
-    alert("Entries copied to clipboard as a JSON.")
+
+    exportJSON(
+      formattedEntries,
+      `Astral-Tree-Entries-${MomentJs(new Date()).format(DATE_FORMAT)}`
+    )
   }
 
   return (
     <Container fluid>
       <Row className="py-2">
         <Col xs={12} tag={ButtonGroup} className="p-0">
-          <Button
-            color="accent"
-            onClick={GetAllEntries}
-            disabled={!userIsLoggedIn}
-          >
+          <Button color="accent" onClick={GetAllEntries} disabled={!userId}>
             <i className="fas fa-cloud-download-alt" /> Download and Sync All
             Entries
           </Button>
@@ -95,7 +98,7 @@ const ImportExportEntries = ({
             onClick={handleExportEntries}
             disabled={totalEntries === 0}
           >
-            <i className="fas fa-clipboard" /> Export Entries
+            <i className="fas fa-file-export" /> Export Entries
           </Button>
         </Col>
       </Row>
@@ -104,11 +107,11 @@ const ImportExportEntries = ({
 }
 
 ImportExportEntries.propTypes = {
-  userIsLoggedIn: PropTypes.bool.isRequired,
+  userId: PropTypes.number.isRequired,
   items: EntriesPropTypes,
   filteredItems: EntriesPropTypes,
 }
 
-ImportExportEntries.defaultProps = { userIsLoggedIn: false }
+ImportExportEntries.defaultProps = { userId: null }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImportExportEntries)

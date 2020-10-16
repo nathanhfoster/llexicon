@@ -1,8 +1,10 @@
-import React, { useState, useEffect, memo, Fragment } from "react"
-import { inputProps } from "./propTypes"
-import { FormGroup, Label, Input, FormFeedback, FormText } from "reactstrap"
+import React, { useMemo, memo, Fragment } from 'react'
+import { InputProps } from './propTypes'
+import { FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap'
+import BasicOption from '../BasicOption'
 
 const BasicInput = ({
+  id,
   name,
   defaultValue,
   check,
@@ -20,71 +22,77 @@ const BasicInput = ({
   multiline,
   row,
   className,
+  value,
+  onChange,
+  children,
+  options,
   ...restOfProps
 }) => {
-  const [value, setValue] = useState(restOfProps.value)
-
-  useEffect(() => {
-    if (value !== restOfProps.value) {
-      setValue(value)
-    }
-  }, [restOfProps.value])
-
-  const isCheckOrRadio = type === "checkbox" || type === "radio"
-
-  const handleChange = ({ target: { type, value, checked, files } }) => {
-    if (type === "radio" || type === "checkbox") {
-      setValue(checked)
-    } else if (type === "file") {
-      // setValue(files)
-      setValue(value)
-    } else {
-      setValue(value)
-    }
-  }
+  const isCheckOrRadio = type === 'checkbox' || type === 'radio'
 
   const valid =
-    restOfProps.valid || (typeof isValid === "function" && isValid(value))
+    restOfProps.valid || (typeof isValid === 'function' && isValid(value))
+
   const invalid =
-    restOfProps.invalid || (typeof isInvalid === "function" && isInvalid(value))
+    restOfProps.invalid ||
+    (typeof isInvalid === 'function' && isInvalid(value))
 
-  const renderLabel = `${label} ${required ? "*" : ""}`
-
-  const renderInput = (
-    <Input
-      id={name}
-      defaultValue={defaultValue}
-      value={value}
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      disabled={disabled}
-      valid={Boolean(valid)}
-      invalid={Boolean(invalid)}
-      onChange={handleChange}
-    />
+  const renderOptions = useMemo(
+    () =>
+      type === 'select'
+        ? options?.map((option, i) => (
+            <BasicOption key={`option-${name}-${i}`} {...option} />
+          ))
+        : undefined,
+    [options, type],
   )
+
+  const renderInput = useMemo(
+    () => (
+      <Input
+        id={id || name}
+        defaultValue={defaultValue}
+        value={value}
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        disabled={disabled}
+        valid={Boolean(valid)}
+        invalid={Boolean(invalid)}
+        onChange={onChange}
+      >
+        {renderOptions}
+      </Input>
+    ),
+    [value, renderOptions, disabled, valid, invalid, type, placeholder],
+  )
+
+  const renderLabel = useMemo(() => {
+    const labelText = `${label} ${required ? '*' : ''}`
+
+    return isCheckOrRadio ? (
+      <Label check={isCheckOrRadio} for={name}>
+        {renderInput} {labelText}
+      </Label>
+    ) : (
+      <Fragment>
+        {label && (
+          <Label check={isCheckOrRadio} for={name}>
+            {labelText}
+          </Label>
+        )}
+        {renderInput}
+      </Fragment>
+    )
+  }, [renderInput, label, required, name])
 
   return (
     <FormGroup check={isCheckOrRadio} row={row}>
-      {isCheckOrRadio ? (
-        <Label check={isCheckOrRadio} for={name}>
-          {renderInput} {renderLabel}
-        </Label>
-      ) : (
-        <Fragment>
-          {label && (
-            <Label check={isCheckOrRadio} for={name}>
-              {renderLabel}
-            </Label>
-          )}
-          {renderInput}
-        </Fragment>
-      )}
-      {typeof valid === "string" && (
+      {renderLabel}
+      {typeof valid === 'string' && (
         <FormFeedback valid={!valid}>{valid}</FormFeedback>
       )}
-      {typeof invalid === "string" && (
+      {typeof invalid === 'string' && (
         <FormFeedback valid={!invalid}>{invalid}</FormFeedback>
       )}
       {helpText && <FormText>{helpText}</FormText>}
@@ -92,8 +100,6 @@ const BasicInput = ({
   )
 }
 
-BasicInput.propTypes = inputProps
-
-BasicInput.defaultProps = {}
+BasicInput.propTypes = InputProps
 
 export default memo(BasicInput)

@@ -1,14 +1,12 @@
-import React, { useCallback } from "react"
-import PropTypes from "prop-types"
-import { connect } from "store/provider"
-import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
-import { UseDebounce } from ".."
-import { ClearAlerts } from "reducers//Alerts/actions"
-import "./styles.css"
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { connect as reduxConnect } from 'react-redux'
+import { Toast, ToastHeader, ToastBody, Button } from 'reactstrap'
+import { UseDebounce } from '..'
+import { ClearAlerts } from 'redux/Alerts/actions'
+import './styles.css'
 
-const mapStateToProps = ({
-  Alerts: { title, message, timeout, serviceWorkerRegistration },
-}) => ({
+const mapStateToProps = ({ Alerts: { title, message, timeout, serviceWorkerRegistration } }) => ({
   title,
   message,
   timeout,
@@ -48,7 +46,7 @@ const AlertNotifications = ({
 
   return (
     <Toast
-      className="Alert rounded"
+      className='Alert rounded'
       isOpen={shouldShow}
       appear={true}
       enter={true}
@@ -62,7 +60,7 @@ const AlertNotifications = ({
     >
       <UseDebounce
         debounceOnMount={!appUpdate}
-        onChangeCallback={handleClearAlerts}
+        onChange={handleClearAlerts}
         value={shouldShow}
         delay={timeout}
       />
@@ -71,8 +69,8 @@ const AlertNotifications = ({
         <h6>{message}</h6>
 
         {appUpdate && (
-          <div className="Center">
-            <Button onClick={handleUpdate} color="accent">
+          <div className='Center'>
+            <Button onClick={handleUpdate} color='accent'>
               Update
             </Button>
           </div>
@@ -91,8 +89,8 @@ AlertNotifications.propTypes = {
 }
 
 AlertNotifications.defaultProps = {
-  icon: <i className="fas fa-feather-alt" />,
+  icon: <i className='fas fa-feather-alt' />,
   timeout: 3000,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AlertNotifications)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(AlertNotifications)

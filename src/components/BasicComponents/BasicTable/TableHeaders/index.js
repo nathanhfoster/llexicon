@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, memo } from "react"
-import PropTypes from "prop-types"
-import { connect } from "store/provider"
-import { ColumnsPropType, SortListPropType } from "../state/types"
-import TableHeader from "./TableHeader"
-import { basicTableSort, basicTableFilter } from "../state/actions"
+import BasicTableContext from '../state/context';
+import React, { useCallback, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { ColumnsPropType, SortListPropType } from '../state/types';
+import TableHeader from './TableHeader';
+import { basicTableSort, basicTableFilter } from '../state/actions';
 
 const mapStateToProps = ({
   columns,
@@ -19,9 +20,9 @@ const mapStateToProps = ({
   onFilterCallback,
   sortable,
   filterable,
-})
+});
 
-const mapDispatchToProps = { basicTableSort, basicTableFilter }
+const mapDispatchToProps = { basicTableSort, basicTableFilter };
 
 const TableHeaders = ({
   onSortCallback,
@@ -34,18 +35,18 @@ const TableHeaders = ({
   basicTableFilter,
 }) => {
   const handleFilter = useCallback((filterKey, filterValue) => {
-    basicTableFilter(onFilterCallback, filterKey, filterValue)
-  })
+    basicTableFilter(onFilterCallback, filterKey, filterValue);
+  });
 
   const sortMap = useMemo(
     () =>
       sortList.reduce((map, item) => {
-        const { key, ...restOfItem } = item
-        map[key] = restOfItem
-        return map
+        const { key, ...restOfItem } = item;
+        map[key] = restOfItem;
+        return map;
       }, {}),
-    [sortList]
-  )
+    [sortList],
+  );
 
   const renderColumnHeaders = useMemo(
     () =>
@@ -61,18 +62,18 @@ const TableHeaders = ({
           defaultSortValue,
           defaultFilterValue,
           filterValue,
-        } = column
-        const isSortable = sortable || Boolean(sort)
-        const isFilterable = filterable || Boolean(filter)
-     
-        const { sortUp } = sortMap[key]
+        } = column;
+        const isSortable = sortable || Boolean(sort);
+        const isFilterable = filterable || Boolean(filter);
+
+        const { sortUp } = sortMap[key];
         const sortCallback = () => {
           if (sortUp === false) {
-            basicTableSort(onSortCallback, key, null)
+            basicTableSort(onSortCallback, key, null);
           } else {
-            basicTableSort(onSortCallback, key, !sortUp)
+            basicTableSort(onSortCallback, key, !sortUp);
           }
-        }
+        };
 
         return (
           <TableHeader
@@ -90,17 +91,17 @@ const TableHeaders = ({
             defaultFilterValue={defaultFilterValue}
             filterCallback={handleFilter}
           />
-        )
+        );
       }),
-    [columns, sortList]
-  )
+    [columns, sortList],
+  );
 
   return (
     <thead>
       <tr>{renderColumnHeaders}</tr>
     </thead>
-  )
-}
+  );
+};
 
 TableHeaders.propTypes = {
   onSortCallback: PropTypes.func,
@@ -108,6 +109,8 @@ TableHeaders.propTypes = {
   sortable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
   sortList: SortListPropType,
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(memo(TableHeaders))
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  context: BasicTableContext,
+})(TableHeaders);

@@ -1,18 +1,18 @@
 import React, { useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { EntriesPropTypes } from "reducers//Entries/propTypes"
-import { useDispatch } from "store/provider"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
+import { useDispatch } from "react-redux"
 import {
   BasicTable,
   Header,
   EntryDataCellLink,
   TagsContainer,
   EntriesTable,
-} from "../../../components"
+} from "components"
 import Moment from "react-moment"
 import { Container, Row, Col } from "reactstrap"
 import { stringMatch, stripHtml, formatBytes } from "../../../utils"
-import { GetUserEntriesDetails } from "reducers//Admin/actions"
+import { GetUserEntriesDetails } from "redux/Admin/actions"
 
 const { REACT_APP_API_URL } = process.env
 

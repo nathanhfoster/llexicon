@@ -1,9 +1,9 @@
 {
   "name": "Astral Tree",
   "short_name": "Astral Tree",
-  "description": "Capture the essence of your life with a free online journal and diary.",
+  "description": "Capture the essence of your life with a free online journal and diary app",
   "author": "Nathan Foster",
-  "keywords": ["react", "redux", "journal", "diary", "astral", "tree"],
+  "keywords": ["react", "redux", "journal", "diary", "astral", "tree", "pwa", "free", "django"],
   "icons": [
     {
       "src": "assets/android-chrome-144x144.png",
@@ -19,6 +19,29 @@
       "src": "assets/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create Entry",
+      "short_name": "Create",
+      "description": "Create a new entry",
+      "url": "/new-entry",
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Calendar View",
+      "short_name": "Calendar",
+      "description": "Calendar View",
+      "url": "/entries/calendar",
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Open Settings",
+      "short_name": "Settings",
+      "description": "View your settings",
+      "url": "/settings/entries",
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
     }
   ],
   "background_color": "#29303b",

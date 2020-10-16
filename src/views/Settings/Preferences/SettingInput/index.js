@@ -1,39 +1,27 @@
-import React, { useState, memo } from "react"
-import PropTypes from "prop-types"
-import { FormGroup, Label, Input, Tooltip } from "reactstrap"
+import React, { useState, memo } from 'react'
+import PropTypes from 'prop-types'
+import { FormGroup, Label, Input, Tooltip } from 'reactstrap'
 
-const SettingInput = ({
-  settingKey,
-  disabled,
-  onClickCallback,
-  title,
-  tooltipTitle,
-  checked,
-}) => {
+const SettingInput = ({ settingKey, disabled, onClick, title, tooltipTitle, checked }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleTooltip = () => setIsOpen(!isOpen)
 
-  const onClick = () => onClickCallback(settingKey)
+  const handleOnClick = () => onClick(settingKey)
 
   return (
     <FormGroup check>
-      <Label check inline={"true"}>
+      <Label check inline={'true'}>
         <Input
           readOnly
           name={settingKey}
-          type="radio"
+          type='radio'
           disabled={disabled}
           checked={checked}
-          onClick={onClick}
+          onClick={handleOnClick}
         />
         <span id={settingKey}>{title}</span>
-        <Tooltip
-          placement="right"
-          isOpen={isOpen}
-          target={settingKey}
-          toggle={toggleTooltip}
-        >
+        <Tooltip placement='right' isOpen={isOpen} target={settingKey} toggle={toggleTooltip}>
           {tooltipTitle}
         </Tooltip>
       </Label>
@@ -45,7 +33,7 @@ SettingInput.propTypes = {
   settingKey: PropTypes.string,
   disabled: PropTypes.bool,
   checked: PropTypes.bool,
-  onClickCallback: PropTypes.func,
+  onClick: PropTypes.func,
   title: PropTypes.string,
   tooltipTitle: PropTypes.string,
 }

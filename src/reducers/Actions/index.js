@@ -1,26 +1,26 @@
-import axios from "axios"
-import { getUser } from "../localState"
+import axios from 'axios'
+import { getUser } from '../localState'
 
 const { REACT_APP_API_URL } = process.env
 
 const base = {
-  Accept: "application/json",
+  Accept: 'application/json',
 }
 
 const baseHeaders = {
   ...base,
-  "Cache-Control": "no-cache",
-  "Content-Type": "application/x-www-form-urlencoded",
+  'Cache-Control': 'no-cache',
+  'Content-Type': 'application/x-www-form-urlencoded',
 }
 
-const baseFormHeaders = (payload) => ({
+const baseFormHeaders = payload => ({
   ...base,
-  "Accept-Language": "en-US,en;q=0.8",
-  "Content-Type": `multipart/form-data; boundary=${payload._boundary}`,
+  'Accept-Language': 'en-US,en;q=0.8',
+  'Content-Type': `multipart/form-data; boundary=${payload._boundary}`,
 })
 
 const isNotLoggedInAxios = () => {
-  return axios.create({ baseURL: "https://offline_mode" })
+  return axios.create({ baseURL: 'https://offline_mode' })
 }
 
 /*
@@ -44,8 +44,8 @@ Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/R
 }
 */
 
-const Axios = (props) => {
-  const { authToken, responseType = "json" } = props ? props : {}
+const Axios = props => {
+  const { authToken, responseType = 'json' } = props ? props : {}
   const {
     token: userToken,
     Settings: { offline_mode },
@@ -67,7 +67,7 @@ const Axios = (props) => {
   })
 }
 
-const AxiosOffline = (responseType = "json") => {
+const AxiosOffline = (responseType = 'json') => {
   const { token } = getUser()
 
   return axios.create({
@@ -85,7 +85,7 @@ const AxiosOffline = (responseType = "json") => {
   })
 }
 
-const AxiosForm = (props) => {
+const AxiosForm = props => {
   const { authToken, payload } = props ? props : {}
   const { token: userToken } = getUser()
   const token = authToken || userToken
@@ -120,18 +120,14 @@ const AxiosData = (token, payload) => {
 
 // dispatchActions is an array of actions that will be
 // recursively called using .then promise since an action that => or returns Axios() is a promise.
-const Sync = (dispatchActions) => async (dispatch) => {
-  // console.log("Sync: ", dispatchActions)
+const Sync = dispatchActions => async dispatch => {
   if (!Array.isArray(dispatchActions)) return await dispatch(dispatchActions)
   if (dispatchActions.length === 0) return
   const [firstAction, ...restOfActions] = dispatchActions
 
-  // console.log("firstAction: ", firstAction)
-  // console.log("restOfActions: ", restOfActions)
-
   await dispatch(firstAction)
     .then(async () => await dispatch(Sync(restOfActions)))
-    .catch((e) => {
+    .catch(e => {
       console.log(JSON.parse(JSON.stringify(e)))
       return
     })

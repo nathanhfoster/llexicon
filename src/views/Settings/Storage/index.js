@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { connect } from "store/provider"
 import { Container, Row, Col } from "reactstrap"
-import { LocalStorage } from "../../../components"
+import { LocalStorage } from "components"
 
 const mapStateToProps = ({}) => ({})
 

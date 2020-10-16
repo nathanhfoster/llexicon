@@ -1,18 +1,14 @@
-import React, { useRef, useEffect } from "react"
-import PropTypes from "prop-types"
-import { connect } from "store/provider"
-import Marker from "../Marker"
-import { WatchUserLocation } from "reducers//User/actions"
+import React, { useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import { connect as reduxConnect } from 'react-redux'
+import Marker from '../Marker'
+import { WatchUserLocation } from 'redux/User/actions'
 
 const mapStateToProps = ({ User: { location } }) => ({ userLocation: location })
 
 const mapDispatchToProps = { WatchUserLocation }
 
-const UserLocationMarker = ({
-  userLocation,
-  onChangeCallback,
-  WatchUserLocation,
-}) => {
+const UserLocationMarker = ({ userLocation, onChange, WatchUserLocation }) => {
   const watchId = useRef(null)
 
   useEffect(() => {
@@ -21,18 +17,18 @@ const UserLocationMarker = ({
   }, [])
   return (
     <Marker
-      key="MyLocation"
+      key='MyLocation'
       lat={userLocation.latitude}
       lng={userLocation.longitude}
-      onChangeCallback={onChangeCallback}
+      onChange={onChange}
     />
   )
 }
 
 UserLocationMarker.propTypes = {
   UserLocation: PropTypes.object,
-  onChangeCallback: PropTypes.func,
+  onChange: PropTypes.func,
   WatchUserLocation: PropTypes.func,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserLocationMarker)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(UserLocationMarker)

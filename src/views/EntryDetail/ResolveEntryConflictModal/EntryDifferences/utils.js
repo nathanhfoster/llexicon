@@ -2,7 +2,7 @@ import React from "react"
 import Moment from "react-moment"
 import { CloudDownload } from "../../../../images/SVG"
 import { formatBytes } from "../../../../utils"
-import { getJsonTagsOrPeople } from "reducers//Entries/utils"
+import { getJsonTagsOrPeople } from "redux/Entries/utils"
 
 const ORDER_PROPS = [
   "title",

@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useRef, useCallback } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "reducers//Entries/propTypes"
-import { connect } from "store/provider"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import { connect as reduxConnect } from "react-redux"
 import EntryDifferences from "./EntryDifferences"
 import { Container, Row, Col } from "reactstrap"
-import { BasicModal, EntryCard } from "../../../components"
+import { BasicModal, EntryCard } from "components"
 import {
-  SetEntryRedux,
   UpdateReduxEntry,
   SyncEntries,
   ClearEntry,
-} from "reducers//Entries/actions"
+} from "redux/Entries/actions"
 import { findDifferentProps } from "./utils"
 import "./styles.css"
 
@@ -20,7 +19,6 @@ const mapStateToProps = ({ Entries: { isPending, item } }) => ({
 })
 
 const mapDispatchToProps = {
-  SetEntryRedux,
   UpdateReduxEntry,
   SyncEntries,
   ClearEntry,
@@ -30,7 +28,6 @@ const ResolveEntryConflictModal = ({
   fetchingEntryFromServer,
   entryFromServer,
   entry,
-  SetEntryRedux,
   UpdateReduxEntry,
   SyncEntries,
   ClearEntry,
@@ -91,9 +88,7 @@ const ResolveEntryConflictModal = ({
 
   const handleSave = useCallback(async () => {
     setHasResolved(true)
-    const updateDate = new Date()
-    entryToUpdate.id && SetEntryRedux(entryToUpdate, updateDate)
-    await UpdateReduxEntry(entryToUpdate.id, entryToUpdate, updateDate)
+    await UpdateReduxEntry(entryToUpdate.id, entryToUpdate)
     await SyncEntries()
   }, [entryToUpdate])
 
@@ -120,7 +115,7 @@ const ResolveEntryConflictModal = ({
             >
               <EntryCard
                 {...entry}
-                onClickCallback={handleLocalEntryCardClick}
+                onClick={handleLocalEntryCardClick}
                 selected={localEntryCardSelected}
                 cardHeaderClassName="ResolveEntryConflictCardHeader"
                 reduceHtml={false}
@@ -140,7 +135,7 @@ const ResolveEntryConflictModal = ({
             >
               <EntryCard
                 {...entryFromServer}
-                onClickCallback={handleEntryFromServerCardClick}
+                onClick={handleEntryFromServerCardClick}
                 selected={entryFromServerCardSelected}
                 cardHeaderClassName="ResolveEntryConflictCardHeader"
                 reduceHtml={false}
@@ -157,7 +152,7 @@ ResolveEntryConflictModal.propTypes = {
   fetchingEntryFromServer: PropTypes.bool.isRequired,
   entryFromServer: EntryPropTypes,
   entry: EntryPropTypes,
-  SetEntryRedux: PropTypes.func.isRequired,
+  SetEntry: PropTypes.func.isRequired,
   UpdateReduxEntry: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   ClearEntry: PropTypes.func.isRequired,

@@ -21,10 +21,8 @@ const filterList = (orginalList, searchValue, initiallyRenderList) => {
 }
 
 const getSearchValue = (orginalList, value) => {
-  // console.log('getSearchValue: ', list, value)
   if (orginalList.length === 0 || !value) return ""
   const foundListItem = orginalList.find((item) => item.id === value)
-  // console.log('foundListItem: ', foundListItem)
   if (!foundListItem) return ""
   return foundListItem.value
 }

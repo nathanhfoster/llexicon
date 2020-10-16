@@ -1,7 +1,7 @@
 import React, { useEffect, lazy } from "react"
 import { connect } from "store/provider"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "reducers//Entries/propTypes"
+import { EntryPropTypes } from "redux/Entries/propTypes"
 import { ReactDatePicker } from "../../components"
 import {
   Container,
@@ -14,15 +14,15 @@ import {
   InputGroupText,
   Button,
 } from "reactstrap"
-import { SetCalendar } from "reducers//Calendar/actions"
-import { PostReduxEntry, SyncEntries } from "reducers//Entries/actions"
+import { SetCalendar } from "redux/Calendar/actions"
+import { PostReduxEntry, SyncEntries } from "redux/Entries/actions"
 
-import { SetEditorState, ClearEditorState } from "reducers//TextEditor/actions"
+import { SetEditorState, ClearEditorState } from "redux/TextEditor/actions"
 
-import { DEFAULT_STATE_TEXT_EDITOR } from "reducers//TextEditor/reducer"
+import { DEFAULT_STATE_TEXT_EDITOR } from "redux/TextEditor/reducer"
 import { getStringBytes } from "../../utils"
 import "./styles.css"
-import { ResetMap } from "reducers//Map/actions"
+import { ResetMap } from "redux/Map/actions"
 
 const Editor = lazy(() => import("../../components/Editor"))
 
@@ -128,7 +128,7 @@ const NewEntry = ({
       </Row>
       <Row className="EditorContainer">
         <Col xs={12} className="p-0">
-          <Editor entry={entry} onChangeCallback={handleTextEditorChange} />
+          <Editor entry={entry} onChange={handleTextEditorChange} />
         </Col>
       </Row>
     </Container>

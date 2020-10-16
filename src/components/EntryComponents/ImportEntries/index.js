@@ -1,56 +1,42 @@
-import React, { memo } from "react"
-import { useDispatch } from "store/provider"
-import PropTypes from "prop-types"
-import FileUpload from "../../FileUpload"
-import { ImportReduxEntry } from "reducers//Entries/actions"
+import React, { useCallback, memo } from 'react'
+import { useDispatch } from 'react-redux'
+import PropTypes from 'prop-types'
+import { loadJSON } from 'utils'
+import FileUpload from '../../FileUpload'
+import { SetEntries, SyncEntries } from 'redux/Entries/actions'
+import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/reducer'
+
+const getTagsOrPeople = string =>
+  string.split(',').reduce((acc, name) => {
+    if (name) {
+      acc.push({ name })
+    }
+    return acc
+  }, [])
 
 const ImportEntries = () => {
   const dispatch = useDispatch()
 
-  const importEntries = (e) => {
-    const files = e.currentTarget.files
-    Object.keys(files).forEach((i) => {
-      const file = files[i]
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const { result } = reader
-        //server call for uploading or reading the files one-by-one
-        //by using 'reader.result' or 'file'
-
-        // console.log("result: ", result)
-        // console.log("-------------------------------------------")
-        const [empty, dateCreated, ...restOfString] = result.split(
-          /ï»¿(.*,*,*)/
-        )
-        const date_created_by_author = new Date(dateCreated)
-
-        const nextSplit = restOfString[0].split(/[\r\n]+/g)
-        const [emptyString, title, ...html] = nextSplit
-
-        const payload = {
-          id: `entryImport-${i}`,
-          title,
-          html: html.join(""),
-          date_created: date_created_by_author,
-          date_created_by_author,
-          date_updated: date_created_by_author,
-          EntryFiles: [],
-          tags: [],
-          people: [],
-          views: 0,
-          rating: 0,
-          latitude: null,
-          longitude: null,
-          is_public: false,
-          _shouldPost: true,
+  const importEntries = useCallback(({ target: { files: { 0: file }, value } }) => {
+    loadJSON(file).then(async json => {
+      const payload = json.map(entry => {
+        let newEntry = {
+          ...entry,
+          tags: getTagsOrPeople(entry.tags),
+          people: getTagsOrPeople(entry.people),
+          EntryFiles: entry.EntryFiles || [],
         }
-        dispatch(ImportReduxEntry(payload))
-      }
-      reader.readAsBinaryString(file)
+        if (entry.id.toString().includes(BASE_JOURNAL_ENTRY_ID)) {
+          return { ...newEntry, _shouldPost: true }
+        }
+        return newEntry
+      })
+      await dispatch(SetEntries(payload))
+      await dispatch(SyncEntries())
     })
-  }
+  }, [])
 
-  return <FileUpload onChangeCallback={importEntries} />
+  return <FileUpload onChange={importEntries} />
 }
 
 export default memo(ImportEntries)

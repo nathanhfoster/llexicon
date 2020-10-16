@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { UserProps } from "reducers//User/propTypes"
-import { connect } from "store/provider"
+import { UserProps } from "redux/User/propTypes"
+import { connect as reduxConnect } from "react-redux"
 import { Form, FormGroup } from "reactstrap"
 import SettingInput from "./SettingInput"
 
@@ -9,7 +9,7 @@ import {
   GetUserSettings,
   PostSettings,
   UpdateSettings,
-} from "reducers//User/actions"
+} from "redux/User/actions"
 
 const mapStateToProps = ({ User }) => ({
   User,
@@ -69,14 +69,14 @@ const Preferences = ({
         {
           settingKey: "show_animated_background",
           checked: show_animated_background,
-          onClickCallback: handleOnClick,
+          onClick: handleOnClick,
           title: "Show animated background",
           tooltipTitle: "Toggles showing the the animated background",
         },
         {
           settingKey: "dark_mode",
           checked: dark_mode,
-          onClickCallback: handleOnClick,
+          onClick: handleOnClick,
           title: "Dark Mode",
           tooltipTitle: "Toggles dark mode",
         },
@@ -92,14 +92,14 @@ const Preferences = ({
         {
           settingKey: "offline_mode",
           checked: offline_mode,
-          onClickCallback: handleOnClick,
+          onClick: handleOnClick,
           title: "Offline mode",
           tooltipTitle: "Disconnect from the stars",
         },
         {
           settingKey: "push_messages",
           checked: push_messages,
-          onClickCallback: handleOnClick,
+          onClick: handleOnClick,
           title: "Push Messages",
           tooltipTitle: "Toggles frequent fetches of messages",
         },

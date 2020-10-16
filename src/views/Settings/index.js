@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react"
 import PropTypes from "prop-types"
-import { useLocation } from "react-router-dom"
-import { UserProps } from "reducers//User/propTypes"
+import { connect as reduxConnect } from "react-redux"
+import { UserProps } from "redux/User/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { BasicTabs, Header, PushNotifications } from "../../components"
 import EntryStatistics from "./EntryStatistics"
@@ -10,7 +10,7 @@ import AccountDetails from "./AccountDetails"
 import UpdateProfile from "./UpdateProfile"
 import Storage from "./Storage"
 import Preferences from "./Preferences"
-import { RouterPush, RouteMap } from "reducers//router/actions"
+import { RouterPush, RouteMap } from "redux/router/actions"
 import "./styles.css"
 
 const {
@@ -41,7 +41,7 @@ const Settings = ({}) => {
           <EntryStatistics />
         </Fragment>
       ),
-      onClickCallback: handleTabChange,
+      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PROFILE,
@@ -53,28 +53,28 @@ const Settings = ({}) => {
           <UpdateProfile />
         </Fragment>
       ),
-      onClickCallback: handleTabChange,
+      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PREFERENCES,
       title: "Preferences",
       className: "mt-2",
       render: <Preferences />,
-      onClickCallback: handleTabChange,
+      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PUSH_NOTIFICATIONS,
       title: "Push Notifications",
       className: "mt-2",
       render: <PushNotifications />,
-      onClickCallback: handleTabChange,
+      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_STORAGE,
       title: "Storage",
       className: "mt-2",
       render: <Storage />,
-      onClickCallback: handleTabChange,
+      onClick: handleTabChange,
     },
   ]
   return (

@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { UserProps } from "reducers//User/propTypes"
-import { connect } from "store/provider"
-import { BasicForm, ConfirmAction, ButtonClearCache } from "../../../components"
+import { UserProps } from "redux/User/propTypes"
+import { connect as reduxConnect } from "react-redux"
+import { BasicForm, ConfirmAction, ButtonClearCache } from "components"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
-import { UpdateUser, DeleteAccount } from "reducers//User/actions"
+import { UpdateUser, DeleteAccount } from "redux/User/actions"
 import { cleanObject } from "../../../utils"
-import { RouteMap, RouterPush } from "reducers//router/actions"
+import { RouteMap, RouterPush } from "redux/router/actions"
 
 const mapStateToProps = ({ User }) => ({
   User,

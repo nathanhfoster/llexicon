@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
-import { useLocation } from "react-router-dom"
-import { RouteMap, RouterGoBack } from "reducers//router/actions"
-import { SetApiResponseStatus } from "reducers//Alerts/actions"
+import { connect as reduxConnect } from "react-redux"
+import { RouteMap, RouterGoBack } from "redux/router/actions"
+import { SetApiResponseStatus } from "redux/Alerts/actions"
 import { stringMatch } from "../../../utils"
 import "./styles.css"
 

@@ -1,10 +1,13 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
-import { EntryTagsProps, EntryPeopleProps } from "reducers//Entries/propTypes"
+import {
+  EntryTagsProps,
+  EntryPeopleProps,
+} from "redux/Entries/propTypes"
 import { Container, Row, Col } from "reactstrap"
 import { RatingIcon, TagsContainer } from "../../.."
 import Moment from "react-moment"
-import { formatBytes } from "../../../../utils"
+import { formatBytes } from "utils"
 
 import "./styles.css"
 

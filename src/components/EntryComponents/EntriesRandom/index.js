@@ -1,13 +1,13 @@
-import React, { useMemo, useState, Fragment } from "react"
-import { EntriesPropTypes } from "reducers//Entries/propTypes"
-import { connect } from "store/provider"
-import { EntryCards, Header } from "../.."
-import { ButtonGroup, Button } from "reactstrap"
-import "./styles.css"
+import React, { useMemo, useState, Fragment } from 'react'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import { connect as reduxConnect } from 'react-redux'
+import { EntryCards, Header } from '../..'
+import { ButtonGroup, Button } from 'reactstrap'
+import './styles.css'
 
-const mapStateToProps = ({
-  Entries: { items, filteredItems, showOnlyPublic },
-}) => ({
+const NUMBER_OF_MOST_VIEWED_ENTRIES = 8
+
+const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) => ({
   items,
   filteredItems,
   showOnlyPublic,
@@ -20,32 +20,36 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
     () =>
       items
         .concat(filteredItems)
-        .filter(({ _shouldDelete, is_public }) =>
-          showOnlyPublic ? is_public : !_shouldDelete
-        ),
-    [items, filteredItems, shouldRerender, showOnlyPublic]
+        .filter(({ _shouldDelete, is_public }) => (showOnlyPublic ? is_public : !_shouldDelete))
+        .slice(0, NUMBER_OF_MOST_VIEWED_ENTRIES),
+    [items, filteredItems, shouldRerender, showOnlyPublic],
   )
 
-  let randomEntries = []
+  const randomEntries = useMemo(() => {
+    const uniqueEntryIndices = [...viewableEntries]
+    const numberOfRandomEntries =
+      uniqueEntryIndices.length > NUMBER_OF_MOST_VIEWED_ENTRIES
+        ? NUMBER_OF_MOST_VIEWED_ENTRIES
+        : uniqueEntryIndices.length
 
-  const numberOfRandomEntries =
-    viewableEntries.length < 4 ? viewableEntries.length : 6
+    let entries = []
 
-  let uniqueEntryIndices = [...viewableEntries]
+    for (let i = 0; i < numberOfRandomEntries; i++) {
+      const entry = uniqueEntryIndices.popRandomValue()
 
-  for (let i = 0; i < numberOfRandomEntries; i++) {
-    const entry = uniqueEntryIndices.popRandomValue()
+      entries.push(entry)
+    }
 
-    randomEntries.push(entry)
-  }
+    return entries
+  }, [viewableEntries])
 
   return (
     <Fragment>
-      <Header fill="var(--quinaryColor)" display="inline-block">
+      <Header fill='var(--quinaryColor)' display='inline-block'>
         Random Entries
-        <ButtonGroup className="EntriesRandomRefreshButtonContainer">
-          <Button color="accent" onClick={handleRefresh}>
-            <i className="fas fa-sync-alt" />
+        <ButtonGroup className='EntriesRandomRefreshButtonContainer'>
+          <Button color='accent' onClick={handleRefresh}>
+            <i className='fas fa-sync-alt' />
           </Button>
         </ButtonGroup>
       </Header>

@@ -1,6 +1,6 @@
-import React, { useMemo, memo, lazy } from "react"
+import React, { memo, lazy } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "reducers//Entries/propTypes"
+import { EntryPropTypes } from "redux/Entries/propTypes"
 import { Collapse, Container, Row, Col, Button } from "reactstrap"
 import { TagsContainer } from "../../"
 import EntryFilesCarousel from "../../EntryComponents/EntryFilesCarousel"
@@ -23,80 +23,16 @@ const PeopleButtonModal = lazy(() =>
   import("./ToolbarButtonModals/PeopleButtonModal")
 )
 
-const renderButtonColumns = (columns) =>
-  columns.map((ButtonModal, i) => {
-    const { Component, props } = ButtonModal
-    return <Component key={i} xs={12 / columns.length} {...props} />
-  })
-
 const BottomToolbar = ({
-  readOnly,
   entry,
-  editorRef,
+  handleInsertEmbeded,
   isOpen,
   canToggleToolbars,
   toggleBottomToolbar,
-  onChangeCallback,
+  handleEditorChange,
   xs,
 }) => {
   // editorRef.current.focus()
-  const editorSelection =
-    editorRef && editorRef.current
-      ? editorRef.current.getEditorSelection()
-      : null
-  const buttons = useMemo(
-    () => [
-      [
-        {
-          Component: MediaButtonModal,
-          props: { editorRef, editorSelection },
-        },
-        {
-          Component: RatingButtonModal,
-          props: { rating: entry.rating, onChangeCallback, xs },
-        },
-      ],
-      [
-        {
-          Component: TagsButtonModal,
-          props: {
-            entryId: entry.id,
-            tags: entry.tags,
-            html: entry.html,
-            title: entry.title,
-            onChangeCallback,
-            xs,
-          },
-        },
-        {
-          Component: PeopleButtonModal,
-          props: {
-            entryId: entry.id,
-            people: entry.people,
-            html: entry.html,
-            title: entry.title,
-            onChangeCallback,
-            xs,
-          },
-        },
-        {
-          Component: LocationButtonModal,
-          props: { entry, onChangeCallback, xs },
-        },
-      ],
-    ],
-    [entry, editorRef, editorSelection]
-  )
-
-  const renderButtonRows = useMemo(
-    () =>
-      buttons.map((columns, i) => (
-        <Row key={i} className="BottomToolButtonRow">
-          {renderButtonColumns(columns)}
-        </Row>
-      )),
-    [buttons]
-  )
 
   const handlers = useSwipeable({
     onSwipedUp: () => toggleBottomToolbar(true),
@@ -141,15 +77,46 @@ const BottomToolbar = ({
           <Row className="BottomToolBarFiles">
             <Col xs={12} className="p-1">
               <EntryFilesCarousel
-                html={entry.html}
                 files={entry.EntryFiles}
-                onChangeCallback={onChangeCallback}
-                editorRef={editorRef}
-                editorSelection={editorSelection}
+                onChange={handleEditorChange}
+                handleInsertEmbeded={handleInsertEmbeded}
               />
             </Col>
           </Row>
-          {renderButtonRows}
+          <Row className="BottomToolButtonRow">
+            <MediaButtonModal
+              xs={6}
+              handleInsertEmbeded={handleInsertEmbeded}
+            />
+            <RatingButtonModal
+              xs={6}
+              rating={entry.rating}
+              onChange={handleEditorChange}
+            />
+          </Row>
+          <Row className="BottomToolButtonRow">
+            <TagsButtonModal
+              xs={4}
+              entryId={entry.id}
+              tags={entry.tags}
+              html={entry.html}
+              title={entry.title}
+              onChange={handleEditorChange}
+            />
+            <PeopleButtonModal
+              xs={4}
+              entryId={entry.id}
+              people={entry.people}
+              html={entry.html}
+              title={entry.title}
+              onChange={handleEditorChange}
+            />
+            <LocationButtonModal
+              xs={4}
+              entry={entry}
+              onChange={handleEditorChange}
+            />
+          </Row>
         </Container>
       </Collapse>
     </div>
@@ -157,12 +124,10 @@ const BottomToolbar = ({
 }
 
 BottomToolbar.propTypes = {
-  readOnly: PropTypes.bool,
-  editorRef: PropTypes.object,
   entry: EntryPropTypes.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleBottomToolbar: PropTypes.func.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  handleEditorChange: PropTypes.func.isRequired,
 }
 
 export default memo(BottomToolbar)

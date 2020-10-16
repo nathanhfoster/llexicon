@@ -1,7 +1,9 @@
 import React, { Fragment, memo } from "react"
-import { EntryPropTypes } from "reducers//Entries/propTypes"
+import { EntryPropTypes } from "redux/Entries/propTypes"
 import { Badge, Container, Row, Col } from "reactstrap"
-import { GoToEntryDetail, GetEntryDetailUrl } from "reducers//router/actions"
+import {
+  GoToEntryDetail,
+} from "redux/router/actions"
 import Moment from "react-moment"
 import Star from "../../BackgroundImage/Star"
 import { TagsContainer, EntryDataCellLink, EntryOptionsMenu } from "../../"
@@ -30,8 +32,6 @@ const EntryMinimal = ({
   const showFileIcon = EntryFiles.length > 0
   const showLocationIcon = latitude && longitude
 
-  const href = GetEntryDetailUrl(id)
-
   const handleContainerClick = () => GoToEntryDetail(id)
 
   return (
@@ -45,7 +45,7 @@ const EntryMinimal = ({
       <Row>
         <Col xs={12} className="EntryMinimalDetail Overflow mb-1">
           <Star size={14} animation={false} opacity={1} />
-          <EntryDataCellLink className="ml-1" href={href}>
+          <EntryDataCellLink className="ml-1" entryId={id}>
             {title}
           </EntryDataCellLink>
           <div

@@ -1,9 +1,9 @@
 import React, { memo } from "react"
-import { EntryPropTypes } from "reducers//Entries/propTypes"
-import { BasicTable } from "../../../../components"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import { BasicTable } from "components"
 import { Container, Row, Col } from "reactstrap"
 import { CloudDownload } from "../../../../images/SVG"
-import { differenceBetweenStrings } from "../../../../utils"
+import { differenceBetweenStrings } from "utils"
 import { findDifferentProps } from "../utils"
 import {
   getEntryPropSortOrder,
@@ -39,8 +39,6 @@ const EntryDifferences = ({ entry1, entry2 }) => {
     //     render: (entry) => nextString,
     //   }
     // )
-
-    // console.log(tableColumns)
 
     return (
       <Row>

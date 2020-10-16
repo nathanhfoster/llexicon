@@ -1,11 +1,12 @@
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types';
 
 const BasicTableActionTypes = {
-  BASIC_TABLE_SORT: "BASIC_TABLE_SORT",
-  BASIC_TABLE_FILTER: "BASIC_TABLE_FILTER",
-  BASIC_TABLE_SET_PAGE: "BASIC_TABLE_SET_PAGE",
-  BASIC_TABLE_SET_PAGE_SIZE: "BASIC_TABLE_SET_PAGE_SIZE",
-}
+  BASIC_TABLE_SORT: 'BASIC_TABLE_SORT',
+  BASIC_TABLE_FILTER: 'BASIC_TABLE_FILTER',
+  BASIC_TABLE_SET_PAGE: 'BASIC_TABLE_SET_PAGE',
+  BASIC_TABLE_SET_PAGE_SIZE: 'BASIC_TABLE_SET_PAGE_SIZE',
+  BASIC_TABLE_SET_DATA: 'BASIC_TABLE_SET_DATA',
+};
 
 const ColumnPropType = PropTypes.shape({
   title: PropTypes.oneOfType([
@@ -18,26 +19,26 @@ const ColumnPropType = PropTypes.shape({
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   render: PropTypes.func,
   footer: PropTypes.func,
-  sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["string"])]),
+  sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(['string'])]),
   defaultSortValue: PropTypes.bool,
   filter: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.oneOf(["string", "number", "date"]),
+    PropTypes.oneOf(['string', 'number', 'date']),
   ]),
   defaultFilterValue: PropTypes.string,
   filterPlaceholder: PropTypes.string,
-})
+});
 
-const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
+const ColumnsPropType = PropTypes.arrayOf(ColumnPropType);
 
-const DataPropType = PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+const DataPropType = PropTypes.arrayOf(PropTypes.object.isRequired).isRequired;
 
 const SortListPropType = PropTypes.arrayOf(
   PropTypes.shape({
     key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     sortUp: PropTypes.oneOf([false, true, null]),
-  })
-)
+  }),
+);
 
 export {
   BasicTableActionTypes,
@@ -45,4 +46,4 @@ export {
   ColumnsPropType,
   DataPropType,
   SortListPropType,
-}
+};

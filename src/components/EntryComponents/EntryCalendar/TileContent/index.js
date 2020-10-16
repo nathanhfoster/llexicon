@@ -1,32 +1,32 @@
-import React, { useMemo, Fragment } from "react"
-import PropTypes from "prop-types"
-import { connect } from "store/provider"
-import { RouteMap, RouterPush } from "reducers//router/actions"
-import { GetUserEntriesByDate } from "reducers//Entries/actions"
-import EntryPreview from "./EntryPreview"
-import MomentJS from "moment"
-import "./styles.css"
+import React, { useMemo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { connect as reduxConnect } from 'react-redux'
+import { RouteMap, RouterPush } from 'redux/router/actions'
+import { GetUserEntriesByDate } from 'redux/Entries/actions'
+import EntryPreview from './EntryPreview'
+import MomentJS from 'moment'
+import './styles.css'
 
 const mapStateToProps = (
   { Window: { isMobile } },
-  { date, view, staticContext, activeDate, entriesWithinView }
+  { date, view, staticContext, activeDate, entriesWithinView },
 ) => {
   const calendarDate = MomentJS(date)
   const currentDate = MomentJS(activeDate)
 
-  const sameMonth = calendarDate.isSame(currentDate, "month")
+  const sameMonth = calendarDate.isSame(currentDate, 'month')
 
-  const shouldRenderEntryPreview = view === "month" && sameMonth
+  const shouldRenderEntryPreview = view === 'month' && sameMonth
 
   const shouldRenderPlusButton = !shouldRenderEntryPreview
     ? false
-    : calendarDate.isSame(currentDate, "day")
+    : calendarDate.isSame(currentDate, 'day')
 
-  const entries = entriesWithinView.filter((entry) => {
+  const entries = entriesWithinView.filter(entry => {
     const { date_created_by_author, _shouldDelete } = entry
 
     const entryDate = MomentJS(date_created_by_author)
-    const eventFound = entryDate.isSame(calendarDate, "day")
+    const eventFound = entryDate.isSame(calendarDate, 'day')
 
     return !_shouldDelete && eventFound
   })
@@ -51,12 +51,11 @@ const TileContent = ({
   staticContext,
   view,
 }) => {
-  const handleTodayClick = () =>
-    setTimeout(() => RouterPush(RouteMap.NEW_ENTRY), 10)
+  const handleTodayClick = () => setTimeout(() => RouterPush(RouteMap.NEW_ENTRY), 10)
 
   const renderEntryPreviews = useMemo(
     () =>
-      entries.map((entry) => (
+      entries.map(entry => (
         <EntryPreview
           key={entry.id}
           id={entry.id}
@@ -66,22 +65,20 @@ const TileContent = ({
           view={view}
         />
       )),
-    [entries]
+    [entries],
   )
-
-  // console.log("TileContent: ")
 
   return (
     <Fragment>
       {shouldRenderPlusButton && (
         <i
-          className="fas fa-feather-alt TileContentFeather"
-          title="Create Entry"
+          className='fas fa-feather-alt TileContentFeather'
+          title='Create Entry'
           onClick={handleTodayClick}
         />
       )}
       {shouldRenderEntryPreview && (
-        <div className="TileContentContainer">{renderEntryPreviews}</div>
+        <div className='TileContentContainer'>{renderEntryPreviews}</div>
       )}
     </Fragment>
   )

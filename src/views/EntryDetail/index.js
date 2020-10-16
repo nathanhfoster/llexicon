@@ -1,15 +1,18 @@
 import React, { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
-import { EntryPropTypes } from "reducers//Entries/propTypes"
-import { connect } from "store/provider"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Entry } from "../../components"
 import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
-
-import { GetUserEntryDetails, SyncEntries } from "reducers//Entries/actions"
-import { SetCalendar } from "reducers//Calendar/actions"
+import {
+  GetUserEntryDetails,
+  ClearEntry,
+  SyncEntries,
+} from "redux/Entries/actions"
+import { SetCalendar } from "redux/Calendar/actions"
 import PageNotFound from "../PageNotFound"
-import { BASE_JOURNAL_ENTRY_ID } from "reducers//Entries/reducer"
+import { getReduxEntryId } from "redux/Entries/utils"
 import "./styles.css"
 
 const mapStateToProps = (
@@ -28,7 +31,12 @@ const mapStateToProps = (
   isPending,
 })
 
-const mapDispatchToProps = { GetUserEntryDetails, SyncEntries, SetCalendar }
+const mapDispatchToProps = {
+  GetUserEntryDetails,
+  ClearEntry,
+  SyncEntries,
+  SetCalendar,
+}
 
 const EntryDetail = ({
   entryId,
@@ -37,26 +45,32 @@ const EntryDetail = ({
   serviceWorkerController,
   isPending,
   GetUserEntryDetails,
+  ClearEntry,
   SyncEntries,
   SetCalendar,
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
+  // const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
   const entryFound = Boolean(entry)
 
   const entryAuthor = entry ? entry.author : null
 
   const readOnly = Boolean(
-    (!isPending && entryAuthor && !userId) || userId !== entryAuthor
+    (!isPending && entryAuthor && !userId) ||
+      (entryAuthor && userId !== entryAuthor)
   )
 
   useEffect(() => {
-    if (!entryIsLocalOnly) {
-      SyncEntries(
-        () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
-      )
+    // if (!entryIsLocalOnly) {
+    SyncEntries(
+      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
+    )
+    // }
+
+    return () => {
+      ClearEntry()
     }
   }, [])
 
@@ -86,9 +100,7 @@ const EntryDetail = ({
       </Row>
     </Container>
   ) : (
-    <PageNotFound
-      title={"Entry Not Found. It is either deleted or no longer public."}
-    />
+    <PageNotFound />
   )
 }
 
@@ -98,6 +110,7 @@ EntryDetail.propTypes = {
   entry: EntryPropTypes,
   isPending: PropTypes.bool.isRequired,
   GetUserEntryDetails: PropTypes.func.isRequired,
+  ClearEntry: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
 }

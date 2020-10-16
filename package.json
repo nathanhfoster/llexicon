@@ -20,6 +20,7 @@
     "react-facebook-login": "^4.1.1",
     "react-ga": "^2.7.0",
     "react-google-login": "^5.1.10",
+    "react-helmet": "^6.1.0",
     "react-image-lightbox": "^5.1.1",
     "react-moment": "^0.9.7",
     "react-quill": "^2.0.0-beta.2",

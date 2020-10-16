@@ -1,14 +1,9 @@
-import React, { PureComponent, createRef, Fragment } from "react"
-import PropTypes from "prop-types"
-import { BasicList, UseDebounce } from "../"
-import {
-  getSearchValue,
-  filterList,
-  getTextWidth,
-  mergeLists,
-} from "./functions"
-import { Input, Label } from "reactstrap"
-import "./styles.css"
+import React, { PureComponent, createRef, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { BasicList, UseDebounce } from '../'
+import { getSearchValue, filterList, getTextWidth, mergeLists } from './functions'
+import { Input, Label } from 'reactstrap'
+import './styles.css'
 
 const TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK = 200
 
@@ -16,15 +11,7 @@ class SearchList extends PureComponent {
   constructor(props) {
     super(props)
     this.searchListRef = createRef()
-    const {
-      initiallyRenderList,
-      list,
-      defaultValue,
-      value,
-      height,
-      width,
-      showList,
-    } = props
+    const { initiallyRenderList, list, defaultValue, value, height, width, showList } = props
 
     const searchValue = defaultValue || getSearchValue(list, value)
 
@@ -49,10 +36,9 @@ class SearchList extends PureComponent {
     list: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.any.isRequired,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
-          .isRequired,
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
         otherValue: PropTypes.any,
-      }).isRequired
+      }).isRequired,
     ),
     cacheList: PropTypes.bool,
 
@@ -63,18 +49,18 @@ class SearchList extends PureComponent {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     itemSize: PropTypes.number.isRequired,
     listPosition: PropTypes.oneOf([
-      "static",
-      "absolute",
-      "fixed",
-      "relative",
-      "sticky",
-      "initial",
-      "inherit",
+      'static',
+      'absolute',
+      'fixed',
+      'relative',
+      'sticky',
+      'initial',
+      'inherit',
     ]),
 
     // Callback props
     onListItemClickCallback: PropTypes.func, // When an item is clicked
-    onChangeCallback: PropTypes.func, // When searching
+    onChange: PropTypes.func, // When searching
     onChangeCallbackDebounceDelay: PropTypes.number,
     onBlurCallback: PropTypes.func,
     onFocusCallback: PropTypes.func,
@@ -82,7 +68,7 @@ class SearchList extends PureComponent {
   }
 
   static defaultProps = {
-    placeholder: "Search...",
+    placeholder: 'Search...',
     maxHeight: 250,
     height: 250,
     width: 300,
@@ -91,18 +77,12 @@ class SearchList extends PureComponent {
     showList: false,
     initiallyRenderList: true,
     cacheList: false,
-    listPosition: "absolute",
+    listPosition: 'absolute',
     onChangeCallbackDebounceDelay: 400,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let {
-      initiallyRenderList,
-      searchValue,
-      showList,
-      searchListRef,
-      typingSearchValue,
-    } = prevState
+    let { initiallyRenderList, searchValue, showList, searchListRef, typingSearchValue } = prevState
     const { defaultValue, itemSize, maxHeight, value, cacheList } = nextProps
     let nextList = nextProps.list
 
@@ -121,12 +101,11 @@ class SearchList extends PureComponent {
     }
 
     const { clientWidth, offsetWidth } = searchListRef
-    const currentSearchValueWidth = getTextWidth(searchValue, "1rem system-ui")
+    const currentSearchValueWidth = getTextWidth(searchValue, '1rem system-ui')
     const listSearchDropDownIconOffset = 16
     const listSearchInputMaxWidth = offsetWidth - listSearchDropDownIconOffset
 
-    const currentSearchValueOverflowed =
-      currentSearchValueWidth > listSearchInputMaxWidth
+    const currentSearchValueOverflowed = currentSearchValueWidth > listSearchInputMaxWidth
 
     const showDropDownIcon = !currentSearchValueOverflowed
 
@@ -154,7 +133,7 @@ class SearchList extends PureComponent {
     this.setState({ showDropDownIcon: true })
   }
 
-  onSearchChange = (e) => {
+  onSearchChange = e => {
     const { value } = e.target
     this.setState({ searchValue: value, initiallyRenderList: false })
   }
@@ -174,13 +153,13 @@ class SearchList extends PureComponent {
   }
 
   handleDropDownIconClick = () => {
-    this.setState((prevState) => {
+    this.setState(prevState => {
       const { placeholder } = this.props
       const { searchValue, showList } = prevState
       if (searchValue === placeholder && !showList) {
         return {
           showList: true,
-          searchValue: "",
+          searchValue: '',
         }
       } else {
         return { showList: !showList }
@@ -201,69 +180,53 @@ class SearchList extends PureComponent {
       label,
       itemSize,
       onChangeCallbackDebounceDelay,
-      onChangeCallback,
+      onChange,
       listPosition,
       onScrollToBottomOfListCallback,
     } = this.props
-    const {
-      showList,
-      showDropDownIcon,
-      list,
-      searchValue,
-      height,
-      width,
-    } = this.state
+    const { showList, showDropDownIcon, list, searchValue, height, width } = this.state
     return (
       <Fragment>
-        {onChangeCallback && (
+        {onChange && (
           <UseDebounce
             value={searchValue}
-            onChangeCallback={onChangeCallback}
+            onChange={onChange}
             delay={onChangeCallbackDebounceDelay}
           />
         )}
-        <div className="listSearchContainer">
-          <div className="listSearchInputDropDown">
+        <div className='listSearchContainer'>
+          <div className='listSearchInputDropDown'>
             {label && (
-              <Label className="listSearchHelper" for="SearchListInput">
+              <Label className='listSearchHelper' for='SearchListInput'>
                 {label}
               </Label>
             )}
             <Input
               ref={this.searchListRef}
-              id="SearchListInput"
-              className="listSearchInput Overflow"
-              type="text"
+              id='SearchListInput'
+              className='listSearchInput Overflow'
+              type='text'
               value={searchValue}
               placeholder={placeholder}
               onChange={this.onSearchChange}
-              onFocus={(e) => {
+              onFocus={e => {
                 e.target.select()
                 this.setState({ typingSearchValue: true })
-                setTimeout(
-                  this.handleInputFocus,
-                  TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK
-                )
+                setTimeout(this.handleInputFocus, TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK)
               }}
               onBlur={() => {
                 this.setState({ typingSearchValue: false })
-                setTimeout(
-                  this.handleInputBlur,
-                  TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK
-                )
+                setTimeout(this.handleInputBlur, TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK)
               }}
             />
 
             {showDropDownIcon && (
               <i
-                className={`listSearchDropDownIcon ${showList ? "Up" : "Down"}`}
-                tabIndex="1"
+                className={`listSearchDropDownIcon ${showList ? 'Up' : 'Down'}`}
+                tabIndex='1'
                 onClick={this.handleDropDownIconClick}
                 onBlur={() =>
-                  setTimeout(
-                    this.handleDropDownIconBlur,
-                    TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK
-                  )
+                  setTimeout(this.handleDropDownIconBlur, TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK)
                 }
               />
             )}
@@ -282,10 +245,10 @@ class SearchList extends PureComponent {
               />
             ) : (
               <div
-                className="listSearchItemsContainer fade-in"
-                style={{ height: itemSize, width: width, position: "absolute" }}
+                className='listSearchItemsContainer fade-in'
+                style={{ height: itemSize, width: width, position: 'absolute' }}
               >
-                <div className="noHover" style={{ padding: itemSize / 4 }}>
+                <div className='noHover' style={{ padding: itemSize / 4 }}>
                   No results
                 </div>
               </div>

@@ -14,7 +14,7 @@ import "./styles.css"
 
 const mapStateToProps = ({}) => ({})
 
-const PageNotFound = ({}) => (
+const PageNotFound = () => (
   <div className="PageNotFound bg-purple">
     <div className="custom-navbar">
       <div className="brand-logo">

@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useMemo } from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
-import { BasicProgress, Header } from "../"
-import { Container, Row, Col } from "reactstrap"
-import { ButtonClearCache } from "../"
-import { formatBytes, getStringBytes } from "../../utils"
-import { EntriesPropTypes } from "reducers//Entries/propTypes"
+import { connect as reduxConnect } from "react-redux"
+import {
+  BasicProgress,
+  Header,
+  ButtonClearCache,
+  ButtonClearEntries,
+} from "components"
+import { Container, Row, Col, ButtonGroup } from "reactstrap"
+import { formatBytes, getStringBytes } from "utils"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
 import { CloudDownload } from "../../images/SVG"
-import { PersistedStorageReduxKey, isQuotaExceeded } from "reducers//localState"
+import { PersistedStorageReduxKey, isQuotaExceeded } from "redux/localState"
 
 const LOCAL_STORAGE_LIMIT = 10 * 1024 * 1024
 const SERVER_STORAGE_LIMIT = 500 * 1024 * 1024
@@ -127,8 +131,10 @@ const LocalStorage = ({
         </Col>
       </Row>
       <Row className="text-center my-3">
-        <Col xs={12}>
+        <Col tag={ButtonGroup} xs={12}>
           <ButtonClearCache />
+          <div className="mx-1" />
+          <ButtonClearEntries />
         </Col>
       </Row>
       <Row>

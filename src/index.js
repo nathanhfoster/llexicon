@@ -1,24 +1,23 @@
-import "./css/index.css"
-import React, { Suspense, lazy } from "react"
+import "css/index.css"
+import React, { Suspense } from "react"
 import ReactDOM from "react-dom"
-import App from "./App"
 import storeFactory from "./redux"
-import rootReducer from "./redux/RootReducer"
-import { ContextProvider } from "store/provider"
-import { history } from "./redux/router/reducer"
+import App from "App"
+import { history } from "redux/router/reducer"
 import {
   getUserClientId,
   PersistedStorageReduxKey,
   clearLocalStorage,
-} from "./redux/localState"
+} from "redux/localState"
 import { Provider } from "react-redux"
 import { ConnectedRouter } from "connected-react-router"
-import { deepParseJson, getRandomInt } from "./utils"
-import { LoadingScreen } from "./components"
-import * as serviceWorker from "./serviceWorker"
-import { GetAppVersion } from "reducers//App/actions"
+import { LoadingScreen } from "components"
+import { PersistGate } from "redux-persist/integration/react"
+import * as serviceWorker from "serviceWorker"
+import { GetAppVersion } from "redux/App/actions"
 import ReactGA from "react-ga"
-import prototypes from "./prototypes"
+import prototypes from "prototypes"
+
 prototypes()
 
 const getPersistedState = () => {
@@ -31,7 +30,6 @@ const getPersistedState = () => {
   }
   return state
 }
-const persistedState = getPersistedState()
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
@@ -73,17 +71,15 @@ history.listen((location) => {
 // const ReduxStore = storeFactory(initialState)
 
 ReactDOM.render(
-  <ContextProvider
-    rootReducer={Reducers}
-    persistKey={PersistedStorageReduxKey}
-    initialState={persistedState}
-  >
-    <Suspense fallback={<LoadingScreen />}>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
-    </Suspense>
-  </ContextProvider>,
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Suspense fallback={<LoadingScreen />}>
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
+      </Suspense>
+    </PersistGate>
+  </Provider>,
   document.getElementById("root")
 )
 

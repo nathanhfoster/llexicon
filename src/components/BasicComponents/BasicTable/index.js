@@ -1,20 +1,45 @@
-import React, { memo } from "react"
-import PropTypes from "prop-types"
-import Table from "./Table"
-import { getInitialState, BasicTableReducer } from "./state/reducer"
-import { ColumnsPropType, DataPropType } from "./state/types"
-import { stringMatch } from "../../../utils"
-import { ContextProvider } from "store/provider"
+import BasicTableContext from './state/context';
+import React, { useRef, useEffect, useMemo, lazy, memo } from 'react';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import PropTypes from 'prop-types';
+import { BasicTableReducer } from './state/reducer';
+import { basicTableSetData } from './state/actions';
+import { getInitialState } from './state/utils';
+import { ColumnsPropType, DataPropType } from './state/types';
+import { stringMatch } from '../../../utils';
+const Table = lazy(() => import('./Table'));
+const { NODE_ENV } = process.env;
 
-const BasicTableProvider = ({ data, ...propsUsedToDeriveContextValue }) => (
-  <ContextProvider
-    rootReducer={BasicTableReducer}
-    initialState={propsUsedToDeriveContextValue}
-    initializer={getInitialState}
-  >
-    <Table data={data} />
-  </ContextProvider>
-)
+const inDevelopmentMode = NODE_ENV == 'development';
+
+const middleWares = inDevelopmentMode
+  ? composeWithDevTools(applyMiddleware(thunk))
+  : applyMiddleware(thunk);
+
+const BasicTableProvider = props => {
+  let mounted = useRef(false);
+
+  const store = useMemo(
+    () => createStore(BasicTableReducer, getInitialState(props), middleWares),
+    [],
+  );
+
+  useEffect(() => {
+    if (mounted.current) {
+      store.dispatch(basicTableSetData(props.data));
+    }
+    mounted.current = true;
+  }, [props.data]);
+
+  return (
+    <Provider context={BasicTableContext} store={store}>
+      <Table />
+    </Provider>
+  );
+};
 
 BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
@@ -43,7 +68,7 @@ BasicTableProvider.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]),
-}
+};
 
 BasicTableProvider.defaultProps = {
   hover: false,
@@ -56,39 +81,36 @@ BasicTableProvider.defaultProps = {
   responsive: true,
   pageSize: 5,
   pageSizes: [5, 15, 25, 50],
-  sortList: [],
-  sortList: [],
   columns: [
     {
-      title: "#",
-      key: "id",
+      title: '#',
+      key: 'id',
       width: 25,
     },
     {
-      title: "First Name",
-      key: "first_name",
+      title: 'First Name',
+      key: 'first_name',
       width: 100,
-      filter: "string",
+      filter: 'string',
     },
     {
-      title: "Last Name",
-      key: "last_name",
+      title: 'Last Name',
+      key: 'last_name',
       width: 200,
-      filter: "string",
+      filter: 'string',
     },
     {
-      title: "Username",
-      key: "user_name",
-      render: (item) => <a href="#">{`Delete ${item.user_name}`}</a>,
+      title: 'Username',
+      key: 'user_name',
+      render: item => <a href='#'>{`Delete ${item.user_name}`}</a>,
       sort: (a, b, sortUp) =>
         sortUp
           ? b.user_name.localeCompare(a.user_name)
           : a.user_name.localeCompare(b.user_name),
-      filter: (filterValue) => (item) =>
-        stringMatch(item.user_name, filterValue),
+      filter: filterValue => item => stringMatch(item.user_name, filterValue),
     },
   ],
-  dataDisplayName: "Data",
+  dataDisplayName: 'Data',
   data: new Array(25).fill().map(
     (e, i) =>
       (e = {
@@ -96,7 +118,7 @@ BasicTableProvider.defaultProps = {
         first_name: `first_name${i}`,
         last_name: `last_name${i}`,
         user_name: `user_name${i}`,
-      })
+      }),
   ),
-}
-export default memo(BasicTableProvider)
+};
+export default memo(BasicTableProvider);
