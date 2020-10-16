@@ -16,11 +16,11 @@ import {
   ShareOnTwitter,
   Portal,
 } from "../.."
-import { copyStringToClipboard, shareUrl } from "../../../utils"
-import { RouterGoBack, GetEntryDetailUrl } from "../../../redux/router/actions"
+import { copyStringToClipboard, shareUrl } from "utils"
+import { RouterGoBack, GetEntryDetailUrl } from "redux/router/actions"
 import { useDispatch } from "react-redux"
-import { UpdateReduxEntry, SyncEntries } from "../../../redux/Entries/actions"
-import { BASE_JOURNAL_ENTRY_ID } from "../../../redux/Entries/reducer"
+import { UpdateReduxEntry, SyncEntries } from "redux/Entries/actions"
+import { BASE_JOURNAL_ENTRY_ID } from "redux/Entries/reducer"
 import "./styles.css"
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })

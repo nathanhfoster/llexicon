@@ -11,11 +11,11 @@ import {
 } from 'reactstrap'
 import { connect as reduxConnect } from 'react-redux'
 import ToolbarModal from '../../ToolbarModal'
-import { TagsContainer, DebounceInput } from '../../../../'
-import { GetUserEntryPeople } from '../../../../../redux/Entries/actions'
-import { TopKFrequentStrings, removeAttributeDuplicates, stringMatch } from '../../../../../utils'
+import { TagsContainer, DebounceInput } from 'components'
+import { GetUserEntryPeople } from 'redux/Entries/actions'
+import { TopKFrequentStrings, removeAttributeDuplicates, stringMatch } from 'utils'
 import { validateTagOrPeopleString, validatedPersonNameString } from '../utlis'
-import { EntriesPropTypes, EntryPeopleProps } from '../../../../../redux/Entries/propTypes'
+import { EntriesPropTypes, EntryPeopleProps } from 'redux/Entries/propTypes'
 
 const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems, EntryPeople } }) => ({
   items,

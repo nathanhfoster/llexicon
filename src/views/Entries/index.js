@@ -1,19 +1,27 @@
-import React, { useEffect, useMemo, lazy } from 'react'
-import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
-import { EntriesPropTypes } from '../../redux/Entries/propTypes'
-import { Row } from 'reactstrap'
-import { RouteMap, RouterPush } from '../../redux/router/actions'
-import { BasicTabs, NewEntryButton } from '../../components'
-import { UserEntriesTable } from '../../containers'
-import NewEntry from '../NewEntry'
-import { GetUserEntries } from '../../redux/Entries/actions'
-import './styles.css'
+import React, { useEffect, useMemo, lazy } from "react"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
+import { Row } from "reactstrap"
+import { RouteMap, RouterPush } from "redux/router/actions"
+import { BasicTabs, NewEntryButton } from "../../components"
+import { UserEntriesTable } from "../../containers"
+import NewEntry from "../NewEntry"
+import { GetUserEntries } from "redux/Entries/actions"
+import "./styles.css"
 
-const EntryCalendar = lazy(() => import('../../components/EntryComponents/EntryCalendar'))
-const EntryFolders = lazy(() => import('../../components/EntryComponents/EntryFolders'))
-const EntriesList = lazy(() => import('../../components/EntryComponents/EntriesList'))
-const EntriesMap = lazy(() => import('../../components/EntryComponents/EntriesMap'))
+const EntryCalendar = lazy(() =>
+  import("../../components/EntryComponents/EntryCalendar")
+)
+const EntryFolders = lazy(() =>
+  import("../../components/EntryComponents/EntryFolders")
+)
+const EntriesList = lazy(() =>
+  import("../../components/EntryComponents/EntriesList")
+)
+const EntriesMap = lazy(() =>
+  import("../../components/EntryComponents/EntriesMap")
+)
 
 const mapStateToProps = ({
   User: { id },
@@ -51,9 +59,15 @@ const Entries = ({
   const viewableEntries = useMemo(
     () =>
       entries
-        .filter(({ _shouldDelete, is_public }) => (showOnlyPublic ? is_public : !_shouldDelete))
-        .sort((a, b) => new Date(b.date_created_by_author) - new Date(a.date_created_by_author)),
-    [entries, showOnlyPublic],
+        .filter(({ _shouldDelete, is_public }) =>
+          showOnlyPublic ? is_public : !_shouldDelete
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.date_created_by_author) -
+            new Date(a.date_created_by_author)
+        ),
+    [entries, showOnlyPublic]
   )
 
   const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
@@ -72,17 +86,17 @@ const Entries = ({
 
   const activeTab = pathname
 
-  const handleTabChange = tabId => RouterPush(tabId)
+  const handleTabChange = (tabId) => RouterPush(tabId)
 
   const tabs = useMemo(
     () => [
       {
         tabId: RouteMap.NEW_ENTRY,
         title: {
-          name: 'Create Entry',
-          render: <i className='fas fa-feather-alt' />,
+          name: "Create Entry",
+          render: <i className="fas fa-feather-alt" />,
         },
-        className: 'fade-in',
+        className: "fade-in",
         render: (
           <Row>
             <NewEntry />
@@ -93,10 +107,10 @@ const Entries = ({
       {
         tabId: RouteMap.ENTRIES_CALENDAR,
         title: {
-          name: 'Entries Calendar',
-          render: <i className='fas fa-calendar-alt' />,
+          name: "Entries Calendar",
+          render: <i className="fas fa-calendar-alt" />,
         },
-        className: 'fade-in',
+        className: "fade-in",
         render: (
           <Row>
             <EntryCalendar />
@@ -107,10 +121,10 @@ const Entries = ({
       {
         tabId: RouteMap.ENTRIES_FOLDERS,
         title: {
-          name: 'Entries Folders',
-          render: <i className='fas fa-folder' />,
+          name: "Entries Folders",
+          render: <i className="fas fa-folder" />,
         },
-        className: 'fade-in',
+        className: "fade-in",
         render: (
           <Row>
             {shouldRenderNewEntryButton ? (
@@ -124,29 +138,38 @@ const Entries = ({
       },
       {
         tabId: RouteMap.ENTRIES_LIST,
-        title: { name: 'Entries List', render: <i className='fas fa-th-list' /> },
-        className: 'fade-in',
+        title: {
+          name: "Entries List",
+          render: <i className="fas fa-th-list" />,
+        },
+        className: "fade-in",
         render: shouldRenderNewEntryButton ? (
           <Row>
             <NewEntryButton />
           </Row>
         ) : (
           <Row>
-            <EntriesList height={minimalEntriesListHeight} entries={viewableEntries} />
+            <EntriesList
+              height={minimalEntriesListHeight}
+              entries={viewableEntries}
+            />
           </Row>
         ),
         onClick: handleTabChange,
       },
       {
         tabId: RouteMap.ENTRIES_TABLE,
-        title: { name: 'Entries Table', render: <i className='fas fa-table' /> },
-        className: 'fade-in',
+        title: {
+          name: "Entries Table",
+          render: <i className="fas fa-table" />,
+        },
+        className: "fade-in",
         render: shouldRenderNewEntryButton ? (
           <Row>
             <NewEntryButton />
           </Row>
         ) : (
-          <Row className='ShowScrollBar'>
+          <Row className="ShowScrollBar">
             <UserEntriesTable pageSize={10} />
           </Row>
         ),
@@ -155,10 +178,10 @@ const Entries = ({
       {
         tabId: RouteMap.ENTRIES_MAP,
         title: {
-          name: 'Entries Map',
-          render: <i className='fas fa-map-marked-alt' />,
+          name: "Entries Map",
+          render: <i className="fas fa-map-marked-alt" />,
         },
-        className: 'fade-in',
+        className: "fade-in",
         render: (
           <Row>
             <EntriesMap height={viewPortHeight - 46} />
@@ -167,7 +190,12 @@ const Entries = ({
         onClick: handleTabChange,
       },
     ],
-    [minimalEntriesListHeight, shouldRenderNewEntryButton, viewPortHeight, viewableEntries],
+    [
+      minimalEntriesListHeight,
+      shouldRenderNewEntryButton,
+      viewPortHeight,
+      viewableEntries,
+    ]
   )
 
   const fluid = useMemo(
@@ -175,10 +203,17 @@ const Entries = ({
       activeTab === RouteMap.ENTRIES_CALENDAR ||
       activeTab === RouteMap.ENTRIES_TABLE ||
       activeTab === RouteMap.ENTRIES_MAP,
-    [activeTab],
+    [activeTab]
   )
 
-  return <BasicTabs className='EntryTabs' fluid={fluid} activeTab={activeTab} tabs={tabs} />
+  return (
+    <BasicTabs
+      className="EntryTabs"
+      fluid={fluid}
+      activeTab={activeTab}
+      tabs={tabs}
+    />
+  )
 }
 
 Entries.propTypes = {

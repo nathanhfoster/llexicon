@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 
 import { EntriesTable } from "../../components"
-import { EntriesPropTypes } from "../../redux/Entries/propTypes"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
 
 const mapStateToProps = ({ Entries: { items, sortMap, filterMap } }) => ({
   items,

@@ -12,15 +12,15 @@ import {
 import { connect as reduxConnect } from 'react-redux'
 import ToolbarModal from '../../ToolbarModal'
 import { TagsContainer, DebounceInput } from '../../../../'
-import { GetUserEntryTags } from '../../../../../redux/Entries/actions'
+import { GetUserEntryTags } from 'redux/Entries/actions'
 import {
   filterMapArray,
   TopKFrequentStrings,
   removeAttributeDuplicates,
   stringMatch,
-} from '../../../../../utils'
+} from 'utils'
 import { validateTagOrPeopleString, validatedTagString } from '../utlis'
-import { EntriesPropTypes, EntryTagsProps } from '../../../../../redux/Entries/propTypes'
+import { EntriesPropTypes, EntryTagsProps } from 'redux/Entries/propTypes'
 import { SUGGESTED } from './utils'
 
 const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems, EntryTags } }) => ({

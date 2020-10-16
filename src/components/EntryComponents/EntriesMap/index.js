@@ -2,9 +2,9 @@ import React, { useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
 import { BasicMap } from '../..'
-import { EntryPropTypes } from '../../../redux/Entries/propTypes'
-import { SetEditorState } from '../../../redux/TextEditor/actions'
-import { RouteMap, RouterPush, GoToEntryDetail } from '../../../redux/router/actions'
+import { EntryPropTypes } from 'redux/Entries/propTypes'
+import { SetEditorState } from 'redux/TextEditor/actions'
+import { RouteMap, RouterPush, GoToEntryDetail } from 'redux/router/actions'
 
 const mapStateToProps = ({ Entries: { items, showOnlyPublic } }) => ({
   entries: items,

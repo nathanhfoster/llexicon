@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback, useMemo, lazy } from 'react'
 import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
-import { EntriesPropTypes } from '../../../redux/Entries/propTypes'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem, Button } from 'reactstrap'
 import { NavLink } from 'react-router-dom'
-import { RouterPush } from '../../../redux/router/actions'
-import { filterMapArray, TopKFrequentStrings } from '../../../utils'
-import { useScrollable } from '../../../hooks'
+import { RouterPush } from 'redux/router/actions'
+import { filterMapArray, TopKFrequentStrings } from 'utils'
+import { useScrollable } from 'hooks'
 import './styles.css'
 
 const EntryCards = lazy(() => import('../EntryCards'))

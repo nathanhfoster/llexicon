@@ -5,7 +5,7 @@ import Headers from "./QuillSelectButtons/Headers"
 import Sizes from "./QuillSelectButtons/Sizes"
 import QuillSelectButtons from "./QuillSelectButtons"
 import QuillButtons from "./QuillButtons"
-import { DEFAULT_STATE_TEXT_EDITOR } from "../../../redux/TextEditor/reducer"
+import { DEFAULT_STATE_TEXT_EDITOR } from "redux/TextEditor/reducer"
 import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR

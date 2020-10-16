@@ -7,7 +7,7 @@ import {
   Header,
   NewEntryButton,
 } from "../../components"
-import { RouteMap, RouterPush } from "../../redux/router/actions"
+import { RouteMap, RouterPush } from "redux/router/actions"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
 import { connect as reduxConnect } from "react-redux"
 import {

@@ -9,7 +9,7 @@ import {
   EntriesToggleShowOnlyPublic,
 } from "../../components"
 import LogoImage from "../../components/BackgroundImage/LogoImage"
-import { RouterPush, RouteMap } from "../../redux/router/actions"
+import { RouterPush, RouteMap } from "redux/router/actions"
 import "./styles.css"
 
 const EntryNavButtons = lazy(() =>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
 import { Toast, ToastHeader, ToastBody, Button } from 'reactstrap'
 import { UseDebounce } from '..'
-import { ClearAlerts } from '../../redux/Alerts/actions'
+import { ClearAlerts } from 'redux/Alerts/actions'
 import './styles.css'
 
 const mapStateToProps = ({ Alerts: { title, message, timeout, serviceWorkerRegistration } }) => ({

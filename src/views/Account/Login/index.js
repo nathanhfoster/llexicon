@@ -2,8 +2,8 @@ import React, { useCallback, useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
 import { Jumbotron } from "reactstrap"
-import { BasicForm, FacebookGoogleLogin } from "../../../components"
-import { UserLogin } from "../../../redux/User/actions"
+import { BasicForm, FacebookGoogleLogin } from "components"
+import { UserLogin } from "redux/User/actions"
 
 const mapStateToProps = ({ User: { error, pending } }) => ({
   userError: error,

@@ -9,7 +9,7 @@ import {
   SyncEntries,
   GetAllUserEntries,
   GetAllUserEntryPages,
-} from "../../../redux/Entries/actions"
+} from "redux/Entries/actions"
 import MomentJs from "moment"
 
 const DATE_FORMAT = "YYYY-MM-DD hh:mm:ss"

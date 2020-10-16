@@ -5,12 +5,9 @@ import { BasicProgress, Header } from "../"
 import { Container, Row, Col } from "reactstrap"
 import { ButtonClearCache } from "../"
 import { formatBytes, getStringBytes } from "../../utils"
-import { EntriesPropTypes } from "../../redux/Entries/propTypes"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
 import { CloudDownload } from "../../images/SVG"
-import {
-  PersistedStorageReduxKey,
-  isQuotaExceeded,
-} from "../../redux/localState"
+import { PersistedStorageReduxKey, isQuotaExceeded } from "redux/localState"
 
 const LOCAL_STORAGE_LIMIT = 10 * 1024 * 1024
 const SERVER_STORAGE_LIMIT = 500 * 1024 * 1024

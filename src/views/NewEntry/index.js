@@ -1,8 +1,8 @@
-import React, { useEffect, lazy } from 'react'
-import { connect as reduxConnect } from 'react-redux'
-import PropTypes from 'prop-types'
-import { EntryPropTypes } from '../../redux/Entries/propTypes'
-import { ReactDatePicker } from '../../components'
+import React, { useEffect, lazy } from "react"
+import { connect as reduxConnect } from "react-redux"
+import PropTypes from "prop-types"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import { ReactDatePicker } from "../../components"
 import {
   Container,
   Row,
@@ -13,18 +13,18 @@ import {
   InputGroupAddon,
   InputGroupText,
   Button,
-} from 'reactstrap'
-import { SetCalendar } from '../../redux/Calendar/actions'
-import { PostReduxEntry, SyncEntries } from '../../redux/Entries/actions'
+} from "reactstrap"
+import { SetCalendar } from "redux/Calendar/actions"
+import { PostReduxEntry, SyncEntries } from "redux/Entries/actions"
 
-import { SetEditorState, ClearEditorState } from '../../redux/TextEditor/actions'
+import { SetEditorState, ClearEditorState } from "redux/TextEditor/actions"
 
-import { DEFAULT_STATE_TEXT_EDITOR } from '../../redux/TextEditor/reducer'
-import { getStringBytes } from '../../utils'
-import './styles.css'
-import { ResetMap } from '../../redux/Map/actions'
+import { DEFAULT_STATE_TEXT_EDITOR } from "redux/TextEditor/reducer"
+import { getStringBytes } from "../../utils"
+import "./styles.css"
+import { ResetMap } from "redux/Map/actions"
 
-const Editor = lazy(() => import('../../components/Editor'))
+const Editor = lazy(() => import("../../components/Editor"))
 
 const mapStateToProps = ({ Calendar: { activeDate }, TextEditor }) => ({
   entry: TextEditor,
@@ -60,11 +60,14 @@ const NewEntry = ({
 
   activeDate = new Date(activeDate)
 
-  const handleInputChange = ({ target: { id, value } }) => SetEditorState({ [id]: value })
+  const handleInputChange = ({ target: { id, value } }) =>
+    SetEditorState({ [id]: value })
 
-  const handleTextEditorChange = ({ ...payload }) => SetEditorState({ ...payload })
+  const handleTextEditorChange = ({ ...payload }) =>
+    SetEditorState({ ...payload })
 
-  const handleChangeDateCreatedByAuthor = activeDate => SetCalendar({ activeDate })
+  const handleChangeDateCreatedByAuthor = (activeDate) =>
+    SetCalendar({ activeDate })
 
   const handlePostEntry = async () => {
     const newEntryData = {
@@ -84,44 +87,47 @@ const NewEntry = ({
   }
 
   return (
-    <Container className='NewEntry Container'>
+    <Container className="NewEntry Container">
       <Row>
-        <Col xs={12} className='p-0'>
+        <Col xs={12} className="p-0">
           <InputGroup
             tag={Form}
-            className='EntryInput EntryInputTitle'
+            className="EntryInput EntryInputTitle"
             // onSubmit={handlePostEntry}
             // method="post"
           >
             <Input
-              type='text'
-              name='title'
-              id='title'
-              placeholder='Entry title...'
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Entry title..."
               value={entry.title}
               onChange={handleInputChange}
             />
-            <InputGroupAddon addonType='append'>
-              <InputGroupText color='primary' className='p-0'>
-                <ReactDatePicker selected={activeDate} onChange={handleChangeDateCreatedByAuthor} />
+            <InputGroupAddon addonType="append">
+              <InputGroupText color="primary" className="p-0">
+                <ReactDatePicker
+                  selected={activeDate}
+                  onChange={handleChangeDateCreatedByAuthor}
+                />
               </InputGroupText>
             </InputGroupAddon>
-            <InputGroupAddon addonType='append' onClick={handlePostEntry}>
+            <InputGroupAddon addonType="append" onClick={handlePostEntry}>
               <InputGroupText
                 tag={Button}
-                className='SaveButton'
-                color='accent'
+                className="SaveButton"
+                color="accent"
                 disabled={postDisabled}
                 // type="submit"
               >
-                <i className='fas fa-save' style={{ fontSize: 20 }} />
+                <i className="fas fa-save" style={{ fontSize: 20 }} />
               </InputGroupText>
             </InputGroupAddon>
           </InputGroup>
         </Col>
       </Row>
-      <Row className='EditorContainer'>
-        <Col xs={12} className='p-0'>
+      <Row className="EditorContainer">
+        <Col xs={12} className="p-0">
           <Editor entry={entry} onChange={handleTextEditorChange} />
         </Col>
       </Row>

@@ -1,17 +1,17 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { stripHtml, TopKFrequentStrings } from "../../../utils"
+import { stripHtml, TopKFrequentStrings } from "utils"
 import Moment from "react-moment"
 import { TagsContainer, BasicTable, EntryDataCellLink } from "../../"
-import { GoToEntryDetail } from "../../../redux/router/actions"
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { stringMatch, formatBytes } from "../../../utils"
+import { GoToEntryDetail } from "redux/router/actions"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
+import { stringMatch, formatBytes } from "utils"
 import {
   SetEntriesSortMap,
   SetEntriesFilterMap,
-} from "../../../redux/Entries/actions"
-import { DEFAULT_STATE_ENTRIES } from "../../../redux/Entries/reducer"
+} from "redux/Entries/actions"
+import { DEFAULT_STATE_ENTRIES } from "redux/Entries/reducer"
 
 const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
   showOnlyPublic,

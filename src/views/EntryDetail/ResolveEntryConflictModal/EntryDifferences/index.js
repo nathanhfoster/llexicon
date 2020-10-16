@@ -1,16 +1,20 @@
-import React, { memo } from 'react'
-import { EntryPropTypes } from '../../../../redux/Entries/propTypes'
-import { BasicTable } from '../../../../components'
-import { Container, Row, Col } from 'reactstrap'
-import { CloudDownload } from '../../../../images/SVG'
-import { differenceBetweenStrings } from '../../../../utils'
-import { findDifferentProps } from '../utils'
-import { getEntryPropSortOrder, getEntryPropIcon, renderEntryProp } from './utils'
-import './styles.css'
+import React, { memo } from "react"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import { BasicTable } from "components"
+import { Container, Row, Col } from "reactstrap"
+import { CloudDownload } from "../../../../images/SVG"
+import { differenceBetweenStrings } from "utils"
+import { findDifferentProps } from "../utils"
+import {
+  getEntryPropSortOrder,
+  getEntryPropIcon,
+  renderEntryProp,
+} from "./utils"
+import "./styles.css"
 
 const EntryDifferences = ({ entry1, entry2 }) => {
   const differntProps = findDifferentProps(entry1, entry2).sort(
-    (a, b) => getEntryPropSortOrder(a[0]) > getEntryPropSortOrder(b[0]),
+    (a, b) => getEntryPropSortOrder(a[0]) > getEntryPropSortOrder(b[0])
   )
 
   var tableColumns = []
@@ -52,8 +56,8 @@ const EntryDifferences = ({ entry1, entry2 }) => {
   })
 
   return (
-    <Container className='EntryDifferences ShowScrollBar'>
-      <Row tag='h1' className='Center mb-2'>
+    <Container className="EntryDifferences ShowScrollBar">
+      <Row tag="h1" className="Center mb-2">
         Differences
       </Row>
       {/* <Row style={{ border: "1px solid var(--secondaryColor)" }}>
@@ -69,11 +73,11 @@ const EntryDifferences = ({ entry1, entry2 }) => {
       <Row>
         <Col xs={2}>Prop</Col>
         <Col xs={5}>
-          <i className='fas fa-hdd mr-1' />
+          <i className="fas fa-hdd mr-1" />
           Local
         </Col>
         <Col xs={5}>
-          <CloudDownload className='mr-1' height={18} />
+          <CloudDownload className="mr-1" height={18} />
           Cloud
         </Col>
       </Row>

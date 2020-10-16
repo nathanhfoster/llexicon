@@ -1,17 +1,17 @@
-import React, { Fragment, memo } from 'react'
-import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
-import { UserProps } from '../../redux/User/propTypes'
-import { Container, Row, Col } from 'reactstrap'
-import { BasicTabs, Header, PushNotifications } from '../../components'
-import EntryStatistics from './EntryStatistics'
-import ImportExportEntries from './ImportExportEntries'
-import AccountDetails from './AccountDetails'
-import UpdateProfile from './UpdateProfile'
-import Storage from './Storage'
-import Preferences from './Preferences'
-import { RouterPush, RouteMap } from '../../redux/router/actions'
-import './styles.css'
+import React, { Fragment, memo } from "react"
+import PropTypes from "prop-types"
+import { connect as reduxConnect } from "react-redux"
+import { UserProps } from "redux/User/propTypes"
+import { Container, Row, Col } from "reactstrap"
+import { BasicTabs, Header, PushNotifications } from "../../components"
+import EntryStatistics from "./EntryStatistics"
+import ImportExportEntries from "./ImportExportEntries"
+import AccountDetails from "./AccountDetails"
+import UpdateProfile from "./UpdateProfile"
+import Storage from "./Storage"
+import Preferences from "./Preferences"
+import { RouterPush, RouteMap } from "redux/router/actions"
+import "./styles.css"
 
 const {
   SETTINGS,
@@ -32,14 +32,14 @@ const Settings = ({ pathname }) => {
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
   const activeTab = pathname
 
-  const handleTabChange = tabId => RouterPush(tabId)
+  const handleTabChange = (tabId) => RouterPush(tabId)
 
   const tabs = [
     {
       tabId: SETTINGS_ENTRIES,
-      title: 'Entries',
+      title: "Entries",
 
-      className: 'mt-2',
+      className: "mt-2",
       render: (
         <Fragment>
           <ImportExportEntries />
@@ -50,8 +50,8 @@ const Settings = ({ pathname }) => {
     },
     {
       tabId: SETTINGS_PROFILE,
-      title: 'Profile',
-      className: 'mt-2',
+      title: "Profile",
+      className: "mt-2",
       render: (
         <Fragment>
           <AccountDetails />
@@ -62,38 +62,38 @@ const Settings = ({ pathname }) => {
     },
     {
       tabId: SETTINGS_PREFERENCES,
-      title: 'Preferences',
-      className: 'mt-2',
+      title: "Preferences",
+      className: "mt-2",
       render: <Preferences />,
       onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PUSH_NOTIFICATIONS,
-      title: 'Push Notifications',
-      className: 'mt-2',
+      title: "Push Notifications",
+      className: "mt-2",
       render: <PushNotifications />,
       onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_STORAGE,
-      title: 'Storage',
-      className: 'mt-2',
+      title: "Storage",
+      className: "mt-2",
       render: <Storage />,
       onClick: handleTabChange,
     },
   ]
   return (
-    <Container className='Settings Container'>
+    <Container className="Settings Container">
       <Row>
-        <Col xs={12} className='Center mt-3'>
+        <Col xs={12} className="Center mt-3">
           <Header>
-            <i className='fa fa-cog mr-2' />
+            <i className="fa fa-cog mr-2" />
             SETTINGS
           </Header>
         </Col>
       </Row>
       <Row>
-        <Col xs={12} className='p-0'>
+        <Col xs={12} className="p-0">
           <BasicTabs activeTab={activeTab} tabs={tabs} />
         </Col>
       </Row>

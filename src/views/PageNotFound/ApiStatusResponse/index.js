@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import { connect as reduxConnect } from "react-redux"
-import { RouteMap, RouterGoBack } from "../../../redux/router/actions"
-import { SetApiResponseStatus } from "../../../redux/Alerts/actions"
+import { RouteMap, RouterGoBack } from "redux/router/actions"
+import { SetApiResponseStatus } from "redux/Alerts/actions"
 import { stringMatch } from "../../../utils"
 import "./styles.css"
 
