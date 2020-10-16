@@ -4,6 +4,7 @@ const {
   ENTRY_SET,
   ENTRY_UPDATE,
   ENTRY_CLEAR,
+  ENTRIES_CLEAR,
   ENTRY_DELETE,
   ENTRIES_SET_TAGS,
   ENTRIES_SET_PEOPLE,
@@ -56,6 +57,8 @@ const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => {
 }
 
 const ClearEntry = () => ({ type: ENTRY_CLEAR })
+
+const ClearEntries = () => ({ type: ENTRIES_CLEAR })
 
 const DeleteReduxEntry = (id) => ({ type: ENTRY_DELETE, id })
 
@@ -114,6 +117,7 @@ export {
   PostReduxEntry,
   UpdateReduxEntry,
   ClearEntry,
+  ClearEntries,
   DeleteReduxEntry,
   SetEntries,
   SetEntriesTags,
