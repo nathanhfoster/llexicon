@@ -1,81 +1,28 @@
-import { Axios, AxiosForm } from '../Actions'
-import { SetApiResponseStatus, SetAlert } from '../Alerts/actions'
-import { RouterPush } from '../router/actions'
-import { EntriesActionTypes } from './types'
-import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from '../../utils'
-import { getJsonTagsOrPeople, getReduxEntryId } from './utils'
-import FormData from 'form-data'
-import qs from 'qs'
-import ReactGA from 'react-ga'
-
-const ToggleShowOnlyPublic = () => ({
-  type: EntriesActionTypes.ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
-})
-
-const PendingEntries = () => ({ type: EntriesActionTypes.ENTRIES_PENDING })
-
-const ResetEntriesSortAndFilterMaps = () => ({
-  type: EntriesActionTypes.ENTRIES_RESET_SORT_AND_FILTER_MAP,
-})
-
-const SetEntriesSortMap = (sortKey, sortUp) => ({
-  type: EntriesActionTypes.ENTRIES_SET_SORT_MAP,
-  payload: { sortKey, sortUp },
-})
-
-const SetEntriesFilterMap = (filterKey, searchValue) => ({
-  type: EntriesActionTypes.ENTRIES_SET_FILTER_MAP,
-  payload: { filterKey, searchValue },
-})
-
-const SetEntry = payload => ({
-  type: EntriesActionTypes.ENTRY_SET,
-  payload,
-})
-
-const PostReduxEntry = payload => (dispatch, getState) => {
-  const {
-    items: { length: itemsLength },
-    filteredItems: { length: filteredItemsLength },
-  } = getState().Entries
-
-  const length = itemsLength + filteredItemsLength
-
-  return dispatch(
-    SetEntry({
-      ...payload,
-      id: getReduxEntryId(length),
-      _shouldPost: true,
-    }),
-  )
-}
-
-const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => {
-  let payload = { ...entry, _lastUpdated }
-  return {
-    type: EntriesActionTypes.ENTRY_UPDATE,
-    id,
-    payload,
-  }
-}
-
-const ClearEntry = () => ({ type: EntriesActionTypes.ENTRY_CLEAR })
-
-const DeleteReduxEntry = id => ({ type: EntriesActionTypes.ENTRY_DELETE, id })
-
-const SetEntries = payload => ({ type: EntriesActionTypes.ENTRIES_SET, payload })
-
-const SetEntriesTags = payload => ({ type: EntriesActionTypes.ENTRIES_SET_TAGS, payload })
-
-const SetEntriesPeople = payload => ({ type: EntriesActionTypes.ENTRIES_SET_PEOPLE, payload })
-
-const SetSearchEntries = (search, payload = []) => ({
-  type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-  payload,
-  search,
-})
-
-const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(''))
+import { Axios, AxiosForm } from "../../Actions"
+import { SetApiResponseStatus, SetAlert } from "../../Alerts/actions"
+import { RouterPush } from "../../router/actions"
+import {
+  getFileFromBase64,
+  htmlToArrayOfBase64,
+  cleanObject,
+} from "../../../utils"
+import { getJsonTagsOrPeople } from "../utils"
+import FormData from "form-data"
+import qs from "qs"
+import ReactGA from "react-ga"
+import {
+  PendingEntries,
+  SetEntriesComplete,
+  SetEntriesError,
+  SetEntry,
+  UpdateReduxEntry,
+  DeleteReduxEntry,
+  SetEntries,
+  SetEntriesTags,
+  SetEntriesPeople,
+  SetSearchEntries,
+  SearchEntriesFilter,
+} from "./redux"
 
 const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -84,13 +31,13 @@ const GetUserEntryTags = () => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch(SetEntriesTags(data))
       ReactGA.event({
-        category: 'Get User Entry Tags',
-        action: 'User got their entry tags!',
+        category: "Get User Entry Tags",
+        action: "User got their entry tags!",
         value: id,
       })
       return data
     })
-    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
 
 const GetUserEntryPeople = () => (dispatch, getState) => {
@@ -100,15 +47,15 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch(SetEntriesPeople(data))
       ReactGA.event({
-        category: 'Get User Entry People',
-        action: 'User got their entry people!',
+        category: "Get User Entry People",
+        action: "User got their entry people!",
         value: id,
       })
     })
-    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const CreateEntryTag = payload => (dispatch, getState) => {
+const CreateEntryTag = (payload) => (dispatch, getState) => {
   const {
     User: { id },
   } = getState()
@@ -118,15 +65,15 @@ const CreateEntryTag = payload => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch(SetEntriesTags(data))
       ReactGA.event({
-        category: 'Create Entry Tag',
-        action: 'User created a entry tag!',
+        category: "Create Entry Tag",
+        action: "User created a entry tag!",
         value: id,
       })
     })
-    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const ParseBase64 = (entry_id, updateEntryPayload) => dispatch => {
+const ParseBase64 = (entry_id, updateEntryPayload) => (dispatch) => {
   const { html } = updateEntryPayload
   const base64s = htmlToArrayOfBase64(html)
   for (let i = 0; i < base64s.length; i++) {
@@ -135,18 +82,20 @@ const ParseBase64 = (entry_id, updateEntryPayload) => dispatch => {
     dispatch(AwsUpload(entry_id, file, base64, html))
   }
   dispatch(UpdateEntry(entry_id, updateEntryPayload))
-  return new Promise(resolve => resolve(dispatch(SetAlert({ title: 'Synced', message: 'Files' }))))
+  return new Promise((resolve) =>
+    resolve(dispatch(SetAlert({ title: "Synced", message: "Files" })))
+  )
 }
 
-const AwsUpload = (entry_id, file, base64, html) => dispatch => {
+const AwsUpload = (entry_id, file, base64, html) => (dispatch) => {
   const { lastModified, lastModifiedDate, name, size, type } = file
   let payload = new FormData()
-  payload.append('entry_id', entry_id)
-  payload.append('file_type', type)
-  payload.append('name', name)
-  payload.append('size', size)
-  payload.append('date_modified', lastModifiedDate.toJSON())
-  payload.append('url', file)
+  payload.append("entry_id", entry_id)
+  payload.append("file_type", type)
+  payload.append("name", name)
+  payload.append("size", size)
+  payload.append("date_modified", lastModifiedDate.toJSON())
+  payload.append("url", file)
 
   return AxiosForm({ payload })
     .post(`/files/`, payload)
@@ -156,13 +105,13 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
       }
       dispatch(UpdateEntry(entry_id, updateEntryPayload))
       ReactGA.event({
-        category: 'Aws Upload',
-        action: 'User created a EntryFile in Aws',
+        category: "Aws Upload",
+        action: "User created a EntryFile in Aws",
         value: data.url,
       })
       return data
     })
-    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 }
 
 const GetEntry = (url, id) => (dispatch, getState) => {
@@ -170,7 +119,7 @@ const GetEntry = (url, id) => (dispatch, getState) => {
     Entries: { items, filteredItems },
     User: { id: userLoggedIn },
   } = getState()
-  const entry = items.concat(filteredItems).find(entry => entry.id == id)
+  const entry = items.concat(filteredItems).find((entry) => entry.id == id)
   if (entry) {
     dispatch(SetEntry(entry))
   }
@@ -181,8 +130,8 @@ const GetEntry = (url, id) => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch(SetEntry(data))
       ReactGA.event({
-        category: 'Get Entry',
-        action: 'User is looking at entry!',
+        category: "Get Entry",
+        action: "User is looking at entry!",
         value: id,
       })
       return data
@@ -195,21 +144,23 @@ const GetEntry = (url, id) => (dispatch, getState) => {
           dispatch(SetApiResponseStatus(status))
           dispatch(
             SetAlert({
-              title: 'Access Denied',
-              message: 'This entry is no longer public',
-            }),
+              title: "Access Denied",
+              message: "This entry is no longer public",
+            })
           )
         }
 
         const payload = JSON.parse(JSON.stringify(response))
-        dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
+        dispatch()
       }
     })
 }
 
-const GetUserEntry = id => dispatch => dispatch(GetEntry(`/entries/${id}/`, id))
+const GetUserEntry = (id) => (dispatch) =>
+  dispatch(GetEntry(`/entries/${id}/`, id))
 
-const GetUserEntryDetails = id => dispatch => dispatch(GetEntry(`/entries/${id}/details/`, id))
+const GetUserEntryDetails = (id) => (dispatch) =>
+  dispatch(GetEntry(`/entries/${id}/details/`, id))
 
 const GetAllUserEntries = () => (dispatch, getState) => {
   dispatch(PendingEntries())
@@ -219,22 +170,20 @@ const GetAllUserEntries = () => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch(SetEntries(data))
       ReactGA.event({
-        category: 'Get All User Entries',
-        action: 'User is got all their entries!',
+        category: "Get All User Entries",
+        action: "User is got all their entries!",
         value: id,
       })
-      dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
+      dispatch(SetAlert({ title: "Received", message: "Entries" }))
       return data
     })
-    .catch(e => {
+    .catch((e) => {
       console.log(e)
       return e
-      // const payload = JSON.parse(JSON.stringify(e.response))
-      // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
 
-const GetUserEntries = pageNumber => (dispatch, getState) => {
+const GetUserEntries = (pageNumber) => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
@@ -242,36 +191,34 @@ const GetUserEntries = pageNumber => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch(SetEntries(data))
       ReactGA.event({
-        category: 'Get User Entries Page',
-        action: 'User got a entry page!',
+        category: "Get User Entries Page",
+        action: "User got a entry page!",
         label: pageNumber.toString(),
         value: id,
       })
-      dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
+      dispatch(SetAlert({ title: "Received", message: "Entries" }))
       return data
     })
-    .catch(e => {
+    .catch((e) => {
       console.log(e)
-      // const payload = JSON.parse(JSON.stringify(e.response))
-      // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
 
-const GetAllUserEntryPages = (pageNumber = 1) => dispatch => {
+const GetAllUserEntryPages = (pageNumber = 1) => (dispatch) => {
   if (pageNumber) {
     dispatch(GetUserEntries(pageNumber))
       .then(({ next }) => {
-        const split = next?.split('page=')
+        const split = next?.split("page=")
         if (split?.length > 0) {
           const nextPage = split[1]
           dispatch(GetAllUserEntryPages(nextPage))
         }
       })
-      .catch(e => console.log(e))
+      .catch((e) => console.log(e))
   }
 }
 
-const GetUserEntriesByDate = payload => (dispatch, getState) => {
+const GetUserEntriesByDate = (payload) => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
@@ -279,22 +226,20 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
     .then(({ data }) => {
       dispatch(SetEntries(data))
       ReactGA.event({
-        category: 'Get User Entries By Date',
-        action: 'User got a entry page!',
+        category: "Get User Entries By Date",
+        action: "User got a entry page!",
         label: JSON.stringify(payload),
         value: id,
       })
-      dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
+      dispatch(SetAlert({ title: "Received", message: "Entries" }))
       return data
     })
-    .catch(e => {
+    .catch((e) => {
       console.log(e)
-      // const payload = JSON.parse(JSON.stringify(e))
-      // dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
     })
 }
 
-const PostEntry = payload => (dispatch, getState) => {
+const PostEntry = (payload) => (dispatch, getState) => {
   dispatch(PendingEntries())
   return Axios()
     .post(`entries/`, qs.stringify(payload))
@@ -311,50 +256,50 @@ const PostEntry = payload => (dispatch, getState) => {
       }
       dispatch(UpdateReduxEntry(payload.id, data, null))
       ReactGA.event({
-        category: 'Post Entry',
-        action: 'User posted a new entry!',
+        category: "Post Entry",
+        action: "User posted a new entry!",
         value: data.id,
       })
       return data
     })
-    .catch(e => {
+    .catch((e) => {
       const error = JSON.parse(JSON.stringify(e))
       console.log(error)
-      dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload: error })
+      dispatch(SetEntriesError(error))
     })
 }
 
-const UpdateEntry = (id, payload) => dispatch => {
+const UpdateEntry = (id, payload) => (dispatch) => {
   dispatch(PendingEntries())
   return Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch(UpdateReduxEntry(data.id, data, null))
       ReactGA.event({
-        category: 'Update Entry',
-        action: 'User updated a new entry!',
+        category: "Update Entry",
+        action: "User updated a new entry!",
         value: data.id,
       })
 
       return data
     })
-    .catch(e => {
+    .catch((e) => {
       if (e.response) {
         const payload = JSON.parse(JSON.stringify(e.response))
-        dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
+        dispatch(SetEntriesError(payload))
       }
     })
 }
 
-const DeleteEntry = id => dispatch => {
+const DeleteEntry = (id) => (dispatch) => {
   dispatch(PendingEntries())
   return Axios()
     .delete(`/entries/${id}/`)
-    .then(res => {
+    .then((res) => {
       dispatch(DeleteReduxEntry(id))
       ReactGA.event({
-        category: 'Delete Entry',
-        action: 'User deleted a new entry!',
+        category: "Delete Entry",
+        action: "User deleted a new entry!",
         value: id,
       })
       return res
@@ -364,11 +309,11 @@ const DeleteEntry = id => dispatch => {
         dispatch(DeleteReduxEntry(id))
       }
       const payload = response
-      dispatch({ type: EntriesActionTypes.ENTRIES_ERROR, payload })
+      dispatch(SetEntriesError(payload))
     })
 }
 
-const SearchUserEntries = search => (dispatch, getState) => {
+const SearchUserEntries = (search) => (dispatch, getState) => {
   dispatch(PendingEntries())
   dispatch(SetSearchEntries(search))
   const { id } = getState().User
@@ -377,18 +322,14 @@ const SearchUserEntries = search => (dispatch, getState) => {
     .then(async ({ data }) => {
       await dispatch(SetSearchEntries(search, data))
       ReactGA.event({
-        category: 'Search User Entries',
-        action: 'User searched for entries!',
+        category: "Search User Entries",
+        action: "User searched for entries!",
         value: search,
       })
       return data
     })
-    .catch(async e => {
-      await dispatch({
-        type: EntriesActionTypes.ENTRIES_SEARCH_FILTER,
-        payload: [],
-        search,
-      })
+    .catch(async (e) => {
+      await dispatch(SearchEntriesFilter(search, []))
       const error = JSON.parse(JSON.stringify(e))
       console.log(error)
     })
@@ -396,11 +337,13 @@ const SearchUserEntries = search => (dispatch, getState) => {
 
 const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
-  const entryToUpdate = items.concat(filteredItems).find(entry => entry.id == entry_id)
+  const entryToUpdate = items
+    .concat(filteredItems)
+    .find((entry) => entry.id == entry_id)
 
   if (entryToUpdate) {
     let { EntryFiles } = entryToUpdate
-    const indexToUpdate = EntryFiles.findIndex(file => file.id === id)
+    const indexToUpdate = EntryFiles.findIndex((file) => file.id === id)
     console.log(indexToUpdate)
     if (indexToUpdate) {
       delete EntryFiles[indexToUpdate]
@@ -413,16 +356,16 @@ const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   }
 }
 
-const DeleteEntryFile = (id, entry_id) => dispatch =>
+const DeleteEntryFile = (id, entry_id) => (dispatch) =>
   Axios()
     .delete(`/files/${id}/`)
-    .then(res => {
+    .then((res) => {
       dispatch(DeleteEntryFileFromRedux(id, entry_id))
       return res
     })
-    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+    .catch((e) => console.log(JSON.parse(JSON.stringify(e))))
 
-const SyncEntries = getEntryMethod => async (dispatch, getState) => {
+const SyncEntries = (getEntryMethod) => async (dispatch, getState) => {
   const {
     User,
     Entries: { items, filteredItems, isPending },
@@ -456,8 +399,8 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
     } = entries[i]
 
     if (_shouldDelete) {
-      await dispatch(DeleteEntry(id)).then(res =>
-        dispatch(SetAlert({ title: 'Deleted', message: 'Entry' })),
+      await dispatch(DeleteEntry(id)).then((res) =>
+        dispatch(SetAlert({ title: "Deleted", message: "Entry" }))
       )
       continue
     } else if (_shouldPost) {
@@ -473,8 +416,8 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
         is_public,
       }
 
-      await dispatch(PostEntry(postPayload)).then(async entry => {
-        dispatch(SetAlert({ title: 'Saved', message: 'Entry' }))
+      await dispatch(PostEntry(postPayload)).then(async (entry) => {
+        dispatch(SetAlert({ title: "Saved", message: "Entry" }))
         if (!entry) return
         const {
           EntryFiles,
@@ -513,45 +456,38 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
         is_public,
         //  views,
       }
-      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res =>
-        dispatch(SetAlert({ title: 'Updated', message: 'Entry' })),
+      await dispatch(
+        ParseBase64(id, cleanObject(updateEntryPayload))
+      ).then((res) =>
+        dispatch(SetAlert({ title: "Updated", message: "Entry" }))
       )
     }
   }
 
-  if (typeof getEntryMethod === 'function') {
-    await getEntryMethod().then(res => dispatch(SetAlert({ title: 'Received', message: 'Entry' })))
+  if (typeof getEntryMethod === "function") {
+    await getEntryMethod().then((res) =>
+      dispatch(SetAlert({ title: "Received", message: "Entry" }))
+    )
   }
 
-  dispatch({ type: EntriesActionTypes.ENTRIES_COMPLETE })
+  dispatch(SetEntriesComplete())
 }
 
 export {
-  ToggleShowOnlyPublic,
   CreateEntryTag,
   GetUserEntryTags,
   GetUserEntryPeople,
-  ClearEntry,
-  SetEntry,
-  SetEntries,
   GetUserEntry,
   GetUserEntryDetails,
   GetAllUserEntries,
   GetAllUserEntryPages,
   GetUserEntries,
   GetUserEntriesByDate,
-  PostReduxEntry,
   PostEntry,
-  UpdateReduxEntry,
   UpdateEntry,
-  DeleteReduxEntry,
   DeleteEntry,
-  ResetSearchEntries,
   SearchUserEntries,
   SyncEntries,
   DeleteEntryFileFromRedux,
   DeleteEntryFile,
-  ResetEntriesSortAndFilterMaps,
-  SetEntriesSortMap,
-  SetEntriesFilterMap,
 }

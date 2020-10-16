@@ -24,11 +24,10 @@ import { useAddToHomescreenPrompt } from 'hooks'
 import { lazyDelay } from 'utils'
 
 const Entries = lazy(() => import('./views/Entries'))
-
 const Helmet = lazy(() => import('./views/Helmet'))
 const AlertNotifications = lazy(() => import('./components/AlertNotifications'))
 const Account = lazy(() => import('./views/Account'))
-const BackgroundImage = lazy(() => import('./components/BackgroundImage').then(lazyDelay(300)))
+const BackgroundImage = lazy(() => import('./components/BackgroundImage').then(lazyDelay(200)))
 const Settings = lazy(() => import('./views/Settings'))
 const Support = lazy(() => import('./views/Support'))
 const EntryDetail = lazy(() => import('./views/EntryDetail'))
