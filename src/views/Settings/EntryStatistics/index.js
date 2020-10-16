@@ -1,11 +1,11 @@
-import React, { Fragment, memo } from "react"
-import { EntriesPropTypes } from "redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
-import { Container, Row, Col } from "reactstrap"
-import MomentJs from "moment"
-import deepEquals from "../../../utils/deepEquals"
-import { formatBytes } from "../../../utils"
-import "./styles.css"
+import React, { Fragment, memo } from 'react'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import { connect as reduxConnect } from 'react-redux'
+import { Container, Row, Col } from 'reactstrap'
+import MomentJs from 'moment'
+import deepEquals from '../../../utils/deepEquals'
+import { formatBytes } from '../../../utils'
+import './styles.css'
 
 const mapStateToProps = ({ Entries: { items, filteredItems, count } }) => ({
   items,
@@ -22,6 +22,9 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
   let tagCountMap = {}
   let peopleCountMap = {}
   let viewCount = 0
+  let entriesToPost = 0
+  let entriesToUpdate = 0
+  let entriesToDelete = 0
 
   const entries = items.concat(filteredItems)
 
@@ -35,6 +38,7 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
   for (var i = 0; i < totalEntries; i++) {
     const {
       id,
+      author,
       tags,
       people,
       EntryFiles,
@@ -42,43 +46,54 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
       html,
       date_created,
       date_created_by_author,
-      _lastUpdated,
       date_updated,
       views,
       rating,
       address,
       latitude,
       longitude,
-      author,
+      size,
+      is_public,
+      _size,
+      _shouldDelete,
+      _shouldPost,
+      _lastUpdated,
     } = entries[i]
     if (rating !== 0) {
       sumRating += rating
       validRatedEntries += 1
     }
 
+    if (_shouldDelete) {
+      entriesToDelete += 1
+    }
+
+    if (_shouldPost) {
+      entriesToPost += 1
+    }
+
+    if (_lastUpdated) {
+      entriesToUpdate += 1
+    }
+
     let updatedDated = MomentJs(date_updated)
 
     if (previousDate) {
-      sumRatingTimeUpdatingEntries += previousDate.diff(
-        updatedDated,
-        "milliseconds"
-      )
+      sumRatingTimeUpdatingEntries += previousDate.diff(updatedDated, 'milliseconds')
     }
 
     previousDate = updatedDated
 
     const entryString = `${title} ${html}`
     const currentCharCount = entryString.length
-    const currentWordCount = entryString.split(" ").length
+    const currentWordCount = entryString.split(' ').length
 
     charCount += currentCharCount
     wordCount += currentWordCount
     viewCount += views
 
-    if (currentWordCount < minimumWordsInAnEntry)
-      minimumWordsInAnEntry = currentWordCount
-    if (currentWordCount > maximumWordsInAnEntry)
-      maximumWordsInAnEntry = currentWordCount
+    if (currentWordCount < minimumWordsInAnEntry) minimumWordsInAnEntry = currentWordCount
+    if (currentWordCount > maximumWordsInAnEntry) maximumWordsInAnEntry = currentWordCount
 
     for (let j = 0, l = tags.length; j < l; j++) {
       const { name } = tags[j]
@@ -116,18 +131,21 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
   // ]
 
   const entryAverages = [
-    { title: "Rating", value: averageRating },
-    { title: "Words / entry", value: averageWordsPerEntry },
+    { title: 'Rating', value: averageRating },
+    { title: 'Words / entry', value: averageWordsPerEntry },
     // { title: "Time Writing Entries", value: averageTimesUpdatingEntries },
   ]
 
   const entryCounts = [
-    { title: "Entries", value: totalEntries },
-    { title: "Views", value: viewCount },
-    { title: "Characters", value: charCount },
-    { title: "Words", value: wordCount },
-    { title: "Minimum words / entry", value: minimumWordsInAnEntry },
-    { title: "Maximum words / entry", value: maximumWordsInAnEntry },
+    { title: 'Entries', value: totalEntries },
+    { title: 'Entries to Post', value: entriesToPost },
+    { title: 'Entries to Update', value: entriesToUpdate },
+    { title: 'Entries to Delete', value: entriesToDelete },
+    { title: 'Views', value: viewCount },
+    { title: 'Characters', value: charCount },
+    { title: 'Words', value: wordCount },
+    { title: 'Minimum words / entry', value: minimumWordsInAnEntry },
+    { title: 'Maximum words / entry', value: maximumWordsInAnEntry },
   ]
 
   const renderEntryStats = (stats, fixedValue = 2) =>
@@ -137,9 +155,9 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
         return (
           <Fragment key={`${title}-${i}`}>
             <Col xs={12}>
-              <span className="HomeSubHeader">{title}</span>
+              <span className='HomeSubHeader'>{title}</span>
             </Col>
-            {value.map((v) => renderStat(i, v, fixedValue))}
+            {value.map(v => renderStat(i, v, fixedValue))}
           </Fragment>
         )
       }
@@ -164,47 +182,41 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
         return renderStat(i, { title: name, value })
       })
 
-  const renderStat = (
-    key,
-    { title, value, type = "number" },
-    fixedValue = 0
-  ) => (
+  const renderStat = (key, { title, value, type = 'number' }, fixedValue = 0) => (
     <Col xs={12} key={`${title}-${key}`}>
       <span style={{ fontSize: 14, fontWeight: 600 }}>{`${title}: `}</span>
-      <span className="Stat">
-        {type === "number" ? Number(value).toFixed(fixedValue) : value}
-      </span>
+      <span className='Stat'>{type === 'number' ? Number(value).toFixed(fixedValue) : value}</span>
     </Col>
   )
 
   return (
-    <Container className="EntryStatistics Container">
+    <Container className='EntryStatistics Container'>
       <Row>
-        <Col xs={12} className="p-0">
+        <Col xs={12} className='p-0'>
           <h1>Entry Statistics</h1>
         </Col>
       </Row>
-      <Row className="StatContainer">
+      <Row className='StatContainer'>
         <Col xs={12}>
-          <span className="HomeSubHeader">Average</span>
+          <span className='HomeSubHeader'>Average</span>
         </Col>
         {renderEntryStats(entryAverages)}
       </Row>
-      <Row className="StatContainer">
+      <Row className='StatContainer'>
         <Col xs={12}>
-          <span className="HomeSubHeader">Count</span>
+          <span className='HomeSubHeader'>Count</span>
         </Col>
         {renderEntryStats(entryCounts, 0)}
       </Row>
-      <Row className="StatContainer">
+      <Row className='StatContainer'>
         <Col xs={12}>
-          <span className="HomeSubHeader">Tags</span>
+          <span className='HomeSubHeader'>Tags</span>
         </Col>
         {renderTagCounts()}
       </Row>
-      <Row className="StatContainer">
+      <Row className='StatContainer'>
         <Col xs={12}>
-          <span className="HomeSubHeader">People</span>
+          <span className='HomeSubHeader'>People</span>
         </Col>
         {renderPeopleCounts()}
       </Row>
