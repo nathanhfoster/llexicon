@@ -63,4 +63,4 @@ EntriesRandom.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-export default connect(mapStateToProps)(EntriesRandom)
+export default reduxConnect(mapStateToProps)(EntriesRandom)

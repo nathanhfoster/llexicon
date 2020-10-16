@@ -303,4 +303,4 @@ EntriesTable.defaultProps = {
   filterMap: DEFAULT_STATE_ENTRIES.filterMap,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntriesTable)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesTable)

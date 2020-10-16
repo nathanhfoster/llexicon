@@ -22,6 +22,9 @@ const mapStateToProps = ({
     Settings: { show_animated_background },
   },
   Window: { innerHeight, innerWidth },
+  router: {
+    location: { pathname },
+  },
 }) => ({
   show_animated_background,
   starLength: Math.ceil((innerHeight + innerWidth) / 5),
@@ -54,4 +57,4 @@ const BackgroundImage = ({ show_animated_background, starLength, pathname }) => 
   )
 }
 
-export default connect(mapStateToProps)(BackgroundImage)
+export default reduxConnect(mapStateToProps)(BackgroundImage)

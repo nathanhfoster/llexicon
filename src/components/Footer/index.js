@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
 import "./styles.css"
@@ -29,4 +29,4 @@ Footer.propTypes = {
   version: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 }
 
-export default connect(mapStateToProps)(Footer)
+export default reduxConnect(mapStateToProps)(Footer)

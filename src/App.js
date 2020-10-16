@@ -250,6 +250,7 @@ const App = ({
               ENTRIES_LIST,
               ENTRIES_TABLE,
               ENTRIES_MAP,
+              NEW_ENTRY,
             ]}
             render={() => <Entries />}
           />

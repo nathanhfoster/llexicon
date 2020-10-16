@@ -39,4 +39,4 @@ EntriesMostViewed.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-export default connect(mapStateToProps)(EntriesMostViewed)
+export default reduxConnect(mapStateToProps)(EntriesMostViewed)

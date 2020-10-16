@@ -1,6 +1,6 @@
 import ReactGA from "react-ga"
-import { SetAlert } from "reducers//Alerts/actions"
-import { GetAppVersion } from "reducers//App/actions"
+import { SetAlert } from "./redux/Alerts/actions"
+import { GetAppVersion } from "./redux/App/actions"
 const { PUBLIC_URL } = process.env
 
 const receivePushNotification = (event, registration) => {
@@ -57,7 +57,7 @@ const config = (store) => ({
     if (waitingServiceWorker) {
       waitingServiceWorker.addEventListener("statechange", (event) => {
         if (event.target.state === "activated") {
-          if (store.isReady) {
+          if (store) {
             store
               .dispatch(GetAppVersion())
               .then(({ currentVersion, latestVersion }) => {

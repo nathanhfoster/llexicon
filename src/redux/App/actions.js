@@ -1,4 +1,4 @@
-import { AppActionTypes } from "./types"
+import { AppActionTypes } from "../App/types"
 import axios from "axios"
 import ReactGA from "react-ga"
 const { PUBLIC_URL } = process.env

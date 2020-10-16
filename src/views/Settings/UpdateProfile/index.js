@@ -135,4 +135,4 @@ UpdateProfile.propTypes = {
 
 UpdateProfile.defaultProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateProfile)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(UpdateProfile)

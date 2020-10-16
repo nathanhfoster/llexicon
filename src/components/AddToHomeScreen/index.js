@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, Button } from "reactstrap"
 import getBrowserIcon from "./getBrowserIcon"
 import { BasicModal } from "../"
@@ -108,4 +108,4 @@ AddToHomeScreenModal.defaultProps = {
   width: "auto",
 }
 
-export default memo(connect(mapStateToProps)(AddToHomeScreenModal))
+export default memo(reduxConnect(mapStateToProps)(AddToHomeScreenModal))

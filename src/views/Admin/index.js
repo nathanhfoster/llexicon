@@ -198,4 +198,4 @@ Admin.propTypes = {
 
 Admin.defaultProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Admin)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Admin)

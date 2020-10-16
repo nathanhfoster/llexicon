@@ -62,4 +62,4 @@ EntryPropTypes.defaultProps = {
   height: 500,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntriesMap)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntriesMap)

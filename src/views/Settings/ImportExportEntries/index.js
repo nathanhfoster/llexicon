@@ -114,4 +114,7 @@ ImportExportEntries.propTypes = {
 
 ImportExportEntries.defaultProps = { userId: null }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImportExportEntries)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ImportExportEntries)

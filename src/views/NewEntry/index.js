@@ -1,5 +1,5 @@
 import React, { useEffect, lazy } from "react"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "redux/Entries/propTypes"
 import { ReactDatePicker } from "../../components"
@@ -145,4 +145,4 @@ NewEntry.propTypes = {
   ResetMap: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewEntry)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(NewEntry)

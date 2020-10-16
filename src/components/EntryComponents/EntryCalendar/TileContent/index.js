@@ -88,4 +88,4 @@ TileContent.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TileContent)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(TileContent)

@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import { LocalStorage } from "components"
 
@@ -22,4 +22,4 @@ Storage.propTypes = {}
 
 Storage.defaultProps = {}
 
-export default connect(mapStateToProps)(Storage)
+export default reduxConnect(mapStateToProps)(Storage)

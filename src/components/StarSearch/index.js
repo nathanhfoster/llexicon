@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { InputGroup, InputGroupAddon, InputGroupText } from "reactstrap"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import { Link } from "react-router-dom"
 import { RouteMap } from "redux/router/actions"
 import { SearchUserEntries } from "redux/Entries/actions"
@@ -75,4 +75,4 @@ StarSearch.propTypes = {
   SearchUserEntries: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StarSearch)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(StarSearch)

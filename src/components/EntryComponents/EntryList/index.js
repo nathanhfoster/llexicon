@@ -105,4 +105,4 @@ EntryList.propTypes = {
   entriesWithinView: EntriesPropTypes,
 }
 
-export default connect(mapStateToProps)(EntryList)
+export default reduxConnect(mapStateToProps)(EntryList)

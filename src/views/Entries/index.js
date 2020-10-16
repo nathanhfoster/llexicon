@@ -5,7 +5,7 @@ import { EntriesPropTypes } from "redux/Entries/propTypes"
 import { Row } from "reactstrap"
 import { RouteMap, RouterPush } from "redux/router/actions"
 import { BasicTabs, NewEntryButton } from "../../components"
-import { UserEntriesTable } from "containers"
+import { UserEntriesTable } from "../../containers"
 import NewEntry from "../NewEntry"
 import { GetUserEntries } from "redux/Entries/actions"
 import "./styles.css"
@@ -28,12 +28,16 @@ const mapStateToProps = ({
   Entries: { items, showOnlyPublic },
   TextEditor,
   Window: { innerHeight, navBarHeight },
+  router: {
+    location: { pathname },
+  },
 }) => ({
   userId: id,
   entries: items,
   showOnlyPublic,
   TextEditor,
   viewPortHeight: innerHeight - navBarHeight,
+  pathname,
 })
 
 const mapDispatchToProps = {
@@ -47,8 +51,8 @@ const Entries = ({
   TextEditor,
   viewPortHeight,
   GetUserEntries,
+  pathname,
 }) => {
-  const { pathname } = useLocation()
   useEffect(() => {
     if (userId) GetUserEntries(1)
   }, [userId])
@@ -224,4 +228,4 @@ Entries.propTypes = {
   GetUserEntries: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Entries)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Entries)

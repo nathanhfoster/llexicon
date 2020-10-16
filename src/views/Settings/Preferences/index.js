@@ -134,4 +134,4 @@ Preferences.propTypes = {
   UpdateSettings: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Preferences)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Preferences)

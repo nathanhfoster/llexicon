@@ -173,4 +173,4 @@ LocalStorage.propTypes = {
 
 LocalStorage.defaultProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(LocalStorage)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(LocalStorage)

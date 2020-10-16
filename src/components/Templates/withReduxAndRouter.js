@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, memo } from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { Container, Row, Col } from "reactstrap"
 
@@ -12,7 +12,7 @@ const getInitialState = ({}) => {
   return {}
 }
 
-const Template = (props) => {
+const Template = props => {
   const [state, setState] = useState(getInitialState(props))
 
   const {} = state
@@ -30,7 +30,7 @@ Template.propTypes = {}
 
 Template.defaultProps = {}
 
-export default connect(
+export default reduxConnect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(Template))

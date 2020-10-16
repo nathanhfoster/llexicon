@@ -158,7 +158,7 @@ ResolveEntryConflictModal.propTypes = {
   ClearEntry: PropTypes.func.isRequired,
 }
 
-export default connect(
+export default reduxConnect(
   mapStateToProps,
   mapDispatchToProps
 )(ResolveEntryConflictModal)

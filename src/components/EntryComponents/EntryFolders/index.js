@@ -15,8 +15,13 @@ const BASE_FOLDER_DIRECTORY_URL = 'folders?folder=All'
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
-const EntryFolders = ({ entries }) => {
-  const { search } = useLocation()
+const mapStateToProps = ({
+  router: {
+    location: { search },
+  },
+}) => ({ search })
+
+const EntryFolders = ({ entries, search }) => {
   useEffect(() => {
     if (!search) RouterPush(BASE_FOLDER_DIRECTORY_URL)
   }, [])
@@ -140,4 +145,4 @@ EntryFolders.propTypes = {
 
 EntryFolders.defaultProps = { search: '' }
 
-export default memo(EntryFolders)
+export default reduxConnect(mapStateToProps)(EntryFolders)

@@ -93,7 +93,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatchToProps = {
-  ResetRedux,
+  UserLogout,
   GetUserEntriesByDate,
 }
 
@@ -101,7 +101,7 @@ const NavBar = ({
   userId,
   userIsSuperUser,
   isMobile,
-  ResetRedux,
+  UserLogout,
   prompt,
   promptToInstall,
 }) => {
@@ -297,8 +297,8 @@ const NavBar = ({
 
 Navbar.propTypes = {
   userId: PropTypes.number,
-  ResetRedux: PropTypes.func,
+  UserLogout: PropTypes.func,
   GetAllEntries: PropTypes.func,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(NavBar)

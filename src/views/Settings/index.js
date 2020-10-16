@@ -22,8 +22,13 @@ const {
   SETTINGS_STORAGE,
 } = RouteMap
 
-const Settings = ({}) => {
-  const { pathname } = useLocation()
+const mapStateToProps = ({
+  router: {
+    location: { pathname },
+  },
+}) => ({ pathname })
+
+const Settings = ({ pathname }) => {
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
   const activeTab = pathname
 
@@ -100,4 +105,4 @@ Settings.propTypes = {
   User: UserProps,
 }
 
-export default memo(Settings)
+export default reduxConnect(mapStateToProps)(Settings)

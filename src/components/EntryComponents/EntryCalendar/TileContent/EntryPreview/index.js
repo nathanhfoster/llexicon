@@ -46,13 +46,7 @@ const EntryPreview = ({
       </div>
     </div>
   ) : view == "month" ? (
-    <Star
-      bottom="8px"
-      size={8}
-      color="PurpleWhite"
-      animation={false}
-      opacity={1}
-    />
+    <Star bottom="8px" size={8} color="PurpleWhite" animation={false} opacity={1} />
   ) : null
 
 EntryPreview.propTypes = {
@@ -72,4 +66,4 @@ EntryPreview.propTypes = {
   views: PropTypes.number,
 }
 
-export default connect(mapStateToProps)(EntryPreview)
+export default reduxConnect(mapStateToProps)(EntryPreview)

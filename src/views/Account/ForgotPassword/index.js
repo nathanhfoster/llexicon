@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "components"
 import { PasswordReset } from "redux/User/actions"
@@ -80,4 +80,4 @@ ForgotPassword.propTypes = {
 
 ForgotPassword.defaultProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(ForgotPassword)

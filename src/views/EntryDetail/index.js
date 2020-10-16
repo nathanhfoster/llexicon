@@ -115,4 +115,4 @@ EntryDetail.propTypes = {
   SetCalendar: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntryDetail)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)

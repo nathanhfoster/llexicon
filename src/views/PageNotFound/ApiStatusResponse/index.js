@@ -21,14 +21,23 @@ const getSubtitles = (apiResponseStatus) => {
   }
 }
 
-const mapStateToProps = ({ Alerts: { apiResponseStatus } }) => ({
+const mapStateToProps = ({
+  Alerts: { apiResponseStatus },
+  router: {
+    location: { pathname },
+  },
+}) => ({
   apiResponseStatus,
+  pathname,
 })
 
 const mapDispatchToProps = { SetApiResponseStatus }
 
-const ApiStatusResponse = ({ apiResponseStatus, SetApiResponseStatus }) => {
-  const { pathname } = useLocation()
+const ApiStatusResponse = ({
+  apiResponseStatus,
+  SetApiResponseStatus,
+  pathname,
+}) => {
   useEffect(() => {
     const isOnEntryDetailView = stringMatch(
       pathname,
@@ -70,4 +79,7 @@ ApiStatusResponse.propTypes = {
 
 ApiStatusResponse.defaultProps = { apiResponseStatus: 404 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ApiStatusResponse)
+export default reduxConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ApiStatusResponse)

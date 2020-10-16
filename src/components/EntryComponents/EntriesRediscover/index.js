@@ -50,4 +50,4 @@ EntriesRediscover.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-export default connect(mapStateToProps)(EntriesRediscover)
+export default reduxConnect(mapStateToProps)(EntriesRediscover)

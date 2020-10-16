@@ -1,4 +1,4 @@
-import { CalendarActionTypes } from "./types"
+import { CalendarActionTypes } from "../Calendar/types"
 
 const DEFAULT_STATE_CALENDAR = { activeDate: new Date(), view: "month" }
 

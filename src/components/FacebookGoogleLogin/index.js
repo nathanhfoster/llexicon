@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import { Row, Col } from "reactstrap"
-import { useDispatch } from "store/provider"
+import { useDispatch } from "react-redux"
 import FacebookLogin from "react-facebook-login"
 import GoogleLogin from "react-google-login"
 import { SocialAuthentication } from "redux/Actions/SocialAuthentication"
@@ -9,7 +9,7 @@ const { REACT_APP_FACEBOOK_API, REACT_APP_GOOGLE_API } = process.env
 
 const FacebookGoogleLogin = () => {
   const dispatch = useDispatch()
-  const responseFacebook = (response) => {
+  const responseFacebook = response => {
     const {
       accessToken,
       data_access_expiration_time,
@@ -20,7 +20,7 @@ const FacebookGoogleLogin = () => {
       picture,
       reauthorize_required_in,
       signedRequest,
-      userID,
+      userID
     } = response
     const payload = {
       provider: "Facebook",
@@ -30,12 +30,12 @@ const FacebookGoogleLogin = () => {
       expires_at: data_access_expiration_time,
       name,
       email,
-      picture: picture.data.url,
+      picture: picture.data.url
     }
     dispatch(SocialAuthentication(payload))
   }
 
-  const responseGoogle = (response) => {
+  const responseGoogle = response => {
     const {
       El,
       tokenId,
@@ -51,8 +51,8 @@ const FacebookGoogleLogin = () => {
         login_hint,
         scope,
         session_state,
-        token_type,
-      },
+        token_type
+      }
       // w3: { Eea, Paa, U3, ig, ofa, wea }
     } = response
 
@@ -64,7 +64,7 @@ const FacebookGoogleLogin = () => {
       expires_at,
       name,
       email,
-      picture: imageUrl,
+      picture: imageUrl
     }
 
     dispatch(SocialAuthentication(payload))
@@ -92,7 +92,7 @@ const FacebookGoogleLogin = () => {
       <Col xs={{ size: 6 }}>
         <GoogleLogin
           clientId={REACT_APP_GOOGLE_API}
-          render={(renderProps) => (
+          render={renderProps => (
             <button
               className="GoogleButton"
               onClick={renderProps.onClick}

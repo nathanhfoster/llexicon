@@ -1,6 +1,6 @@
 import React, { useMemo, lazy, Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
 import {
   AddToHomeScreen,
@@ -15,7 +15,7 @@ import "./styles.css"
 const EntryNavButtons = lazy(() =>
   import("../../components/EntryComponents/EntryNavButtons")
 )
-const UserEntriesTable = lazy(() => import("containers/UserEntriesTable"))
+const UserEntriesTable = lazy(() => import("../../containers/UserEntriesTable"))
 
 const EntriesMostViewed = lazy(() =>
   import("../../components/EntryComponents/EntriesMostViewed")
@@ -102,4 +102,4 @@ Home.propTypes = {
 
 Home.defaultProps = { userIsLoggedIn: false }
 
-export default connect(mapStateToProps)(Home)
+export default reduxConnect(mapStateToProps)(Home)

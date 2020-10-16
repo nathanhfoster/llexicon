@@ -260,4 +260,4 @@ class BasicMap extends PureComponent {
     )
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(BasicMap)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(BasicMap)

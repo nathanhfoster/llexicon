@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, Fragment } from "react"
 import PropTypes from "prop-types"
-import { connect } from "store/provider"
+import { connect as reduxConnect } from "react-redux"
 import { Jumbotron } from "reactstrap"
 import { BasicForm, FacebookGoogleLogin } from "components"
 import { CreateUser } from "redux/User/actions"
@@ -12,16 +12,12 @@ const mapStateToProps = ({ User: { error, pending } }) => ({
 
 const mapDispatchToProps = {
   CreateUser,
-  UserLogin,
 }
 
 const SignUp = ({ userError, userPending, CreateUser }) => {
   const errorMessage =
     userError && "Please confirm Username, Email, or Password"
-  const handleSignUp = useCallback(async (payload) => {
-    await CreateUser(payload)
-    await UserLogin(payload)
-  }, [])
+  const handleSignUp = useCallback((payload) => CreateUser(payload), [])
 
   const isInvalid = useCallback((value) => {
     if (value && value.length < 3) {
@@ -102,4 +98,4 @@ SignUp.propTypes = {
   CreateUser: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(SignUp)

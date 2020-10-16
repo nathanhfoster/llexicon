@@ -31,6 +31,8 @@ const getPersistedState = () => {
   return state
 }
 
+const { store, persistor } = storeFactory()
+
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
 const inDevelopmentMode = NODE_ENV === "development"
@@ -84,6 +86,6 @@ ReactDOM.render(
 )
 
 // Doesn't get called in development since there is no service worker
-inDevelopmentMode && store.isReady && store.dispatch(GetAppVersion())
+inDevelopmentMode && store.dispatch(GetAppVersion())
 
 serviceWorker.register(serviceWorker.serviceWorkerConfig(store))

@@ -3,7 +3,7 @@ import { EntriesPropTypes } from "redux/Entries/propTypes"
 import { connect as reduxConnect } from "react-redux"
 import { Container, Row, Col } from "reactstrap"
 import MomentJs from "moment"
-import deepEquals from "utils//deepEquals"
+import deepEquals from "../../../utils/deepEquals"
 import { formatBytes } from "../../../utils"
 import "./styles.css"
 
@@ -219,4 +219,4 @@ EntryStatistics.propTypes = {
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
 
-export default connect(mapStateToProps)(memo(EntryStatistics, isEqual))
+export default reduxConnect(mapStateToProps)(memo(EntryStatistics, isEqual))
