@@ -33,6 +33,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = { UpdateAppVersion }
 
 const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVersion }) => {
+  serviceWorkerRegistration= true
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
 
   const appVerisionText = useMemo(
@@ -45,8 +46,6 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
   const activeTab = pathname
 
   const handleTabChange = tabId => RouterPush(tabId)
-
-  const handleUpdateApp = () => {}
 
   const tabs = [
     {
@@ -105,9 +104,11 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
             SETTINGS
           </Header>
         </Col>
-        <Col xs={12} className='Center'>
+        <Col xs={12} className='Center mb-2'>
           {serviceWorkerRegistration ? (
-            <Button>{appVerisionText}</Button>
+            <Button color='accent' onClick={UpdateAppVersion}>
+              {appVerisionText}
+            </Button>
           ) : (
             <h6>{appVerisionText}</h6>
           )}

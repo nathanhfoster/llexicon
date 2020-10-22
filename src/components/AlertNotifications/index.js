@@ -6,32 +6,21 @@ import { UseDebounce } from '..'
 import { ClearAlerts, UpdateAppVersion } from 'redux/Alerts/actions'
 import './styles.css'
 
-const mapStateToProps = ({ Alerts: { title, message, timeout, serviceWorkerRegistration } }) => ({
+const mapStateToProps = ({ Alerts: { title, message, timeout } }) => ({
   title,
   message,
   timeout,
-  serviceWorkerRegistration,
 })
 
 const mapDispatchToProps = { ClearAlerts, UpdateAppVersion }
 
-const AlertNotifications = ({
-  icon,
-  title,
-  message,
-  timeout,
-  serviceWorkerRegistration,
-  ClearAlerts,
-  UpdateAppVersion,
-}) => {
+const AlertNotifications = ({ icon, title, message, timeout, ClearAlerts, UpdateAppVersion }) => {
   const appUpdate = timeout === false
   const shouldShow = appUpdate || (title && message) ? true : false
 
   const handleClearAlerts = useCallback(() => {
     ClearAlerts()
   }, [])
-
-  const handleUpdate = useCallback(() => UpdateAppVersion(), [])
 
   return (
     <Toast
@@ -59,7 +48,7 @@ const AlertNotifications = ({
 
         {appUpdate && (
           <div className='Center'>
-            <Button onClick={handleUpdate} color='accent'>
+            <Button onClick={UpdateAppVersion} color='accent'>
               Update
             </Button>
           </div>
