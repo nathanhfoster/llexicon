@@ -1,22 +1,18 @@
-import "css/index.css"
-import React, { Suspense } from "react"
-import ReactDOM from "react-dom"
-import storeFactory from "./redux"
-import App from "App"
-import { history } from "redux/router/reducer"
-import {
-  getUserClientId,
-  PersistedStorageReduxKey,
-  clearLocalStorage,
-} from "redux/localState"
-import { Provider } from "react-redux"
-import { ConnectedRouter } from "connected-react-router"
-import { LoadingScreen } from "components"
-import { PersistGate } from "redux-persist/integration/react"
-import * as serviceWorker from "serviceWorker"
-import { GetAppVersion } from "redux/App/actions"
-import ReactGA from "react-ga"
-import prototypes from "prototypes"
+import 'css/index.css'
+import React, { Suspense } from 'react'
+import ReactDOM from 'react-dom'
+import storeFactory from './redux'
+import App from 'App'
+import { history } from 'redux/router/reducer'
+import { getUserClientId, PersistedStorageReduxKey, clearLocalStorage } from 'redux/localState'
+import { Provider } from 'react-redux'
+import { ConnectedRouter } from 'connected-react-router'
+import { LoadingScreen } from 'components'
+import { PersistGate } from 'redux-persist/integration/react'
+import * as serviceWorker from 'serviceWorker'
+import { GetAppVersion } from 'redux/App/actions'
+import ReactGA from 'react-ga'
+import prototypes from 'prototypes'
 
 prototypes()
 
@@ -35,7 +31,7 @@ const { store, persistor } = storeFactory()
 
 const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
-const inDevelopmentMode = NODE_ENV === "development"
+const inDevelopmentMode = NODE_ENV === 'development'
 
 const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
 
@@ -51,7 +47,7 @@ ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
   },
 })
 // Initialize google analytics page view tracking
-history.listen((location) => {
+history.listen(location => {
   const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
   const page = location.pathname
 
@@ -82,10 +78,9 @@ ReactDOM.render(
       </Suspense>
     </PersistGate>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById('root'),
 )
 
-// Doesn't get called in development since there is no service worker
-!inDevelopmentMode && store.dispatch(GetAppVersion())
+store.dispatch(GetAppVersion())
 
 serviceWorker.register(serviceWorker.serviceWorkerConfig(store))

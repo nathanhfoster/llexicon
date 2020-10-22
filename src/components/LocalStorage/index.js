@@ -1,30 +1,22 @@
-import React, { useEffect, useState, useMemo } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import {
-  BasicProgress,
-  Header,
-  ButtonClearCache,
-  ButtonClearEntries,
-} from "components"
-import { Container, Row, Col, ButtonGroup } from "reactstrap"
-import { formatBytes, getStringBytes } from "utils"
-import { EntriesPropTypes } from "redux/Entries/propTypes"
-import { CloudDownload } from "../../images/SVG"
-import { PersistedStorageReduxKey, isQuotaExceeded } from "redux/localState"
+import React, { useMemo } from 'react'
+import PropTypes from 'prop-types'
+import { connect as reduxConnect } from 'react-redux'
+import { BasicProgress, Header, ButtonClearCache, ButtonClearEntries } from 'components'
+import { Container, Row, Col, ButtonGroup } from 'reactstrap'
+import { formatBytes, getStringBytes } from 'utils'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import { CloudDownload } from '../../images/SVG'
 
-const LOCAL_STORAGE_LIMIT = 10 * 1024 * 1024
 const SERVER_STORAGE_LIMIT = 500 * 1024 * 1024
-const LOCAL_STORAGE_QOUTA_LIMIT_TEST = "qoutaLimitTest"
-const LOCAL_STORAGE_QOUTA_LIMIT_TEST_ITERATIONS = ~~(LOCAL_STORAGE_LIMIT / 100)
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const {
     App: {
       version,
       localStorageUsage,
       localStorageQuota,
       localStorageUsageDetails,
+      localStorageCapacity,
     },
     Entries: { items, filteredItems },
     // Entries,
@@ -41,6 +33,7 @@ const mapStateToProps = (state) => {
     localStorageUsage,
     localStorageQuota,
     localStorageUsageDetails,
+    localStorageCapacity,
   }
 }
 
@@ -55,57 +48,16 @@ const LocalStorage = ({
   localStorageUsage,
   localStorageQuota,
   localStorageUsageDetails,
+  localStorageCapacity,
 }) => {
-  const [localStorageLimitBytes, setLocalStorageLimitBytes] = useState(
-    reduxStoreUsage
-  )
-
-  useEffect(() => {
-    var i = 0
-    var previousLocalStorage = ""
-    try {
-      for (
-        i = LOCAL_STORAGE_QOUTA_LIMIT_TEST_ITERATIONS;
-        i <= LOCAL_STORAGE_LIMIT;
-        i += LOCAL_STORAGE_QOUTA_LIMIT_TEST_ITERATIONS
-      ) {
-        const currentLocalStorageTest =
-          localStorage.getItem(LOCAL_STORAGE_QOUTA_LIMIT_TEST) || ""
-        const currentReduxLocalStorage =
-          localStorage.getItem(PersistedStorageReduxKey) || ""
-        previousLocalStorage = currentLocalStorageTest.concat(
-          currentReduxLocalStorage
-        )
-        localStorage.setItem(
-          LOCAL_STORAGE_QOUTA_LIMIT_TEST,
-          new Array(i).join("a")
-        )
-      }
-    } catch (e) {
-      if (isQuotaExceeded(e)) {
-        const previousLocalStorageBytes = getStringBytes(previousLocalStorage)
-
-        setLocalStorageLimitBytes(previousLocalStorageBytes)
-        localStorage.removeItem(LOCAL_STORAGE_QOUTA_LIMIT_TEST)
-      }
-    }
-  }, [localStorageLimitBytes])
-
-  const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(
-    localStorageLimitBytes
-  )}`
+  const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(localStorageCapacity)}`
 
   const serverUsage = useMemo(
-    () =>
-      items
-        .concat(filteredItems)
-        .reduce((usage, entry) => (usage += entry.size || 0), 0),
-    [items, filteredItems]
+    () => items.concat(filteredItems).reduce((usage, entry) => (usage += entry.size || 0), 0),
+    [items, filteredItems],
   )
 
-  const serverStorageLabel = `${formatBytes(serverUsage)} / ${formatBytes(
-    SERVER_STORAGE_LIMIT
-  )}`
+  const serverStorageLabel = `${formatBytes(serverUsage)} / ${formatBytes(SERVER_STORAGE_LIMIT)}`
 
   // const bars = [
   //   { value: entriesStorageUsage, showPercentage: true, label: "Entries" },
@@ -116,35 +68,35 @@ const LocalStorage = ({
     <Container fluid>
       <Row>
         <Header>
-          <i className="fas fa-hdd mr-1" />
+          <i className='fas fa-hdd mr-1' />
           Local Storage Usage
         </Header>
       </Row>
       <Row>
-        <Col xs={12} className="p-0">
+        <Col xs={12} className='p-0'>
           <BasicProgress
             label={reduxStorageLabel}
             showPercentage
             value={reduxStoreUsage}
-            max={localStorageLimitBytes}
+            max={localStorageCapacity}
           />
         </Col>
       </Row>
-      <Row className="text-center my-3">
+      <Row className='text-center my-3'>
         <Col tag={ButtonGroup} xs={12}>
           <ButtonClearCache />
-          <div className="mx-1" />
+          <div className='mx-1' />
           <ButtonClearEntries />
         </Col>
       </Row>
       <Row>
         <Header height={50}>
-          <CloudDownload className="mr-1" height={37} />
+          <CloudDownload className='mr-1' height={37} />
           Server Usage
         </Header>
       </Row>
       <Row>
-        <Col xs={12} className="p-0">
+        <Col xs={12} className='p-0'>
           <BasicProgress
             label={serverStorageLabel}
             showPercentage

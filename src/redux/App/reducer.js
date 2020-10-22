@@ -2,6 +2,7 @@ import { AppActionTypes } from "./types"
 
 const DEFAULT_STATE_APP = {
   version: new Number(1).toFixed(3),
+  localStorageCapacity: null,
   localStorageUsage: null,
   localStorageQuota: null,
   localStorageUsageDetails: null,
