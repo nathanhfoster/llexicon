@@ -86,6 +86,6 @@ ReactDOM.render(
 )
 
 // Doesn't get called in development since there is no service worker
-inDevelopmentMode && store.dispatch(GetAppVersion())
+!inDevelopmentMode && store.dispatch(GetAppVersion())
 
 serviceWorker.register(serviceWorker.serviceWorkerConfig(store))

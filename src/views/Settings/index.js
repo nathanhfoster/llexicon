@@ -1,17 +1,17 @@
-import React, { Fragment, memo } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { UserProps } from "redux/User/propTypes"
-import { Container, Row, Col } from "reactstrap"
-import { BasicTabs, Header, PushNotifications } from "../../components"
-import EntryStatistics from "./EntryStatistics"
-import ImportExportEntries from "./ImportExportEntries"
-import AccountDetails from "./AccountDetails"
-import UpdateProfile from "./UpdateProfile"
-import Storage from "./Storage"
-import Preferences from "./Preferences"
-import { RouterPush, RouteMap } from "redux/router/actions"
-import "./styles.css"
+import React, { useMemo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { connect as reduxConnect } from 'react-redux'
+import { Container, Row, Col, Button } from 'reactstrap'
+import { BasicTabs, Header, PushNotifications } from '../../components'
+import EntryStatistics from './EntryStatistics'
+import ImportExportEntries from './ImportExportEntries'
+import AccountDetails from './AccountDetails'
+import UpdateProfile from './UpdateProfile'
+import Storage from './Storage'
+import Preferences from './Preferences'
+import { RouterPush, RouteMap } from 'redux/router/actions'
+import { UpdateAppVersion } from 'redux/Alerts/actions'
+import './styles.css'
 
 const {
   SETTINGS,
@@ -23,23 +23,37 @@ const {
 } = RouteMap
 
 const mapStateToProps = ({
+  Alerts: { serviceWorkerRegistration },
+  App: { version },
   router: {
     location: { pathname },
   },
-}) => ({ pathname })
+}) => ({ serviceWorkerRegistration, appVersion: version, pathname })
 
-const Settings = ({ pathname }) => {
+const mapDispatchToProps = { UpdateAppVersion }
+
+const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVersion }) => {
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
+
+  const appVerisionText = useMemo(
+    () =>
+      serviceWorkerRegistration
+        ? `Update to app verision: ${appVersion}`
+        : `App verision: ${appVersion}`,
+    [serviceWorkerRegistration, appVersion],
+  )
   const activeTab = pathname
 
-  const handleTabChange = (tabId) => RouterPush(tabId)
+  const handleTabChange = tabId => RouterPush(tabId)
+
+  const handleUpdateApp = () => {}
 
   const tabs = [
     {
       tabId: SETTINGS_ENTRIES,
-      title: "Entries",
+      title: 'Entries',
 
-      className: "mt-2",
+      className: 'mt-2',
       render: (
         <Fragment>
           <ImportExportEntries />
@@ -50,8 +64,8 @@ const Settings = ({ pathname }) => {
     },
     {
       tabId: SETTINGS_PROFILE,
-      title: "Profile",
-      className: "mt-2",
+      title: 'Profile',
+      className: 'mt-2',
       render: (
         <Fragment>
           <AccountDetails />
@@ -62,38 +76,45 @@ const Settings = ({ pathname }) => {
     },
     {
       tabId: SETTINGS_PREFERENCES,
-      title: "Preferences",
-      className: "mt-2",
+      title: 'Preferences',
+      className: 'mt-2',
       render: <Preferences />,
       onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PUSH_NOTIFICATIONS,
-      title: "Push Notifications",
-      className: "mt-2",
+      title: 'Push Notifications',
+      className: 'mt-2',
       render: <PushNotifications />,
       onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_STORAGE,
-      title: "Storage",
-      className: "mt-2",
+      title: 'Storage',
+      className: 'mt-2',
       render: <Storage />,
       onClick: handleTabChange,
     },
   ]
   return (
-    <Container className="Settings Container">
+    <Container className='Settings Container'>
       <Row>
-        <Col xs={12} className="Center mt-3">
+        <Col xs={12} className='Center mt-3'>
           <Header>
-            <i className="fa fa-cog mr-2" />
+            <i className='fa fa-cog mr-2' />
             SETTINGS
           </Header>
         </Col>
+        <Col xs={12} className='Center'>
+          {serviceWorkerRegistration ? (
+            <Button>{appVerisionText}</Button>
+          ) : (
+            <h6>{appVerisionText}</h6>
+          )}
+        </Col>
       </Row>
       <Row>
-        <Col xs={12} className="p-0">
+        <Col xs={12} className='p-0'>
           <BasicTabs activeTab={activeTab} tabs={tabs} />
         </Col>
       </Row>
@@ -102,7 +123,10 @@ const Settings = ({ pathname }) => {
 }
 
 Settings.propTypes = {
-  User: UserProps,
+  serviceWorkerRegistration: PropTypes.object,
+  appVersion: PropTypes.string,
+  pathname: PropTypes.string.isRequired,
+  UpdateAppVersion: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps)(Settings)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Settings)

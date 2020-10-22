@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
 import { Toast, ToastHeader, ToastBody, Button } from 'reactstrap'
 import { UseDebounce } from '..'
-import { ClearAlerts } from 'redux/Alerts/actions'
+import { ClearAlerts, UpdateAppVersion } from 'redux/Alerts/actions'
 import './styles.css'
 
 const mapStateToProps = ({ Alerts: { title, message, timeout, serviceWorkerRegistration } }) => ({
@@ -13,7 +13,7 @@ const mapStateToProps = ({ Alerts: { title, message, timeout, serviceWorkerRegis
   serviceWorkerRegistration,
 })
 
-const mapDispatchToProps = { ClearAlerts }
+const mapDispatchToProps = { ClearAlerts, UpdateAppVersion }
 
 const AlertNotifications = ({
   icon,
@@ -22,6 +22,7 @@ const AlertNotifications = ({
   timeout,
   serviceWorkerRegistration,
   ClearAlerts,
+  UpdateAppVersion,
 }) => {
   const appUpdate = timeout === false
   const shouldShow = appUpdate || (title && message) ? true : false
@@ -30,19 +31,7 @@ const AlertNotifications = ({
     ClearAlerts()
   }, [])
 
-  const handleUpdate = useCallback(() => {
-    handleClearAlerts()
-    // serviceWorkerRegistration &&
-    //   serviceWorkerRegistration.waiting &&
-    //   serviceWorkerRegistration.waiting.postMessage({ type: "SKIP_WAITING" })
-    setTimeout(() => {
-      // const currentUrl = window.location.href
-      // window.close()
-      // window.open(currentUrl, "_blank")
-
-      window.location.reload()
-    }, 400)
-  }, [])
+  const handleUpdate = useCallback(() => UpdateAppVersion(), [])
 
   return (
     <Toast
@@ -85,6 +74,7 @@ AlertNotifications.propTypes = {
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   ClearAlerts: PropTypes.func.isRequired,
+  UpdateAppVersion: PropTypes.func.isRequired,
   timeout: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
 }
 

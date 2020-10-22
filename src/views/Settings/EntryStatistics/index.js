@@ -1,9 +1,9 @@
 import React, { Fragment, memo } from 'react'
+import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { connect as reduxConnect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
 import MomentJs from 'moment'
-import deepEquals from '../../../utils/deepEquals'
 import { formatBytes } from '../../../utils'
 import './styles.css'
 
@@ -229,6 +229,4 @@ EntryStatistics.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
-
-export default reduxConnect(mapStateToProps)(memo(EntryStatistics, isEqual))
+export default reduxConnect(mapStateToProps)(memo(EntryStatistics))

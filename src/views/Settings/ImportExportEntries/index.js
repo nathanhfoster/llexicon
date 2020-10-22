@@ -102,7 +102,7 @@ const ImportExportEntries = ({
 }
 
 ImportExportEntries.propTypes = {
-  userId: PropTypes.number.isRequired,
+  userId: PropTypes.number,
   items: EntriesPropTypes,
   filteredItems: EntriesPropTypes,
 }
