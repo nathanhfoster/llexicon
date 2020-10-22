@@ -166,7 +166,7 @@ const PeopleButtonModal = ({
         people: newPeople,
       }
     })
-  }, [])
+  }, [splitPeopleAsString])
 
   const placeholder = useMemo(() => {
     const people = suggestedPeople.concat(frequentPeople)
