@@ -33,7 +33,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = { UpdateAppVersion }
 
 const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVersion }) => {
-  serviceWorkerRegistration= true
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
 
   const appVerisionText = useMemo(
