@@ -130,7 +130,8 @@ const GetEntry = (url, id) => (dispatch, getState) => {
       })
       return data
     })
-    .catch(({ response }) => {
+    .catch(e => {
+      const { response } = e
       if (userLoggedIn && response) {
         const { status } = response
         if (entry && !entry._shouldPost && (status === 401 || status === 404)) {
@@ -144,8 +145,9 @@ const GetEntry = (url, id) => (dispatch, getState) => {
           )
         }
 
-        const payload = JSON.parse(JSON.stringify(response))
-        dispatch()
+        const error = JSON.parse(JSON.stringify(e))
+        console.log(error)
+        dispatch(SetEntriesError(error))
       }
     })
 }
@@ -170,8 +172,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
       return data
     })
     .catch(e => {
-      console.log(e)
-      return e
+      dispatch(SetEntriesError(e))
     })
 }
 
@@ -192,7 +193,7 @@ const GetUserEntries = pageNumber => (dispatch, getState) => {
       return data
     })
     .catch(e => {
-      console.log(e)
+      dispatch(SetEntriesError(e))
     })
 }
 
@@ -227,7 +228,7 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
       return data
     })
     .catch(e => {
-      console.log(e)
+      dispatch(SetEntriesError(e))
     })
 }
 
@@ -255,9 +256,7 @@ const PostEntry = payload => (dispatch, getState) => {
       return data
     })
     .catch(e => {
-      const error = JSON.parse(JSON.stringify(e))
-      console.log(error)
-      dispatch(SetEntriesError(error))
+      dispatch(SetEntriesError(e))
     })
 }
 
@@ -276,10 +275,7 @@ const UpdateEntry = (id, payload) => dispatch => {
       return data
     })
     .catch(e => {
-      if (e.response) {
-        const payload = JSON.parse(JSON.stringify(e.response))
-        dispatch(SetEntriesError(payload))
-      }
+      dispatch(SetEntriesError(e))
     })
 }
 
@@ -296,12 +292,11 @@ const DeleteEntry = id => dispatch => {
       })
       return res
     })
-    .catch(({ response }) => {
-      if (response.status === 404) {
+    .catch(e => {
+      if (e.response.status === 404) {
         dispatch(DeleteReduxEntry(id))
       }
-      const payload = response
-      dispatch(SetEntriesError(payload))
+      dispatch(SetEntriesError(e))
     })
 }
 
@@ -322,8 +317,7 @@ const SearchUserEntries = search => (dispatch, getState) => {
     })
     .catch(async e => {
       await dispatch(SearchEntriesFilter(search, []))
-      const error = JSON.parse(JSON.stringify(e))
-      console.log(error)
+      dispatch(SetEntriesError(e))
     })
 }
 

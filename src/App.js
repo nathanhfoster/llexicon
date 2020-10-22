@@ -15,6 +15,7 @@ import {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   ClearEntry,
+  ClearEntriesErrors,
 } from 'redux/Entries/actions'
 import { ResetMap } from 'redux/Map/actions'
 import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
@@ -87,6 +88,7 @@ const mapDispatchToProps = {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   ClearEntry,
+  ClearEntriesErrors,
   ResetMap,
 }
 
@@ -137,6 +139,7 @@ const App = ({
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   ClearEntry,
+  ClearEntriesErrors,
   ResetMap,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
@@ -152,6 +155,7 @@ const App = ({
     ResetMap()
     ResetSearchEntries()
     ClearEntry()
+    ClearEntriesErrors()
 
     SetLocalStorageUsage()
 
@@ -267,6 +271,7 @@ App.propTypes = {
   userToken: PropTypes.string,
   userIsSuperUser: PropTypes.bool,
   userDarkMode: PropTypes.bool,
+
   SetWindow: PropTypes.func.isRequired,
   SetLocalStorageUsage: PropTypes.func.isRequired,
   ResetUserError: PropTypes.func.isRequired,
@@ -276,7 +281,11 @@ App.propTypes = {
   GetUserEntries: PropTypes.func.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
+  GetUserEntriesByDate: PropTypes.func.isRequired,
   ResetEntriesSortAndFilterMaps: PropTypes.func.isRequired,
+  ResetSearchEntries: PropTypes.func.isRequired,
+  ClearEntry: PropTypes.func.isRequired,
+  ClearEntriesErrors: PropTypes.func.isRequired,
   ResetMap: PropTypes.func.isRequired,
 }
 

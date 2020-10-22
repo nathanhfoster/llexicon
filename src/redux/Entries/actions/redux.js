@@ -1,5 +1,5 @@
-import { EntriesActionTypes } from "../types"
-import { getReduxEntryId } from "../utils"
+import { EntriesActionTypes } from '../types'
+import { getReduxEntryId } from '../utils'
 const {
   ENTRY_SET,
   ENTRY_UPDATE,
@@ -10,6 +10,7 @@ const {
   ENTRIES_SET_PEOPLE,
   ENTRIES_PENDING,
   ENTRIES_ERROR,
+  ENTRIES_ERROR_CLEAR,
   ENTRIES_COMPLETE,
   ENTRIES_SET,
   ENTRIES_SEARCH_FILTER,
@@ -23,14 +24,20 @@ const PendingEntries = () => ({ type: ENTRIES_PENDING })
 
 const SetEntriesComplete = () => ({ type: ENTRIES_COMPLETE })
 
-const SetEntriesError = (payload) => ({ type: ENTRIES_ERROR, payload })
+const SetEntriesError = e => {
+  const payload = JSON.parse(JSON.stringify(e))
+  console.log(payload)
+  return { type: ENTRIES_ERROR, payload }
+}
 
-const SetEntry = (payload) => ({
+const ClearEntriesErrors = () => ({ type: ENTRIES_ERROR_CLEAR })
+
+const SetEntry = payload => ({
   type: ENTRY_SET,
   payload,
 })
 
-const PostReduxEntry = (payload) => (dispatch, getState) => {
+const PostReduxEntry = payload => (dispatch, getState) => {
   const {
     items: { length: itemsLength },
     filteredItems: { length: filteredItemsLength },
@@ -43,7 +50,7 @@ const PostReduxEntry = (payload) => (dispatch, getState) => {
       ...payload,
       id: getReduxEntryId(length),
       _shouldPost: true,
-    })
+    }),
   )
 }
 
@@ -60,19 +67,19 @@ const ClearEntry = () => ({ type: ENTRY_CLEAR })
 
 const ClearEntries = () => ({ type: ENTRIES_CLEAR })
 
-const DeleteReduxEntry = (id) => ({ type: ENTRY_DELETE, id })
+const DeleteReduxEntry = id => ({ type: ENTRY_DELETE, id })
 
-const SetEntries = (payload) => ({
+const SetEntries = payload => ({
   type: ENTRIES_SET,
   payload,
 })
 
-const SetEntriesTags = (payload) => ({
+const SetEntriesTags = payload => ({
   type: ENTRIES_SET_TAGS,
   payload,
 })
 
-const SetEntriesPeople = (payload) => ({
+const SetEntriesPeople = payload => ({
   type: ENTRIES_SET_PEOPLE,
   payload,
 })
@@ -101,7 +108,7 @@ const ResetEntriesSortAndFilterMaps = () => ({
   type: ENTRIES_RESET_SORT_AND_FILTER_MAP,
 })
 
-const ResetSearchEntries = () => (dispatch) => dispatch(SetSearchEntries(""))
+const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(''))
 
 const SearchEntriesFilter = (search, payload) => ({
   type: ENTRIES_SEARCH_FILTER,
@@ -113,6 +120,7 @@ export {
   PendingEntries,
   SetEntriesComplete,
   SetEntriesError,
+  ClearEntriesErrors,
   SetEntry,
   PostReduxEntry,
   UpdateReduxEntry,
