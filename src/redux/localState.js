@@ -1,6 +1,7 @@
 import { getObjectLength, removeKeyOrValueFromObject } from '../utils'
 import { deepParseJson } from '../utils'
 import {
+  DEFAULT_STATE_APP,
   DEFAULT_STATE_ALERTS,
   DEFAULT_STATE_CALENDAR,
   DEFAULT_STATE_USER,
@@ -174,9 +175,7 @@ const getUserClientId = () => {
 
     const { id, username, email } = getUser()
 
-    const {
-      navigator: { appVersion },
-    } = Window
+    const appVersion = Window?.navigator?.appVersion || DEFAULT_STATE_APP.version
 
     const userId = id
     const clientId = appVersion
