@@ -2,8 +2,6 @@ import React, { useEffect, lazy } from 'react'
 import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
-import { FORAGE_NAME, AstralTreeDB } from 'components/Persistor'
-import { LoadReducerState, SetLocalStorageUsage } from 'redux/App/actions'
 import { SetWindow } from 'redux/Window/actions'
 import { ResetUserError, GetUserSettings } from 'redux/User/actions'
 import { SetCalendar } from 'redux/Calendar/actions'
@@ -77,11 +75,9 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
   SetWindow,
-  SetLocalStorageUsage,
   ResetUserError,
   GetUserSettings,
   SetCalendar,
-  LoadReducerState,
   SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
@@ -131,9 +127,7 @@ const App = ({
   userIsSuperUser,
   userDarkMode,
   SetWindow,
-  SetLocalStorageUsage,
   SetCalendar,
-  LoadReducerState,
   SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
@@ -147,12 +141,6 @@ const App = ({
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const handleResize = () => SetWindow()
-  useEffect(() => {
-    ;(async () => {
-      const persistedSate = await AstralTreeDB.getItem(FORAGE_NAME).then(s => JSON.parse(s))
-      LoadReducerState(persistedSate)
-    })()
-  }, [])
 
   useEffect(() => {
     changeTheme(userDarkMode)
@@ -166,8 +154,6 @@ const App = ({
     ResetSearchEntries()
     ClearEntry()
     ClearEntriesErrors()
-
-    SetLocalStorageUsage()
 
     window.addEventListener('resize', handleResize)
 
@@ -283,11 +269,9 @@ App.propTypes = {
   userDarkMode: PropTypes.bool,
 
   SetWindow: PropTypes.func.isRequired,
-  SetLocalStorageUsage: PropTypes.func.isRequired,
   ResetUserError: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
-  LoadReducerState: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,

@@ -4,24 +4,33 @@ import ReactDOM from 'react-dom'
 import storeFactory from './redux'
 import App from 'App'
 import { history } from 'redux/router/reducer'
-import { Persistor } from 'components'
-import { getUserClientId } from 'redux/localState'
+import { Persistor, LoadingScreen } from 'components'
+import { PersistedStorageReduxKey, getUserClientId } from 'redux/localState'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
-import { LoadingScreen } from 'components'
-import { PersistGate } from 'redux-persist/integration/react'
 import * as serviceWorker from 'serviceWorker'
 import { GetAppVersion } from 'redux/App/actions'
 import ReactGA from 'react-ga'
 import prototypes from 'prototypes'
+import { deepParseJson } from 'utils'
 
 prototypes()
 
-const { store, persistor } = storeFactory()
+const getPersistedState = () => {
+  let state
+  try {
+    state = deepParseJson(localStorage.getItem(PersistedStorageReduxKey))
+  } catch (e) {
+    localStorage.clear()
+  }
+  return state
+}
 
-const { NODE_ENV, REACT_APP_GOOGLE_TRACKING_ID } = process.env
+const initialState = getPersistedState()
 
-const inDevelopmentMode = NODE_ENV === 'development'
+const store = storeFactory(initialState)
+
+const { REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
 const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
 
@@ -55,19 +64,14 @@ history.listen(location => {
 //   ReactGA.pageview(pageName, { dimension1: profileId });
 // })
 
-// const initialState = getReduxState()
-// const ReduxStore = storeFactory(initialState)
-
 ReactDOM.render(
   <Provider store={store}>
     <Persistor />
-    <PersistGate loading={null} persistor={persistor}>
-      <Suspense fallback={<LoadingScreen />}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
-      </Suspense>
-    </PersistGate>
+    <Suspense fallback={<LoadingScreen />}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </Suspense>
   </Provider>,
   document.getElementById('root'),
 )

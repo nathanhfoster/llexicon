@@ -2,13 +2,18 @@ import { AppActionTypes } from '../App/types'
 import axios from 'axios'
 import ReactGA from 'react-ga'
 import { getLocalStorageCapacity } from './utils'
-import { DATEBASE_SIZE } from 'components/Persistor'
 const { PUBLIC_URL } = process.env
 
-const SetLocalStorageUsage = () => dispatch => {
+const SetLocalStorageUsage = () => (dispatch, getState) => {
+  const { localStorageCapacity: localStorageCapacityFromRedux } = getState().App
+  const localStorageCapacity = localStorageCapacityFromRedux || getLocalStorageCapacity()
+
+  let payload = { localStorageCapacity }
+
   if (navigator?.storage?.estimate) {
     return navigator.storage.estimate().then(({ usage, quota, usageDetails }) => {
-      const payload = {
+      payload = {
+        ...payload,
         localStorageUsage: usage,
         localStorageQuota: quota,
         localStorageUsageDetails: usageDetails,
@@ -16,6 +21,8 @@ const SetLocalStorageUsage = () => dispatch => {
       dispatch({ type: AppActionTypes.APP_SET_LOCAL_STORAGE_USAGE, payload })
       return [usage, quota]
     })
+  } else {
+    dispatch({ type: AppActionTypes.APP_SET_LOCAL_STORAGE_USAGE, payload })
   }
 }
 
@@ -40,6 +47,9 @@ const GetAppVersion = () => (dispatch, getState) => {
     .catch(({ response }) => console.log('ERROR: ', response))
 }
 
-const LoadReducerState = state => ({ type: AppActionTypes.LOAD_PERSISTED_STATE, payload: state || {} })
+const LoadReducerState = state => ({
+  type: AppActionTypes.LOAD_PERSISTED_STATE,
+  payload: state || {},
+})
 
 export { SetLocalStorageUsage, ResetRedux, GetAppVersion, LoadReducerState }

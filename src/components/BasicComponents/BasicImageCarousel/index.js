@@ -1,23 +1,13 @@
-import React, {
-  useRef,
-  useReducer,
-  useEffect,
-  useMemo,
-  useCallback,
-  memo,
-} from "react"
-import PropTypes from "prop-types"
-import { ActionTypes, getInitialState, reducer } from "./state"
-import Lightbox from "react-image-lightbox"
-import { Media } from "reactstrap"
+import React, { useRef, useReducer, useEffect, useMemo, useCallback, memo } from 'react'
+import PropTypes from 'prop-types'
+import { ActionTypes, getInitialState, reducer } from './state'
+import Lightbox from 'react-image-lightbox'
+import { Media } from 'reactstrap'
+import { EntryPropType } from 'redux/Entries/propTypes'
 
-import "./styles.css"
+import './styles.css'
 
-const BasicImageCarousel = ({
-  toolbarButtons,
-  imageClickCallback,
-  ...restOfProps
-}) => {
+const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps }) => {
   const mounted = useRef(false)
   const [state, dispatch] = useReducer(reducer, getInitialState(restOfProps))
   const { images, photoIndex, isOpen, imageOffset } = state
@@ -49,25 +39,13 @@ const BasicImageCarousel = ({
     return [mainSrc, prevSrc, nextSrc]
   }, [photoIndex, images.length])
 
-  const handleOpen = useCallback(
-    () => dispatch({ type: ActionTypes.SET_OPEN }),
-    []
-  )
+  const handleOpen = useCallback(() => dispatch({ type: ActionTypes.SET_OPEN }), [])
 
-  const handleClose = useCallback(
-    () => dispatch({ type: ActionTypes.SET_CLOSE }),
-    []
-  )
+  const handleClose = useCallback(() => dispatch({ type: ActionTypes.SET_CLOSE }), [])
 
-  const handleMovePrev = useCallback(
-    () => dispatch({ type: ActionTypes.SET_PREV }),
-    []
-  )
+  const handleMovePrev = useCallback(() => dispatch({ type: ActionTypes.SET_PREV }), [])
 
-  const handleMoveNext = useCallback(
-    () => dispatch({ type: ActionTypes.SET_NEXT }),
-    []
-  )
+  const handleMoveNext = useCallback(() => dispatch({ type: ActionTypes.SET_NEXT }), [])
 
   const renderImageFiles = useMemo(
     () =>
@@ -83,23 +61,23 @@ const BasicImageCarousel = ({
             key={i}
             type={file_type}
             src={url}
-            className="EntryFilesCarouselImage p-1"
+            className='EntryFilesCarouselImage p-1'
             alt={name}
             onClick={handleOnClick}
           />
         )
       }),
-    [images, imageOffset]
+    [images, imageOffset],
   )
 
   const toolBarImagesWithCallback = useMemo(
     () =>
-      React.Children.map(toolbarButtons, (child) =>
+      React.Children.map(toolbarButtons, child =>
         React.cloneElement(child, {
           onClick: () => child.props.onClick(state),
-        })
+        }),
       ),
-    [state, toolbarButtons]
+    [state, toolbarButtons],
   )
 
   return (
@@ -126,12 +104,12 @@ const BasicImageCarousel = ({
 BasicImageCarousel.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      entry_id: PropTypes.number.isRequired,
+      id: EntryPropType.id,
+      entry_id: EntryPropType.id,
       url: PropTypes.string.isRequired,
       name: PropTypes.string,
       file_type: PropTypes.string,
-    })
+    }),
   ),
   isOpen: PropTypes.bool.isRequired,
   photoIndex: PropTypes.number.isRequired,

@@ -1,17 +1,44 @@
-import { useEffect } from 'react'
+import { useLayoutEffect, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
-import { isAFunction , } from 'utils'
+import { isAFunction } from 'utils'
 import { isQuotaExceeded } from 'redux/localState'
 import localforage from 'localforage'
+import { LoadReducerState, SetLocalStorageUsage } from 'redux/App/actions'
+import { IndexDbKey, PersistedStorageReduxKey } from 'redux/localState'
+import { usePrevious } from 'hooks'
 
-export const FORAGE_NAME = 'AstralTreeDB'
+export const LOCAL_STORAGE_REDUCERS = [
+  // 'Admin',
+  // 'Alerts',
+  'App',
+  // 'Calendar',
+  // 'Entries',
+  // 'Map',
+  'User',
+  // 'TextEditor',
+  'Window',
+  'router',
+]
 
-export const DATEBASE_SIZE = 5000 * 1024 * 1024 
+export const INDEX_DB_REDUCERS = [
+  'Admin',
+  'Alerts',
+  // 'App',
+  'Calendar',
+  'Entries',
+  'Map',
+  // 'User',
+  'TextEditor',
+  // 'Window',
+  // 'router',
+]
+
+export const DATEBASE_SIZE = 5000 * 1024 * 1024
 
 export const AstralTreeDB = localforage.createInstance({
   driver: localforage.WEBSQL, // Force WebSQL; same as using setDriver()
-  name: FORAGE_NAME,
+  name: IndexDbKey,
   version: 1.0,
   size: DATEBASE_SIZE, // Size of database, in bytes. WebSQL-only for now.
   storeName: 'keyvaluepairs', // Should be alphanumeric, with underscores.
@@ -20,45 +47,75 @@ export const AstralTreeDB = localforage.createInstance({
 
 const mapStateToProps = state => ({ state })
 
-const Persistor = ({ persistKey, debounce, whenQuotaExceeds, state }) => {
-  // persist storage if persistConfig exists
+const mapDispatchToProps = { LoadReducerState, SetLocalStorageUsage }
+
+const Persistor = ({
+  debounce,
+  whenQuotaExceeds,
+  state,
+  LoadReducerState,
+  SetLocalStorageUsage,
+}) => {
+  const prevState = usePrevious(state)
+
+  useLayoutEffect(() => {
+    ;(async () => {
+      const persistedSate = await AstralTreeDB.getItem(IndexDbKey).then(s => JSON.parse(s))
+      LoadReducerState(persistedSate)
+      SetLocalStorageUsage()
+    })()
+  }, [LoadReducerState, SetLocalStorageUsage])
+
   useEffect(() => {
-    if (persistKey) {
-      const persistDebounce = setTimeout(() => {
-        let stringifiedState = JSON.stringify(state)
+    const persistDebounce = setTimeout(() => {
+      const localStoragePayload = stateToReduce =>
+        LOCAL_STORAGE_REDUCERS.reduce((acc, reducer) => {
+          acc[reducer] = stateToReduce[reducer]
+          return acc
+        }, {})
 
-        // Object.entries(state).forEach(([reducer, value]) => {
-        //   try {
-        //     AstralTreeDB.setItem(reducer, value)
-        //   } catch (e) {
-        //     console.log(e)
-        //   }
-        // })
-
-        try {
-          AstralTreeDB.setItem(persistKey, stringifiedState)
-        } catch (e) {
-          console.log(e)
+      try {
+        localStorage.setItem(PersistedStorageReduxKey, JSON.stringify(localStoragePayload(state)))
+      } catch (e) {
+        if (isQuotaExceeded(e) && isAFunction(whenQuotaExceeds)) {
+          localStorage.setItem(
+            PersistedStorageReduxKey,
+            JSON.stringify(whenQuotaExceeds(prevState)),
+          )
         }
-      }, debounce)
-
-      return () => {
-        clearTimeout(persistDebounce)
-        // AstralTreeDB.clear()
       }
+
+      const indexDBPayload = stateToReduce =>
+        INDEX_DB_REDUCERS.reduce((acc, reducer) => {
+          acc[reducer] = stateToReduce[reducer]
+          return acc
+        }, {})
+
+      try {
+        AstralTreeDB.setItem(IndexDbKey, JSON.stringify(indexDBPayload(state)))
+      } catch (e) {
+        console.log(e)
+      }
+    }, debounce)
+
+    return () => {
+      clearTimeout(persistDebounce)
+      // AstralTreeDB.clear()
     }
-  }, [state, persistKey])
+  }, [state, prevState, debounce, whenQuotaExceeds])
 
   return null
 }
 
 Persistor.propTypes = {
-  persistKey: PropTypes.string.isRequired,
   debounce: PropTypes.number.isRequired,
   whenQuotaExceeds: PropTypes.func,
   state: PropTypes.objectOf(PropTypes.object),
+
+  LoadReducerState: PropTypes.func.isRequired,
+  SetLocalStorageUsage: PropTypes.func.isRequired,
 }
 
-Persistor.defaultProps = { persistKey: FORAGE_NAME, debounce: 400 }
+Persistor.defaultProps = { debounce: 400 }
 
-export default reduxConnect(mapStateToProps)(Persistor)
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(Persistor)

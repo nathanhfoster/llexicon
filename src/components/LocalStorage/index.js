@@ -6,44 +6,71 @@ import { Container, Row, Col, ButtonGroup } from 'reactstrap'
 import { formatBytes, getStringBytes } from 'utils'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { CloudDownload } from '../../images/SVG'
-import { DATEBASE_SIZE } from 'components/Persistor'
+import { DATEBASE_SIZE, LOCAL_STORAGE_REDUCERS, INDEX_DB_REDUCERS } from 'components/Persistor'
 
 const SERVER_STORAGE_LIMIT = 500 * 1024 * 1024
 
 const mapStateToProps = state => {
   const {
-    App: { version, localStorageUsage, localStorageQuota, localStorageUsageDetails },
+    App: {
+      version,
+      localStorageCapacity,
+      localStorageUsage,
+      localStorageQuota,
+      localStorageUsageDetails,
+    },
     Entries: { items, filteredItems },
     // Entries,
   } = state
-  const reduxStoreUsage = getStringBytes(state)
+  const localStorageReduxUsage = getStringBytes(
+    LOCAL_STORAGE_REDUCERS.reduce((acc, reducer) => {
+      acc[reducer] = state[reducer]
+      return acc
+    }, {}),
+  )
+  const indexDBStorageReduxUsage = getStringBytes(
+    INDEX_DB_REDUCERS.reduce((acc, reducer) => {
+      acc[reducer] = state[reducer]
+      return acc
+    }, {}),
+  )
   // const entriesStorageUsage = getStringBytes(Entries)
 
   return {
-    reduxStoreUsage,
+    localStorageReduxUsage,
+    indexDBStorageReduxUsage,
     items,
     filteredItems,
     // entriesStorageUsage,
     version,
+    localStorageCapacity,
     localStorageUsage,
     localStorageQuota,
     localStorageUsageDetails,
   }
 }
 
-const mapDispatchToProps = {}
-
 const LocalStorage = ({
-  reduxStoreUsage,
+  localStorageReduxUsage,
+  indexDBStorageReduxUsage,
   items,
   filteredItems,
   entriesStorageUsage,
   version,
+  localStorageCapacity,
   localStorageUsage,
   localStorageQuota,
   localStorageUsageDetails,
 }) => {
-  const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(DATEBASE_SIZE)}`
+  const localStroageReduxLabel = useMemo(
+    () => `${formatBytes(localStorageReduxUsage)} / ${formatBytes(localStorageCapacity)}`,
+    [localStorageReduxUsage, localStorageCapacity],
+  )
+
+  const indexDbStorageLabel = useMemo(
+    () => `${formatBytes(indexDBStorageReduxUsage)} / ${formatBytes(DATEBASE_SIZE)}`,
+    [indexDBStorageReduxUsage],
+  )
 
   const serverUsage = useMemo(
     () => items.concat(filteredItems).reduce((usage, entry) => (usage += entry.size || 0), 0),
@@ -68,10 +95,26 @@ const LocalStorage = ({
       <Row>
         <Col xs={12} className='p-0'>
           <BasicProgress
-            label={reduxStorageLabel}
+            label={localStroageReduxLabel}
             showPercentage
-            value={reduxStoreUsage}
+            value={localStorageReduxUsage}
             max={DATEBASE_SIZE}
+          />
+        </Col>
+      </Row>
+      <Row className='my-2'>
+        <Header height={50}>
+          <i className='fas fa-database mr-1' />
+          IndexDB Usage
+        </Header>
+      </Row>
+      <Row>
+        <Col xs={12} className='p-0'>
+          <BasicProgress
+            label={indexDbStorageLabel}
+            showPercentage
+            value={serverUsage}
+            max={SERVER_STORAGE_LIMIT}
           />
         </Col>
       </Row>
@@ -103,7 +146,7 @@ const LocalStorage = ({
 }
 
 LocalStorage.propTypes = {
-  reduxStoreUsage: PropTypes.number,
+  localStorageReduxUsage: PropTypes.number,
   items: EntriesPropTypes,
   filteredItems: EntriesPropTypes,
   version: PropTypes.string,
@@ -118,4 +161,4 @@ LocalStorage.propTypes = {
 
 LocalStorage.defaultProps = {}
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(LocalStorage)
+export default reduxConnect(mapStateToProps)(LocalStorage)

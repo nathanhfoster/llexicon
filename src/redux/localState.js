@@ -9,6 +9,7 @@ import {
   DEFAULT_STATE_WINDOW,
 } from './RootReducer'
 
+const IndexDbKey = 'AstralTreeDB'
 const LocalStorageReduxKey = 'ReduxStore'
 const PersistedStorageReduxKey = `persist:${LocalStorageReduxKey}`
 const LocalStorageFilesKey = 'Files'
@@ -166,15 +167,16 @@ const getUserClientId = () => {
   const persistedStore = localStorage.getItem(PersistedStorageReduxKey)
 
   if (persistedStore) {
-    const { App, Window } = JSON.parse(persistedStore)
+    const {
+      App: { version },
+      Window,
+    } = JSON.parse(persistedStore)
 
-    const User = getUser()
+    const { id, username, email } = getUser()
 
-    const { version } = JSON.parse(App)
-    const { id, username, email } = User
     const {
       navigator: { appVersion },
-    } = JSON.parse(Window)
+    } = Window
 
     const userId = id
     const clientId = appVersion
@@ -192,6 +194,7 @@ const handleQuotaExceeded = e => {
 }
 
 export {
+  IndexDbKey,
   LocalStorageReduxKey,
   PersistedStorageReduxKey,
   clearLocalStorage,

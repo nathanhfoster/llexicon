@@ -125,7 +125,6 @@ const MediaButtonModal = ({ xs, handleInsertEmbeded, videoHeight }) => {
 }
 
 MediaButtonModal.propTypes = {
-  editorRef: PropTypes.object.isRequired,
   xs: PropTypes.number,
   editorSelection: PropTypes.object,
   videoHeight: PropTypes.string.isRequired,
