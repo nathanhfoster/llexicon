@@ -40,6 +40,6 @@ const GetAppVersion = () => (dispatch, getState) => {
     .catch(({ response }) => console.log('ERROR: ', response))
 }
 
-const LoadReducerState = payload => ({ type: AppActionTypes.LOAD_PERSISTED_STATE, payload })
+const LoadReducerState = state => ({ type: AppActionTypes.LOAD_PERSISTED_STATE, payload: state || {} })
 
 export { SetLocalStorageUsage, ResetRedux, GetAppVersion, LoadReducerState }
