@@ -263,7 +263,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case AppActionTypes.LOAD_PERSISTED_STATE:
-      return payload?.Entries || state
+      return { ...state, ...payload.Entries, isPending: false }
 
     default:
       return state
