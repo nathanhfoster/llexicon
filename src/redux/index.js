@@ -1,4 +1,14 @@
-import { Reducers } from './RootReducer'
+import { Reducers,
+  DEFAULT_STATE_ADMIN,
+  DEFAULT_STATE_ALERTS,
+  DEFAULT_STATE_APP,
+  DEFAULT_STATE_CALENDAR,
+  DEFAULT_STATE_ENTRIES,
+  DEFAULT_STATE_MAP,
+  DEFAULT_STATE_USER,
+  DEFAULT_STATE_TEXT_EDITOR,
+  DEFAULT_STATE_WINDOW
+} from './RootReducer'
 import thunk from 'redux-thunk'
 import { history } from './router/reducer'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
