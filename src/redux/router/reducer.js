@@ -16,4 +16,4 @@ const DEFAULT_STATE_ROUTER = {
 
 const router = connectRouter(DEFAULT_STATE_ROUTER)
 
-export { history, router }
+export { history, router, DEFAULT_STATE_ROUTER }

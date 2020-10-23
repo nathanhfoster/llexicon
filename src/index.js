@@ -5,30 +5,17 @@ import storeFactory from './redux'
 import App from 'App'
 import { history } from 'redux/router/reducer'
 import { Persistor, LoadingScreen } from 'components'
-import { PersistedStorageReduxKey, getUserClientId } from 'redux/localState'
+import { getUserClientId } from 'redux/localState'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import * as serviceWorker from 'serviceWorker'
 import { GetAppVersion } from 'redux/App/actions'
 import ReactGA from 'react-ga'
 import prototypes from 'prototypes'
-import { deepParseJson } from 'utils'
 
 prototypes()
 
-const getPersistedState = () => {
-  let state
-  try {
-    state = deepParseJson(localStorage.getItem(PersistedStorageReduxKey))
-  } catch (e) {
-    localStorage.clear()
-  }
-  return state
-}
-
-const initialState = getPersistedState()
-
-const store = storeFactory(initialState)
+const store = storeFactory()
 
 const { REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
