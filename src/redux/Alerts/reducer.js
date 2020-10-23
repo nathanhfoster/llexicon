@@ -28,7 +28,7 @@ const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
       return DEFAULT_STATE_ALERTS
 
       case AppActionTypes.LOAD_PERSISTED_STATE:
-        return payload?.Alerts || state
+        return { ...state, ...payload.Alerts, timeout: DEFAULT_STATE_ALERTS.timeout }
 
     default:
       return state
