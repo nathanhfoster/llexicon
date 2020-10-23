@@ -2,7 +2,6 @@ import { AppActionTypes } from "./types"
 
 const DEFAULT_STATE_APP = {
   version: new Number(1).toFixed(3),
-  localStorageCapacity: null,
   localStorageUsage: null,
   localStorageQuota: null,
   localStorageUsageDetails: null,
@@ -19,6 +18,9 @@ const App = (state = DEFAULT_STATE_APP, action) => {
 
     case AppActionTypes.REDUX_RESET:
       return state
+
+      // case AppActionTypes.LOAD_PERSISTED_STATE:
+      //   return payload?.App || state
 
     default:
       return state

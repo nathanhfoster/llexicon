@@ -27,6 +27,9 @@ const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ALERTS
 
+      case AppActionTypes.LOAD_PERSISTED_STATE:
+        return payload?.Alerts || state
+
     default:
       return state
   }

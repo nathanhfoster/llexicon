@@ -1,5 +1,6 @@
 import { EntriesActionTypes } from '../types'
 import { getReduxEntryId } from '../utils'
+
 const {
   ENTRY_SET,
   ENTRY_UPDATE,

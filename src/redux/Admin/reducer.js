@@ -70,6 +70,9 @@ const Admin = (state = DEFAULT_STATE_ADMIN, action) => {
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_ADMIN
 
+      case AppActionTypes.LOAD_PERSISTED_STATE:
+        return payload?.Admin || state
+
     default:
       return state
   }

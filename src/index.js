@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom'
 import storeFactory from './redux'
 import App from 'App'
 import { history } from 'redux/router/reducer'
-import { getUserClientId, PersistedStorageReduxKey, clearLocalStorage } from 'redux/localState'
+import { Persistor } from 'components'
+import { getUserClientId } from 'redux/localState'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import { LoadingScreen } from 'components'
@@ -15,17 +16,6 @@ import ReactGA from 'react-ga'
 import prototypes from 'prototypes'
 
 prototypes()
-
-const getPersistedState = () => {
-  let state
-
-  try {
-    state = JSON.parse(localStorage.getItem(PersistedStorageReduxKey))
-  } catch (e) {
-    clearLocalStorage()
-  }
-  return state
-}
 
 const { store, persistor } = storeFactory()
 
@@ -70,6 +60,7 @@ history.listen(location => {
 
 ReactDOM.render(
   <Provider store={store}>
+    <Persistor />
     <PersistGate loading={null} persistor={persistor}>
       <Suspense fallback={<LoadingScreen />}>
         <ConnectedRouter history={history}>

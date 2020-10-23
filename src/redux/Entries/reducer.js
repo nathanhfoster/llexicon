@@ -200,7 +200,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case ENTRY_UPDATE:
       let nextState = state.items.concat(state.filteredItems)
       const indexToUpdate = nextState.findIndex(entry => entry.id === id)
-      if (indexToUpdate) {
+      if (indexToUpdate !== -1) {
         const mergedItem = { ...nextState[indexToUpdate], ...payload }
         nextState[indexToUpdate] = {
           ...mergedItem,
@@ -261,6 +261,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
               _shouldDelete || _shouldPost || _lastUpdated,
           ),
       }
+
+    case AppActionTypes.LOAD_PERSISTED_STATE:
+      return payload?.Entries || state
 
     default:
       return state

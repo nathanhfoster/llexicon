@@ -1,5 +1,5 @@
-import { UserActionTypes } from "./types"
-import { AppActionTypes } from "../App/types"
+import { UserActionTypes } from './types'
+import { AppActionTypes } from '../App/types'
 
 const DEFAULT_STATE_USER = {
   token: null,
@@ -74,6 +74,9 @@ const User = (state = DEFAULT_STATE_USER, action) => {
 
     case AppActionTypes.REDUX_RESET:
       return DEFAULT_STATE_USER
+
+    // case AppActionTypes.LOAD_PERSISTED_STATE:
+    //   return payload?.User || state
 
     default:
       return state

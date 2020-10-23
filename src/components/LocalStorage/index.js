@@ -6,18 +6,13 @@ import { Container, Row, Col, ButtonGroup } from 'reactstrap'
 import { formatBytes, getStringBytes } from 'utils'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { CloudDownload } from '../../images/SVG'
+import { DATEBASE_SIZE } from 'components/Persistor'
 
 const SERVER_STORAGE_LIMIT = 500 * 1024 * 1024
 
 const mapStateToProps = state => {
   const {
-    App: {
-      version,
-      localStorageUsage,
-      localStorageQuota,
-      localStorageUsageDetails,
-      localStorageCapacity,
-    },
+    App: { version, localStorageUsage, localStorageQuota, localStorageUsageDetails },
     Entries: { items, filteredItems },
     // Entries,
   } = state
@@ -33,7 +28,6 @@ const mapStateToProps = state => {
     localStorageUsage,
     localStorageQuota,
     localStorageUsageDetails,
-    localStorageCapacity,
   }
 }
 
@@ -48,9 +42,8 @@ const LocalStorage = ({
   localStorageUsage,
   localStorageQuota,
   localStorageUsageDetails,
-  localStorageCapacity,
 }) => {
-  const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(localStorageCapacity)}`
+  const reduxStorageLabel = `${formatBytes(reduxStoreUsage)} / ${formatBytes(DATEBASE_SIZE)}`
 
   const serverUsage = useMemo(
     () => items.concat(filteredItems).reduce((usage, entry) => (usage += entry.size || 0), 0),
@@ -78,7 +71,7 @@ const LocalStorage = ({
             label={reduxStorageLabel}
             showPercentage
             value={reduxStoreUsage}
-            max={localStorageCapacity}
+            max={DATEBASE_SIZE}
           />
         </Col>
       </Row>
