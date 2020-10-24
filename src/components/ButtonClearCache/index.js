@@ -4,11 +4,13 @@ import { useDispatch } from "react-redux"
 import { ResetRedux } from "redux/App/actions"
 import { clearReduxStoreFromLocalStorage } from "redux/localState"
 import { ConfirmAction } from "components"
+import { AstralTreeDB } from "components/Persitor"
 import { Button } from "reactstrap"
 
 const ButtonClearCache = () => {
   const dispatch = useDispatch()
   const handleClearCache = useCallback(() => {
+    AstralTreeDB.clear()
     clearReduxStoreFromLocalStorage()
     dispatch(ResetRedux())
     if ("serviceWorker" in navigator) {
