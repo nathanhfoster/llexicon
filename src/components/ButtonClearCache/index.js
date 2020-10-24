@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 import { ResetRedux } from "redux/App/actions"
 import { clearReduxStoreFromLocalStorage } from "redux/localState"
 import { ConfirmAction } from "components"
-import { AstralTreeDB } from "components/Persitor"
+import { AstralTreeDB } from "components/Persistor"
 import { Button } from "reactstrap"
 
 const ButtonClearCache = () => {
