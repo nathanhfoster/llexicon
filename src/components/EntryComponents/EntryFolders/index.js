@@ -1,19 +1,16 @@
-import React, { useEffect, useState, useCallback, useMemo, lazy } from 'react'
+import React, { useRef, useEffect, useState, useCallback, useMemo, lazy } from 'react'
 import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem, Button } from 'reactstrap'
 import { NavLink } from 'react-router-dom'
 import { RouterPush } from 'redux/router/actions'
-import { filterMapArray, TopKFrequentStrings } from 'utils'
-import { useScrollable } from 'hooks'
+import { filterMapArray } from 'utils'
 import './styles.css'
 
 const EntryCards = lazy(() => import('../EntryCards'))
 const EntryFolder = lazy(() => import('./EntryFolder'))
 const BASE_FOLDER_DIRECTORY_URL = 'folders?folder=All'
-const ENTRIES_RENDER_OFFSET = 6
-const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
 const mapStateToProps = ({
   router: {
@@ -22,11 +19,10 @@ const mapStateToProps = ({
 }) => ({ search })
 
 const EntryFolders = ({ entries, search }) => {
+  const containerRef = useRef()
   useEffect(() => {
     if (!search) RouterPush(BASE_FOLDER_DIRECTORY_URL)
-  }, [])
-
-  const [viewableEntriesRange, setViewableEntriesRange] = useState(DEFAULT_VIEWABLE_ENTRIES_RANGE)
+  }, [search])
 
   const [minimizeEntryCards, setMinimizeEntryCards] = useState(true)
 
@@ -34,8 +30,6 @@ const EntryFolders = ({ entries, search }) => {
     () => setMinimizeEntryCards(prevMinimizeEntryCards => !prevMinimizeEntryCards),
     [],
   )
-
-  const [beginOffset, endOffset] = viewableEntriesRange
 
   const directoryPath = useMemo(() => search.replace('?folder=', '').split('+'), [search])
   const directoryTags = useMemo(() => directoryPath.slice(1), [directoryPath])
@@ -56,22 +50,6 @@ const EntryFolders = ({ entries, search }) => {
         .filter(({ name }) => !directoryTags.includes(name)),
     [entryFilteredTags, directoryTags],
   )
-
-  const viewableEntries = useMemo(() => entryFilteredTags.slice(beginOffset, endOffset), [
-    entryFilteredTags,
-    beginOffset,
-    endOffset,
-    minimizeEntryCards,
-    search,
-  ])
-
-  const setViewableEntriesRangeThreshold = viewableEntries.length < entryFilteredTags.length
-
-  const [reachedBottom, setReachedBottomCallback] = useScrollable(setViewableEntriesRangeThreshold)
-
-  useEffect(() => {
-    setViewableEntriesRange([beginOffset, endOffset + ENTRIES_RENDER_OFFSET])
-  }, [reachedBottom])
 
   const renderFolderBreadCrumbs = useMemo(
     () =>
@@ -98,7 +76,6 @@ const EntryFolders = ({ entries, search }) => {
       sortedTags.map((name, i) => {
         const handleOnClickCallback = () => {
           RouterPush(search.concat(`+${name}`))
-          setViewableEntriesRange(DEFAULT_VIEWABLE_ENTRIES_RANGE)
         }
 
         return (
@@ -126,14 +103,18 @@ const EntryFolders = ({ entries, search }) => {
           <i className={`fas fa-eye${minimizeEntryCards ? '' : '-slash'}`} />
         </Col>
       </Row>
-      <Row className='EntryFoldersContainer Container' onScroll={setReachedBottomCallback}>
+      <div ref={containerRef} className='EntryFoldersContainer Container row'>
         {renderFolders}
         <Container className='EntryCards'>
           <Row>
-            <EntryCards entries={viewableEntries} minimal={minimizeEntryCards} />
+            <EntryCards
+              entries={entryFilteredTags}
+              minimal={minimizeEntryCards}
+              containerRef={containerRef}
+            />
           </Row>
         </Container>
-      </Row>
+      </div>
     </Container>
   )
 }

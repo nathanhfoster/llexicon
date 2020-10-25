@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
 import { BasicProgress, Header, ButtonClearCache, ButtonClearEntries } from 'components'
@@ -6,7 +6,13 @@ import { Container, Row, Col, ButtonGroup } from 'reactstrap'
 import { formatBytes, getStringBytes } from 'utils'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { CloudDownload } from '../../images/SVG'
-import { DATEBASE_SIZE, LOCAL_STORAGE_REDUCERS, INDEX_DB_REDUCERS } from 'components/Persistor'
+import {
+  DATEBASE_SIZE,
+  LOCAL_STORAGE_REDUCERS,
+  INDEX_DB_REDUCERS,
+  AstralTreeDB,
+} from 'components/Persistor'
+import { IndexDbKey, PersistedStorageReduxKey } from 'redux/localState'
 
 const SERVER_STORAGE_LIMIT = 500 * 1024 * 1024
 
