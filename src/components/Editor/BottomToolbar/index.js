@@ -1,10 +1,11 @@
-import React, { memo, lazy } from "react"
+import React, { memo, lazy, useContext } from "react"
 import PropTypes from "prop-types"
 import { EntryPropTypes } from "redux/Entries/propTypes"
 import { Collapse, Container, Row, Col, Button } from "reactstrap"
 import { TagsContainer } from "../../"
 import EntryFilesCarousel from "../../EntryComponents/EntryFilesCarousel"
 import { useSwipeable } from "react-swipeable"
+import { EditorConsumer } from "../"
 import "./styles.css"
 
 const LocationButtonModal = lazy(() =>
@@ -28,11 +29,8 @@ const BottomToolbar = ({
   handleInsertEmbeded,
   isOpen,
   canToggleToolbars,
-  toggleBottomToolbar,
-  handleEditorChange,
-  xs,
 }) => {
-  // editorRef.current.focus()
+  const { toggleBottomToolbar, handleEditorChange } = useContext(EditorConsumer)
 
   const handlers = useSwipeable({
     onSwipedUp: () => toggleBottomToolbar(true),

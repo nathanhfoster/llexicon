@@ -172,7 +172,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
           <Header fill="var(--quinaryColor)">Admin Table</Header>
         </Col>
       </Row>
-      <Row className="HomeRow mb-3 pb-1">
+      <Row>
         <BasicTable
           sortable
           filterable

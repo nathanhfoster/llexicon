@@ -1,16 +1,25 @@
-import React, { useRef, useState, useMemo, useCallback, Fragment, memo } from 'react'
-import ReactQuill from 'react-quill'
-import { THEMES, FORMATS, getModules } from './modules'
-import 'react-quill/dist/quill.snow.css'
-import 'react-quill/dist/quill.bubble.css'
-import 'react-quill/dist/quill.core.css'
+import React, {
+  createContext,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  memo,
+} from "react"
+import ReactQuill from "react-quill"
+import { THEMES, FORMATS, getModules } from "./modules"
+import "react-quill/dist/quill.snow.css"
+import "react-quill/dist/quill.bubble.css"
+import "react-quill/dist/quill.core.css"
 // import "quill-emoji/dist/quill-emoji.css"
 // import "quill-mention/dist/quill.mention.min.css"
-import './styles.css'
-import TopToolbar from './TopToolbar'
-import BottomToolbar from './BottomToolbar'
-import PropTypes from 'prop-types'
-import { EntryPropTypes } from 'redux/Entries/propTypes'
+import "./styles.css"
+import TopToolbar from "./TopToolbar"
+import BottomToolbar from "./BottomToolbar"
+import PropTypes from "prop-types"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+
+export const EditorConsumer = createContext()
 
 const Editor = ({
   children,
@@ -26,42 +35,53 @@ const Editor = ({
   const editorRef = useRef()
 
   const [bottomToolbarIsOpen, setBottomToolbarIsOpen] = useState(
-    !readOnly && restOfProps.bottomToolbarIsOpen,
+    !readOnly && restOfProps.bottomToolbarIsOpen
   )
 
-  const toolbarId = useMemo(() => `toolbar-${restOfProps.toolbarId}`, [restOfProps.toolbarId])
+  const toolbarId = useMemo(() => `toolbar-${restOfProps.toolbarId}`, [
+    restOfProps.toolbarId,
+  ])
 
   const quillId = useMemo(() => toolbarId.toString(), [toolbarId])
 
-  const modules = useMemo(() => getModules(toolbarId, restOfProps.topToolbarIsOpen), [
-    toolbarId,
-    restOfProps.topToolbarIsOpen,
-  ])
+  const modules = useMemo(
+    () => getModules(toolbarId, restOfProps.topToolbarIsOpen),
+    [toolbarId, restOfProps.topToolbarIsOpen]
+  )
 
-  const topToolbarIsOpen = useMemo(() => !readOnly && restOfProps.topToolbarIsOpen, [
-    readOnly,
-    restOfProps.topToolbarIsOpen,
-  ])
+  const topToolbarIsOpen = useMemo(
+    () => !readOnly && restOfProps.topToolbarIsOpen,
+    [readOnly, restOfProps.topToolbarIsOpen]
+  )
 
-  const canToggleToolbars = useMemo(() => !readOnly && restOfProps.canToggleToolbars, [
-    readOnly,
-    restOfProps.canToggleToolbars,
-  ])
+  const canToggleToolbars = useMemo(
+    () => !readOnly && restOfProps.canToggleToolbars,
+    [readOnly, restOfProps.canToggleToolbars]
+  )
 
   const editorStyles = useMemo(
     () => ({
       height: readOnly
-        ? '100%'
+        ? "100%"
         : bottomToolbarIsOpen
-        ? 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))'
-        : 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))',
+        ? "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
+        : "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))",
     }),
-    [readOnly, bottomToolbarIsOpen],
+    [readOnly, bottomToolbarIsOpen]
+  )
+
+  const handleOnFocus = useCallback(
+    (range) => {
+      if (editorRef && editorRef.current) {
+        editorRef.current.setEditorSelection(editorRef.current.editor, range)
+      }
+    },
+    [editorRef]
   )
 
   const handleEditorChange = useCallback(
     ({ ...payload }) => onChange({ id: restOfProps.toolbarId, ...payload }),
-    [restOfProps.toolbarId],
+    [restOfProps.toolbarId]
   )
 
   const handleEditorStateChange = useCallback((html, delta, source, editor) => {
@@ -69,44 +89,37 @@ const Editor = ({
   }, [])
 
   const toggleBottomToolbar = useCallback(
-    toggle =>
-      setBottomToolbarIsOpen(currentState =>
-        toggle === true || toggle === false ? toggle : !currentState,
+    (toggle) =>
+      setBottomToolbarIsOpen((currentState) =>
+        toggle === true || toggle === false ? toggle : !currentState
       ),
-    [],
+    []
   )
 
-  const handleOnFocus = useCallback(
-    range => {
-      if (editorRef && editorRef.current) {
-        editorRef.current.setEditorSelection(editorRef.current.editor, range)
-      }
-    },
-    [editorRef],
+  const contextValue = useMemo(
+    () => ({
+      editorRef,
+      handleEditorChange,
+      toggleBottomToolbar,
+    }),
+    [editorRef, handleEditorChange, toggleBottomToolbar]
   )
-
-  const handleUndo = useCallback(() => editorRef?.current?.editor?.history.undo(), [editorRef])
-
-  const handleRedo = useCallback(() => editorRef?.current?.editor?.history.redo(), [editorRef])
 
   return (
-    <Fragment>
+    <EditorConsumer.Provider value={contextValue}>
       {children}
-      <div id='TextEditor' style={{ height, width }}>
+      <div id="TextEditor" style={{ height, width }}>
         <TopToolbar
           toolbarId={toolbarId}
           editorRef={editorRef}
           isOpen={topToolbarIsOpen}
-          handleUndo={handleUndo}
-          handleRedo={handleRedo}
-          handleEditorChange={handleEditorChange}
         />
         <ReactQuill
           id={quillId}
           readOnly={readOnly}
-          bounds='app'
+          bounds="app"
           ref={editorRef}
-          className='Editor'
+          className="Editor"
           style={editorStyles}
           theme={theme}
           formats={FORMATS}
@@ -120,12 +133,10 @@ const Editor = ({
           entry={entry}
           canToggleToolbars={canToggleToolbars}
           isOpen={bottomToolbarIsOpen}
-          toggleBottomToolbar={toggleBottomToolbar}
-          handleEditorChange={handleEditorChange}
           id={restOfProps.toolbarId}
         />
       </div>
-    </Fragment>
+    </EditorConsumer.Provider>
   )
 }
 
@@ -134,7 +145,8 @@ Editor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   entry: EntryPropTypes.isRequired,
   onChange: PropTypes.func,
-  toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
   canToggleToolbars: PropTypes.bool.isRequired,
   topToolbarIsOpen: PropTypes.bool,
   bottomToolbarIsOpen: PropTypes.bool,
@@ -165,10 +177,10 @@ Editor.propTypes = {
 
 Editor.defaultProps = {
   theme: THEMES.SNOW,
-  height: '100%',
-  width: '100%',
+  height: "100%",
+  width: "100%",
   toolbarId: 1,
-  placeholder: 'Today I have...',
+  placeholder: "Today I have...",
   canToggleToolbars: true,
   topToolbarIsOpen: true,
   bottomToolbarIsOpen: true,

@@ -1,4 +1,4 @@
-import React, { useCallback, memo } from "react"
+import React, { useCallback, useContext, memo } from "react"
 import PropTypes from "prop-types"
 import { Collapse } from "reactstrap"
 import Headers from "./QuillSelectButtons/Headers"
@@ -6,17 +6,23 @@ import Sizes from "./QuillSelectButtons/Sizes"
 import QuillSelectButtons from "./QuillSelectButtons"
 import QuillButtons from "./QuillButtons"
 import { DEFAULT_STATE_TEXT_EDITOR } from "redux/TextEditor/reducer"
+import { EditorConsumer } from "../"
 import "./styles.css"
 
 const { html } = DEFAULT_STATE_TEXT_EDITOR
 
-const TopToolbar = ({
-  toolbarId,
-  isOpen,
-  handleUndo,
-  handleRedo,
-  handleEditorChange,
-}) => {
+const TopToolbar = ({ toolbarId, isOpen }) => {
+  const { editorRef, handleEditorChange } = useContext(EditorConsumer)
+  const handleUndo = useCallback(
+    () => editorRef?.current?.editor?.history.undo(),
+    [editorRef]
+  )
+
+  const handleRedo = useCallback(
+    () => editorRef?.current?.editor?.history.redo(),
+    [editorRef]
+  )
+
   const handleClear = useCallback(() => handleEditorChange({ html }), [])
 
   const handleGetTAble = useCallback(() => {

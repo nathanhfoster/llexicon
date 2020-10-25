@@ -1,5 +1,6 @@
-import { useState, useLayoutEffect } from 'react'
-import { usePrevious } from 'hooks'
+import { useState, useCallback, useEffect } from "react"
+import { usePrevious } from "hooks"
+import { shallowEquals } from "utils"
 
 const useScrollable = ({ threshold = true, handleReachedBottom }) => {
   const [scrollProps, setScrollProps] = useState({
@@ -12,28 +13,42 @@ const useScrollable = ({ threshold = true, handleReachedBottom }) => {
 
   const previousScrollProps = usePrevious(scrollProps)
 
-  const handleOnScroll = e => {
-    if (!e) return
-    const {
-      target: { scrollHeight, scrollTop, clientHeight },
-    } = e
-    const scrollOffset = clientHeight / 4
+  const handleOnScroll = useCallback(
+    (e) => {
+      if (!e) return
+      const {
+        target: { scrollHeight, scrollTop, clientHeight },
+      } = e
+      const scrollOffset = clientHeight / 4
 
-    const reachedBottom = threshold && scrollHeight - scrollTop <= clientHeight + scrollOffset
+      const reachedBottom =
+        threshold && scrollHeight - scrollTop <= clientHeight + scrollOffset
 
-    setScrollProps({ scrollHeight, scrollTop, clientHeight, scrollOffset, reachedBottom })
-  }
+      setScrollProps({
+        scrollHeight,
+        scrollTop,
+        clientHeight,
+        scrollOffset,
+        reachedBottom,
+      })
+    },
+    [threshold]
+  )
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!previousScrollProps || !scrollProps) return
-    if (
-      scrollProps.reachedBottom &&
-      (previousScrollProps.scrollHeight != scrollProps.scrollHeight ||
-        previousScrollProps.scrollTop != scrollProps.scrollTop ||
-        previousScrollProps.clientHeight != scrollProps.clientHeight ||
-        previousScrollProps.scrollOffset != scrollProps.scrollOffset)
-    ) {
-      handleReachedBottom(scrollProps)
+
+    const debounce = setTimeout(() => {
+      if (
+        scrollProps.reachedBottom &&
+        !shallowEquals(previousScrollProps, scrollProps)
+      ) {
+        handleReachedBottom(scrollProps)
+      }
+    }, 200)
+
+    return () => {
+      clearTimeout(debounce)
     }
   }, [handleReachedBottom, previousScrollProps, scrollProps])
 

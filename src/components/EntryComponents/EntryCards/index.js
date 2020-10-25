@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, useMemo, memo, useCallback } from 'react'
+import React, { useEffect, useState, useMemo, memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Col } from 'reactstrap'
@@ -18,7 +18,7 @@ const EntryCards = ({ className, entries, minimal, containerRef }) => {
 
   const handleOnScroll = useScrollable({ handleReachedBottom })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (containerRef?.current) {
       containerRef.current.addEventListener('scroll', handleOnScroll)
     }
