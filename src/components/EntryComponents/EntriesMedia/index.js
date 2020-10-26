@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, memo } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { Container, Col, Media } from 'reactstrap'
-import { GoToEntryDetail } from 'redux/router/actions'
+import EntryMedia from './EntryMedia'
+import { Container } from 'reactstrap'
 import { useScrollable } from 'hooks'
 import './styles.css'
 
@@ -31,24 +31,12 @@ const EntriesMedia = ({ entries }) => {
 
   const renderEntryMedia = useMemo(
     () =>
-      viewableEntries.reduce((acc, { id: entryId, title, html, EntryFiles }, i) => {
-        const handleEntryOnClick = () => {
-          GoToEntryDetail(entryId)
-        }
+      viewableEntries.reduce((acc, { id: entryId, title, html, tags, people, EntryFiles }, i) => {
+        const defaultProps = { entryId, title, tags, people }
+
         if (EntryFiles?.length > 0) {
           EntryFiles.forEach(({ id, url, entry_id }, j) => {
-            acc.push(
-              <Col
-                key={`File-${entryId}-${id}-${j}`}
-                xs={6}
-                md={4}
-                xl={3}
-                onClick={handleEntryOnClick}
-              >
-                <b className='Overflow'>{title}</b>
-                <Media className='EntryMedia' src={url} />
-              </Col>,
-            )
+            acc.push(<EntryMedia key={`File-${entryId}-${id}-${j}`} {...defaultProps} src={url} />)
           })
         }
 
@@ -56,27 +44,13 @@ const EntriesMedia = ({ entries }) => {
           const [iFrame] = html.match(I_FRAME_REGEX)
           const [src] = iFrame.match(SRC_REGEX)
 
-          acc.push(
-            <Col key={`File-${entryId}-${i}`} xs={6} md={4} xl={3} onClick={handleEntryOnClick}>
-              <b className='EntryMedia Overflow'>{title}</b>
-              <div class='embed-responsive embed-responsive-16by9'>
-                <iframe title={title} className=' embed-responsive-item' src={src} />
-              </div>
-            </Col>,
-          )
+          acc.push(<EntryMedia key={`File-${entryId}-${i}`} {...defaultProps} isVideo src={src} />)
         }
 
         if (IMAGE_REGEX.test(html)) {
           const [image] = html.match(IMAGE_REGEX)
           const [src] = image.match(SRC_REGEX)
-          acc.push(
-            <Col key={`File-${entryId}-${i}`} xs={6} md={4} xl={3} onClick={handleEntryOnClick}>
-              <b className='EntryMedia Overflow'>{title}</b>
-              <div class='embed-responsive embed-responsive-16by9'>
-                <iframe title={title} className=' embed-responsive-item' src={src} />
-              </div>
-            </Col>,
-          )
+          acc.push(<EntryMedia key={`File-${entryId}-${i}`} {...defaultProps} src={src} />)
         }
 
         return acc
@@ -86,10 +60,7 @@ const EntriesMedia = ({ entries }) => {
 
   return (
     <Container>
-      <div
-        className='EntriesMediaContainer Container row'
-        onScroll={handleOnScroll}
-      >
+      <div className='EntriesMediaContainer Container row' onScroll={handleOnScroll}>
         {renderEntryMedia}
       </div>
     </Container>
