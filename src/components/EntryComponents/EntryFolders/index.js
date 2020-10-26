@@ -20,6 +20,7 @@ const mapStateToProps = ({
 
 const EntryFolders = ({ entries, search }) => {
   const containerRef = useRef()
+  
   useEffect(() => {
     if (!search) RouterPush(BASE_FOLDER_DIRECTORY_URL)
   }, [search])

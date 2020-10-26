@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from "react"
-import { usePrevious } from "hooks"
-import { shallowEquals } from "utils"
+import { useState, useCallback, useEffect } from 'react'
+import { usePrevious } from 'hooks'
+import { shallowEquals } from 'utils'
 
 const useScrollable = ({ threshold = true, handleReachedBottom }) => {
   const [scrollProps, setScrollProps] = useState({
@@ -14,15 +14,14 @@ const useScrollable = ({ threshold = true, handleReachedBottom }) => {
   const previousScrollProps = usePrevious(scrollProps)
 
   const handleOnScroll = useCallback(
-    (e) => {
+    e => {
       if (!e) return
       const {
         target: { scrollHeight, scrollTop, clientHeight },
       } = e
       const scrollOffset = clientHeight / 4
 
-      const reachedBottom =
-        threshold && scrollHeight - scrollTop <= clientHeight + scrollOffset
+      const reachedBottom = threshold && scrollHeight - scrollTop <= clientHeight + scrollOffset
 
       setScrollProps({
         scrollHeight,
@@ -32,17 +31,14 @@ const useScrollable = ({ threshold = true, handleReachedBottom }) => {
         reachedBottom,
       })
     },
-    [threshold]
+    [threshold],
   )
 
   useEffect(() => {
     if (!previousScrollProps || !scrollProps) return
 
     const debounce = setTimeout(() => {
-      if (
-        scrollProps.reachedBottom &&
-        !shallowEquals(previousScrollProps, scrollProps)
-      ) {
+      if (scrollProps.reachedBottom && !shallowEquals(previousScrollProps, scrollProps)) {
         handleReachedBottom(scrollProps)
       }
     }, 200)

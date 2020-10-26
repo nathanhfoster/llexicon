@@ -1,19 +1,15 @@
-import React, { useEffect, useRef } from "react"
-import PropTypes from "prop-types"
-import { EntryPropTypes } from "redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
-import { Container, Row, Col } from "reactstrap"
-import { Entry } from "../../components"
-import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
-import {
-  GetUserEntryDetails,
-  ClearEntry,
-  SyncEntries,
-} from "redux/Entries/actions"
-import { SetCalendar } from "redux/Calendar/actions"
-import PageNotFound from "../PageNotFound"
-import { getReduxEntryId } from "redux/Entries/utils"
-import "./styles.css"
+import React, { useRef, useMemo, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import { EntryPropTypes } from 'redux/Entries/propTypes'
+import { connect as reduxConnect } from 'react-redux'
+import { Container, Row, Col } from 'reactstrap'
+import { Entry } from '../../components'
+import ResolveEntryConflictModal from './ResolveEntryConflictModal'
+import { GetUserEntryDetails, ClearEntry, SyncEntries } from 'redux/Entries/actions'
+import { SetCalendar } from 'redux/Calendar/actions'
+import PageNotFound from '../PageNotFound'
+import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils'
+import './styles.css'
 
 const mapStateToProps = (
   {
@@ -23,7 +19,7 @@ const mapStateToProps = (
       navigator: { serviceWorker },
     },
   },
-  { entryId }
+  { entryId },
 ) => ({
   userId: id,
   entry: items.concat(filteredItems).find(({ id }) => id == entryId),
@@ -51,51 +47,42 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  // const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
-
-  const entryFound = Boolean(entry)
+  const entryIsLocalOnly = useMemo(() => entryId.toString().includes(BASE_JOURNAL_ENTRY_ID), [
+    entryId,
+  ])
 
   const entryAuthor = entry ? entry.author : null
 
   const readOnly = Boolean(
-    (!isPending && entryAuthor && !userId) ||
-      (entryAuthor && userId !== entryAuthor)
+    !entryIsLocalOnly ||
+      (!isPending && entryAuthor && !userId) ||
+      (entryAuthor && userId !== entryAuthor),
   )
 
   useEffect(() => {
     // if (!entryIsLocalOnly) {
-    SyncEntries(
-      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
-    )
+    SyncEntries(() => new Promise(resolve => resolve(GetUserEntryDetails(entryId))))
     // }
 
     return () => {
       ClearEntry()
     }
-  }, [])
+  }, [ClearEntry, GetUserEntryDetails, SyncEntries, entryId])
 
   useEffect(() => {
-    if (
-      entryFound &&
-      entry.date_created_by_author &&
-      !setCalendarDateToEntryDate.current
-    ) {
+    if (entry && entry.date_created_by_author && !setCalendarDateToEntryDate.current) {
       const activeDate = new Date(entry.date_created_by_author)
       SetCalendar({ activeDate })
       setCalendarDateToEntryDate.current = true
     }
-  }, [entry])
+  }, [SetCalendar, entry])
 
-  return entryFound ? (
-    <Container className="Container">
+  return entry ? (
+    <Container className='Container'>
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
-        <Col xs={12} className="EntryDetail p-0">
-          <Entry
-            readOnly={readOnly}
-            entry={entry}
-            shouldRedirectOnDelete={true}
-          />
+        <Col xs={12} className='EntryDetail p-0'>
+          <Entry readOnly={readOnly} entry={entry} shouldRedirectOnDelete={true} />
         </Col>
       </Row>
     </Container>

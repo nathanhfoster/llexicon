@@ -3,11 +3,11 @@ import { RouteMap } from 'redux/router/actions'
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
-const BASE_JOURNAL_ENTRY_ID = 'Entry'
+const BASE_JOURNAL_ENTRY_ID = 'Entry-'
 
-const getReduxEntryId = id => `${BASE_JOURNAL_ENTRY_ID}-${id}`
+const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
 
-const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId(0)
+const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
 
 const getMostRecent = (reduxData, newData) => {
   let newItem = { ...newData, ...reduxData }
