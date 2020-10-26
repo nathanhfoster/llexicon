@@ -1,10 +1,11 @@
 .EntriesMediaContainer {
   background-color: rgba(var(--primaryColorRGB), 0.5);
   box-shadow: var(--primaryBoxShadow);
-  max-height: calc(100vh - var(--navBarHeight) - 48px);
+height: calc(100vh - var(--navBarHeight) - 48px);
 }
 
 .EntryMedia {
+  display: inherit;
   max-height: 200px;
   max-width: 100%;
   object-fit: scale-down;

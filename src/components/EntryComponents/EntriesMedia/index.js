@@ -85,9 +85,9 @@ const EntriesMedia = ({ entries }) => {
   )
 
   return (
-    <Container className='EntriesMediaContainer'>
+    <Container>
       <div
-        className='EntryFoldersContainer Container row'
+        className='EntriesMediaContainer Container row'
         onScroll={handleOnScroll}
       >
         {renderEntryMedia}
