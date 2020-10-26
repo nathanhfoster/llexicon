@@ -34,6 +34,7 @@
 }
 
 .Overflow {
+  display: inherit;
   flex-wrap: nowrap;
   white-space: nowrap;
   text-overflow: ellipsis;
