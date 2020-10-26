@@ -1,3 +1,9 @@
+.EntryMediaContainer {
+  background-color: rgba(var(--primaryColorRGB), 0.5);
+  box-shadow: var(--primaryBoxShadow);
+  max-height: calc(100vh - var(--navBarHeight) - 48px);
+}
+
 .EntryMedia {
   max-height: 200px;
   max-width: 100%;
