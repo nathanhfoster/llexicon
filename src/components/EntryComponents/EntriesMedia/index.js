@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useMemo, memo } from 'react'
+import React, { useState, useCallback, useMemo, memo } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Col, Media } from 'reactstrap'
 import { GoToEntryDetail } from 'redux/router/actions'
@@ -13,7 +13,6 @@ const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
 const EntriesMedia = ({ entries }) => {
-  const containerRef = useRef()
   const [viewableEntriesRange, setViewableEntriesRange] = useState(DEFAULT_VIEWABLE_ENTRIES_RANGE)
 
   const [beginOffset, endOffset] = viewableEntriesRange
@@ -88,7 +87,6 @@ const EntriesMedia = ({ entries }) => {
   return (
     <Container className='EntriesMediaContainer'>
       <div
-        ref={containerRef}
         className='EntryFoldersContainer Container row'
         onScroll={handleOnScroll}
       >
