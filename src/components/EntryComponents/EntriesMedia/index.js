@@ -86,7 +86,7 @@ const EntriesMedia = ({ entries }) => {
   )
 
   return (
-    <Container className='EntriesMedia'>
+    <Container className='EntriesMediaContainer'>
       <div
         ref={containerRef}
         className='EntryFoldersContainer Container row'
