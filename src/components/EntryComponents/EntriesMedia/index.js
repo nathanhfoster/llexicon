@@ -1,11 +1,7 @@
-import React, { useRef, useEffect, useState, useCallback, useMemo, lazy } from 'react'
-import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import React, { useRef, useState, useCallback, useMemo, memo } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { Container, Row, Col, Media } from 'reactstrap'
-import { NavLink } from 'react-router-dom'
+import { Container, Col, Media } from 'reactstrap'
 import { GoToEntryDetail } from 'redux/router/actions'
-import { filterMapArray } from 'utils'
 import { useScrollable } from 'hooks'
 import './styles.css'
 
@@ -16,13 +12,7 @@ const SRC_REGEX = /(?<=src=").*?(?=[\?"])/
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
-const mapStateToProps = ({
-  router: {
-    location: { search },
-  },
-}) => ({ search })
-
-const EntriesMedia = ({ entries, search }) => {
+const EntriesMedia = ({ entries }) => {
   const containerRef = useRef()
   const [viewableEntriesRange, setViewableEntriesRange] = useState(DEFAULT_VIEWABLE_ENTRIES_RANGE)
 
@@ -110,9 +100,6 @@ const EntriesMedia = ({ entries, search }) => {
 
 EntriesMedia.propTypes = {
   entries: EntriesPropTypes,
-  search: PropTypes.string.isRequired,
 }
 
-EntriesMedia.defaultProps = { search: '' }
-
-export default reduxConnect(mapStateToProps)(EntriesMedia)
+export default memo(EntriesMedia)
