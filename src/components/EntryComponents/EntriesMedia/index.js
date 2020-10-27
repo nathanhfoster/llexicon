@@ -4,6 +4,7 @@ import EntryMedia from './EntryMedia'
 import { Container } from 'reactstrap'
 import { useScrollable } from 'hooks'
 import './styles.css'
+import { Header } from 'components'
 
 const I_FRAME_REGEX = /(?:<iframe[^>]*)(?:(?:\/>)|(?:>.*?<\/iframe>))/gm
 const IMAGE_REGEX = /<img.*?src="([^"]+)".*?>/gm
@@ -41,6 +42,7 @@ const EntriesMedia = ({ entries }) => {
         const defaultProps = { entryId, title, tags, people }
 
         if (EntryFiles?.length > 0) {
+          console.log(EntryFiles)
           EntryFiles.forEach(({ id, url, entry_id }, j) => {
             acc.push(
               <EntryMedia key={`File-${entryId}-${id}-${i}-${j}`} {...defaultProps} src={url} />,
@@ -71,7 +73,13 @@ const EntriesMedia = ({ entries }) => {
           let iterator
           while ((iterator = IMAGE_REGEX.exec(html))) {
             const { 0: image, 1: src, groups, index, input, length } = iterator
-            acc.push(<EntryMedia key={`Image-${entryId}-${i}-${IMAGE_REGEX.lastIndex}`} {...defaultProps} src={src} />)
+            acc.push(
+              <EntryMedia
+                key={`Image-${entryId}-${i}-${IMAGE_REGEX.lastIndex}`}
+                {...defaultProps}
+                src={src}
+              />,
+            )
           }
         }
 
@@ -86,7 +94,7 @@ const EntriesMedia = ({ entries }) => {
   return (
     <Container>
       <div className='EntriesMediaContainer Container row' onScroll={handleOnScroll}>
-        {renderEntryMedia}
+        {renderEntryMedia.lenght > 0 ? renderEntryMedia : <Header>No Media</Header>}
       </div>
     </Container>
   )
