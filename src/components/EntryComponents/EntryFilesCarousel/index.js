@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useContext, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { connect as reduxConnect } from 'react-redux'
 import { BasicImageCarousel } from '../..'
@@ -6,6 +6,7 @@ import { Container, Row, Col, Button } from 'reactstrap'
 import { EntryFilesProps } from 'redux/Entries/propTypes'
 import { removeAttributeDuplicates } from 'utils'
 import { DeleteEntryFile } from 'redux/Entries/actions'
+import { EditorConsumer } from '../../Editor'
 import './styles.css'
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
@@ -18,7 +19,6 @@ const mapDispatchToProps = { DeleteEntryFile }
 const EntryFilesCarousel = ({
   className,
   files,
-  handleInsertEmbeded,
   overflowX,
   overflowY,
   whiteSpace,
@@ -26,6 +26,8 @@ const EntryFilesCarousel = ({
   filteredItems,
   DeleteEntryFile,
 }) => {
+  const { editorRef } = useContext(EditorConsumer)
+
   const AllEntryFiles = useMemo(
     () =>
       items
@@ -62,8 +64,19 @@ const EntryFilesCarousel = ({
 
   const handleImageClick = useCallback(({ images, photoIndex, isOpen }) => {
     const { url, file_type } = images[photoIndex]
-    const type = file_type.split('/')[0]
-    handleInsertEmbeded(type, url)
+    const [type] = file_type.split('/')
+
+    if (!editorRef.current) return
+    let cursorIndex = 0
+
+    const editorSelection = editorRef.current.getEditorSelection()
+
+    if (editorSelection) {
+      const { index, length } = editorSelection
+      cursorIndex = index
+    }
+
+    editorRef.current.getEditor().insertEmbed(cursorIndex, type, url)
   }, [])
 
   const handleImageDelete = useCallback(({ images, photoIndex, isOpen }) => {

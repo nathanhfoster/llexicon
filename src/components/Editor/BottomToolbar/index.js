@@ -14,7 +14,7 @@ const RatingButtonModal = lazy(() => import('./ToolbarButtonModals/RatingButtonM
 const MediaButtonModal = lazy(() => import('./ToolbarButtonModals/MediaButtonModal'))
 const PeopleButtonModal = lazy(() => import('./ToolbarButtonModals/PeopleButtonModal'))
 
-const BottomToolbar = ({ entry, handleInsertEmbeded, isOpen, canToggleToolbars }) => {
+const BottomToolbar = ({ entry, isOpen, canToggleToolbars }) => {
   const { toggleBottomToolbar, handleEditorChange } = useContext(EditorConsumer)
 
   const handlers = useSwipeable({
@@ -55,15 +55,11 @@ const BottomToolbar = ({ entry, handleInsertEmbeded, isOpen, canToggleToolbars }
         <Container fluid className='BottomToolBar'>
           <Row className='BottomToolBarFiles'>
             <Col xs={12} className='p-1'>
-              <EntryFilesCarousel
-                files={entry.EntryFiles}
-                onChange={handleEditorChange}
-                handleInsertEmbeded={handleInsertEmbeded}
-              />
+              <EntryFilesCarousel files={entry.EntryFiles} onChange={handleEditorChange} />
             </Col>
           </Row>
           <Row className='BottomToolButtonRow'>
-            <MediaButtonModal xs={6} handleInsertEmbeded={handleInsertEmbeded} />
+            <MediaButtonModal xs={6} />
             <RatingButtonModal xs={6} rating={entry.rating} onChange={handleEditorChange} />
           </Row>
           <Row className='BottomToolButtonRow'>
