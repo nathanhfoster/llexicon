@@ -94,7 +94,7 @@ const EntriesMedia = ({ entries }) => {
   return (
     <Container>
       <div className='EntriesMediaContainer Container row' onScroll={handleOnScroll}>
-        {renderEntryMedia.lenght > 0 ? renderEntryMedia : <Header>No Media</Header>}
+        {renderEntryMedia.length > 0 ? renderEntryMedia : <Header>No Media</Header>}
       </div>
     </Container>
   )
