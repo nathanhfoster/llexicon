@@ -11,8 +11,14 @@ const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
 
 const getMostRecent = (reduxData, newData) => {
   let newItem = { ...newData, ...reduxData }
-  const reduxDataLastUpdated = new Date(reduxData._lastUpdated || reduxData.date_updated || 0)
-  const newDataLastUpdated = new Date(newData._lastUpdated || newData.date_updated || 0)
+  const reduxDataLastUpdated = new Date(
+    reduxData._lastUpdated !== 'Invalid date'
+      ? reduxData._lastUpdated
+      : reduxData.date_updated || 0,
+  )
+  const newDataLastUpdated = new Date(
+    newData._lastUpdated !== 'Invalid date' ? newData._lastUpdated : newData.date_updated || 0,
+  )
   const overWriteWithNewData = newDataLastUpdated - reduxDataLastUpdated > 0
 
   if (overWriteWithNewData) {
