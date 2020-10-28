@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
 import { Entry } from '../../components'
 import ResolveEntryConflictModal from './ResolveEntryConflictModal'
@@ -13,7 +13,7 @@ import {
 } from 'redux/Entries/actions'
 import { SetCalendar } from 'redux/Calendar/actions'
 import PageNotFound from '../PageNotFound'
-import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils'
+import { isReadOnly } from 'redux/Entries/utils'
 import './styles.css'
 
 const mapStateToProps = (
@@ -54,26 +54,20 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  const entryIsLocalOnly = useMemo(() => entryId.toString().includes(BASE_JOURNAL_ENTRY_ID), [
+  const readOnly = useMemo(() => !isPending && isReadOnly(entryId, entry?.author, userId), [
+    isPending,
     entryId,
+    entry?.author,
+    userId,
   ])
 
-  const entryAuthor = entry ? entry.author : null
-
-  const readOnly = Boolean(
-    (!isPending && !entryIsLocalOnly && entryAuthor && !userId) ||
-      (entryAuthor && userId !== entryAuthor),
-  )
-
   useEffect(() => {
-    // if (!entryIsLocalOnly) {
-    SyncEntries(() => new Promise(resolve => resolve(GetUserEntryDetails(entryId))))
-    // }
+    GetUserEntryDetails(entryId)
 
     return () => {
       ClearEntry()
     }
-  }, [ClearEntry, GetUserEntryDetails, SyncEntries, entryId])
+  }, [entryId])
 
   useEffect(() => {
     if (entry && entry.date_created_by_author && !setCalendarDateToEntryDate.current) {
@@ -81,7 +75,7 @@ const EntryDetail = ({
       SetCalendar({ activeDate })
       setCalendarDateToEntryDate.current = true
     }
-  }, [SetCalendar, entry])
+  }, [entry])
 
   const handleOnChange = useCallback(
     payload => {
@@ -93,7 +87,7 @@ const EntryDetail = ({
 
   const handleOnSubmit = useCallback(() => {
     SyncEntries()
-  }, [])
+  }, [SyncEntries])
 
   return entry ? (
     <Container className='Container'>
@@ -127,4 +121,4 @@ EntryDetail.propTypes = {
   SetCalendar: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryDetail)

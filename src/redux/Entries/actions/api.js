@@ -1,4 +1,4 @@
-import { Axios, AxiosForm } from '../../Actions'
+import { Axios, AxiosForm, Sync } from '../../Actions'
 import { SetApiResponseStatus, SetAlert } from '../../Alerts/actions'
 import { RouterPush } from '../../router/actions'
 import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from '../../../utils'
@@ -310,8 +310,8 @@ const SearchUserEntries = search => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .post(`entries/${id}/search/`, qs.stringify({ search }))
-    .then(async ({ data }) => {
-      await dispatch(SetSearchEntries(search, data))
+    .then(({ data }) => {
+      dispatch(SetSearchEntries(search, data))
       ReactGA.event({
         category: 'Search User Entries',
         action: 'User searched for entries!',
@@ -320,7 +320,7 @@ const SearchUserEntries = search => (dispatch, getState) => {
       return data
     })
     .catch(async e => {
-      await dispatch(SearchEntriesFilter(search, []))
+      dispatch(SearchEntriesFilter(search, []))
       dispatch(SetEntriesError(e))
     })
 }
@@ -353,7 +353,7 @@ const DeleteEntryFile = (id, entry_id) => dispatch =>
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 
-const SyncEntries = getEntryMethod => async (dispatch, getState) => {
+const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User: {
       id: UserId,
@@ -388,7 +388,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
     } = entries[i]
 
     if (_shouldDelete) {
-      await dispatch(DeleteEntry(id)).then(res =>
+      dispatch(DeleteEntry(id)).then(res =>
         dispatch(SetAlert({ title: 'Deleted', message: 'Entry' })),
       )
       continue
@@ -406,7 +406,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
         views,
       }
 
-      await dispatch(PostEntry(postPayload)).then(async entry => {
+      dispatch(PostEntry(postPayload)).then(async entry => {
         dispatch(SetAlert({ title: 'Saved', message: 'Entry' }))
         if (!entry) return
         const {
@@ -429,7 +429,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
           tags: getTagStringFromObject(tags),
           people: getTagStringFromObject(people),
         }
-        await dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+        dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })
       continue
     } else if (_lastUpdated) {
@@ -446,14 +446,14 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
         is_public,
         //  views,
       }
-      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res =>
+      dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res =>
         dispatch(SetAlert({ title: 'Updated', message: 'Entry' })),
       )
     }
   }
 
   if (typeof getEntryMethod === 'function') {
-    await getEntryMethod().then(res => dispatch(SetAlert({ title: 'Received', message: 'Entry' })))
+    getEntryMethod().then(res => dispatch(SetAlert({ title: 'Received', message: 'Entry' })))
   }
 
   dispatch(SetEntriesComplete())

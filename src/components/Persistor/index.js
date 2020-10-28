@@ -1,6 +1,6 @@
 import { useLayoutEffect, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { isAFunction } from 'utils'
 import { isQuotaExceeded } from 'redux/localState'
 import localforage from 'localforage'
@@ -118,4 +118,4 @@ Persistor.propTypes = {
 
 Persistor.defaultProps = { debounce: 400 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Persistor)
+export default connect(mapStateToProps, mapDispatchToProps)(Persistor)

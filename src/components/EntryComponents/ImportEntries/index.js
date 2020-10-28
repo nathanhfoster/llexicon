@@ -25,7 +25,7 @@ const ImportEntries = () => {
         return newEntry
       })
       await dispatch(SetEntries(payload))
-      await dispatch(SyncEntries())
+      // await dispatch(SyncEntries())
     })
   }, [])
 

@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo, Fragment } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { Jumbotron } from "reactstrap"
-import { BasicForm, FacebookGoogleLogin } from "components"
-import { PasswordReset } from "redux/User/actions"
+import React, { useCallback, useMemo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Jumbotron } from 'reactstrap'
+import { BasicForm, FacebookGoogleLogin } from 'components'
+import { PasswordReset } from 'redux/User/actions'
 
 const mapStateToProps = ({ User: { error, pending } }) => ({
   userError: error,
@@ -15,15 +15,12 @@ const mapDispatchToProps = {
 }
 
 const ForgotPassword = ({ userError, userPending, PasswordReset }) => {
-  const errorMessage = userError && "Please confirm email"
-  const handlePasswordReset = useCallback(
-    (payload) => PasswordReset(payload),
-    []
-  )
+  const errorMessage = userError && 'Please confirm email'
+  const handlePasswordReset = useCallback(payload => PasswordReset(payload), [])
 
-  const isInvalid = useCallback((value) => {
+  const isInvalid = useCallback(value => {
     if (value && value.length < 3) {
-      return "Required. 3 or more characters."
+      return 'Required. 3 or more characters.'
     } else {
       return false
     }
@@ -32,32 +29,32 @@ const ForgotPassword = ({ userError, userPending, PasswordReset }) => {
   const inputs = useMemo(
     () => [
       {
-        label: "Email",
-        type: "email",
-        name: "email",
-        placeholder: "Email...",
+        label: 'Email',
+        type: 'email',
+        name: 'email',
+        placeholder: 'Email...',
         required: true,
         invalid: errorMessage,
         isInvalid,
       },
     ],
-    [userError]
+    [userError],
   )
 
   const formSubmitLabel = useMemo(
     () => (
       <Fragment>
         {userPending && <i className={`fas fa-sun SunIcon`} />}
-        <span className="ml-1">Request</span>
+        <span className='ml-1'>Request</span>
       </Fragment>
     ),
-    [userPending]
+    [userPending],
   )
 
   return (
-    <Jumbotron className="LoginFormContainer">
+    <Jumbotron className='LoginFormContainer'>
       <BasicForm
-        title="Forgot password"
+        title='Forgot password'
         onSubmit={handlePasswordReset}
         submitLabel={formSubmitLabel}
         inputs={inputs}
@@ -80,4 +77,4 @@ ForgotPassword.propTypes = {
 
 ForgotPassword.defaultProps = {}
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(ForgotPassword)
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword)

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo, lazy } from 'react'
 import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem, Button } from 'reactstrap'
 import { NavLink } from 'react-router-dom'
@@ -20,7 +20,7 @@ const mapStateToProps = ({
 
 const EntryFolders = ({ entries, search }) => {
   const containerRef = useRef()
-  
+
   useEffect(() => {
     if (!search) RouterPush(BASE_FOLDER_DIRECTORY_URL)
   }, [search])
@@ -127,4 +127,4 @@ EntryFolders.propTypes = {
 
 EntryFolders.defaultProps = { search: '' }
 
-export default reduxConnect(mapStateToProps)(EntryFolders)
+export default connect(mapStateToProps)(EntryFolders)

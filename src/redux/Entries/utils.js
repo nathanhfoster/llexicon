@@ -108,6 +108,16 @@ const getTagObjectFromString = s =>
     return acc
   }, [])
 
+const isReadOnly = (entryId, entryAuthor, userId) => {
+  const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
+
+  const entryIsStoredInTheBackend = !entryIsLocalOnly
+
+  const userIsLoggedInButIsNotTheAuthor = userId && entryAuthor && userId !== entryAuthor
+
+  return Boolean(entryIsStoredInTheBackend || userIsLoggedInButIsNotTheAuthor)
+}
+
 export {
   LINK_TO_SIGN_UP,
   BASE_JOURNAL_ENTRY_ID,
@@ -118,4 +128,5 @@ export {
   handleFilterEntries,
   getTagStringFromObject,
   getTagObjectFromString,
+  isReadOnly,
 }

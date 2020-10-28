@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, Fragment } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { EntryCards, Header } from '../..'
 import Moment from 'react-moment'
 
@@ -50,4 +50,4 @@ EntriesRediscover.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(EntriesRediscover)
+export default connect(mapStateToProps)(EntriesRediscover)

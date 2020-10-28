@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { BasicImageCarousel } from '../..'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { EntryFilesProps } from 'redux/Entries/propTypes'
@@ -122,4 +122,4 @@ EntryFilesCarousel.defaultProps = {
   whiteSpace: 'nowrap',
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryFilesCarousel)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryFilesCarousel)

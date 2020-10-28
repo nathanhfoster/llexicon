@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, lazy, useCallback } from 'react'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col } from 'reactstrap'
@@ -102,4 +102,4 @@ NewEntry.propTypes = {
   ResetMap: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(NewEntry)
+export default connect(mapStateToProps, mapDispatchToProps)(NewEntry)

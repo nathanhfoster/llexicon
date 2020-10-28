@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
 import { ImportEntries } from 'components'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { copyStringToClipboard, loadJSON, exportJSON } from 'utils'
 import { SyncEntries, GetAllUserEntries, GetAllUserEntryPages } from 'redux/Entries/actions'
 import { getTagStringFromObject } from 'redux/Entries/utils'
@@ -56,8 +56,6 @@ const ImportExportEntries = ({
       } = entry
 
       // console.log(date_created, MomentJs(date_created).format(DATE_FORMAT))
-
-     
 
       let entries = {
         id,
@@ -113,4 +111,4 @@ ImportExportEntries.propTypes = {
 
 ImportExportEntries.defaultProps = { userId: null }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(ImportExportEntries)
+export default connect(mapStateToProps, mapDispatchToProps)(ImportExportEntries)

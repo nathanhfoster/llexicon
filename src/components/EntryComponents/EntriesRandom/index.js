@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useState, Fragment } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { EntryCards, Header } from '../..'
 import { ButtonGroup, Button } from 'reactstrap'
 import './styles.css'
@@ -64,4 +64,4 @@ EntriesRandom.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(EntriesRandom)
+export default connect(mapStateToProps)(EntriesRandom)

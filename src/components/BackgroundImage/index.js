@@ -1,6 +1,6 @@
 import React, { useMemo, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { RouteMap } from 'redux/router/actions'
 import { Media } from 'reactstrap'
 import StarGenerator from './StarGenerator'
@@ -57,4 +57,4 @@ const BackgroundImage = ({ show_animated_background, starLength, pathname }) => 
   )
 }
 
-export default reduxConnect(mapStateToProps)(BackgroundImage)
+export default connect(mapStateToProps)(BackgroundImage)

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo, memo } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import { Container, Row, Col } from "reactstrap"
+import React, { useState, useEffect, useMemo, memo } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { Container, Row, Col } from 'reactstrap'
 
 const mapStateToProps = ({}) => ({})
 
@@ -18,7 +18,7 @@ const Template = props => {
   const {} = state
 
   return (
-    <Container className="Template Container">
+    <Container className='Template Container'>
       <Row>
         <Col xs={12}>Template</Col>
       </Row>
@@ -30,7 +30,4 @@ Template.propTypes = {}
 
 Template.defaultProps = {}
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Template))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Template))

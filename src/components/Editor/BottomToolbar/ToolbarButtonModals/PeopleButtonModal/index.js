@@ -9,7 +9,7 @@ import {
   InputGroupText,
   Button,
 } from 'reactstrap'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import ToolbarModal from '../../ToolbarModal'
 import { TagsContainer, DebounceInput } from 'components'
 import { GetUserEntryPeople } from 'redux/Entries/actions'
@@ -277,4 +277,4 @@ PeopleButtonModal.defaultProps = {
   people: [],
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(PeopleButtonModal)
+export default connect(mapStateToProps, mapDispatchToProps)(PeopleButtonModal)

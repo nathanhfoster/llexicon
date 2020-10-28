@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState, useCallback } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
+import React, { useContext, useEffect, useState, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import {
   Container,
   Row,
@@ -10,18 +10,18 @@ import {
   InputGroupText,
   Input,
   Media,
-} from "reactstrap"
-import ToolbarModal from "../../ToolbarModal"
-import { BasicDropDown } from "../../../../"
-import { cleanUrl } from "../../../../Editor/modules/Video"
-import { Logo } from "../../../../../images/AWS"
-import { EditorConsumer } from "../../../"
-import "./styles.css"
+} from 'reactstrap'
+import ToolbarModal from '../../ToolbarModal'
+import { BasicDropDown } from '../../../../'
+import { cleanUrl } from '../../../../Editor/modules/Video'
+import { Logo } from '../../../../../images/AWS'
+import { EditorConsumer } from '../../../'
+import './styles.css'
 
 const EMBEDED_TYPES = [
-  { id: "image", value: "Image" },
-  { id: "video", value: "Video" },
-  { id: "video", value: "iFrame" },
+  { id: 'image', value: 'Image' },
+  { id: 'video', value: 'Video' },
+  { id: 'video', value: 'iFrame' },
 ]
 
 const PLACEHOLDER = Logo
@@ -42,7 +42,7 @@ const MediaButtonModal = ({ xs, videoHeight }) => {
   }, [])
 
   useEffect(() => {
-    if (value === "iFrame" && url) {
+    if (value === 'iFrame' && url) {
       const regex = /<iframe.*?s*src="(.*?)".*?<\/iframe>/
       const splitString = regex.exec(url)
 
@@ -67,42 +67,39 @@ const MediaButtonModal = ({ xs, videoHeight }) => {
     }
 
     editorRef.current.getEditor().insertEmbed(cursorIndex, type, url)
-    setUrl("")
+    setUrl('')
   }, [editorRef, type, url])
 
-  const handleInputChange = useCallback(
-    ({ target: { value } }) => setUrl(value),
-    []
-  )
+  const handleInputChange = useCallback(({ target: { value } }) => setUrl(value), [])
 
-  const handleModalCancel = useCallback(() => setUrl(""), [])
+  const handleModalCancel = useCallback(() => setUrl(''), [])
 
   const handleOnFocus = useCallback(({ target }) => target.select(), [])
 
   return (
     <ToolbarModal
-      className="p-0"
-      title="Add Media"
-      ButtonIcon="fas fa-photo-video"
-      button="Add Media"
+      className='p-0'
+      title='Add Media'
+      ButtonIcon='fas fa-photo-video'
+      button='Add Media'
       xs={xs}
       onSaveCallback={handleAddUrl}
       onCancelCallback={handleModalCancel}
       disabledSave={addUrlDisabled}
     >
-      <Container fluid className="MediaButtonModal p-0">
-        <Row className="p-2">
+      <Container fluid className='MediaButtonModal p-0'>
+        <Row className='p-2'>
           <Col xs={12}>
             <InputGroup
               // tag={Form}
-              className="EntryInput"
+              className='EntryInput'
               // onSubmit={handleAddUrl}
               // method="post"
             >
-              <InputGroupAddon addonType="append">
-                <InputGroupText className="p-0">
+              <InputGroupAddon addonType='append'>
+                <InputGroupText className='p-0'>
                   <BasicDropDown
-                    className="MediaDropDown"
+                    className='MediaDropDown'
                     value={value}
                     options={EMBEDED_TYPES}
                     onChange={handleDropDownClick}
@@ -110,9 +107,9 @@ const MediaButtonModal = ({ xs, videoHeight }) => {
                 </InputGroupText>
               </InputGroupAddon>
               <Input
-                type="text"
-                name="url"
-                id="url"
+                type='text'
+                name='url'
+                id='url'
                 placeholder={PLACEHOLDER}
                 value={url}
                 onChange={handleInputChange}
@@ -121,16 +118,16 @@ const MediaButtonModal = ({ xs, videoHeight }) => {
             </InputGroup>
           </Col>
         </Row>
-        <div className="Center">
+        <div className='Center'>
           {type === EMBEDED_TYPES[0].id ? (
-            <Media src={url || PLACEHOLDER} className="MediaButtonModalImage" />
+            <Media src={url || PLACEHOLDER} className='MediaButtonModalImage' />
           ) : (
             <iframe
-              title="Image"
+              title='Image'
               src={cleanUrl(url)}
-              frameBorder="0"
+              frameBorder='0'
               height={videoHeight}
-              width="100%"
+              width='100%'
             />
           )}
         </div>
@@ -145,4 +142,4 @@ MediaButtonModal.propTypes = {
   videoHeight: PropTypes.string.isRequired,
 }
 
-export default reduxConnect(mapStateToProps)(MediaButtonModal)
+export default connect(mapStateToProps)(MediaButtonModal)

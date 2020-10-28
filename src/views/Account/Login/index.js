@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo, Fragment } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { Jumbotron } from "reactstrap"
-import { BasicForm, FacebookGoogleLogin } from "components"
-import { UserLogin } from "redux/User/actions"
+import React, { useCallback, useMemo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Jumbotron } from 'reactstrap'
+import { BasicForm, FacebookGoogleLogin } from 'components'
+import { UserLogin } from 'redux/User/actions'
 
 const mapStateToProps = ({ User: { error, pending } }) => ({
   userError: error,
@@ -13,13 +13,13 @@ const mapStateToProps = ({ User: { error, pending } }) => ({
 const mapDispatchToProps = { UserLogin }
 
 const Login = ({ userError, userPending, UserLogin }) => {
-  const errorMessage = userError && "Username or Password is incorrect"
+  const errorMessage = userError && 'Username or Password is incorrect'
 
-  const handleLogin = useCallback((payload) => UserLogin(payload), [])
+  const handleLogin = useCallback(payload => UserLogin(payload), [])
 
-  const isInvalid = useCallback((value) => {
+  const isInvalid = useCallback(value => {
     if (value && value.length < 3) {
-      return "Required. 3 or more characters."
+      return 'Required. 3 or more characters.'
     } else {
       return false
     }
@@ -28,40 +28,40 @@ const Login = ({ userError, userPending, UserLogin }) => {
   const inputs = useMemo(
     () => [
       {
-        label: "Username",
-        type: "text",
-        name: "username",
-        placeholder: "Username...",
+        label: 'Username',
+        type: 'text',
+        name: 'username',
+        placeholder: 'Username...',
         invalid: errorMessage,
         isInvalid,
         required: true,
       },
       {
-        label: "Password",
-        type: "password",
-        name: "password",
-        placeholder: "Password...",
+        label: 'Password',
+        type: 'password',
+        name: 'password',
+        placeholder: 'Password...',
         isInvalid,
         required: true,
       },
     ],
-    [errorMessage]
+    [errorMessage],
   )
 
   const formSubmitLabel = useMemo(
     () => (
       <Fragment>
         {userPending && <i className={`fas fa-sun SunIcon`} />}
-        <span className="ml-1">Login</span>
+        <span className='ml-1'>Login</span>
       </Fragment>
     ),
-    [userPending]
+    [userPending],
   )
 
   return (
-    <Jumbotron className="LoginFormContainer">
+    <Jumbotron className='LoginFormContainer'>
       <BasicForm
-        title="Login"
+        title='Login'
         onSubmit={handleLogin}
         submitLabel={formSubmitLabel}
         inputs={inputs}
@@ -82,4 +82,4 @@ Login.propTypes = {
   UserLogin: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

@@ -9,16 +9,11 @@ import {
   InputGroupText,
   Button,
 } from 'reactstrap'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import ToolbarModal from '../../ToolbarModal'
 import { TagsContainer, DebounceInput } from '../../../../'
 import { GetUserEntryTags } from 'redux/Entries/actions'
-import {
-  filterMapArray,
-  TopKFrequentStrings,
-  removeAttributeDuplicates,
-  stringMatch,
-} from 'utils'
+import { filterMapArray, TopKFrequentStrings, removeAttributeDuplicates, stringMatch } from 'utils'
 import { validateTagOrPeopleString, validatedTagString } from '../utlis'
 import { EntriesPropTypes, EntryTagsProps } from 'redux/Entries/propTypes'
 import { SUGGESTED } from './utils'
@@ -298,4 +293,4 @@ TagsButtonModal.defaultProps = {
   tags: [],
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(TagsButtonModal)
+export default connect(mapStateToProps, mapDispatchToProps)(TagsButtonModal)

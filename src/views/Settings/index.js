@@ -1,6 +1,6 @@
 import React, { useMemo, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { BasicTabs, Header, PushNotifications } from '../../components'
 import EntryStatistics from './EntryStatistics'
@@ -129,4 +129,4 @@ Settings.propTypes = {
   UpdateAppVersion: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)

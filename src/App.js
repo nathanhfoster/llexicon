@@ -1,6 +1,6 @@
 import React, { useEffect, lazy } from 'react'
 import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { SetWindow } from 'redux/Window/actions'
 import { ResetUserError, GetUserSettings } from 'redux/User/actions'
@@ -286,4 +286,4 @@ App.propTypes = {
   ResetMap: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

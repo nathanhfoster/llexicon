@@ -24,7 +24,7 @@ const Entry = ({
 
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
-  const submitDisabled = editorStateHtmlIsBlank && !entry.title
+  const submitDisabled = readOnly || (editorStateHtmlIsBlank && !entry.title)
 
   entry.date_created_by_author = new Date(entry.date_created_by_author)
 
@@ -56,7 +56,7 @@ const Entry = ({
           id='title'
           placeholder='Entry title...'
           value={entry.title}
-          onChange={handleTitleChange}
+          onChange={!handleTitleChange}
           disabled={readOnly}
         />
         <InputGroupAddon addonType='append'>
@@ -68,7 +68,7 @@ const Entry = ({
             />
           </InputGroupText>
         </InputGroupAddon>
-        <InputGroupAddon addonType='append' onClick={onSubmit}>
+        <InputGroupAddon addonType='append' onClick={!submitDisabled ? onSubmit : null}>
           <InputGroupText
             tag={Button}
             className='SaveButton'

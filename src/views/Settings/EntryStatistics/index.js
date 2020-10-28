@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
 import MomentJs from 'moment'
 import { formatBytes } from '../../../utils'
@@ -229,4 +229,4 @@ EntryStatistics.propTypes = {
   filteredItems: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(memo(EntryStatistics))
+export default connect(mapStateToProps)(memo(EntryStatistics))
