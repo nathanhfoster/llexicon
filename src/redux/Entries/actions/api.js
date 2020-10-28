@@ -362,8 +362,6 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
     Entries: { items, filteredItems, isPending },
   } = getState()
 
-  if (!UserId || offline_mode) return
-
   dispatch(PendingEntries())
 
   const entries = items.concat(filteredItems)
