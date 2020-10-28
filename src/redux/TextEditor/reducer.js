@@ -2,12 +2,13 @@ import { TextEditorActionTypes } from '../TextEditor/types'
 import { AppActionTypes } from '../App/types'
 import { DEFAULT_ENTRY_FILES } from '../Entries/reducer'
 import { getStringBytes } from '../../utils'
+import { NEW_ENTRY_ID } from 'redux/Entries/utils'
 
 const defaultTextEditor = {
   _clearedOn: '',
   size: 0,
   author: null,
-  id: 'NewEntry',
+  id: NEW_ENTRY_ID,
   tags: [
     {
       name: 'Excited',

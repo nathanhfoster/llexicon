@@ -1,11 +1,16 @@
-import React, { useRef, useMemo, useEffect } from 'react'
+import React, { useRef, useMemo, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { connect as reduxConnect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
 import { Entry } from '../../components'
 import ResolveEntryConflictModal from './ResolveEntryConflictModal'
-import { GetUserEntryDetails, ClearEntry, SyncEntries } from 'redux/Entries/actions'
+import {
+  GetUserEntryDetails,
+  ClearEntry,
+  SyncEntries,
+  UpdateReduxEntry,
+} from 'redux/Entries/actions'
 import { SetCalendar } from 'redux/Calendar/actions'
 import PageNotFound from '../PageNotFound'
 import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils'
@@ -32,6 +37,7 @@ const mapDispatchToProps = {
   ClearEntry,
   SyncEntries,
   SetCalendar,
+  UpdateReduxEntry,
 }
 
 const EntryDetail = ({
@@ -44,6 +50,7 @@ const EntryDetail = ({
   ClearEntry,
   SyncEntries,
   SetCalendar,
+  UpdateReduxEntry,
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
@@ -76,12 +83,31 @@ const EntryDetail = ({
     }
   }, [SetCalendar, entry])
 
+  const handleOnChange = useCallback(
+    payload => {
+      if (readOnly) return
+      UpdateReduxEntry(entry?.id, payload)
+    },
+    [entry?.id, readOnly],
+  )
+
+  const handleOnSubmit = useCallback(() => {
+    SyncEntries()
+  }, [])
+
   return entry ? (
     <Container className='Container'>
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
         <Col xs={12} className='EntryDetail p-0'>
-          <Entry readOnly={readOnly} entry={entry} shouldRedirectOnDelete={true} />
+          <Entry
+            showOptionsMenu
+            readOnly={readOnly}
+            entry={entry}
+            shouldRedirectOnDelete={true}
+            onChange={handleOnChange}
+            onSubmit={handleOnSubmit}
+          />
         </Col>
       </Row>
     </Container>

@@ -1,6 +1,6 @@
-@import "./animations/index.css";
+@import './animations/index.css';
 .App {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   /* color: white; */
 }
@@ -34,7 +34,6 @@
 }
 
 .Overflow {
-  display: inherit;
   flex-wrap: nowrap;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -79,9 +78,9 @@ a:hover {
   text-align: center;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input[type='text'],
+input[type='email'],
+input[type='password'] {
   min-height: var(--inputHeight);
   padding: 0.5rem !important;
   border: inherit;
@@ -148,11 +147,11 @@ input[type="password"] {
 }
 
 .add-plus::after {
-  content: "+";
+  content: '+';
   padding-left: 1px;
 }
 
 .add-minus::after {
-  content: "-";
+  content: '-';
   padding-left: 1px;
 }

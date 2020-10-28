@@ -5,6 +5,8 @@ const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
 const BASE_JOURNAL_ENTRY_ID = 'Entry-'
 
+const NEW_ENTRY_ID = 'NewEntry'
+
 const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
 
 const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
@@ -109,6 +111,7 @@ const getTagObjectFromString = s =>
 export {
   LINK_TO_SIGN_UP,
   BASE_JOURNAL_ENTRY_ID,
+  NEW_ENTRY_ID,
   DEFAULT_JOUNRAL_ENTRY_ID,
   getReduxEntryId,
   mergeJson,

@@ -71,7 +71,7 @@ const Editor = ({
   )
 
   const handleEditorChange = useCallback(
-    ({ ...payload }) => onChange({ id: restOfProps.toolbarId, ...payload }),
+    ({ ...payload }) => onChange(payload),
     [restOfProps.toolbarId],
   )
 

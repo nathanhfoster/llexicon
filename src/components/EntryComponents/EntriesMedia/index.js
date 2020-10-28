@@ -42,7 +42,6 @@ const EntriesMedia = ({ entries }) => {
         const defaultProps = { entryId, title, tags, people }
 
         if (EntryFiles?.length > 0) {
-          console.log(EntryFiles)
           EntryFiles.forEach(({ id, url, entry_id }, j) => {
             acc.push(
               <EntryMedia key={`File-${entryId}-${id}-${i}-${j}`} {...defaultProps} src={url} />,
@@ -88,8 +87,6 @@ const EntriesMedia = ({ entries }) => {
       [],
     )
   }, [viewableEntries])
-
-  // console.log('renderEntryMedia: ', renderEntryMedia)
 
   return (
     <Container>

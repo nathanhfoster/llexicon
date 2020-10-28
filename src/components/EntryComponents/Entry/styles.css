@@ -5,16 +5,9 @@
   z-index: 3;
 }
 
-
-
 .EntryInputTitle .form-control,
 .EntryInputTitle .input-group-text {
   box-shadow: none;
-}
-
-.EntryInput * {
-  border-bottom-left-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
 }
 
 .EntryInputDelete {

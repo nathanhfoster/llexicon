@@ -12,11 +12,11 @@ import {
   locationStickStyleHover,
   locationStickStyleShadow,
 } from './styles'
-
+import { NEW_ENTRY_ID } from 'redux/Entries/utils'
 import { DEFAULT_POLYGON_MIN_ZOOM } from '../constants'
 
 const infoClick = ({ $dimensionKey, onChange, lat, lng, getAddressOnMarkerClick }) => {
-  if ($dimensionKey === 'NewEntry') {
+  if ($dimensionKey === NEW_ENTRY_ID) {
     RouterPush(RouteMap.NEW_ENTRY)
   } else if (!getAddressOnMarkerClick) {
     return onChange({
@@ -45,7 +45,7 @@ const zoomStyle = {
 const ClientNameCharacter = props => {
   const { $dimensionKey, renderUserLocation } = props
   const className =
-    $dimensionKey === 'NewEntry'
+    $dimensionKey ===  NEW_ENTRY_ID
       ? 'fas fa-search-location'
       : renderUserLocation
       ? 'fas fa-user-circle'
@@ -59,7 +59,7 @@ const ClientNameCharacter = props => {
 const Zoom = props => {
   const { $dimensionKey, renderUserLocation } = props
   const className =
-    $dimensionKey === 'NewEntry'
+    $dimensionKey ===  NEW_ENTRY_ID
       ? 'fas fa-feather-alt'
       : renderUserLocation
       ? 'fas fa-user-circle fa-2x'
