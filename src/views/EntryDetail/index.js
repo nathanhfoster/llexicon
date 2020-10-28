@@ -54,8 +54,7 @@ const EntryDetail = ({
   const entryAuthor = entry ? entry.author : null
 
   const readOnly = Boolean(
-    !entryIsLocalOnly ||
-      (!isPending && entryAuthor && !userId) ||
+    (!isPending && !entryIsLocalOnly && entryAuthor && !userId) ||
       (entryAuthor && userId !== entryAuthor),
   )
 
