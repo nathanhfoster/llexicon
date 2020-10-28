@@ -9,7 +9,7 @@ import { SyncEntries, GetAllUserEntries, GetAllUserEntryPages } from 'redux/Entr
 import { getTagStringFromObject } from 'redux/Entries/utils'
 import MomentJs from 'moment'
 
-const DATE_FORMAT = 'YYYY-MM-DD hh:mm:ssA'
+const DATE_FORMAT = 'YYYY-MM-DD hh:mm:ss A'
 
 const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems } }) => ({
   userId: id,
@@ -55,7 +55,9 @@ const ImportExportEntries = ({
         ...restOfProps
       } = entry
 
-      console.log(date_created, MomentJs(date_created).format(DATE_FORMAT))
+      // console.log(date_created, MomentJs(date_created).format(DATE_FORMAT))
+
+     
 
       let entries = {
         id,
