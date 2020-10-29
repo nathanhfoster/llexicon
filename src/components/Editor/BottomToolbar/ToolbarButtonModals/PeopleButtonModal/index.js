@@ -236,7 +236,6 @@ const PeopleButtonModal = ({
               <InputGroupAddon addonType='append'>
                 <InputGroupText
                   tag={Button}
-                  className='SaveButton'
                   color='primary'
                   disabled={!personsName}
                   onClick={handleCreatePeople}

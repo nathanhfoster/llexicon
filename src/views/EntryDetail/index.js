@@ -13,14 +13,17 @@ import {
 import { SetCalendar } from 'redux/Calendar/actions'
 import PageNotFound from '../PageNotFound'
 import { isReadOnly } from 'redux/Entries/utils'
-import './styles.css'
 
 const Entry = lazy(() => import('../../components/EntryComponents/Entry'))
 
 const mapStateToProps = (
   {
     User: { id },
-    Entries: { items, filteredItems, isPending },
+    Entries: {
+      items,
+      filteredItems,
+      item: { isPending },
+    },
     Window: {
       navigator: { serviceWorker },
     },
@@ -55,7 +58,7 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  const readOnly = useMemo(() => !isPending && isReadOnly(entryId, entry?.author, userId), [
+  const readOnly = useMemo(() => isPending || isReadOnly(entryId, entry?.author, userId), [
     isPending,
     entryId,
     entry?.author,
@@ -94,7 +97,7 @@ const EntryDetail = ({
     <Container className='Container'>
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
-        <Col xs={12} className='EntryDetail p-0'>
+        <Col xs={12} className='p-0'>
           <Entry
             showOptionsMenu
             readOnly={readOnly}

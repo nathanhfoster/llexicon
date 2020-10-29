@@ -255,7 +255,6 @@ const TagsButtonModal = ({
               <InputGroupAddon addonType='append'>
                 <InputGroupText
                   tag={Button}
-                  className='SaveButton'
                   color='primary'
                   disabled={!tagName}
                   onClick={handleCreateTag}

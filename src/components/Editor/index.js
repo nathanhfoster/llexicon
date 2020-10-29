@@ -53,7 +53,7 @@ const Editor = ({
   const editorStyles = useMemo(
     () => ({
       height: readOnly
-        ? '100%'
+        ? 'calc(100vh - var(--navBarHeight) - var(--inputHeight))'
         : bottomToolbarIsOpen
         ? 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))'
         : 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))',
@@ -70,10 +70,9 @@ const Editor = ({
     [editorRef],
   )
 
-  const handleEditorChange = useCallback(
-    ({ ...payload }) => onChange(payload),
-    [restOfProps.toolbarId],
-  )
+  const handleEditorChange = useCallback(({ ...payload }) => onChange(payload), [
+    restOfProps.toolbarId,
+  ])
 
   const handleEditorStateChange = useCallback((html, delta, source, editor) => {
     handleEditorChange({ html })
@@ -99,30 +98,29 @@ const Editor = ({
   return (
     <EditorConsumer.Provider value={contextValue}>
       {children}
-      <div id='TextEditor' style={{ height, width }}>
-        <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
-        <ReactQuill
-          id={quillId}
-          readOnly={readOnly}
-          bounds='app'
-          ref={editorRef}
-          className='Editor'
-          style={editorStyles}
-          theme={theme}
-          formats={FORMATS}
-          modules={modules}
-          value={entry.html}
-          onChange={handleEditorStateChange}
-          placeholder={placeholder}
-          onFocus={handleOnFocus}
-        />
-        <BottomToolbar
-          entry={entry}
-          canToggleToolbars={canToggleToolbars}
-          isOpen={bottomToolbarIsOpen}
-          id={restOfProps.toolbarId}
-        />
-      </div>
+
+      <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
+      <ReactQuill
+        id={quillId}
+        readOnly={readOnly}
+        bounds='app'
+        ref={editorRef}
+        className='Editor'
+        style={editorStyles}
+        theme={theme}
+        formats={FORMATS}
+        modules={modules}
+        value={entry.html}
+        onChange={handleEditorStateChange}
+        placeholder={placeholder}
+        onFocus={handleOnFocus}
+      />
+      <BottomToolbar
+        entry={entry}
+        canToggleToolbars={canToggleToolbars}
+        isOpen={bottomToolbarIsOpen}
+        id={restOfProps.toolbarId}
+      />
     </EditorConsumer.Provider>
   )
 }

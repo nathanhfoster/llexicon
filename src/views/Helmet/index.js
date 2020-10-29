@@ -18,7 +18,7 @@ const HelmetContainer = ({ entryDetail }) => {
   const image = useMemo(() => {
     let image =
       'https://www.seekpng.com/png/full/43-433493_tree-of-life-constellation-icon-icon.png'
-    if (entryDetail?.EntryFiles.length > 0) {
+    if (entryDetail?.EntryFiles?.length > 0) {
       image = entryDetail.EntryFiles[0].url
     }
 

@@ -10,6 +10,7 @@ const {
   ENTRIES_SET_TAGS,
   ENTRIES_SET_PEOPLE,
   ENTRIES_PENDING,
+  ENTRY_PENDING,
   ENTRIES_ERROR,
   ENTRIES_ERROR_CLEAR,
   ENTRIES_COMPLETE,
@@ -23,11 +24,13 @@ const {
 
 const PendingEntries = () => ({ type: ENTRIES_PENDING })
 
+const PendingEntry = () => ({ type: ENTRY_PENDING })
+
 const SetEntriesComplete = () => ({ type: ENTRIES_COMPLETE })
 
 const SetEntriesError = e => {
   const payload = JSON.parse(JSON.stringify(e))
-  console.log(payload)
+  // console.log(payload)
   return { type: ENTRIES_ERROR, payload }
 }
 
@@ -119,6 +122,7 @@ const SearchEntriesFilter = (search, payload) => ({
 
 export {
   PendingEntries,
+  PendingEntry,
   SetEntriesComplete,
   SetEntriesError,
   ClearEntriesErrors,

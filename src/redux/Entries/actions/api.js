@@ -8,6 +8,7 @@ import qs from 'qs'
 import ReactGA from 'react-ga'
 import {
   PendingEntries,
+  PendingEntry,
   SetEntriesComplete,
   SetEntriesError,
   SetEntry,
@@ -109,15 +110,18 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
 }
 
 const GetEntry = (url, id) => (dispatch, getState) => {
+  dispatch(PendingEntry())
+
   const {
     Entries: { items, filteredItems },
     User: { id: userLoggedIn },
   } = getState()
+
   const entry = items.concat(filteredItems).find(entry => entry.id == id)
+
   if (entry) {
     dispatch(SetEntry(entry))
   }
-  dispatch(PendingEntries())
 
   return Axios()
     .get(url)

@@ -73,7 +73,6 @@ const Entry = ({
         <InputGroupAddon addonType='append' onClick={!submitDisabled ? onSubmit : null}>
           <InputGroupText
             tag={Button}
-            className='SaveButton'
             color='accent'
             disabled={submitDisabled}
             // type="submit"

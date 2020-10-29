@@ -7,7 +7,6 @@ import { SetCalendar } from 'redux/Calendar/actions'
 import { PostReduxEntry, SyncEntries } from 'redux/Entries/actions'
 import { SetEditorState, ClearEditorState } from 'redux/TextEditor/actions'
 import { getStringBytes } from '../../utils'
-import './styles.css'
 import { ResetMap } from 'redux/Map/actions'
 import { NEW_ENTRY_ID } from 'redux/Entries/utils'
 
@@ -76,7 +75,7 @@ const NewEntry = ({
 
   return (
     <Container className='NewEntry Container'>
-      <Row className='EditorContainer'>
+      <Row>
         <Col xs={12} className='p-0'>
           <Entry
             readOnly={false}

@@ -18,6 +18,7 @@ const {
   ENTRIES_SET_TAGS,
   ENTRIES_SET_PEOPLE,
   ENTRIES_PENDING,
+  ENTRY_PENDING,
   ENTRIES_ERROR,
   ENTRIES_ERROR_CLEAR,
   ENTRIES_COMPLETE,
@@ -84,7 +85,7 @@ const DEFAULT_STATE_ENTRIES = {
   count: null,
   next: null,
   previous: null,
-  item: null,
+  item: { isPending: false },
   items: [FIRST_JOUNRAL_ENTRY],
   filteredItems: [],
   isPending: false,
@@ -151,6 +152,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case ENTRIES_PENDING:
       return { ...state, isPending: true }
 
+    case ENTRY_PENDING:
+      return { ...state, item: { ...state.item, isPending: true } }
+
     case ENTRIES_ERROR:
       return { ...state, isPending: false, error: payload }
 
@@ -189,7 +193,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case ENTRY_SET:
       return {
         ...state,
-        item: { ...state.item, ...payload, _size: getStringBytes(payload) },
+        item: { ...state.item, ...payload, isPending: false, _size: getStringBytes(payload) },
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), [payload]),
           state.search,
@@ -264,11 +268,11 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
 
     case AppActionTypes.LOAD_PERSISTED_STATE:
       return {
-           ...state,
-           ...payload.Entries,
-           isPending: DEFAULT_STATE_ENTRIES.isPending,
-           error: DEFAULT_STATE_ENTRIES.error
-           }
+        ...state,
+        ...payload.Entries,
+        isPending: DEFAULT_STATE_ENTRIES.isPending,
+        error: DEFAULT_STATE_ENTRIES.error,
+      }
 
     default:
       return state
