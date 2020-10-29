@@ -40,6 +40,7 @@ const DEFAULT_STATE_USER = {
 
 const User = (state = DEFAULT_STATE_USER, action) => {
   const { type, payload } = action
+
   switch (type) {
     case UserActionTypes.USER_PENDING:
       return { ...state, pending: payload }

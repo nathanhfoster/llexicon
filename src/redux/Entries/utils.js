@@ -109,13 +109,14 @@ const getTagObjectFromString = s =>
   }, [])
 
 const isReadOnly = (entryId, entryAuthor, userId) => {
-  const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
+  const entryIsStoredInTheBackend = !entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
-  const entryIsStoredInTheBackend = !entryIsLocalOnly
+  const userNotLoggedInButAuthorExistsAndEntryStoredInBackend =
+    !userId && entryAuthor && entryIsStoredInTheBackend
 
-  const userIsLoggedInButIsNotTheAuthor = userId && entryAuthor && userId !== entryAuthor
+  const userIsNotTheAuthor = entryAuthor && userId !== entryAuthor
 
-  return Boolean(entryIsStoredInTheBackend || userIsLoggedInButIsNotTheAuthor)
+  return Boolean(userNotLoggedInButAuthorExistsAndEntryStoredInBackend || userIsNotTheAuthor)
 }
 
 export {
