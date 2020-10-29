@@ -58,7 +58,7 @@ const Entry = ({
           id='title'
           placeholder='Entry title...'
           value={entry.title}
-          onChange={!handleTitleChange}
+          onChange={handleTitleChange}
           disabled={readOnly}
         />
         <InputGroupAddon addonType='append'>

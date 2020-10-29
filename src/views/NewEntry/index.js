@@ -44,7 +44,6 @@ const NewEntry = ({
   activeDate = new Date(activeDate)
 
   const handleOnChange = useCallback(payload => {
-    console.log('handleOnChange: ', payload)
     const { date_created_by_author } = payload
     if (date_created_by_author) {
       SetCalendar({ activeDate: date_created_by_author })
