@@ -1,9 +1,8 @@
-import React, { useRef, useMemo, useEffect, useCallback } from 'react'
+import React, { useRef, useMemo, useEffect, useCallback, lazy } from 'react'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
-import { Entry } from '../../components'
 import ResolveEntryConflictModal from './ResolveEntryConflictModal'
 import {
   GetUserEntryDetails,
@@ -15,6 +14,8 @@ import { SetCalendar } from 'redux/Calendar/actions'
 import PageNotFound from '../PageNotFound'
 import { isReadOnly } from 'redux/Entries/utils'
 import './styles.css'
+
+const Entry = lazy(() => import('../../components/EntryComponents/Entry'))
 
 const mapStateToProps = (
   {

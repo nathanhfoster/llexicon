@@ -1,10 +1,12 @@
-import React, { useCallback, memo } from 'react'
+import React, { useCallback, lazy, memo } from 'react'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { InputGroup, Input, InputGroupAddon, InputGroupText, Button } from 'reactstrap'
-import { Editor, EntryOptionsMenu, ReactDatePicker } from '../../'
+import { EntryOptionsMenu, ReactDatePicker } from '../../'
 import { DEFAULT_STATE_TEXT_EDITOR } from 'redux/TextEditor/reducer'
 import './styles.css'
+
+const Editor = lazy(() => import('../../Editor'))
 
 const Entry = ({
   height,
