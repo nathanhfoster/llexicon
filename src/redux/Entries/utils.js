@@ -11,22 +11,13 @@ const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
 
 const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
 
+const getDate = ({ _lastUpdated, date_updated }) => new Date(_lastUpdated) || new Date(date_updated) || new Date(0)
+
 const getMostRecent = (reduxData, newData) => {
   let newItem = { ...newData, ...reduxData }
-  const reduxDataLastUpdated = new Date(
-    reduxData._lastUpdated !== 'Invalid date'
-      ? reduxData._lastUpdated
-      : reduxData.date_updated !== 'Invalid date'
-      ? reduxData.date_updated
-      : 0,
-  )
-  const newDataLastUpdated = new Date(
-    newData._lastUpdated !== 'Invalid date'
-      ? newData._lastUpdated
-      : newData.date_updated !== 'Invalid date'
-      ? newData.date_updated
-      : 0,
-  )
+  const reduxDataLastUpdated = getDate(reduxData)
+  const newDataLastUpdated = getDate(newData)
+  
   const overWriteWithNewData = newDataLastUpdated - reduxDataLastUpdated > 0
 
   if (overWriteWithNewData) {
