@@ -1,7 +1,7 @@
 import React, { useCallback, memo } from 'react'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
-import { loadJSON } from 'utils'
+import { loadJSON, getValidDate } from 'utils'
 import FileUpload from '../../FileUpload'
 import { SetEntries, SyncEntries } from 'redux/Entries/actions'
 import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/reducer'
@@ -15,6 +15,10 @@ const ImportEntries = () => {
       const payload = json.map(entry => {
         let newEntry = {
           ...entry,
+          date_created: getValidDate(entry.date_created),
+          date_created_by_author: getValidDate(entry.date_created_by_author),
+          date_updated: getValidDate(entry.date_updated),
+          _lastUpdated: getValidDate(entry._lastUpdated),
           tags: getTagObjectFromString(entry.tags),
           people: getTagObjectFromString(entry.people),
           EntryFiles: entry.EntryFiles || [],

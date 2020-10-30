@@ -4,6 +4,7 @@ import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { InputGroup, Input, InputGroupAddon, InputGroupText, Button } from 'reactstrap'
 import { EntryOptionsMenu, ReactDatePicker } from '../../'
 import { DEFAULT_STATE_TEXT_EDITOR } from 'redux/TextEditor/reducer'
+import { getValidDate } from 'utils'
 import './styles.css'
 
 const Editor = lazy(() => import('../../Editor'))
@@ -22,13 +23,12 @@ const Entry = ({
   onChange,
   onSubmit,
 }) => {
-  const activeDate = new Date(entry.date_created_by_author || entry._lastUpdated) || new Date(0)
+  const activeDate =
+    getValidDate(entry.date_created_by_author) || getValidDate(entry._lastUpdated) || new Date()
 
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
   const submitDisabled = readOnly || (editorStateHtmlIsBlank && !entry.title)
-
-  entry.date_created_by_author = new Date(entry.date_created_by_author) || activeDate
 
   const handleTitleChange = useCallback(({ target: { value } }) => onChange({ title: value }), [])
 

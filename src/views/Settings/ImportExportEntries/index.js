@@ -4,10 +4,9 @@ import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
 import { ImportEntries } from 'components'
 import { connect } from 'react-redux'
-import { copyStringToClipboard, loadJSON, exportJSON } from 'utils'
+import { copyStringToClipboard, loadJSON, exportJSON, getValidDate } from 'utils'
 import { SyncEntries, GetAllUserEntries, GetAllUserEntryPages } from 'redux/Entries/actions'
 import { getTagStringFromObject } from 'redux/Entries/utils'
-import MomentJs from 'moment'
 
 const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems } }) => ({
   userId: id,
@@ -60,9 +59,9 @@ const ImportExportEntries = ({
         people: getTagStringFromObject(people),
         title,
         html,
-        date_created: new Date(date_created),
-        date_created_by_author: new Date(date_created_by_author),
-        date_updated: new Date(date_updated),
+        date_created: getValidDate(date_created),
+        date_created_by_author: getValidDate(date_created_by_author),
+        date_updated: getValidDate(date_updated),
         views,
         rating,
         address,

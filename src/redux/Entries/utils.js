@@ -1,4 +1,4 @@
-import { objectToArray, stringMatch, getStringBytes } from 'utils'
+import { objectToArray, stringMatch, getStringBytes, getValidDate } from 'utils'
 import { RouteMap } from 'redux/router/actions'
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
@@ -11,13 +11,14 @@ const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
 
 const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
 
-const getDate = ({ _lastUpdated, date_updated }) => new Date(_lastUpdated) || new Date(date_updated) || new Date(0)
+const getDate = ({ _lastUpdated, date_updated }) =>
+  getValidDate(_lastUpdated) || getValidDate(date_updated) || new Date(0)
 
 const getMostRecent = (reduxData, newData) => {
   let newItem = { ...newData, ...reduxData }
   const reduxDataLastUpdated = getDate(reduxData)
   const newDataLastUpdated = getDate(newData)
-  
+
   const overWriteWithNewData = newDataLastUpdated - reduxDataLastUpdated > 0
 
   if (overWriteWithNewData) {
