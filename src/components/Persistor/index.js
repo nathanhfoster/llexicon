@@ -64,7 +64,7 @@ const Persistor = ({
       LoadReducerState(persistedSate)
       SetLocalStorageUsage()
     })()
-  }, [LoadReducerState, SetLocalStorageUsage])
+  }, [])
 
   useEffect(() => {
     const persistDebounce = setTimeout(() => {
