@@ -371,7 +371,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
   const entries = items.concat(filteredItems)
 
   for (let i = 0, { length } = entries; i < length; i++) {
-    const {
+    let {
       id,
       title,
       html,
@@ -390,6 +390,10 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
       longitude,
       is_public,
     } = entries[i]
+
+    date_created = new Date(date_created)
+    date_created_by_author = new Date(date_created_by_author)
+    date_updated = new Date(date_updated)
 
     if (_shouldDelete) {
       await dispatch(DeleteEntry(id)).then(res =>
@@ -457,7 +461,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
   }
 
   if (typeof getEntryMethod === 'function') {
-    getEntryMethod().then(res => dispatch(SetAlert({ title: 'Received', message: 'Entry' })))
+    await getEntryMethod().then(res => dispatch(SetAlert({ title: 'Received', message: 'Entry' })))
   }
 
   dispatch(SetEntriesComplete())
