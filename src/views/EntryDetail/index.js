@@ -75,7 +75,7 @@ const EntryDetail = ({
 
   useEffect(() => {
     if (entry && entry.date_created_by_author && !setCalendarDateToEntryDate.current) {
-      const activeDate = new Date(entry.date_created_by_author)
+      const activeDate = new Date(entry.date_created_by_author) || new Date()
       SetCalendar({ activeDate })
       setCalendarDateToEntryDate.current = true
     }
