@@ -6,7 +6,6 @@ import { SetWindow } from 'redux/Window/actions'
 import { ResetUserError, GetUserSettings } from 'redux/User/actions'
 import { SetCalendar } from 'redux/Calendar/actions'
 import {
-  SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
@@ -79,7 +78,6 @@ const mapDispatchToProps = {
   ResetUserError,
   GetUserSettings,
   SetCalendar,
-  SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
@@ -129,7 +127,6 @@ const App = ({
   userDarkMode,
   SetWindow,
   SetCalendar,
-  SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
@@ -161,7 +158,7 @@ const App = ({
     handleResize()
 
     if (userId) {
-      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
+      GetUserEntries()
       GetUserSettings()
       GetUserEntryTags()
       GetUserEntryPeople()
@@ -274,7 +271,6 @@ App.propTypes = {
   ResetUserError: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,

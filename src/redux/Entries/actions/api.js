@@ -180,7 +180,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
     })
 }
 
-const GetUserEntries = pageNumber => (dispatch, getState) => {
+const GetUserEntries = (pageNumber = 1) => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
