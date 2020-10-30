@@ -79,7 +79,7 @@ const ImportExportEntries = ({
       return entries
     })
 
-    exportJSON(formattedEntries, `Astral-Tree-Entries-${MomentJs(new Date()).format(DATE_FORMAT)}`)
+    exportJSON(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
   }
 
   return (
