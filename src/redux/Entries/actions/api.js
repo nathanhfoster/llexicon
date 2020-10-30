@@ -357,7 +357,7 @@ const DeleteEntryFile = (id, entry_id) => dispatch =>
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 
-const SyncEntries = getEntryMethod => (dispatch, getState) => {
+const SyncEntries = getEntryMethod => async (dispatch, getState) => {
   const {
     User: {
       id: UserId,
@@ -392,7 +392,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
     } = entries[i]
 
     if (_shouldDelete) {
-      dispatch(DeleteEntry(id)).then(res =>
+      await dispatch(DeleteEntry(id)).then(res =>
         dispatch(SetAlert({ title: 'Deleted', message: 'Entry' })),
       )
       continue
@@ -410,7 +410,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         views,
       }
 
-      dispatch(PostEntry(postPayload)).then(async entry => {
+      await dispatch(PostEntry(postPayload)).then(async entry => {
         dispatch(SetAlert({ title: 'Saved', message: 'Entry' }))
         if (!entry) return
         const {
@@ -450,7 +450,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         is_public,
         //  views,
       }
-      dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res =>
+      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res =>
         dispatch(SetAlert({ title: 'Updated', message: 'Entry' })),
       )
     }
