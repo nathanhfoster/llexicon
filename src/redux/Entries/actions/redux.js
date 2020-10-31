@@ -41,22 +41,13 @@ const SetEntry = payload => ({
   payload,
 })
 
-const PostReduxEntry = payload => (dispatch, getState) => {
-  const {
-    items: { length: itemsLength },
-    filteredItems: { length: filteredItemsLength },
-  } = getState().Entries
-
-  const length = itemsLength + filteredItemsLength
-
-  return dispatch(
+const PostReduxEntry = payload => (dispatch) => dispatch(
     SetEntry({
       ...payload,
-      id: getReduxEntryId(length),
+      id: new Date().getTime(),
       _shouldPost: true,
     }),
   )
-}
 
 const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => {
   let payload = { ...entry, _lastUpdated }
