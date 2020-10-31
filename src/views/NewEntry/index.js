@@ -6,7 +6,6 @@ import { Container, Row, Col } from 'reactstrap'
 import { SetCalendar } from 'redux/Calendar/actions'
 import { PostReduxEntry, SyncEntries } from 'redux/Entries/actions'
 import { SetEditorState, ClearEditorState } from 'redux/TextEditor/actions'
-import { getStringBytes } from '../../utils'
 import { ResetMap } from 'redux/Map/actions'
 import { NEW_ENTRY_ID } from 'redux/Entries/utils'
 
@@ -52,16 +51,10 @@ const NewEntry = ({
   }, [])
 
   const handleOnSubmit = useCallback(async () => {
-    const newEntryData = {
+    const payload = {
       ...entry,
-      date_created: activeDate,
       date_created_by_author: activeDate,
-      date_updated: activeDate,
     }
-
-    const size = getStringBytes(newEntryData)
-
-    const payload = { ...newEntryData, size }
 
     await PostReduxEntry(payload)
     
