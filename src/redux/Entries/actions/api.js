@@ -255,13 +255,14 @@ const PostEntry = payload => (dispatch, getState) => {
         const newRoute = pathname.replace(payload.id, data.id)
         RouterPush(newRoute)
       }
-      dispatch(UpdateReduxEntry(payload.id, data, null))
+      const updatedEntry = { ...data, _shouldPost: false }
+      dispatch(UpdateReduxEntry(payload.id, updatedEntry, null))
       ReactGA.event({
         category: 'Post Entry',
         action: 'User posted a new entry!',
         value: data.id,
       })
-      return { ...data, _shouldPost: false, _lastUpdated: null }
+      return { ...updatedEntry, _lastUpdated: null }
     })
     .catch(e => {
       dispatch(SetEntriesError(e))
@@ -417,27 +418,13 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
       dispatch(PostEntry(postPayload)).then(entry => {
         dispatch(SetAlert({ title: 'Saved', message: 'Entry' }))
         if (!entry) return
-        const {
-          EntryFiles,
-          author,
-          date_created,
-          date_created_by_author,
-          date_updated,
-          id,
-          title,
-          views,
-          address,
-          latitude,
-          longitude,
-          is_public,
-        } = entry
 
         const updateEntryPayload = {
           html,
           tags: getTagStringFromObject(tags),
           people: getTagStringFromObject(people),
         }
-        dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+        dispatch(ParseBase64(entry.id, cleanObject(updateEntryPayload)))
       })
       continue
     } else if (_lastUpdated) {
