@@ -47,8 +47,9 @@ const payload = {
       ...entry,
       id: new Date().getTime(),
       _shouldPost: true,
+      _lastUpdated: null,
       date_created: entry.date_created_by_author,
-      date_updated: entry.date_created_by_author
+      date_updated: entry.date_created_by_author,
 }
 const size = getStringBytes(payload)
 
