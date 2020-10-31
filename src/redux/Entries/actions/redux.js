@@ -41,11 +41,13 @@ const SetEntry = payload => ({
   payload,
 })
 
-const PostReduxEntry = payload => (dispatch) => dispatch(
+const PostReduxEntry = payload => dispatch => dispatch(
     SetEntry({
       ...payload,
       id: new Date().getTime(),
       _shouldPost: true,
+      date_created: payload.date_created_by_author,
+      date_updated: payload.date_created_by_author,
     }),
   )
 
