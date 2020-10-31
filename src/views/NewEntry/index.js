@@ -64,6 +64,7 @@ const NewEntry = ({
     const payload = { ...newEntryData, size }
 
     await PostReduxEntry(payload)
+    
     SyncEntries()
     ClearEditorState()
   }, [activeDate, entry])

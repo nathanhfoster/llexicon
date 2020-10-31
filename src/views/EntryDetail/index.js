@@ -74,7 +74,7 @@ const EntryDetail = ({
   }, [entryId])
 
   useEffect(() => {
-    if (entry && entry.date_created_by_author && !setCalendarDateToEntryDate.current) {
+    if (entry?.date_created_by_author && !setCalendarDateToEntryDate.current) {
       const activeDate = new Date(entry.date_created_by_author) || new Date()
       SetCalendar({ activeDate })
       setCalendarDateToEntryDate.current = true
@@ -83,8 +83,8 @@ const EntryDetail = ({
 
   const handleOnChange = useCallback(
     payload => {
-      if (readOnly) return
-      UpdateReduxEntry(entry?.id, payload)
+      if (readOnly || !entry) return
+      UpdateReduxEntry(entry.id, payload)
     },
     [entry?.id, readOnly],
   )

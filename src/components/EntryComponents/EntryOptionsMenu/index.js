@@ -63,6 +63,8 @@ const EntryOptionsMenu = ({
     setTimeout(() => {
       handleEditorChange({
         _shouldDelete: true,
+        _shouldPost: false,
+        _lastUpdated: null,
       })
 
       handleSync()
