@@ -70,7 +70,7 @@ const CreateEntryTag = payload => (dispatch, getState) => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const ParseBase64 = (entry_id, updateEntryPayload) => dispatch => {
+const ParseBase64 = (entry_id, updateEntryPayload) => async dispatch => {
   const { html } = updateEntryPayload
   const base64s = htmlToArrayOfBase64(html)
   for (let i = 0; i < base64s.length; i++) {
@@ -78,7 +78,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => dispatch => {
     const file = getFileFromBase64(base64, `EntryFile-${entry_id}`)
     dispatch(AwsUpload(entry_id, file, base64, html))
   }
-  dispatch(UpdateEntry(entry_id, updateEntryPayload))
+  await dispatch(UpdateEntry(entry_id, updateEntryPayload))
   return new Promise(resolve => resolve(dispatch(SetAlert({ title: 'Synced', message: 'Files' }))))
 }
 
@@ -261,7 +261,7 @@ const PostEntry = payload => (dispatch, getState) => {
         action: 'User posted a new entry!',
         value: data.id,
       })
-      return data
+      return {...data, _lastUpdated: null}
     })
     .catch(e => {
       dispatch(SetEntriesError(e))
@@ -437,7 +437,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
           tags: getTagStringFromObject(tags),
           people: getTagStringFromObject(people),
         }
-        dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+        await dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })
       continue
     } else if (_lastUpdated) {
