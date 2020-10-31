@@ -1,5 +1,6 @@
 import { EntriesActionTypes } from '../types'
 import { getReduxEntryId } from '../utils'
+import { getStringBytes } from 'utils'
 
 const {
   ENTRY_SET,
@@ -41,15 +42,24 @@ const SetEntry = payload => ({
   payload,
 })
 
-const PostReduxEntry = payload => dispatch => dispatch(
-    SetEntry({
-      ...payload,
+const PostReduxEntry = entry => dispatch => {
+const payload = {
+      ...entry,
       id: new Date().getTime(),
       _shouldPost: true,
-      date_created: payload.date_created_by_author,
-      date_updated: payload.date_created_by_author,
+      date_created: entry.date_created_by_author,
+      date_updated: entry.date_created_by_author
+}
+const size = getStringBytes(payload)
+
+return dispatch(
+    SetEntry({
+      ...payload,
+      size,
+      _size: size,
     }),
   )
+}
 
 const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => {
   let payload = { ...entry, _lastUpdated }
