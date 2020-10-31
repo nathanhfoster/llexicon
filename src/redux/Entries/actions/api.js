@@ -357,7 +357,7 @@ const DeleteEntryFile = (id, entry_id) => dispatch =>
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 
-const SyncEntries = getEntryMethod => async (dispatch, getState) => {
+const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User: {
       id: UserId,
@@ -396,7 +396,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
     date_updated = new Date(date_updated)
 
     if (_shouldDelete) {
-      await dispatch(DeleteEntry(id)).then(res =>
+      dispatch(DeleteEntry(id)).then(res =>
         dispatch(SetAlert({ title: 'Deleted', message: 'Entry' })),
       )
       continue
@@ -414,7 +414,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
         views,
       }
 
-      await dispatch(PostEntry(postPayload)).then(async entry => {
+      await dispatch(PostEntry(postPayload)).then(entry => {
         dispatch(SetAlert({ title: 'Saved', message: 'Entry' }))
         if (!entry) return
         const {
@@ -437,7 +437,7 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
           tags: getTagStringFromObject(tags),
           people: getTagStringFromObject(people),
         }
-        await dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
+        dispatch(ParseBase64(id, cleanObject(updateEntryPayload)))
       })
       continue
     } else if (_lastUpdated) {
@@ -454,14 +454,14 @@ const SyncEntries = getEntryMethod => async (dispatch, getState) => {
         is_public,
         //  views,
       }
-      await dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res =>
+      dispatch(ParseBase64(id, cleanObject(updateEntryPayload))).then(res =>
         dispatch(SetAlert({ title: 'Updated', message: 'Entry' })),
       )
     }
   }
 
   if (typeof getEntryMethod === 'function') {
-    await getEntryMethod().then(res => dispatch(SetAlert({ title: 'Received', message: 'Entry' })))
+    getEntryMethod().then(res => dispatch(SetAlert({ title: 'Received', message: 'Entry' })))
   }
 
   dispatch(SetEntriesComplete())
