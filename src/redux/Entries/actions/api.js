@@ -261,7 +261,7 @@ const PostEntry = payload => (dispatch, getState) => {
         action: 'User posted a new entry!',
         value: data.id,
       })
-      return { ...data, _lastUpdated: null }
+      return { ...data, _shouldPost: false, _lastUpdated: null }
     })
     .catch(e => {
       dispatch(SetEntriesError(e))
