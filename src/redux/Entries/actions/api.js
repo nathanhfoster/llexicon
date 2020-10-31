@@ -261,7 +261,7 @@ const PostEntry = payload => (dispatch, getState) => {
         action: 'User posted a new entry!',
         value: data.id,
       })
-      return {...data, _lastUpdated: null}
+      return { ...data, _lastUpdated: null }
     })
     .catch(e => {
       dispatch(SetEntriesError(e))
@@ -414,7 +414,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
         views,
       }
 
-      await dispatch(PostEntry(postPayload)).then(entry => {
+      dispatch(PostEntry(postPayload)).then(entry => {
         dispatch(SetAlert({ title: 'Saved', message: 'Entry' }))
         if (!entry) return
         const {

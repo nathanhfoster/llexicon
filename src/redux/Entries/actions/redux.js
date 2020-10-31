@@ -45,7 +45,7 @@ const SetEntry = payload => ({
 const PostReduxEntry = entry => dispatch => {
 const payload = {
       ...entry,
-      id: new Date().getTime(),
+      id: getReduxEntryId(),
       _shouldPost: true,
       _lastUpdated: null,
       date_created: entry.date_created_by_author,

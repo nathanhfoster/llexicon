@@ -42,7 +42,7 @@ const UserLogin = (payload, rememberMe) => async dispatch => {
       await dispatch(RefreshPatchUser(id))
       await dispatch(SetUser(data))
       await dispatch(persistReduxState())
-      await dispatch(GetUserEntries(1))
+      await dispatch(GetUserEntries())
       ReactGA.event({
         category: 'Login',
         action: 'User logged in!',

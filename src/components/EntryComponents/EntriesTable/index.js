@@ -7,8 +7,14 @@ import { TagsContainer, BasicTable, EntryDataCellLink } from '../../'
 import { GoToEntryDetail } from 'redux/router/actions'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { stringMatch, formatBytes } from 'utils'
-import { SetEntriesSortMap, SetEntriesFilterMap } from 'redux/Entries/actions'
+import {
+  SetEntriesSortMap,
+  SetEntriesFilterMap,
+  UpdateReduxEntry,
+  SyncEntries,
+} from 'redux/Entries/actions'
 import { DEFAULT_STATE_ENTRIES } from 'redux/Entries/reducer'
+import { ButtonGroup, Button } from 'reactstrap'
 
 const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
   showOnlyPublic,
@@ -17,12 +23,16 @@ const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
 const mapDispatchToProps = {
   SetEntriesSortMap,
   SetEntriesFilterMap,
+  UpdateReduxEntry,
+  SyncEntries,
 }
 
 const EntriesTable = ({
   showOnlyPublic,
   SetEntriesSortMap,
   SetEntriesFilterMap,
+  UpdateReduxEntry,
+  SyncEntries,
   entries,
   sortMap,
   filterMap,
@@ -238,6 +248,24 @@ const EntriesTable = ({
 
   const onRowClick = useCallback(item => GoToEntryDetail(item.id), [])
 
+  const handleActionMenuCallback = useCallback((data, _shouldDelete) => {
+    console.log(data, _shouldDelete)
+    const getEntryPayload = entry => ({
+      ...entry,
+      _shouldDelete,
+      _shouldPost: false,
+      _lastUpdated: null,
+    })
+    setTimeout(() => {
+      if (Array.isArray(data)) {
+      } else {
+        UpdateReduxEntry(data.id, getEntryPayload(data), null)
+      }
+
+      // SyncEntries()
+    }, 200)
+  }, [])
+
   return (
     <BasicTable
       sortable
@@ -249,7 +277,12 @@ const EntriesTable = ({
       onRowClick={onRowClick}
       onSortCallback={handleSortCallback}
       onFilterCallback={handleFilterCallback}
-    />
+      // actionMenuCallback={handleActionMenuCallback}
+    >
+      {/* <ButtonGroup>
+        <Button>Delete</Button>
+      </ButtonGroup> */}
+    </BasicTable>
   )
 }
 

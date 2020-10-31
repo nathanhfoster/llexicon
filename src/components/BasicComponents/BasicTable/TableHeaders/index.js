@@ -1,10 +1,11 @@
-import BasicTableContext from '../state/context';
-import React, { useCallback, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { ColumnsPropType, SortListPropType } from '../state/types';
-import TableHeader from './TableHeader';
-import { basicTableSort, basicTableFilter } from '../state/actions';
+import BasicTableContext from '../state/context'
+import React, { useCallback, useMemo } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { ColumnsPropType, SortListPropType } from '../state/types'
+import TableHeader from './TableHeader'
+import { basicTableSort, basicTableFilter, selectAllData } from '../state/actions'
+import { isAFunction } from 'utils'
 
 const mapStateToProps = ({
   columns,
@@ -13,6 +14,8 @@ const mapStateToProps = ({
   onFilterCallback,
   sortable,
   filterable,
+  data,
+  actionMenuCallback,
 }) => ({
   columns,
   sortList,
@@ -20,9 +23,11 @@ const mapStateToProps = ({
   onFilterCallback,
   sortable,
   filterable,
-});
+  data,
+  actionMenuCallback,
+})
 
-const mapDispatchToProps = { basicTableSort, basicTableFilter };
+const mapDispatchToProps = { basicTableSort, basicTableFilter, selectAllData }
 
 const TableHeaders = ({
   onSortCallback,
@@ -33,20 +38,26 @@ const TableHeaders = ({
   sortList,
   basicTableSort,
   basicTableFilter,
+  data,
+  actionMenuCallback,
+  selectAllData,
 }) => {
-  const handleFilter = useCallback((filterKey, filterValue) => {
-    basicTableFilter(onFilterCallback, filterKey, filterValue);
-  });
+  const handleFilter = useCallback(
+    (filterKey, filterValue) => {
+      basicTableFilter(onFilterCallback, filterKey, filterValue)
+    },
+    [basicTableFilter, onFilterCallback],
+  )
 
   const sortMap = useMemo(
     () =>
       sortList.reduce((map, item) => {
-        const { key, ...restOfItem } = item;
-        map[key] = restOfItem;
-        return map;
+        const { key, ...restOfItem } = item
+        map[key] = restOfItem
+        return map
       }, {}),
     [sortList],
-  );
+  )
 
   const renderColumnHeaders = useMemo(
     () =>
@@ -62,18 +73,18 @@ const TableHeaders = ({
           defaultSortValue,
           defaultFilterValue,
           filterValue,
-        } = column;
-        const isSortable = sortable || Boolean(sort);
-        const isFilterable = filterable || Boolean(filter);
+        } = column
+        const isSortable = sortable || Boolean(sort)
+        const isFilterable = filterable || Boolean(filter)
 
-        const { sortUp } = sortMap[key];
+        const { sortUp } = sortMap[key]
         const sortCallback = () => {
           if (sortUp === false) {
-            basicTableSort(onSortCallback, key, null);
+            basicTableSort(onSortCallback, key, null)
           } else {
-            basicTableSort(onSortCallback, key, !sortUp);
+            basicTableSort(onSortCallback, key, !sortUp)
           }
-        };
+        }
 
         return (
           <TableHeader
@@ -91,17 +102,37 @@ const TableHeaders = ({
             defaultFilterValue={defaultFilterValue}
             filterCallback={handleFilter}
           />
-        );
+        )
       }),
-    [columns, sortList],
-  );
+    [basicTableSort, columns, filterable, handleFilter, onSortCallback, sortMap, sortable],
+  )
+
+  const allDataIsSelected = useMemo(() => data.every(({ _dataSelected }) => _dataSelected), [data])
+
+  const handleActionMenuCallback = useCallback(
+    e => {
+      e.stopPropagation()
+      if (isAFunction(actionMenuCallback)) {
+        actionMenuCallback(data, !allDataIsSelected)
+        selectAllData()
+      }
+    },
+    [data, allDataIsSelected, actionMenuCallback],
+  )
 
   return (
     <thead>
-      <tr>{renderColumnHeaders}</tr>
+      <tr>
+        {actionMenuCallback && (
+          <th title='SelectAll' onClick={e => e.stopPropagation()} style={{ width: 40 }}>
+            <input type='checkbox' checked={allDataIsSelected} onClick={handleActionMenuCallback} />
+          </th>
+        )}
+        {renderColumnHeaders}
+      </tr>
     </thead>
-  );
-};
+  )
+}
 
 TableHeaders.propTypes = {
   onSortCallback: PropTypes.func,
@@ -109,8 +140,8 @@ TableHeaders.propTypes = {
   sortable: PropTypes.bool.isRequired,
   columns: ColumnsPropType,
   sortList: SortListPropType,
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   context: BasicTableContext,
-})(TableHeaders);
+})(TableHeaders)

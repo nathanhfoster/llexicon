@@ -56,6 +56,7 @@ const Persistor = ({
   LoadReducerState,
   SetLocalStorageUsage,
 }) => {
+  // console.log(state.Entries.items)
   const prevState = usePrevious(state)
 
   useLayoutEffect(() => {
