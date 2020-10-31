@@ -62,7 +62,7 @@ return dispatch(
 }
 
 const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => {
-  let payload = { ...entry, id, _lastUpdated }
+  let payload = { ...entry, _lastUpdated }
   return {
     type: ENTRY_UPDATE,
     id,
