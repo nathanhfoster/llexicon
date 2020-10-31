@@ -244,7 +244,7 @@ const PostEntry = payload => (dispatch, getState) => {
   dispatch(PendingEntries())
   return Axios()
     .post(`entries/`, qs.stringify(payload))
-    .then(async ({ data }) => {
+    .then(({ data }) => {
       const {
         router: {
           location: { pathname },
@@ -255,7 +255,7 @@ const PostEntry = payload => (dispatch, getState) => {
         const newRoute = pathname.replace(payload.id, data.id)
         RouterPush(newRoute)
       }
-      await dispatch(UpdateReduxEntry(payload.id, data, null))
+      dispatch(UpdateReduxEntry(payload.id, data, null))
       ReactGA.event({
         category: 'Post Entry',
         action: 'User posted a new entry!',
