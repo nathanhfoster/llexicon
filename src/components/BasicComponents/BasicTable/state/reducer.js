@@ -19,7 +19,6 @@ const BasicTableReducer = (state, action) => {
       const newSortList = filterSort(state.sortList, payload.sortKey, {
         sortUp: payload.sortUp,
       })
-
       return {
         ...state,
         ...getSortedAndFilteredData(

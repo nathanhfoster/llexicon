@@ -55,7 +55,13 @@ const getInitialState = ({ columns, pageSize, pageSizes, data, ...restOfProps })
 
   return {
     ...restOfProps,
-    ...getSortedAndFilteredData(data, sortList, selectedData, filterList),
+    ...getSortedAndFilteredData(
+      data,
+      sortList,
+      filterList,
+      selectedData,
+      // restOfProps.actionMenuCallback,
+    ),
     columns,
     currentPage: 0,
     pageSize,
