@@ -63,10 +63,17 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
         </Col>
         <UserEntriesTable />
       </Row>
-
-      <EntriesRediscover />
-      <EntriesMostViewed />
-      <EntriesRandom />
+      <Row>
+        <Col xs={12} className='p-0'>
+          <EntriesRediscover />
+        </Col>
+        <Col xs={12} className='p-0'>
+          <EntriesMostViewed />
+        </Col>
+        <Col xs={12} className='p-0'>
+          <EntriesRandom />
+        </Col>
+      </Row>
     </Container>
   )
 }
