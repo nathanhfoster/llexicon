@@ -12,7 +12,7 @@ const EntryMedia = ({ entryId, title, tags, people, src, isVideo }) => {
   }
 
   return (
-    <Col xs={6} md={4} xl={3} className='EntryMediaContainer' onClick={handleEntryOnClick}>
+    <Col xs={6} md={4} xl={3} className='EntryMediaContainer px-1' onClick={handleEntryOnClick}>
       <Header fontSize='1.25rem' className='EntryMedia Overflow' center={false}>
         {title}
       </Header>
