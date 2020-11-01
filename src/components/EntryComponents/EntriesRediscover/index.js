@@ -36,12 +36,12 @@ const EntriesRediscover = ({ items, filteredItems, showOnlyPublic }) => {
   return (
     <Fragment>
       <Col xs={12} className='p-0'>
-         <Header fill='var(--quinaryColor)'>Rediscover This Day</Header>
-      <Col>
+        <Header fill='var(--quinaryColor)'>Rediscover This Day</Header>
+      </Col>
       <Header fontSize='1.5rem'>
         <Moment format='MMMM D'>{today}</Moment>
       </Header>
-      <div ref={containerRef} className='HomeRow mb-3 pb-1 row'>
+      <div ref={containerRef} className='HomeRow mb-3 mx-1 row'>
         <EntryCards entries={entriesOnThisDay} containerRef={containerRef} />
       </div>
     </Fragment>

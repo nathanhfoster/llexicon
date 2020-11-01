@@ -45,16 +45,16 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
   return (
     <Fragment>
       <Col xs={12} className='p-0'>
-         <Header fill='var(--quinaryColor)' display='inline-block'>
-           Random Entries
-           <ButtonGroup className='EntriesRandomRefreshButtonContainer'>
-             <Button color='accent' onClick={handleRefresh}>
-               <i className='fas fa-sync-alt' />
-             </Button>
-           </ButtonGroup>
-         </Header>
+        <Header fill='var(--quinaryColor)' display='inline-block'>
+          Random Entries
+          <ButtonGroup className='EntriesRandomRefreshButtonContainer'>
+            <Button color='accent' onClick={handleRefresh}>
+              <i className='fas fa-sync-alt' />
+            </Button>
+          </ButtonGroup>
+        </Header>
       </Col>
-      <div ref={containerRef} className='HomeRow pb-1 row'>
+      <div ref={containerRef} className='HomeRow pb-1 mx-1 row'>
         <EntryCards entries={randomEntries} containerRef={containerRef} />
       </div>
     </Fragment>

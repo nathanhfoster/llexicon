@@ -24,9 +24,9 @@ const EntriesMostViewed = ({ items, filteredItems, showOnlyPublic }) => {
   return (
     <Fragment>
       <Col xs={12} className='p-0'>
-         <Header fill='var(--quinaryColor)'>Most Viewed Entries</Header>
+        <Header fill='var(--quinaryColor)'>Most Viewed Entries</Header>
       </Col>
-      <div ref={containerRef} className='HomeRow mb-3 pb-1 row'>
+      <div ref={containerRef} className='HomeRow mb-3 pb-1 mx-1 row'>
         <EntryCards entries={entriesMostViewed} containerRef={containerRef} />
       </div>
     </Fragment>
