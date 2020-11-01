@@ -43,9 +43,19 @@ const BasicTableReducer = (state, action) => {
       return { ...state, pageSize: payload, currentPage: 0 }
 
     case BASIC_TABLE_SET_DATA:
+      const prevSelectedData = state.selectedData.reduce((acc, d) => {
+         acc[d.id] = d
+     }, {})
+     
+      const dataToPass = payload.map(d => {
+      if(prevSelectedData[d.id]) {
+        return {...prevSelectedData[d.id], ...d}
+      }
+      return d
+      })
       return {
         ...state,
-        ...getSortedAndFilteredData(payload, state.sortList, state.filterList),
+        ...getSortedAndFilteredData(dataToPass, state.sortList, state.filterList),
       }
 
     case BASIC_TABLE_SELECT_DATA_ITEMS:
