@@ -16,9 +16,9 @@ const SetUserUsers = (users) => ({
   payload: users,
 })
 
-const SetUserEntries = (entries) => ({
+const SetUserEntries = (payload) => ({
   type: AdminActionTypes.ADMIN_SET_USERS_ENTRIES,
-  payload: entries,
+  payload,
 })
 
 const SetUserEntriesDetails = (entries, authorId) => ({
