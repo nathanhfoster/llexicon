@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import EntryDifferences from './EntryDifferences'
 import { Container, Row, Col } from 'reactstrap'
 import { BasicModal, EntryCard } from 'components'
-import { UpdateReduxEntry, SyncEntries, ClearEntry } from 'redux/Entries/actions'
+import { UpdateReduxEntries, SyncEntries, ClearEntry } from 'redux/Entries/actions'
 import { findDifferentProps } from './utils'
 import './styles.css'
 
@@ -15,7 +15,7 @@ const mapStateToProps = ({ Entries: { isPending, item } }) => ({
 })
 
 const mapDispatchToProps = {
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   SyncEntries,
   ClearEntry,
 }
@@ -24,7 +24,7 @@ const ResolveEntryConflictModal = ({
   fetchingEntryFromServer,
   entryFromServer,
   entry,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   SyncEntries,
   ClearEntry,
 }) => {
@@ -82,7 +82,7 @@ const ResolveEntryConflictModal = ({
 
   const handleSave = useCallback(async () => {
     setHasResolved(true)
-    await UpdateReduxEntry(entryToUpdate.id, entryToUpdate)
+    await UpdateReduxEntries(entryToUpdate.id, entryToUpdate)
     await SyncEntries()
   }, [entryToUpdate])
 
@@ -135,7 +135,7 @@ ResolveEntryConflictModal.propTypes = {
   entryFromServer: EntryPropTypes,
   entry: EntryPropTypes,
   SetEntry: PropTypes.func.isRequired,
-  UpdateReduxEntry: PropTypes.func.isRequired,
+  UpdateReduxEntries: PropTypes.func.isRequired,
   SyncEntries: PropTypes.func.isRequired,
   ClearEntry: PropTypes.func.isRequired,
 }

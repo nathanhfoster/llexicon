@@ -74,7 +74,7 @@ const TableRow = ({
     e => {
       e.stopPropagation()
 
-      selectDataItem(item.id, !item._dataSelected)
+      selectDataItem(item.id, !item._isSelected)
     },
     [actionMenuCallback, item, selectDataItem, selectedData],
   )
@@ -89,8 +89,9 @@ const TableRow = ({
           {actionMenuCallback ? (
             <input
               type='checkbox'
-              checked={item._dataSelected}
-              onClick={handleActionMenuCallback}
+              checked={!!item._isSelected}
+              onClick={e => e.stopPropagation()}
+              onChange={handleActionMenuCallback}
             />
           ) : render ? (
             render(item)

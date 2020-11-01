@@ -11,7 +11,7 @@ import { getStringBytes } from '../../utils'
 import * as AwsImages from '../../images/AWS'
 const {
   ENTRY_SET,
-  ENTRY_UPDATE,
+  ENTRIES_UPDATE,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
   ENTRIES_DELETE,
@@ -201,21 +201,37 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         isPending: false,
       }
 
-    case ENTRY_UPDATE:
-      let nextState = state.items.concat(state.filteredItems)
-      const indexToUpdate = nextState.findIndex(entry => entry.id === id)
-      if (indexToUpdate !== -1) {
-        const mergedItem = { ...nextState[indexToUpdate], ...payload }
-        nextState[indexToUpdate] = {
-          ...mergedItem,
-          _size: getStringBytes(mergedItem),
-        }
+    case ENTRIES_UPDATE:
+      let nextState
+      if (Array.isArray(payload)) {
+        const entriesUpdateMap = payload.reduce((acc, e) => {
+          acc[e.id] = e
+          return acc
+        }, {})
+        nextState = state.items.concat(state.filteredItems).map(e => entriesUpdateMap[e.id] || e)
+
         return {
           ...state,
           ...handleFilterEntries(nextState, state.search),
-          item: state.item?.id === mergedItem.id ? mergedItem : state.item,
           isPending: false,
           error: DEFAULT_STATE_ENTRIES.error,
+        }
+      } else {
+        nextState = state.items.concat(state.filteredItems)
+        const indexToUpdate = nextState.findIndex(entry => entry.id === id)
+        if (indexToUpdate !== -1) {
+          const mergedItem = { ...nextState[indexToUpdate], ...payload }
+          nextState[indexToUpdate] = {
+            ...mergedItem,
+            _size: getStringBytes(mergedItem),
+          }
+          return {
+            ...state,
+            ...handleFilterEntries(nextState, state.search),
+            item: state.item?.id === mergedItem.id ? mergedItem : state.item,
+            isPending: false,
+            error: DEFAULT_STATE_ENTRIES.error,
+          }
         }
       }
       return state

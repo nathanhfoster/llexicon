@@ -22,7 +22,13 @@ const BasicTableReducer = (state, action) => {
 
       return {
         ...state,
-        ...getSortedAndFilteredData(state.data, newSortList, state.filterList),
+        ...getSortedAndFilteredData(
+          state.data,
+          newSortList,
+          state.filterList,
+          state.selectedData,
+          state.actionMenuCallback,
+        ),
       }
 
     case BASIC_TABLE_FILTER:
@@ -32,7 +38,13 @@ const BasicTableReducer = (state, action) => {
 
       return {
         ...state,
-        ...getSortedAndFilteredData(state.data, state.sortList, newFilterList),
+        ...getSortedAndFilteredData(
+          state.data,
+          state.sortList,
+          newFilterList,
+          state.selectedData,
+          state.actionMenuCallback,
+        ),
         currentPage: 0,
       }
 
@@ -43,29 +55,25 @@ const BasicTableReducer = (state, action) => {
       return { ...state, pageSize: payload, currentPage: 0 }
 
     case BASIC_TABLE_SET_DATA:
-      const prevSelectedData = state.selectedData.reduce((acc, d) => {
-         acc[d.id] = d
-     }, {})
-     
-      const dataToPass = payload.map(d => {
-      if(prevSelectedData[d.id]) {
-        return {...prevSelectedData[d.id], ...d}
-      }
-      return d
-      })
       return {
         ...state,
-        ...getSortedAndFilteredData(dataToPass, state.sortList, state.filterList),
+        ...getSortedAndFilteredData(
+          payload,
+          state.sortList,
+          state.filterList,
+          state.selectedData,
+          state.actionMenuCallback,
+        ),
       }
 
     case BASIC_TABLE_SELECT_DATA_ITEMS:
       let selectedData = []
       const newSortedAndFilteredData = state.sortedAndFilteredData.map(d => {
-        const _dataSelected = payload[d.id]
-        if (_dataSelected) selectedData.push(d)
+        const _isSelected = payload[d.id]
+        if (_isSelected) selectedData.push(d)
         return {
           ...d,
-          _dataSelected,
+          _isSelected,
         }
       })
 
@@ -80,11 +88,11 @@ const BasicTableReducer = (state, action) => {
     case BASIC_TABLE_SELECT_DATA_ITEM:
       let newSelectedData = []
       const newSortedAndFilteredDataWithItem = state.sortedAndFilteredData.map(d => {
-        const _dataSelected = d.id === id ? payload : d._dataSelected
-        if (_dataSelected) newSelectedData.push(d)
+        const _isSelected = d.id === id ? payload : d._isSelected
+        if (_isSelected) newSelectedData.push(d)
         return {
           ...d,
-          _dataSelected,
+          _isSelected,
         }
       })
 

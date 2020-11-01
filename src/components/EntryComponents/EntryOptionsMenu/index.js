@@ -13,7 +13,7 @@ import {
 import { copyStringToClipboard, shareUrl } from 'utils'
 import { RouterGoBack, GetEntryDetailUrl } from 'redux/router/actions'
 import { useDispatch } from 'react-redux'
-import { UpdateReduxEntry, SyncEntries } from 'redux/Entries/actions'
+import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
 import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/reducer'
 import { isReadOnly } from 'redux/Entries/utils'
 import './styles.css'
@@ -54,7 +54,7 @@ const EntryOptionsMenu = ({
   const handleSync = useCallback(() => dispatch(SyncEntries()), [])
 
   const handleEditorChange = useCallback(({ ...payload }) => {
-    dispatch(UpdateReduxEntry(entryId, payload))
+    dispatch(UpdateReduxEntries(entryId, payload))
     shouldSyncOnUpdate && handleSync()
   }, [])
 

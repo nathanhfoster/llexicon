@@ -8,7 +8,7 @@ import {
   GetUserEntryDetails,
   ClearEntry,
   SyncEntries,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
 } from 'redux/Entries/actions'
 import { SetCalendar } from 'redux/Calendar/actions'
 import PageNotFound from '../PageNotFound'
@@ -41,7 +41,7 @@ const mapDispatchToProps = {
   ClearEntry,
   SyncEntries,
   SetCalendar,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
 }
 
 const EntryDetail = ({
@@ -54,7 +54,7 @@ const EntryDetail = ({
   ClearEntry,
   SyncEntries,
   SetCalendar,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
@@ -84,7 +84,7 @@ const EntryDetail = ({
   const handleOnChange = useCallback(
     payload => {
       if (readOnly || !entry) return
-      UpdateReduxEntry(entry.id, payload)
+      UpdateReduxEntries(entry.id, payload)
     },
     [entry?.id, readOnly],
   )

@@ -4,7 +4,7 @@ import { getStringBytes } from 'utils'
 
 const {
   ENTRY_SET,
-  ENTRY_UPDATE,
+  ENTRIES_UPDATE,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
   ENTRIES_DELETE,
@@ -62,10 +62,15 @@ const PostReduxEntry = entry => dispatch => {
   )
 }
 
-const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => {
-  let payload = { ...entry, _lastUpdated }
+const UpdateReduxEntries = (id, entries, _lastUpdated = new Date()) => {
+  let payload
+  if (Array.isArray(entries)) {
+    payload = entries
+  } else {
+    payload = { ...entries, _lastUpdated }
+  }
   return {
-    type: ENTRY_UPDATE,
+    type: ENTRIES_UPDATE,
     id,
     payload,
   }
@@ -136,7 +141,7 @@ export {
   ClearEntriesErrors,
   SetEntry,
   PostReduxEntry,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   ClearEntry,
   ClearEntries,
   DeleteReduxEntries,

@@ -12,7 +12,7 @@ import {
   SetEntriesComplete,
   SetEntriesError,
   SetEntry,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   DeleteReduxEntries,
   SetEntries,
   SetEntriesTags,
@@ -256,7 +256,7 @@ const PostEntry = payload => (dispatch, getState) => {
         RouterPush(newRoute)
       }
       const updatedEntry = { ...data, _shouldPost: false }
-      dispatch(UpdateReduxEntry(payload.id, updatedEntry, null))
+      dispatch(UpdateReduxEntries(payload.id, updatedEntry, null))
       ReactGA.event({
         category: 'Post Entry',
         action: 'User posted a new entry!',
@@ -274,7 +274,7 @@ const UpdateEntry = (id, payload) => dispatch => {
   return Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch(UpdateReduxEntry(id, data, null))
+      dispatch(UpdateReduxEntries(id, data, null))
       ReactGA.event({
         category: 'Update Entry',
         action: 'User updated a new entry!',
@@ -344,7 +344,7 @@ const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
         EntryFiles,
         _shouldDelete: true,
       }
-      dispatch(UpdateReduxEntry(entry_id, payload, null))
+      dispatch(UpdateReduxEntries(entry_id, payload, null))
     }
   }
 }

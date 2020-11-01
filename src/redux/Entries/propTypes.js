@@ -37,7 +37,7 @@ const EntryRatingProps = PropTypes.oneOf([0, 1, 2, 3, 4, 5])
 const EntryPropType = {
   size: PropTypes.number,
   author: PropTypes.number,
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps,
   people: EntryPeopleProps,
   EntryFiles: EntryFilesProps,

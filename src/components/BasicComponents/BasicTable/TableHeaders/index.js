@@ -132,13 +132,12 @@ const TableHeaders = ({
   )
 
   const allSlicedDataIsSelected = useMemo(
-    () => slicedData.length > 0 && slicedData.every(({ _dataSelected }) => _dataSelected),
+    () => slicedData.length > 0 && slicedData.every(({ _isSelected }) => _isSelected),
     [slicedData],
   )
 
   const handleActionMenuCallback = useCallback(
     e => {
-      e.stopPropagation()
       if (!allSlicedDataIsSelected) {
         selectDataItems(selectedData.concat(slicedData))
       } else if (allSlicedDataIsSelected && !allDataIsSelected) {
@@ -168,7 +167,8 @@ const TableHeaders = ({
                 disabled={sortedAndFilteredData.length === 0 || slicedData.length === 0}
                 type='checkbox'
                 checked={allSlicedDataIsSelected || allDataIsSelected}
-                onClick={handleActionMenuCallback}
+                onClick={e => e.stopPropagation()}
+                onChange={handleActionMenuCallback}
               />
             </th>
           </Fragment>

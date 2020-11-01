@@ -84,15 +84,8 @@ BasicTable.propTypes = {
   dark: PropTypes.bool,
   hover: PropTypes.bool,
   responsive: PropTypes.bool,
-  pageSize: PropTypes.number.isRequired,
-  pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
   // Custom ref handler that will be assigned to the "ref" of the inner <table> element
   innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object]),
-}
-
-BasicTable.defaultProps = {
-  pageSize: 10,
-  pageSizes: [5, 15, 25, 50, 100],
 }
 
 export default connect(mapStateToProps, null, null, {

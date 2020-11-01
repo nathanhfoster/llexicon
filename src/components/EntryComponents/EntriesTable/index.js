@@ -10,7 +10,7 @@ import { stringMatch, formatBytes } from 'utils'
 import {
   SetEntriesSortMap,
   SetEntriesFilterMap,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   SyncEntries,
 } from 'redux/Entries/actions'
 import { DEFAULT_STATE_ENTRIES } from 'redux/Entries/reducer'
@@ -25,7 +25,7 @@ const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
 const mapDispatchToProps = {
   SetEntriesSortMap,
   SetEntriesFilterMap,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   SyncEntries,
 }
 
@@ -33,7 +33,7 @@ const EntriesTable = ({
   showOnlyPublic,
   SetEntriesSortMap,
   SetEntriesFilterMap,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   SyncEntries,
   entries,
   sortMap,
@@ -257,14 +257,19 @@ const EntriesTable = ({
   )
 
   const handleDeleteEntries = useCallback(() => {
-    const getEntryPayload = entry => ({
-      ...entry,
+    const getUpdatedEntry = e => ({
+      ...e,
       _shouldDelete: true,
       _shouldPost: false,
+      _lastUpdated: null,
     })
+    const payload =
+      entriesSelected.length === 1
+        ? getUpdatedEntry(entriesSelected[0])
+        : entriesSelected.map(e => getUpdatedEntry(e))
 
     entriesSelected.forEach(e => {
-      UpdateReduxEntry(e.id, getEntryPayload(e), null)
+      UpdateReduxEntries(e.id, payload, null)
     })
 
     SyncEntries()

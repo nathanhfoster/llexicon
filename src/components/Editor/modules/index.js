@@ -96,7 +96,7 @@ const getModules = (toolbarId, topToolbarIsOpen) => ({
   // keyboard: {
   //   bindings: QuillBetterTable.keyboardBindings,
   // },
-  table: false,
+  // table: false,
   // tableUI: true,
   // imageDrop: {}
 })
