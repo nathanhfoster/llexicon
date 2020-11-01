@@ -140,7 +140,7 @@ const TableHeaders = ({
     e => {
       e.stopPropagation()
       if (!allSlicedDataIsSelected) {
-        selectDataItems(slicedData)
+        selectDataItems(selectedData.concat(slicedData))
       } else if (allSlicedDataIsSelected && !allDataIsSelected) {
         selectDataItems(sortedAndFilteredData)
       } else if (allDataIsSelected) {
@@ -148,6 +148,7 @@ const TableHeaders = ({
       }
     },
     [
+      selectedData,
       allDataIsSelected,
       allSlicedDataIsSelected,
       selectDataItems,
