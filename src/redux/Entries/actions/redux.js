@@ -7,7 +7,7 @@ const {
   ENTRY_UPDATE,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
-  ENTRY_DELETE,
+  ENTRIES_DELETE,
   ENTRIES_SET_TAGS,
   ENTRIES_SET_PEOPLE,
   ENTRIES_PENDING,
@@ -43,17 +43,17 @@ const SetEntry = payload => ({
 })
 
 const PostReduxEntry = entry => dispatch => {
-const payload = {
-      ...entry,
-      id: getReduxEntryId(),
-      _shouldPost: true,
-      _lastUpdated: null,
-      date_created: entry.date_created_by_author,
-      date_updated: entry.date_created_by_author,
-}
-const size = getStringBytes(payload)
+  const payload = {
+    ...entry,
+    id: getReduxEntryId(),
+    _shouldPost: true,
+    _lastUpdated: null,
+    date_created: entry.date_created_by_author,
+    date_updated: entry.date_created_by_author,
+  }
+  const size = getStringBytes(payload)
 
-return dispatch(
+  return dispatch(
     SetEntry({
       ...payload,
       size,
@@ -75,7 +75,11 @@ const ClearEntry = () => ({ type: ENTRY_CLEAR })
 
 const ClearEntries = () => ({ type: ENTRIES_CLEAR })
 
-const DeleteReduxEntry = id => ({ type: ENTRY_DELETE, id })
+const DeleteReduxEntries = (id, entriesToDelete) => ({
+  type: ENTRIES_DELETE,
+  id,
+  payload: entriesToDelete,
+})
 
 const SetEntries = payload => ({
   type: ENTRIES_SET,
@@ -135,7 +139,7 @@ export {
   UpdateReduxEntry,
   ClearEntry,
   ClearEntries,
-  DeleteReduxEntry,
+  DeleteReduxEntries,
   SetEntries,
   SetEntriesTags,
   SetEntriesPeople,

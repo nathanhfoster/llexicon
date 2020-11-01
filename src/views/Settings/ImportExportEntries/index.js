@@ -1,85 +1,22 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
-import { ImportEntries } from 'components'
+import { ImportEntries, ButtonExportEntries } from 'components'
 import { connect } from 'react-redux'
-import { copyStringToClipboard, loadJSON, exportJSON, getValidDate } from 'utils'
-import { SyncEntries, GetAllUserEntries, GetAllUserEntryPages } from 'redux/Entries/actions'
-import { getTagStringFromObject } from 'redux/Entries/utils'
 
-const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems } }) => ({
+import { SyncEntries, GetAllUserEntryPages } from 'redux/Entries/actions'
+
+const mapStateToProps = ({ User: { id } }) => ({
   userId: id,
-  items,
-  filteredItems,
 })
 
 const mapDispatchToProps = { SyncEntries, GetAllUserEntryPages }
 
-const ImportExportEntries = ({
-  userId,
-  items,
-  filteredItems,
-  SyncEntries,
-  GetAllUserEntryPages,
-}) => {
-  const entries = items.concat(filteredItems)
-  const totalEntries = entries.length
-
+const ImportExportEntries = ({ userId, SyncEntries, GetAllUserEntryPages }) => {
   const GetAllEntries = useCallback(
     () => SyncEntries(() => new Promise(resolve => resolve(GetAllUserEntryPages()))),
     [],
   )
-
-  const handleExportEntries = () => {
-    const formattedEntries = entries.map((entry, i) => {
-      const {
-        id,
-        author,
-        tags,
-        people,
-        title,
-        html,
-        date_created,
-        date_created_by_author,
-        date_updated,
-        views,
-        rating,
-        address,
-        latitude,
-        longitude,
-        is_public,
-        ...restOfProps
-      } = entry
-
-      let entries = {
-        id,
-        author,
-        tags: getTagStringFromObject(tags),
-        people: getTagStringFromObject(people),
-        title,
-        html,
-        date_created: getValidDate(date_created),
-        date_created_by_author: getValidDate(date_created_by_author),
-        date_updated: getValidDate(date_updated),
-        views,
-        rating,
-        address,
-        latitude,
-        longitude,
-        is_public,
-        ...restOfProps,
-      }
-
-      if (userId) {
-        entries['author'] = userId
-      }
-
-      return entries
-    })
-
-    exportJSON(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
-  }
 
   return (
     <Container fluid>
@@ -89,9 +26,7 @@ const ImportExportEntries = ({
             <i className='fas fa-cloud-download-alt' /> Download and Sync All Entries
           </Button>
           <ImportEntries />
-          <Button color='accent' onClick={handleExportEntries} disabled={totalEntries === 0}>
-            <i className='fas fa-file-export' /> Export Entries
-          </Button>
+          <ButtonExportEntries />
         </Col>
       </Row>
     </Container>
@@ -100,8 +35,6 @@ const ImportExportEntries = ({
 
 ImportExportEntries.propTypes = {
   userId: PropTypes.number,
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
 }
 
 ImportExportEntries.defaultProps = { userId: null }

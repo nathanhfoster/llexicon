@@ -13,7 +13,7 @@ import {
   SetEntriesError,
   SetEntry,
   UpdateReduxEntry,
-  DeleteReduxEntry,
+  DeleteReduxEntries,
   SetEntries,
   SetEntriesTags,
   SetEntriesPeople,
@@ -139,7 +139,7 @@ const GetEntry = (url, id) => (dispatch, getState) => {
       if (userLoggedIn && response) {
         const { status } = response
         if (entry && !entry._shouldPost && (status === 401 || status === 404)) {
-          dispatch(DeleteReduxEntry(id))
+          dispatch(DeleteReduxEntries(id))
           dispatch(SetApiResponseStatus(status))
           dispatch(
             SetAlert({
@@ -293,7 +293,7 @@ const DeleteEntry = id => dispatch => {
   return Axios()
     .delete(`/entries/${id}/`)
     .then(res => {
-      dispatch(DeleteReduxEntry(id))
+      dispatch(DeleteReduxEntries(id))
       ReactGA.event({
         category: 'Delete Entry',
         action: 'User deleted a new entry!',
@@ -303,7 +303,7 @@ const DeleteEntry = id => dispatch => {
     })
     .catch(e => {
       if (e.response.status === 404) {
-        dispatch(DeleteReduxEntry(id))
+        dispatch(DeleteReduxEntries(id))
       }
       dispatch(SetEntriesError(e))
     })

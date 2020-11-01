@@ -9,7 +9,9 @@ const getSortedAndFilteredData = (data, sortList, filterList) => {
 
   const dataLength = (sortedAndFilteredData || data).length
 
-  return { data, sortedAndFilteredData, dataLength, sortList, filterList }
+  const selectedData = sortedAndFilteredData.filter(({ _dataSelected }) => _dataSelected)
+
+  return { data, sortedAndFilteredData, dataLength, selectedData, sortList, filterList }
 }
 
 const getInitialState = ({ columns, pageSize, pageSizes, data, ...restOfProps }) => {

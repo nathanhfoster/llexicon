@@ -1,4 +1,3 @@
-import { exportJSON } from 'utils'
 import { BasicTableActionTypes } from './types'
 import { filterSort, getSortedAndFilteredData } from './utils'
 
@@ -8,8 +7,8 @@ const {
   BASIC_TABLE_SET_PAGE,
   BASIC_TABLE_SET_PAGE_SIZE,
   BASIC_TABLE_SET_DATA,
-  BASIC_TABLE_SELECT_ALL_DATA,
-  BASIC_TABLE_SELECT_DATA,
+  BASIC_TABLE_SELECT_DATA_ITEMS,
+  BASIC_TABLE_SELECT_DATA_ITEM,
 } = BasicTableActionTypes
 
 const BasicTableReducer = (state, action) => {
@@ -49,25 +48,42 @@ const BasicTableReducer = (state, action) => {
         ...getSortedAndFilteredData(payload, state.sortList, state.filterList),
       }
 
-    case BASIC_TABLE_SELECT_ALL_DATA:
+    case BASIC_TABLE_SELECT_DATA_ITEMS:
+      let selectedData = []
+      const newSortedAndFilteredData = state.sortedAndFilteredData.map(d => {
+        const _dataSelected = payload[d.id]
+        if (_dataSelected) selectedData.push(d)
+        return {
+          ...d,
+          _dataSelected,
+        }
+      })
+
+      state.actionMenuCallback(selectedData)
+
       return {
         ...state,
-        data: state.data.map(d => ({ ...d, _dataSelected: !d._dataSelected })),
-        sortedAndFilteredData: state.sortedAndFilteredData.map(d => ({
-          ...d,
-          _dataSelected: !d._dataSelected,
-        })),
+        sortedAndFilteredData: newSortedAndFilteredData,
+        selectedData,
       }
 
-    case BASIC_TABLE_SELECT_DATA:
-      const mapCallback = d => ({
-        ...d,
-        _dataSelected: d.id === id ? !d._dataSelected : !!d._dataSelected,
+    case BASIC_TABLE_SELECT_DATA_ITEM:
+      let newSelectedData = []
+      const newSortedAndFilteredDataWithItem = state.sortedAndFilteredData.map(d => {
+        const _dataSelected = d.id === id ? payload : d._dataSelected
+        if (_dataSelected) newSelectedData.push(d)
+        return {
+          ...d,
+          _dataSelected,
+        }
       })
+
+      state.actionMenuCallback(newSelectedData)
+
       return {
         ...state,
-        data: state.data.map(mapCallback),
-        sortedAndFilteredData: state.sortedAndFilteredData.map(mapCallback),
+        sortedAndFilteredData: newSortedAndFilteredDataWithItem,
+        selectedData: newSelectedData,
       }
 
     default:

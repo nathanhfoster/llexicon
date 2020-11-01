@@ -14,7 +14,7 @@ const {
   ENTRY_UPDATE,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
-  ENTRY_DELETE,
+  ENTRIES_DELETE,
   ENTRIES_SET_TAGS,
   ENTRIES_SET_PEOPLE,
   ENTRIES_PENDING,
@@ -220,7 +220,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
       return state
 
-    case ENTRY_DELETE:
+    case ENTRIES_DELETE:
       const hasArrayOfIds = Array.isArray(payload)
       const filterCondition = item => (hasArrayOfIds ? payload.includes(item.id) : item.id != id)
       return {

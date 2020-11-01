@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useMemo, useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { stripHtml, TopKFrequentStrings } from 'utils'
@@ -14,7 +14,9 @@ import {
   SyncEntries,
 } from 'redux/Entries/actions'
 import { DEFAULT_STATE_ENTRIES } from 'redux/Entries/reducer'
+import { ButtonExportEntries, ConfirmAction } from 'components'
 import { ButtonGroup, Button } from 'reactstrap'
+import './styles.css'
 
 const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
   showOnlyPublic,
@@ -46,14 +48,13 @@ const EntriesTable = ({
     [showOnlyPublic, entries],
   )
 
-  const handleSortCallback = useCallback(
-    (sortKey, sortUp) => SetEntriesSortMap(sortKey, sortUp),
-    [],
-  )
+  const handleSortCallback = useCallback((sortKey, sortUp) => SetEntriesSortMap(sortKey, sortUp), [
+    SetEntriesSortMap,
+  ])
 
   const handleFilterCallback = useCallback(
     (filterKey, searchValue) => SetEntriesFilterMap(filterKey, searchValue),
-    [],
+    [SetEntriesFilterMap],
   )
 
   const tableColumns = useMemo(
@@ -243,28 +244,31 @@ const EntriesTable = ({
           formatBytes(entries.reduce((count, { size, _size }) => count + size || _size, 0)),
       },
     ],
-    [viewableEntries],
+    [filterMap, sortMap],
   )
 
   const onRowClick = useCallback(item => GoToEntryDetail(item.id), [])
 
-  const handleActionMenuCallback = useCallback((data, _shouldDelete) => {
-    console.log(data, _shouldDelete)
+  const [entriesSelected, setEntriesSelected] = useState([])
+
+  const handleActionMenuCallback = useCallback(
+    selectedEntries => setEntriesSelected(selectedEntries),
+    [],
+  )
+
+  const handleDeleteEntries = useCallback(() => {
     const getEntryPayload = entry => ({
       ...entry,
-      _shouldDelete,
+      _shouldDelete: true,
       _shouldPost: false,
-      _lastUpdated: null,
     })
-    setTimeout(() => {
-      if (Array.isArray(data)) {
-      } else {
-        UpdateReduxEntry(data.id, getEntryPayload(data), null)
-      }
 
-      // SyncEntries()
-    }, 200)
-  }, [])
+    entriesSelected.forEach(e => {
+      UpdateReduxEntry(e.id, getEntryPayload(e), null)
+    })
+
+    SyncEntries()
+  }, [entriesSelected])
 
   return (
     <BasicTable
@@ -277,11 +281,24 @@ const EntriesTable = ({
       onRowClick={onRowClick}
       onSortCallback={handleSortCallback}
       onFilterCallback={handleFilterCallback}
-      // actionMenuCallback={handleActionMenuCallback}
+      actionMenuCallback={handleActionMenuCallback}
     >
-      {/* <ButtonGroup>
-        <Button>Delete</Button>
-      </ButtonGroup> */}
+      <ButtonGroup className='BasicTableActions'>
+        <ButtonExportEntries entries={entriesSelected} />
+        <ConfirmAction
+          disabled={entriesSelected.length === 0}
+          message={`Are you sure you want delete  ${
+            entriesSelected.length === 1 ? 'this entry' : `these ${entriesSelected.length} entries`
+          }?`}
+          onConfirm={handleDeleteEntries}
+          button={
+            <Button color='danger'>
+              <i className='fas fa-trash-alt mr-1' />
+              Delete Entries
+            </Button>
+          }
+        />
+      </ButtonGroup>
     </BasicTable>
   )
 }

@@ -26,9 +26,11 @@ const TableBody = ({ sortedAndFilteredData, currentPage, pageSize, dataDisplayNa
 
   const sliceEnd = sliceStart + pageSize
 
-  const slicedData = useMemo(() => {
-    return sortedAndFilteredData.slice(sliceStart, sliceEnd)
-  }, [sortedAndFilteredData, sliceStart, sliceEnd])
+  const slicedData = useMemo(() => sortedAndFilteredData.slice(sliceStart, sliceEnd), [
+    sortedAndFilteredData,
+    sliceStart,
+    sliceEnd,
+  ])
 
   let renderTableRows = useMemo(
     () => slicedData.map((item, i) => <TableRow key={i} item={item} />),

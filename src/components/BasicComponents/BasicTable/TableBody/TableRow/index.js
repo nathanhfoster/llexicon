@@ -6,19 +6,33 @@ import { Collapse } from 'reactstrap'
 import { ColumnsPropType } from '../../state/types'
 import { connect } from 'react-redux'
 import { isType } from '../../../../../utils'
-import { isAFunction } from 'utils'
-import { selectData } from '../../state/actions'
+import { selectDataItem } from '../../state/actions'
 
-const mapStateToProps = ({ getRowValue, onRowClick, columns, actionMenuCallback }) => ({
+const mapStateToProps = ({
   getRowValue,
   onRowClick,
   columns,
+  selectedData,
+  actionMenuCallback,
+}) => ({
+  getRowValue,
+  onRowClick,
+  columns,
+  selectedData,
   actionMenuCallback,
 })
 
-const mapDispatchToProps = { selectData }
+const mapDispatchToProps = { selectDataItem }
 
-const TableRow = ({ getRowValue, onRowClick, item, columns, actionMenuCallback, selectData }) => {
+const TableRow = ({
+  getRowValue,
+  onRowClick,
+  item,
+  columns,
+  selectedData,
+  actionMenuCallback,
+  selectDataItem,
+}) => {
   const [open, setOpen] = useState(false)
   const handleRowClick = useCallback(
     e => {
@@ -59,12 +73,10 @@ const TableRow = ({ getRowValue, onRowClick, item, columns, actionMenuCallback, 
   const handleActionMenuCallback = useCallback(
     e => {
       e.stopPropagation()
-      if (isAFunction(actionMenuCallback)) {
-        actionMenuCallback([item], !item._dataSelected)
-        selectData(item.id)
-      }
+
+      selectDataItem(item.id, !item._dataSelected)
     },
-    [item, actionMenuCallback],
+    [actionMenuCallback, item, selectDataItem, selectedData],
   )
 
   return (

@@ -1,3 +1,4 @@
+import { Entries } from 'views'
 import { BasicTableActionTypes } from './types'
 
 const {
@@ -6,8 +7,8 @@ const {
   BASIC_TABLE_SET_PAGE,
   BASIC_TABLE_SET_PAGE_SIZE,
   BASIC_TABLE_SET_DATA,
-  BASIC_TABLE_SELECT_ALL_DATA,
-  BASIC_TABLE_SELECT_DATA,
+  BASIC_TABLE_SELECT_DATA_ITEMS,
+  BASIC_TABLE_SELECT_DATA_ITEM,
 } = BasicTableActionTypes
 
 const basicTableSort = (onSortCallback, sortKey, sortUp) => dispatch => {
@@ -44,13 +45,18 @@ const basicTableSetData = payload => ({
   payload,
 })
 
-const selectAllData = () => ({
-  type: BASIC_TABLE_SELECT_ALL_DATA,
+const selectDataItems = (entires, selected = true) => ({
+  type: BASIC_TABLE_SELECT_DATA_ITEMS,
+  payload: entires.reduce((acc, e) => {
+    acc[e.id] = selected
+    return acc
+  }, {}),
 })
 
-const selectData = id => ({
-  type: BASIC_TABLE_SELECT_DATA,
+const selectDataItem = (id, selected = true) => ({
+  type: BASIC_TABLE_SELECT_DATA_ITEM,
   id,
+  payload: selected,
 })
 
 export {
@@ -59,6 +65,6 @@ export {
   basicTableSetPage,
   basicTableSetPageSize,
   basicTableSetData,
-  selectAllData,
-  selectData,
+  selectDataItems,
+  selectDataItem,
 }

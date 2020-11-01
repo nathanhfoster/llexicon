@@ -1,11 +1,10 @@
 import BasicTableContext from '../state/context'
-import React, { useCallback, useMemo } from 'react'
+import React, { Fragment, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ColumnsPropType, SortListPropType } from '../state/types'
 import TableHeader from './TableHeader'
-import { basicTableSort, basicTableFilter, selectAllData } from '../state/actions'
-import { isAFunction } from 'utils'
+import { basicTableSort, basicTableFilter, selectDataItems } from '../state/actions'
 
 const mapStateToProps = ({
   columns,
@@ -14,7 +13,10 @@ const mapStateToProps = ({
   onFilterCallback,
   sortable,
   filterable,
-  data,
+  sortedAndFilteredData,
+  selectedData,
+  pageSize,
+  currentPage,
   actionMenuCallback,
 }) => ({
   columns,
@@ -23,11 +25,14 @@ const mapStateToProps = ({
   onFilterCallback,
   sortable,
   filterable,
-  data,
+  sortedAndFilteredData,
+  selectedData,
+  pageSize,
+  currentPage,
   actionMenuCallback,
 })
 
-const mapDispatchToProps = { basicTableSort, basicTableFilter, selectAllData }
+const mapDispatchToProps = { basicTableSort, basicTableFilter, selectDataItems }
 
 const TableHeaders = ({
   onSortCallback,
@@ -38,9 +43,12 @@ const TableHeaders = ({
   sortList,
   basicTableSort,
   basicTableFilter,
-  data,
+  sortedAndFilteredData,
+  selectedData,
+  pageSize,
+  currentPage,
   actionMenuCallback,
-  selectAllData,
+  selectDataItems,
 }) => {
   const handleFilter = useCallback(
     (filterKey, filterValue) => {
@@ -107,26 +115,62 @@ const TableHeaders = ({
     [basicTableSort, columns, filterable, handleFilter, onSortCallback, sortMap, sortable],
   )
 
-  const allDataIsSelected = useMemo(() => data.every(({ _dataSelected }) => _dataSelected), [data])
+  const sliceStart = currentPage * pageSize
+
+  const sliceEnd = sliceStart + pageSize
+
+  const slicedData = useMemo(() => sortedAndFilteredData.slice(sliceStart, sliceEnd), [
+    sortedAndFilteredData,
+    sliceStart,
+    sliceEnd,
+  ])
+
+  const allDataIsSelected = useMemo(
+    () =>
+      sortedAndFilteredData.length !== 0 && sortedAndFilteredData.length === selectedData.length,
+    [selectedData, sortedAndFilteredData.length],
+  )
+
+  const allSlicedDataIsSelected = useMemo(
+    () => slicedData.length > 0 && slicedData.every(({ _dataSelected }) => _dataSelected),
+    [slicedData],
+  )
 
   const handleActionMenuCallback = useCallback(
     e => {
       e.stopPropagation()
-      if (isAFunction(actionMenuCallback)) {
-        actionMenuCallback(data, !allDataIsSelected)
-        selectAllData()
+      if (!allSlicedDataIsSelected) {
+        selectDataItems(slicedData)
+      } else if (allSlicedDataIsSelected && !allDataIsSelected) {
+        selectDataItems(sortedAndFilteredData)
+      } else if (allDataIsSelected) {
+        selectDataItems(sortedAndFilteredData, false)
       }
     },
-    [data, allDataIsSelected, actionMenuCallback],
+    [
+      allDataIsSelected,
+      allSlicedDataIsSelected,
+      selectDataItems,
+      slicedData,
+      sortedAndFilteredData,
+    ],
   )
 
   return (
     <thead>
       <tr>
         {actionMenuCallback && (
-          <th title='SelectAll' onClick={e => e.stopPropagation()} style={{ width: 40 }}>
-            <input type='checkbox' checked={allDataIsSelected} onClick={handleActionMenuCallback} />
-          </th>
+          <Fragment>
+            <th title='SelectAll' onClick={e => e.stopPropagation()} style={{ width: 50 }}>
+              <div>{selectedData.length}</div>
+              <input
+                disabled={sortedAndFilteredData.length === 0 || slicedData.length === 0}
+                type='checkbox'
+                checked={allSlicedDataIsSelected || allDataIsSelected}
+                onClick={handleActionMenuCallback}
+              />
+            </th>
+          </Fragment>
         )}
         {renderColumnHeaders}
       </tr>
