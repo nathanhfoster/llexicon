@@ -3,6 +3,7 @@ import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { connect } from 'react-redux'
 import { EntryCards, Header } from '../..'
 import Moment from 'react-moment'
+import { Col } from 'reactstrap'
 
 const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) => ({
   items,
@@ -34,7 +35,9 @@ const EntriesRediscover = ({ items, filteredItems, showOnlyPublic }) => {
 
   return (
     <Fragment>
-      <Header fill='var(--quinaryColor)'>Rediscover This Day</Header>
+      <Col xs={12} className='p-0'>
+         <Header fill='var(--quinaryColor)'>Rediscover This Day</Header>
+      <Col>
       <Header fontSize='1.5rem'>
         <Moment format='MMMM D'>{today}</Moment>
       </Header>
