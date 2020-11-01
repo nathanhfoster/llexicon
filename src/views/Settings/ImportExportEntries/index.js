@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
+import { ButtonGroup, Button } from 'reactstrap'
 import { ImportEntries, ButtonExportEntries } from 'components'
 import { connect } from 'react-redux'
 
@@ -19,17 +19,13 @@ const ImportExportEntries = ({ userId, SyncEntries, GetAllUserEntryPages }) => {
   )
 
   return (
-    <Container fluid>
-      <Row className='py-2'>
-        <Col xs={12} tag={ButtonGroup} className='p-0'>
-          <Button color='accent' onClick={GetAllEntries} disabled={!userId}>
-            <i className='fas fa-cloud-download-alt' /> Download and Sync All Entries
-          </Button>
-          <ImportEntries />
-          <ButtonExportEntries />
-        </Col>
-      </Row>
-    </Container>
+    <ButtonGroup style={{ width: '100%' }} className='pb-1'>
+      <Button color='accent' onClick={GetAllEntries} disabled={!userId}>
+        <i className='fas fa-cloud-download-alt' /> Download and Sync
+      </Button>
+      <ImportEntries />
+      <ButtonExportEntries />
+    </ButtonGroup>
   )
 }
 

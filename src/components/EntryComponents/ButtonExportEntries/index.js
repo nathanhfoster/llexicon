@@ -67,7 +67,7 @@ const ButtonClearEntries = ({ userId, entries: entriesFromProps, items, filtered
   }
   return (
     <Button color='accent' onClick={handleExportEntries} disabled={entries.length === 0}>
-      <i className='fas fa-file-export' /> Export Entries
+      <i className='fas fa-file-export' /> Export
     </Button>
   )
 }

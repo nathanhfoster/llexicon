@@ -294,7 +294,7 @@ const EntriesTable = ({
           button={
             <Button color='danger'>
               <i className='fas fa-trash-alt mr-1' />
-              Delete Entries
+              Delete
             </Button>
           }
         />
