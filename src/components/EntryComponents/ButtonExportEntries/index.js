@@ -7,15 +7,13 @@ import { connect } from 'react-redux'
 import { exportJSON, getValidDate } from 'utils'
 import { getTagStringFromObject } from 'redux/Entries/utils'
 
-const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems } }) => ({
+const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems } }, { entries }) => ({
   userId: id,
-  items,
-  filteredItems,
+  entries: entries || items.concat(filteredItems),
 })
 
-const ButtonClearEntries = ({ userId, entries: entriesFromProps, items, filteredItems }) => {
-  const entries = entriesFromProps || items.concat(filteredItems)
-
+const ButtonClearEntries = ({ userId, entries }) => {
+  
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
@@ -75,8 +73,6 @@ const ButtonClearEntries = ({ userId, entries: entriesFromProps, items, filtered
 ButtonClearEntries.propTypes = {
   userId: PropTypes.number,
   entries: EntriesPropTypes,
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
 }
 
 ButtonClearEntries.defaultProps = {}
