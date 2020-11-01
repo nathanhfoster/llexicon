@@ -2,7 +2,7 @@ import React, { useRef, useMemo, useState, Fragment } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { connect } from 'react-redux'
 import { EntryCards, Header } from '../..'
-import { ButtonGroup, Button } from 'reactstrap'
+import { Col, ButtonGroup, Button } from 'reactstrap'
 import './styles.css'
 
 const NUMBER_OF_MOST_VIEWED_ENTRIES = 8
@@ -44,14 +44,16 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
 
   return (
     <Fragment>
-      <Header fill='var(--quinaryColor)' display='inline-block'>
-        Random Entries
-        <ButtonGroup className='EntriesRandomRefreshButtonContainer'>
-          <Button color='accent' onClick={handleRefresh}>
-            <i className='fas fa-sync-alt' />
-          </Button>
-        </ButtonGroup>
-      </Header>
+      <Col xs={12} className='p-0'>
+         <Header fill='var(--quinaryColor)' display='inline-block'>
+           Random Entries
+           <ButtonGroup className='EntriesRandomRefreshButtonContainer'>
+             <Button color='accent' onClick={handleRefresh}>
+               <i className='fas fa-sync-alt' />
+             </Button>
+           </ButtonGroup>
+         </Header>
+      </Col>
       <div ref={containerRef} className='HomeRow pb-1 row'>
         <EntryCards entries={randomEntries} containerRef={containerRef} />
       </div>
