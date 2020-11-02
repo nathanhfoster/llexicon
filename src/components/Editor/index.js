@@ -1,4 +1,13 @@
-import React, { createContext, useRef, useState, useMemo, useCallback, memo } from 'react'
+import React, {
+  createContext,
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  memo,
+  useReducer,
+} from 'react'
 import ReactQuill from 'react-quill'
 import { THEMES, FORMATS, getModules } from './modules'
 import 'react-quill/dist/quill.snow.css'
@@ -26,6 +35,14 @@ const Editor = ({
   ...restOfProps
 }) => {
   const editorRef = useRef()
+  const didMount = useRef(false)
+
+  useEffect(() => {
+    didMount.current = true
+    return () => {
+      didMount.current = false
+    }
+  }, [])
 
   const [bottomToolbarIsOpen, setBottomToolbarIsOpen] = useState(
     !readOnly && restOfProps.bottomToolbarIsOpen,
@@ -70,13 +87,15 @@ const Editor = ({
     [editorRef],
   )
 
-  const handleEditorChange = useCallback(({ ...payload }) => onChange(payload), [
-    restOfProps.toolbarId,
-  ])
+  const handleEditorChange = useCallback(({ ...payload }) => {
+    onChange(payload)
+  }, [])
 
   const handleEditorStateChange = useCallback((html, delta, source, editor) => {
+    // console.log('handleEditorStateChange: ', delta, source, editor)
+    if (source === 'api' && !didMount.current) return
     handleEditorChange({ html })
-  }, [])
+  }, [didMount.current])
 
   const toggleBottomToolbar = useCallback(
     toggle =>
