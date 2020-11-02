@@ -17,6 +17,10 @@ const getDate = ({ _lastUpdated, date_updated }) => _lastUpdated || date_updated
 const getMostRecent = (reduxData, newData) => {
   let newItem = { ...newData, ...reduxData }
 
+  if(newData.views > reduxData.views) {
+   newItem = {...newItem, views: newData.views}
+  }
+
   const reduxDataLastUpdated = getDate(reduxData)
   const newDataLastUpdated = getDate(newData)
 
