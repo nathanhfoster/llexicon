@@ -96,7 +96,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
           <BasicForm
             title='Update Profile'
             onSubmit={handleChangeUser}
-            submitLabel={formSubmitLabel}
+            saveLabel={formSubmitLabel}
             inputs={inputs}
           />
         </Col>

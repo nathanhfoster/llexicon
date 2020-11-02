@@ -60,12 +60,7 @@ const Login = ({ userError, userPending, UserLogin }) => {
 
   return (
     <Jumbotron className='LoginFormContainer'>
-      <BasicForm
-        title='Login'
-        onSubmit={handleLogin}
-        submitLabel={formSubmitLabel}
-        inputs={inputs}
-      />
+      <BasicForm title='Login' onSubmit={handleLogin} saveLabel={formSubmitLabel} inputs={inputs} />
       <FacebookGoogleLogin />
     </Jumbotron>
   )

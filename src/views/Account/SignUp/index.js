@@ -78,7 +78,7 @@ const SignUp = ({ userError, userPending, CreateUser }) => {
       <BasicForm
         title='Sign Up'
         onSubmit={handleSignUp}
-        submitLabel={formSubmitLabel}
+        saveLabel={formSubmitLabel}
         inputs={inputs}
       />
       <FacebookGoogleLogin />

@@ -4,6 +4,7 @@ import { optionProps } from '../BasicOption/propTypes'
 const InputTypes = [
   'email',
   'text',
+  'textarea',
   'password',
   'checkbox',
   'radio',

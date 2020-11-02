@@ -56,7 +56,7 @@ const ForgotPassword = ({ userError, userPending, PasswordReset }) => {
       <BasicForm
         title='Forgot password'
         onSubmit={handlePasswordReset}
-        submitLabel={formSubmitLabel}
+        saveLabel={formSubmitLabel}
         inputs={inputs}
       />
       <FacebookGoogleLogin />

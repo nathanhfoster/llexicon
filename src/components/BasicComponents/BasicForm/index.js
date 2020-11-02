@@ -7,9 +7,11 @@ import BasicInput from '../BasicInput'
 const BasicForm = ({
   title,
   inputs,
-  submitLabel,
+  saveLabel,
+  cancelLabel,
   method,
   onSubmit,
+  onCancel,
   onChange,
 }) => {
   const [state, setState] = useState(inputs)
@@ -62,11 +64,7 @@ const BasicForm = ({
   const renderInputs = useMemo(
     () =>
       (onChange ? inputs : state).map((input, i) => (
-        <BasicInput
-          key={`${input.name}-${i}`}
-          {...input}
-          onChange={handleChange}
-        />
+        <BasicInput key={`${input.name}-${i}`} {...input} onChange={handleChange} />
       )),
     [onChange, inputs, state, handleChange],
   )
@@ -77,8 +75,11 @@ const BasicForm = ({
       {renderInputs}
       {onSubmit && (
         <div className='text-center'>
-          <Button color='primary' type='submit'>
-            {submitLabel}
+          <Button className='mr-1' color='accent' type='submit'>
+            {saveLabel}
+          </Button>
+          <Button color='danger' onClick={onCancel}>
+            {cancelLabel}
           </Button>
         </div>
       )}
@@ -115,7 +116,8 @@ BasicForm.defaultProps = {
       disabled: false,
     },
   ],
-  submitLabel: 'Submit',
+  saveLabel: 'Save',
+  cancelLabel: 'Cancel',
   method: 'post',
 }
 export default memo(BasicForm)
