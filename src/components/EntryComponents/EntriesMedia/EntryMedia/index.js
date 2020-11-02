@@ -1,18 +1,16 @@
-import React, { memo } from 'react'
+import React, { useMemo, memo } from 'react'
 import PropTypes from 'prop-types'
 import { EntryPropType } from 'redux/Entries/propTypes'
 import { Header, TagsContainer } from 'components'
 import { Col, Media } from 'reactstrap'
-import { GoToEntryDetail } from 'redux/router/actions'
+import { GetEntryDetailUrl } from 'redux/router/actions'
 import './styles.css'
 
 const EntryMedia = ({ entryId, title, tags, people, src, isVideo }) => {
-  const handleEntryOnClick = () => {
-    GoToEntryDetail(entryId)
-  }
+  const entryDetailRoute = useMemo(() => GetEntryDetailUrl(entryId), [entryId])
 
   return (
-    <Col xs={6} md={4} xl={3} className='EntryMediaContainer px-1' onClick={handleEntryOnClick}>
+    <Col tag='a' href={entryDetailRoute} xs={6} md={4} xl={3} className='EntryMediaContainer px-1'>
       <Header fontSize='1.25rem' className='EntryMedia Overflow' center={false}>
         {title}
       </Header>
