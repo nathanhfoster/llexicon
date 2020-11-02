@@ -1,20 +1,20 @@
-import React, { useRef, useMemo, useEffect, useCallback, lazy } from 'react'
-import PropTypes from 'prop-types'
-import { EntryPropTypes } from 'redux/Entries/propTypes'
-import { connect } from 'react-redux'
-import { Container, Row, Col } from 'reactstrap'
-import ResolveEntryConflictModal from './ResolveEntryConflictModal'
+import React, { useRef, useMemo, useEffect, useCallback, lazy } from "react"
+import PropTypes from "prop-types"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import { connect } from "react-redux"
+import { Container, Row, Col } from "reactstrap"
+import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
 import {
   GetUserEntryDetails,
   ClearEntry,
   SyncEntries,
   UpdateReduxEntries,
-} from 'redux/Entries/actions'
-import { SetCalendar } from 'redux/Calendar/actions'
-import PageNotFound from '../PageNotFound'
-import { isReadOnly } from 'redux/Entries/utils'
+} from "redux/Entries/actions"
+import { SetCalendar } from "redux/Calendar/actions"
+import PageNotFound from "../PageNotFound"
+import { isReadOnly } from "redux/Entries/utils"
 
-const Entry = lazy(() => import('../../components/EntryComponents/Entry'))
+const Entry = lazy(() => import("../../components/EntryComponents/Entry"))
 
 const mapStateToProps = (
   {
@@ -28,7 +28,7 @@ const mapStateToProps = (
       navigator: { serviceWorker },
     },
   },
-  { entryId },
+  { entryId }
 ) => ({
   userId: id,
   entry: items.concat(filteredItems).find(({ id }) => id == entryId),
@@ -58,12 +58,10 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  const readOnly = useMemo(() => isPending || isReadOnly(entryId, entry?.author, userId), [
-    isPending,
-    entryId,
-    entry?.author,
-    userId,
-  ])
+  const readOnly = useMemo(
+    () => isPending || isReadOnly(entryId, entry?.author, userId),
+    [isPending, entryId, entry?.author, userId]
+  )
 
   useEffect(() => {
     GetUserEntryDetails(entryId)
@@ -82,11 +80,11 @@ const EntryDetail = ({
   }, [entry])
 
   const handleOnChange = useCallback(
-    payload => {
+    (payload) => {
       if (readOnly || !entry) return
       UpdateReduxEntries(entry.id, payload)
     },
-    [entry?.id, readOnly],
+    [entry?.id, readOnly]
   )
 
   const handleOnSubmit = useCallback(() => {
@@ -94,10 +92,10 @@ const EntryDetail = ({
   }, [SyncEntries])
 
   return entry ? (
-    <Container className='Container'>
+    <Container className="Container">
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
-        <Col xs={12} className='p-0'>
+        <Col xs={12} className="p-0">
           <Entry
             showOptionsMenu
             readOnly={readOnly}
