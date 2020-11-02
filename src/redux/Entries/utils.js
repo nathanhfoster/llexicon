@@ -12,8 +12,7 @@ const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
 
 const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
 
-const getDate = ({ _lastUpdated, date_updated }) =>
-  getValidDate(_lastUpdated) || getValidDate(date_updated) || new Date(0)
+const getDate = ({ _lastUpdated, date_updated }) => _lastUpdated || date_updated
 
 const getMostRecent = (reduxData, newData) => {
   let newItem = { ...newData, ...reduxData }
