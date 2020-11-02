@@ -653,7 +653,7 @@ const shallowEquals = (a, b) => {
 const getValidDate = s => {
   const date = new Date(s)
 
-  if (typeof date === isType.STRING || !date.getTime()) {
+  if (typeof date === isType.STRING || date.getTime() !== date.getTime()) {
     return null
   }
 
