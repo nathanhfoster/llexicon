@@ -1,3 +1,4 @@
+import MomentJS from 'moment'
 import { objectToArray, stringMatch, getStringBytes, getValidDate } from 'utils'
 import { RouteMap } from 'redux/router/actions'
 
@@ -19,7 +20,7 @@ const getMostRecent = (reduxData, newData) => {
   const reduxDataLastUpdated = getDate(reduxData)
   const newDataLastUpdated = getDate(newData)
 
-  const overWriteWithNewData = newDataLastUpdated - reduxDataLastUpdated > 0
+  const overWriteWithNewData = MomentJS(newDataLastUpdated).isAfter(reduxDataLastUpdated)
 
   if (overWriteWithNewData) {
     delete reduxData._lastUpdated
