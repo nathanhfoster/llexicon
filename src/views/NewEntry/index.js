@@ -44,7 +44,7 @@ const NewEntry = ({
   const handleOnChange = useCallback(payload => {
     const { date_created_by_author } = payload
     if (date_created_by_author) {
-      SetCalendar({ activeDate: date_created_by_author })
+      SetCalendar({ activeDate: new Date(date_created_by_author) })
     } else {
       SetEditorState(payload)
     }
