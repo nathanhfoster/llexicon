@@ -9,6 +9,7 @@ const UserLocationButton = ({ panTo, UserLocation, WatchUserLocation, onChange }
   const watchId = useRef()
   const prevUserLocation = usePrevious(UserLocation)
 
+
   useEffect(() => {
     if (
       !prevUserLocation.latitude &&
@@ -21,6 +22,10 @@ const UserLocationButton = ({ panTo, UserLocation, WatchUserLocation, onChange }
         zoom: 16,
       })
     }
+  }, [UserLocation])
+
+
+  useEffect(() => {
     return () => {
       if (watchId.current) {
         watchId.current = WatchUserLocation(watchId.current)
