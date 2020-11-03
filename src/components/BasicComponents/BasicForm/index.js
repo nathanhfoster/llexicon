@@ -30,14 +30,27 @@ const BasicForm = ({
       onChange(event)
     } else {
       const {
-        target: { id, name, value, type, checked, files },
+        target: { id, name, value, type, checked, files, multiple, options },
       } = event
 
       setState(prevState =>
         prevState.map(input => {
           if (input.name === name) {
-            if (type === 'radio' || type === 'checkbox') {
+            if (type === 'radio' || type === 'checkbox' || type === 'switch') {
               return { ...input, checked }
+            } else if (
+              (type === 'select-one' || type === 'select-multiple') &&
+              options?.length > 0
+            ) {
+              let stateOptions = []
+
+              for (let i = 0, { length } = options; i < length; i++) {
+                const { value, selected } = options[i]
+
+                stateOptions.push({ value, selected })
+              }
+
+              return { ...input, options: stateOptions }
             } else if (type === 'file') {
               return { ...input, files }
             } else {

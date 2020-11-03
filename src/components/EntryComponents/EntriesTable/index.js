@@ -13,103 +13,11 @@ import {
   UpdateReduxEntries,
   SyncEntries,
 } from 'redux/Entries/actions'
-import { getTagObjectFromString } from 'redux/Entries/utils'
+
 import { DEFAULT_STATE_ENTRIES } from 'redux/Entries/reducer'
-import { ButtonExportEntries, ConfirmAction, BasicModal, BasicForm } from 'components'
+import { ButtonExportEntries, ConfirmAction, EditEntries } from 'components'
 import { ButtonGroup, Button } from 'reactstrap'
 import './styles.css'
-
-// 'email',
-// 'text',
-// 'password',
-// 'checkbox',
-// 'radio',
-// 'file',
-// 'select',
-
-const OPTIONS = new Array(5).fill().map((e, i) => ({ name: i + 1 }))
-
-const INPUTS = [
-  {
-    label: 'Should Delete',
-    name: '_shouldDelete',
-    type: 'checkbox',
-    placeholder: `Sould Delete..`,
-  },
-  {
-    label: 'Should Post',
-    name: '_shouldPost',
-    type: 'checkbox',
-    placeholder: `Should Post...`,
-  },
-  {
-    label: 'Is Public',
-    name: 'is_public',
-    type: 'checkbox',
-    placeholder: `Is Public...`,
-  },
-  {
-    label: 'Tags',
-    name: 'tags',
-    type: 'text',
-    placeholder: 'Document,Dream,Family,Friends,Quote,Vacation',
-  },
-  {
-    label: 'People',
-    name: 'people',
-    type: 'text',
-    placeholder: 'John Doe,Jane Doe',
-  },
-  {
-    label: 'Title',
-    name: 'title',
-    type: 'text',
-    placeholder: `Tile...`,
-  },
-  {
-    label: 'HTML',
-    name: 'html',
-    type: 'textarea',
-    placeholder: `Html...`,
-  },
-  {
-    label: 'Date Created',
-    name: 'date_created_by_author',
-    type: 'text',
-    placeholder: `Date Created...`,
-  },
-  {
-    label: 'View',
-    name: 'views',
-    type: 'text',
-    placeholder: `View...`,
-  },
-  {
-    label: 'Rating',
-    name: 'rating',
-    type: 'select',
-    placeholder: `Rating...`,
-    options: OPTIONS,
-  },
-  {
-    label: 'Address',
-    name: 'address',
-    type: 'text',
-    placeholder: `Address...`,
-  },
-  {
-    label: 'Latitude',
-    name: 'latitude',
-    type: 'text',
-    placeholder: `Latitude...`,
-  },
-  {
-    label: 'Longitude',
-    name: 'longitude',
-    type: 'text',
-    placeholder: `Longitude...`,
-  },
-]
 
 const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
   showOnlyPublic,
@@ -368,43 +276,6 @@ const EntriesTable = ({
     SyncEntries()
   }, [entriesSelected])
 
-  const [showEditModal, setShowEditModal] = useState(false)
-
-  const modalButton = useMemo(
-    () => (
-      <Button color='accent' onClick={() => setShowEditModal(true)}>
-        <i className='fas fa-edit mr-1' />
-        Edit
-      </Button>
-    ),
-    [],
-  )
-
-  const handleCancel = useCallback(() => setShowEditModal(false), [])
-
-  const handleEditEntries = useCallback(
-    formPayload => {
-      const getUpdatedEntry = e => ({
-        ...e,
-        ...cleanObject(formPayload),
-      })
-
-      const payload =
-        entriesSelected.length === 1
-          ? getUpdatedEntry(entriesSelected[0])
-          : entriesSelected.map(e => getUpdatedEntry(e))
-
-      entriesSelected.forEach(e => {
-        UpdateReduxEntries(e.id, payload)
-      })
-
-      setShowEditModal(false)
-
-      SyncEntries()
-    },
-    [entriesSelected],
-  )
-
   const confirmationButton = useMemo(
     () => (
       <Button color='danger'>
@@ -430,18 +301,7 @@ const EntriesTable = ({
     >
       <ButtonGroup className='BasicTableActions'>
         <ButtonExportEntries entries={entriesSelected} />
-
-        <BasicModal
-          show={showEditModal}
-          disabled={entriesSelected.length === 0}
-          title={`Edit ${
-            entriesSelected.length === 1 ? 'entry' : `these ${entriesSelected.length} entries`
-          }`}
-          button={modalButton}
-          footer={null}
-        >
-          <BasicForm onSubmit={handleEditEntries} onCancel={handleCancel} inputs={INPUTS} />
-        </BasicModal>
+        <EditEntries entries={entriesSelected} />
         <ConfirmAction
           disabled={entriesSelected.length === 0}
           message={`Are you sure you want delete  ${

@@ -1,11 +1,14 @@
 import React, { memo } from 'react'
-import {optionProps} from './propTypes'
+import { optionProps } from './propTypes'
 
-const BasicOption = ({ name }) => {
-  return <option>{name}</option>
+const BasicOption = ({ value, name, label, ...optionPros }) => {
+  return (
+    <option value={value || name || label} {...optionPros}>
+      {label || name || value}
+    </option>
+  )
 }
 
 export default memo(BasicOption)
-
 
 BasicOption.propTypes = optionProps

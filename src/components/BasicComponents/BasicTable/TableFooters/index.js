@@ -27,7 +27,11 @@ const TableFooters = ({ columns, sortedAndFilteredData, selectedData, actionMenu
   return (
     shouldRender && (
       <tfoot className='BasicTableFooter'>
-        {actionMenuCallback && <tr className='text-center'g>{selectedData.length}</tr>}
+        {actionMenuCallback && (
+          <tr>
+            <td>{selectedData.length}</td>
+          </tr>
+        )}
         <tr>{renderTableRows}</tr>
       </tfoot>
     )

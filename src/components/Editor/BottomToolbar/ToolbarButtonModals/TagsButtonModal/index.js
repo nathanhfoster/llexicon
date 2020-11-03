@@ -66,7 +66,7 @@ const TagsButtonModal = ({
   const splitTagsAsString = tagName.split(',')
   const lastTagAsString = splitTagsAsString[splitTagsAsString.length - 1]
 
-  let entryTags = useMemo(
+  const entryTags = useMemo(
     () =>
       show
         ? Object.values(

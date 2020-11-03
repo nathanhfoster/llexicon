@@ -1,10 +1,10 @@
-import React, { useCallback, lazy, memo } from 'react'
+import React, { useMemo, useCallback, lazy, memo } from 'react'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { InputGroup, Input, InputGroupAddon, InputGroupText, Button } from 'reactstrap'
-import { EntryOptionsMenu, ReactDatePicker } from '../../'
+import { BasicInput, EntryOptionsMenu } from '../../'
 import { DEFAULT_STATE_TEXT_EDITOR } from 'redux/TextEditor/reducer'
-import { getValidDate } from 'utils'
+import { getDateForDateTimeInputValue } from 'utils'
 import './styles.css'
 
 const Editor = lazy(() => import('../../Editor'))
@@ -23,8 +23,9 @@ const Entry = ({
   onChange,
   onSubmit,
 }) => {
-  const activeDate =
-    getValidDate(entry.date_created_by_author) || getValidDate(entry._lastUpdated) || new Date()
+  const activeDate = useMemo(() => getDateForDateTimeInputValue(entry.date_created_by_author), [
+    entry.date_created_by_author,
+  ])
 
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
@@ -32,10 +33,11 @@ const Entry = ({
 
   const handleTitleChange = useCallback(({ target: { value } }) => onChange({ title: value }), [])
 
-  const handleDateChange = useCallback(date_created_by_author => {
+  const handleDateChange = useCallback(({ target: { value } }) => {
+    console.log(value)
     onChange({
-      date_created_by_author,
-      _lastUpdated: date_created_by_author,
+      date_created_by_author: value,
+      _lastUpdated: value,
     })
   }, [])
 
@@ -63,9 +65,11 @@ const Entry = ({
         />
         <InputGroupAddon addonType='append'>
           <InputGroupText className='p-0'>
-            <ReactDatePicker
-              readOnly={readOnly}
-              selected={activeDate}
+            <BasicInput
+              type='datetime-local'
+              name='date_created_by_author'
+              disabled={readOnly}
+              value={activeDate}
               onChange={handleDateChange}
             />
           </InputGroupText>

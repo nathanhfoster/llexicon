@@ -80,12 +80,66 @@ a:hover {
 
 input[type='text'],
 input[type='email'],
-input[type='password'] {
+input[type='password'],
+input[type='date'],
+input[type='datetime-local'] {
   min-height: var(--inputHeight);
-  padding: 0.5rem !important;
+  /* padding: 0.5rem !important; */
   border: inherit;
   background: var(--quinaryColor) !important;
   color: var(--secondaryColor);
+}
+
+input[type='date'] {
+  position: relative;
+  padding: 10px;
+}
+/* input[type='date']::-webkit-calendar-picker-indicator {
+  color: transparent;
+  background: none;
+  z-index: 1;
+}
+
+input[type='date']:before {
+  color: transparent;
+  background: none;
+  display: block;
+  font-family: 'FontAwesome';
+  content: '\f073';
+  width: 15px;
+  height: 20px;
+  position: absolute;
+  top: calc(var(--inputHeight) / 4);
+  right: calc(var(--inputHeight) / 4);
+  color: #999;
+} */
+
+input[type='time']::-webkit-calendar-picker-indicator,
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+  filter: invert(64%) sepia(13%) saturate(0%) hue-rotate(184deg) brightness(92%) contrast(95%);
+}
+
+::-webkit-datetime-edit {
+  /* padding: 0.1em; */
+}
+::-webkit-datetime-edit-fields-wrapper {
+  background: var(--quinaryColor);
+}
+::-webkit-datetime-edit-text {
+  /* padding: 0.1em; */
+}
+::-webkit-datetime-edit-month-field {
+  color: var(--secondaryColor);
+}
+::-webkit-datetime-edit-day-field {
+  color: var(--secondaryColor);
+}
+::-webkit-datetime-edit-year-field {
+  color: var(--secondaryColor);
+}
+::-webkit-calendar-picker-indicator {
+  /* background: var(--quinaryColor); */
 }
 
 /* input[type="file"] {

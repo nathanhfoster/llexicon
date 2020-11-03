@@ -660,6 +660,9 @@ const getValidDate = s => {
   return date
 }
 
+const getDateForDateTimeInputValue = date =>
+  new Date(date.getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
+
 export {
   DOCUMENT_FORMAT,
   DOCUMENT_MIME_TYPE,
@@ -718,4 +721,5 @@ export {
   isAFunction,
   shallowEquals,
   getValidDate,
+  getDateForDateTimeInputValue,
 }
