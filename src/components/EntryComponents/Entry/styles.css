@@ -8,6 +8,10 @@
   margin: 0;
 }
 
+.EntryInput #date_created_by_author {
+  max-width: 50vw;
+}
+
 .EntryInputTitle .form-control,
 .EntryInputTitle .input-group-text {
   box-shadow: none;
