@@ -35,9 +35,11 @@ const Entry = ({
 
   const handleDateChange = useCallback(({ target: { value } }) => {
     // console.log('value: ', value)
-    onChange({
-      date_created_by_author: value,
-    })
+    if (value) {
+      onChange({
+        date_created_by_author: value,
+      })
+    }
   }, [])
 
   return (
