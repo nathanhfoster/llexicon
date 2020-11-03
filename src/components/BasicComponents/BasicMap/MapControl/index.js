@@ -1,8 +1,8 @@
-import React, { Component, cloneElement } from "react"
-import PropTypes from "prop-types"
-import { render } from "react-dom"
-import deepEquals from "../../../../utils/deepEquals"
-import "./styles.css"
+import React, { Component, cloneElement } from 'react'
+import PropTypes from 'prop-types'
+import { render } from 'react-dom'
+import deepEquals from '../../../../utils/deepEquals'
+import './styles.css'
 
 class MapControl extends Component {
   static propTypes = {
@@ -13,12 +13,13 @@ class MapControl extends Component {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }
 
-  static defaultProps = { width: "100%" }
+  static defaultProps = { width: '100%' }
 
   shouldComponentUpdate(nextProps, nextState) {
     const mapChanged = !this.props.map && nextProps.map
     const mapApiChanged = !this.props.mapApi && nextProps.mapApi
     const childrenChanged = !deepEquals(this.props.children, nextProps.children)
+
     return mapChanged || mapApiChanged || childrenChanged
   }
 
@@ -39,7 +40,7 @@ class MapControl extends Component {
 
   renderChildren = (children, props) =>
     Array.isArray(children)
-      ? children.map((child) => cloneElement(child, { ...props }))
+      ? children.map(child => cloneElement(child, { ...props }))
       : cloneElement(children, { ...props })
 
   _render() {
@@ -49,24 +50,22 @@ class MapControl extends Component {
 
     render(
       <div
-        className="mapControl"
+        className='mapControl'
         style={{ width }}
-        ref={(el) => {
+        ref={el => {
           if (!this.renderedOnce) {
             this.el = el
             props.map.controls[controlPosition].push(el)
           } else if (el && this.el && el !== this.el) {
-            this.el.innerHTML = ""
-            ;[].slice
-              .call(el.childNodes)
-              .forEach((child) => this.el.appendChild(child))
+            this.el.innerHTML = ''
+            ;[].slice.call(el.childNodes).forEach(child => this.el.appendChild(child))
           }
           this.renderedOnce = true
         }}
       >
         {this.renderChildren(children, { ...props })}
       </div>,
-      document.createElement("div")
+      document.createElement('div'),
     )
   }
 

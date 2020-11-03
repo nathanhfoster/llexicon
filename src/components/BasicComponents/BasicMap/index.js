@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Fragment, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import GoogleMapReact from 'google-map-react'
@@ -27,6 +27,7 @@ const mapStateToProps = ({ Map: { bounds, center, zoom }, User: { location } }) 
 const mapDispatchToProps = { SetMapBoundsCenterZoom, WatchUserLocation }
 
 class BasicMap extends PureComponent {
+  state = {}
   static propTypes = {
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -106,63 +107,6 @@ class BasicMap extends PureComponent {
     SetMapBoundsCenterZoom(boundsCenterZoom)
   }
 
-  getMapControls = () => {
-    const { onChange, UserLocation, WatchUserLocation } = this.props
-
-    const mapControls = [
-      {
-        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
-        props: { width: 'calc(100% - 48px)', onChange },
-        items: [
-          {
-            Component: MapSearchBox,
-          },
-        ],
-      },
-      {
-        controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
-        props: {
-          width: 'auto',
-          UserLocation,
-          WatchUserLocation,
-          panTo: this.panTo,
-        },
-        items: [
-          {
-            Component: UserLocationButton,
-          },
-        ],
-      },
-    ]
-
-    return mapControls
-  }
-
-  renderControls = controls => {
-    const { mapInstance, mapApi } = this.state
-    if (!mapInstance) return null
-    return controls.map((control, i) => {
-      const { controlPosition, items, props } = control
-      const handlePanTo = boundsCenterZoom => this.panTo(boundsCenterZoom)
-
-      return (
-        <MapControl
-          key={i}
-          map={mapInstance}
-          mapApi={mapApi}
-          controlPosition={controlPosition}
-          panTo={handlePanTo}
-          {...props}
-        >
-          {items.map((control, j) => {
-            const { Component, ...props } = control
-            return <Component {...props} key={j} />
-          })}
-        </MapControl>
-      )
-    })
-  }
-
   renderMarkerClusters = markerClusters => {
     const { onChange, getAddressOnMarkerClick, zoom } = this.props
     const { mapInstance } = this.state
@@ -209,9 +153,7 @@ class BasicMap extends PureComponent {
       getAddressOnMarkerClick,
       UserLocation,
     } = this.props
-    const { entry, markerClusters } = this.state
-
-    const mapControls = this.getMapControls()
+    const { entry, markerClusters, mapInstance, mapApi } = this.state
 
     const shouldRenderEntryLocation = entry.latitude && entry.longitude
 
@@ -254,7 +196,30 @@ class BasicMap extends PureComponent {
             />
           )}
           {this.renderMarkerClusters(markerClusters)}
-          {this.renderControls(mapControls)}
+          {mapInstance && (
+            <Fragment>
+              <MapControl
+                map={mapInstance}
+                mapApi={mapApi}
+                controlPosition={GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT}
+                panTo={this.panTo}
+              >
+                <MapSearchBox width='calc(100% - 48px)' onChange={onChange} />
+              </MapControl>
+              <MapControl
+                width='auto'
+                map={mapInstance}
+                mapApi={mapApi}
+                controlPosition={GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM}
+                panTo={this.panTo}
+              >
+                <UserLocationButton
+                  UserLocation={UserLocation}
+                  WatchUserLocation={WatchUserLocation}
+                />
+              </MapControl>
+            </Fragment>
+          )}
         </GoogleMapReact>
       </div>
     )

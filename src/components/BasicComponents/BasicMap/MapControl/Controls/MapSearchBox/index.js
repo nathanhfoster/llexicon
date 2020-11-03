@@ -66,9 +66,7 @@ const MapSearchBox = ({ map, mapApi, onChange, panTo, $geoService, $onMouseAllow
       address: formatted_address,
     })
 
-    const center = Object.values(newPosition)
-
-    panTo({ center })
+    panTo({ center: newPosition })
 
     //setMapCenterBoundsZoom({ center, zoom })
 
