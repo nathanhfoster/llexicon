@@ -37,6 +37,7 @@ const BasicInput = ({
   multiple,
   min,
   max,
+  step,
   ...restOfProps
 }) => {
   const isCheckOrRadio = type === 'checkbox' || type === 'radio'
@@ -71,6 +72,7 @@ const BasicInput = ({
       min,
       max,
       multiple,
+      step,
     }
 
     switch (type) {
@@ -96,6 +98,7 @@ const BasicInput = ({
     min,
     max,
     multiple,
+    step,
     renderOptions,
   ])
 

@@ -74,6 +74,7 @@ const EditEntries = ({
       const getUpdatedEntry = e => ({
         ...e,
         ...entryFieldsToUpdate,
+        _lastUpdated: new Date(),
       })
 
       const payload =
@@ -87,7 +88,7 @@ const EditEntries = ({
 
       SyncEntries()
     },
-    [SyncEntries, UpdateReduxEntries, entries],
+    [entries],
   )
 
   const handleCancel = useCallback(() => setShowEditModal(false), [])

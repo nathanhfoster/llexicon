@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 import ReactGA from 'react-ga'
+import MomentJS from 'moment'
 
 const DOCUMENT_FORMAT = {
   xml: 'XML',
@@ -660,8 +661,14 @@ const getValidDate = s => {
   return date
 }
 
-const getDateForDateTimeInputValue = date =>
-  new Date(date.getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
+const getLocalDateTimeNoSeconds = (date, displaySeconds = false) => {
+  // 2020-11-10T19:38
+  return MomentJS(date).format(`YYYY-MM-DDTHH:mm${displaySeconds ? ':ss' : ''}`)
+
+  // return new Date(date.getTime(), + new Date().getTimezoneOffset() * -60 * 1000)
+  //   .toISOString()
+  //   .slice(0, 19)
+}
 
 export {
   DOCUMENT_FORMAT,
@@ -721,5 +728,5 @@ export {
   isAFunction,
   shallowEquals,
   getValidDate,
-  getDateForDateTimeInputValue,
+  getLocalDateTimeNoSeconds,
 }

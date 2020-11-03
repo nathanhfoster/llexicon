@@ -4,7 +4,7 @@ import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { InputGroup, Input, InputGroupAddon, InputGroupText, Button } from 'reactstrap'
 import { BasicInput, EntryOptionsMenu } from '../../'
 import { DEFAULT_STATE_TEXT_EDITOR } from 'redux/TextEditor/reducer'
-import { getDateForDateTimeInputValue } from 'utils'
+import { getLocalDateTimeNoSeconds } from 'utils'
 import './styles.css'
 
 const Editor = lazy(() => import('../../Editor'))
@@ -23,7 +23,7 @@ const Entry = ({
   onChange,
   onSubmit,
 }) => {
-  const activeDate = useMemo(() => getDateForDateTimeInputValue(entry.date_created_by_author), [
+  const activeDate = useMemo(() => getLocalDateTimeNoSeconds(entry.date_created_by_author), [
     entry.date_created_by_author,
   ])
 
@@ -34,10 +34,9 @@ const Entry = ({
   const handleTitleChange = useCallback(({ target: { value } }) => onChange({ title: value }), [])
 
   const handleDateChange = useCallback(({ target: { value } }) => {
-    console.log(value)
+    // console.log('value: ', value)
     onChange({
       date_created_by_author: value,
-      _lastUpdated: value,
     })
   }, [])
 
@@ -67,6 +66,7 @@ const Entry = ({
           <InputGroupText className='p-0'>
             <BasicInput
               type='datetime-local'
+              step='0'
               name='date_created_by_author'
               disabled={readOnly}
               value={activeDate}

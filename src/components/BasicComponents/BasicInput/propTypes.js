@@ -48,6 +48,7 @@ const InputProps = {
   multiline: PropTypes.bool,
   row: PropTypes.string,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  step: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 }
 
 const BasicInputsProps = PropTypes.shape(InputProps)
