@@ -133,4 +133,4 @@ const Sync = dispatchActions => async dispatch => {
     })
 }
 
-export { Axios, AxiosOffline, AxiosForm, AxiosData, Sync }
+export { isNotLoggedInAxios, Axios, AxiosOffline, AxiosForm, AxiosData, Sync }

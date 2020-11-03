@@ -19,6 +19,7 @@ import {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   SearchEntriesFilter,
+  DeleteEntryFileFromRedux,
 } from './redux'
 import {
   CreateEntryTag,
@@ -35,7 +36,6 @@ import {
   DeleteEntry,
   SearchUserEntries,
   SyncEntries,
-  DeleteEntryFileFromRedux,
   DeleteEntryFile,
 } from './api'
 
@@ -61,6 +61,7 @@ export {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   SearchEntriesFilter,
+  DeleteEntryFileFromRedux,
   // API
   CreateEntryTag,
   GetUserEntryTags,
@@ -76,6 +77,5 @@ export {
   DeleteEntry,
   SearchUserEntries,
   SyncEntries,
-  DeleteEntryFileFromRedux,
   DeleteEntryFile,
 }

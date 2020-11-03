@@ -72,11 +72,21 @@ const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps
 
   const toolBarImagesWithCallback = useMemo(
     () =>
-      React.Children.map(toolbarButtons, child =>
-        React.cloneElement(child, {
-          onClick: () => child.props.onClick(state),
-        }),
-      ),
+      React.Children.map(toolbarButtons, child => {
+        const { onClick, onConfirm } = child.props
+        const childProps = onClick
+          ? {
+              onClick: () => {
+                onClick(state)
+              },
+            }
+          : {
+              onConfirm: () => {
+                onConfirm(state)
+              },
+            }
+        return React.cloneElement(child, childProps)
+      }),
     [state, toolbarButtons],
   )
 

@@ -1,7 +1,8 @@
-import { Axios, AxiosForm, Sync } from '../../Actions'
-import { SetApiResponseStatus, SetAlert } from '../../Alerts/actions'
-import { RouterPush } from '../../router/actions'
-import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from '../../../utils'
+import { Axios, AxiosForm, isNotLoggedInAxios } from 'redux/Actions'
+import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils'
+import { SetApiResponseStatus, SetAlert } from 'redux/Alerts/actions'
+import { RouterPush } from 'redux/router/actions'
+import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from 'utils'
 import { getTagStringFromObject } from '../utils'
 import FormData from 'form-data'
 import qs from 'qs'
@@ -19,6 +20,7 @@ import {
   SetEntriesPeople,
   SetSearchEntries,
   SearchEntriesFilter,
+  DeleteEntryFileFromRedux,
 } from './redux'
 
 const GetUserEntryTags = () => (dispatch, getState) => {
@@ -121,6 +123,10 @@ const GetEntry = (url, id) => (dispatch, getState) => {
 
   if (entry) {
     dispatch(SetEntry(entry))
+  }
+
+  if (id.includes(BASE_JOURNAL_ENTRY_ID)) {
+    return isNotLoggedInAxios()
   }
 
   return Axios()
@@ -324,29 +330,10 @@ const SearchUserEntries = search => (dispatch, getState) => {
       })
       return data
     })
-    .catch(async e => {
+    .catch(e => {
       dispatch(SearchEntriesFilter(search, []))
       dispatch(SetEntriesError(e))
     })
-}
-
-const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
-  const { items, filteredItems } = getState().Entries
-  const entryToUpdate = items.concat(filteredItems).find(entry => entry.id == entry_id)
-
-  if (entryToUpdate) {
-    let { EntryFiles } = entryToUpdate
-    const indexToUpdate = EntryFiles.findIndex(file => file.id === id)
-    console.log(indexToUpdate)
-    if (indexToUpdate) {
-      delete EntryFiles[indexToUpdate]
-      const payload = {
-        EntryFiles,
-        _shouldDelete: true,
-      }
-      dispatch(UpdateReduxEntries(entry_id, payload, null))
-    }
-  }
 }
 
 const DeleteEntryFile = (id, entry_id) => dispatch =>
@@ -354,9 +341,31 @@ const DeleteEntryFile = (id, entry_id) => dispatch =>
     .delete(`/files/${id}/`)
     .then(res => {
       dispatch(DeleteEntryFileFromRedux(id, entry_id))
+      dispatch(
+        SetAlert({
+          title: 'Deleted',
+          message: 'Entry File',
+        }),
+      )
       return res
     })
-    .catch(e => console.log(JSON.parse(JSON.stringify(e))))
+    .catch(e => {
+      const { response } = e
+      if (response) {
+        const { status } = response
+        if (status === 401 || status === 404) {
+          dispatch(DeleteEntryFileFromRedux(id, entry_id))
+          dispatch(
+            SetAlert({
+              title: 'Deleted',
+              message: 'Entry File',
+            }),
+          )
+        }
+
+        dispatch(SetEntriesError(e))
+      }
+    })
 
 const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
@@ -469,6 +478,5 @@ export {
   DeleteEntry,
   SearchUserEntries,
   SyncEntries,
-  DeleteEntryFileFromRedux,
   DeleteEntryFile,
 }

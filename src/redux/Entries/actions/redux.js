@@ -62,13 +62,14 @@ const PostReduxEntry = entry => dispatch => {
   )
 }
 
-const UpdateReduxEntries = (id, entries, _lastUpdated = new Date()) => {
+const UpdateReduxEntries = (id, entryOrEntries, _lastUpdated = new Date()) => {
   let payload
-  if (Array.isArray(entries)) {
-    payload = entries
+  if (Array.isArray(entryOrEntries)) {
+    payload = entryOrEntries
   } else {
-    payload = { ...entries, _lastUpdated }
+    payload = { ...entryOrEntries, _lastUpdated }
   }
+
   return {
     type: ENTRIES_UPDATE,
     id,
@@ -133,6 +134,18 @@ const SearchEntriesFilter = (search, payload) => ({
   payload,
 })
 
+const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
+  const { items, filteredItems } = getState().Entries
+  const entryToUpdate = items.concat(filteredItems).find(({ id }) => id == entry_id)
+
+  if (entryToUpdate) {
+    const payload = {
+      EntryFiles: entryToUpdate.EntryFiles.filter(file => file.id !== id),
+    }
+    dispatch(UpdateReduxEntries(entry_id, payload))
+  }
+}
+
 export {
   PendingEntries,
   PendingEntry,
@@ -155,4 +168,5 @@ export {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   SearchEntriesFilter,
+  DeleteEntryFileFromRedux,
 }

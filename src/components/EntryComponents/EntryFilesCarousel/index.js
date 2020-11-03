@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useCallback } from 'react'
+import React, { useContext, useMemo, useCallback, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { BasicImageCarousel } from '../..'
@@ -7,6 +7,7 @@ import { EntryFilesProps } from 'redux/Entries/propTypes'
 import { removeAttributeDuplicates } from 'utils'
 import { DeleteEntryFile } from 'redux/Entries/actions'
 import { EditorConsumer } from '../../Editor'
+import { ConfirmAction } from 'components'
 import './styles.css'
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
@@ -34,7 +35,7 @@ const EntryFilesCarousel = ({
         .concat(filteredItems)
         .map(item => item.EntryFiles)
         .flat(1)
-        .sort((a, b) => new Date(b.date_updated) - new Date(a.date_updated)),
+        .sort((a, b) => new Date(b?.date_updated) - new Date(a?.date_updated)),
     [items, filteredItems],
   )
 
@@ -89,9 +90,16 @@ const EntryFilesCarousel = ({
       <Button color='accent' onClick={handleImageClick}>
         Insert Image
       </Button>,
-      <Button color='danger' onClick={handleImageDelete}>
-        Delete Image
-      </Button>,
+      <ConfirmAction
+        message='Are you sure you want to delete this Entry File?'
+        onConfirm={handleImageDelete}
+        button={
+          <Button color='danger'>
+            <i className='fas fa-trash-alt mr-1' />
+            Delete Image
+          </Button>
+        }
+      />,
     ],
     [],
   )
