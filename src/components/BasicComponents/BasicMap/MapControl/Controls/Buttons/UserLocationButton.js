@@ -34,7 +34,6 @@ const UserLocationButton = ({ panTo, UserLocation, WatchUserLocation }) => {
   }, [WatchUserLocation])
 
   const handleOnClick = () => {
-    console.log('handleOnClick')
     if (!watchId.current) {
       watchId.current = WatchUserLocation()
     }
