@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo, memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import { Header } from 'components'
 import { Col } from 'reactstrap'
 import EntryCard from './EntryCard'
 import { useScrollable } from 'hooks'
@@ -24,23 +25,23 @@ const EntryCards = ({ className, entries, minimal, containerRef }) => {
     }
   }, [containerRef, handleOnScroll])
 
-  const viewableEntries = useMemo(() => entries.slice(beginOffset, endOffset), [
-    entries,
-    beginOffset,
-    endOffset,
-  ])
-
   const renderEntryCards = useMemo(
     () =>
-      viewableEntries.map(entry => (
+      entries.map(entry => (
         <Col key={entry.id} xs={6} md={4} xl={3} className={className}>
           <EntryCard {...entry} minimal={minimal} />
         </Col>
       )),
-    [className, minimal, viewableEntries],
+    [className, minimal, entries],
   )
 
-  return renderEntryCards
+  const renderViewableEntryCards = useMemo(() => renderEntryCards.slice(beginOffset, endOffset), [
+    renderEntryCards,
+    beginOffset,
+    endOffset,
+  ])
+
+  return renderViewableEntryCards.length > 0 ? renderViewableEntryCards :<Header>No Entries</Header>
 }
 
 EntryCards.propTypes = {
