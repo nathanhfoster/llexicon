@@ -9,15 +9,6 @@ const MapSearchBox = ({ map, mapApi, onChange, panTo, $geoService, $onMouseAllow
   let searchInputRef = useRef()
 
   useEffect(() => {
-    searchBoxRef.current = new mapApi.places.SearchBox(searchInputRef.current)
-    searchBoxRef.current.addListener('places_changed', handlePlacesChange)
-    searchBoxRef.current.bindTo('bounds', map)
-    return () => {
-      mapApi.event.clearInstanceListeners(searchInputRef.current)
-    }
-  }, [])
-
-  useEffect(() => {
     searchInputRef.current.focus()
   }, [searchInputRef])
 
@@ -100,6 +91,17 @@ const MapSearchBox = ({ map, mapApi, onChange, panTo, $geoService, $onMouseAllow
   }
 
   const selectSearchBox = ({ target }) => target.select()
+
+  useEffect(() => {
+    if (mapApi) {
+      searchBoxRef.current = new mapApi.places.SearchBox(searchInputRef.current)
+      searchBoxRef.current.addListener('places_changed', handlePlacesChange)
+      searchBoxRef.current.bindTo('bounds', map)
+      return () => {
+        mapApi.event.clearInstanceListeners(searchInputRef.current)
+      }
+    }
+  }, [handlePlacesChange, map, mapApi])
 
   return (
     <div className='mapBoxSearchBoxContainer'>

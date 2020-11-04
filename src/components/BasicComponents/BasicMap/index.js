@@ -144,18 +144,18 @@ const BasicMap = ({
   const shouldRenderUserLocation =
     renderUserLocation && UserLocation.latitude && UserLocation.longitude
 
-  useMapControl(
-    mapInstance,
-    GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
-    <MapSearchBox map={mapInstance} mapApi={mapApi} panTo={panTo} onChange={onChange} />,
-    'calc(100% - 48px)',
-  )
+  useMapControl({
+    map: mapInstance,
+    controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
+    children: <MapSearchBox mapApi={mapApi} panTo={panTo} onChange={onChange} />,
+    width: 'calc(100% - 48px)',
+  })
 
-  useMapControl(
-    mapInstance,
-    GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
-    <UserLocationButton panTo={panTo} SetUserLocation={SetUserLocation} />,
-  )
+  useMapControl({
+    map: mapInstance,
+    controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
+    children: <UserLocationButton panTo={panTo} SetUserLocation={SetUserLocation} />,
+  })
 
   return (
     <div style={{ height, width }}>
