@@ -84,7 +84,7 @@ input[type='password'],
 input[type='date'],
 input[type='datetime-local'] {
   min-height: var(--inputHeight);
-  /* padding: 0.5rem !important; */
+  padding: 0.5rem !important;
   border: inherit;
   background: var(--quinaryColor) !important;
   color: var(--secondaryColor);
