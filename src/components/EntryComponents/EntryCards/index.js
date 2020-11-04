@@ -41,7 +41,11 @@ const EntryCards = ({ className, entries, minimal, containerRef }) => {
     endOffset,
   ])
 
-  return renderViewableEntryCards.length > 0 ? renderViewableEntryCards :<Header>No Entries</Header>
+  return renderViewableEntryCards.length > 0 ? (
+    renderViewableEntryCards
+  ) : (
+    <Header>No Entries</Header>
+  )
 }
 
 EntryCards.propTypes = {

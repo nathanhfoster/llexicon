@@ -31,67 +31,68 @@ const EntriesMedia = ({ entries }) => {
   const handleOnScroll = useScrollable({ handleReachedBottom })
 
   const renderEntryMedia = useMemo(() => {
-    return entries.reduce(
-      (acc, { id: entryId, title, html, tags, people, EntryFiles }, i) => {
-        const defaultProps = { entryId, title, tags, people }
+    return entries.reduce((acc, { id: entryId, title, html, tags, people, EntryFiles }, i) => {
+      const defaultProps = { entryId, title, tags, people }
 
-        if (EntryFiles?.length > 0) {
-          EntryFiles.forEach(({ id, url, entry_id }, j) => {
-            acc.push(
-              <EntryMedia key={`File-${entryId}-${id}-${i}-${j}`} {...defaultProps} src={url} />,
-            )
-          })
+      if (EntryFiles?.length > 0) {
+        EntryFiles.forEach(({ id, url, entry_id }, j) => {
+          acc.push(
+            <EntryMedia key={`File-${entryId}-${id}-${i}-${j}`} {...defaultProps} src={url} />,
+          )
+        })
+      }
+
+      if (I_FRAME_REGEX.test(html)) {
+        I_FRAME_REGEX.lastIndex = 0
+        let iterator
+        while ((iterator = I_FRAME_REGEX.exec(html))) {
+          const { 0: src, groups, index, input, length } = iterator
+          const youTubeVideoId = src?.match(YOUTUBE_VIDEO_ID)?.pop()
+          const thumbnailSrc = getYouTubeThumnail(youTubeVideoId)
+          acc.push(
+            <EntryMedia
+              key={`iFrame-${entryId}-${i}-${I_FRAME_REGEX.lastIndex}`}
+              {...defaultProps}
+              isVideo={!thumbnailSrc}
+              src={thumbnailSrc || src}
+            />,
+          )
         }
+      }
 
-        if (I_FRAME_REGEX.test(html)) {
-          I_FRAME_REGEX.lastIndex = 0
-          let iterator
-          while ((iterator = I_FRAME_REGEX.exec(html))) {
-            const { 0: src, groups, index, input, length } = iterator
-            const youTubeVideoId = src?.match(YOUTUBE_VIDEO_ID)?.pop()
-            const thumbnailSrc = getYouTubeThumnail(youTubeVideoId)
-            acc.push(
-              <EntryMedia
-                key={`iFrame-${entryId}-${i}-${I_FRAME_REGEX.lastIndex}`}
-                {...defaultProps}
-                isVideo={!thumbnailSrc}
-                src={thumbnailSrc || src}
-              />,
-            )
-          }
+      if (IMAGE_REGEX.test(html)) {
+        IMAGE_REGEX.lastIndex = 0
+        let iterator
+        while ((iterator = IMAGE_REGEX.exec(html))) {
+          const { 0: image, 1: src, groups, index, input, length } = iterator
+          acc.push(
+            <EntryMedia
+              key={`Image-${entryId}-${i}-${IMAGE_REGEX.lastIndex}`}
+              {...defaultProps}
+              src={src}
+            />,
+          )
         }
+      }
 
-        if (IMAGE_REGEX.test(html)) {
-          IMAGE_REGEX.lastIndex = 0
-          let iterator
-          while ((iterator = IMAGE_REGEX.exec(html))) {
-            const { 0: image, 1: src, groups, index, input, length } = iterator
-            acc.push(
-              <EntryMedia
-                key={`Image-${entryId}-${i}-${IMAGE_REGEX.lastIndex}`}
-                {...defaultProps}
-                src={src}
-              />,
-            )
-          }
-        }
-
-        return acc
-      },
-      [],
-    )
+      return acc
+    }, [])
   }, [entries])
 
   const renderViewableEntriesMedia = useMemo(() => renderEntryMedia.slice(beginOffset, endOffset), [
-      renderEntryMedia,
-      beginOffset,
-      endOffset,
-    ])
+    renderEntryMedia,
+    beginOffset,
+    endOffset,
+  ])
 
   return (
     <Container>
       <div className='EntriesMediaContainer Container row' onScroll={handleOnScroll}>
-        {renderViewableEntriesMedia.length > 0 ? renderViewableEntriesMedia : <Header>No Media</Header>}
+        {renderViewableEntriesMedia.length > 0 ? (
+          renderViewableEntriesMedia
+        ) : (
+          <Header>No Media</Header>
+        )}
       </div>
     </Container>
   )
