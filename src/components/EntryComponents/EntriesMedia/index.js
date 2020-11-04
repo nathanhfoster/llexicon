@@ -30,14 +30,8 @@ const EntriesMedia = ({ entries }) => {
 
   const handleOnScroll = useScrollable({ handleReachedBottom })
 
-  const viewableEntries = useMemo(() => entries.slice(beginOffset, endOffset), [
-    entries,
-    beginOffset,
-    endOffset,
-  ])
-
   const renderEntryMedia = useMemo(() => {
-    return viewableEntries.reduce(
+    return entries.reduce(
       (acc, { id: entryId, title, html, tags, people, EntryFiles }, i) => {
         const defaultProps = { entryId, title, tags, people }
 
@@ -86,12 +80,18 @@ const EntriesMedia = ({ entries }) => {
       },
       [],
     )
-  }, [viewableEntries])
+  }, [entries])
+
+  const renderViewableEntriesMedia = useMemo(() => renderEntryMedia.slice(beginOffset, endOffset), [
+      renderEntryMedia,
+      beginOffset,
+      endOffset,
+    ])
 
   return (
     <Container>
       <div className='EntriesMediaContainer Container row' onScroll={handleOnScroll}>
-        {renderEntryMedia.length > 0 ? renderEntryMedia : <Header>No Media</Header>}
+        {renderViewableEntriesMedia.length > 0 ? renderViewableEntriesMedia : <Header>No Media</Header>}
       </div>
     </Container>
   )
