@@ -1,19 +1,18 @@
-import React, { Fragment, PureComponent } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import GoogleMapReact from 'google-map-react'
 import MarkerCluster from './MarkerCluster'
 import Marker from './Marker'
 import { SetMapBoundsCenterZoom } from 'redux/Map/actions'
-import { WatchUserLocation } from 'redux/User/actions'
-
-import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from './constants'
-import MapControl from './MapControl'
-import MapSearchBox from './MapControl/Controls/MapSearchBox'
-import UserLocationButton from './MapControl/Controls/Buttons/UserLocationButton'
+import { SetUserLocation } from 'redux/User/actions'
+import useMapControl from './Controls/useMapControl'
+import MapSearchBox from './Controls/MapSearchBox'
+import UserLocationButton from './Controls/Buttons/UserLocationButton'
 import createClusters from './functions/createClusters'
 import formatLocations from './functions/formatLocations'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
+import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from './constants'
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
@@ -24,92 +23,91 @@ const mapStateToProps = ({ Map: { bounds, center, zoom }, User: { location } }) 
   UserLocation: location,
 })
 
-const mapDispatchToProps = { SetMapBoundsCenterZoom, WatchUserLocation }
+const mapDispatchToProps = { SetMapBoundsCenterZoom, SetUserLocation }
 
-class BasicMap extends PureComponent {
-  state = {}
-  static propTypes = {
-    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    SetMapBoundsCenterZoom: PropTypes.func.isRequired,
-    WatchUserLocation: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    locations: PropTypes.arrayOf(PropTypes.object),
-    getAddressOnMarkerClick: PropTypes.bool.isRequired,
-    entry: EntryPropTypes,
-  }
+const BasicMap = ({
+  entry,
+  center,
+  bounds,
+  locations,
+  zoom,
+  height,
+  width,
+  options,
+  onChange,
+  renderUserLocation,
+  getAddressOnMarkerClick,
+  UserLocation,
+  SetUserLocation,
+  SetMapBoundsCenterZoom,
+}) => {
+  const [state, setState] = useState({
+    mapInstance: null,
+    mapApi: null,
+    mapRef: null,
+  })
 
-  static defaultProps = {
-    renderUserLocation: true,
-    height: 500,
-    width: '100%',
-    options: DEFAULT_MAP_OPTIONS,
-    locations: [],
-    getAddressOnMarkerClick: false,
-    entry: {},
-  }
+  const { mapInstance, mapApi, mapRef } = state
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { bounds, zoom, locations } = nextProps
+  const formattedLocations = useMemo(() => formatLocations(locations), [locations])
 
-    let { center, entry } = nextProps
+  center.lat = parseFloat(center.lat)
+  center.lng = parseFloat(center.lng)
 
-    let markerClusters = []
-
-    const formattedLocations = formatLocations(locations)
-
-    center.lat = parseFloat(center.lat)
-    center.lng = parseFloat(center.lng)
-
+  const markerClusters = useMemo(() => {
+    let clusters = []
     if (center && zoom && bounds) {
-      markerClusters = createClusters(formattedLocations, {
+      clusters = createClusters(formattedLocations, {
         center,
         bounds,
         zoom,
       })
     }
 
-    if (entry.latitude && entry.longitude) {
-      // Remove possible trailing zeroes
-      entry.latitude = parseFloat(entry.latitude.toString())
-      entry.longitude = parseFloat(entry.longitude.toString())
+    return clusters
+  }, [bounds, center, formattedLocations, zoom])
+
+  if (entry.latitude && entry.longitude) {
+    // Remove possible trailing zeroes
+    entry.latitude = parseFloat(entry.latitude.toString())
+    entry.longitude = parseFloat(entry.longitude.toString())
+  }
+
+  const onGoogleApiLoaded = useCallback(({ map, maps, ref }) => {
+    if (!mapInstance) {
+      setState(prevState => ({
+        ...prevState,
+        mapInstance: map,
+        mapApi: maps,
+        mapRef: ref,
+      }))
     }
+  }, [])
 
-    return {
-      entry,
-      markerClusters,
-      formattedLocations,
-    }
-  }
+  const panTo = useCallback(
+    boundsCenterZoom => {
+      if (
+        boundsCenterZoom.bounds &&
+        !(boundsCenterZoom.bounds.ne.lat && boundsCenterZoom.bounds.sw.lat)
+      ) {
+        delete boundsCenterZoom.bounds
+      }
 
-  onGoogleApiLoaded = ({ map, maps }) => {
-    this.setState({
-      mapInstance: map,
-      mapApi: maps,
-    })
-  }
+      SetMapBoundsCenterZoom(boundsCenterZoom)
+    },
+    [SetMapBoundsCenterZoom],
+  )
 
-  handleChange = ({ bounds, center, marginBounds, size, zoom }) => {
-    const boundsCenterZoom = { center, zoom, bounds }
+  const handleChange = useCallback(
+    ({ bounds, center, marginBounds, size, zoom }) => {
+      const boundsCenterZoom = { center, zoom, bounds }
 
-    this.panTo(boundsCenterZoom)
-  }
+      panTo(boundsCenterZoom)
+    },
+    [panTo],
+  )
 
-  panTo = boundsCenterZoom => {
-    const { SetMapBoundsCenterZoom } = this.props
-    if (
-      boundsCenterZoom.bounds &&
-      !(boundsCenterZoom.bounds.ne.lat && boundsCenterZoom.bounds.sw.lat)
-    ) {
-      delete boundsCenterZoom.bounds
-    }
-
-    SetMapBoundsCenterZoom(boundsCenterZoom)
-  }
-
-  renderMarkerClusters = markerClusters => {
-    const { onChange, getAddressOnMarkerClick, zoom } = this.props
-    const { mapInstance } = this.state
+  const renderMarkerClusters = useMemo(() => {
     if (!mapInstance) {
       return null
     }
@@ -139,90 +137,86 @@ class BasicMap extends PureComponent {
         )
       }
     })
-  }
+  }, [getAddressOnMarkerClick, mapInstance, markerClusters, onChange, zoom])
 
-  render() {
-    const {
-      center,
-      zoom,
-      height,
-      width,
-      options,
-      onChange,
-      renderUserLocation,
-      getAddressOnMarkerClick,
-      UserLocation,
-    } = this.props
-    const { entry, markerClusters, mapInstance, mapApi } = this.state
+  const shouldRenderEntryLocation = entry.latitude && entry.longitude
 
-    const shouldRenderEntryLocation = entry.latitude && entry.longitude
+  const shouldRenderUserLocation =
+    renderUserLocation && UserLocation.latitude && UserLocation.longitude
 
-    const shouldRenderUserLocation =
-      renderUserLocation && UserLocation.latitude && UserLocation.longitude
+  useMapControl(
+    mapInstance,
+    GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
+    <MapSearchBox map={mapInstance} mapApi={mapApi} panTo={panTo} onChange={onChange} />,
+    'calc(100% - 48px)',
+  )
 
-    return (
-      <div style={{ height, width }}>
-        <GoogleMapReact
-          // debounced
-          bootstrapURLKeys={{ key: REACT_APP_GOOGLE_LOCATION_API }}
-          // defaultCenter={center}
-          // defaultZoom={zoom}
-          center={center}
-          zoom={zoom}
-          onChange={this.handleChange}
-          options={options}
-          onGoogleApiLoaded={this.onGoogleApiLoaded}
-          yesIWantToUseGoogleMapApiInternals={true}
-        >
-          {shouldRenderEntryLocation && (
-            <Marker
-              {...entry}
-              key={entry.id}
-              lat={entry.latitude}
-              lng={entry.longitude}
-              renderUserLocation={false}
-              getAddressOnMarkerClick={getAddressOnMarkerClick}
-              onChange={onChange}
-            />
-          )}
-          {shouldRenderUserLocation && (
-            <Marker
-              key='MyLocation'
-              lat={UserLocation.latitude}
-              lng={UserLocation.longitude}
-              renderUserLocation={renderUserLocation}
-              getAddressOnMarkerClick={getAddressOnMarkerClick}
-              onChange={onChange}
-            />
-          )}
-          {this.renderMarkerClusters(markerClusters)}
-          {mapInstance && (
-            <Fragment>
-              <MapControl
-                map={mapInstance}
-                mapApi={mapApi}
-                controlPosition={GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT}
-                panTo={this.panTo}
-              >
-                <MapSearchBox width='calc(100% - 48px)' onChange={onChange} />
-              </MapControl>
-              <MapControl
-                width='auto'
-                map={mapInstance}
-                mapApi={mapApi}
-                controlPosition={GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM}
-                panTo={this.panTo}
-              >
-                <UserLocationButton
-                  UserLocation={UserLocation}
-                  WatchUserLocation={WatchUserLocation}
-                />
-              </MapControl>
-            </Fragment>
-          )}
-        </GoogleMapReact>
-      </div>
-    )
-  }
+  useMapControl(
+    mapInstance,
+    GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
+    <UserLocationButton panTo={panTo} SetUserLocation={SetUserLocation} />,
+  )
+
+  return (
+    <div style={{ height, width }}>
+      <GoogleMapReact
+        // debounced
+        bootstrapURLKeys={{ key: REACT_APP_GOOGLE_LOCATION_API }}
+        // defaultCenter={center}
+        // defaultZoom={zoom}
+        center={center}
+        zoom={zoom}
+        onChange={handleChange}
+        options={options}
+        onGoogleApiLoaded={onGoogleApiLoaded}
+        yesIWantToUseGoogleMapApiInternals={true}
+      >
+        {shouldRenderEntryLocation && (
+          <Marker
+            {...entry}
+            key={entry.id}
+            lat={entry.latitude}
+            lng={entry.longitude}
+            renderUserLocation={false}
+            getAddressOnMarkerClick={getAddressOnMarkerClick}
+            onChange={onChange}
+          />
+        )}
+        {shouldRenderUserLocation && (
+          <Marker
+            key='MyLocation'
+            lat={UserLocation.latitude}
+            lng={UserLocation.longitude}
+            renderUserLocation={renderUserLocation}
+            getAddressOnMarkerClick={getAddressOnMarkerClick}
+            onChange={onChange}
+          />
+        )}
+        {renderMarkerClusters}
+      </GoogleMapReact>
+    </div>
+  )
 }
+
+BasicMap.propTypes = {
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  SetMapBoundsCenterZoom: PropTypes.func.isRequired,
+
+  onChange: PropTypes.func.isRequired,
+  locations: PropTypes.arrayOf(PropTypes.object),
+  getAddressOnMarkerClick: PropTypes.bool.isRequired,
+  entry: EntryPropTypes,
+}
+
+BasicMap.defaultProps = {
+  renderUserLocation: true,
+  height: 500,
+  width: '100%',
+  options: DEFAULT_MAP_OPTIONS,
+  locations: [],
+  getAddressOnMarkerClick: false,
+  entry: {},
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(BasicMap)

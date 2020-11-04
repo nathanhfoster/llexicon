@@ -1,34 +1,29 @@
-import React, { useRef, useEffect } from 'react'
+import React, { memo } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import Marker from '../Marker'
-import { WatchUserLocation } from 'redux/User/actions'
+import { useGeolocation } from 'hooks'
 
-const mapStateToProps = ({ User: { location } }) => ({ userLocation: location })
+const UserLocationMarker = ({ onChange }) => {
+  const [geoState] = useGeolocation({
+    enableHighAccuracy: true,
+    timeout: 0xffffffff,
+    maximumAge: 0,
+  })
 
-const mapDispatchToProps = { WatchUserLocation }
+  const {
+    isSupported,
+    isRetrieving,
+    position: {
+      coords: { accuracy, altitude, altitudeAccuracy, heading, latitude, longitude, speed },
+      timestamp,
+    },
+  } = geoState
 
-const UserLocationMarker = ({ userLocation, onChange, WatchUserLocation }) => {
-  const watchId = useRef(null)
-
-  useEffect(() => {
-    watchId.current = WatchUserLocation()
-    return () => WatchUserLocation(watchId.current)
-  }, [])
-  return (
-    <Marker
-      key='MyLocation'
-      lat={userLocation.latitude}
-      lng={userLocation.longitude}
-      onChange={onChange}
-    />
-  )
+  return <Marker key='MyLocation' lat={latitude} lng={longitude} onChange={onChange} />
 }
 
 UserLocationMarker.propTypes = {
-  UserLocation: PropTypes.object,
   onChange: PropTypes.func,
-  WatchUserLocation: PropTypes.func,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserLocationMarker)
+export default memo(UserLocationMarker)

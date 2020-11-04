@@ -136,6 +136,7 @@ const SetUserLocation = position => dispatch => {
   if (!position) {
     return dispatch({ type: UserActionTypes.USER_RESET_LOCATION })
   }
+
   const {
     coords: { accuracy, altitude, altitudeAccuracy, heading, latitude, longitude, speed },
     timestamp,
@@ -154,41 +155,6 @@ const SetUserLocation = position => dispatch => {
       timestamp,
     },
   })
-}
-
-const GetUserLocation = () => dispatch => {
-  const { geolocation } = navigator
-  return geolocation.getCurrentPosition(
-    position => {
-      dispatch(SetUserLocation(position))
-      ReactGA.event({
-        category: 'Get User Location',
-        action: 'User is using the getCurrentPosition API!',
-      })
-    },
-    error => console.log('GetUserLocation ERROR: ', error),
-    { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 },
-  )
-}
-
-const WatchUserLocation = watchId => dispatch => {
-  const { geolocation } = navigator
-  if (watchId) {
-    dispatch(SetUserLocation(null))
-    return geolocation.clearWatch(watchId)
-  }
-
-  return geolocation.watchPosition(
-    position => {
-      dispatch(SetUserLocation(position))
-      ReactGA.event({
-        category: 'Watch User Location',
-        action: 'User is using the watchPosition API!',
-      })
-    },
-    error => console.log('WatchUserLocation ERROR: ', error),
-    { enableHighAccuracy: true, timeout: 3000, maximumAge: 10000 },
-  )
 }
 
 const PasswordReset = payload => dispatch => {
@@ -302,8 +268,6 @@ export {
   UpdateUser,
   UpdateProfile,
   SetUserLocation,
-  GetUserLocation,
-  WatchUserLocation,
   PasswordReset,
   GetUserSettings,
   PostSettings,

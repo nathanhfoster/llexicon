@@ -6,7 +6,7 @@ import { isQuotaExceeded } from 'redux/localState'
 import localforage from 'localforage'
 import { LoadReducerState, SetLocalStorageUsage } from 'redux/App/actions'
 import { IndexDbKey, PersistedStorageReduxKey } from 'redux/localState'
-import { usePrevious } from 'hooks'
+import { usePreviousValue } from 'hooks'
 
 export const LOCAL_STORAGE_REDUCERS = [
   // 'Admin',
@@ -57,7 +57,7 @@ const Persistor = ({
   SetLocalStorageUsage,
 }) => {
   // console.log(state.Entries.items)
-  const prevState = usePrevious(state)
+  const prevState = usePreviousValue(state)
 
   useLayoutEffect(() => {
     ;(async () => {

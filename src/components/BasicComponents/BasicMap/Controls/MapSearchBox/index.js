@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, memo } from 'react'
 import PropTypes from 'prop-types'
-import fitCoordsToBounds from '../../../functions/fitCoordsToBounds'
+import fitCoordsToBounds from '../../functions/fitCoordsToBounds'
 import { NEW_ENTRY_ID } from 'redux/Entries/utils'
 import './styles.css'
 

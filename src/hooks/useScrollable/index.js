@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { usePrevious } from 'hooks'
+import { usePreviousValue } from 'hooks'
 import { shallowEquals } from 'utils'
 
 const useScrollable = ({ threshold = true, handleReachedBottom }) => {
@@ -11,7 +11,7 @@ const useScrollable = ({ threshold = true, handleReachedBottom }) => {
     reachedBottom: false,
   })
 
-  const previousScrollProps = usePrevious(scrollProps)
+  const previousScrollProps = usePreviousValue(scrollProps)
 
   const handleOnScroll = useCallback(
     e => {
