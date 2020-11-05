@@ -46,15 +46,17 @@ const EntriesMedia = ({ entries }) => {
         I_FRAME_REGEX.lastIndex = 0
         let iterator
         while ((iterator = I_FRAME_REGEX.exec(html))) {
-          const { 0: src, groups, index, input, length } = iterator
-          const youTubeVideoId = src?.match(YOUTUBE_VIDEO_ID)?.pop()
-          const thumbnailSrc = getYouTubeThumnail(youTubeVideoId)
+          const { 0: iFrame, groups, index, input, length } = iterator
+          const [src] = iFrame.match(SRC_REGEX)
+          // const youTubeVideoId = src?.match(YOUTUBE_VIDEO_ID)?.pop()
+          // const thumbnailSrc = getYouTubeThumnail(youTubeVideoId)
           acc.push(
             <EntryMedia
               key={`iFrame-${entryId}-${i}-${I_FRAME_REGEX.lastIndex}`}
+              isVideo
               {...defaultProps}
-              isVideo={!thumbnailSrc}
-              src={thumbnailSrc || src}
+              // isVideo={!thumbnailSrc}
+              src={src}
             />,
           )
         }
