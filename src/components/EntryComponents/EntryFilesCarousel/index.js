@@ -27,7 +27,7 @@ const EntryFilesCarousel = ({
   filteredItems,
   DeleteEntryFile,
 }) => {
-  const { editorRef } = useContext(EditorConsumer)
+  const { editorRef, editorSelection } = useContext(EditorConsumer)
 
   const AllEntryFiles = useMemo(
     () =>
@@ -63,27 +63,31 @@ const EntryFilesCarousel = ({
     }
   }, [AllEntryFiles, files])
 
-  const handleImageClick = useCallback(({ images, photoIndex, isOpen }) => {
-    const { url, file_type } = images[photoIndex]
-    const [type] = file_type.split('/')
+  const handleImageClick = useCallback(
+    ({ images, photoIndex, isOpen }) => {
+      const { url, file_type } = images[photoIndex]
+      const [type] = file_type.split('/')
 
-    if (!editorRef.current) return
-    let cursorIndex = 0
+      if (!editorRef.current) return
+      let cursorIndex = 0
 
-    const editorSelection = editorRef.current.getEditorSelection()
+      if (editorSelection) {
+        const { index, length } = editorSelection
+        cursorIndex = index
+      }
 
-    if (editorSelection) {
-      const { index, length } = editorSelection
-      cursorIndex = index
-    }
+      editorRef.current.getEditor().insertEmbed(cursorIndex, type, url)
+    },
+    [editorRef, editorSelection],
+  )
 
-    editorRef.current.getEditor().insertEmbed(cursorIndex, type, url)
-  }, [])
-
-  const handleImageDelete = useCallback(({ images, photoIndex, isOpen }) => {
-    const { id, entry_id } = images[photoIndex]
-    DeleteEntryFile(id, entry_id)
-  }, [])
+  const handleImageDelete = useCallback(
+    ({ images, photoIndex, isOpen }) => {
+      const { id, entry_id } = images[photoIndex]
+      DeleteEntryFile(id, entry_id)
+    },
+    [DeleteEntryFile],
+  )
 
   const toolbarButtons = useMemo(
     () => [
@@ -101,7 +105,7 @@ const EntryFilesCarousel = ({
         }
       />,
     ],
-    [],
+    [handleImageClick, handleImageDelete],
   )
 
   return (

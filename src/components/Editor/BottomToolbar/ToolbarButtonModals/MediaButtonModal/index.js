@@ -31,7 +31,7 @@ const mapStateToProps = ({ Window: { innerHeight } }) => ({
 })
 
 const MediaButtonModal = ({ xs, videoHeight }) => {
-  const { editorRef } = useContext(EditorConsumer)
+  const { editorRef, editorSelection } = useContext(EditorConsumer)
   const [url, setUrl] = useState(PLACEHOLDER)
   const [type, setType] = useState(EMBEDED_TYPES[0].id)
   const [value, setValue] = useState(EMBEDED_TYPES[0].value)
@@ -51,15 +51,13 @@ const MediaButtonModal = ({ xs, videoHeight }) => {
         setUrl(src)
       }
     }
-  }, [url, type])
+  }, [url, type, value])
 
   const addUrlDisabled = false
 
   const handleAddUrl = useCallback(() => {
     if (!editorRef.current) return
     let cursorIndex = 0
-
-    const editorSelection = editorRef.current.getEditorSelection()
 
     if (editorSelection) {
       const { index, length } = editorSelection
@@ -68,7 +66,7 @@ const MediaButtonModal = ({ xs, videoHeight }) => {
 
     editorRef.current.getEditor().insertEmbed(cursorIndex, type, url)
     setUrl('')
-  }, [editorRef, type, url])
+  }, [editorRef, editorSelection, type, url])
 
   const handleInputChange = useCallback(({ target: { value } }) => setUrl(value), [])
 

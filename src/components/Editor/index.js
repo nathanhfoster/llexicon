@@ -91,11 +91,14 @@ const Editor = ({
     onChange(payload)
   }, [])
 
-  const handleEditorStateChange = useCallback((html, delta, source, editor) => {
-    // console.log('handleEditorStateChange: ', delta, source, editor)
-    if (source === 'api' && !didMount.current) return
-    handleEditorChange({ html })
-  }, [didMount.current])
+  const handleEditorStateChange = useCallback(
+    (html, delta, source, editor) => {
+      // console.log('handleEditorStateChange: ', delta, source, editor)
+      if (source === 'api' && !didMount.current) return
+      handleEditorChange({ html })
+    },
+    [didMount.current],
+  )
 
   const toggleBottomToolbar = useCallback(
     toggle =>
@@ -105,13 +108,16 @@ const Editor = ({
     [],
   )
 
+  const editorSelection = editorRef?.current?.getEditorSelection()
+
   const contextValue = useMemo(
     () => ({
       editorRef,
+      editorSelection,
       handleEditorChange,
       toggleBottomToolbar,
     }),
-    [editorRef, handleEditorChange, toggleBottomToolbar],
+    [editorRef, editorSelection, handleEditorChange, toggleBottomToolbar],
   )
 
   return (
