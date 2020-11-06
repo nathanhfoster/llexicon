@@ -123,7 +123,6 @@ const Editor = ({
   return (
     <EditorConsumer.Provider value={contextValue}>
       {children}
-
       <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
       <ReactQuill
         id={quillId}

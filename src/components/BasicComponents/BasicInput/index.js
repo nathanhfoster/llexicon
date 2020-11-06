@@ -1,5 +1,5 @@
-import React, { useMemo, memo, Fragment } from 'react'
-import { InputProps } from './propTypes'
+import React, { useMemo, memo, Fragment } from "react"
+import { InputProps } from "./propTypes"
 import {
   FormGroup,
   Label,
@@ -8,8 +8,8 @@ import {
   Input,
   FormFeedback,
   FormText,
-} from 'reactstrap'
-import BasicOption from '../BasicOption'
+} from "reactstrap"
+import BasicOption from "../BasicOption"
 
 const BasicInput = ({
   id,
@@ -29,6 +29,7 @@ const BasicInput = ({
   helpText,
   multiline,
   row,
+  inline,
   className,
   value,
   onChange,
@@ -40,20 +41,24 @@ const BasicInput = ({
   step,
   ...restOfProps
 }) => {
-  const isCheckOrRadio = type === 'checkbox' || type === 'radio'
+  const isCheckOrRadio = type === "checkbox" || type === "radio"
 
   const uniqueId = id || name
 
-  const valid = restOfProps.valid || (typeof isValid === 'function' && isValid(value))
+  const valid =
+    restOfProps.valid || (typeof isValid === "function" && isValid(value))
 
-  const invalid = restOfProps.invalid || (typeof isInvalid === 'function' && isInvalid(value))
+  const invalid =
+    restOfProps.invalid || (typeof isInvalid === "function" && isInvalid(value))
 
   const renderOptions = useMemo(
     () =>
-      type === 'select'
-        ? options?.map((option, i) => <BasicOption key={`option-${name}-${i}`} {...option} />)
+      type === "select"
+        ? options?.map((option, i) => (
+            <BasicOption key={`option-${name}-${i}`} {...option} />
+          ))
         : undefined,
-    [name, options, type],
+    [name, options, type]
   )
 
   const renderInput = useMemo(() => {
@@ -76,9 +81,9 @@ const BasicInput = ({
     }
 
     switch (type) {
-      case 'switch':
+      case "switch":
         return <CustomInput {...inputProps} />
-      case 'file':
+      case "file":
         return <CustomFileInput {...inputProps} />
       default:
         return <Input {...inputProps}>{renderOptions}</Input>
@@ -103,7 +108,7 @@ const BasicInput = ({
   ])
 
   const renderLabel = useMemo(() => {
-    const labelText = label ? `${label} ${required ? '*' : ''}` : null
+    const labelText = label ? `${label} ${required ? "*" : ""}` : null
 
     return isCheckOrRadio ? (
       <Label check={isCheckOrRadio} for={name}>
@@ -122,14 +127,14 @@ const BasicInput = ({
   }, [label, required, isCheckOrRadio, name, renderInput])
 
   return (
-    <FormGroup check={isCheckOrRadio} row={row}>
+    <FormGroup check={isCheckOrRadio} row={row} inline={inline}>
       {renderLabel}
-      {typeof valid === 'string' && (
+      {typeof valid === "string" && (
         <FormFeedback for={uniqueId} valid={!valid}>
           {valid}
         </FormFeedback>
       )}
-      {typeof invalid === 'string' && (
+      {typeof invalid === "string" && (
         <FormFeedback for={uniqueId} valid={!invalid}>
           {invalid}
         </FormFeedback>

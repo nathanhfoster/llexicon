@@ -9,7 +9,7 @@
 }
 
 .EntryInput #date_created_by_author {
-  max-width: 50vw;
+  max-width: 37.5vw;
 }
 
 .EntryInputTitle .form-control,
@@ -21,3 +21,8 @@
   box-shadow: none !important;
   padding: 10px 12px;
 }
+
+.EntryViews {
+  background-color: var(--quinaryColor);
+}
+

@@ -1,13 +1,19 @@
-import React, { useMemo, useCallback, lazy, memo } from 'react'
-import PropTypes from 'prop-types'
-import { EntryPropTypes } from 'redux/Entries/propTypes'
-import { InputGroup, Input, InputGroupAddon, InputGroupText, Button } from 'reactstrap'
-import { BasicInput, EntryOptionsMenu } from '../../'
-import { DEFAULT_STATE_TEXT_EDITOR } from 'redux/TextEditor/reducer'
-import { getLocalDateTimeNoSeconds } from 'utils'
-import './styles.css'
+import React, { useMemo, useCallback, lazy, memo } from "react"
+import PropTypes from "prop-types"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import {
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  Button,
+} from "reactstrap"
+import { BasicInput, EntryOptionsMenu } from "../../"
+import { DEFAULT_STATE_TEXT_EDITOR } from "redux/TextEditor/reducer"
+import { getLocalDateTimeNoSeconds, nFormatter } from "utils"
+import "./styles.css"
 
-const Editor = lazy(() => import('../../Editor'))
+const Editor = lazy(() => import("../../Editor"))
 
 const Entry = ({
   height,
@@ -23,21 +29,23 @@ const Entry = ({
   onChange,
   onSubmit,
 }) => {
-  const activeDate = useMemo(() => getLocalDateTimeNoSeconds(entry.date_created_by_author), [
-    entry.date_created_by_author,
-  ])
+  const activeDate = useMemo(
+    () => getLocalDateTimeNoSeconds(entry.date_created_by_author),
+    [entry.date_created_by_author]
+  )
 
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
   const submitDisabled = readOnly || (editorStateHtmlIsBlank && !entry.title)
 
-  const handleTitleChange = useCallback(({ target: { value } }) => onChange({ title: value }), [])
-
-  const handleDateChange = useCallback(({ target: { value } }) => {
-    // console.log('value: ', value)
-    if (value) {
+  const handleOnChange = useCallback(({ target: { name, value } }) => {
+    if (name === "date_created_by_author" && value) {
       onChange({
-        date_created_by_author: value,
+        [name]: value,
+      })
+    } else {
+      onChange({
+        [name]: value,
       })
     }
   }, [])
@@ -54,42 +62,64 @@ const Entry = ({
       onChange={onChange}
       height={height}
     >
-      <InputGroup key={`EntryTitle-${entry.id}`} className='EntryInput EntryInputTitle'>
+      <InputGroup
+        key={`EntryTitle-${entry.id}`}
+        className="EntryInput EntryInputTitle"
+      >
         <Input
-          type='text'
-          name='title'
-          id='title'
-          placeholder='Entry title...'
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Entry title..."
           value={entry.title}
-          onChange={handleTitleChange}
+          onChange={handleOnChange}
           disabled={readOnly}
         />
-        <InputGroupAddon addonType='append'>
-          <InputGroupText className='p-0'>
-            <BasicInput
-              type='datetime-local'
-              step='0'
-              name='date_created_by_author'
+        <InputGroupAddon addonType="append">
+          <InputGroupText className="p-0">
+            {/* <i className="fas fa-eye p-0" style={{ fontSize: 8 }} /> */}
+            <Input
+              type={readOnly ? "text" : "number"}
+              name="views"
+              id="views"
+              placeholder="0"
+              min="0"
+              value={readOnly ? nFormatter(entry.views) : entry.views}
+              onChange={handleOnChange}
               disabled={readOnly}
-              value={activeDate}
-              onChange={handleDateChange}
+              style={{ maxWidth: readOnly ? 46 : 70 }}
             />
           </InputGroupText>
         </InputGroupAddon>
-        <InputGroupAddon addonType='append' onClick={!submitDisabled ? onSubmit : null}>
+        <InputGroupAddon addonType="append">
+          <InputGroupText className="p-0">
+            <BasicInput
+              type="datetime-local"
+              step="0"
+              name="date_created_by_author"
+              disabled={readOnly}
+              value={activeDate}
+              onChange={handleOnChange}
+            />
+          </InputGroupText>
+        </InputGroupAddon>
+        <InputGroupAddon
+          addonType="append"
+          onClick={!submitDisabled ? onSubmit : null}
+        >
           <InputGroupText
             tag={Button}
-            color='accent'
+            color="accent"
             disabled={submitDisabled}
             // type="submit"
           >
-            <i className='fas fa-save' style={{ fontSize: 20 }} />
+            <i className="fas fa-save" style={{ fontSize: 20 }} />
           </InputGroupText>
         </InputGroupAddon>
         {showOptionsMenu && (
-          <InputGroupAddon addonType='append'>
+          <InputGroupAddon addonType="append">
             <InputGroupText
-              className='p-0'
+              className="p-0"
               tag={EntryOptionsMenu}
               onChange={onChange}
               entryId={entry.id}
@@ -121,14 +151,14 @@ Entry.propTypes = {
 }
 
 Entry.defaultProps = {
-  height: '100%',
+  height: "100%",
   showOptionsMenu: false,
   readOnly: false,
   canToggleToolbars: true,
   topToolbarIsOpen: true,
   bottomToolbarIsOpen: true,
   shouldRedirectOnDelete: false,
-  theme: 'snow',
+  theme: "snow",
 }
 
 export default memo(Entry)

@@ -120,6 +120,12 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
   filter: invert(64%) sepia(13%) saturate(0%) hue-rotate(184deg) brightness(92%) contrast(95%);
 }
 
+::-webkit-calendar-picker-indicator:hover {
+  /* background: var(--quinaryColor); */
+  cursor: pointer;
+  filter: invert(60%) sepia(10%) saturate(0%) hue-rotate(184deg) brightness(90%) contrast(90%) !important;
+}
+
 ::-webkit-datetime-edit {
   /* padding: 0.1em; */
 }
@@ -138,9 +144,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 ::-webkit-datetime-edit-year-field {
   color: var(--secondaryColor);
 }
-::-webkit-calendar-picker-indicator {
-  /* background: var(--quinaryColor); */
-}
+
 
 /* input[type="file"] {
   display: none;
