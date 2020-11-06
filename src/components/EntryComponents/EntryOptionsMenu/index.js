@@ -26,7 +26,6 @@ const EntryOptionsMenu = ({
   is_public,
   author,
   userId,
-  shouldSyncOnUpdate,
   shouldRedirectOnDelete,
   direction,
 }) => {
@@ -55,7 +54,7 @@ const EntryOptionsMenu = ({
 
   const handleEditorChange = useCallback(({ ...payload }) => {
     dispatch(UpdateReduxEntries(entryId, payload))
-    shouldSyncOnUpdate && handleSync()
+     handleSync()
   }, [])
 
   const handleDelete = useCallback(() => {
@@ -181,12 +180,10 @@ EntryOptionsMenu.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string,
   is_public: PropTypes.bool.isRequired,
-  shouldSyncOnUpdate: PropTypes.bool,
   shouldRedirectOnDelete: PropTypes.bool,
 }
 
 EntryOptionsMenu.defaultProps = {
-  shouldSyncOnUpdate: false,
   shouldRedirectOnDelete: false,
   direction: 'down',
 }

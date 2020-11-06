@@ -57,7 +57,6 @@ const EntryMinimal = ({
               title={title}
               is_public={is_public}
               author={author}
-              shouldSyncOnUpdate={true}
             />
           </div>
         </Col>
