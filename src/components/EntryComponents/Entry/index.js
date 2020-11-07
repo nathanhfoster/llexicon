@@ -79,15 +79,15 @@ const Entry = ({
           <InputGroupText className="p-0">
             {/* <i className="fas fa-eye p-0" style={{ fontSize: 8 }} /> */}
             <Input
-              type={readOnly ? "text" : "number"}
+              type={true || readOnly ? "text" : "number"}
               name="views"
               id="views"
               placeholder="0"
               min="0"
-              value={readOnly ? nFormatter(entry.views) : entry.views}
+              value={true || readOnly ? nFormatter(entry.views) : entry.views}
               onChange={handleOnChange}
-              disabled={readOnly}
-              style={{ maxWidth: readOnly ? 46 : 70 }}
+              disabled={true || readOnly}
+              style={{ maxWidth: true || readOnly ? 46 : 70 }}
             />
           </InputGroupText>
         </InputGroupAddon>
