@@ -75,9 +75,8 @@ const Entry = ({
           onChange={handleOnChange}
           disabled={readOnly}
         />
-        <InputGroupAddon addonType="append">
+        {/* <InputGroupAddon addonType="append">
           <InputGroupText className="p-0">
-            {/* <i className="fas fa-eye p-0" style={{ fontSize: 8 }} /> */}
             <Input
               type={true || readOnly ? "text" : "number"}
               name="views"
@@ -90,7 +89,7 @@ const Entry = ({
               style={{ maxWidth: true || readOnly ? 46 : 70 }}
             />
           </InputGroupText>
-        </InputGroupAddon>
+        </InputGroupAddon> */}
         <InputGroupAddon addonType="append">
           <InputGroupText className="p-0">
             <BasicInput
