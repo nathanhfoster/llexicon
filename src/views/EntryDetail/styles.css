@@ -1,3 +1,0 @@
-.EntryDetail {
-    height: calc(100vh - var(--navBarHeight) - var(--inputHeight));
-}

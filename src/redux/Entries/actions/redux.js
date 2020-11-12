@@ -1,15 +1,19 @@
-import { EntriesActionTypes } from "../types"
-import { getReduxEntryId } from "../utils"
+import { EntriesActionTypes } from '../types'
+import { getReduxEntryId } from '../utils'
+import { getStringBytes, isObject } from 'utils'
+
 const {
   ENTRY_SET,
-  ENTRY_UPDATE,
+  ENTRIES_UPDATE,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
-  ENTRY_DELETE,
+  ENTRIES_DELETE,
   ENTRIES_SET_TAGS,
   ENTRIES_SET_PEOPLE,
   ENTRIES_PENDING,
+  ENTRY_PENDING,
   ENTRIES_ERROR,
+  ENTRIES_ERROR_CLEAR,
   ENTRIES_COMPLETE,
   ENTRIES_SET,
   ENTRIES_SEARCH_FILTER,
@@ -21,58 +25,68 @@ const {
 
 const PendingEntries = () => ({ type: ENTRIES_PENDING })
 
+const PendingEntry = () => ({ type: ENTRY_PENDING })
+
 const SetEntriesComplete = () => ({ type: ENTRIES_COMPLETE })
 
-const SetEntriesError = (payload) => ({ type: ENTRIES_ERROR, payload })
+const SetEntriesError = e => {
+  const payload = JSON.parse(JSON.stringify(e))
+  // console.log(payload)
+  return { type: ENTRIES_ERROR, payload }
+}
 
-const SetEntry = (payload) => ({
+const ClearEntriesErrors = () => ({ type: ENTRIES_ERROR_CLEAR })
+
+const SetEntry = payload => ({
   type: ENTRY_SET,
   payload,
 })
 
-const PostReduxEntry = (payload) => (dispatch, getState) => {
-  const {
-    items: { length: itemsLength },
-    filteredItems: { length: filteredItemsLength },
-  } = getState().Entries
-
-  const length = itemsLength + filteredItemsLength
+const PostReduxEntry = entry => dispatch => {
+  const payload = {
+    ...entry,
+    id: getReduxEntryId(),
+    _shouldPost: true,
+    _lastUpdated: null,
+    date_created: entry.date_created_by_author,
+    date_updated: entry.date_created_by_author,
+  }
+  const size = getStringBytes(payload)
 
   return dispatch(
     SetEntry({
       ...payload,
-      id: getReduxEntryId(length),
-      _shouldPost: true,
-    })
+      size,
+      _size: size,
+    }),
   )
 }
 
-const UpdateReduxEntry = (id, entry, _lastUpdated = new Date()) => {
-  let payload = { ...entry, _lastUpdated }
-  return {
-    type: ENTRY_UPDATE,
-    id,
-    payload,
-  }
-}
+const UpdateReduxEntries = (entryOrEntries, _lastUpdated = new Date()) => ({
+  type: ENTRIES_UPDATE,
+  payload: entryOrEntries.id ? { ...entryOrEntries, _lastUpdated } : entryOrEntries,
+})
 
 const ClearEntry = () => ({ type: ENTRY_CLEAR })
 
 const ClearEntries = () => ({ type: ENTRIES_CLEAR })
 
-const DeleteReduxEntry = (id) => ({ type: ENTRY_DELETE, id })
+const DeleteReduxEntries = entriesToDelete => ({
+  type: ENTRIES_DELETE,
+  payload: entriesToDelete,
+})
 
-const SetEntries = (payload) => ({
+const SetEntries = payload => ({
   type: ENTRIES_SET,
   payload,
 })
 
-const SetEntriesTags = (payload) => ({
+const SetEntriesTags = payload => ({
   type: ENTRIES_SET_TAGS,
   payload,
 })
 
-const SetEntriesPeople = (payload) => ({
+const SetEntriesPeople = payload => ({
   type: ENTRIES_SET_PEOPLE,
   payload,
 })
@@ -101,7 +115,7 @@ const ResetEntriesSortAndFilterMaps = () => ({
   type: ENTRIES_RESET_SORT_AND_FILTER_MAP,
 })
 
-const ResetSearchEntries = () => (dispatch) => dispatch(SetSearchEntries(""))
+const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(''))
 
 const SearchEntriesFilter = (search, payload) => ({
   type: ENTRIES_SEARCH_FILTER,
@@ -109,16 +123,30 @@ const SearchEntriesFilter = (search, payload) => ({
   payload,
 })
 
+const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
+  const { items, filteredItems } = getState().Entries
+  const entryToUpdate = items.concat(filteredItems).find(({ id }) => id == entry_id)
+
+  if (entryToUpdate) {
+    const payload = {
+      EntryFiles: entryToUpdate.EntryFiles.filter(file => file.id !== id),
+    }
+    dispatch(UpdateReduxEntries(payload))
+  }
+}
+
 export {
   PendingEntries,
+  PendingEntry,
   SetEntriesComplete,
   SetEntriesError,
+  ClearEntriesErrors,
   SetEntry,
   PostReduxEntry,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   ClearEntry,
   ClearEntries,
-  DeleteReduxEntry,
+  DeleteReduxEntries,
   SetEntries,
   SetEntriesTags,
   SetEntriesPeople,
@@ -129,4 +157,5 @@ export {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   SearchEntriesFilter,
+  DeleteEntryFileFromRedux,
 }

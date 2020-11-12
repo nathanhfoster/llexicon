@@ -1,9 +1,9 @@
-import React, { useCallback, memo } from "react"
-import PropTypes from "prop-types"
-import { DebounceInput } from "../../../../"
-import { capitalizeFirstLetter, isType } from "../../../../../utils"
-import { ColumnPropType } from "../../state/types"
-import "./styles.css"
+import React, { useCallback, memo } from 'react'
+import PropTypes from 'prop-types'
+import { DebounceInput } from '../../../../'
+import { capitalizeFirstLetter, isType } from '../../../../../utils'
+import { ColumnPropType } from '../../state/types'
+import './styles.css'
 
 const TableHeader = ({
   headerKey,
@@ -19,41 +19,37 @@ const TableHeader = ({
   defaultFilterValue,
   filterCallback,
 }) => {
-  const handleDebounce = useCallback(
-    (filterValue) => filterCallback(headerKey, filterValue),
-    [headerKey]
-  )
+  const handleDebounce = useCallback(filterValue => filterCallback(headerKey, filterValue), [
+    headerKey,
+  ])
+
+  const handleInputOnClick = useCallback(e => e.stopPropagation(), [])
 
   const headerTitle = typeof title === isType.STRING ? title : headerKey
-  const titleFunction =
-    typeof title === isType.FUNCTION || title instanceof Function
+  const titleFunction = typeof title === isType.FUNCTION || title instanceof Function
   const shouldShowSortIcon = typeof sortUp === isType.BOOLEAN
   const headerStyles = { width }
 
   return (
     <th
-      className={`BasicTableHeader px-1 ${sortable ? "HeaderHoverable" : ""} `}
+      className={`BasicTableHeader px-1 ${sortable ? 'HeaderHoverable' : ''} `}
       style={headerStyles}
       title={headerTitle}
       onClick={sortable ? sortCallback : null}
     >
-      <div className="ml-1">
+      <div className='ml-1'>
         {titleFunction ? title(column) : title || headerKey}
         {sortable && shouldShowSortIcon && (
-          <i className={`fas fa-sort-${sortUp ? "up" : "down"} ml-1`} />
+          <i className={`fas fa-sort-${sortUp ? 'up' : 'down'} ml-1`} />
         )}
       </div>
       <DebounceInput
-        className="TableHeaderSortInput"
+        className='TableHeaderSortInput'
         defaultValue={defaultFilterValue}
         disabled={!(filter || filterable)}
-        onClick={(e) => e.stopPropagation()}
+        onClick={handleInputOnClick}
         onChange={handleDebounce}
-        placeholder={
-          filterable
-            ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)}`
-            : null
-        }
+        placeholder={filterable ? filterPlaceholder || `${capitalizeFirstLetter(headerKey)}` : null}
       />
     </th>
   )

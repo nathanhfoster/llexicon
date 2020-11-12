@@ -1,13 +1,11 @@
 import React, { useEffect, lazy } from 'react'
 import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
-import { SetLocalStorageUsage } from 'redux/App/actions'
 import { SetWindow } from 'redux/Window/actions'
 import { ResetUserError, GetUserSettings } from 'redux/User/actions'
 import { SetCalendar } from 'redux/Calendar/actions'
 import {
-  SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
@@ -15,6 +13,7 @@ import {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   ClearEntry,
+  ClearEntriesErrors,
 } from 'redux/Entries/actions'
 import { ResetMap } from 'redux/Map/actions'
 import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
@@ -54,6 +53,7 @@ const {
   ENTRIES,
   ENTRIES_LIST,
   ENTRIES_FOLDERS,
+  ENTRIES_MEDIA,
   ENTRIES_TABLE,
   ENTRIES_MAP,
   PRIVACY_POLICY,
@@ -75,11 +75,9 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
   SetWindow,
-  SetLocalStorageUsage,
   ResetUserError,
   GetUserSettings,
   SetCalendar,
-  SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
@@ -87,6 +85,7 @@ const mapDispatchToProps = {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   ClearEntry,
+  ClearEntriesErrors,
   ResetMap,
 }
 
@@ -127,9 +126,7 @@ const App = ({
   userIsSuperUser,
   userDarkMode,
   SetWindow,
-  SetLocalStorageUsage,
   SetCalendar,
-  SyncEntries,
   GetUserEntries,
   GetUserEntryTags,
   GetUserEntryPeople,
@@ -137,10 +134,12 @@ const App = ({
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   ClearEntry,
+  ClearEntriesErrors,
   ResetMap,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const handleResize = () => SetWindow()
+
   useEffect(() => {
     changeTheme(userDarkMode)
   }, [userDarkMode])
@@ -152,15 +151,14 @@ const App = ({
     ResetMap()
     ResetSearchEntries()
     ClearEntry()
-
-    SetLocalStorageUsage()
+    ClearEntriesErrors()
 
     window.addEventListener('resize', handleResize)
 
     handleResize()
 
     if (userId) {
-      SyncEntries(() => new Promise(resolve => resolve(GetUserEntries(1))))
+      GetUserEntries()
       GetUserSettings()
       GetUserEntryTags()
       GetUserEntryPeople()
@@ -247,6 +245,7 @@ const App = ({
               NEW_ENTRY,
               ENTRIES_CALENDAR,
               ENTRIES_FOLDERS,
+              ENTRIES_MEDIA,
               ENTRIES_LIST,
               ENTRIES_TABLE,
               ENTRIES_MAP,
@@ -267,17 +266,20 @@ App.propTypes = {
   userToken: PropTypes.string,
   userIsSuperUser: PropTypes.bool,
   userDarkMode: PropTypes.bool,
+
   SetWindow: PropTypes.func.isRequired,
-  SetLocalStorageUsage: PropTypes.func.isRequired,
   ResetUserError: PropTypes.func.isRequired,
   GetUserSettings: PropTypes.func.isRequired,
   SetCalendar: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
   GetUserEntryTags: PropTypes.func.isRequired,
   GetUserEntryPeople: PropTypes.func.isRequired,
+  GetUserEntriesByDate: PropTypes.func.isRequired,
   ResetEntriesSortAndFilterMaps: PropTypes.func.isRequired,
+  ResetSearchEntries: PropTypes.func.isRequired,
+  ClearEntry: PropTypes.func.isRequired,
+  ClearEntriesErrors: PropTypes.func.isRequired,
   ResetMap: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

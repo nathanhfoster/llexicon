@@ -63,15 +63,10 @@ const BasicModal = ({
         cloneElement(button, {
           ...button.props,
           disabled,
-          onClick: () => {
+          onClick: e => {
             const { onClick } = button.props
-            onClick && onClick()
-            onClick && onClick()
-            handleToggle()
-          },
-          onClick: () => {
-            onClick && onClick()
-            handleToggle()
+            if (onClick) onClick(e)
+            handleToggle(e)
           },
         })
       )}
@@ -94,16 +89,18 @@ const BasicModal = ({
         </ModalHeader>
         <ModalBody className={className}>{children}</ModalBody>
         <ModalFooter style={{ justifyContent: 'center' }}>
-          {footer || (
-            <Fragment>
-              {saveButton &&
-                cloneElement(saveButton, {
-                  disabled: disabledSave,
-                  onClick: handleSave,
-                })}
-              {cancelButton && cloneElement(cancelButton, { onClick: handleClose })}
-            </Fragment>
-          )}
+          {footer === null
+            ? null
+            : footer || (
+                <Fragment>
+                  {saveButton &&
+                    cloneElement(saveButton, {
+                      disabled: disabledSave,
+                      onClick: handleSave,
+                    })}
+                  {cancelButton && cloneElement(cancelButton, { onClick: handleClose })}
+                </Fragment>
+              )}
         </ModalFooter>
       </Modal>
     </Fragment>
@@ -176,6 +173,7 @@ BasicModal.propTypes = {
 }
 
 BasicModal.defaultProps = {
+  button: <Button color='accent'>Open</Button>,
   cancelButton: <Button color='danger'>Cancel</Button>,
   saveButton: (
     <Button className='mr-1' color='success'>

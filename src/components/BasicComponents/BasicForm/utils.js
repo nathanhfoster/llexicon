@@ -1,21 +1,21 @@
-const getFormPayload = (elements) => {
-  let payload = {}
-
-  for (let i = 0, { length } = elements; i < length; i++) {
-    const { id, name, value, type, checked, files } = elements[i]
+const getFormPayload = elements =>
+  elements.reduce((payload, e) => {
+    const { id, name, value, type, checked, files, options } = e
 
     if (name) {
-      if (type === "radio" || type === "checkbox") {
+      if (type === 'radio' || type === 'checkbox') {
         payload[name] = checked
-      } else if (type === "file") {
+      } else if (type === 'select') {
+        const selectedOptions = options?.filter(({ selected }) => selected)
+        payload[name] = selectedOptions?.length > 0 ? selectedOptions : undefined
+      } else if (type === 'file') {
         payload[name] = files
       } else {
         payload[name] = value
       }
     }
-  }
 
-  return payload
-}
+    return payload
+  }, {})
 
 export { getFormPayload }

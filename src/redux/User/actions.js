@@ -42,7 +42,7 @@ const UserLogin = (payload, rememberMe) => async dispatch => {
       await dispatch(RefreshPatchUser(id))
       await dispatch(SetUser(data))
       await dispatch(persistReduxState())
-      await dispatch(GetUserEntries(1))
+      await dispatch(GetUserEntries())
       ReactGA.event({
         category: 'Login',
         action: 'User logged in!',
@@ -136,6 +136,7 @@ const SetUserLocation = position => dispatch => {
   if (!position) {
     return dispatch({ type: UserActionTypes.USER_RESET_LOCATION })
   }
+
   const {
     coords: { accuracy, altitude, altitudeAccuracy, heading, latitude, longitude, speed },
     timestamp,
@@ -154,41 +155,6 @@ const SetUserLocation = position => dispatch => {
       timestamp,
     },
   })
-}
-
-const GetUserLocation = () => dispatch => {
-  const { geolocation } = navigator
-  return geolocation.getCurrentPosition(
-    position => {
-      dispatch(SetUserLocation(position))
-      ReactGA.event({
-        category: 'Get User Location',
-        action: 'User is using the getCurrentPosition API!',
-      })
-    },
-    error => console.log('GetUserLocation ERROR: ', error),
-    { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 },
-  )
-}
-
-const WatchUserLocation = watchId => dispatch => {
-  const { geolocation } = navigator
-  if (watchId) {
-    dispatch(SetUserLocation(null))
-    return geolocation.clearWatch(watchId)
-  }
-
-  return geolocation.watchPosition(
-    position => {
-      dispatch(SetUserLocation(position))
-      ReactGA.event({
-        category: 'Watch User Location',
-        action: 'User is using the watchPosition API!',
-      })
-    },
-    error => console.log('WatchUserLocation ERROR: ', error),
-    { enableHighAccuracy: true, timeout: 3000, maximumAge: 10000 },
-  )
 }
 
 const PasswordReset = payload => dispatch => {
@@ -269,10 +235,10 @@ const UpdateSettings = payload => (dispatch, getState) => {
     .catch(e => console.log('UpdateSettings: ', e.response))
 }
 
-const DeleteAccount = () => (dispatch, getState) => {
+const DeleteAccount = userId => (dispatch, getState) => {
   const { id } = getState().User
   return AxiosOffline()
-    .delete(`users/${id}/`)
+    .delete(`users/${userId || id}/`)
     .then(res => {
       dispatch(SetAlert({ title: 'Deleted', message: 'Account' }))
       clearReduxStoreFromLocalStorage()
@@ -302,8 +268,6 @@ export {
   UpdateUser,
   UpdateProfile,
   SetUserLocation,
-  GetUserLocation,
-  WatchUserLocation,
   PasswordReset,
   GetUserSettings,
   PostSettings,

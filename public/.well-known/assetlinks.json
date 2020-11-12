@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "xyz.appmaker.qyrotf",
+      "sha256_cert_fingerprints": ["26:28:66:84:88:9C:C2:0B:BB:80:3B:B0:5A:F7:60:B7:93:F2:5F:6E:9D:C6:29:2F:80:BE:51:E0:88:26:31:65"]
+    }
+  }
+]

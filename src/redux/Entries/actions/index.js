@@ -4,10 +4,11 @@ import {
   SetEntriesError,
   SetEntry,
   PostReduxEntry,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   ClearEntry,
   ClearEntries,
-  DeleteReduxEntry,
+  ClearEntriesErrors,
+  DeleteReduxEntries,
   SetEntries,
   SetEntriesTags,
   SetEntriesPeople,
@@ -18,7 +19,8 @@ import {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   SearchEntriesFilter,
-} from "./redux"
+  DeleteEntryFileFromRedux,
+} from './redux'
 import {
   CreateEntryTag,
   GetUserEntryTags,
@@ -34,9 +36,8 @@ import {
   DeleteEntry,
   SearchUserEntries,
   SyncEntries,
-  DeleteEntryFileFromRedux,
   DeleteEntryFile,
-} from "./api"
+} from './api'
 
 export {
   // REDUX
@@ -45,10 +46,11 @@ export {
   SetEntriesError,
   SetEntry,
   PostReduxEntry,
-  UpdateReduxEntry,
+  UpdateReduxEntries,
   ClearEntry,
   ClearEntries,
-  DeleteReduxEntry,
+  ClearEntriesErrors,
+  DeleteReduxEntries,
   SetEntries,
   SetEntriesTags,
   SetEntriesPeople,
@@ -59,6 +61,7 @@ export {
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
   SearchEntriesFilter,
+  DeleteEntryFileFromRedux,
   // API
   CreateEntryTag,
   GetUserEntryTags,
@@ -74,6 +77,5 @@ export {
   DeleteEntry,
   SearchUserEntries,
   SyncEntries,
-  DeleteEntryFileFromRedux,
   DeleteEntryFile,
 }

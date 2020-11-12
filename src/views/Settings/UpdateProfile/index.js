@@ -1,12 +1,12 @@
-import React, { useCallback, useMemo, Fragment } from "react"
-import PropTypes from "prop-types"
-import { UserProps } from "redux/User/propTypes"
-import { connect as reduxConnect } from "react-redux"
-import { BasicForm, ConfirmAction, ButtonClearCache } from "components"
-import { Container, Row, Col, ButtonGroup, Button } from "reactstrap"
-import { UpdateUser, DeleteAccount } from "redux/User/actions"
-import { cleanObject } from "../../../utils"
-import { RouteMap, RouterPush } from "redux/router/actions"
+import React, { useCallback, useMemo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { UserProps } from 'redux/User/propTypes'
+import { connect } from 'react-redux'
+import { BasicForm, ConfirmAction, ButtonClearCache } from 'components'
+import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
+import { UpdateUser, DeleteAccount } from 'redux/User/actions'
+import { cleanObject } from '../../../utils'
+import { RouteMap, RouterPush } from 'redux/router/actions'
 
 const mapStateToProps = ({ User }) => ({
   User,
@@ -18,7 +18,7 @@ const mapDispatchToProps = {
 }
 
 const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
-  const handleChangeUser = useCallback((payload) => {
+  const handleChangeUser = useCallback(payload => {
     UpdateUser(cleanObject(payload, true))
   }, [])
   const handleDeleteAccount = useCallback(() => DeleteAccount(), [])
@@ -29,42 +29,42 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
   const inputs = useMemo(
     () => [
       {
-        label: "Username",
-        type: "text",
-        name: "username",
-        placeholder: "Username...",
+        label: 'Username',
+        type: 'text',
+        name: 'username',
+        placeholder: 'Username...',
         defaultValue: User.username,
         disabled: !User.id,
       },
       {
-        label: "email",
-        type: "email",
-        name: "email",
-        placeholder: "Email...",
+        label: 'email',
+        type: 'email',
+        name: 'email',
+        placeholder: 'Email...',
         defaultValue: User.email,
         disabled: !User.id,
       },
       {
-        label: "First name",
-        type: "text",
-        name: "first_name",
-        placeholder: "First Name...",
+        label: 'First name',
+        type: 'text',
+        name: 'first_name',
+        placeholder: 'First Name...',
         defaultValue: User.first_name,
         disabled: !User.id,
       },
       {
-        label: "Last name",
-        type: "text",
-        name: "last_name",
-        placeholder: "Last name...",
+        label: 'Last name',
+        type: 'text',
+        name: 'last_name',
+        placeholder: 'Last name...',
         defaultValue: User.last_name,
         disabled: !User.id,
       },
       {
-        label: "Password",
-        type: "password",
-        name: "password",
-        placeholder: "Password...",
+        label: 'Password',
+        type: 'password',
+        name: 'password',
+        placeholder: 'Password...',
         disabled: !User.id,
       },
       // {
@@ -76,40 +76,40 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
       //   disabled: !User.id,
       // },
     ],
-    [User]
+    [User],
   )
 
   const formSubmitLabel = useMemo(
     () => (
       <Fragment>
         {User.pending && <i className={`fas fa-sun SunIcon`} />}
-        <span className="ml-1">Update</span>
+        <span className='ml-1'>Update</span>
       </Fragment>
     ),
-    [User.pending]
+    [User.pending],
   )
 
   return User.id ? (
     <Container>
-      <Row className="mb-3">
+      <Row className='mb-3'>
         <Col xs={12}>
           <BasicForm
-            title="Update Profile"
+            title='Update Profile'
             onSubmit={handleChangeUser}
-            submitLabel={formSubmitLabel}
+            saveLabel={formSubmitLabel}
             inputs={inputs}
           />
         </Col>
       </Row>
-      <Row className="mb-3">
-        <Col xs={12} className="Center">
+      <Row className='mb-3'>
+        <Col xs={12} className='Center'>
           <ConfirmAction
-            message="Are you sure you want to delete your account? Everything will be erased."
+            message='Are you sure you want to delete your account? Everything will be erased.'
             onConfirm={handleDeleteAccount}
             disabled={!User.id}
             button={
-              <Button color="danger">
-                <i className="fas fa-trash-alt mr-1" />
+              <Button color='danger'>
+                <i className='fas fa-trash-alt mr-1' />
                 Delete Account and Clear Cache
               </Button>
             }
@@ -119,7 +119,7 @@ const UpdateProfile = ({ User, UpdateUser, DeleteAccount }) => {
     </Container>
   ) : (
     <ButtonGroup>
-      <Button color="accent" onClick={handleSignUp}>
+      <Button color='accent' onClick={handleSignUp}>
         Sign Up
       </Button>
       <ButtonClearCache />
@@ -135,4 +135,4 @@ UpdateProfile.propTypes = {
 
 UpdateProfile.defaultProps = {}
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(UpdateProfile)
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateProfile)

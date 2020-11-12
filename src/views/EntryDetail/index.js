@@ -1,29 +1,34 @@
-import React, { useEffect, useRef } from "react"
-import PropTypes from "prop-types"
-import { EntryPropTypes } from "redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
-import { Container, Row, Col } from "reactstrap"
-import { Entry } from "../../components"
-import ResolveEntryConflictModal from "./ResolveEntryConflictModal"
+import React, { useRef, useMemo, useEffect, useCallback, lazy } from 'react'
+import PropTypes from 'prop-types'
+import { EntryPropTypes } from 'redux/Entries/propTypes'
+import { connect } from 'react-redux'
+import { Container, Row, Col } from 'reactstrap'
+import ResolveEntryConflictModal from './ResolveEntryConflictModal'
 import {
   GetUserEntryDetails,
   ClearEntry,
   SyncEntries,
-} from "redux/Entries/actions"
-import { SetCalendar } from "redux/Calendar/actions"
-import PageNotFound from "../PageNotFound"
-import { getReduxEntryId } from "redux/Entries/utils"
-import "./styles.css"
+  UpdateReduxEntries,
+} from 'redux/Entries/actions'
+import { SetCalendar } from 'redux/Calendar/actions'
+import PageNotFound from '../PageNotFound'
+import { isReadOnly } from 'redux/Entries/utils'
+
+const Entry = lazy(() => import('../../components/EntryComponents/Entry'))
 
 const mapStateToProps = (
   {
     User: { id },
-    Entries: { items, filteredItems, isPending },
+    Entries: {
+      items,
+      filteredItems,
+      item: { isPending },
+    },
     Window: {
       navigator: { serviceWorker },
     },
   },
-  { entryId }
+  { entryId },
 ) => ({
   userId: id,
   entry: items.concat(filteredItems).find(({ id }) => id == entryId),
@@ -36,6 +41,7 @@ const mapDispatchToProps = {
   ClearEntry,
   SyncEntries,
   SetCalendar,
+  UpdateReduxEntries,
 }
 
 const EntryDetail = ({
@@ -48,53 +54,57 @@ const EntryDetail = ({
   ClearEntry,
   SyncEntries,
   SetCalendar,
+  UpdateReduxEntries,
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  // const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
-
-  const entryFound = Boolean(entry)
-
-  const entryAuthor = entry ? entry.author : null
-
-  const readOnly = Boolean(
-    (!isPending && entryAuthor && !userId) ||
-      (entryAuthor && userId !== entryAuthor)
-  )
+  const readOnly = useMemo(() => isPending || isReadOnly(entryId, entry?.author, userId), [
+    isPending,
+    entryId,
+    entry?.author,
+    userId,
+  ])
 
   useEffect(() => {
-    // if (!entryIsLocalOnly) {
-    SyncEntries(
-      () => new Promise((resolve) => resolve(GetUserEntryDetails(entryId)))
-    )
-    // }
+    GetUserEntryDetails(entryId)
 
     return () => {
       ClearEntry()
     }
-  }, [])
+  }, [entryId])
 
   useEffect(() => {
-    if (
-      entryFound &&
-      entry.date_created_by_author &&
-      !setCalendarDateToEntryDate.current
-    ) {
-      const activeDate = new Date(entry.date_created_by_author)
+    if (entry?.date_created_by_author && !setCalendarDateToEntryDate.current) {
+      const activeDate = new Date(entry.date_created_by_author) || new Date()
       SetCalendar({ activeDate })
       setCalendarDateToEntryDate.current = true
     }
   }, [entry])
 
-  return entryFound ? (
-    <Container className="Container">
+  const handleOnChange = useCallback(
+    payload => {
+      if (readOnly || !entry) return
+      UpdateReduxEntries(payload)
+    },
+    [entry?.id, readOnly],
+  )
+
+  const handleOnSubmit = useCallback(() => {
+    SyncEntries()
+  }, [SyncEntries])
+
+  return entry ? (
+    <Container className='Container'>
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
-        <Col xs={12} className="EntryDetail p-0">
+        <Col xs={12} className='p-0'>
           <Entry
+            showOptionsMenu
             readOnly={readOnly}
             entry={entry}
             shouldRedirectOnDelete={true}
+            onChange={handleOnChange}
+            onSubmit={handleOnSubmit}
           />
         </Col>
       </Row>
@@ -115,4 +125,4 @@ EntryDetail.propTypes = {
   SetCalendar: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryDetail)

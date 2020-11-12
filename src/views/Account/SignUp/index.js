@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo, Fragment } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { Jumbotron } from "reactstrap"
-import { BasicForm, FacebookGoogleLogin } from "components"
-import { CreateUser } from "redux/User/actions"
+import React, { useCallback, useMemo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Jumbotron } from 'reactstrap'
+import { BasicForm, FacebookGoogleLogin } from 'components'
+import { CreateUser } from 'redux/User/actions'
 
 const mapStateToProps = ({ User: { error, pending } }) => ({
   userError: error,
@@ -15,13 +15,12 @@ const mapDispatchToProps = {
 }
 
 const SignUp = ({ userError, userPending, CreateUser }) => {
-  const errorMessage =
-    userError && "Please confirm Username, Email, or Password"
-  const handleSignUp = useCallback((payload) => CreateUser(payload), [])
+  const errorMessage = userError && 'Please confirm Username, Email, or Password'
+  const handleSignUp = useCallback(payload => CreateUser(payload), [])
 
-  const isInvalid = useCallback((value) => {
+  const isInvalid = useCallback(value => {
     if (value && value.length < 3) {
-      return "Required. 3 or more characters."
+      return 'Required. 3 or more characters.'
     } else {
       return false
     }
@@ -30,56 +29,56 @@ const SignUp = ({ userError, userPending, CreateUser }) => {
   const inputs = useMemo(
     () => [
       {
-        label: "Username",
-        type: "text",
-        name: "username",
-        placeholder: "Username...",
+        label: 'Username',
+        type: 'text',
+        name: 'username',
+        placeholder: 'Username...',
         invalid: errorMessage,
         isInvalid,
         required: true,
       },
       {
-        label: "Email",
-        type: "email",
-        name: "email",
-        placeholder: "Email...",
+        label: 'Email',
+        type: 'email',
+        name: 'email',
+        placeholder: 'Email...',
         isInvalid,
         required: true,
       },
       {
-        label: "Password",
-        type: "password",
-        name: "password",
-        placeholder: "Password...",
+        label: 'Password',
+        type: 'password',
+        name: 'password',
+        placeholder: 'Password...',
         isInvalid,
         required: true,
       },
       {
-        label: "Opt in",
-        type: "checkbox",
-        name: "opt_in",
+        label: 'Opt in',
+        type: 'checkbox',
+        name: 'opt_in',
         // defaultValue: true,
       },
     ],
-    [errorMessage]
+    [errorMessage],
   )
 
   const formSubmitLabel = useMemo(
     () => (
       <Fragment>
         {userPending && <i className={`fas fa-sun SunIcon`} />}
-        <span className="ml-1">Sign Up</span>
+        <span className='ml-1'>Sign Up</span>
       </Fragment>
     ),
-    [userPending]
+    [userPending],
   )
 
   return (
-    <Jumbotron className="LoginFormContainer">
+    <Jumbotron className='LoginFormContainer'>
       <BasicForm
-        title="Sign Up"
+        title='Sign Up'
         onSubmit={handleSignUp}
-        submitLabel={formSubmitLabel}
+        saveLabel={formSubmitLabel}
         inputs={inputs}
       />
       <FacebookGoogleLogin />
@@ -98,4 +97,4 @@ SignUp.propTypes = {
   CreateUser: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(SignUp)
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

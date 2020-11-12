@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import {
   Container,
   Row,
@@ -15,6 +15,7 @@ import ToolbarModal from '../../ToolbarModal'
 import { BasicDropDown } from '../../../../'
 import { cleanUrl } from '../../../../Editor/modules/Video'
 import { Logo } from '../../../../../images/AWS'
+import { EditorConsumer } from '../../../'
 import './styles.css'
 
 const EMBEDED_TYPES = [
@@ -29,7 +30,8 @@ const mapStateToProps = ({ Window: { innerHeight } }) => ({
   videoHeight: `${innerHeight / 3}px`,
 })
 
-const MediaButtonModal = ({ xs, handleInsertEmbeded, videoHeight }) => {
+const MediaButtonModal = ({ xs, videoHeight }) => {
+  const { editorRef, editorSelection } = useContext(EditorConsumer)
   const [url, setUrl] = useState(PLACEHOLDER)
   const [type, setType] = useState(EMBEDED_TYPES[0].id)
   const [value, setValue] = useState(EMBEDED_TYPES[0].value)
@@ -49,14 +51,22 @@ const MediaButtonModal = ({ xs, handleInsertEmbeded, videoHeight }) => {
         setUrl(src)
       }
     }
-  }, [url, type])
+  }, [url, type, value])
 
   const addUrlDisabled = false
 
   const handleAddUrl = useCallback(() => {
-    handleInsertEmbeded(type, url)
+    if (!editorRef.current) return
+    let cursorIndex = 0
+
+    if (editorSelection) {
+      const { index, length } = editorSelection
+      cursorIndex = index
+    }
+
+    editorRef.current.getEditor().insertEmbed(cursorIndex, type, url)
     setUrl('')
-  }, [type, url])
+  }, [editorRef, editorSelection, type, url])
 
   const handleInputChange = useCallback(({ target: { value } }) => setUrl(value), [])
 
@@ -125,10 +135,9 @@ const MediaButtonModal = ({ xs, handleInsertEmbeded, videoHeight }) => {
 }
 
 MediaButtonModal.propTypes = {
-  editorRef: PropTypes.object.isRequired,
   xs: PropTypes.number,
   editorSelection: PropTypes.object,
   videoHeight: PropTypes.string.isRequired,
 }
 
-export default reduxConnect(mapStateToProps)(MediaButtonModal)
+export default connect(mapStateToProps)(MediaButtonModal)

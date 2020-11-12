@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const BasicTableActionTypes = {
   BASIC_TABLE_SORT: 'BASIC_TABLE_SORT',
@@ -6,7 +6,9 @@ const BasicTableActionTypes = {
   BASIC_TABLE_SET_PAGE: 'BASIC_TABLE_SET_PAGE',
   BASIC_TABLE_SET_PAGE_SIZE: 'BASIC_TABLE_SET_PAGE_SIZE',
   BASIC_TABLE_SET_DATA: 'BASIC_TABLE_SET_DATA',
-};
+  BASIC_TABLE_SELECT_DATA_ITEMS: 'BASIC_TABLE_SELECT_DATA_ITEMS',
+  BASIC_TABLE_SELECT_DATA_ITEM: 'BASIC_TABLE_SELECT_DATA_ITEM',
+}
 
 const ColumnPropType = PropTypes.shape({
   title: PropTypes.oneOfType([
@@ -21,29 +23,22 @@ const ColumnPropType = PropTypes.shape({
   footer: PropTypes.func,
   sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(['string'])]),
   defaultSortValue: PropTypes.bool,
-  filter: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.oneOf(['string', 'number', 'date']),
-  ]),
+  filter: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(['string', 'number', 'date'])]),
   defaultFilterValue: PropTypes.string,
   filterPlaceholder: PropTypes.string,
-});
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+})
 
-const ColumnsPropType = PropTypes.arrayOf(ColumnPropType);
+const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
 
-const DataPropType = PropTypes.arrayOf(PropTypes.object.isRequired).isRequired;
+const DataPropType = PropTypes.arrayOf(PropTypes.shape({ _isSelected: PropTypes.bool }).isRequired)
+  .isRequired
 
 const SortListPropType = PropTypes.arrayOf(
   PropTypes.shape({
     key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     sortUp: PropTypes.oneOf([false, true, null]),
   }),
-);
+)
 
-export {
-  BasicTableActionTypes,
-  ColumnPropType,
-  ColumnsPropType,
-  DataPropType,
-  SortListPropType,
-};
+export { BasicTableActionTypes, ColumnPropType, ColumnsPropType, DataPropType, SortListPropType }

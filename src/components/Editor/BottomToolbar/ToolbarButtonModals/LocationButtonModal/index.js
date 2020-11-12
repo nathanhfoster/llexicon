@@ -1,11 +1,10 @@
 import React, { useRef, useMemo, useEffect, useCallback } from 'react'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { Container } from 'reactstrap'
 import ToolbarModal from '../../ToolbarModal'
 import { BasicMap } from 'components'
-import { WatchUserLocation } from 'redux/User/actions'
 import { SetMapBoundsCenterZoom } from 'redux/Map/actions'
 import { GetAddress } from 'redux/Actions/Google'
 import './styles.css'
@@ -15,7 +14,7 @@ const mapStateToProps = ({ Map, User: { location } }) => ({
   UserLocation: location,
 })
 
-const mapDispatchToProps = { WatchUserLocation, SetMapBoundsCenterZoom }
+const mapDispatchToProps = { SetMapBoundsCenterZoom }
 
 const LocationButtonModal = ({
   Map,
@@ -23,7 +22,6 @@ const LocationButtonModal = ({
   UserLocation,
   xs,
   onChange,
-  WatchUserLocation,
   SetMapBoundsCenterZoom,
 }) => {
   let watchId = useRef(null)
@@ -41,9 +39,6 @@ const LocationButtonModal = ({
 
   const handleClick = useCallback(() => {
     const { latitude, longitude } = entry
-    if (!watchId.current) {
-      watchId.current = WatchUserLocation()
-    }
     if (latitude && longitude) {
       SetMapBoundsCenterZoom({
         center: { lat: latitude, lng: longitude },
@@ -74,9 +69,6 @@ const LocationButtonModal = ({
   ])
 
   const handleCancel = useCallback(() => {
-    if (watchId.current) {
-      watchId.current = WatchUserLocation(watchId.current)
-    }
     SetMapBoundsCenterZoom(prevMap)
   }, [watchId.current])
 
@@ -114,7 +106,6 @@ LocationButtonModal.propTypes = {
   xs: PropTypes.number,
   entry: EntryPropTypes,
   onChange: PropTypes.func.isRequired,
-  WatchUserLocation: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(LocationButtonModal)
+export default connect(mapStateToProps, mapDispatchToProps)(LocationButtonModal)

@@ -1,4 +1,4 @@
-import { stringMatch, isType } from "../../../../../utils"
+import { stringMatch, isType } from '../../../../../utils'
 
 const tableFilter = (data, filterList) => {
   let filteredData = [...data]
@@ -9,10 +9,10 @@ const tableFilter = (data, filterList) => {
     const item = filters[i]
     const { key, filterValue, filter } = item
     if (!filterValue) return
-    else if (filter instanceof Function || typeof filter === "function") {
+    else if (filter instanceof Function || typeof filter === 'function') {
       filteredData = filteredData.filter(filter(filterValue))
-    } else if (filter === "date") {
-      filteredData = filteredData.filter((item) => {
+    } else if (filter === 'date') {
+      filteredData = filteredData.filter(item => {
         if (filterValue) {
           const momentCreatedByAuthor = new Date(item[key])
           const momentOfSearchValue = new Date(filterValue)
@@ -23,16 +23,16 @@ const tableFilter = (data, filterList) => {
         }
       })
     } else if (filter === isType.STRING) {
-      filteredData = filteredData.filter((item) => {
+      filteredData = filteredData.filter(item => {
         const itemString = item[key]
         return stringMatch(itemString, filterValue)
       })
     } else if (filter === isType.NUMBER) {
       if (filterValue) {
-        filteredData = filteredData.filter((item) => item[key] >= filterValue)
+        filteredData = filteredData.filter(item => item[key] >= filterValue)
       }
     } else {
-      filteredData = filteredData.filter((item) => {
+      filteredData = filteredData.filter(item => {
         const itemValue = item[key]
         let itemString = `${itemValue}`
 

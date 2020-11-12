@@ -1,11 +1,19 @@
-import React, { useCallback, memo } from 'react'
-import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
-import { EntryPropTypes } from 'redux/Entries/propTypes'
-import { InputGroup, Input, InputGroupAddon, InputGroupText } from 'reactstrap'
-import { Editor, EntryOptionsMenu, ReactDatePicker, UseDebounce } from '../../'
-import { UpdateReduxEntry, SyncEntries } from 'redux/Entries/actions'
-import './styles.css'
+import React, { useMemo, useCallback, lazy, memo } from "react"
+import PropTypes from "prop-types"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import {
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  Button,
+} from "reactstrap"
+import { BasicInput, EntryOptionsMenu } from "../../"
+import { DEFAULT_STATE_TEXT_EDITOR } from "redux/TextEditor/reducer"
+import { getLocalDateTimeNoSeconds, nFormatter } from "utils"
+import "./styles.css"
+
+const Editor = lazy(() => import("../../Editor"))
 
 const Entry = ({
   height,
@@ -18,38 +26,29 @@ const Entry = ({
   shouldRedirectOnDelete,
   theme,
   readOnly,
+  onChange,
+  onSubmit,
 }) => {
-  const dispatch = useDispatch()
-  const activeDate = new Date(entry.date_created_by_author || entry._lastUpdated || 0)
-
-  entry.date_created_by_author = new Date(entry.date_created_by_author)
-
-  const handleEditorChange = useCallback(
-    ({ ...payload }) => {
-      if (readOnly) return
-      dispatch(UpdateReduxEntry(entry.id, payload))
-    },
-    [entry.id, readOnly],
+  const activeDate = useMemo(
+    () => getLocalDateTimeNoSeconds(entry.date_created_by_author),
+    [entry.date_created_by_author]
   )
 
-  const handleDebounce = useCallback(() => {
-    dispatch(SyncEntries())
+  const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
+
+  const submitDisabled = readOnly || (editorStateHtmlIsBlank && !entry.title)
+
+  const handleOnChange = useCallback(({ target: { name, value } }) => {
+    if (name === "date_created_by_author" && value) {
+      onChange({
+        [name]: value,
+      })
+    } else {
+      onChange({
+        [name]: value,
+      })
+    }
   }, [])
-
-  const handleTitleChange = useCallback(
-    ({ target: { value } }) => handleEditorChange({ id: entry.id, title: value }),
-    [],
-  )
-
-  const handleDateChange = useCallback(
-    date_created_by_author =>{
-      handleEditorChange({
-        id: entry.id,
-        date_created_by_author,
-        _lastUpdated: date_created_by_author,
-      })},
-    [],
-  )
 
   return (
     <Editor
@@ -60,36 +59,68 @@ const Entry = ({
       bottomToolbarIsOpen={bottomToolbarIsOpen}
       entry={entry}
       theme={theme}
-      onChange={handleEditorChange}
+      onChange={onChange}
       height={height}
     >
-      <UseDebounce onChange={handleDebounce} value={entry} delay={3200} />
-      <InputGroup key={`EntryTitle-${entry.id}`} className='EntryInput EntryInputTitle'>
+      <InputGroup
+        key={`EntryTitle-${entry.id}`}
+        className="EntryInput EntryInputTitle"
+      >
         <Input
-          type='text'
-          name='title'
-          id='title'
-          placeholder='Entry title...'
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Entry title..."
           value={entry.title}
-          onChange={handleTitleChange}
+          onChange={handleOnChange}
           disabled={readOnly}
         />
-        <InputGroupAddon addonType='append'>
-          <InputGroupText className='p-0'>
-            <ReactDatePicker
-              readOnly={readOnly}
-              selected={activeDate}
-              onChange={handleDateChange}
+        {/* <InputGroupAddon addonType="append">
+          <InputGroupText className="p-0">
+            <Input
+              type={true || readOnly ? "text" : "number"}
+              name="views"
+              id="views"
+              placeholder="0"
+              min="0"
+              value={true || readOnly ? nFormatter(entry.views) : entry.views}
+              onChange={handleOnChange}
+              disabled={true || readOnly}
+              style={{ maxWidth: true || readOnly ? 46 : 70 }}
+            />
+          </InputGroupText>
+        </InputGroupAddon> */}
+        <InputGroupAddon addonType="append">
+          <InputGroupText className="p-0">
+            <BasicInput
+              type="datetime-local"
+              step="0"
+              name="date_created_by_author"
+              disabled={readOnly}
+              value={activeDate}
+              onChange={handleOnChange}
             />
           </InputGroupText>
         </InputGroupAddon>
-
+        <InputGroupAddon
+          addonType="append"
+          onClick={!submitDisabled ? onSubmit : null}
+        >
+          <InputGroupText
+            tag={Button}
+            color="accent"
+            disabled={submitDisabled}
+            // type="submit"
+          >
+            <i className="fas fa-save" style={{ fontSize: 20 }} />
+          </InputGroupText>
+        </InputGroupAddon>
         {showOptionsMenu && (
-          <InputGroupAddon addonType='append'>
+          <InputGroupAddon addonType="append">
             <InputGroupText
-              className='p-0'
+              className="p-0"
               tag={EntryOptionsMenu}
-              onChange={handleEditorChange}
+              onChange={onChange}
               entryId={entry.id}
               is_public={entry.is_public}
               shouldRedirectOnDelete={shouldRedirectOnDelete}
@@ -114,17 +145,19 @@ Entry.propTypes = {
   staticContext: PropTypes.any,
   topToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 }
 
 Entry.defaultProps = {
-  height: '100%',
-  showOptionsMenu: true,
+  height: "100%",
+  showOptionsMenu: false,
   readOnly: false,
   canToggleToolbars: true,
   topToolbarIsOpen: true,
   bottomToolbarIsOpen: true,
   shouldRedirectOnDelete: false,
-  theme: 'snow',
+  theme: "snow",
 }
 
 export default memo(Entry)

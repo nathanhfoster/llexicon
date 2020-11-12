@@ -39,7 +39,7 @@ FileUpload.propTypes = {
 }
 
 FileUpload.defaultProps = {
-  title: 'Import Entries',
+  title: 'Import',
 }
 
 export default memo(FileUpload)

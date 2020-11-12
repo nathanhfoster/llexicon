@@ -1,19 +1,41 @@
-import { objectToArray, stringMatch, getStringBytes } from 'utils'
+import MomentJS from 'moment'
+import { objectToArray, stringMatch, getStringBytes, getValidDate } from 'utils'
 import { RouteMap } from 'redux/router/actions'
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
-const BASE_JOURNAL_ENTRY_ID = 'Entry'
+const BASE_JOURNAL_ENTRY_ID = 'Entry-'
 
-const getReduxEntryId = id => `${BASE_JOURNAL_ENTRY_ID}-${id}`
+const NEW_ENTRY_ID = 'NewEntry'
 
-const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId(0)
+const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
+
+const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
+
+const getDate = ({ _lastUpdated, date_updated }) => _lastUpdated || date_updated
 
 const getMostRecent = (reduxData, newData) => {
   let newItem = { ...newData, ...reduxData }
-  const reduxDataLastUpdated = new Date(reduxData._lastUpdated || reduxData.date_updated || 0)
-  const newDataLastUpdated = new Date(newData._lastUpdated || newData.date_updated || 0)
-  const overWriteWithNewData = newDataLastUpdated - reduxDataLastUpdated > 0
+
+  if (newData.views > reduxData.views) {
+    newItem = { ...newItem, views: newData.views }
+  }
+
+  const reduxDataLastUpdated = getDate(reduxData)
+  const newDataLastUpdated = getDate(newData)
+
+  const hasValidDates = newDataLastUpdated && reduxDataLastUpdated
+
+  const areUpdatedOnTheSameDay =
+    hasValidDates && MomentJS(reduxDataLastUpdated).isSame(newDataLastUpdated)
+
+  if (areUpdatedOnTheSameDay) {
+    delete reduxData._lastUpdated
+    delete newData._lastUpdated
+  }
+
+  const overWriteWithNewData =
+    hasValidDates && MomentJS(reduxDataLastUpdated).isBefore(newDataLastUpdated)
 
   if (overWriteWithNewData) {
     delete reduxData._lastUpdated
@@ -94,13 +116,26 @@ const getTagObjectFromString = s =>
     return acc
   }, [])
 
+const isReadOnly = (entryId, entryAuthor, userId) => {
+  const entryIsStoredInTheBackend = !entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
+
+  const userNotLoggedInButAuthorExistsAndEntryStoredInBackend =
+    !userId && entryAuthor && entryIsStoredInTheBackend
+
+  const userIsNotTheAuthor = entryAuthor && userId !== entryAuthor
+
+  return Boolean(userNotLoggedInButAuthorExistsAndEntryStoredInBackend || userIsNotTheAuthor)
+}
+
 export {
   LINK_TO_SIGN_UP,
   BASE_JOURNAL_ENTRY_ID,
+  NEW_ENTRY_ID,
   DEFAULT_JOUNRAL_ENTRY_ID,
   getReduxEntryId,
   mergeJson,
   handleFilterEntries,
   getTagStringFromObject,
   getTagObjectFromString,
+  isReadOnly,
 }

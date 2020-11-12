@@ -9,7 +9,7 @@ import {
   InputGroupText,
   Button,
 } from 'reactstrap'
-import { connect as reduxConnect } from 'react-redux'
+import { connect } from 'react-redux'
 import ToolbarModal from '../../ToolbarModal'
 import { TagsContainer, DebounceInput } from 'components'
 import { GetUserEntryPeople } from 'redux/Entries/actions'
@@ -166,7 +166,7 @@ const PeopleButtonModal = ({
         people: newPeople,
       }
     })
-  }, [])
+  }, [splitPeopleAsString])
 
   const placeholder = useMemo(() => {
     const people = suggestedPeople.concat(frequentPeople)
@@ -236,7 +236,6 @@ const PeopleButtonModal = ({
               <InputGroupAddon addonType='append'>
                 <InputGroupText
                   tag={Button}
-                  className='SaveButton'
                   color='primary'
                   disabled={!personsName}
                   onClick={handleCreatePeople}
@@ -277,4 +276,4 @@ PeopleButtonModal.defaultProps = {
   people: [],
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(PeopleButtonModal)
+export default connect(mapStateToProps, mapDispatchToProps)(PeopleButtonModal)

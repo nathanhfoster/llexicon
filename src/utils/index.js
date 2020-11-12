@@ -1,5 +1,18 @@
 import { lazy } from 'react'
 import ReactGA from 'react-ga'
+import MomentJS from 'moment'
+
+const isType = {
+  UNDEFINED: 'undefined',
+  NULL: 'object',
+  BOOLEAN: 'boolean',
+  NUMBER: 'number',
+  BIG_INT: 'bigint',
+  STRING: 'string',
+  SYMBOL: 'symbol',
+  FUNCTION: 'function',
+  OBJECT: 'object',
+}
 
 const DOCUMENT_FORMAT = {
   xml: 'XML',
@@ -501,18 +514,6 @@ const formatBytes = (bytes, decimals = 2) => {
 
 const getStringBytes = object => parseInt(JSON.stringify(object).split(/%..|./).length - 1)
 
-const isType = {
-  UNDEFINED: 'undefined',
-  NULL: 'object',
-  BOOLEAN: 'boolean',
-  NUMBER: 'number',
-  BIG_INT: 'bigint',
-  STRING: 'string',
-  SYMBOL: 'symbol',
-  FUNCTION: 'function',
-  OBJECT: 'object',
-}
-
 const shareUrl = ({ url, title, text }) => {
   if (!navigator.share) return
   navigator
@@ -628,7 +629,74 @@ const differenceBetweenStrings = (s1, s2) => {
   return s2.split('').reduce((diff, val, i) => (val != s1.charAt(i) ? (diff += val) : diff), '')
 }
 
+const isAFunction = value => value instanceof Function || typeof value === isType.FUNCTION
+
+const isObject = value => {
+  const type = typeof value
+  return value != null && (type === isType.OBJECT || isAFunction(value))
+}
+
+const shallowEquals = (a, b) => {
+  if (a === b) return true
+  if (!(a || b)) return true
+  // if ((!a && b) || (!b && a)) return false;
+
+  for (const key in a) {
+    if (!(key in b) || a[key] !== b[key]) {
+      return false
+    }
+  }
+
+  for (const key in b) {
+    if (!(key in a) || a[key] !== b[key]) {
+      return false
+    }
+  }
+
+  return true
+}
+
+const getValidDate = s => {
+  const date = new Date(s)
+
+  if (typeof date === isType.STRING || date.getTime() !== date.getTime()) {
+    return null
+  }
+
+  return date
+}
+
+const getLocalDateTimeNoSeconds = (date, displaySeconds = false) => {
+  // 2020-11-10T19:38
+  return MomentJS(date).format(`YYYY-MM-DDTHH:mm${displaySeconds ? ':ss' : ''}`)
+
+  // return new Date(date.getTime(), + new Date().getTimezoneOffset() * -60 * 1000)
+  //   .toISOString()
+  //   .slice(0, 19)
+}
+
+const nFormatter = (num, digits = 0) => {
+  var si = [
+    { value: 1, symbol: '' },
+    { value: 1e3, symbol: 'k' },
+    { value: 1e6, symbol: 'M' },
+    { value: 1e9, symbol: 'G' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e18, symbol: 'E' },
+  ]
+  var rx = /\.0+$|(\.[0-9]*[1-9])0+$/
+  var i
+  for (i = si.length - 1; i > 0; i--) {
+    if (num >= si[i].value) {
+      break
+    }
+  }
+  return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
+}
+
 export {
+  isType,
   DOCUMENT_FORMAT,
   DOCUMENT_MIME_TYPE,
   DeepClone,
@@ -676,11 +744,16 @@ export {
   stringMatch,
   formatBytes,
   getStringBytes,
-  isType,
   shareUrl,
   shareFile,
   deepParseJson,
   getSHA256,
   showFile,
   differenceBetweenStrings,
+  isAFunction,
+  isObject,
+  shallowEquals,
+  getValidDate,
+  getLocalDateTimeNoSeconds,
+  nFormatter,
 }

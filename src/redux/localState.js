@@ -1,6 +1,7 @@
 import { getObjectLength, removeKeyOrValueFromObject } from '../utils'
 import { deepParseJson } from '../utils'
 import {
+  DEFAULT_STATE_APP,
   DEFAULT_STATE_ALERTS,
   DEFAULT_STATE_CALENDAR,
   DEFAULT_STATE_USER,
@@ -9,6 +10,7 @@ import {
   DEFAULT_STATE_WINDOW,
 } from './RootReducer'
 
+const IndexDbKey = 'AstralTreeDB'
 const LocalStorageReduxKey = 'ReduxStore'
 const PersistedStorageReduxKey = `persist:${LocalStorageReduxKey}`
 const LocalStorageFilesKey = 'Files'
@@ -150,12 +152,16 @@ const getUser = () => {
   if (persistedReduxStore) {
     const persistedReduxStoreObject = JSON.parse(persistedReduxStore)
     const { User } = persistedReduxStoreObject
-    if (!User) return { token: null, offline_mode: null }
+    if (!User) return { token: null, offline_mode: null, Settings: {} }
     else if (typeof User === 'string') {
       userFromLocalStorage = JSON.parse(User)
     } else {
       userFromLocalStorage = User
     }
+  }
+
+  if (!userFromLocalStorage.Settings) {
+    userFromLocalStorage.Settings = {}
   }
 
   return userFromLocalStorage
@@ -166,15 +172,14 @@ const getUserClientId = () => {
   const persistedStore = localStorage.getItem(PersistedStorageReduxKey)
 
   if (persistedStore) {
-    const { App, Window } = JSON.parse(persistedStore)
-
-    const User = getUser()
-
-    const { version } = JSON.parse(App)
-    const { id, username, email } = User
     const {
-      navigator: { appVersion },
-    } = JSON.parse(Window)
+      App: { version },
+      Window,
+    } = JSON.parse(persistedStore)
+
+    const { id, username, email } = getUser()
+
+    const appVersion = Window?.navigator?.appVersion || DEFAULT_STATE_APP.version
 
     const userId = id
     const clientId = appVersion
@@ -192,6 +197,7 @@ const handleQuotaExceeded = e => {
 }
 
 export {
+  IndexDbKey,
   LocalStorageReduxKey,
   PersistedStorageReduxKey,
   clearLocalStorage,

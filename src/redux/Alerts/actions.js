@@ -12,4 +12,24 @@ const SetAlert = (payload) => ({
 
 const ClearAlerts = () => ({ type: AlertActionTypes.ALERTS_CLEAR })
 
-export { SetApiResponseStatus, SetAlert, ClearAlerts }
+const UpdateAppVersion = () => (dispatch, getState) => {
+  const { serviceWorkerRegistration } = getState().Alerts
+  dispatch(ClearAlerts())
+
+  // navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  //   for(let registration of registrations) {
+  //    registration.unregister()
+  //  } })
+
+  if (serviceWorkerRegistration?.waiting)
+    serviceWorkerRegistration.waiting.postMessage({ type: "SKIP_WAITING" })
+  setTimeout(() => {
+    // const currentUrl = window.location.href
+    // window.close()
+    // window.open(currentUrl, "_blank")
+
+    window.location.reload()
+  }, 400)
+}
+
+export { SetApiResponseStatus, SetAlert, ClearAlerts, UpdateAppVersion }

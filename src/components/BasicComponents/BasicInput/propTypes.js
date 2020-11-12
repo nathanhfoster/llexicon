@@ -1,14 +1,30 @@
-import PropTypes from 'prop-types'
-import { optionProps } from '../BasicOption/propTypes'
+import PropTypes from "prop-types"
+import { optionProps } from "../BasicOption/propTypes"
 
 const InputTypes = [
-  'email',
-  'text',
-  'password',
-  'checkbox',
-  'radio',
-  'file',
-  'select',
+  "button",
+  "checkbox",
+  "color",
+  "date",
+  "datetime-local",
+  "email",
+  "file",
+  "hidden",
+  "image",
+  "month",
+  "number",
+  "password",
+  "radio",
+  "range",
+  "reset",
+  "search",
+  "submit",
+  "tel",
+  "text",
+  "textarea",
+  "time",
+  "url",
+  "week",
 ]
 
 const InputProps = {
@@ -30,8 +46,10 @@ const InputProps = {
   isInvalid: PropTypes.func,
   helpText: PropTypes.string,
   multiline: PropTypes.bool,
-  row: PropTypes.string,
+  row: PropTypes.bool,
+  inline: PropTypes.bool,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  step: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 }
 
 const BasicInputsProps = PropTypes.shape(InputProps)

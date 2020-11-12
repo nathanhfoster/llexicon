@@ -7,9 +7,11 @@ import BasicInput from '../BasicInput'
 const BasicForm = ({
   title,
   inputs,
-  submitLabel,
+  saveLabel,
+  cancelLabel,
   method,
   onSubmit,
+  onCancel,
   onChange,
 }) => {
   const [state, setState] = useState(inputs)
@@ -28,14 +30,27 @@ const BasicForm = ({
       onChange(event)
     } else {
       const {
-        target: { id, name, value, type, checked, files },
+        target: { id, name, value, type, checked, files, multiple, options },
       } = event
 
       setState(prevState =>
         prevState.map(input => {
           if (input.name === name) {
-            if (type === 'radio' || type === 'checkbox') {
+            if (type === 'radio' || type === 'checkbox' || type === 'switch') {
               return { ...input, checked }
+            } else if (
+              (type === 'select-one' || type === 'select-multiple') &&
+              options?.length > 0
+            ) {
+              let stateOptions = []
+
+              for (let i = 0, { length } = options; i < length; i++) {
+                const { value, selected } = options[i]
+
+                stateOptions.push({ value, selected })
+              }
+
+              return { ...input, options: stateOptions }
             } else if (type === 'file') {
               return { ...input, files }
             } else {
@@ -62,11 +77,7 @@ const BasicForm = ({
   const renderInputs = useMemo(
     () =>
       (onChange ? inputs : state).map((input, i) => (
-        <BasicInput
-          key={`${input.name}-${i}`}
-          {...input}
-          onChange={handleChange}
-        />
+        <BasicInput key={`${input.name}-${i}`} {...input} onChange={handleChange} />
       )),
     [onChange, inputs, state, handleChange],
   )
@@ -77,8 +88,11 @@ const BasicForm = ({
       {renderInputs}
       {onSubmit && (
         <div className='text-center'>
-          <Button color='primary' type='submit'>
-            {submitLabel}
+          <Button className='mr-1' color='accent' type='submit'>
+            {saveLabel}
+          </Button>
+          <Button color='danger' onClick={onCancel}>
+            {cancelLabel}
           </Button>
         </div>
       )}
@@ -115,7 +129,8 @@ BasicForm.defaultProps = {
       disabled: false,
     },
   ],
-  submitLabel: 'Submit',
+  saveLabel: 'Save',
+  cancelLabel: 'Cancel',
   method: 'post',
 }
 export default memo(BasicForm)

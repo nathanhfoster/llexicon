@@ -8,8 +8,7 @@ const tableSort = (data, sortList) => {
   )
 
   for (let i = 0, { length } = sorts; i < length; i++) {
-    const item = sorts[i]
-    const { key, sortUp, sort } = item
+    const { key, sortUp, sort } = sorts[i]
 
     if (sort) {
       sortedData = sortedData.sort((a, b) => sort(a, b, sortUp))

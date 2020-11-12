@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "redux/Entries/propTypes"
 import { Container, Row, Col, Button } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "react-redux"
 import Calendar from "react-calendar"
 import Moment from "react-moment"
 import MomentJS from "moment"
@@ -17,7 +17,11 @@ import "./stylesM.css"
 const mapStateToProps = ({
   Calendar: { activeDate, view },
   Entries: { items },
-}) => ({ entries: items, activeDate, view })
+}) => ({
+  entries: items,
+  activeDate,
+  view,
+})
 
 const mapDispatchToProps = {
   SetCalendar,
@@ -200,4 +204,4 @@ EntryCalendar.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryCalendar)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryCalendar)

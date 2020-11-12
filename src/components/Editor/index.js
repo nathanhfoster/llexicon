@@ -1,4 +1,12 @@
-import React, { useRef, useState, useMemo, useCallback, Fragment, memo } from 'react'
+import React, {
+  createContext,
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  memo,
+} from 'react'
 import ReactQuill from 'react-quill'
 import { THEMES, FORMATS, getModules } from './modules'
 import 'react-quill/dist/quill.snow.css'
@@ -12,6 +20,8 @@ import BottomToolbar from './BottomToolbar'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
 
+export const EditorConsumer = createContext()
+
 const Editor = ({
   children,
   entry,
@@ -24,6 +34,14 @@ const Editor = ({
   ...restOfProps
 }) => {
   const editorRef = useRef()
+  const didMount = useRef(false)
+
+  useEffect(() => {
+    didMount.current = true
+    return () => {
+      didMount.current = false
+    }
+  }, [])
 
   const [bottomToolbarIsOpen, setBottomToolbarIsOpen] = useState(
     !readOnly && restOfProps.bottomToolbarIsOpen,
@@ -51,29 +69,12 @@ const Editor = ({
   const editorStyles = useMemo(
     () => ({
       height: readOnly
-        ? '100%'
+        ? 'calc(100vh - var(--navBarHeight) - var(--inputHeight))'
         : bottomToolbarIsOpen
         ? 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))'
         : 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))',
     }),
     [readOnly, bottomToolbarIsOpen],
-  )
-
-  const handleEditorChange = useCallback(
-    ({ ...payload }) => onChange({ id: restOfProps.toolbarId, ...payload }),
-    [restOfProps.toolbarId],
-  )
-
-  const handleEditorStateChange = useCallback((html, delta, source, editor) => {
-    handleEditorChange({ html })
-  }, [])
-
-  const toggleBottomToolbar = useCallback(
-    toggle =>
-      setBottomToolbarIsOpen(currentState =>
-        toggle === true || toggle === false ? toggle : !currentState,
-      ),
-    [],
   )
 
   const handleOnFocus = useCallback(
@@ -85,47 +86,69 @@ const Editor = ({
     [editorRef],
   )
 
-  const handleUndo = useCallback(() => editorRef?.current?.editor?.history.undo(), [editorRef])
+  const handleEditorChange = useCallback(
+    fields => {
+      const payload = { id: entry.id, ...fields }
+      onChange(payload)
+    },
+    [entry.id],
+  )
 
-  const handleRedo = useCallback(() => editorRef?.current?.editor?.history.redo(), [editorRef])
+  const handleEditorStateChange = useCallback(
+    (html, delta, source, editor) => {
+      // console.log('handleEditorStateChange: ', delta, source, editor)
+      if (source === 'api' && !didMount.current) return
+      handleEditorChange({ html })
+    },
+    [didMount.current],
+  )
+
+  const toggleBottomToolbar = useCallback(
+    toggle =>
+      setBottomToolbarIsOpen(currentState =>
+        toggle === true || toggle === false ? toggle : !currentState,
+      ),
+    [],
+  )
+
+  const editorSelection = editorRef?.current?.getEditorSelection()
+
+  const contextValue = useMemo(
+    () => ({
+      editorRef,
+      editorSelection,
+      handleEditorChange,
+      toggleBottomToolbar,
+    }),
+    [editorRef, editorSelection, handleEditorChange, toggleBottomToolbar],
+  )
 
   return (
-    <Fragment>
+    <EditorConsumer.Provider value={contextValue}>
       {children}
-      <div id='TextEditor' style={{ height, width }}>
-        <TopToolbar
-          toolbarId={toolbarId}
-          editorRef={editorRef}
-          isOpen={topToolbarIsOpen}
-          handleUndo={handleUndo}
-          handleRedo={handleRedo}
-          handleEditorChange={handleEditorChange}
-        />
-        <ReactQuill
-          id={quillId}
-          readOnly={readOnly}
-          bounds='app'
-          ref={editorRef}
-          className='Editor'
-          style={editorStyles}
-          theme={theme}
-          formats={FORMATS}
-          modules={modules}
-          value={entry.html}
-          onChange={handleEditorStateChange}
-          placeholder={placeholder}
-          onFocus={handleOnFocus}
-        />
-        <BottomToolbar
-          entry={entry}
-          canToggleToolbars={canToggleToolbars}
-          isOpen={bottomToolbarIsOpen}
-          toggleBottomToolbar={toggleBottomToolbar}
-          handleEditorChange={handleEditorChange}
-          id={restOfProps.toolbarId}
-        />
-      </div>
-    </Fragment>
+      <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
+      <ReactQuill
+        id={quillId}
+        readOnly={readOnly}
+        bounds='app'
+        ref={editorRef}
+        className='Editor'
+        style={editorStyles}
+        theme={theme}
+        formats={FORMATS}
+        modules={modules}
+        value={entry.html}
+        onChange={handleEditorStateChange}
+        placeholder={placeholder}
+        onFocus={handleOnFocus}
+      />
+      <BottomToolbar
+        entry={entry}
+        canToggleToolbars={canToggleToolbars}
+        isOpen={bottomToolbarIsOpen}
+        id={restOfProps.toolbarId}
+      />
+    </EditorConsumer.Provider>
   )
 }
 

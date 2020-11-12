@@ -1,45 +1,46 @@
-import BasicTableContext from './state/context';
-import React, { useRef, useEffect, useMemo, lazy, memo } from 'react';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import PropTypes from 'prop-types';
-import { BasicTableReducer } from './state/reducer';
-import { basicTableSetData } from './state/actions';
-import { getInitialState } from './state/utils';
-import { ColumnsPropType, DataPropType } from './state/types';
-import { stringMatch } from '../../../utils';
-const Table = lazy(() => import('./Table'));
-const { NODE_ENV } = process.env;
+import BasicTableContext from './state/context'
+import React, { useRef, useEffect, useMemo, lazy, memo } from 'react'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import PropTypes from 'prop-types'
+import { BasicTableReducer } from './state/reducer'
+import { basicTableSetData } from './state/actions'
+import { getInitialState } from './state/utils'
+import { ColumnsPropType, DataPropType } from './state/types'
+import { stringMatch } from '../../../utils'
+const Table = lazy(() => import('./Table'))
+const { NODE_ENV } = process.env
 
-const inDevelopmentMode = NODE_ENV == 'development';
+const inDevelopmentMode = NODE_ENV == 'development'
 
 const middleWares = inDevelopmentMode
   ? composeWithDevTools(applyMiddleware(thunk))
-  : applyMiddleware(thunk);
+  : applyMiddleware(thunk)
 
-const BasicTableProvider = props => {
-  let mounted = useRef(false);
+const BasicTableProvider = ({ children, ...restOfProps }) => {
+  let mounted = useRef(false)
 
   const store = useMemo(
-    () => createStore(BasicTableReducer, getInitialState(props), middleWares),
+    () => createStore(BasicTableReducer, getInitialState(restOfProps), middleWares),
     [],
-  );
+  )
 
   useEffect(() => {
     if (mounted.current) {
-      store.dispatch(basicTableSetData(props.data));
+      store.dispatch(basicTableSetData(restOfProps.data))
     }
-    mounted.current = true;
-  }, [props.data]);
+    mounted.current = true
+  }, [restOfProps.data])
 
   return (
     <Provider context={BasicTableContext} store={store}>
+      {children}
       <Table />
     </Provider>
-  );
-};
+  )
+}
 
 BasicTableProvider.propTypes = {
   sortable: PropTypes.bool.isRequired,
@@ -47,6 +48,7 @@ BasicTableProvider.propTypes = {
   columns: ColumnsPropType,
   dataDisplayName: PropTypes.string.isRequired,
   data: DataPropType,
+  actionMenuCallback: PropTypes.func,
   getRowValue: PropTypes.func,
   onRowClick: PropTypes.func,
   onSortCallback: PropTypes.func,
@@ -63,12 +65,8 @@ BasicTableProvider.propTypes = {
   pageSize: PropTypes.number.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
   // Custom ref handler that will be assigned to the "ref" of the inner <table> element
-  innerRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-    PropTypes.object,
-  ]),
-};
+  innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object]),
+}
 
 BasicTableProvider.defaultProps = {
   hover: false,
@@ -80,7 +78,7 @@ BasicTableProvider.defaultProps = {
   dark: true,
   responsive: true,
   pageSize: 5,
-  pageSizes: [5, 15, 25, 50],
+  pageSizes: [5, 15, 25, 50, 100],
   columns: [
     {
       title: '#',
@@ -104,9 +102,7 @@ BasicTableProvider.defaultProps = {
       key: 'user_name',
       render: item => <a href='#'>{`Delete ${item.user_name}`}</a>,
       sort: (a, b, sortUp) =>
-        sortUp
-          ? b.user_name.localeCompare(a.user_name)
-          : a.user_name.localeCompare(b.user_name),
+        sortUp ? b.user_name.localeCompare(a.user_name) : a.user_name.localeCompare(b.user_name),
       filter: filterValue => item => stringMatch(item.user_name, filterValue),
     },
   ],
@@ -120,5 +116,5 @@ BasicTableProvider.defaultProps = {
         user_name: `user_name${i}`,
       }),
   ),
-};
-export default memo(BasicTableProvider);
+}
+export default memo(BasicTableProvider)
