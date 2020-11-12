@@ -22,12 +22,12 @@
 [id*="toolbar-"] {
   box-shadow: var(--primaryBoxShadow);
   background: var(--quinaryColor);
-  color: #444444;
+  color: var(--secondaryColor);
   z-index: 9999;
 }
 
 [id*="toolbar-"] i {
-  color: #444444;
+  color: var(--secondaryColor);
 }
 
 [id*="toolbar-"] i:hover {
@@ -88,5 +88,5 @@
   /* content: '';
    
     height: 100%;
-    border: 1px solid #444444; */
+    border: 1px solid var(--secondaryColor); */
 }

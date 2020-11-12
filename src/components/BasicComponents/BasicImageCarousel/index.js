@@ -1,101 +1,59 @@
-import React, { useRef, useState, useEffect, useMemo, memo } from "react"
-import PropTypes from "prop-types"
-import Lightbox from "react-image-lightbox"
-import { Media } from "reactstrap"
+import React, { useRef, useReducer, useEffect, useMemo, useCallback, memo } from 'react'
+import PropTypes from 'prop-types'
+import { ActionTypes, getInitialState, reducer } from './state'
+import Lightbox from 'react-image-lightbox'
+import { Media } from 'reactstrap'
+import { EntryPropType } from 'redux/Entries/propTypes'
 
-import "./styles.css"
+import './styles.css'
 
-const getInitialState = ({ images, photoIndex, isOpen }) => {
-  return { images, photoIndex, isOpen }
-}
-
-const BasicImageCarousel = ({
-  toolbarButtons,
-  imageClickCallback,
-  ...restOfProps
-}) => {
+const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps }) => {
   const mounted = useRef(false)
-  const [state, setState] = useState(getInitialState(restOfProps))
-
+  const [state, dispatch] = useReducer(reducer, getInitialState(restOfProps))
+  const { images, photoIndex, isOpen, imageOffset } = state
   useEffect(() => {
     if (mounted.current) {
-      setState((prevState) => ({
-        ...prevState,
-        photoIndex: restOfProps.photoIndex,
-        isOpen: restOfProps.isOpen,
-      }))
+      dispatch({ type: ActionTypes.SET_INDEX_AND_OPEN, payload: restOfProps })
     }
     mounted.current = true
   }, [restOfProps.photoIndex, restOfProps.isOpen])
 
   useEffect(() => {
     if (mounted.current) {
-      setState((prevState) => {
-        let nextState = {
-          ...prevState,
-          images: restOfProps.images,
-        }
-
-        if (restOfProps.images.length < prevState.images.length) {
-          nextState = {
-            ...nextState,
-            photoIndex:
-              (photoIndex + restOfProps.images.length - 1) %
-              restOfProps.images.length,
-          }
-        } else if (restOfProps.images.length > prevState.images.length) {
-          nextState = {
-            ...nextState,
-            photoIndex: (photoIndex + 1) % restOfProps.images.length,
-          }
-        }
-
-        return nextState
-      })
+      dispatch({ type: ActionTypes.SET_IS_OPEN, payload: restOfProps })
     }
+    mounted.current = true
   }, [restOfProps.images])
 
-  const { images, photoIndex, isOpen } = state
+  const [mainSrc, prevSrc, nextSrc] = useMemo(() => {
+    let mainSrc = null
+    let prevSrc = null
+    let nextSrc = null
 
-  let mainSrc = null
+    if (images.length > 0) {
+      mainSrc = images[photoIndex].url
+      prevSrc = images[(photoIndex + images.length - 1) % images.length].url
+      nextSrc = images[(photoIndex + 1) % images.length].url
+    }
 
-  let prevSrc = null
+    return [mainSrc, prevSrc, nextSrc]
+  }, [photoIndex, images.length])
 
-  let nextSrc = null
+  const handleOpen = useCallback(() => dispatch({ type: ActionTypes.SET_OPEN }), [])
 
-  if (images.length > 0) {
-    mainSrc = images[photoIndex].url
+  const handleClose = useCallback(() => dispatch({ type: ActionTypes.SET_CLOSE }), [])
 
-    prevSrc = images[(photoIndex + images.length - 1) % images.length].url
+  const handleMovePrev = useCallback(() => dispatch({ type: ActionTypes.SET_PREV }), [])
 
-    nextSrc = images[(photoIndex + 1) % images.length].url
-  }
-
-  const handleOpen = () =>
-    setState((prevState) => ({ ...prevState, isOpen: true }))
-
-  const handleClose = () =>
-    setState((prevState) => ({ ...prevState, isOpen: false }))
-
-  const handleMovePrev = () =>
-    setState((prevState) => ({
-      ...prevState,
-      photoIndex: (photoIndex + images.length - 1) % images.length,
-    }))
-
-  const handleMoveNext = () =>
-    setState((prevState) => ({
-      ...prevState,
-      photoIndex: (photoIndex + 1) % images.length,
-    }))
+  const handleMoveNext = useCallback(() => dispatch({ type: ActionTypes.SET_NEXT }), [])
 
   const renderImageFiles = useMemo(
     () =>
-      images.map((image, i) => {
+      images.slice(0, imageOffset).map((image, i) => {
         const { url, name, file_type } = image
         const handleOnClick = () => {
           handleOpen()
-          setState((prevState) => ({ ...prevState, photoIndex: i }))
+          dispatch({ type: ActionTypes.SET_INDEX, payload: i })
           imageClickCallback && imageClickCallback(image)
         }
         return (
@@ -103,23 +61,33 @@ const BasicImageCarousel = ({
             key={i}
             type={file_type}
             src={url}
-            className="EntryFilesCarouselImage p-1"
+            className='EntryFilesCarouselImage p-1'
             alt={name}
             onClick={handleOnClick}
           />
         )
       }),
-    [images]
+    [images, imageOffset],
   )
 
   const toolBarImagesWithCallback = useMemo(
     () =>
-      React.Children.map(toolbarButtons, (child) =>
-        React.cloneElement(child, {
-          onClick: () => child.props.onClick(state),
-        })
-      ),
-    [state, toolbarButtons]
+      React.Children.map(toolbarButtons, child => {
+        const { onClick, onConfirm } = child.props
+        const childProps = onClick
+          ? {
+              onClick: () => {
+                onClick(state)
+              },
+            }
+          : {
+              onConfirm: () => {
+                onConfirm(state)
+              },
+            }
+        return React.cloneElement(child, childProps)
+      }),
+    [state, toolbarButtons],
   )
 
   return (
@@ -146,12 +114,12 @@ const BasicImageCarousel = ({
 BasicImageCarousel.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      entry_id: PropTypes.number.isRequired,
+      id: EntryPropType.id,
+      entry_id: EntryPropType.id,
       url: PropTypes.string.isRequired,
       name: PropTypes.string,
       file_type: PropTypes.string,
-    })
+    }),
   ),
   isOpen: PropTypes.bool.isRequired,
   photoIndex: PropTypes.number.isRequired,

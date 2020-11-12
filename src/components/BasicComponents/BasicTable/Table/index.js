@@ -1,14 +1,18 @@
-import React, { useMemo, memo, lazy, Fragment } from "react"
-import { connect } from "store/provider"
-import PropTypes from "prop-types"
-import { Table } from "reactstrap"
-import { tableSort, tableFilter } from "../utils"
-import { DataPropType, SortListPropType } from "../state/types"
-import "./styles.css"
+import BasicTableContext from '../state/context'
+import React, { lazy, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Table } from 'reactstrap'
+import { DataPropType, SortListPropType } from '../state/types'
+import './styles.css'
+
+// Lazy load other child components so BasicTableContext can be initialized before it is used
+const TableHeaders = lazy(() => import('../TableHeaders'))
+const TableBody = lazy(() => import('../TableBody'))
+const TableFooters = lazy(() => import('../TableFooters'))
+const TablePaginator = lazy(() => import('../TablePaginator'))
 
 const mapStateToProps = ({
-  sortList,
-  filterList,
   hover,
   borderless,
   bordered,
@@ -18,8 +22,6 @@ const mapStateToProps = ({
   onRowClick,
   getRowValue,
 }) => ({
-  sortList,
-  filterList,
   hover,
   borderless,
   bordered,
@@ -30,16 +32,7 @@ const mapStateToProps = ({
   getRowValue,
 })
 
-// Lazy load other child components so BasicTableContext can be initialized before it is used
-const TableHeaders = lazy(() => import("../TableHeaders"))
-const TableBody = lazy(() => import("../TableBody"))
-const TableFooters = lazy(() => import("../TableFooters"))
-const TablePaginator = lazy(() => import("../TablePaginator"))
-
 const BasicTable = ({
-  data,
-  sortList,
-  filterList,
   hover,
   borderless,
   bordered,
@@ -49,24 +42,12 @@ const BasicTable = ({
   onRowClick,
   getRowValue,
 }) => {
-  const sortedData = useMemo(() => tableSort(data, sortList), [data, sortList])
-
-  const sortedAndFilteredData = useMemo(
-    () => tableFilter(sortedData, filterList),
-    [sortedData, filterList]
-  )
-
-  const dataLength = useMemo(() => (sortedAndFilteredData || data).length, [
-    sortedAndFilteredData,
-    data,
-  ])
-
   const isHoverable = hover || onRowClick || getRowValue ? true : false
 
   return (
     <Fragment>
       <Table
-        className="BasicTable m-0"
+        className='BasicTable m-0'
         bordered={bordered}
         borderless={borderless}
         striped={striped}
@@ -75,16 +56,15 @@ const BasicTable = ({
         responsive={responsive}
       >
         <TableHeaders />
-        <TableBody data={sortedAndFilteredData} />
-        <TableFooters data={sortedAndFilteredData} />
+        <TableBody />
+        <TableFooters />
       </Table>
-      <TablePaginator dataLength={dataLength} />
+      <TablePaginator />
     </Fragment>
   )
 }
 
 BasicTable.propTypes = {
-  data: DataPropType,
   sortList: SortListPropType,
   filterList: PropTypes.array,
   hover: PropTypes.bool.isRequired,
@@ -104,19 +84,10 @@ BasicTable.propTypes = {
   dark: PropTypes.bool,
   hover: PropTypes.bool,
   responsive: PropTypes.bool,
-  pageSize: PropTypes.number.isRequired,
-  pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
   // Custom ref handler that will be assigned to the "ref" of the inner <table> element
-  innerRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.string,
-    PropTypes.object,
-  ]),
+  innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object]),
 }
 
-BasicTable.defaultProps = {
-  pageSize: 10,
-  pageSizes: [5, 15, 25, 50, 100],
-}
-
-export default connect(mapStateToProps)(memo(BasicTable))
+export default connect(mapStateToProps, null, null, {
+  context: BasicTableContext,
+})(BasicTable)

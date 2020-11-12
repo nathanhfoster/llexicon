@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect, memo, Fragment } from "react"
-import PropTypes from "prop-types"
-import { Input } from "reactstrap"
-import { UseDebounce } from "../"
+import React, { useRef, useState, useEffect, memo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { Input } from 'reactstrap'
+import { UseDebounce } from '../'
 
 const DebounceInput = ({
   debounceOnMount,
@@ -42,7 +42,7 @@ const DebounceInput = ({
         debounceOnMount={debounceOnMount}
         value={debouncedValue}
         delay={delay}
-        onChangeCallback={onChange}
+        onChange={onChange}
       />
     </Fragment>
   )

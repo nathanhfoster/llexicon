@@ -1,8 +1,8 @@
-import React, { memo } from "react"
+import React, { useMemo, memo } from "react"
 import PropTypes from "prop-types"
 import { NavItem, NavLink, DropdownItem } from "reactstrap"
-import { NavLink as RouterNavLink, withRouter } from "react-router-dom"
-import { RouterLinkPush } from "../../../redux/router/actions"
+import { NavLink as RouterNavLink } from "react-router-dom"
+import { RouterLinkPush } from "redux/router/actions"
 import "./styles.css"
 
 const NavItemLink = ({
@@ -11,34 +11,36 @@ const NavItemLink = ({
   title,
   icon,
   onClick,
-  onClickCallback,
+  closeHamburgerMenu,
   render,
 }) => {
-  const handleCLick = () => {
+  const handleOnClick = () => {
+    closeHamburgerMenu && closeHamburgerMenu()
     onClick && onClick()
-    onClickCallback && onClickCallback()
   }
-
-  const renderNavLink = () =>
-    render || (
-      <NavItem key={title} tag={"div"}>
-        <NavLink
-          activeClassName="active"
-          className="Navlink"
-          tag={RouterNavLink}
-          to={RouterLinkPush(route)}
-          onClick={handleCLick}
-        >
-          {icon}
-          <span className="NavBarLink">{title}</span>
-        </NavLink>
-      </NavItem>
-    )
+  const renderNavLink = useMemo(
+    () =>
+      render || (
+        <NavItem key={title} tag={"div"}>
+          <NavLink
+            activeClassName="active"
+            className="Navlink"
+            tag={RouterNavLink}
+            to={RouterLinkPush(route)}
+            onClick={handleOnClick}
+          >
+            {icon}
+            <span className="NavBarLink">{title}</span>
+          </NavLink>
+        </NavItem>
+      ),
+    [icon, render, route, title]
+  )
 
   return dropdownItem ? (
-    <DropdownItem className="Navlink">{renderNavLink()}</DropdownItem>
+    <DropdownItem className="Navlink">{renderNavLink}</DropdownItem>
   ) : (
-    renderNavLink()
+    renderNavLink
   )
 }
 
@@ -48,10 +50,10 @@ NavItemLink.propTypes = {
   title: PropTypes.string,
   icon: PropTypes.node,
   onClick: PropTypes.func,
-  onClickCallback: PropTypes.func,
+  closeHamburgerMenu: PropTypes.func,
   render: PropTypes.node,
 }
 
 NavItemLink.defaultProps = { dropdownItem: false }
 
-export default withRouter(memo(NavItemLink))
+export default memo(NavItemLink)

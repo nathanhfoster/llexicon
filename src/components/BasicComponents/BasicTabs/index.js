@@ -1,18 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo, memo } from "react"
-import PropTypes from "prop-types"
-import {
-  Container,
-  Row,
-  Col,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-} from "reactstrap"
-import { isType } from "../../../utils"
-import { useSwipeable } from "react-swipeable"
-import "./styles.css"
+import React, { useState, useEffect, useRef, useMemo, memo } from 'react'
+import PropTypes from 'prop-types'
+import { Container, Row, Col, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
+import { isType } from '../../../utils'
+import { useSwipeable } from 'react-swipeable'
+import './styles.css'
 
 const getInitialState = (activeTab, defaultTab, tabs) => {
   let firstTabId = null
@@ -26,7 +17,7 @@ const getInitialState = (activeTab, defaultTab, tabs) => {
 
 const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
   const [activeTab, setActiveTab] = useState(
-    getInitialState(restOfProps.activeTab, defaultTab, tabs)
+    getInitialState(restOfProps.activeTab, defaultTab, tabs),
   )
 
   const mounted = useRef()
@@ -39,7 +30,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     }
   }, [restOfProps.activeTab])
 
-  const handleTabChanged = (activeTab) => setActiveTab(activeTab)
+  const handleTabChanged = activeTab => setActiveTab(activeTab)
 
   const { renderTabs, renderTabPanes, previousTab, nextTab } = useMemo(() => {
     let tabsToRender = []
@@ -49,14 +40,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
 
     for (let i = 0, { length } = tabs; i < length; i++) {
       const tab = tabs[i]
-      const {
-        tabId,
-        title,
-        onClickCallback,
-        render,
-        mountTabOnlyWhenActive = true,
-        className,
-      } = tab
+      const { tabId, title, onClick, render, mountTabOnlyWhenActive = true, className } = tab
 
       const onTab = activeTab === tabId
       const titleIsObject = Boolean(typeof title === isType.OBJECT)
@@ -78,18 +62,15 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
       tabsToRender.push(
         <NavItem key={tabId} title={titleIsObject ? title.name : title}>
           <NavLink
-            className={`BasicTabsNavLink py-2 px-3 ${onTab ? "active" : ""}`}
-            onClick={() =>
-              onClickCallback ? onClickCallback(tabId) : handleTabChanged(tabId)
-            }
+            className={`BasicTabsNavLink py-2 px-3 ${onTab ? 'active' : ''}`}
+            onClick={() => (onClick ? onClick(tabId) : handleTabChanged(tabId))}
           >
             {titleIsObject ? title.render : title}
           </NavLink>
-        </NavItem>
+        </NavItem>,
       )
 
-      const shouldNotRenderTabPane =
-        mountTabOnlyWhenActive === true && activeTab !== tabId
+      const shouldNotRenderTabPane = mountTabOnlyWhenActive === true && activeTab !== tabId
 
       tabPanesToRender.push(
         <TabContent key={tabId} activeTab={activeTab}>
@@ -98,7 +79,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
               {render}
             </TabPane>
           )}
-        </TabContent>
+        </TabContent>,
       )
     }
 
@@ -139,23 +120,22 @@ BasicTabs.propTypes = {
   defaultTab: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
-      tabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-        .isRequired,
+      tabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
       mountTabOnlyWhenActive: PropTypes.bool,
       title: PropTypes.oneOfType([
         PropTypes.string.isRequired,
         PropTypes.shape({ name: PropTypes.string, render: PropTypes.node }),
       ]),
       render: PropTypes.node.isRequired,
-      onClickCallback: PropTypes.func,
-    }).isRequired
+      onClick: PropTypes.func,
+    }).isRequired,
   ),
 }
 
 BasicTabs.defaultProps = {
-  className: "BasicTabs",
+  className: 'BasicTabs',
   fluid: false,
-  tabs: new Array(3).fill().map((i) => {
+  tabs: new Array(3).fill().map(i => {
     const index = i + 1
     return {
       tabId: index,

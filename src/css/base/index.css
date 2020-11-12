@@ -1,6 +1,6 @@
-@import "./animations/index.css";
+@import './animations/index.css';
 .App {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   /* color: white; */
 }
@@ -38,6 +38,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -77,15 +78,73 @@ a:hover {
   text-align: center;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='date'],
+input[type='datetime-local'] {
   min-height: var(--inputHeight);
   padding: 0.5rem !important;
   border: inherit;
   background: var(--quinaryColor) !important;
   color: var(--secondaryColor);
 }
+
+input[type='date'] {
+  position: relative;
+  padding: 10px;
+}
+/* input[type='date']::-webkit-calendar-picker-indicator {
+  color: transparent;
+  background: none;
+  z-index: 1;
+}
+
+input[type='date']:before {
+  color: transparent;
+  background: none;
+  display: block;
+  font-family: 'FontAwesome';
+  content: '\f073';
+  width: 15px;
+  height: 20px;
+  position: absolute;
+  top: calc(var(--inputHeight) / 4);
+  right: calc(var(--inputHeight) / 4);
+  color: #999;
+} */
+
+input[type='time']::-webkit-calendar-picker-indicator,
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+  filter: invert(64%) sepia(13%) saturate(0%) hue-rotate(184deg) brightness(92%) contrast(95%);
+}
+
+::-webkit-calendar-picker-indicator:hover {
+  /* background: var(--quinaryColor); */
+  cursor: pointer;
+  filter: invert(60%) sepia(10%) saturate(0%) hue-rotate(184deg) brightness(90%) contrast(90%) !important;
+}
+
+::-webkit-datetime-edit {
+  /* padding: 0.1em; */
+}
+::-webkit-datetime-edit-fields-wrapper {
+  background: var(--quinaryColor);
+}
+::-webkit-datetime-edit-text {
+  /* padding: 0.1em; */
+}
+::-webkit-datetime-edit-month-field {
+  color: var(--secondaryColor);
+}
+::-webkit-datetime-edit-day-field {
+  color: var(--secondaryColor);
+}
+::-webkit-datetime-edit-year-field {
+  color: var(--secondaryColor);
+}
+
 
 /* input[type="file"] {
   display: none;
@@ -146,11 +205,11 @@ input[type="password"] {
 }
 
 .add-plus::after {
-  content: "+";
+  content: '+';
   padding-left: 1px;
 }
 
 .add-minus::after {
-  content: "-";
+  content: '-';
   padding-left: 1px;
 }

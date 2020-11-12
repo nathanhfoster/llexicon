@@ -1,15 +1,10 @@
-import React, { lazy, useMemo } from "react"
-import PropTypes from "prop-types"
-import { Container, Row, Col, Button } from "reactstrap"
-import {
-  AddToHomeScreen,
-  BasicCard,
-  Header,
-  NewEntryButton,
-} from "../../components"
-import { RouteMap, RouterPush } from "../../redux/router/actions"
-import LogoImage from "../../components/BackgroundImage/LogoImage"
-import { connect as reduxConnect } from "react-redux"
+import React, { lazy, useMemo } from 'react'
+import PropTypes from 'prop-types'
+import { Container, Row, Col, Button } from 'reactstrap'
+import { AddToHomeScreen, BasicCard, Header, NewEntryButton } from '../../components'
+import { RouteMap, RouterPush } from 'redux/router/actions'
+import LogoImage from '../../components/BackgroundImage/LogoImage'
+import { connect } from 'react-redux'
 import {
   Bell,
   CloudDownload,
@@ -18,10 +13,10 @@ import {
   ShieldCheck,
   UserHeadset,
   WifiSlash,
-} from "../../images/SVG"
-import "./styles.css"
+} from '../../images/SVG'
+import './styles.css'
 
-const Footer = lazy(() => import("../../components/Footer"))
+const Footer = lazy(() => import('../../components/Footer'))
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 
@@ -29,22 +24,19 @@ const About = ({ userId, prompt, promptToInstall }) => {
   const features = useMemo(
     () => [
       {
-        faIcon: "fas fa-download",
-        title: "Installable",
-        text:
-          "Install this app to your device just like you would in an app store",
+        faIcon: 'fas fa-download',
+        title: 'Installable',
+        text: 'Install this app to your device just like you would in an app store',
 
-        button: (
-          <AddToHomeScreen prompt={prompt} promptToInstall={promptToInstall} />
-        ),
+        button: <AddToHomeScreen prompt={prompt} promptToInstall={promptToInstall} />,
       },
       {
-        faIcon: "fas fa-sync-alt",
-        title: "Sync",
-        text: "Automatically sync your entries across all devices",
+        faIcon: 'fas fa-sync-alt',
+        title: 'Sync',
+        text: 'Automatically sync your entries across all devices',
         button: (
           <Button
-            color="accent"
+            color='accent'
             onClick={() => RouterPush(RouteMap.SIGNUP)}
             disabled={userId ? true : false}
           >
@@ -53,125 +45,117 @@ const About = ({ userId, prompt, promptToInstall }) => {
         ),
       },
       {
-        header: <Bell className="AboutFeatureImage" />,
-        title: "Notifications",
-        text: "Daily motivation to journal your life",
+        header: <Bell className='AboutFeatureImage' />,
+        title: 'Notifications',
+        text: 'Daily motivation to journal your life',
         button: (
-          <Button
-            color="accent"
-            onClick={() => RouterPush(RouteMap.SETTINGS_PUSH_NOTIFICATIONS)}
-          >
+          <Button color='accent' onClick={() => RouterPush(RouteMap.SETTINGS_PUSH_NOTIFICATIONS)}>
             Grant Access
           </Button>
         ),
       },
       {
-        header: <WifiSlash className="AboutFeatureImage" />,
-        title: "Offline",
+        header: <WifiSlash className='AboutFeatureImage' />,
+        title: 'Offline',
         text: "Doesn't require an internet connection",
         button: (
-          <Button
-            color="accent"
-            onClick={() => RouterPush(RouteMap.SETTINGS_PREFERENCES)}
-          >
+          <Button color='accent' onClick={() => RouterPush(RouteMap.SETTINGS_PREFERENCES)}>
             Go Offline
           </Button>
         ),
       },
       {
-        header: <UserHeadset className="AboutFeatureImage" />,
-        title: "Support",
-        text: "Open to feature suggestions, bug reports, or conversation!",
+        header: <UserHeadset className='AboutFeatureImage' />,
+        title: 'Support',
+        text: 'Open to feature suggestions, bug reports, or conversation!',
         button: (
-          <Button color="accent" onClick={() => RouterPush(RouteMap.SUPPORT)}>
+          <Button color='accent' onClick={() => RouterPush(RouteMap.SUPPORT)}>
             Support Page
           </Button>
         ),
       },
 
       {
-        faIcon: "fas fa-link",
-        title: "Linkable",
-        text: "Share any public view you want with your friends and family",
+        faIcon: 'fas fa-link',
+        title: 'Linkable',
+        text: 'Share any public view you want with your friends and family',
         // button: <Button color="accent">Learn More</Button>
       },
       {
-        header: <PhoneLaptop className="AboutFeatureImage" />,
-        title: "Responsive",
-        text: "UI fits the screen dimensions of any device",
+        header: <PhoneLaptop className='AboutFeatureImage' />,
+        title: 'Responsive',
+        text: 'UI fits the screen dimensions of any device',
       },
       {
-        header: <CloudDownload className="AboutFeatureImage" />,
-        title: "Fresh",
-        text: "Always get the latest verision of the app",
+        header: <CloudDownload className='AboutFeatureImage' />,
+        title: 'Fresh',
+        text: 'Always get the latest verision of the app',
       },
       {
-        header: <Mobile className="AboutFeatureImage" />,
-        title: "App-like",
-        text: "Looks and interacts like a native app",
+        header: <Mobile className='AboutFeatureImage' />,
+        title: 'App-like',
+        text: 'Looks and interacts like a native app',
       },
       {
-        header: <ShieldCheck className="AboutFeatureImage" />,
-        title: "Secure",
-        text: "Always served over HTTPS",
+        header: <ShieldCheck className='AboutFeatureImage' />,
+        title: 'Secure',
+        text: 'Always served over HTTPS',
       },
     ],
-    [userId, prompt, promptToInstall]
+    [userId, prompt, promptToInstall],
   )
 
   const renderFeatures = useMemo(
     () =>
       features.map((feature, i) => (
-        <Col key={i} xs={12} sm={6} md={4} className="pt-3 pt-sm-4">
+        <Col key={i} xs={12} sm={6} md={4} className='pt-3 pt-sm-4'>
           <BasicCard
             {...feature}
-            cardHeaderClassName="Center"
-            cardBodyClassName="AboutCardBody"
-            cardTitleClassName="Center"
-            cardTextClassName="Center"
+            cardHeaderClassName='Center'
+            cardBodyClassName='AboutCardBody'
+            cardTitleClassName='Center'
+            cardTextClassName='Center'
           />
         </Col>
       )),
-    [features]
+    [features],
   )
 
-  const homeCardHeader = useMemo(
-    () => <LogoImage height={256} width={256} />,
-    []
-  )
+  const homeCardHeader = useMemo(() => <LogoImage height={256} width={256} />, [])
 
   const homeCardTitle = useMemo(
-    () => ({ name: "Astral Tree", render: <Header>Astral Tree</Header> }),
-    []
+    () => ({ name: 'Astral Tree', render: <Header>Astral Tree</Header> }),
+    [],
   )
 
   const homeCardText = useMemo(
     () => (
       <div>
-        <h3>The first progressive web app journal</h3>
+        <h4>Capture the essence of your life</h4>
+        <h4>with a free online journal and diary app</h4>
       </div>
     ),
-    []
+    [],
   )
 
   const homeCardButton = useMemo(() => <NewEntryButton />, [])
 
   return (
-    <Container tag="article" className="About Container">
+    <Container tag='article' className='About Container'>
       <Row>
-        <Col xs={12} className="pt-3 pt-sm-4">
+        <Col xs={12} className='pt-3 pt-sm-4'>
           <BasicCard
-            cardHeaderClassName="Center"
+            cardHeaderClassName='Center'
             header={homeCardHeader}
             title={homeCardTitle}
-            cardTextClassName="Center"
+            cardTextClassName='Center'
             text={homeCardText}
             button={homeCardButton}
           />
         </Col>
       </Row>
       <Row>{renderFeatures}</Row>
-      <Row className="mt-3 mt-sm-4">
+      <Row className='mt-3 mt-sm-4'>
         <Col xs={12}>
           <Footer />
         </Col>
@@ -184,4 +168,4 @@ About.propTypes = {
   userId: PropTypes.number,
 }
 
-export default reduxConnect(mapStateToProps)(About)
+export default connect(mapStateToProps)(About)

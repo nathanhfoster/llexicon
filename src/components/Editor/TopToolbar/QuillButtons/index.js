@@ -1,7 +1,29 @@
 import React, { memo } from "react"
-import PropTypes from "prop-types"
-
 import "./styles.css"
+
+const BUTTONS = [
+  [
+    { name: "bold" },
+    { name: "italic" },
+    { name: "underline" },
+    { name: "strike" },
+    { name: "blockquote" },
+    { name: "code-block" },
+  ],
+  [
+    { name: "script", value: "sub" },
+    { name: "script", value: "super" },
+  ],
+  [
+    { name: "list", value: "ordered" },
+    { name: "list", value: "bullet" },
+    { name: "indent", value: "-1" },
+    { name: "indent", value: "+1" },
+    { name: "direction", value: "rtl" },
+  ],
+  [{ name: "link" }, { name: "image" }, { name: "video" }],
+  [{ name: "clean" }],
+]
 
 const renderButtonGroup = (key, buttons) => (
   <span key={key} className="ql-formats">
@@ -19,30 +41,6 @@ const renderButtons = (buttons) =>
     }
   })
 
-const QuillButtons = ({
-  buttons = [
-    [
-      { name: "bold" },
-      { name: "italic" },
-      { name: "underline" },
-      { name: "strike" },
-      { name: "blockquote" },
-      { name: "code-block" },
-    ],
-    [
-      { name: "script", value: "sub" },
-      { name: "script", value: "super" },
-    ],
-    [
-      { name: "list", value: "ordered" },
-      { name: "list", value: "bullet" },
-      { name: "indent", value: "-1" },
-      { name: "indent", value: "+1" },
-      { name: "direction", value: "rtl" },
-    ],
-    [{ name: "link" }, { name: "image" }, { name: "video" }],
-    [{ name: "clean" }],
-  ],
-}) => renderButtons(buttons)
+const QuillButtons = () => renderButtons(BUTTONS)
 
 export default memo(QuillButtons)

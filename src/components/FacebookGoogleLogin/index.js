@@ -3,8 +3,7 @@ import { Row, Col } from "reactstrap"
 import { useDispatch } from "react-redux"
 import FacebookLogin from "react-facebook-login"
 import GoogleLogin from "react-google-login"
-import { SocialAuthenticationProviders } from "../../constants"
-import { SocialAuthentication } from "../../redux/Actions/SocialAuthentication"
+import { SocialAuthentication } from "redux/Actions/SocialAuthentication"
 import "./styles.css"
 const { REACT_APP_FACEBOOK_API, REACT_APP_GOOGLE_API } = process.env
 
@@ -24,7 +23,7 @@ const FacebookGoogleLogin = () => {
       userID
     } = response
     const payload = {
-      provider: SocialAuthenticationProviders.FACEBOOK,
+      provider: "Facebook",
       provider_id: id,
       access_token: accessToken,
       expires_in: expiresIn,
@@ -58,7 +57,7 @@ const FacebookGoogleLogin = () => {
     } = response
 
     const payload = {
-      provider: SocialAuthenticationProviders.GOOGLE,
+      provider: "Google",
       provider_id: El || googleId,
       access_token: id_token,
       expires_in,

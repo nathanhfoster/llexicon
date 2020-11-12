@@ -1,23 +1,28 @@
 .EntryInput .form-control,
+.EntryInput .form-group,
 .EntryInput .input-group-text {
   outline: 0px;
   border: 0;
   z-index: 3;
+  height: var(--inputHeight);
+  margin: 0;
 }
 
-
+.EntryInput #date_created_by_author {
+  max-width: 37.5vw;
+}
 
 .EntryInputTitle .form-control,
 .EntryInputTitle .input-group-text {
   box-shadow: none;
 }
 
-.EntryInput * {
-  border-bottom-left-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-}
-
 .EntryInputDelete {
   box-shadow: none !important;
   padding: 10px 12px;
 }
+
+.EntryViews {
+  background-color: var(--quinaryColor);
+}
+

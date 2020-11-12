@@ -1,14 +1,14 @@
-import React, { useMemo, lazy, memo, Fragment } from "react"
-import PropTypes from "prop-types"
-import { EntryPropType } from "../../../../redux/Entries/propTypes"
-import { GetEntryDetailUrl } from "../../../../redux/router/actions"
-import { BasicCard } from "../../.."
-import EntryCardHtml from "../EntryCardHtml"
-import EntryCardTitle from "../EntryCardTitle"
-import EntryCardText from "../EntryCardText"
-import "./styles.css"
+import React, { useMemo, lazy, memo, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { EntryPropType } from 'redux/Entries/propTypes'
+import { GetEntryDetailUrl } from 'redux/router/actions'
+import { BasicCard } from '../../..'
+import EntryCardHtml from '../EntryCardHtml'
+import EntryCardTitle from '../EntryCardTitle'
+import EntryCardText from '../EntryCardText'
+import './styles.css'
 
-const EntryOptionsMenu = lazy(() => import("../../EntryOptionsMenu"))
+const EntryOptionsMenu = lazy(() => import('../../EntryOptionsMenu'))
 
 const EntryCard = ({
   id,
@@ -31,7 +31,7 @@ const EntryCard = ({
   _size,
   size,
   selected,
-  onClickCallback,
+  onClick,
   minimal,
   cardClassName,
   cardHeaderClassName,
@@ -40,27 +40,23 @@ const EntryCard = ({
   reduceHtml,
 }) => {
   const href = useMemo(() => GetEntryDetailUrl(id), [id])
-  const tag = onClickCallback ? "div" : "a"
+  const tag = onClick ? 'div' : 'a'
 
   const cardHeader = useMemo(
     () => (
       <Fragment>
         <EntryCardHtml html={html} reduceHtml={reduceHtml} />
-        <div
-          className="EntryOptionsMenuContainer"
-          onClick={(e) => e.preventDefault()}
-        >
+        <div className='EntryOptionsMenuContainer' onClick={e => e.preventDefault()}>
           <EntryOptionsMenu
             entryId={id}
             title={title}
             is_public={is_public}
             author={author}
-            shouldSyncOnUpdate={true}
           />
         </div>
       </Fragment>
     ),
-    [id, is_public, html, views, rating]
+    [id, is_public, html, views, rating],
   )
 
   const cardTitle = useMemo(
@@ -68,7 +64,7 @@ const EntryCard = ({
       name: title,
       render: <EntryCardTitle title={title} is_public={is_public} />,
     }),
-    [title, is_public]
+    [title, is_public],
   )
 
   const cardText = useMemo(
@@ -84,24 +80,14 @@ const EntryCard = ({
           size={size || _size}
         />
       ),
-    [
-      tags,
-      people,
-      date_created_by_author,
-      date_updated,
-      views,
-      rating,
-      _size,
-      size,
-      minimal,
-    ]
+    [tags, people, date_created_by_author, date_updated, views, rating, _size, size, minimal],
   )
 
   return (
     <BasicCard
       selected={selected}
       tag={tag}
-      onClickCallback={onClickCallback}
+      onClick={onClick}
       href={href}
       header={cardHeader}
       title={cardTitle}
@@ -117,7 +103,7 @@ const EntryCard = ({
 EntryCard.propTypes = {
   ...EntryPropType,
   selected: PropTypes.bool.isRequired,
-  onClickCallback: PropTypes.func,
+  onClick: PropTypes.func,
   minimal: PropTypes.bool.isRequired,
   cardClassName: PropTypes.string.isRequired,
   cardHeaderClassName: PropTypes.string.isRequired,
@@ -129,10 +115,10 @@ EntryCard.propTypes = {
 EntryCard.defaultProps = {
   selected: false,
   minimal: false,
-  cardClassName: "EntryCardContainer",
-  cardHeaderClassName: "EntryCardHeader Overflow p-0",
-  cardBodyClassName: "px-2 pt-0 pb-2",
-  cardTextClassName: "EntryCardText",
+  cardClassName: 'EntryCardContainer',
+  cardHeaderClassName: 'EntryCardHeader Overflow p-0',
+  cardBodyClassName: 'px-2 pt-0 pb-2',
+  cardTextClassName: 'EntryCardText',
   reduceHtml: true,
 }
 

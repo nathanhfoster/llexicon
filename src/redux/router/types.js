@@ -18,6 +18,7 @@ const RouteMap = {
   ENTRIES_TABLE: "/entries/table",
   ENTRIES_MAP: "/entries/map",
   ENTRIES_FOLDERS: "/entries/folders",
+  ENTRIES_MEDIA: '/entries/media',
   LOGIN: "/login",
   SIGNUP: "/sign-up",
   PASSWORD_RESET: "/password-reset",

@@ -1,13 +1,13 @@
-import React, { useState, memo, Fragment, cloneElement } from "react"
-import PropTypes from "prop-types"
-import { useSelector, shallowEqual } from "react-redux"
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
-import "./styles.css"
+import React, { useState, memo, Fragment, cloneElement } from 'react'
+import PropTypes from 'prop-types'
+import { useSelector, shallowEqual } from 'react-redux'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import './styles.css'
 
 const BasicModal = ({
   show,
   title,
-  onClickCallback,
+  onClick,
   onSaveCallback,
   onCancelCallback,
   children,
@@ -23,8 +23,7 @@ const BasicModal = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleToggle = () =>
-    toggle ? toggle() : setIsOpen((prevIsOpen) => !prevIsOpen)
+  const handleToggle = () => (toggle ? toggle() : setIsOpen(prevIsOpen => !prevIsOpen))
 
   const handleClose = () => {
     onCancelCallback && onCancelCallback()
@@ -44,17 +43,17 @@ const BasicModal = ({
         Settings: { dark_mode },
       },
     }) => dark_mode,
-    [shallowEqual]
+    [shallowEqual],
   )
 
   return (
     <Fragment>
-      {button === false ? null : typeof button === "string" ? (
+      {button === false ? null : typeof button === 'string' ? (
         <Button
-          color="primary"
+          color='primary'
           disabled={disabled}
           onClick={() => {
-            onClickCallback && onClickCallback()
+            onClick && onClick()
             handleToggle()
           }}
         >
@@ -64,23 +63,18 @@ const BasicModal = ({
         cloneElement(button, {
           ...button.props,
           disabled,
-          onClick: () => {
+          onClick: e => {
             const { onClick } = button.props
-            onClick && onClick()
-            onClickCallback && onClickCallback()
-            handleToggle()
-          },
-          onClickCallback: () => {
-            onClickCallback && onClickCallback()
-            handleToggle()
+            if (onClick) onClick(e)
+            handleToggle(e)
           },
         })
       )}
       <Modal
         isOpen={shouldShowModal}
         toggle={handleToggle}
-        className="BasicModal"
-        contentClassName={`${dark_mode ? "BasicModalContentDark" : ""}`}
+        className='BasicModal'
+        contentClassName={`${dark_mode ? 'BasicModalContentDark' : ''}`}
         size={size}
         centered
         onClosed={onCancelCallback}
@@ -88,25 +82,25 @@ const BasicModal = ({
         <ModalHeader
           toggle={handleToggle}
           style={{
-            justifyContent:
-              typeof title === "string" ? "center" : "space-between",
+            justifyContent: typeof title === 'string' ? 'center' : 'space-between',
           }}
         >
           {title}
         </ModalHeader>
         <ModalBody className={className}>{children}</ModalBody>
-        <ModalFooter style={{ justifyContent: "center" }}>
-          {footer || (
-            <Fragment>
-              {saveButton &&
-                cloneElement(saveButton, {
-                  disabled: disabledSave,
-                  onClick: handleSave,
-                })}
-              {cancelButton &&
-                cloneElement(cancelButton, { onClick: handleClose })}
-            </Fragment>
-          )}
+        <ModalFooter style={{ justifyContent: 'center' }}>
+          {footer === null
+            ? null
+            : footer || (
+                <Fragment>
+                  {saveButton &&
+                    cloneElement(saveButton, {
+                      disabled: disabledSave,
+                      onClick: handleSave,
+                    })}
+                  {cancelButton && cloneElement(cancelButton, { onClick: handleClose })}
+                </Fragment>
+              )}
         </ModalFooter>
       </Modal>
     </Fragment>
@@ -115,7 +109,7 @@ const BasicModal = ({
 
 BasicModal.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  onClickCallback: PropTypes.func,
+  onClick: PropTypes.func,
   onSaveCallback: PropTypes.func,
   onCancelCallback: PropTypes.func,
   xs: PropTypes.number,
@@ -132,7 +126,7 @@ BasicModal.propTypes = {
   // if modal should be centered vertically in viewport
   centered: PropTypes.bool,
   // corresponds to bootstrap's modal sizes, ie. 'lg' or 'sm'
-  size: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
+  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
   // callback for toggling isOpen in the controlling component
   toggle: PropTypes.func,
   role: PropTypes.string, // defaults to "dialog"
@@ -140,7 +134,7 @@ BasicModal.propTypes = {
   labelledBy: PropTypes.string,
   keyboard: PropTypes.bool,
   // control backdrop, see https://v4-alpha.getbootstrap.com/components/modal/#options
-  backdrop: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(["static"])]),
+  backdrop: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['static'])]),
   // if body of modal should be scrollable when content is long
   scrollable: PropTypes.bool,
   // allows for a node/component to exist next to the modal (outside of it). Useful for external close buttons
@@ -179,15 +173,16 @@ BasicModal.propTypes = {
 }
 
 BasicModal.defaultProps = {
-  cancelButton: <Button color="danger">Cancel</Button>,
+  button: <Button color='accent'>Open</Button>,
+  cancelButton: <Button color='danger'>Cancel</Button>,
   saveButton: (
-    <Button className="mr-1" color="success">
+    <Button className='mr-1' color='success'>
       Save
     </Button>
   ),
   disabled: false,
   disabledSave: false,
-  size: "lg",
+  size: 'lg',
 }
 
 export default memo(BasicModal)

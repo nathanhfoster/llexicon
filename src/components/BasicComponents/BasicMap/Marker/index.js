@@ -1,8 +1,8 @@
-import React, { memo } from "react"
-import PropTypes from "prop-types"
-import PreviewBox from "./PreviewBox"
-import Stick from "./Stick"
-import { markerStyle } from "./styles"
+import React, { memo } from 'react'
+import PropTypes from 'prop-types'
+import PreviewBox from './PreviewBox'
+import Stick from './Stick'
+import { markerStyle } from './styles'
 
 const getShouldShowPreview = ({ $hover, hoveredChildKey, $dimensionKey }) =>
   $hover || hoveredChildKey === $dimensionKey
@@ -13,7 +13,7 @@ const Marker = props => {
 
   const style = {
     ...markerStyle,
-    zIndex: shouldShowPreview ? 1000 : zIndex
+    zIndex: shouldShowPreview ? 1000 : zIndex,
   }
 
   const onMouseEnter = () => $onMouseAllow(true)
@@ -22,9 +22,7 @@ const Marker = props => {
 
   return (
     <div style={style} onMouseEnter={onMouseEnter}>
-      {shouldShowPreview && (
-        <PreviewBox {...props} onMouseLeave={onMouseLeave} />
-      )}
+      {shouldShowPreview && <PreviewBox {...props} onMouseLeave={onMouseLeave} />}
       <Stick {...props} shouldShowPreview={shouldShowPreview} />
     </div>
   )
@@ -39,10 +37,7 @@ Marker.propTypes = {
   $prerender: PropTypes.bool,
   hoveredChildKey: PropTypes.string,
   boundaries: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number })
-        .isRequired
-    )
+    PropTypes.arrayOf(PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }).isRequired),
   ),
   clientId: PropTypes.string,
   clientName: PropTypes.string,
@@ -58,18 +53,15 @@ Marker.propTypes = {
   score: PropTypes.string,
   acreage: PropTypes.number,
   boundary: PropTypes.arrayOf(
-    PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }).isRequired
+    PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }).isRequired,
   ),
   locations: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   marketValue: PropTypes.number,
   parcelNumbers: PropTypes.array,
   siteType: PropTypes.string,
-  inGroup: PropTypes.bool
+  inGroup: PropTypes.bool,
 }
 
 Marker.defaultProps = { inGroup: false, zIndex: 1 }
 
-const areEqual = (prevProps, nextProps) =>
-  getShouldShowPreview(prevProps) === getShouldShowPreview(nextProps)
-
-export default memo(Marker, areEqual)
+export default memo(Marker)

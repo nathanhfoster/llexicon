@@ -1,31 +1,28 @@
-import React, { useEffect, useState, memo } from "react"
-import PropTypes from "prop-types"
-import {
-  EntryTagsProps,
-  EntryPeopleProps,
-} from "../../../../redux/Entries/propTypes"
-import moment from "moment"
-import { TagsContainer } from "../../../"
-import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from "./styles"
+import React, { useEffect, useState, memo } from 'react'
+import PropTypes from 'prop-types'
+import { EntryTagsProps, EntryPeopleProps } from 'redux/Entries/propTypes'
+import moment from 'moment'
+import { TagsContainer } from '../../../'
+import { K_CIRCLE_SIZE, K_POP_UP_ANIMATION } from './styles'
 
 const HEIGHT = 140
 const WIDTH = 200
 
 const rootStyles = {
-  display: "block",
-  margin: "auto",
-  padding: "6px",
-  alignContent: "center",
-  justifyContent: "center",
-  textAlign: "center",
+  display: 'block',
+  margin: 'auto',
+  padding: '6px',
+  alignContent: 'center',
+  justifyContent: 'center',
+  textAlign: 'center',
   height: HEIGHT,
   width: WIDTH,
-  position: "absolute",
+  position: 'absolute',
   left: -(WIDTH / 2) + 16,
   bottom: K_CIRCLE_SIZE - 2,
   zIndex: 999,
-  backgroundColor: "white",
-  color: "black",
+  backgroundColor: 'white',
+  color: 'black',
   boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
   borderRadius: 4,
 }
@@ -35,15 +32,15 @@ const mountedStyles = { ...rootStyles, ...K_POP_UP_ANIMATION }
 const lineStyle = {
   marginTop: 8,
   height: K_CIRCLE_SIZE,
-  width: "calc(100% - 12px)",
-  borderTop: "1px solid #808080",
-  position: "absolute",
+  width: 'calc(100% - 12px)',
+  borderTop: '1px solid #808080',
+  position: 'absolute',
   bottom: 0,
 }
 
 const column = {
-  position: "absolute",
-  bottom: "calc(50% - 4px)",
+  position: 'absolute',
+  bottom: 'calc(50% - 4px)',
 }
 
 const leftColumn = {
@@ -74,27 +71,21 @@ const PreviewBox = ({
     setStyles(mountedStyles)
   }, [])
 
-  if ($dimensionKey === "MyLocation") {
-    title = "Me"
+  if ($dimensionKey === 'MyLocation') {
+    title = 'Me'
   }
 
-  date_created_by_author = moment(
-    date_created_by_author || _lastUpdated
-  ).format("MM/DD/YYYY")
+  date_created_by_author = moment(date_created_by_author || _lastUpdated).format('MM/DD/YYYY')
 
   return (
     <div style={styles}>
       <div>{title}</div>
       <div>{address}</div>
 
-      {$dimensionKey !== "MyLocation" && (
+      {$dimensionKey !== 'MyLocation' && (
         <div>
           <TagsContainer tags={tags} />
-          <TagsContainer
-            tags={people}
-            faIcon="fas fa-user"
-            emptyString="No people..."
-          />
+          <TagsContainer tags={people} faIcon='fas fa-user' emptyString='No people...' />
         </div>
       )}
 

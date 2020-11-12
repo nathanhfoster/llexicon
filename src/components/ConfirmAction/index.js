@@ -1,30 +1,20 @@
-import React, { useCallback, useMemo, memo } from "react"
-import PropTypes from "prop-types"
-import { BasicModal } from "../"
-import { Button } from "reactstrap"
+import React, { useCallback, useMemo, memo } from 'react'
+import PropTypes from 'prop-types'
+import { BasicModal } from '../'
+import { Button } from 'reactstrap'
 
-const ConfirmAction = ({
-  button,
-  title,
-  message,
-  onConfirm,
-  onCancel,
-  size,
-  disabled,
-}) => {
+const ConfirmAction = ({ button, title, message, onConfirm, onCancel, size, disabled }) => {
   const handleConfirm = useCallback(() => {
-    onConfirm && onConfirm()
-  }, [])
+    if (onConfirm) onConfirm()
+  }, [onConfirm])
+  
   const handleCancel = useCallback(() => {
-    onCancel && onCancel()
-  }, [])
+    if (onCancel) onCancel()
+  }, [onCancel])
 
-  const saveButton = useMemo(() => <Button color="danger">Confirm</Button>, [])
+  const saveButton = useMemo(() => <Button color='danger'>Confirm</Button>, [])
 
-  const cancelButton = useMemo(
-    () => <Button color="primary">Cancel</Button>,
-    []
-  )
+  const cancelButton = useMemo(() => <Button color='primary'>Cancel</Button>, [])
 
   return (
     <BasicModal
@@ -37,7 +27,7 @@ const ConfirmAction = ({
       saveButton={saveButton}
       cancelButton={cancelButton}
     >
-      <span className="Center">{message}</span>
+      <span className='Center'>{message}</span>
     </BasicModal>
   )
 }
@@ -47,19 +37,19 @@ ConfirmAction.propTypes = {
   title: PropTypes.string,
   onConfirm: PropTypes.func,
   onCancel: PropTypes.func,
-  size: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
+  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
 }
 
 ConfirmAction.defaultProps = {
-  title: "Delete",
+  title: 'Delete',
   button: (
-    <Button color="danger">
-      <i className="fas fa-trash-alt mr-1" />
+    <Button color='danger'>
+      <i className='fas fa-trash-alt mr-1' />
       Delete
     </Button>
   ),
-  message: "Are you sure you want to delete complete this action?",
-  size: "lg",
+  message: 'Are you sure you want to delete complete this action?',
+  size: 'lg',
   disabled: false,
 }
 

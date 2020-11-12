@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useMemo, lazy } from "react"
 import PropTypes from "prop-types"
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
 import { Container, Row, Col, Button } from "reactstrap"
-import { connect as reduxConnect } from "react-redux"
+import { connect } from "react-redux"
 import Calendar from "react-calendar"
 import Moment from "react-moment"
 import MomentJS from "moment"
-import { RouterPush, RouteMap } from "../../../redux/router/actions"
-import { SetCalendar } from "../../../redux/Calendar/actions"
-import { GetUserEntriesByDate } from "../../../redux/Entries/actions"
+import { RouterPush, RouteMap } from "redux/router/actions"
+import { SetCalendar } from "redux/Calendar/actions"
+import { GetUserEntriesByDate } from "redux/Entries/actions"
+import TileContent from "./TileContent"
 import EntryList from "../EntryList"
 import "./styles.css"
 import "./stylesM.css"
@@ -18,7 +19,11 @@ const TileContent = lazy(() => import("./TileContent"))
 const mapStateToProps = ({
   Calendar: { activeDate, view },
   Entries: { items },
-}) => ({ entries: items, activeDate, view })
+}) => ({
+  entries: items,
+  activeDate,
+  view,
+})
 
 const mapDispatchToProps = {
   SetCalendar,
@@ -201,4 +206,4 @@ EntryCalendar.propTypes = {
   GetUserEntriesByDate: PropTypes.func.isRequired,
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(EntryCalendar)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryCalendar)

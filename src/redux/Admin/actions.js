@@ -16,9 +16,9 @@ const SetUserUsers = (users) => ({
   payload: users,
 })
 
-const SetUserEntries = (entries) => ({
+const SetUserEntries = (payload) => ({
   type: AdminActionTypes.ADMIN_SET_USERS_ENTRIES,
-  payload: entries,
+  payload,
 })
 
 const SetUserEntriesDetails = (entries, authorId) => ({
@@ -43,7 +43,6 @@ const GetAllUserEntries = () => (dispatch) => {
   return Axios()
     .get("entries/all/")
     .then(({ data }) => {
-      // console.log(data)
       dispatch(SetUserEntries(data))
       return data
     })

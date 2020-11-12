@@ -1,22 +1,20 @@
-import { Axios, AxiosForm, AxiosOffline } from "../Actions"
-import { UserActionTypes } from "../User/types"
-import { AppActionTypes } from "../App/types"
-import { ResetRedux } from "../App/actions"
-import { SetAlert } from "../Alerts/actions"
-import { persistReduxState } from "../localState"
-import { GetUserEntries } from "../Entries/actions"
-import { clearReduxStoreFromLocalStorage } from "../localState"
-import qs from "qs"
-import ReactGA from "react-ga"
+import { Axios, AxiosForm, AxiosOffline } from '../Actions'
+import { UserActionTypes } from '../User/types'
+import { AppActionTypes } from '../App/types'
+import { ResetRedux } from '../App/actions'
+import { SetAlert } from '../Alerts/actions'
+import { persistReduxState } from '../localState'
+import { GetUserEntries } from '../Entries/actions'
+import { clearReduxStoreFromLocalStorage } from '../localState'
+import qs from 'qs'
+import ReactGA from 'react-ga'
 
 const setPendingUser = (payload = true) => ({
   type: UserActionTypes.USER_PENDING,
   payload,
 })
 
-const setUserError = ({ config, response, message, name, stack }) => (
-  dispatch
-) => {
+const setUserError = ({ config, response, message, name, stack }) => dispatch => {
   const { status, statusText } = response
   const payload = { message, name, stack, status, statusText }
 
@@ -28,33 +26,33 @@ const setUserError = ({ config, response, message, name, stack }) => (
 
 const ResetUserError = () => ({ type: UserActionTypes.USER_RESET_ERROR })
 
-const SetUser = (payload) => ({
+const SetUser = payload => ({
   type: UserActionTypes.USER_SET,
   payload,
 })
 
-const ChangeUser = (payload) => ({ type: UserActionTypes.USER_SET, payload })
+const ChangeUser = payload => ({ type: UserActionTypes.USER_SET, payload })
 
-const UserLogin = (payload, rememberMe) => async (dispatch) => {
+const UserLogin = (payload, rememberMe) => async dispatch => {
   dispatch(setPendingUser())
   return await AxiosOffline()
-    .post("login/", qs.stringify(payload))
+    .post('login/', qs.stringify(payload))
     .then(async ({ data }) => {
       const { id, token } = data
       await dispatch(RefreshPatchUser(id))
       await dispatch(SetUser(data))
       await dispatch(persistReduxState())
-      await dispatch(GetUserEntries(1))
+      await dispatch(GetUserEntries())
       ReactGA.event({
-        category: "Login",
-        action: "User logged in!",
+        category: 'Login',
+        action: 'User logged in!',
       })
       return data
     })
-    .catch((e) => dispatch(setUserError(e)))
+    .catch(e => dispatch(setUserError(e)))
 }
 
-const RefreshPatchUser = (id) => (dispatch) => {
+const RefreshPatchUser = id => dispatch => {
   dispatch(setPendingUser())
   return AxiosOffline()
     .get(`users/${id}/refresh/`)
@@ -64,12 +62,12 @@ const RefreshPatchUser = (id) => (dispatch) => {
         payload: data,
       })
       ReactGA.event({
-        category: "Refresh Patch User",
-        action: "User refreshed their login",
+        category: 'Refresh Patch User',
+        action: 'User refreshed their login',
       })
       return data
     })
-    .catch((e) => {
+    .catch(e => {
       dispatch(setUserError(e))
       e.response && e.response.status == 401
         ? dispatch({
@@ -80,41 +78,41 @@ const RefreshPatchUser = (id) => (dispatch) => {
     })
 }
 
-const UserLogout = () => (dispatch) => dispatch(ResetRedux())
+const UserLogout = () => dispatch => dispatch(ResetRedux())
 
-const CreateUser = (payload, rememberMe) => (dispatch) => {
+const CreateUser = (payload, rememberMe) => dispatch => {
   dispatch(setPendingUser())
   return AxiosOffline()
-    .post("users/", qs.stringify(payload))
-    .then((res) => {
+    .post('users/', qs.stringify(payload))
+    .then(res => {
       dispatch(UserLogin(payload, rememberMe))
       ReactGA.event({
-        category: "Sign Up",
-        action: "User signed up!",
+        category: 'Sign Up',
+        action: 'User signed up!',
       })
       return res
     })
-    .catch((e) => dispatch(setUserError(e)))
+    .catch(e => dispatch(setUserError(e)))
 }
 
-const UpdateUser = (payload) => (dispatch, getState) => {
+const UpdateUser = payload => (dispatch, getState) => {
   dispatch(setPendingUser())
   const { id } = getState().User
   return Axios()
     .patch(`users/${id}/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch({ type: UserActionTypes.USER_SET, payload: data })
-      dispatch(SetAlert({ title: "Updated", message: "Profile" }))
+      dispatch(SetAlert({ title: 'Updated', message: 'Profile' }))
       ReactGA.event({
-        category: "Update User",
-        action: "User updated their account",
+        category: 'Update User',
+        action: 'User updated their account',
       })
       return data
     })
-    .catch((e) => dispatch(setUserError(e)))
+    .catch(e => dispatch(setUserError(e)))
 }
 
-const UpdateProfile = (payload) => (dispatch, getState) => {
+const UpdateProfile = payload => (dispatch, getState) => {
   dispatch(setPendingUser())
   const { id } = getState().User
   // await dispatch({ type: USER_UPDATE_LOADING })
@@ -126,28 +124,21 @@ const UpdateProfile = (payload) => (dispatch, getState) => {
         payload: data,
       })
       ReactGA.event({
-        category: "Update Profile",
-        action: "User updated their profile",
+        category: 'Update Profile',
+        action: 'User updated their profile',
       })
       return data
     })
-    .catch((e) => dispatch(setUserError(e)))
+    .catch(e => dispatch(setUserError(e)))
 }
 
-const SetUserLocation = (position) => (dispatch) => {
+const SetUserLocation = position => dispatch => {
   if (!position) {
     return dispatch({ type: UserActionTypes.USER_RESET_LOCATION })
   }
+
   const {
-    coords: {
-      accuracy,
-      altitude,
-      altitudeAccuracy,
-      heading,
-      latitude,
-      longitude,
-      speed,
-    },
+    coords: { accuracy, altitude, altitudeAccuracy, heading, latitude, longitude, speed },
     timestamp,
   } = position
 
@@ -166,61 +157,24 @@ const SetUserLocation = (position) => (dispatch) => {
   })
 }
 
-const GetUserLocation = () => (dispatch) => {
-  const { geolocation } = navigator
-  return geolocation.getCurrentPosition(
-    (position) => {
-      //console.log("GetUserLocation:", position)
-      dispatch(SetUserLocation(position))
-      ReactGA.event({
-        category: "Get User Location",
-        action: "User is using the getCurrentPosition API!",
-      })
-    },
-    (error) => console.log("GetUserLocation ERROR: ", error),
-    { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 }
-  )
-}
-
-const WatchUserLocation = (watchId) => (dispatch) => {
-  const { geolocation } = navigator
-  if (watchId) {
-    dispatch(SetUserLocation(null))
-    return geolocation.clearWatch(watchId)
-  }
-
-  return geolocation.watchPosition(
-    (position) => {
-      // console.log("WatchUserLocation:", position)
-      dispatch(SetUserLocation(position))
-      ReactGA.event({
-        category: "Watch User Location",
-        action: "User is using the watchPosition API!",
-      })
-    },
-    (error) => console.log("WatchUserLocation ERROR: ", error),
-    { enableHighAccuracy: true, timeout: 3000, maximumAge: 10000 }
-  )
-}
-
-const PasswordReset = (payload) => (dispatch) => {
+const PasswordReset = payload => dispatch => {
   dispatch(setPendingUser())
   return AxiosOffline()
-    .post("rest-auth/password/reset/", qs.stringify(payload))
+    .post('rest-auth/password/reset/', qs.stringify(payload))
     .then(({ data: { detail } }) => {
       dispatch(
         SetAlert({
-          title: "Password Reset",
+          title: 'Password Reset',
           message: detail,
-        })
+        }),
       )
       ReactGA.event({
-        category: "Password Reset",
-        action: "User requested a password reset!",
+        category: 'Password Reset',
+        action: 'User requested a password reset!',
       })
       dispatch(setPendingUser(false))
     })
-    .catch((e) => dispatch(setUserError(e)))
+    .catch(e => dispatch(setUserError(e)))
 }
 
 const GetUserSettings = () => (dispatch, getState) => {
@@ -234,10 +188,10 @@ const GetUserSettings = () => (dispatch, getState) => {
       })
       return data
     })
-    .catch((e) => console.log(e))
+    .catch(e => console.log(e))
 }
 
-const PostSettings = (payload) => (dispatch) => {
+const PostSettings = payload => dispatch => {
   dispatch({
     type: UserActionTypes.USER_SET_SETTINGS,
     payload,
@@ -250,14 +204,14 @@ const PostSettings = (payload) => (dispatch) => {
         payload: data,
       })
       ReactGA.event({
-        category: "Post Settings",
-        action: "User posted a new setting!",
+        category: 'Post Settings',
+        action: 'User posted a new setting!',
       })
       return data
     })
-    .catch((e) => console.log("PostSettings: ", e.response))
+    .catch(e => console.log('PostSettings: ', e.response))
 }
-const UpdateSettings = (payload) => (dispatch, getState) => {
+const UpdateSettings = payload => (dispatch, getState) => {
   const { id } = getState().User.Settings
   dispatch({
     type: UserActionTypes.USER_SET_SETTINGS,
@@ -267,41 +221,41 @@ const UpdateSettings = (payload) => (dispatch, getState) => {
   return AxiosOffline()
     .patch(`user/settings/${id}/`, qs.stringify(payload))
     .then(({ data }) => {
-      dispatch(SetAlert({ title: "Updated", message: "Setting" }))
+      dispatch(SetAlert({ title: 'Updated', message: 'Setting' }))
       dispatch({
         type: UserActionTypes.USER_SET_SETTINGS,
         payload: data,
       })
       ReactGA.event({
-        category: "Update Settings",
-        action: "User updated a setting!",
+        category: 'Update Settings',
+        action: 'User updated a setting!',
       })
       return data
     })
-    .catch((e) => console.log("UpdateSettings: ", e.response))
+    .catch(e => console.log('UpdateSettings: ', e.response))
 }
 
-const DeleteAccount = () => (dispatch, getState) => {
+const DeleteAccount = userId => (dispatch, getState) => {
   const { id } = getState().User
   return AxiosOffline()
-    .delete(`users/${id}/`)
-    .then((res) => {
-      dispatch(SetAlert({ title: "Deleted", message: "Account" }))
+    .delete(`users/${userId || id}/`)
+    .then(res => {
+      dispatch(SetAlert({ title: 'Deleted', message: 'Account' }))
       clearReduxStoreFromLocalStorage()
       dispatch(ResetRedux())
       ReactGA.event({
-        category: "Delete Account",
-        action: "User deleted their account!",
+        category: 'Delete Account',
+        action: 'User deleted their account!',
       })
       return res
     })
-    .catch((e) => console.log("DeleteAccount: ", e.response))
+    .catch(e => console.log('DeleteAccount: ', e.response))
 }
 
-const SearchForUsers = (search) =>
+const SearchForUsers = search =>
   Axios.get(`/users?search=${search}/`)
     .then(({ data }) => {})
-    .catch((e) => console.log("SearchForUsers: ", e.response))
+    .catch(e => console.log('SearchForUsers: ', e.response))
 
 export {
   ResetUserError,
@@ -314,8 +268,6 @@ export {
   UpdateUser,
   UpdateProfile,
   SetUserLocation,
-  GetUserLocation,
-  WatchUserLocation,
   PasswordReset,
   GetUserSettings,
   PostSettings,

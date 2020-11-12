@@ -1,25 +1,26 @@
-import { TextEditorActionTypes } from "../TextEditor/types"
-import { AppActionTypes } from "../App/types"
-import { DEFAULT_ENTRY_FILES } from "../Entries/reducer"
-import { getStringBytes } from "../../utils"
+import { TextEditorActionTypes } from '../TextEditor/types'
+import { AppActionTypes } from '../App/types'
+import { DEFAULT_ENTRY_FILES } from '../Entries/reducer'
+import { getStringBytes } from '../../utils'
+import { NEW_ENTRY_ID } from 'redux/Entries/utils'
 
 const defaultTextEditor = {
-  _clearedOn: "",
+  _clearedOn: '',
   size: 0,
   author: null,
-  id: "NewEntry",
+  id: NEW_ENTRY_ID,
   tags: [
     {
-      name: "Excited",
+      name: 'Excited',
     },
     {
-      name: "Inspired",
+      name: 'Inspired',
     },
   ],
   people: [],
   EntryFiles: DEFAULT_ENTRY_FILES,
-  title: "",
-  html: "<p><br></p>",
+  title: '',
+  html: '<p><br></p>',
   date_created: null,
   date_created_by_author: null,
   date_updated: null,
@@ -64,6 +65,9 @@ const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
         rating: 0,
         _clearedOn: new Date(),
       }
+
+    case AppActionTypes.LOAD_PERSISTED_STATE:
+      return payload?.TextEditor || state
 
     default:
       return state

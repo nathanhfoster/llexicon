@@ -1,62 +1,56 @@
-import React, { useMemo, useState, Fragment } from "react"
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { connect as reduxConnect } from "react-redux"
-import { EntryCards, Header } from "../.."
-import { ButtonGroup, Button } from "reactstrap"
-import "./styles.css"
+import React, { useRef, useMemo, Fragment } from 'react'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import { connect } from 'react-redux'
+import { EntryCards, Header } from '../..'
+import { Col } from 'reactstrap'
+import './styles.css'
 
-const mapStateToProps = ({
-  Entries: { items, filteredItems, showOnlyPublic }
-}) => ({
+const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) => ({
   items,
   filteredItems,
-  showOnlyPublic
+  showOnlyPublic,
 })
 
 const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
-  const [shouldRerender, forceUpdate] = useState(false)
-  const handleRefresh = () => forceUpdate(!shouldRerender)
+  const containerRef = useRef()
+
   const viewableEntries = useMemo(
     () =>
       items
         .concat(filteredItems)
-        .filter(({ _shouldDelete, is_public }) =>
-          showOnlyPublic ? is_public : !_shouldDelete
-        ),
-    [items, filteredItems, shouldRerender, showOnlyPublic]
+        .filter(({ _shouldDelete, is_public }) => (showOnlyPublic ? is_public : !_shouldDelete)),
+    [items, filteredItems, showOnlyPublic],
   )
 
-  let randomEntries = []
+  const randomEntries = useMemo(() => {
+    const uniqueEntryIndices = [...viewableEntries]
 
-  const numberOfRandomEntries =
-    viewableEntries.length < 4 ? viewableEntries.length : 6
+    let entries = []
 
-  let uniqueEntryIndices = [...viewableEntries]
+    for (let i = 0, { length } = uniqueEntryIndices; i < length; i++) {
+      const entry = uniqueEntryIndices.popRandomValue()
 
-  for (let i = 0; i < numberOfRandomEntries; i++) {
-    const entry = uniqueEntryIndices.popRandomValue()
+      entries.push(entry)
+    }
 
-    randomEntries.push(entry)
-  }
+    return entries
+  }, [viewableEntries])
 
   return (
     <Fragment>
-      <Header fill="var(--quinaryColor)" display="inline-block">
-        Random Entries
-        <ButtonGroup className="EntriesRandomRefreshButtonContainer">
-          <Button color="accent" onClick={handleRefresh}>
-            <i className="fas fa-sync-alt" />
-          </Button>
-        </ButtonGroup>
-      </Header>
-      <EntryCards entries={randomEntries} />
+      <Col xs={12} className='p-0'>
+        <Header fill='var(--quinaryColor)'>Random Entries</Header>
+      </Col>
+      <div ref={containerRef} className='HomeRow pb-1 mx-1 row'>
+        <EntryCards entries={randomEntries} containerRef={containerRef} />
+      </div>
     </Fragment>
   )
 }
 
 EntriesRandom.propTypes = {
   items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes
+  filteredItems: EntriesPropTypes,
 }
 
-export default reduxConnect(mapStateToProps)(EntriesRandom)
+export default connect(mapStateToProps)(EntriesRandom)

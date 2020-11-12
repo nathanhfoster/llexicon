@@ -1,12 +1,12 @@
 import React, { useEffect, useCallback, useMemo } from "react"
 import PropTypes from "prop-types"
-import { UsersProps } from "../../redux/Admin/propTypes"
-import { connect as reduxConnect } from "react-redux"
+import { UsersProps } from "redux/Admin/propTypes"
+import { connect } from "react-redux"
 import UserEntriesTable from "./UserEntriesTable"
 import { BasicTable, Header } from "../../components"
 import Moment from "react-moment"
 import { Container, Row, Col } from "reactstrap"
-import { GetAllUsers, GetAllUserEntries } from "../../redux/Admin/actions"
+import { GetAllUsers, GetAllUserEntries } from "redux/Admin/actions"
 import { stringMatch } from "../../utils"
 
 const { REACT_APP_API_URL } = process.env
@@ -25,7 +25,7 @@ const mapDispatchToProps = {
 const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
   useEffect(() => {
     // Using an IIFE
-    ;(async function anyNameFunction() {
+    ;(async () => {
       await GetAllUsers()
       await GetAllUserEntries()
     })()
@@ -172,7 +172,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
           <Header fill="var(--quinaryColor)">Admin Table</Header>
         </Col>
       </Row>
-      <Row className="HomeRow mb-3 pb-1">
+      <Row>
         <BasicTable
           sortable
           filterable
@@ -198,4 +198,4 @@ Admin.propTypes = {
 
 Admin.defaultProps = {}
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(Admin)
+export default connect(mapStateToProps, mapDispatchToProps)(Admin)

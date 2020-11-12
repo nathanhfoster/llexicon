@@ -1,4 +1,5 @@
-import { MapActionTypes } from "./types"
+import { AppActionTypes } from 'redux/App/types'
+import { MapActionTypes } from './types'
 
 const CENTER_OF_US = { lat: 39.8097343, lng: -98.5556199 }
 
@@ -34,6 +35,9 @@ const Map = (state = DEFAULT_STATE_MAP, action) => {
 
     case MapActionTypes.MAP_RESET:
       return DEFAULT_STATE_MAP
+
+    case AppActionTypes.LOAD_PERSISTED_STATE:
+      return payload?.Map || state
 
     default:
       return state

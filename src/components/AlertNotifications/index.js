@@ -1,30 +1,20 @@
-import React, { useCallback } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
-import { UseDebounce } from ".."
-import { ClearAlerts } from "../../redux/Alerts/actions"
-import "./styles.css"
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Toast, ToastHeader, ToastBody, Button } from 'reactstrap'
+import { UseDebounce } from '..'
+import { ClearAlerts, UpdateAppVersion } from 'redux/Alerts/actions'
+import './styles.css'
 
-const mapStateToProps = ({
-  Alerts: { title, message, timeout, serviceWorkerRegistration },
-}) => ({
+const mapStateToProps = ({ Alerts: { title, message, timeout } }) => ({
   title,
   message,
   timeout,
-  serviceWorkerRegistration,
 })
 
-const mapDispatchToProps = { ClearAlerts }
+const mapDispatchToProps = { ClearAlerts, UpdateAppVersion }
 
-const AlertNotifications = ({
-  icon,
-  title,
-  message,
-  timeout,
-  serviceWorkerRegistration,
-  ClearAlerts,
-}) => {
+const AlertNotifications = ({ icon, title, message, timeout, ClearAlerts, UpdateAppVersion }) => {
   const appUpdate = timeout === false
   const shouldShow = appUpdate || (title && message) ? true : false
 
@@ -32,23 +22,9 @@ const AlertNotifications = ({
     ClearAlerts()
   }, [])
 
-  const handleUpdate = useCallback(() => {
-    handleClearAlerts()
-    // serviceWorkerRegistration &&
-    //   serviceWorkerRegistration.waiting &&
-    //   serviceWorkerRegistration.waiting.postMessage({ type: "SKIP_WAITING" })
-    setTimeout(() => {
-      // const currentUrl = window.location.href
-      // window.close()
-      // window.open(currentUrl, "_blank")
-
-      window.location.reload()
-    }, 400)
-  }, [])
-
   return (
     <Toast
-      className="Alert rounded"
+      className='Alert rounded'
       isOpen={shouldShow}
       appear={true}
       enter={true}
@@ -62,7 +38,7 @@ const AlertNotifications = ({
     >
       <UseDebounce
         debounceOnMount={!appUpdate}
-        onChangeCallback={handleClearAlerts}
+        onChange={handleClearAlerts}
         value={shouldShow}
         delay={timeout}
       />
@@ -71,8 +47,8 @@ const AlertNotifications = ({
         <h6>{message}</h6>
 
         {appUpdate && (
-          <div className="Center">
-            <Button onClick={handleUpdate} color="accent">
+          <div className='Center'>
+            <Button onClick={UpdateAppVersion} color='accent'>
               Update
             </Button>
           </div>
@@ -87,15 +63,13 @@ AlertNotifications.propTypes = {
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   ClearAlerts: PropTypes.func.isRequired,
+  UpdateAppVersion: PropTypes.func.isRequired,
   timeout: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
 }
 
 AlertNotifications.defaultProps = {
-  icon: <i className="fas fa-feather-alt" />,
+  icon: <i className='fas fa-feather-alt' />,
   timeout: 3000,
 }
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AlertNotifications)
+export default connect(mapStateToProps, mapDispatchToProps)(AlertNotifications)

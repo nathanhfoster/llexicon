@@ -1,17 +1,17 @@
-import React, { useCallback, memo } from "react"
-import PropTypes from "prop-types"
-import { connect as reduxConnect } from "react-redux"
-import { Col } from "reactstrap"
-import { BasicList, EntryMinimal } from "../.."
-import { EntriesPropTypes } from "../../../redux/Entries/propTypes"
-import { GetUserEntries } from "../../../redux/Entries/actions"
-import deepEquals from "../../../utils/deepEquals"
+import React, { useCallback, memo } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Col } from 'reactstrap'
+import { BasicList, EntryMinimal } from '../..'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import { GetUserEntries } from 'redux/Entries/actions'
+import deepEquals from 'utils/deepEquals'
 
 const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
   const entry = data[index]
 
   return (
-    <Col key={entry.id} xs={12} className="fade-in px-0 py-1" style={style}>
+    <Col key={entry.id} xs={12} className='fade-in px-0 py-1' style={style}>
       <EntryMinimal {...entry} />
     </Col>
   )
@@ -71,13 +71,10 @@ EntriesList.propTypes = {
 
 EntriesList.defaultProps = {
   height: 500,
-  width: "100%",
+  width: '100%',
   itemSize: 150,
 }
 
 const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
 
-export default reduxConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(memo(EntriesList, isEqual))
+export default connect(mapStateToProps, mapDispatchToProps)(memo(EntriesList, isEqual))

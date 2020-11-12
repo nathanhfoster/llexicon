@@ -3,16 +3,9 @@ const TILE_SIZE = 256
 const world2Screen = ({ x, y }, zoom, heading, tilt = 0) => {
   const scale = Math.pow(2, zoom)
   const scaledTile = scale * TILE_SIZE
-  // const zX = Math.cos(tilt)
-  // const zY = Math.sin(tilt)
-  // console.log('tilt: ', tilt)
-  // console.log('zY', zY)
-  // console.log('y: ', y)
-  // console.log('y / zY: ', x / zY)
   x = x * scaledTile
   y = y * scaledTile
 
-  // console.log({ x, y })
   return { x, y }
 }
 

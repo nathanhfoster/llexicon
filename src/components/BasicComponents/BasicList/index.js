@@ -114,10 +114,6 @@ class BasicList extends PureComponent {
     const bottomOfListIndex = length === 0 ? length : length - 1
     const reachedBottomOfList =
       bottomOfListIndex !== 0 && overscanStopIndex === bottomOfListIndex
-    // console.log("overscanStopIndex: ", overscanStopIndex)
-    // console.log("visibleStopIndex: ", visibleStopIndex)
-    // console.log('reachedBottomOfList: ', reachedBottomOfList)
-    // console.log('---------------------------------------')
 
     reachedBottomOfList && onScrollToBottomOfListCallback()
   }

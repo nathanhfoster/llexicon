@@ -1,8 +1,18 @@
-import React, { useState, useEffect, memo, Fragment } from "react"
-import { inputProps } from "./propTypes"
-import { FormGroup, Label, Input, FormFeedback, FormText } from "reactstrap"
+import React, { useMemo, memo, Fragment } from "react"
+import { InputProps } from "./propTypes"
+import {
+  FormGroup,
+  Label,
+  CustomInput,
+  CustomFileInput,
+  Input,
+  FormFeedback,
+  FormText,
+} from "reactstrap"
+import BasicOption from "../BasicOption"
 
 const BasicInput = ({
+  id,
   name,
   defaultValue,
   check,
@@ -19,81 +29,121 @@ const BasicInput = ({
   helpText,
   multiline,
   row,
+  inline,
   className,
+  value,
+  onChange,
+  children,
+  options,
+  multiple,
+  min,
+  max,
+  step,
   ...restOfProps
 }) => {
-  const [value, setValue] = useState(restOfProps.value)
-
-  useEffect(() => {
-    if (value !== restOfProps.value) {
-      setValue(value)
-    }
-  }, [restOfProps.value])
-
   const isCheckOrRadio = type === "checkbox" || type === "radio"
 
-  const handleChange = ({ target: { type, value, checked, files } }) => {
-    if (type === "radio" || type === "checkbox") {
-      setValue(checked)
-    } else if (type === "file") {
-      // setValue(files)
-      setValue(value)
-    } else {
-      setValue(value)
-    }
-  }
+  const uniqueId = id || name
 
   const valid =
     restOfProps.valid || (typeof isValid === "function" && isValid(value))
+
   const invalid =
     restOfProps.invalid || (typeof isInvalid === "function" && isInvalid(value))
 
-  const renderLabel = `${label} ${required ? "*" : ""}`
-
-  const renderInput = (
-    <Input
-      id={name}
-      defaultValue={defaultValue}
-      value={value}
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      disabled={disabled}
-      valid={Boolean(valid)}
-      invalid={Boolean(invalid)}
-      onChange={handleChange}
-    />
+  const renderOptions = useMemo(
+    () =>
+      type === "select"
+        ? options?.map((option, i) => (
+            <BasicOption key={`option-${name}-${i}`} {...option} />
+          ))
+        : undefined,
+    [name, options, type]
   )
 
+  const renderInput = useMemo(() => {
+    const inputProps = {
+      id: uniqueId,
+      className,
+      defaultValue,
+      value,
+      type,
+      name,
+      placeholder,
+      disabled,
+      valid: Boolean(valid),
+      invalid: Boolean(invalid),
+      onChange,
+      min,
+      max,
+      multiple,
+      step,
+    }
+
+    switch (type) {
+      case "switch":
+        return <CustomInput {...inputProps} />
+      case "file":
+        return <CustomFileInput {...inputProps} />
+      default:
+        return <Input {...inputProps}>{renderOptions}</Input>
+    }
+  }, [
+    uniqueId,
+    className,
+    defaultValue,
+    value,
+    type,
+    name,
+    placeholder,
+    disabled,
+    valid,
+    invalid,
+    onChange,
+    min,
+    max,
+    multiple,
+    step,
+    renderOptions,
+  ])
+
+  const renderLabel = useMemo(() => {
+    const labelText = label ? `${label} ${required ? "*" : ""}` : null
+
+    return isCheckOrRadio ? (
+      <Label check={isCheckOrRadio} for={name}>
+        {renderInput} {labelText}
+      </Label>
+    ) : (
+      <Fragment>
+        {label && (
+          <Label check={isCheckOrRadio} for={name}>
+            {labelText}
+          </Label>
+        )}
+        {renderInput}
+      </Fragment>
+    )
+  }, [label, required, isCheckOrRadio, name, renderInput])
+
   return (
-    <FormGroup check={isCheckOrRadio} row={row}>
-      {isCheckOrRadio ? (
-        <Label check={isCheckOrRadio} for={name}>
-          {renderInput} {renderLabel}
-        </Label>
-      ) : (
-        <Fragment>
-          {label && (
-            <Label check={isCheckOrRadio} for={name}>
-              {renderLabel}
-            </Label>
-          )}
-          {renderInput}
-        </Fragment>
-      )}
+    <FormGroup check={isCheckOrRadio} row={row} inline={inline}>
+      {renderLabel}
       {typeof valid === "string" && (
-        <FormFeedback valid={!valid}>{valid}</FormFeedback>
+        <FormFeedback for={uniqueId} valid={!valid}>
+          {valid}
+        </FormFeedback>
       )}
       {typeof invalid === "string" && (
-        <FormFeedback valid={!invalid}>{invalid}</FormFeedback>
+        <FormFeedback for={uniqueId} valid={!invalid}>
+          {invalid}
+        </FormFeedback>
       )}
       {helpText && <FormText>{helpText}</FormText>}
     </FormGroup>
   )
 }
 
-BasicInput.propTypes = inputProps
-
-BasicInput.defaultProps = {}
+BasicInput.propTypes = InputProps
 
 export default memo(BasicInput)

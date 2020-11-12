@@ -1,52 +1,61 @@
-import React, { useState, useRef, useEffect, useMemo, memo } from "react"
-import PropTypes from "prop-types"
-import { Container } from "reactstrap"
-import ToolbarModal from "../../ToolbarModal"
-import { RatingStar, RatingIcon } from "../../../../"
-import "./styles.css"
+import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react'
+import PropTypes from 'prop-types'
+import { Container } from 'reactstrap'
+import ToolbarModal from '../../ToolbarModal'
+import { RatingStar, RatingIcon } from '../../../../'
+import './styles.css'
 
 const getInitialState = ({ rating }) => ({ rating, savedRating: false })
 
-const RatingButtonModal = (props) => {
-  const { xs, onChangeCallback } = props
-  const [state, setState] = useState(getInitialState(props))
-  const { rating, savedRating } = state
+const RatingButtonModal = ({ xs, onChange, ...restOfProps }) => {
+  const [{ rating, savedRating }, setState] = useState(getInitialState(restOfProps))
 
-  const previousPropsRating = useRef(props.rating)
+  const previousPropsRating = useRef(restOfProps.rating)
   const ratingChanged =
-    previousPropsRating.current !== props.rating && props.ratring !== rating
+    previousPropsRating.current !== restOfProps.rating && restOfProps.ratring !== rating
 
   useEffect(() => {
     if (ratingChanged) {
-      setState((prevState) => ({ ...prevState, rating: props.rating }))
+      setState(prevState => ({ ...prevState, rating: restOfProps.rating }))
     }
-  }, [props.rating])
+  }, [restOfProps.rating])
 
-  const handleClick = () => {}
+  const handleClick = useCallback(() => {}, [])
 
-  const handleCancel = () =>
-    setState((prevState) => ({
-      ...prevState,
-      rating: props.rating,
-      savedRating: false,
-    }))
+  const handleCancel = useCallback(
+    () =>
+      setState(prevState => ({
+        ...prevState,
+        rating: restOfProps.rating,
+        savedRating: false,
+      })),
+    [restOfProps.rating],
+  )
 
-  const handleSave = () => onChangeCallback({ rating })
+  const handleSave = useCallback(() => onChange({ rating }), [rating])
 
-  const handleStarClicked = (rating) =>
-    setState((prevState) => ({ ...prevState, rating, savedRating: true }))
+  const handleStarClicked = useCallback(
+    rating => setState(prevState => ({ ...prevState, rating, savedRating: true })),
+    [],
+  )
 
-  const handleMouseEnter = (rating) => {
-    if (!savedRating) {
-      setState((prevState) => ({ ...prevState, rating }))
-    }
-  }
+  const handleMouseEnter = useCallback(
+    rating => {
+      if (!savedRating) {
+        setState(prevState => ({ ...prevState, rating }))
+      }
+    },
+    [savedRating],
+  )
 
-  const handleMouseLeave = (leftRating) => {
-    if (leftRating !== rating) {
-      setState((prevState) => ({ ...prevState, savedRating: false }))
-    }
-  }
+  const handleMouseLeave = useCallback(
+    leftRating => {
+      if (leftRating !== rating) {
+        setState(prevState => ({ ...prevState, savedRating: false }))
+      }
+    },
+    [rating],
+  )
 
   const renderRating = useMemo(() => {
     let stars = []
@@ -59,28 +68,28 @@ const RatingButtonModal = (props) => {
           filled={i <= rating}
           onMouseEnterCallback={handleMouseEnter}
           onMouseLeaveCallback={handleMouseLeave}
-          onClickCallback={handleStarClicked}
-        />
+          onClick={handleStarClicked}
+        />,
       )
     }
 
     return stars
-  }, [rating])
+  }, [rating, handleMouseEnter, handleMouseLeave, handleStarClicked])
 
   const ButtonIcon = useMemo(() => <RatingIcon rating={rating} />, [rating])
 
   return (
     <ToolbarModal
-      className="Center p-0"
-      title="Add Rating"
-      onClickCallback={handleClick}
+      className='Center p-0'
+      title='Add Rating'
+      onClick={handleClick}
       onCancelCallback={handleCancel}
       onSaveCallback={handleSave}
       ButtonIcon={ButtonIcon}
-      button="Add Rating"
+      button='Add Rating'
       xs={xs}
     >
-      <Container fluid className="RatingButtonModal p-0">
+      <Container fluid className='RatingButtonModal p-0'>
         {renderRating}
       </Container>
     </ToolbarModal>
@@ -89,7 +98,7 @@ const RatingButtonModal = (props) => {
 
 RatingButtonModal.propTypes = {
   rating: PropTypes.number.isRequired,
-  onChangeCallback: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default memo(RatingButtonModal)

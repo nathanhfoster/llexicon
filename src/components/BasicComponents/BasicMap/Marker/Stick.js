@@ -1,8 +1,8 @@
-import React, { Fragment, memo } from "react"
-import PropTypes from "prop-types"
-import { useHistory } from "react-router-dom"
-import { RouterPush, RouteMap } from "../../../../redux/router/actions"
-import { GetAddress } from "../../../../redux/Actions/Google"
+import React, { Fragment, memo } from 'react'
+import PropTypes from 'prop-types'
+import { useHistory } from 'react-router-dom'
+import { RouterPush, RouteMap } from 'redux/router/actions'
+import { GetAddress } from 'redux/Actions/Google'
 import {
   K_CIRCLE_SIZE,
   K_BORDER_WIDTH,
@@ -11,36 +11,30 @@ import {
   locationStickStyle,
   locationStickStyleHover,
   locationStickStyleShadow,
-} from "./styles"
+} from './styles'
+import { NEW_ENTRY_ID } from 'redux/Entries/utils'
+import { DEFAULT_POLYGON_MIN_ZOOM } from '../constants'
 
-import { DEFAULT_POLYGON_MIN_ZOOM } from "../constants"
-
-const infoClick = ({
-  $dimensionKey,
-  onChangeCallback,
-  lat,
-  lng,
-  getAddressOnMarkerClick,
-}) => {
-  if ($dimensionKey === "NewEntry") {
+const infoClick = ({ $dimensionKey, onChange, lat, lng, getAddressOnMarkerClick }) => {
+  if ($dimensionKey === NEW_ENTRY_ID) {
     RouterPush(RouteMap.NEW_ENTRY)
   } else if (!getAddressOnMarkerClick) {
-    return onChangeCallback({
+    return onChange({
       entryId: $dimensionKey,
       latitude: lat,
       longitude: lng,
     })
   } else {
     GetAddress(lat, lng)
-      .then((address) =>
-        onChangeCallback({
+      .then(address =>
+        onChange({
           entryId: $dimensionKey,
           latitude: lat,
           longitude: lng,
           address,
-        })
+        }),
       )
-      .catch((e) => onChangeCallback({ latitude: lat, longitude: lng }))
+      .catch(e => onChange({ latitude: lat, longitude: lng }))
   }
 }
 
@@ -48,30 +42,28 @@ const zoomStyle = {
   fontSize: 14,
 }
 
-const ClientNameCharacter = (props) => {
+const ClientNameCharacter = props => {
   const { $dimensionKey, renderUserLocation } = props
   const className =
-    $dimensionKey === "NewEntry"
-      ? "fas fa-search-location"
+    $dimensionKey ===  NEW_ENTRY_ID
+      ? 'fas fa-search-location'
       : renderUserLocation
-      ? "fas fa-user-circle"
-      : "fas fa-circle"
+      ? 'fas fa-user-circle'
+      : 'fas fa-circle'
   const style = {
-    fontSize: renderUserLocation ? "inherit" : K_CIRCLE_SIZE / 2,
+    fontSize: renderUserLocation ? 'inherit' : K_CIRCLE_SIZE / 2,
   }
-  return (
-    <i className={className} style={style} onClick={() => infoClick(props)} />
-  )
+  return <i className={className} style={style} onClick={() => infoClick(props)} />
 }
 
-const Zoom = (props) => {
+const Zoom = props => {
   const { $dimensionKey, renderUserLocation } = props
   const className =
-    $dimensionKey === "NewEntry"
-      ? "fas fa-feather-alt"
+    $dimensionKey ===  NEW_ENTRY_ID
+      ? 'fas fa-feather-alt'
       : renderUserLocation
-      ? "fas fa-user-circle fa-2x"
-      : "fas fa-circle"
+      ? 'fas fa-user-circle fa-2x'
+      : 'fas fa-circle'
   return (
     <span style={zoomStyle} onClick={() => infoClick(props)}>
       <i className={className} />
@@ -79,7 +71,7 @@ const Zoom = (props) => {
   )
 }
 
-const Stick = (props) => {
+const Stick = props => {
   const history = useHistory()
   const { shouldShowPreview, inGroup, zoom } = props
   let text = ClientNameCharacter({ ...props, history })
