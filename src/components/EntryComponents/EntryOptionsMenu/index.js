@@ -52,7 +52,8 @@ const EntryOptionsMenu = ({
 
   const handleSync = useCallback(() => dispatch(SyncEntries()), [])
 
-  const handleEditorChange = useCallback(({ ...payload }) => {
+  const handleEditorChange = useCallback(fields => {
+    const payload = { id: entryId, ...fields }
     dispatch(UpdateReduxEntries(payload))
     handleSync()
   }, [])

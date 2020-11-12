@@ -9,7 +9,7 @@ const BasicFormProps = {
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
-  saveLabel: PropTypes.string,
+  saveLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   cancelLabel: PropTypes.string,
   method: PropTypes.string.isRequired,
 }
