@@ -87,9 +87,13 @@ const Editor = ({
     [editorRef],
   )
 
-  const handleEditorChange = useCallback(({ ...payload }) => {
-    onChange(payload)
-  }, [])
+  const handleEditorChange = useCallback(
+    fields => {
+      const payload = { id: entry.id, ...fields }
+      onChange(payload)
+    },
+    [entry.id],
+  )
 
   const handleEditorStateChange = useCallback(
     (html, delta, source, editor) => {

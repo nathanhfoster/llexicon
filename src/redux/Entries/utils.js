@@ -24,14 +24,18 @@ const getMostRecent = (reduxData, newData) => {
   const reduxDataLastUpdated = getDate(reduxData)
   const newDataLastUpdated = getDate(newData)
 
-  const areUpdatedOnTheSameDay = MomentJS(newDataLastUpdated).isSame(reduxDataLastUpdated)
+  const hasValidDates = newDataLastUpdated && reduxDataLastUpdated
+
+  const areUpdatedOnTheSameDay =
+    hasValidDates && MomentJS(reduxDataLastUpdated).isSame(newDataLastUpdated)
 
   if (areUpdatedOnTheSameDay) {
     delete reduxData._lastUpdated
     delete newData._lastUpdated
   }
 
-  const overWriteWithNewData = MomentJS(newDataLastUpdated).isAfter(reduxDataLastUpdated)
+  const overWriteWithNewData =
+    hasValidDates && MomentJS(reduxDataLastUpdated).isBefore(newDataLastUpdated)
 
   if (overWriteWithNewData) {
     delete reduxData._lastUpdated

@@ -84,7 +84,7 @@ const EntryDetail = ({
   const handleOnChange = useCallback(
     payload => {
       if (readOnly || !entry) return
-      UpdateReduxEntries(entry.id, payload)
+      UpdateReduxEntries(payload)
     },
     [entry?.id, readOnly],
   )

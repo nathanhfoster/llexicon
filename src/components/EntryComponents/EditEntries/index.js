@@ -78,10 +78,15 @@ const EditEntries = ({
       })
 
       const payload =
-        entries.length === 1 ? getUpdatedEntry(entries[0]) : entries.map(e => getUpdatedEntry(e))
+        entries.length === 1
+          ? getUpdatedEntry(entries[0])
+          : entries.reduce((acc, e) => {
+              acc[e.id] = getUpdatedEntry(e)
+              return acc
+            }, {})
 
       entries.forEach(e => {
-        UpdateReduxEntries(e.id, payload)
+        UpdateReduxEntries(payload)
       })
 
       setShowEditModal(false)

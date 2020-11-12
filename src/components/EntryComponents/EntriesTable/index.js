@@ -267,10 +267,13 @@ const EntriesTable = ({
     const payload =
       entriesSelected.length === 1
         ? getUpdatedEntry(entriesSelected[0])
-        : entriesSelected.map(e => getUpdatedEntry(e))
+        : entriesSelected.reduce((acc, e) => {
+            acc[e.id] = getUpdatedEntry(e)
+            return acc
+          }, {})
 
     entriesSelected.forEach(e => {
-      UpdateReduxEntries(e.id, payload, null)
+      UpdateReduxEntries(payload, null)
     })
 
     SyncEntries()

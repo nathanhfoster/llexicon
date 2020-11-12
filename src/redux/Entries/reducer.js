@@ -9,6 +9,7 @@ import {
 } from './utils'
 import { getStringBytes } from '../../utils'
 import * as AwsImages from '../../images/AWS'
+import { isObject } from 'utils'
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
@@ -127,7 +128,7 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const { id, type, payload, search } = action
+  const { type, payload, search } = action
 
   switch (type) {
     case ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC:
@@ -202,47 +203,37 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRIES_UPDATE:
-      let nextState
-      if (Array.isArray(payload)) {
-        const entriesUpdateMap = payload.reduce((acc, e) => {
-          acc[e.id] = e
-          return acc
-        }, {})
-        nextState = state.items.concat(state.filteredItems).map(e => entriesUpdateMap[e.id] || e)
-
-        return {
-          ...state,
-          ...handleFilterEntries(nextState, state.search),
-          isPending: false,
-          error: DEFAULT_STATE_ENTRIES.error,
-        }
-      } else {
-        nextState = state.items.concat(state.filteredItems)
-        const indexToUpdate = nextState.findIndex(entry => entry.id === id)
-        if (indexToUpdate !== -1) {
-          const mergedItem = { ...nextState[indexToUpdate], ...payload }
-          nextState[indexToUpdate] = {
-            ...mergedItem,
-            _size: getStringBytes(mergedItem),
-          }
+      let updatedItem
+      let nextItems = state.items.concat(state.filteredItems).map(e => {
+        if (payload.id === e.id) {
+          updatedItem = { ...e, ...payload }
           return {
-            ...state,
-            ...handleFilterEntries(nextState, state.search),
-            item: state.item?.id === mergedItem.id ? mergedItem : state.item,
-            isPending: false,
-            error: DEFAULT_STATE_ENTRIES.error,
+            ...updatedItem,
+            _size: getStringBytes(updatedItem),
+          }
+        } else if (payload[e.id]) {
+          updatedItem = { ...e, ...payload[e.id] }
+          return {
+            ...updatedItem,
+            _size: getStringBytes(updatedItem),
           }
         }
+
+        return e
+      })
+
+      return {
+        ...state,
+        ...handleFilterEntries(nextItems, state.search),
+        isPending: false,
+        error: DEFAULT_STATE_ENTRIES.error,
       }
-      return state
 
     case ENTRIES_DELETE:
-      const hasArrayOfIds = Array.isArray(payload)
-      const filterCondition = item => (hasArrayOfIds ? payload.includes(item.id) : item.id != id)
       return {
         ...state,
         ...handleFilterEntries(
-          state.items.concat(state.filteredItems).filter(filterCondition),
+          state.items.concat(state.filteredItems).filter(e => payload !== e.id || !payload[e.id]),
           state.search,
         ),
       }

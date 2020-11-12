@@ -1,6 +1,6 @@
 import { EntriesActionTypes } from '../types'
 import { getReduxEntryId } from '../utils'
-import { getStringBytes } from 'utils'
+import { getStringBytes, isObject } from 'utils'
 
 const {
   ENTRY_SET,
@@ -62,28 +62,17 @@ const PostReduxEntry = entry => dispatch => {
   )
 }
 
-const UpdateReduxEntries = (id, entryOrEntries, _lastUpdated = new Date()) => {
-  let payload
-  if (Array.isArray(entryOrEntries)) {
-    payload = entryOrEntries
-  } else {
-    payload = { ...entryOrEntries, _lastUpdated }
-  }
-
-  return {
-    type: ENTRIES_UPDATE,
-    id,
-    payload,
-  }
-}
+const UpdateReduxEntries = (entryOrEntries, _lastUpdated = new Date()) => ({
+  type: ENTRIES_UPDATE,
+  payload: entryOrEntries.id ? { ...entryOrEntries, _lastUpdated } : entryOrEntries,
+})
 
 const ClearEntry = () => ({ type: ENTRY_CLEAR })
 
 const ClearEntries = () => ({ type: ENTRIES_CLEAR })
 
-const DeleteReduxEntries = (id, entriesToDelete) => ({
+const DeleteReduxEntries = entriesToDelete => ({
   type: ENTRIES_DELETE,
-  id,
   payload: entriesToDelete,
 })
 
@@ -142,7 +131,7 @@ const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
     const payload = {
       EntryFiles: entryToUpdate.EntryFiles.filter(file => file.id !== id),
     }
-    dispatch(UpdateReduxEntries(entry_id, payload))
+    dispatch(UpdateReduxEntries(payload))
   }
 }
 
