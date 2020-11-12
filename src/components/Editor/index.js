@@ -6,7 +6,6 @@ import React, {
   useMemo,
   useCallback,
   memo,
-  useReducer,
 } from 'react'
 import ReactQuill from 'react-quill'
 import { THEMES, FORMATS, getModules } from './modules'

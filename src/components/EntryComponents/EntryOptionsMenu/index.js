@@ -52,11 +52,14 @@ const EntryOptionsMenu = ({
 
   const handleSync = useCallback(() => dispatch(SyncEntries()), [])
 
-  const handleEditorChange = useCallback(fields => {
-    const payload = { id: entryId, ...fields }
-    dispatch(UpdateReduxEntries(payload))
-    handleSync()
-  }, [])
+  const handleEditorChange = useCallback(
+    fields => {
+      const payload = { id: entryId, ...fields }
+      dispatch(UpdateReduxEntries(payload))
+      handleSync()
+    },
+    [entryId],
+  )
 
   const handleDelete = useCallback(() => {
     shouldRedirectOnDelete && RouterGoBack()
