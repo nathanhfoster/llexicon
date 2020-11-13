@@ -41,14 +41,16 @@ const Entry = ({
   const handleOnChange = useCallback(({ target: { name, value } }) => {
     if (name === "date_created_by_author" && value) {
       onChange({
+        id: entry id,
         [name]: value,
       })
     } else {
       onChange({
+        id: entry id,
         [name]: value,
       })
     }
-  }, [])
+  }, [entry.id])
 
   return (
     <Editor
