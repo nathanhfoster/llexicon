@@ -1,30 +1,32 @@
-import PropTypes from "prop-types"
-import { optionProps } from "../BasicOption/propTypes"
+import PropTypes from 'prop-types'
+import { optionProps } from '../BasicOption/propTypes'
 
 const InputTypes = [
-  "button",
-  "checkbox",
-  "color",
-  "date",
-  "datetime-local",
-  "email",
-  "file",
-  "hidden",
-  "image",
-  "month",
-  "number",
-  "password",
-  "radio",
-  "range",
-  "reset",
-  "search",
-  "submit",
-  "tel",
-  "text",
-  "textarea",
-  "time",
-  "url",
-  "week",
+  'button',
+  'checkbox',
+  'color',
+  'date',
+  'datetime-local',
+  'email',
+  'file',
+  'hidden',
+  'image',
+  'month',
+  'number',
+  'password',
+  'radio',
+  'range',
+  'reset',
+  'search',
+  'submit',
+  'tel',
+  'text',
+  'textarea',
+  'time',
+  'url',
+  'week',
+  'switch',
+  'select'
 ]
 
 const InputProps = {

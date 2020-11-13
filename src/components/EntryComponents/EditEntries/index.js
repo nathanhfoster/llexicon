@@ -1,48 +1,45 @@
-import React, { useState, useRef, useMemo, useCallback } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { BasicModal, BasicForm } from "components"
-import { Button } from "reactstrap"
-import { cleanObject, removeAttributeDuplicates } from "utils"
-import {
-  getTagStringFromObject,
-  getTagObjectFromString,
-} from "redux/Entries/utils"
-import { UpdateReduxEntries, SyncEntries } from "redux/Entries/actions"
-import { EntriesPropTypes } from "redux/Entries/propTypes"
-import InputGroup from "reactstrap/lib/InputGroup"
+import React, { useState, useRef, useMemo, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { BasicModal, BasicForm } from 'components'
+import { Button } from 'reactstrap'
+import { cleanObject, removeAttributeDuplicates } from 'utils'
+import { getTagStringFromObject, getTagObjectFromString } from 'redux/Entries/utils'
+import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import InputGroup from 'reactstrap/lib/InputGroup'
 
 const tagInputs = [
   {
-    label: "Add",
-    name: "tagsAdd",
-    type: "checkbox",
-    className: "mr-2",
+    label: 'Add',
+    name: 'tagsAdd',
+    type: 'checkbox',
+    className: 'mr-2',
   },
   {
-    label: "Delete",
-    name: "tagsDelete",
-    type: "checkbox",
+    label: 'Delete',
+    name: 'tagsDelete',
+    type: 'checkbox',
   },
 ]
 
 const peopleInputs = [
   {
-    label: "Add",
-    name: "peopleAdd",
-    type: "checkbox",
-    className: "mr-2",
+    label: 'Add',
+    name: 'peopleAdd',
+    type: 'checkbox',
+    className: 'mr-2',
   },
   {
-    label: "Delete",
-    name: "peopleDelete",
-    type: "checkbox",
+    label: 'Delete',
+    name: 'peopleDelete',
+    type: 'checkbox',
   },
 ]
 
 const mapStateToProps = (
   { Entries: { items, filteredItems, EntryTags, EntryPeople } },
-  { entries }
+  { entries },
 ) => ({
   entries: entries || items.concat(filteredItems),
   items,
@@ -68,14 +65,21 @@ const EditEntries = ({
   const peopleAdd = useRef(false)
   const peopleDelete = useRef(false)
 
+  const resetRefs = () => {
+    tagsAdd.current = false
+    tagsDelete.current = false
+    peopleAdd.current = false
+    peopleDelete.current = false
+  }
+
   const modalButton = useMemo(
     () => (
-      <Button color="accent" onClick={() => setShowEditModal(true)}>
-        <i className="fas fa-edit mr-1" />
+      <Button color='accent' onClick={() => setShowEditModal(true)}>
+        <i className='fas fa-edit mr-1' />
         Edit
       </Button>
     ),
-    []
+    [],
   )
 
   const [entriesTagMap, entriesPeopleMap] = useMemo(
@@ -93,27 +97,27 @@ const EditEntries = ({
 
               return acc
             },
-            [{}, {}]
+            [{}, {}],
           )
         : [{}, {}],
-    [entries, showEditModal]
+    [entries, showEditModal],
   )
 
   const handleTags = useCallback(({ target: { name, checked } }) => {
     switch (name) {
-      case "tagsAdd":
+      case 'tagsAdd':
         tagsAdd.current = checked
         break
 
-      case "tagsDelete":
+      case 'tagsDelete':
         tagsDelete.current = checked
         break
 
-      case "peopleAdd":
+      case 'peopleAdd':
         peopleAdd.current = checked
         break
 
-      case "peopleDelete":
+      case 'peopleDelete':
         peopleDelete.current = checked
         break
 
@@ -123,8 +127,7 @@ const EditEntries = ({
   }, [])
 
   const handleEditEntries = useCallback(
-    (formPayload) => {
-      console.log("formPayload: ", formPayload)
+    formPayload => {
       let tagMap = {}
       let peopleMap = {}
       formPayload.tags = formPayload.tags?.reduce((acc, { value }) => {
@@ -144,13 +147,15 @@ const EditEntries = ({
 
       let entryFieldsToUpdate = cleanObject(formPayload)
 
-      const getUpdatedEntry = (e) => {
+      const getUpdatedEntry = e => {
         if (tagsAdd.current) {
           entryFieldsToUpdate.tags = removeAttributeDuplicates(
             (entryFieldsToUpdate.tags || []).concat(e.tags),
-            "name"
+            'name',
           )
-        } else if (tagsDelete.current) {
+        }
+        if (Object.keys(tagMap).length > 0 && tagsDelete.current) {
+          console.log(tagMap, e.tags)
           entryFieldsToUpdate.tags = e.tags.reduce((acc, t) => {
             if (!tagMap[t.name]) {
               acc.push(t)
@@ -162,9 +167,10 @@ const EditEntries = ({
         if (peopleAdd.current) {
           entryFieldsToUpdate.people = removeAttributeDuplicates(
             (entryFieldsToUpdate.people || []).concat(e.people),
-            "name"
+            'name',
           )
-        } else if (peopleDelete.current) {
+        }
+        if (Object.keys(tagMap).length > 0 && peopleDelete.current) {
           entryFieldsToUpdate.people = e.people.reduce((acc, p) => {
             if (!peopleMap[p.name]) {
               acc.push(p)
@@ -177,7 +183,7 @@ const EditEntries = ({
           ...e,
           ...entryFieldsToUpdate,
           _lastUpdated: new Date(),
-          // _isSelected: false,
+          _isSelected: false,
         }
       }
 
@@ -189,27 +195,31 @@ const EditEntries = ({
               return acc
             }, {})
 
-      entries.forEach((e) => {
+      entries.forEach(e => {
         UpdateReduxEntries(payload)
       })
 
       setShowEditModal(false)
 
       SyncEntries()
+      resetRefs()
     },
-    [entries, tagsAdd.current, tagsDelete.current]
+    [entries],
   )
 
-  const handleCancel = useCallback(() => setShowEditModal(false), [])
+  const handleCancel = useCallback(() => {
+    resetRefs()
+    setShowEditModal(false)
+  }, [])
 
   const [entryTagsOptions, entryPeopleOptions] = useMemo(() => {
     let tagOptions = [
-      { name: "Document" },
-      { name: "Dream" },
-      { name: "Family" },
-      { name: "Friends" },
-      { name: "Quote" },
-      { name: "Vacation" },
+      { name: 'Document' },
+      { name: 'Dream' },
+      { name: 'Family' },
+      { name: 'Friends' },
+      { name: 'Quote' },
+      { name: 'Vacation' },
     ]
     let peopleOptions = []
 
@@ -220,15 +230,11 @@ const EditEntries = ({
         tagOptions = removeAttributeDuplicates(
           Object.values(
             reduxEntries
-              .map((entry) => entry.tags)
+              .map(entry => entry.tags)
               .flat(1)
-              .concat(EntryTags)
-          ).map((t) =>
-            entriesTagMap[t.name] === entries.length
-              ? { ...t, selected: true }
-              : t
-          ),
-          "name"
+              .concat(EntryTags),
+          ).map(t => (entriesTagMap[t.name] === entries.length ? { ...t, selected: true } : t)),
+          'name',
         )
       }
 
@@ -236,137 +242,136 @@ const EditEntries = ({
         peopleOptions = removeAttributeDuplicates(
           Object.values(
             reduxEntries
-              .map((entry) => entry.people)
+              .map(entry => entry.people)
               .flat(1)
-              .concat(EntryPeople)
-          ).map((p) =>
-            entriesPeopleMap[p.name] === entries.length
-              ? { ...p, selected: true }
-              : p
-          ),
-          "name"
+              .concat(EntryPeople),
+          ).map(p => (entriesPeopleMap[p.name] === entries.length ? { ...p, selected: true } : p)),
+          'name',
         )
       }
     }
 
     return [tagOptions, peopleOptions]
-  }, [showEditModal, items, filteredItems, entries, EntryTags, EntryPeople])
+  }, [
+    showEditModal,
+    items,
+    filteredItems,
+    entries.length,
+    EntryTags,
+    EntryPeople,
+    entriesTagMap,
+    entriesPeopleMap,
+  ])
 
   const inputs = useMemo(
     () => [
       {
-        label: "Should Delete",
-        name: "_shouldDelete",
-        type: "switch",
+        label: 'Should Delete',
+        name: '_shouldDelete',
+        type: 'switch',
         placeholder: `Sould Delete..`,
       },
       {
-        label: "Should Post",
-        name: "_shouldPost",
-        type: "switch",
+        label: 'Should Post',
+        name: '_shouldPost',
+        type: 'switch',
         placeholder: `Should Post...`,
       },
       {
-        label: "Is Public",
-        name: "is_public",
-        type: "switch",
+        label: 'Is Public',
+        name: 'is_public',
+        type: 'switch',
         placeholder: `Is Public...`,
       },
       {
         label: (
-          <div className="row m-0">
-            <div className="mr-2">Tags</div>
+          <div className='row m-0'>
+            <div className='mr-2'>Tags</div>
             <BasicForm inline inputs={tagInputs} onChange={handleTags} />
           </div>
         ),
-        name: "tags",
-        type: "select",
+        name: 'tags',
+        type: 'select',
         options: entryTagsOptions,
         multiple: true,
       },
       {
         label: (
-          <div className="row m-0">
-            <div className="mr-2">People</div>
+          <div className='row m-0'>
+            <div className='mr-2'>People</div>
             <BasicForm inline inputs={peopleInputs} onChange={handleTags} />
           </div>
         ),
-        name: "people",
-        type: "select",
+        name: 'people',
+        type: 'select',
         options: entryPeopleOptions,
         multiple: true,
       },
       {
-        label: "Title",
-        name: "title",
-        type: "text",
+        label: 'Title',
+        name: 'title',
+        type: 'text',
         placeholder: `Tile...`,
       },
       {
-        label: "HTML",
-        name: "html",
-        type: "textarea",
+        label: 'HTML',
+        name: 'html',
+        type: 'textarea',
         placeholder: `Html...`,
       },
       {
-        label: "Date Created",
-        name: "date_created_by_author",
-        type: "datetime-local",
+        label: 'Date Created',
+        name: 'date_created_by_author',
+        type: 'datetime-local',
         placeholder: `Date Created...`,
       },
       {
-        label: "Views",
-        name: "views",
-        type: "number",
-        placeholder: "100",
+        label: 'Views',
+        name: 'views',
+        type: 'number',
+        placeholder: '100',
         min: 0,
       },
       {
-        label: "Rating",
-        name: "rating",
-        type: "number",
-        placeholder: "0",
+        label: 'Rating',
+        name: 'rating',
+        type: 'number',
+        placeholder: '0',
         // defaultValue: 0,
         min: 0,
         max: 5,
       },
       {
-        label: "Address",
-        name: "address",
-        type: "text",
+        label: 'Address',
+        name: 'address',
+        type: 'text',
         placeholder: `Address...`,
       },
       {
-        label: "Latitude",
-        name: "latitude",
-        type: "text",
+        label: 'Latitude',
+        name: 'latitude',
+        type: 'text',
         placeholder: `Latitude...`,
       },
       {
-        label: "Longitude",
-        name: "longitude",
-        type: "text",
+        label: 'Longitude',
+        name: 'longitude',
+        type: 'text',
         placeholder: `Longitude...`,
       },
     ],
-    [entryPeopleOptions, entryTagsOptions]
+    [entryPeopleOptions, entryTagsOptions, handleTags],
   )
 
   return (
     <BasicModal
       show={showEditModal}
       disabled={entries.length === 0}
-      title={`Edit ${
-        entries.length === 1 ? "entry" : `these ${entries.length} entries`
-      }`}
+      title={`Edit ${entries.length === 1 ? 'entry' : `these ${entries.length} entries`}`}
       button={modalButton}
       footer={null}
     >
-      <BasicForm
-        onSubmit={handleEditEntries}
-        onCancel={handleCancel}
-        inputs={inputs}
-      />
+      <BasicForm onSubmit={handleEditEntries} onCancel={handleCancel} inputs={inputs} />
     </BasicModal>
   )
 }
