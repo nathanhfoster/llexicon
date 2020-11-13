@@ -7,7 +7,6 @@ import { cleanObject, removeAttributeDuplicates } from 'utils'
 import { getTagStringFromObject, getTagObjectFromString } from 'redux/Entries/utils'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import InputGroup from 'reactstrap/lib/InputGroup'
 
 const tagInputs = [
   {
@@ -266,24 +265,6 @@ const EditEntries = ({
   const inputs = useMemo(
     () => [
       {
-        label: 'Should Delete',
-        name: '_shouldDelete',
-        type: 'switch',
-        placeholder: `Sould Delete..`,
-      },
-      {
-        label: 'Should Post',
-        name: '_shouldPost',
-        type: 'switch',
-        placeholder: `Should Post...`,
-      },
-      {
-        label: 'Is Public',
-        name: 'is_public',
-        type: 'switch',
-        placeholder: `Is Public...`,
-      },
-      {
         label: (
           <div className='row m-0'>
             <div className='mr-2'>Tags</div>
@@ -306,6 +287,27 @@ const EditEntries = ({
         type: 'select',
         options: entryPeopleOptions,
         multiple: true,
+      },
+      {
+        label: 'Should Delete',
+        name: '_shouldDelete',
+        type: 'checkbox',
+        placeholder: `Sould Delete..`,
+        inline: true,
+      },
+      {
+        label: 'Should Post',
+        name: '_shouldPost',
+        type: 'checkbox',
+        placeholder: `Should Post...`,
+        inline: true,
+      },
+      {
+        label: 'Is Public',
+        name: 'is_public',
+        type: 'checkbox',
+        placeholder: `Is Public...`,
+        inline: true,
       },
       {
         label: 'Title',
