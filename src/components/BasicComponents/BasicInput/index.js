@@ -54,9 +54,10 @@ const BasicInput = ({
   const renderOptions = useMemo(
     () =>
       type === "select"
-        ? options?.map((option, i) => (
-            <BasicOption key={`option-${name}-${i}`} {...option} />
-          ))
+        ? options?.map((option, i) => {
+            if (option.selected) console.log("BasicInput: ", option)
+            return <BasicOption key={`option-${name}-${i}`} {...option} />
+          })
         : undefined,
     [name, options, type]
   )
@@ -64,7 +65,6 @@ const BasicInput = ({
   const renderInput = useMemo(() => {
     const inputProps = {
       id: uniqueId,
-      className,
       defaultValue,
       value,
       type,
@@ -90,7 +90,6 @@ const BasicInput = ({
     }
   }, [
     uniqueId,
-    className,
     defaultValue,
     value,
     type,
@@ -105,18 +104,25 @@ const BasicInput = ({
     multiple,
     step,
     renderOptions,
+    isCheckOrRadio,
   ])
 
-  const renderLabel = useMemo(() => {
-    const labelText = label ? `${label} ${required ? "*" : ""}` : null
+  const labelText = useMemo(() => {
+    if (typeof label === "string") {
+      return `${label} ${required ? "*" : ""}`
+    }
 
+    return label
+  }, [label])
+
+  const renderLabel = useMemo(() => {
     return isCheckOrRadio ? (
       <Label check={isCheckOrRadio} for={name}>
         {renderInput} {labelText}
       </Label>
     ) : (
       <Fragment>
-        {label && (
+        {labelText && (
           <Label check={isCheckOrRadio} for={name}>
             {labelText}
           </Label>
@@ -124,10 +130,15 @@ const BasicInput = ({
         {renderInput}
       </Fragment>
     )
-  }, [label, required, isCheckOrRadio, name, renderInput])
+  }, [labelText, required, isCheckOrRadio, name, renderInput])
 
   return (
-    <FormGroup check={isCheckOrRadio} row={row} inline={inline}>
+    <FormGroup
+      className={className}
+      check={isCheckOrRadio}
+      row={row}
+      inline={inline}
+    >
       {renderLabel}
       {typeof valid === "string" && (
         <FormFeedback for={uniqueId} valid={!valid}>

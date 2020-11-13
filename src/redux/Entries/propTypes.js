@@ -70,6 +70,7 @@ const EntryPropType = {
     PropTypes.string,
     PropTypes.instanceOf(Date),
   ]),
+  _isSelected: PropTypes.bool,
 }
 
 const EntryPropTypes = PropTypes.shape(EntryPropType)

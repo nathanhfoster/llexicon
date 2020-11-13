@@ -33,7 +33,7 @@ const InputProps = {
   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   check: PropTypes.bool,
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   type: PropTypes.oneOf(InputTypes),
   options: PropTypes.arrayOf(PropTypes.shape(optionProps)),
   placeholder: PropTypes.string,

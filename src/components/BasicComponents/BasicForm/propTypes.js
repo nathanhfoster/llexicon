@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
-import { BasicInputsProps } from '../BasicInput/propTypes'
+import PropTypes from "prop-types"
+import { BasicInputsProps } from "../BasicInput/propTypes"
 
 const BasicFormInputProps = PropTypes.arrayOf(BasicInputsProps)
 
@@ -12,6 +12,7 @@ const BasicFormProps = {
   saveLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   cancelLabel: PropTypes.string,
   method: PropTypes.string.isRequired,
+  inline: PropTypes.bool.isRequired,
 }
 
 export { BasicFormInputProps, BasicFormProps }

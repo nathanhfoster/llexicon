@@ -1,7 +1,8 @@
-import React, { memo } from 'react'
-import { optionProps } from './propTypes'
+import React, { memo } from "react"
+import { optionProps } from "./propTypes"
 
 const BasicOption = ({ value, name, label, ...optionPros }) => {
+  if (optionPros.selected) console.log("BasicOption: ", optionPros.selected)
   return (
     <option value={value || name || label} {...optionPros}>
       {label || name || value}
