@@ -41,8 +41,7 @@ const NewEntry = ({
 
   activeDate = new Date(activeDate)
 
-  const handleOnChange = useCallback(fields => {
-    const payload = { id: entry.id, ...fields }
+  const handleOnChange = useCallback(payload => {
     const { date_created_by_author } = payload
     if (date_created_by_author) {
       SetCalendar({ activeDate: new Date(date_created_by_author) })
@@ -50,7 +49,7 @@ const NewEntry = ({
      
     SetEditorState(payload)
 
-  }, [entry.id])
+  }, [])
 
   const handleOnSubmit = useCallback(async () => {
     const payload = {
