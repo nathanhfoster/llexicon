@@ -148,4 +148,8 @@ const BasicInput = ({
 
 BasicInput.propTypes = InputProps
 
+BasicInput.defaultProps = {
+  row: false,
+}
+
 export default memo(BasicInput)

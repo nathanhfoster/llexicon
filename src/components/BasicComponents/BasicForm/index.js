@@ -2,8 +2,10 @@ import React, { useState, useMemo, useCallback, memo } from 'react'
 import { Button, Form } from 'reactstrap'
 import { BasicFormProps } from './propTypes'
 import BasicInput from '../BasicInput'
+import './styles.css'
 
 const BasicForm = ({
+  className,
   inline,
   title,
   inputs,
@@ -99,7 +101,7 @@ const BasicForm = ({
   )
 
   return (
-    <Form inline={inline} onSubmit={handleSubmit} method={method}>
+    <Form className='BasicForm' inline={inline} onSubmit={handleSubmit} method={method}>
       {renderTitle}
       {renderInputs}
       {onSubmit && (

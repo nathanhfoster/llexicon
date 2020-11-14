@@ -46,9 +46,8 @@ const NewEntry = ({
     if (date_created_by_author) {
       SetCalendar({ activeDate: new Date(date_created_by_author) })
     }
-     
-    SetEditorState(payload)
 
+    SetEditorState(payload)
   }, [])
 
   const handleOnSubmit = useCallback(async () => {
@@ -57,10 +56,10 @@ const NewEntry = ({
       date_created_by_author: activeDate,
     }
 
-    await PostReduxEntry(payload)
-    
-    SyncEntries()
-    ClearEditorState()
+    await new Promise(resolve => resolve(PostReduxEntry(payload))).then(payload => {
+      SyncEntries()
+      ClearEditorState()
+    })
   }, [activeDate, entry])
 
   const entryToPass = useMemo(

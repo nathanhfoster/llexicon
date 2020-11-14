@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react'
+import React, { useState, useRef, useMemo, useCallback, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { BasicModal, BasicForm } from 'components'
@@ -14,11 +14,13 @@ const tagInputs = [
     name: 'tagsAdd',
     type: 'checkbox',
     className: 'mr-2',
+    inline: true,
   },
   {
     label: 'Delete',
     name: 'tagsDelete',
     type: 'checkbox',
+    inline: true,
   },
 ]
 
@@ -28,11 +30,13 @@ const peopleInputs = [
     name: 'peopleAdd',
     type: 'checkbox',
     className: 'mr-2',
+    inline: true,
   },
   {
     label: 'Delete',
     name: 'peopleDelete',
     type: 'checkbox',
+    inline: true,
   },
 ]
 
@@ -266,8 +270,8 @@ const EditEntries = ({
     () => [
       {
         label: (
-          <div className='row m-0'>
-            <div className='mr-2'>Tags</div>
+          <div className='d-inline-flex'>
+            <span className='mr-2'>Tags</span>
             <BasicForm inline inputs={tagInputs} onChange={handleTags} />
           </div>
         ),
@@ -275,11 +279,12 @@ const EditEntries = ({
         type: 'select',
         options: entryTagsOptions,
         multiple: true,
+        inline: true,
       },
       {
         label: (
-          <div className='row m-0'>
-            <div className='mr-2'>People</div>
+          <div className='d-inline-flex'>
+            <span className='mr-2'>People</span>
             <BasicForm inline inputs={peopleInputs} onChange={handleTags} />
           </div>
         ),
@@ -287,6 +292,7 @@ const EditEntries = ({
         type: 'select',
         options: entryPeopleOptions,
         multiple: true,
+        inline: true,
       },
       {
         label: 'Should Delete',
