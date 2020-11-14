@@ -9,7 +9,6 @@ import {
 } from './utils'
 import { getStringBytes } from '../../utils'
 import * as AwsImages from '../../images/AWS'
-import { isObject } from 'utils'
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
