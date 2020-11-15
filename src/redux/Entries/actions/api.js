@@ -262,7 +262,7 @@ const PostEntry = payload => (dispatch, getState) => {
         RouterPush(newRoute)
       }
       dispatch(SetEntry(data))
-      dispatch(DeleteReduxEntries(payload))
+      dispatch(DeleteReduxEntries(payload.id))
       ReactGA.event({
         category: 'Post Entry',
         action: 'User posted a new entry!',
