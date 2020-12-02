@@ -27,7 +27,7 @@ const UserLocationButton = ({ map, controlPosition, panTo, SetUserLocation }) =>
   }, [geoState, panTo])
 
   useLayoutEffect(() => {
-    if (map?.controls[controlPosition]?.i[0]?.children?.length > 0) {
+    if (map?.controls[controlPosition]?.i?.length > 0) {
       map.controls[controlPosition].i[0].children[0].addEventListener('click', handleOnClick)
 
       return () => {
