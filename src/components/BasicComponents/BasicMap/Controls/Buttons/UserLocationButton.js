@@ -26,12 +26,13 @@ const UserLocationButton = ({ map, controlPosition, panTo, SetUserLocation }) =>
     })
   }, [geoState, panTo])
 
+
   useLayoutEffect(() => {
-    if (map?.controls[controlPosition]?.i?.length > 0) {
-      map.controls[controlPosition].i[0].children[0].addEventListener('click', handleOnClick)
+    if (map?.controls[controlPosition]?.Nb?.length > 0) {
+      map.controls[controlPosition].Nb[0].children[0].addEventListener('click', handleOnClick)
 
       return () => {
-        map.controls[controlPosition].i[0].children[0].removeEventListener('click', handleOnClick)
+        map.controls[controlPosition].Nb[0].children[0].removeEventListener('click', handleOnClick)
       }
     }
   }, [controlPosition, handleOnClick, map.controls])

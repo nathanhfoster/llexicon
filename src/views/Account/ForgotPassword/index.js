@@ -33,6 +33,7 @@ const ForgotPassword = ({ userError, userPending, PasswordReset }) => {
         type: 'email',
         name: 'email',
         placeholder: 'Email...',
+        autoComplete: 'email',
         required: true,
         invalid: errorMessage,
         isInvalid,
