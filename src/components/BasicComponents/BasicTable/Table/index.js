@@ -67,12 +67,6 @@ const BasicTable = ({
 BasicTable.propTypes = {
   sortList: SortListPropType,
   filterList: PropTypes.array,
-  hover: PropTypes.bool.isRequired,
-  borderless: PropTypes.bool.isRequired,
-  bordered: PropTypes.bool.isRequired,
-  striped: PropTypes.bool.isRequired,
-  dark: PropTypes.bool.isRequired,
-  responsive: PropTypes.bool.isRequired,
   onRowClick: PropTypes.func,
 
   // reactstrap Table

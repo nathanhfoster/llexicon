@@ -1,5 +1,5 @@
-import { BasicTableActionTypes } from './types'
-import { filterSort, getSortedAndFilteredData } from './utils'
+import { BasicTableActionTypes } from "./types"
+import { filterSort, getSortedAndFilteredData } from "./utils"
 
 const {
   BASIC_TABLE_SORT,
@@ -25,8 +25,7 @@ const BasicTableReducer = (state, action) => {
           state.data,
           newSortList,
           state.filterList,
-          state.selectedData,
-          state.actionMenuCallback,
+          state.actionMenuCallback
         ),
       }
 
@@ -41,8 +40,7 @@ const BasicTableReducer = (state, action) => {
           state.data,
           state.sortList,
           newFilterList,
-          state.selectedData,
-          state.actionMenuCallback,
+          state.actionMenuCallback
         ),
         currentPage: 0,
       }
@@ -60,20 +58,20 @@ const BasicTableReducer = (state, action) => {
           payload,
           state.sortList,
           state.filterList,
-          state.selectedData,
-          state.actionMenuCallback,
+          state.actionMenuCallback
         ),
       }
 
     case BASIC_TABLE_SELECT_DATA_ITEMS:
       let selectedData = []
-      const newSortedAndFilteredData = state.sortedAndFilteredData.map(d => {
-        const _isSelected = payload[d.id]
-        if (_isSelected) selectedData.push(d)
-        return {
+      const newSortedAndFilteredData = state.sortedAndFilteredData.map((d) => {
+        const updatedItem = {
           ...d,
-          _isSelected,
+          _isSelected: payload[d.id],
         }
+
+        if (updatedItem._isSelected) selectedData.push(updatedItem)
+        return updatedItem
       })
 
       state.actionMenuCallback(selectedData)
@@ -86,14 +84,18 @@ const BasicTableReducer = (state, action) => {
 
     case BASIC_TABLE_SELECT_DATA_ITEM:
       let newSelectedData = []
-      const newSortedAndFilteredDataWithItem = state.sortedAndFilteredData.map(d => {
-        const _isSelected = d.id === id ? payload : d._isSelected
-        if (_isSelected) newSelectedData.push(d)
-        return {
-          ...d,
-          _isSelected,
+      const newSortedAndFilteredDataWithItem = state.sortedAndFilteredData.map(
+        (d) => {
+          const updatedItem = {
+            ...d,
+            _isSelected: d.id === id ? payload : d._isSelected,
+          }
+
+          if (updatedItem._isSelected) newSelectedData.push(updatedItem)
+
+          return updatedItem
         }
-      })
+      )
 
       state.actionMenuCallback(newSelectedData)
 

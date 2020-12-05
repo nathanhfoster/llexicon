@@ -2,8 +2,12 @@
   vertical-align: middle;
 }
 
+/* .BasicTableHeader:hover {
+  cursor: col-resize;
+  border-right: 2px solid blue;
+} */
+
 .HeaderHoverable:hover {
-  cursor: pointer;
   background-color: var(--quinaryColor);
 }
 

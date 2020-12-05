@@ -51,6 +51,8 @@ const PostReduxEntry = entry => dispatch => {
     date_created: entry.date_created_by_author,
     date_updated: entry.date_created_by_author,
   }
+
+  
   const size = getStringBytes(payload)
 
   return dispatch(

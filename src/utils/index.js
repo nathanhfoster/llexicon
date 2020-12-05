@@ -435,7 +435,11 @@ const cleanObject = (obj, truthyCheck = false) => {
   for (const key in obj) {
     if (truthyCheck && !obj[key]) {
       delete obj[key]
-    } else if (obj[key] === null || obj[key] === undefined) {
+    } else if (
+      obj[key] === null ||
+      obj[key] === undefined ||
+      (Array.isArray(obj[key]) && obj[key].length === 0)
+    ) {
       delete obj[key]
     }
   }

@@ -261,14 +261,14 @@ const PostEntry = payload => (dispatch, getState) => {
         const newRoute = pathname.replace(payload.id, data.id)
         RouterPush(newRoute)
       }
-      const updatedEntry = { ...data, _shouldPost: false }
-      dispatch(UpdateReduxEntries(updatedEntry, null))
+      dispatch(SetEntry(data))
+      dispatch(DeleteReduxEntries(payload.id))
       ReactGA.event({
         category: 'Post Entry',
         action: 'User posted a new entry!',
         value: data.id,
       })
-      return { ...updatedEntry, _lastUpdated: null }
+      return { ...data, _shouldPost: false, _lastUpdated: null }
     })
     .catch(e => {
       dispatch(SetEntriesError(e))

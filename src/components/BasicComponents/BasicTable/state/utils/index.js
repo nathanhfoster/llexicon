@@ -1,28 +1,21 @@
-import filterSort from './filterSort'
-import tableSort from './tableSort'
-import tableFilter from './tableFilter'
+import filterSort from "./filterSort"
+import tableSort from "./tableSort"
+import tableFilter from "./tableFilter"
+import { copyStringToClipboard } from "utils"
 
 const getSortedAndFilteredData = (
   data,
   sortList,
   filterList,
-  prevSelectedData,
-  actionMenuCallback,
+  actionMenuCallback
 ) => {
-  const selectedDataMap = prevSelectedData.reduce((acc, d) => {
-    acc[d.id] = true
-    return acc
-  }, {})
-
   let selectedData = []
 
   const sortedData = tableSort(data, sortList)
 
-  const sortedAndFilteredData = tableFilter(sortedData, filterList).map(d => {
-    if (selectedDataMap[d.id]) {
-      const newItem = { ...d, _isSelected: true }
-      selectedData.push(newItem)
-      return newItem
+  const sortedAndFilteredData = tableFilter(sortedData, filterList).map((d) => {
+    if (d._isSelected) {
+      selectedData.push(d)
     }
     return d
   }, [])
@@ -33,21 +26,36 @@ const getSortedAndFilteredData = (
     actionMenuCallback(selectedData)
   }
 
-  return { data, sortedAndFilteredData, dataLength, selectedData, sortList, filterList }
+  return {
+    data,
+    sortedAndFilteredData,
+    dataLength,
+    selectedData,
+    sortList,
+    filterList,
+  }
 }
 
-const getInitialState = ({ columns, pageSize, pageSizes, data, ...restOfProps }) => {
+const getInitialState = ({
+  columns,
+  pageSize,
+  pageSizes,
+  data,
+  ...restOfProps
+}) => {
   let sortList = []
   let filterList = []
   let firstRowClickFound = null
 
   for (let i = 0, { length } = columns; i < length; i++) {
-    const { key, sort, filter, defaultSortValue, defaultFilterValue } = columns[i]
+    const { key, sort, filter, defaultSortValue, defaultFilterValue } = columns[
+      i
+    ]
 
     const sortItem = { key, sortUp: defaultSortValue, sort }
     sortList.push(sortItem)
 
-    const filterItem = { key, filterValue: defaultFilterValue || '', filter }
+    const filterItem = { key, filterValue: defaultFilterValue || "", filter }
     filterList.push(filterItem)
   }
 
@@ -58,17 +66,22 @@ const getInitialState = ({ columns, pageSize, pageSizes, data, ...restOfProps })
     ...getSortedAndFilteredData(
       data,
       sortList,
-      filterList,
-      selectedData,
+      filterList
       // restOfProps.actionMenuCallback,
     ),
     columns,
     currentPage: 0,
     pageSize,
-    pageSizes: [{ id: 0, header: true, value: 'Page Sizes' }].concat(
-      pageSizes.map((value, i) => ({ id: i + 1, value })),
+    pageSizes: [{ id: 0, header: true, value: "Page Sizes" }].concat(
+      pageSizes.map((value, i) => ({ id: i + 1, value }))
     ),
   }
 }
 
-export { getSortedAndFilteredData, filterSort, tableSort, tableFilter, getInitialState }
+export {
+  getSortedAndFilteredData,
+  filterSort,
+  tableSort,
+  tableFilter,
+  getInitialState,
+}

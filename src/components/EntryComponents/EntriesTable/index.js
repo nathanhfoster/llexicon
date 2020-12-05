@@ -11,6 +11,7 @@ import {
   SetEntriesSortMap,
   SetEntriesFilterMap,
   UpdateReduxEntries,
+  DeleteReduxEntries,
   SyncEntries,
 } from 'redux/Entries/actions'
 
@@ -27,6 +28,7 @@ const mapDispatchToProps = {
   SetEntriesSortMap,
   SetEntriesFilterMap,
   UpdateReduxEntries,
+  DeleteReduxEntries,
   SyncEntries,
 }
 
@@ -35,6 +37,7 @@ const EntriesTable = ({
   SetEntriesSortMap,
   SetEntriesFilterMap,
   UpdateReduxEntries,
+  DeleteReduxEntries,
   SyncEntries,
   entries,
   sortMap,
@@ -250,12 +253,13 @@ const EntriesTable = ({
 
   const onRowClick = useCallback(item => GoToEntryDetail(item.id), [])
 
-  const [entriesSelected, setEntriesSelected] = useState([])
-
-  const handleActionMenuCallback = useCallback(
-    selectedEntries => setEntriesSelected(selectedEntries),
-    [],
+  const [entriesSelected, setEntriesSelected] = useState(
+    entries.filter(({ _isSelected }) => _isSelected),
   )
+
+  const handleActionMenuCallback = useCallback(selectedEntries => {
+    setEntriesSelected(selectedEntries)
+  }, [])
 
   const handleDeleteEntries = useCallback(() => {
     const getUpdatedEntry = e => ({
@@ -271,6 +275,8 @@ const EntriesTable = ({
             acc[e.id] = getUpdatedEntry(e)
             return acc
           }, {})
+
+    // DeleteReduxEntries(payload.id || payload)
 
     entriesSelected.forEach(e => {
       UpdateReduxEntries(payload, null)
