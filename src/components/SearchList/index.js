@@ -206,6 +206,7 @@ class SearchList extends PureComponent {
               id='SearchListInput'
               className='listSearchInput Overflow'
               type='text'
+              autoComplete="on"
               value={searchValue}
               placeholder={placeholder}
               onChange={this.onSearchChange}
