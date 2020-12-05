@@ -109,6 +109,7 @@ const MapSearchBox = ({ map, mapApi, onChange, panTo, $geoService, $onMouseAllow
         ref={searchInputRef}
         className='mapBoxSearchBoxInput'
         type='text'
+        autoComplete='on'
         onFocus={selectSearchBox}
         // onBlur={(e) => e.preventDefault()}
         placeholder='Enter a location'

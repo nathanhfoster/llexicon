@@ -1,26 +1,45 @@
-import axios from 'axios'
-import { getUser } from '../localState'
+import axios from "axios"
+import { getUser } from "../localState"
+
+/**
+ * Config global for axios/django
+ */
+axios.defaults.xsrfHeaderName = "X-CSRFToken"
+axios.defaults.xsrfCookieName = "csrftoken"
 
 const { REACT_APP_API_URL } = process.env
 
+const axiosDefaults = {
+  baseURL: REACT_APP_API_URL,
+  timeout: 0,
+  xsrfHeaderName: "X-CSRFTOKEN",
+  xsrfCookieName: "csrftoken",
+  onUploadProgress: (e) => {
+    // console.log(e)
+  },
+  onDownloadProgress: (e) => {
+    // console.log(e)
+  },
+}
+
 const base = {
-  Accept: 'application/json',
+  Accept: "application/json",
 }
 
 const baseHeaders = {
   ...base,
-  'Cache-Control': 'no-cache',
-  'Content-Type': 'application/x-www-form-urlencoded',
+  "Cache-Control": "no-cache",
+  "Content-Type": "application/x-www-form-urlencoded",
 }
 
-const baseFormHeaders = payload => ({
+const baseFormHeaders = (payload) => ({
   ...base,
-  'Accept-Language': 'en-US,en;q=0.8',
-  'Content-Type': `multipart/form-data; boundary=${payload._boundary}`,
+  "Accept-Language": "en-US,en;q=0.8",
+  "Content-Type": `multipart/form-data; boundary=${payload._boundary}`,
 })
 
 const isNotLoggedInAxios = () => {
-  return axios.create({ baseURL: 'https://offline_mode' })
+  return axios.create({ baseURL: "https://offline_mode" })
 }
 
 /*
@@ -44,8 +63,8 @@ Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/R
 }
 */
 
-const Axios = props => {
-  const { authToken, responseType = 'json' } = props ? props : {}
+const Axios = (props) => {
+  const { authToken, responseType = "json" } = props ? props : {}
   const {
     token: userToken,
     Settings: { offline_mode },
@@ -53,10 +72,8 @@ const Axios = props => {
   const token = authToken || userToken
   if (offline_mode) return isNotLoggedInAxios()
   return axios.create({
+    ...axiosDefaults,
     withCredentials: true,
-    baseURL: REACT_APP_API_URL,
-    timeout: 0,
-    crossDomain: true,
     responseType,
     headers: token
       ? {
@@ -67,14 +84,12 @@ const Axios = props => {
   })
 }
 
-const AxiosOffline = (responseType = 'json') => {
+const AxiosOffline = (responseType = "json") => {
   const { token } = getUser()
 
   return axios.create({
+    ...axiosDefaults,
     withCredentials: token ? true : false,
-    baseURL: REACT_APP_API_URL,
-    timeout: 0,
-    crossDomain: true,
     responseType,
     headers: token
       ? {
@@ -85,13 +100,12 @@ const AxiosOffline = (responseType = 'json') => {
   })
 }
 
-const AxiosForm = props => {
+const AxiosForm = (props) => {
   const { authToken, payload } = props ? props : {}
   const { token: userToken } = getUser()
   const token = authToken || userToken
   return axios.create({
-    baseURL: REACT_APP_API_URL,
-    // timeout: 25000,
+    ...axiosDefaults,
     headers: token
       ? {
           Authorization: `Token ${token}`,
@@ -103,11 +117,8 @@ const AxiosForm = props => {
 
 const AxiosData = (token, payload) => {
   return axios.create({
+    ...axiosDefaults,
     withCredentials: token ? true : false,
-    baseURL: REACT_APP_API_URL,
-    timeout: 25000,
-    async: true,
-    crossDomain: true,
     headers: token
       ? {
           Authorization: `Token ${token}`,
@@ -120,14 +131,14 @@ const AxiosData = (token, payload) => {
 
 // dispatchActions is an array of actions that will be
 // recursively called using .then promise since an action that => or returns Axios() is a promise.
-const Sync = dispatchActions => async dispatch => {
+const Sync = (dispatchActions) => async (dispatch) => {
   if (!Array.isArray(dispatchActions)) return await dispatch(dispatchActions)
   if (dispatchActions.length === 0) return
   const [firstAction, ...restOfActions] = dispatchActions
 
   await dispatch(firstAction)
     .then(async () => await dispatch(Sync(restOfActions)))
-    .catch(e => {
+    .catch((e) => {
       console.log(JSON.parse(JSON.stringify(e)))
       return
     })

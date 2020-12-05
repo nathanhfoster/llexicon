@@ -8,8 +8,8 @@ import {
   handleFilterEntries,
 } from './utils'
 import { getStringBytes } from '../../utils'
-import * as AwsImages from '../../images/AWS'
 import { isObject } from 'utils'
+import * as AwsImages from '../../images/AWS'
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
@@ -233,7 +233,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         ...handleFilterEntries(
-          state.items.concat(state.filteredItems).filter(e => payload !== e.id || !payload[e.id]),
+          state.items.concat(state.filteredItems).filter(({ id }) => {
+            if (isObject(payload)) {
+              return payload[id] === undefined
+            }
+            return id !== payload
+          }),
           state.search,
         ),
       }

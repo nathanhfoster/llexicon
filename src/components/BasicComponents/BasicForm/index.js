@@ -1,10 +1,12 @@
 import React, { useState, useMemo, useCallback, memo } from 'react'
 import { Button, Form } from 'reactstrap'
-import { getFormPayload } from './utils'
 import { BasicFormProps } from './propTypes'
 import BasicInput from '../BasicInput'
+import './styles.css'
 
 const BasicForm = ({
+  className,
+  inline,
   title,
   inputs,
   saveLabel,
@@ -20,7 +22,21 @@ const BasicForm = ({
     e.preventDefault()
     if (!onSubmit) return
 
-    const payload = getFormPayload(state)
+    let payload = state.reduce((acc, { id, name, value, type, checked, files, options }) => {
+      if (name) {
+        if (type === 'radio' || type === 'checkbox') {
+          acc[name] = checked
+        } else if (type === 'select') {
+          const selectedOptions = options?.filter(({ selected }) => selected)
+          acc[name] = selectedOptions
+        } else if (type === 'file') {
+          acc[name] = files
+        } else {
+          acc[name] = value
+        }
+      }
+      return acc
+    }, {})
 
     onSubmit(payload)
   }
@@ -29,6 +45,7 @@ const BasicForm = ({
     if (onChange) {
       onChange(event)
     } else {
+      let radioButtonSelected = false
       const {
         target: { id, name, value, type, checked, files, multiple, options },
       } = event
@@ -37,6 +54,9 @@ const BasicForm = ({
         prevState.map(input => {
           if (input.name === name) {
             if (type === 'radio' || type === 'checkbox' || type === 'switch') {
+              if (type === 'radio' && checked) {
+                radioButtonSelected = true
+              }
               return { ...input, checked }
             } else if (
               (type === 'select-one' || type === 'select-multiple') &&
@@ -44,9 +64,7 @@ const BasicForm = ({
             ) {
               let stateOptions = []
 
-              for (let i = 0, { length } = options; i < length; i++) {
-                const { value, selected } = options[i]
-
+              for (const { value, selected } of options) {
                 stateOptions.push({ value, selected })
               }
 
@@ -76,14 +94,14 @@ const BasicForm = ({
 
   const renderInputs = useMemo(
     () =>
-      (onChange ? inputs : state).map((input, i) => (
-        <BasicInput key={`${input.name}-${i}`} {...input} onChange={handleChange} />
-      )),
-    [onChange, inputs, state, handleChange],
+      (onChange ? inputs : state).map((input, i) => {
+        return <BasicInput key={`${input.name}-${i}`} {...input} onChange={handleChange} />
+      }),
+    [inputs, , handleChange],
   )
 
   return (
-    <Form onSubmit={handleSubmit} method={method}>
+    <Form className='BasicForm' inline={inline} onSubmit={handleSubmit} method={method}>
       {renderTitle}
       {renderInputs}
       {onSubmit && (
@@ -132,5 +150,6 @@ BasicForm.defaultProps = {
   saveLabel: 'Save',
   cancelLabel: 'Cancel',
   method: 'post',
+  inline: false,
 }
 export default memo(BasicForm)

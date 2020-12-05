@@ -15,7 +15,7 @@ const setPendingUser = (payload = true) => ({
 })
 
 const setUserError = ({ config, response, message, name, stack }) => dispatch => {
-  const { status, statusText } = response
+  const { status, statusText } = response || {}
   const payload = { message, name, stack, status, statusText }
 
   dispatch({
