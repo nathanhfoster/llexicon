@@ -111,6 +111,8 @@ const InputProps = {
   inline: PropTypes.bool,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   step: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  formGroup: PropTypes.bool,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 }
 
 const BasicInputsProps = PropTypes.shape(InputProps)

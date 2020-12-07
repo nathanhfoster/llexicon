@@ -61,11 +61,6 @@ const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) +
 
 const getRandomFloat = (min, max, fix = 3) => (Math.random() * (min - max) + max).toFixedNumber(fix)
 
-const arrayToObject = (arr, keyField) =>
-  Object.assign({}, ...arr.map(item => ({ [item[keyField]]: item })))
-
-const objectToArray = obj => Object.values(obj)
-
 const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
   let newObj = DeepClone(obj)
   const keyFound = newObj[keyOrValueToRemove] ? true : false
@@ -698,6 +693,22 @@ const nFormatter = (num, digits = 0) => {
   }
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
+
+const arrayToObject = (arrayOfObjects, primaryKey = 'id') =>
+  arrayOfObjects.reduce((acc, e) => {
+    const id = e[primaryKey]
+    acc[id] = e
+    return acc
+  }, {})
+
+const objectToArray = (
+  objectOfObjects,
+  callback = (acc, e) => {
+    acc.push(e)
+    return acc
+  },
+  initialValue = [],
+) => Object.values(objectOfObjects).reduce((acc, e) => callback(acc, e), initialValue)
 
 export {
   isType,

@@ -52,7 +52,6 @@ const PostReduxEntry = entry => dispatch => {
     date_updated: entry.date_created_by_author,
   }
 
-  
   const size = getStringBytes(payload)
 
   return dispatch(
@@ -93,7 +92,7 @@ const SetEntriesPeople = payload => ({
   payload,
 })
 
-const SetSearchEntries = (search, payload = []) => ({
+const SetSearchEntries = (search, payload) => ({
   type: ENTRIES_SEARCH_FILTER,
   payload,
   search,
@@ -118,12 +117,6 @@ const ResetEntriesSortAndFilterMaps = () => ({
 })
 
 const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(''))
-
-const SearchEntriesFilter = (search, payload) => ({
-  type: ENTRIES_SEARCH_FILTER,
-  search,
-  payload,
-})
 
 const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
@@ -158,6 +151,5 @@ export {
   ToggleShowOnlyPublic,
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
-  SearchEntriesFilter,
   DeleteEntryFileFromRedux,
 }

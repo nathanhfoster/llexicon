@@ -18,7 +18,6 @@ import {
   ToggleShowOnlyPublic,
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
-  SearchEntriesFilter,
   DeleteEntryFileFromRedux,
 } from './redux'
 import {
@@ -60,7 +59,6 @@ export {
   ToggleShowOnlyPublic,
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
-  SearchEntriesFilter,
   DeleteEntryFileFromRedux,
   // API
   CreateEntryTag,

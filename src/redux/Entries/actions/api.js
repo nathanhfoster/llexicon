@@ -19,7 +19,6 @@ import {
   SetEntriesTags,
   SetEntriesPeople,
   SetSearchEntries,
-  SearchEntriesFilter,
   DeleteEntryFileFromRedux,
 } from './redux'
 
@@ -331,7 +330,7 @@ const SearchUserEntries = search => (dispatch, getState) => {
       return data
     })
     .catch(e => {
-      dispatch(SearchEntriesFilter(search, []))
+      dispatch(SetSearchEntries(search))
       dispatch(SetEntriesError(e))
     })
 }

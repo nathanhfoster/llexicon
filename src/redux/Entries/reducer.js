@@ -7,7 +7,7 @@ import {
   mergeJson,
   handleFilterEntries,
 } from './utils'
-import { getStringBytes } from '../../utils'
+import { getStringBytes, arrayToObject } from '../../utils'
 import { isObject } from 'utils'
 import * as AwsImages from '../../images/AWS'
 const {
@@ -144,10 +144,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return { ...state, EntryPeople: payload }
 
     case ENTRIES_SEARCH_FILTER:
+      if (!payload) return { ...state, search }
       return {
         ...state,
         ...handleFilterEntries(mergeJson(state.items.concat(state.filteredItems), payload), search),
         search,
+        isPending: false,
       }
 
     case ENTRIES_PENDING:
@@ -248,6 +250,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         sortMap: DEFAULT_STATE_ENTRIES.sortMap,
         filterMap: DEFAULT_STATE_ENTRIES.filterMap,
+        item: DEFAULT_STATE_ENTRIES.item,
       }
 
     case ENTRIES_SET_SORT_MAP:

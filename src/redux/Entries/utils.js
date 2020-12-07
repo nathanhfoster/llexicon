@@ -67,19 +67,19 @@ const mergeJson = (reduxData, newData, key = 'id') => {
   return objectToArray(mergeMap)
 }
 
+const tagOrPeopleMatch = (tagsOrPeople, search) =>
+  tagsOrPeople.some(({ name }) => stringMatch(name, search))
+
 const handleFilterEntries = (entries, search) => {
   if (!search) return { items: entries, filteredItems: [] }
   let cachedFilteredEntries = []
-
-  const tagOrPeopleMatch = tagsOrPeople =>
-    tagsOrPeople.some(({ name }) => stringMatch(name, search))
 
   const filteredEntries = entries.filter(item => {
     const { title, html, tags, people, address } = item
 
     if (
-      tagOrPeopleMatch(tags) ||
-      tagOrPeopleMatch(people) ||
+      tagOrPeopleMatch(tags, search) ||
+      tagOrPeopleMatch(people, search) ||
       stringMatch(title, search) ||
       stringMatch(html, search) ||
       stringMatch(address, search)
