@@ -36,7 +36,10 @@ const StarSearch = ({
   SearchUserEntries,
 }) => {
   const handleOnChange = useCallback(
-    ({ target: { value } }) => SetSearchEntries(value),
+    ({ target: { value } }) => {
+if(!value) SearchUserEntries("")
+SetSearchEntries(value) 
+},
     [SetSearchEntries]
   )
 
