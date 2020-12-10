@@ -1,49 +1,57 @@
 @media (max-width: 767px) {
-    .TileContentContainer {
-        overflow-x: auto;
-        overflow-y: hidden;
-        line-height: 0;
-        height: 16px;
-    }
-    .TileContentFeather {
-        top: 1px;
-        right: 1px;
-    }
+  .TileContentContainer {
+    overflow-x: auto;
+    overflow-y: hidden;
+    line-height: 0;
+    height: 16px;
+  }
+  .TileContentFeather {
+    top: 1px;
+    right: 1px;
+  }
 }
 
 @media (min-width: 768px) {
-    .TileContentContainer {
-        overflow-x: hidden;
-        overflow-y: auto;
-        max-height: calc(100% - 34px);
-        top: 34px;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-    .TileContentFeather {
-        top: 4px;
-        right: 4px;
-    }
+  .TileContentContainer {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: calc(100% - 34px);
+    top: 34px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .TileContentFeather {
+    top: 4px;
+    right: 4px;
+  }
 }
 
 .TileContentContainer {
-    /* background-color: red; */
-    /* display: inline-block; */
+  /* background-color: red; */
+  /* display: inline-block; */
 }
 
 .TileContentFeather {
-    position: absolute;
-    font-size: 14px;
-    color: rgba(55, 57, 67, 0.5);
-    transition: color 0.2s ease-in-out;
+  position: absolute;
+  font-size: 14px;
+  color: rgba(55, 57, 67, 0.5);
+  transition: color 0.2s ease-in-out;
 }
 
-.react-calendar__tile--active .TileContentFeather, .react-calendar__month-view button:hover .TileContentFeather {
-    color: var(--accentColor)
+.react-calendar__tile--active .TileContentFeather,
+.react-calendar__month-view button:hover .TileContentFeather {
+  color: var(--accentColor);
 }
 
 .TileContentFeather:hover {
-    color: var(--tertiaryColor) !important;
+  color: var(--tertiaryColor) !important;
+}
+
+.EntryPreviewImage img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: scale-down;
+  opacity: 0.90;
 }

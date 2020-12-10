@@ -1,26 +1,26 @@
-import React, { useState, useCallback, useMemo, memo } from 'react'
-import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import EntryMedia from './EntryMedia'
-import { Container } from 'reactstrap'
-import { useScrollable } from 'hooks'
-import './styles.css'
-import { Header } from 'components'
-
-const I_FRAME_REGEX = /(?:<iframe[^>]*)(?:(?:\/>)|(?:>.*?<\/iframe>))/gm
-const IMAGE_REGEX = /<img.*?src="([^"]+)".*?>/gm
-const SRC_REGEX = /(?<=src=").*?(?=[\?"])/
-const SRC_REGEX_GLOBAL = /(?<=src=").*?(?=[\?"])/gm
-const YOUTUBE_VIDEO_ID = /youtube\.com.*(\?v=|\/embed\/)(.{11})/
-
-// sd, mq, hq, maxres
-const getYouTubeThumnail = (videoId, quality = 'sd') =>
-  `https://img.youtube.com/vi/${videoId}/${quality}default.jpg`
+import React, { useState, useCallback, useMemo, memo } from "react"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
+import EntryMedia from "./EntryMedia"
+import { Container } from "reactstrap"
+import { useScrollable } from "hooks"
+import "./styles.css"
+import { Header } from "components"
+import {
+  getYouTubeThumnail,
+  I_FRAME_REGEX,
+  IMAGE_REGEX,
+  SRC_REGEX,
+  SRC_REGEX_GLOBAL,
+  YOUTUBE_VIDEO_ID,
+} from "utils"
 
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
 const EntriesMedia = ({ entries }) => {
-  const [viewableEntriesRange, setViewableEntriesRange] = useState(DEFAULT_VIEWABLE_ENTRIES_RANGE)
+  const [viewableEntriesRange, setViewableEntriesRange] = useState(
+    DEFAULT_VIEWABLE_ENTRIES_RANGE
+  )
 
   const [beginOffset, endOffset] = viewableEntriesRange
 
@@ -39,13 +39,14 @@ const EntriesMedia = ({ entries }) => {
           if (EntryFiles?.length > 0) {
             EntryFiles.forEach(({ id, url, entry_id }, j) => {
               if (!acc.sourceMap[`${entryId}-${url}`]) {
-                acc.sourceMap[`${entryId}-${url}`] = acc.sourceMap[`${entryId}-${url}`] + 1 || 1
+                acc.sourceMap[`${entryId}-${url}`] =
+                  acc.sourceMap[`${entryId}-${url}`] + 1 || 1
                 acc.entryMedia.push(
                   <EntryMedia
                     key={`File-${entryId}-${id}-${i}-${j}`}
                     {...defaultProps}
                     src={url}
-                  />,
+                  />
                 )
               }
             })
@@ -60,7 +61,8 @@ const EntriesMedia = ({ entries }) => {
               // const youTubeVideoId = src?.match(YOUTUBE_VIDEO_ID)?.pop()
               // const thumbnailSrc = getYouTubeThumnail(youTubeVideoId)
               if (!acc.sourceMap[`${entryId}-${src}`]) {
-                acc.sourceMap[`${entryId}-${src}`] = acc.sourceMap[`${entryId}-${src}`] + 1 || 1
+                acc.sourceMap[`${entryId}-${src}`] =
+                  acc.sourceMap[`${entryId}-${src}`] + 1 || 1
                 acc.entryMedia.push(
                   <EntryMedia
                     key={`iFrame-${entryId}-${i}-${I_FRAME_REGEX.lastIndex}`}
@@ -68,7 +70,7 @@ const EntriesMedia = ({ entries }) => {
                     {...defaultProps}
                     // isVideo={!thumbnailSrc}
                     src={src}
-                  />,
+                  />
                 )
               }
             }
@@ -78,15 +80,23 @@ const EntriesMedia = ({ entries }) => {
             IMAGE_REGEX.lastIndex = 0
             let iterator
             while ((iterator = IMAGE_REGEX.exec(html))) {
-              const { 0: image, 1: src, groups, index, input, length } = iterator
+              const {
+                0: image,
+                1: src,
+                groups,
+                index,
+                input,
+                length,
+              } = iterator
               if (!acc.sourceMap[`${entryId}-${src}`]) {
-                acc.sourceMap[`${entryId}-${src}`] = acc.sourceMap[`${entryId}-${src}`] + 1 || 1
+                acc.sourceMap[`${entryId}-${src}`] =
+                  acc.sourceMap[`${entryId}-${src}`] + 1 || 1
                 acc.entryMedia.push(
                   <EntryMedia
                     key={`Image-${entryId}-${i}-${IMAGE_REGEX.lastIndex}`}
                     {...defaultProps}
                     src={src}
-                  />,
+                  />
                 )
               }
             }
@@ -94,20 +104,22 @@ const EntriesMedia = ({ entries }) => {
 
           return acc
         },
-        { entryMedia: [], sourceMap: {} },
+        { entryMedia: [], sourceMap: {} }
       ),
-    [entries],
+    [entries]
   )
 
-  const renderViewableEntriesMedia = useMemo(() => renderEntryMedia.slice(beginOffset, endOffset), [
-    renderEntryMedia,
-    beginOffset,
-    endOffset,
-  ])
+  const renderViewableEntriesMedia = useMemo(
+    () => renderEntryMedia.slice(beginOffset, endOffset),
+    [renderEntryMedia, beginOffset, endOffset]
+  )
 
   return (
     <Container>
-      <div className='EntriesMediaContainer Container row' onScroll={handleOnScroll}>
+      <div
+        className="EntriesMediaContainer Container row"
+        onScroll={handleOnScroll}
+      >
         {renderViewableEntriesMedia.length > 0 ? (
           renderViewableEntriesMedia
         ) : (

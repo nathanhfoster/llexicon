@@ -1,12 +1,12 @@
-import MomentJS from 'moment'
-import { objectToArray, stringMatch, getStringBytes, getValidDate } from 'utils'
-import { RouteMap } from 'redux/router/actions'
+import MomentJS from "moment"
+import { objectToArray, stringMatch, getStringBytes, getValidDate } from "utils"
+import { RouteMap } from "redux/router/actions"
 
 const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
-const BASE_JOURNAL_ENTRY_ID = 'Entry-'
+const BASE_JOURNAL_ENTRY_ID = "Entry-"
 
-const NEW_ENTRY_ID = 'NewEntry'
+const NEW_ENTRY_ID = "NewEntry"
 
 const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
 
@@ -47,7 +47,7 @@ const getMostRecent = (reduxData, newData) => {
   return { ...newItem, _size: getStringBytes(newItem) }
 }
 
-const mergeJson = (reduxData, newData, key = 'id') => {
+const mergeJson = (reduxData, newData, key = "id") => {
   // Order matters. You want to merge the reduxData into the newData
   const allData = reduxData.concat(newData)
   let mergeMap = {}
@@ -74,7 +74,7 @@ const handleFilterEntries = (entries, search) => {
   if (!search) return { items: entries, filteredItems: [] }
   let cachedFilteredEntries = []
 
-  const filteredEntries = entries.filter(item => {
+  const filteredEntries = entries.filter((item) => {
     const { title, html, tags, people, address } = item
 
     if (
@@ -97,7 +97,7 @@ const handleFilterEntries = (entries, search) => {
   }
 }
 
-const getTagStringFromObject = obj =>
+const getTagStringFromObject = (obj) =>
   obj.reduce((acc, { name }, i, { length }) => {
     if (length === 1 || i === length - 1) {
       acc += name
@@ -106,10 +106,10 @@ const getTagStringFromObject = obj =>
     }
 
     return acc
-  }, '')
+  }, "")
 
-const getTagObjectFromString = s =>
-  s.split(',').reduce((acc, name) => {
+const getTagObjectFromString = (s) =>
+  s.split(",").reduce((acc, name) => {
     if (name) {
       acc.push({ name })
     }
@@ -117,14 +117,18 @@ const getTagObjectFromString = s =>
   }, [])
 
 const isReadOnly = (entryId, entryAuthor, userId) => {
-  const entryIsStoredInTheBackend = !entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
+  const entryIsStoredInTheBackend = !entryId
+    .toString()
+    .includes(BASE_JOURNAL_ENTRY_ID)
 
   const userNotLoggedInButAuthorExistsAndEntryStoredInBackend =
     !userId && entryAuthor && entryIsStoredInTheBackend
 
   const userIsNotTheAuthor = entryAuthor && userId !== entryAuthor
 
-  return Boolean(userNotLoggedInButAuthorExistsAndEntryStoredInBackend || userIsNotTheAuthor)
+  return Boolean(
+    userNotLoggedInButAuthorExistsAndEntryStoredInBackend || userIsNotTheAuthor
+  )
 }
 
 export {

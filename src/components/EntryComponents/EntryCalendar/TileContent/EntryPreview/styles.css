@@ -1,47 +1,46 @@
 .TileContent {
-    z-index: 102;
-    /* overflow-y: auto; */
-    /* position: relative; */
-    /* line-height: 76px; */
-    /* max-height: 24px; */
-    font-size: 13px;
-    min-width: 0;
-    align-items: center;
-    text-align: left;
+  z-index: 102;
+  /* overflow-y: auto; */
+  /* position: relative; */
+  /* line-height: 76px; */
+  /* max-height: 24px; */
+  font-size: 13px;
+  min-width: 0;
+  align-items: center;
+  text-align: left;
 }
 
 .hasEventsContainer {
-    cursor: pointer;
-    line-height: 24px;
-    height: 24px;
-    font-size: 13px;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    text-align: left;
+  cursor: pointer;
+  line-height: 24px;
+  height: 24px;
+  font-size: 13px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  text-align: left;
 }
 
 .hasEventsContainer:hover {
-    background-color: var(--quaternaryColor);
+  background-color: var(--quaternaryColor);
 }
 
 .ListItemContainer {
-    display: inline-block;
+  display: inline-block;
 }
 
 .eventTitle {
-    flex: 1;
-    font-weight: 500;
-    /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 2px), transparent calc(100% - 2px), transparent); */
+  flex: 1;
+  font-weight: 500;
+  /* -webkit-mask-image: linear-gradient( to right, #000, #000 calc(100% - 2px), transparent calc(100% - 2px), transparent); */
 }
 
 .eventDate {
-    font-size: 12px;
-    font-weight: 300;
-    cursor: pointer;
-    line-height: 24px;
-    height: 24px;
-    min-width: 0;
-    text-align: right;
+  font-size: 12px;
+  font-weight: 300;
+  cursor: pointer;
+  line-height: 24px;
+  height: 24px;
+  min-width: 0;
+  text-align: right;
 }
-

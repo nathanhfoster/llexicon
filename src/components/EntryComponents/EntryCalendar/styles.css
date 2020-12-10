@@ -147,6 +147,10 @@ abbr {
   background: var(--quinaryColor);
 }
 
+.react-calendar__month-view button:hover img {
+  opacity: 0.10;
+}
+
 .react-calendar__tile--active abbr {
   line-height: 25px;
   width: 25px;

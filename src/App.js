@@ -94,7 +94,7 @@ const DARK_MODE_THEME = {
   '--primaryColorRGB': '41, 48, 59',
   '--secondaryColor': 'white',
   '--tertiarycolor': '#bdc3c7',
-  '--quaternaryColor': 'rgb(21, 32, 43)',
+  '--quaternaryColor': '#202933',
   '--quinaryColor': '#1f2326',
 }
 
