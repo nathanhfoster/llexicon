@@ -148,7 +148,7 @@ abbr {
 }
 
 .react-calendar__month-view button:hover img {
-  opacity: 0.10;
+  opacity: 0.075;
 }
 
 .react-calendar__tile--active abbr {

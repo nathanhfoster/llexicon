@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react"
+import React, { useEffect, useRef, useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
 import { EntriesPropTypes } from "redux/Entries/propTypes"
 import { Container, Row, Col, Button } from "reactstrap"
@@ -112,6 +112,17 @@ const EntryCalendar = ({
   const handleOnClickDecade = (activeStartDate) =>
     handleDateChange({ activeStartDate, view: "decade" }, false)
 
+  const renderTileContent = useCallback(
+    (props) => (
+      <TileContent
+        {...props}
+        activeDate={activeDate}
+        entriesWithinView={entriesWithinView}
+      />
+    ),
+    [activeDate, entriesWithinView]
+  )
+
   return (
     <Container fluid className="EntryCalendar Container">
       <Row>
@@ -155,13 +166,7 @@ const EntryCalendar = ({
             activeStartDate={activeStartDate}
             value={activeDate}
             defaultView="month"
-            tileContent={(props) => (
-              <TileContent
-                {...props}
-                activeDate={activeDate}
-                entriesWithinView={entriesWithinView}
-              />
-            )}
+            tileContent={renderTileContent}
             // tileClassName={tileHandler}
             // minDetail={"year"}
             showWeekNumbers={false}

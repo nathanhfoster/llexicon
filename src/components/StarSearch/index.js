@@ -37,9 +37,9 @@ const StarSearch = ({
 }) => {
   const handleOnChange = useCallback(
     ({ target: { value } }) => {
-if(!value) SearchUserEntries("")
-SetSearchEntries(value) 
-},
+      if (!value) SearchUserEntries("")
+      SetSearchEntries(value)
+    },
     [SetSearchEntries]
   )
 
@@ -79,6 +79,7 @@ SetSearchEntries(value)
         </InputGroupText>
       </InputGroupAddon>
       <BasicInput
+        name="starSearch"
         type="search"
         value={search}
         placeholder="Search for entries"

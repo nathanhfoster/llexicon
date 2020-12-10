@@ -50,8 +50,11 @@
 }
 
 .EntryPreviewImage img {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
   max-height: 100%;
   max-width: 100%;
   object-fit: scale-down;
-  opacity: 0.90;
+  opacity: 0.3;
 }
