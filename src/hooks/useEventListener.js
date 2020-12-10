@@ -15,7 +15,6 @@ const useEventListener = (eventName, handler, element = window) => {
   useEffect(
     () => {
       // Make sure element supports addEventListener
-      // On
       const isSupported = element?.addEventListener
       if (!isSupported) return
 

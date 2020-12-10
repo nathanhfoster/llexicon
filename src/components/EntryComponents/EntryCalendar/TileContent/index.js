@@ -102,7 +102,7 @@ const TileContent = ({
     })
 
     return [entryPreviews, firstEntryFileSource]
-  }, [entries])
+  }, [date, entries, staticContext, view])
 
   return (
     <Fragment>
