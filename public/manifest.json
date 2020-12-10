@@ -30,27 +30,6 @@
       "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Folder View",
-      "short_name": "Folders",
-      "description": "Folders View",
-      "url": "/entries/folders?folder=All",
-      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Media View",
-      "short_name": "Media",
-      "description": "Media View",
-      "url": "/entries/media",
-      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "List View",
-      "short_name": "List",
-      "description": "List View",
-      "url": "/entries/list",
-      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
-    },
-    {
       "name": "Table View",
       "short_name": "Table",
       "description": "Table View",
