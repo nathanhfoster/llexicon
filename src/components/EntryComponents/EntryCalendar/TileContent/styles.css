@@ -38,6 +38,7 @@
   font-size: 14px;
   color: rgba(55, 57, 67, 0.5);
   transition: color 0.2s ease-in-out;
+  z-index: 102;
 }
 
 .react-calendar__tile--active .TileContentFeather,

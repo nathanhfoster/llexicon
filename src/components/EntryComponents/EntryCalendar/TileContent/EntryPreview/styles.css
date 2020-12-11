@@ -21,7 +21,7 @@
   text-align: left;
 }
 
-.hasEventsContainer:hover {
+.hasEventsContainerHover {
   background-color: var(--quaternaryColor);
 }
 
@@ -44,3 +44,5 @@
   min-width: 0;
   text-align: right;
 }
+
+

@@ -71,6 +71,8 @@ const EntryPropType = {
     PropTypes.instanceOf(Date),
   ]),
   _isSelected: PropTypes.bool,
+  _image: PropTypes.string,
+  _calendarDate: PropTypes.instanceOf(Date),
 }
 
 const EntryPropTypes = PropTypes.shape(EntryPropType)

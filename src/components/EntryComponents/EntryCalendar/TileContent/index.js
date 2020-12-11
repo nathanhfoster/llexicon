@@ -10,7 +10,7 @@ import { I_FRAME_REGEX, SRC_REGEX, IMAGE_REGEX } from "utils"
 import "./styles.css"
 
 const mapStateToProps = (
-  { Window: { isMobile } },
+  { Calendar: { activeEntry }, Window: { isMobile } },
   { date, view, staticContext, activeDate, entriesWithinView }
 ) => {
   const calendarDate = MomentJS(date)
@@ -34,6 +34,9 @@ const mapStateToProps = (
   })
 
   return {
+    activeEntryExists:
+      Boolean(activeEntry.id) &&
+      activeEntry._calendarDate?.getDate() === date.getDate(),
     shouldRenderEntryPreview,
     shouldRenderPlusButton,
     entries,
@@ -46,6 +49,7 @@ const mapStateToProps = (
 const mapDispatchToProps = { GetUserEntriesByDate }
 
 const TileContent = ({
+  activeEntryExists,
   shouldRenderEntryPreview,
   shouldRenderPlusButton,
   entries,
@@ -56,12 +60,29 @@ const TileContent = ({
   const handleTodayClick = () =>
     setTimeout(() => RouterPush(RouteMap.NEW_ENTRY), 10)
 
-  const [renderEntryPreviews, firstEntryFileSource] = useMemo(() => {
-    let firstEntryFileSource
-
+  const renderEntryPreviews = useMemo(() => {
     const entryPreviews = entries.map((entry) => {
+      return (
+        <EntryPreview
+          {...entry}
+          key={entry.id}
+          date={date}
+          staticContext={staticContext}
+          view={view}
+        />
+      )
+    })
+
+    return entryPreviews
+  }, [date, entries, staticContext, view])
+
+  const firstEntryFileSource = useMemo(() => {
+    let firstEntryFileSource
+    for (let i = 0, { length } = entries; i < length; i++) {
+      const entry = entries[i]
+
       if (!firstEntryFileSource) {
-        const foundFile = entry.EntryFiles.find(({ url }) => url)
+        let foundFile = entry.EntryFiles.find(({ entry_id, url }) => url)
 
         // if (I_FRAME_REGEX.test(entry.html)) {
         //   I_FRAME_REGEX.lastIndex = 0
@@ -85,24 +106,14 @@ const TileContent = ({
             const { 0: image, 1: src, groups, index, input, length } = iterator
             foundImageRegex = src
           }
+
+          firstEntryFileSource = foundImageRegex || foundFile?.url
         }
-
-        firstEntryFileSource = foundFile?.url || foundImageRegex
       }
-      return (
-        <EntryPreview
-          key={entry.id}
-          id={entry.id}
-          {...entry}
-          date={date}
-          staticContext={staticContext}
-          view={view}
-        />
-      )
-    })
 
-    return [entryPreviews, firstEntryFileSource]
-  }, [date, entries, staticContext, view])
+      return firstEntryFileSource
+    }
+  }, [entries])
 
   return (
     <Fragment>
@@ -115,7 +126,11 @@ const TileContent = ({
       )}
       {shouldRenderEntryPreview && (
         <Fragment>
-          {firstEntryFileSource && (
+          <div
+            id={`portal-tile-image-${date.getDate()}`}
+            className="EntryPreviewImage"
+          />
+          {!activeEntryExists && firstEntryFileSource && (
             <div className="EntryPreviewImage">
               <Media src={firstEntryFileSource} />
             </div>
