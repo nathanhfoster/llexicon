@@ -4,16 +4,21 @@ import { Helmet } from 'react-helmet'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { stripHtml } from 'utils'
 
-const mapStateToProps = ({ Entries: { item } }) => ({ entryDetail: item })
+const mapStateToProps = ({
+  Entries: { item },
+  router: {
+    location: { pathname },
+  },
+}) => ({ entryDetail: item, pathname })
 
-const HelmetContainer = ({ entryDetail }) => {
+const HelmetContainer = ({ entryDetail, pathname }) => {
   const title = useMemo(() => {
     let title = 'Astral Tree'
     if (entryDetail?.title) {
       title = entryDetail.title
     }
     return title
-  }, [entryDetail])
+  }, [entryDetail, pathname])
 
   const image = useMemo(() => {
     let image =
