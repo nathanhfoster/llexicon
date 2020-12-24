@@ -236,7 +236,9 @@ const EditEntries = ({
               .map(entry => entry.tags)
               .flat(1)
               .concat(EntryTags),
-          ).map(t => (entriesTagMap[t.name] === entries.length ? { ...t, selected: true } : t)),
+          )
+            .sort(({ name: a }, { name: b }) => a.localeCompare(b))
+            .map(t => (entriesTagMap[t.name] === entries.length ? { ...t, selected: true } : t)),
           'name',
         )
       }
@@ -248,7 +250,9 @@ const EditEntries = ({
               .map(entry => entry.people)
               .flat(1)
               .concat(EntryPeople),
-          ).map(p => (entriesPeopleMap[p.name] === entries.length ? { ...p, selected: true } : p)),
+          )
+            .sort(({ name: a }, { name: b }) => a.localeCompare(b))
+            .map(p => (entriesPeopleMap[p.name] === entries.length ? { ...p, selected: true } : p)),
           'name',
         )
       }
