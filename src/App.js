@@ -1,10 +1,10 @@
-import React, { useEffect, lazy } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { Route, Switch, Redirect } from "react-router-dom"
-import { SetWindow } from "redux/Window/actions"
-import { ResetUserError, GetUserSettings } from "redux/User/actions"
-import { SetCalendar } from "redux/Calendar/actions"
+import React, { useEffect, lazy } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Route, Switch, Redirect } from 'react-router-dom'
+import { SetWindow } from 'redux/Window/actions'
+import { ResetUserError, GetUserSettings } from 'redux/User/actions'
+import { SetCalendar } from 'redux/Calendar/actions'
 import {
   GetUserEntries,
   GetUserEntryTags,
@@ -14,25 +14,24 @@ import {
   ResetSearchEntries,
   ClearEntry,
   ClearEntriesErrors,
-} from "redux/Entries/actions"
-import { ResetMap } from "redux/Map/actions"
-import { RouteMap, RouterGoBack, RouterLinkPush } from "redux/router/actions"
-import { Admin, About, Home, PrivacyPolicy } from "views"
-import { NavBar } from "components"
-import { useAddToHomescreenPrompt } from "hooks"
-import { lazyDelay } from "utils"
+} from 'redux/Entries/actions'
+import { ResetMap } from 'redux/Map/actions'
+import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
+import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
+import { Admin, About, Home, PrivacyPolicy } from 'views'
+import { NavBar } from 'components'
+import { useAddToHomescreenPrompt } from 'hooks'
+import { lazyDelay } from 'utils'
 
-const Entries = lazy(() => import("./views/Entries"))
-const Helmet = lazy(() => import("./views/Helmet"))
-const AlertNotifications = lazy(() => import("./components/AlertNotifications"))
-const Account = lazy(() => import("./views/Account"))
-const BackgroundImage = lazy(() =>
-  import("./components/BackgroundImage").then(lazyDelay(200))
-)
-const Settings = lazy(() => import("./views/Settings"))
-const Support = lazy(() => import("./views/Support"))
-const EntryDetail = lazy(() => import("./views/EntryDetail"))
-const PageNotFound = lazy(() => import("./views/PageNotFound"))
+const Entries = lazy(() => import('./views/Entries'))
+const Helmet = lazy(() => import('./views/Helmet'))
+const AlertNotifications = lazy(() => import('./components/AlertNotifications'))
+const Account = lazy(() => import('./views/Account'))
+const BackgroundImage = lazy(() => import('./components/BackgroundImage').then(lazyDelay(200)))
+const Settings = lazy(() => import('./views/Settings'))
+const Support = lazy(() => import('./views/Support'))
+const EntryDetail = lazy(() => import('./views/EntryDetail'))
+const PageNotFound = lazy(() => import('./views/PageNotFound'))
 
 const {
   ADMIN,
@@ -89,27 +88,28 @@ const mapDispatchToProps = {
   ClearEntry,
   ClearEntriesErrors,
   ResetMap,
+  SetBottomToolbarIsOpen,
 }
 
 const DARK_MODE_THEME = {
-  "--primaryColor": "#29303b",
-  "--primaryColorRGB": "41, 48, 59",
-  "--secondaryColor": "white",
-  "--tertiarycolor": "#bdc3c7",
-  "--quaternaryColor": "#202933",
-  "--quinaryColor": "#1f2326",
+  '--primaryColor': '#29303b',
+  '--primaryColorRGB': '41, 48, 59',
+  '--secondaryColor': 'white',
+  '--tertiarycolor': '#bdc3c7',
+  '--quaternaryColor': '#202933',
+  '--quinaryColor': '#1f2326',
 }
 
 const LIGHT_MODE_THEME = {
-  "--primaryColor": "white",
-  "--primaryColorRGB": "255, 255, 255",
-  "--secondaryColor": "black",
-  "--tertiarycolor": "rgba(0, 0, 0, 0.75)",
-  "--quaternaryColor": "#dfe6e9",
-  "--quinaryColor": "#bdc3c7",
+  '--primaryColor': 'white',
+  '--primaryColorRGB': '255, 255, 255',
+  '--secondaryColor': 'black',
+  '--tertiarycolor': 'rgba(0, 0, 0, 0.75)',
+  '--quaternaryColor': '#dfe6e9',
+  '--quinaryColor': '#bdc3c7',
 }
 
-const mapThemeProperties = (themeObject) => {
+const mapThemeProperties = themeObject => {
   let root = document.documentElement
 
   for (const [key, value] of Object.entries(themeObject)) {
@@ -117,10 +117,8 @@ const mapThemeProperties = (themeObject) => {
   }
 }
 
-const changeTheme = (darkMode) =>
-  darkMode
-    ? mapThemeProperties(DARK_MODE_THEME)
-    : mapThemeProperties(LIGHT_MODE_THEME)
+const changeTheme = darkMode =>
+  darkMode ? mapThemeProperties(DARK_MODE_THEME) : mapThemeProperties(LIGHT_MODE_THEME)
 
 const App = ({
   ResetUserError,
@@ -140,6 +138,7 @@ const App = ({
   ClearEntry,
   ClearEntriesErrors,
   ResetMap,
+  SetBottomToolbarIsOpen,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const handleResize = () => SetWindow()
@@ -148,16 +147,17 @@ const App = ({
     changeTheme(userDarkMode)
   }, [userDarkMode])
   useEffect(() => {
-    const activeDate = new Date()
+    SetBottomToolbarIsOpen(true)
+    SetCalendar({ activeDate: new Date() })
+    ResetSearchEntries()
     ResetUserError()
-    SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
     ResetMap()
-    ResetSearchEntries()
+
     ClearEntry()
     ClearEntriesErrors()
 
-    window.addEventListener("resize", handleResize)
+    window.addEventListener('resize', handleResize)
 
     handleResize()
 
@@ -172,49 +172,41 @@ const App = ({
     }
 
     return () => {
-      window.removeEventListener("resize", handleResize)
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
   const renderRedirectOrComponent = (shouldRedirect, component, route) => {
-    if (shouldRedirect && route === "GoBack") return () => RouterGoBack(true)
+    if (shouldRedirect && route === 'GoBack') return () => RouterGoBack(true)
     const directTo = () => RouterLinkPush(route)
     return shouldRedirect ? () => <Redirect push to={directTo} /> : component
   }
 
   return (
-    <main className={userDarkMode ? "DarkMode" : "LightMode"}>
+    <main className={userDarkMode ? 'DarkMode' : 'LightMode'}>
       <Helmet />
-      <div id="portal-root" />
+      <div id='portal-root' />
       <AlertNotifications />
       <NavBar prompt={prompt} promptToInstall={promptToInstall} />
-      <div className="App RouteOverlay">
+      <div className='App RouteOverlay'>
         <BackgroundImage />
         <Switch>
           <Route
             exact={true}
             path={[ADMIN]}
-            component={renderRedirectOrComponent(
-              !userIsSuperUser,
-              Admin,
-              "GoBack"
-            )}
+            component={renderRedirectOrComponent(!userIsSuperUser, Admin, 'GoBack')}
           />
           <Route
             exact={true}
             strict={false}
             path={[ABOUT]}
-            render={() => (
-              <About prompt={prompt} promptToInstall={promptToInstall} />
-            )}
+            render={() => <About prompt={prompt} promptToInstall={promptToInstall} />}
           />
           <Route
             exact={true}
             strict={false}
             path={[ROOT, HOME]}
-            render={() => (
-              <Home prompt={prompt} promptToInstall={promptToInstall} />
-            )}
+            render={() => <Home prompt={prompt} promptToInstall={promptToInstall} />}
           />
           {/* <Route
             path={ROOT}
@@ -224,11 +216,7 @@ const App = ({
           <Route
             exact
             path={[LOGIN, SIGNUP, PASSWORD_RESET]}
-            component={renderRedirectOrComponent(
-              !!userToken,
-              Account,
-              "GoBack"
-            )}
+            component={renderRedirectOrComponent(!!userToken, Account, 'GoBack')}
           />
           <Route
             exact
@@ -269,11 +257,7 @@ const App = ({
             ]}
             render={() => <Entries />}
           />
-          <Route
-            exact
-            path={[PRIVACY_POLICY]}
-            render={() => <PrivacyPolicy />}
-          />
+          <Route exact path={[PRIVACY_POLICY]} render={() => <PrivacyPolicy />} />
           <Route render={() => <PageNotFound />} />
         </Switch>
       </div>
@@ -300,6 +284,7 @@ App.propTypes = {
   ClearEntry: PropTypes.func.isRequired,
   ClearEntriesErrors: PropTypes.func.isRequired,
   ResetMap: PropTypes.func.isRequired,
+  SetBottomToolbarIsOpen: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
