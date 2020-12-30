@@ -1,12 +1,10 @@
-import React, { useCallback, memo } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
 import { BasicList, EntryMinimal } from '../..'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { GetUserEntries } from 'redux/Entries/actions'
-import deepEquals from 'utils/deepEquals'
-
 const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
   const entry = data[index]
 
@@ -29,14 +27,12 @@ const mapDispatchToProps = {
 const EntriesList = ({
   nextEntryPage,
   entriesSearch,
-  onItemsRendered,
   height,
   width,
   itemSize,
   entries,
   GetUserEntries,
 }) => {
-  const listLength = entries.length
   const handleOnScrollToBottomOfListCallback = useCallback(() => {
     if (entriesSearch || !nextEntryPage) {
       return
@@ -46,15 +42,14 @@ const EntriesList = ({
     const pageNumber = split[1]
 
     GetUserEntries(pageNumber)
-  }, [entries])
+  }, [entriesSearch, nextEntryPage])
   return (
     <BasicList
       height={height}
       width={width}
       list={entries}
-      itemCount={listLength}
+      itemCount={entries.length}
       itemSize={itemSize}
-      onItemsRendered={onItemsRendered}
       render={renderMinimalEntries}
       onScrollToBottomOfListCallback={handleOnScrollToBottomOfListCallback}
     />
@@ -63,7 +58,6 @@ const EntriesList = ({
 
 EntriesList.propTypes = {
   entries: EntriesPropTypes,
-  onItemsRendered: PropTypes.func,
   height: PropTypes.number.isRequired,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   GetUserEntries: PropTypes.func.isRequired,
@@ -75,6 +69,4 @@ EntriesList.defaultProps = {
   itemSize: 150,
 }
 
-const isEqual = (prevProps, nextProps) => deepEquals(prevProps, nextProps)
-
-export default connect(mapStateToProps, mapDispatchToProps)(memo(EntriesList, isEqual))
+export default connect(mapStateToProps, mapDispatchToProps)(EntriesList)

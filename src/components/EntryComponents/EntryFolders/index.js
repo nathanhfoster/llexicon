@@ -75,17 +75,13 @@ const EntryFolders = ({ entries, search }) => {
   const renderFolders = useMemo(
     () =>
       sortedTags.map((name, i) => {
-        const handleOnClickCallback = () => {
-          RouterPush(search.concat(`+${name}`))
-        }
-
         return (
           <Col key={`${name}-${i}`} xs={4} sm={3} md={2} className='p-0'>
-            <EntryFolder title={name} onClick={handleOnClickCallback} />
+            <EntryFolder title={name} />
           </Col>
         )
       }),
-    [sortedTags, search],
+    [sortedTags],
   )
 
   return (

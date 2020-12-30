@@ -12,6 +12,6 @@
 }
 
 .MediaButtonModalImage {
-  max-height: calc(100vh - 81px - var(--inputHeight) - 71px - 80px);
-  width: auto;
+  max-height: calc(100vh - 81px - var(--inputHeight) - 71px - 40px);
+  width: 100%;
 }
