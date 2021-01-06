@@ -17,6 +17,7 @@ import {
   ButtonShareEntries,
   ButtonClearSelectedEntries,
   ButtonDeleteEntries,
+  ImportEntries,
 } from 'components'
 import { ButtonGroup } from 'reactstrap'
 import './styles.css'
@@ -289,6 +290,7 @@ const EntriesTable = ({
       actionMenuCallback={handleActionMenuCallback}
     >
       <ButtonGroup className='BasicTableActions'>
+        <ImportEntries />
         <ButtonExportEntries entries={selectedEntries} />
         <ButtonEditEntries entries={selectedEntries} />
         <ButtonShareEntries entries={selectedEntries} />

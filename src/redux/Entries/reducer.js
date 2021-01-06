@@ -132,6 +132,9 @@ const DEFAULT_STATE_ENTRIES = {
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   const { type, payload, search } = action
 
+  let updatedItem
+  let nextItems = []
+
   switch (type) {
     case ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC:
       return { ...state, showOnlyPublic: !state.showOnlyPublic }
@@ -207,8 +210,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRIES_UPDATE:
-      let updatedItem
-      let nextItems = state.items.concat(state.filteredItems).map(e => {
+      nextItems = state.items.concat(state.filteredItems).map(e => {
         if (payload.id === e.id) {
           updatedItem = { ...e, ...payload }
           return {
@@ -234,7 +236,32 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRIES_SELECTED:
-      return { ...state, selectedItems: payload || {} }
+      nextItems = state.items.concat(state.filteredItems).reduce((acc, e) => {
+        const _isSelected = Boolean(payload[e.id])
+        if (!_isSelected && e._isSelected) {
+          updatedItem = { ...e, _isSelected: false }
+        } else if (_isSelected) {
+          updatedItem = { ...e, _isSelected }
+        }
+
+        if (updatedItem) {
+          acc.push({
+            ...updatedItem,
+            _size: getStringBytes(updatedItem),
+          })
+        } else {
+          acc.push(e)
+        }
+
+        return acc
+      }, [])
+
+      console.log(nextItems[0])
+      return {
+        ...state,
+        ...handleFilterEntries(nextItems, state.search),
+        selectedItems: payload,
+      }
 
     case ENTRIES_DELETE:
       return {
