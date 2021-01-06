@@ -37,6 +37,7 @@ const ButtonShareEntries = ({ entries, UpdateReduxEntries, SyncEntries }) => {
       return {
         ...e,
         is_public: true,
+        _lastUpdated: new Date(),
       }
     }
 
