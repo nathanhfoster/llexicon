@@ -5,6 +5,7 @@ import { getStringBytes, isObject } from 'utils'
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
+  ENTRIES_SELECTED,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
   ENTRIES_DELETE,
@@ -63,14 +64,20 @@ const PostReduxEntry = entry => dispatch => {
   )
 }
 
-const SelectEntries = selectedEntriesMap => (dispatch, getState) => {
+const UpdateReduxEntries = (entryOrEntriesMap, _lastUpdated = new Date()) => ({
+  type: ENTRIES_UPDATE,
+  payload: entryOrEntriesMap.id ? { ...entryOrEntriesMap, _lastUpdated } : entryOrEntriesMap,
+})
+
+const SelectEntries = (selectedEntriesMap = {}) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
 
   const payload = items.concat(filteredItems).reduce((acc, e) => {
-    if (!selectedEntriesMap[e.id]?._isSelected && e._isSelected) {
+    const isSelected = Boolean(selectedEntriesMap[e.id])
+    if (!isSelected && e._isSelected) {
       acc[e.id] = { ...e, _isSelected: false }
-    } else if (selectedEntriesMap[e.id]) {
-      acc[e.id] = selectedEntriesMap[e.id]
+    } else if (isSelected) {
+      acc[e.id] = isSelected
     }
     return acc
   }, {})
@@ -80,10 +87,10 @@ const SelectEntries = selectedEntriesMap => (dispatch, getState) => {
   }
 }
 
-const UpdateReduxEntries = (entryOrEntriesMap, _lastUpdated = new Date()) => ({
-  type: ENTRIES_UPDATE,
-  payload: entryOrEntriesMap.id ? { ...entryOrEntriesMap, _lastUpdated } : entryOrEntriesMap,
-})
+const SelectReduxEntries = selectedEntriesMap => dispatch => {
+  dispatch(SelectEntries(selectedEntriesMap))
+  return dispatch({ type: ENTRIES_SELECTED, payload: selectedEntriesMap })
+}
 
 const ClearEntry = () => ({ type: ENTRY_CLEAR })
 
@@ -155,8 +162,9 @@ export {
   ClearEntriesErrors,
   SetEntry,
   PostReduxEntry,
-  SelectEntries,
   UpdateReduxEntries,
+  SelectEntries,
+  SelectReduxEntries,
   ClearEntry,
   ClearEntries,
   DeleteReduxEntries,

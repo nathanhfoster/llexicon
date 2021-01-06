@@ -13,6 +13,7 @@ import * as AwsImages from '../../images/AWS'
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
+  ENTRIES_SELECTED,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
   ENTRIES_DELETE,
@@ -88,6 +89,7 @@ const DEFAULT_STATE_ENTRIES = {
   previous: null,
   item: { id: null, isPending: false },
   items: [FIRST_JOUNRAL_ENTRY],
+  selectedItems: {},
   filteredItems: [],
   isPending: false,
   error: null,
@@ -230,6 +232,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
       }
+
+    case ENTRIES_SELECTED:
+      return { ...state, selectedItems: payload || {} }
 
     case ENTRIES_DELETE:
       return {

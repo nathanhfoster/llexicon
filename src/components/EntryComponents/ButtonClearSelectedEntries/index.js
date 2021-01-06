@@ -3,17 +3,17 @@ import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { connect } from 'react-redux'
 import { Button } from 'reactstrap'
-import { SelectEntries } from 'redux/Entries/actions'
+import { SelectReduxEntries } from 'redux/Entries/actions'
 
 const mapStateToProps = ({ Entries: { items, filteredItems } }, { entries }) => ({
   entries: entries || items.concat(filteredItems).filter(({ _isSelected }) => _isSelected),
 })
 
-const mapDispatchToProps = { SelectEntries }
+const mapDispatchToProps = { SelectReduxEntries }
 
-const ButtonClearSelectedEntries = ({ entries, SelectEntries }) => {
+const ButtonClearSelectedEntries = ({ entries, SelectReduxEntries }) => {
   const handleShareEntries = useCallback(() => {
-    SelectEntries([])
+    SelectReduxEntries()
   }, [])
   return (
     <Button disabled={entries.length === 0} color='accent' onClick={handleShareEntries}>

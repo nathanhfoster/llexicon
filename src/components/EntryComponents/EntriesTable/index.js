@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useState } from 'react'
-import PropTypes from 'prop-types'
+import PropTypes, { objectOf } from 'prop-types'
 import { connect } from 'react-redux'
 import { stripHtml, TopKFrequentStrings } from 'utils'
 import Moment from 'react-moment'
@@ -7,7 +7,7 @@ import { TagsContainer, BasicTable, EntryDataCellLink } from '../../'
 import { GoToEntryDetail } from 'redux/router/actions'
 import { EntryPropType, EntriesPropTypes } from 'redux/Entries/propTypes'
 import { stringMatch, formatBytes } from 'utils'
-import { SetEntriesSortMap, SetEntriesFilterMap, SelectEntries } from 'redux/Entries/actions'
+import { SetEntriesSortMap, SetEntriesFilterMap, SelectReduxEntries } from 'redux/Entries/actions'
 
 import { DEFAULT_STATE_ENTRIES } from 'redux/Entries/reducer'
 
@@ -21,33 +21,47 @@ import {
 import { ButtonGroup } from 'reactstrap'
 import './styles.css'
 
-const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
+const mapStateToProps = ({ Entries: { showOnlyPublic, selectedItems } }) => ({
   showOnlyPublic,
+  selectedItems,
 })
 
 const mapDispatchToProps = {
   SetEntriesSortMap,
   SetEntriesFilterMap,
-  SelectEntries,
+  SelectReduxEntries,
 }
 
 const EntriesTable = ({
   showOnlyPublic,
+  selectedItems,
   SetEntriesSortMap,
   SetEntriesFilterMap,
-  SelectEntries,
+  SelectReduxEntries,
   entries,
   sortMap,
   filterMap,
   pageSize,
 }) => {
-  const viewableEntries = useMemo(
-    () =>
-      entries.filter(({ _shouldDelete, is_public }) =>
-        showOnlyPublic ? is_public : !_shouldDelete,
-      ),
-    [showOnlyPublic, entries],
-  )
+  const [viewableEntries, selectedEntries] = useMemo(() => {
+    let selected = []
+    const viewable = entries.reduce((acc, e) => {
+      const { id, _shouldDelete, is_public } = e
+      const _isSelected = Boolean(selectedItems[id])
+      const newEntry = { ...e, _isSelected }
+      if (showOnlyPublic ? is_public : !_shouldDelete) {
+        acc.push(newEntry)
+      }
+
+      if (_isSelected) {
+        selected.push(newEntry)
+      }
+
+      return acc
+    }, [])
+
+    return [viewable, selected]
+  }, [entries, selectedItems, showOnlyPublic])
 
   const handleSortCallback = useCallback((sortKey, sortUp) => SetEntriesSortMap(sortKey, sortUp), [
     SetEntriesSortMap,
@@ -253,15 +267,13 @@ const EntriesTable = ({
   const handleActionMenuCallback = useCallback(
     selectedEntries => {
       const selectedEntriesMap = selectedEntries.reduce((acc, e) => {
-        acc[e.id] = e
+        acc[e.id] = e._isSelected
         return acc
       }, {})
-      SelectEntries(selectedEntriesMap)
+      SelectReduxEntries(selectedEntriesMap)
     },
-    [entries],
+    [SelectReduxEntries],
   )
-
-  const selectedEntries = useMemo(() => entries.filter(({ _isSelected }) => _isSelected), [entries])
 
   return (
     <BasicTable
@@ -289,11 +301,12 @@ const EntriesTable = ({
 
 EntriesTable.propTypes = {
   entries: EntriesPropTypes,
+  selectedItems: PropTypes.objectOf(PropTypes.bool),
   sortMap: PropTypes.object.isRequired,
   filterMap: PropTypes.object.isRequired,
   SetEntriesSortMap: PropTypes.func.isRequired,
   SetEntriesFilterMap: PropTypes.func.isRequired,
-  SelectEntries: PropTypes.func.isRequired,
+  SelectReduxEntries: PropTypes.func.isRequired,
 }
 
 EntriesTable.defaultProps = {
