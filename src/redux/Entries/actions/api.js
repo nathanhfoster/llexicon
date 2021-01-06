@@ -307,7 +307,7 @@ const DeleteEntry = id => dispatch => {
       return res
     })
     .catch(e => {
-      if (e.response.status === 404) {
+      if (e.response?.status === 404) {
         dispatch(DeleteReduxEntries(id))
       }
       dispatch(SetEntriesError(e))
@@ -349,18 +349,14 @@ const DeleteEntryFile = (id, entry_id) => dispatch =>
       return res
     })
     .catch(e => {
-      const { response } = e
-      if (response) {
-        const { status } = response
-        if (status === 401 || status === 404) {
-          dispatch(DeleteEntryFileFromRedux(id, entry_id))
-          dispatch(
-            SetAlert({
-              title: 'Deleted',
-              message: 'Entry File',
-            }),
-          )
-        }
+      if (e.response?.status === 401 || e.response?.status === 404) {
+        dispatch(DeleteEntryFileFromRedux(id, entry_id))
+        dispatch(
+          SetAlert({
+            title: 'Deleted',
+            message: 'Entry File',
+          }),
+        )
 
         dispatch(SetEntriesError(e))
       }

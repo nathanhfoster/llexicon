@@ -1,5 +1,5 @@
-import { BasicTableActionTypes } from "./types"
-import { filterSort, getSortedAndFilteredData } from "./utils"
+import { BasicTableActionTypes } from './types'
+import { filterSort, getSortedAndFilteredData } from './utils'
 
 const {
   BASIC_TABLE_SORT,
@@ -25,7 +25,7 @@ const BasicTableReducer = (state, action) => {
           state.data,
           newSortList,
           state.filterList,
-          state.actionMenuCallback
+          state.actionMenuCallback,
         ),
       }
 
@@ -40,7 +40,7 @@ const BasicTableReducer = (state, action) => {
           state.data,
           state.sortList,
           newFilterList,
-          state.actionMenuCallback
+          state.actionMenuCallback,
         ),
         currentPage: 0,
       }
@@ -58,13 +58,13 @@ const BasicTableReducer = (state, action) => {
           payload,
           state.sortList,
           state.filterList,
-          state.actionMenuCallback
+          // state.actionMenuCallback,
         ),
       }
 
     case BASIC_TABLE_SELECT_DATA_ITEMS:
       let selectedData = []
-      const newSortedAndFilteredData = state.sortedAndFilteredData.map((d) => {
+      const newSortedAndFilteredData = state.sortedAndFilteredData.map(d => {
         const updatedItem = {
           ...d,
           _isSelected: payload[d.id],
@@ -84,18 +84,18 @@ const BasicTableReducer = (state, action) => {
 
     case BASIC_TABLE_SELECT_DATA_ITEM:
       let newSelectedData = []
-      const newSortedAndFilteredDataWithItem = state.sortedAndFilteredData.map(
-        (d) => {
-          const updatedItem = {
-            ...d,
-            _isSelected: d.id === id ? payload : d._isSelected,
-          }
-
-          if (updatedItem._isSelected) newSelectedData.push(updatedItem)
-
-          return updatedItem
+      const newSortedAndFilteredDataWithItem = state.sortedAndFilteredData.map(d => {
+        const updatedItem = {
+          ...d,
+          _isSelected: d.id === id ? payload : d._isSelected,
         }
-      )
+
+        if (updatedItem._isSelected) {
+          newSelectedData.push(updatedItem)
+        }
+
+        return updatedItem
+      })
 
       state.actionMenuCallback(newSelectedData)
 

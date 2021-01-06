@@ -9,11 +9,10 @@ import { getTagStringFromObject } from 'redux/Entries/utils'
 
 const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems } }, { entries }) => ({
   userId: id,
-  entries: entries || items.concat(filteredItems),
+  entries: entries || items.concat(filteredItems).filter(({ _isSelected }) => _isSelected),
 })
 
 const ButtonClearEntries = ({ userId, entries }) => {
-  
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
@@ -65,7 +64,8 @@ const ButtonClearEntries = ({ userId, entries }) => {
   }
   return (
     <Button color='accent' onClick={handleExportEntries} disabled={entries.length === 0}>
-      <i className='fas fa-file-export' /> Export
+      <i className='fas fa-file-export mr-1' />
+      Export
     </Button>
   )
 }
@@ -75,6 +75,6 @@ ButtonClearEntries.propTypes = {
   entries: EntriesPropTypes,
 }
 
-ButtonClearEntries.defaultProps = {}
+ButtonClearEntries.defaultProps = { entries: [] }
 
 export default connect(mapStateToProps)(ButtonClearEntries)

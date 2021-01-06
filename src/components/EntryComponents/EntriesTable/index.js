@@ -6,18 +6,19 @@ import Moment from 'react-moment'
 import { TagsContainer, BasicTable, EntryDataCellLink } from '../../'
 import { GoToEntryDetail } from 'redux/router/actions'
 import { EntryPropType, EntriesPropTypes } from 'redux/Entries/propTypes'
-import { stringMatch, formatBytes, cleanObject } from 'utils'
-import {
-  SetEntriesSortMap,
-  SetEntriesFilterMap,
-  UpdateReduxEntries,
-  DeleteReduxEntries,
-  SyncEntries,
-} from 'redux/Entries/actions'
+import { stringMatch, formatBytes } from 'utils'
+import { SetEntriesSortMap, SetEntriesFilterMap, SelectEntries } from 'redux/Entries/actions'
 
 import { DEFAULT_STATE_ENTRIES } from 'redux/Entries/reducer'
-import { ButtonExportEntries, ConfirmAction, EditEntries } from 'components'
-import { ButtonGroup, Button } from 'reactstrap'
+
+import {
+  ButtonExportEntries,
+  ButtonEditEntries,
+  ButtonShareEntries,
+  ButtonClearSelectedEntries,
+  ButtonDeleteEntries,
+} from 'components'
+import { ButtonGroup } from 'reactstrap'
 import './styles.css'
 
 const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
@@ -27,18 +28,14 @@ const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
 const mapDispatchToProps = {
   SetEntriesSortMap,
   SetEntriesFilterMap,
-  UpdateReduxEntries,
-  DeleteReduxEntries,
-  SyncEntries,
+  SelectEntries,
 }
 
 const EntriesTable = ({
   showOnlyPublic,
   SetEntriesSortMap,
   SetEntriesFilterMap,
-  UpdateReduxEntries,
-  DeleteReduxEntries,
-  SyncEntries,
+  SelectEntries,
   entries,
   sortMap,
   filterMap,
@@ -253,47 +250,18 @@ const EntriesTable = ({
 
   const onRowClick = useCallback(item => GoToEntryDetail(item.id), [])
 
-  const [entriesSelected, setEntriesSelected] = useState(
-    entries.filter(({ _isSelected }) => _isSelected),
+  const handleActionMenuCallback = useCallback(
+    selectedEntries => {
+      const selectedEntriesMap = selectedEntries.reduce((acc, e) => {
+        acc[e.id] = e
+        return acc
+      }, {})
+      SelectEntries(selectedEntriesMap)
+    },
+    [entries],
   )
 
-  const handleActionMenuCallback = useCallback(selectedEntries => {
-    setEntriesSelected(selectedEntries)
-  }, [])
-
-  const handleDeleteEntries = useCallback(() => {
-    const getUpdatedEntry = e => ({
-      ...e,
-      _shouldDelete: true,
-      _shouldPost: false,
-      _lastUpdated: null,
-    })
-    const payload =
-      entriesSelected.length === 1
-        ? getUpdatedEntry(entriesSelected[0])
-        : entriesSelected.reduce((acc, e) => {
-            acc[e.id] = getUpdatedEntry(e)
-            return acc
-          }, {})
-
-    // DeleteReduxEntries(payload.id || payload)
-
-    entriesSelected.forEach(e => {
-      UpdateReduxEntries(payload, null)
-    })
-
-    SyncEntries()
-  }, [entriesSelected])
-
-  const confirmationButton = useMemo(
-    () => (
-      <Button color='danger'>
-        <i className='fas fa-trash-alt mr-1' />
-        Delete
-      </Button>
-    ),
-    [],
-  )
+  const selectedEntries = useMemo(() => entries.filter(({ _isSelected }) => _isSelected), [entries])
 
   return (
     <BasicTable
@@ -309,16 +277,11 @@ const EntriesTable = ({
       actionMenuCallback={handleActionMenuCallback}
     >
       <ButtonGroup className='BasicTableActions'>
-        <ButtonExportEntries entries={entriesSelected} />
-        <EditEntries entries={entriesSelected} />
-        <ConfirmAction
-          disabled={entriesSelected.length === 0}
-          message={`Are you sure you want delete  ${
-            entriesSelected.length === 1 ? 'this entry' : `these ${entriesSelected.length} entries`
-          }?`}
-          onConfirm={handleDeleteEntries}
-          button={confirmationButton}
-        />
+        <ButtonExportEntries entries={selectedEntries} />
+        <ButtonEditEntries entries={selectedEntries} />
+        <ButtonShareEntries entries={selectedEntries} />
+        <ButtonClearSelectedEntries entries={selectedEntries} />
+        <ButtonDeleteEntries entries={selectedEntries} />
       </ButtonGroup>
     </BasicTable>
   )
@@ -330,6 +293,7 @@ EntriesTable.propTypes = {
   filterMap: PropTypes.object.isRequired,
   SetEntriesSortMap: PropTypes.func.isRequired,
   SetEntriesFilterMap: PropTypes.func.isRequired,
+  SelectEntries: PropTypes.func.isRequired,
 }
 
 EntriesTable.defaultProps = {

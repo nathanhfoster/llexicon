@@ -1,12 +1,12 @@
-import React, { useState, useRef, useMemo, useCallback, Fragment } from 'react'
+import React, { useState, useRef, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { connect } from 'react-redux'
 import { BasicModal, BasicForm } from 'components'
 import { Button } from 'reactstrap'
 import { cleanObject, removeAttributeDuplicates } from 'utils'
 import { getTagStringFromObject, getTagObjectFromString } from 'redux/Entries/utils'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { EntriesPropTypes } from 'redux/Entries/propTypes'
 
 const tagInputs = [
   {
@@ -44,7 +44,7 @@ const mapStateToProps = (
   { Entries: { items, filteredItems, EntryTags, EntryPeople } },
   { entries },
 ) => ({
-  entries: entries || items.concat(filteredItems),
+  entries: entries || items.concat(filteredItems).filter(({ _isSelected }) => _isSelected),
   items,
   filteredItems,
   EntryTags,
@@ -53,7 +53,7 @@ const mapStateToProps = (
 
 const mapDispatchToProps = { UpdateReduxEntries, SyncEntries }
 
-const EditEntries = ({
+const ButtonEditEntries = ({
   entries,
   items,
   filteredItems,
@@ -198,9 +198,7 @@ const EditEntries = ({
               return acc
             }, {})
 
-      entries.forEach(e => {
-        UpdateReduxEntries(payload)
-      })
+      UpdateReduxEntries(payload)
 
       setShowEditModal(false)
 
@@ -396,12 +394,14 @@ const EditEntries = ({
   )
 }
 
-EditEntries.propTypes = {
+ButtonEditEntries.propTypes = {
   entries: EntriesPropTypes,
+  UpdateReduxEntries: PropTypes.func.isRequired,
+  SyncEntries: PropTypes.func.isRequired,
 }
 
-EditEntries.defaultProps = {
+ButtonEditEntries.defaultProps = {
   entries: [],
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditEntries)
+export default connect(mapStateToProps, mapDispatchToProps)(ButtonEditEntries)
