@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { connect } from 'react-redux'
@@ -12,14 +12,12 @@ const mapStateToProps = ({ Entries: { items, filteredItems } }, { entries }) => 
 const mapDispatchToProps = { SelectEntries }
 
 const ButtonClearSelectedEntries = ({ entries, SelectEntries }) => {
-  const [cleared, setCleared] = useState(false)
   const handleShareEntries = useCallback(() => {
     SelectEntries([])
-    setCleared(true)
   }, [])
   return (
     <Button disabled={entries.length === 0} color='accent' onClick={handleShareEntries}>
-      <i className={`fas fa-${cleared ? 'check' : 'minus-square'} mr-1`} />
+      <i className={`fas fa-minus-square mr-1`} />
       Clear
     </Button>
   )
