@@ -22,9 +22,9 @@ import {
 import { ButtonGroup } from 'reactstrap'
 import './styles.css'
 
-const mapStateToProps = ({ Entries: { showOnlyPublic, selectedItems } }) => ({
+const mapStateToProps = ({ Entries: { showOnlyPublic, selectedItemsMap } }) => ({
   showOnlyPublic,
-  selectedItems,
+  selectedItemsMap,
 })
 
 const mapDispatchToProps = {
@@ -35,7 +35,7 @@ const mapDispatchToProps = {
 
 const EntriesTable = ({
   showOnlyPublic,
-  selectedItems,
+  selectedItemsMap,
   SetEntriesSortMap,
   SetEntriesFilterMap,
   SelectReduxEntries,
@@ -44,7 +44,7 @@ const EntriesTable = ({
   filterMap,
   pageSize,
 }) => {
-  const [selectedReduxEntries, setSelectedReduxEntries] = useState(selectedItems)
+  const [selectedReduxEntries, setSelectedReduxEntries] = useState(selectedItemsMap)
 
   useEffect(() => {
     SelectReduxEntries(selectedReduxEntries)
@@ -54,7 +54,7 @@ const EntriesTable = ({
     let selected = []
     const viewable = entries.reduce((acc, e) => {
       const { id, _shouldDelete, is_public } = e
-      const _isSelected = Boolean(selectedItems[id])
+      const _isSelected = Boolean(selectedItemsMap[id])
       const newEntry = { ...e, _isSelected }
       if (showOnlyPublic ? is_public && !_shouldDelete : !_shouldDelete) {
         acc.push(newEntry)
@@ -68,7 +68,7 @@ const EntriesTable = ({
     }, [])
 
     return [viewable, selected]
-  }, [entries, selectedItems, showOnlyPublic])
+  }, [entries, selectedItemsMap, showOnlyPublic])
 
   const handleSortCallback = useCallback((sortKey, sortUp) => SetEntriesSortMap(sortKey, sortUp), [
     SetEntriesSortMap,
@@ -272,11 +272,7 @@ const EntriesTable = ({
   const onRowClick = useCallback(item => GoToEntryDetail(item.id), [])
 
   const handleActionMenuCallback = useCallback(selectedEntries => {
-    const selectedEntriesMap = selectedEntries.reduce((acc, e) => {
-      acc[e.id] = e._isSelected
-      return acc
-    }, {})
-    setSelectedReduxEntries(selectedEntriesMap)
+    setSelectedReduxEntries(selectedEntries)
   }, [])
 
   return (
@@ -287,6 +283,7 @@ const EntriesTable = ({
       columns={tableColumns}
       dataDisplayName='Entries'
       data={viewableEntries}
+      selectedDataMap={selectedItemsMap}
       onRowClick={onRowClick}
       onSortCallback={handleSortCallback}
       onFilterCallback={handleFilterCallback}
@@ -306,7 +303,7 @@ const EntriesTable = ({
 
 EntriesTable.propTypes = {
   entries: EntriesPropTypes,
-  selectedItems: PropTypes.objectOf(PropTypes.bool),
+  selectedItemsMap: PropTypes.objectOf(PropTypes.bool),
   sortMap: PropTypes.object.isRequired,
   filterMap: PropTypes.object.isRequired,
   SetEntriesSortMap: PropTypes.func.isRequired,

@@ -1,4 +1,4 @@
-import BasicTableContext from '../state/context'
+import { BASIC_TABLE_CONTEXT_OPTIONS } from '../state/context'
 import React, { lazy, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -82,6 +82,4 @@ BasicTable.propTypes = {
   innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object]),
 }
 
-export default connect(mapStateToProps, null, null, {
-  context: BasicTableContext,
-})(BasicTable)
+export default connect(mapStateToProps, null, null, BASIC_TABLE_CONTEXT_OPTIONS)(BasicTable)

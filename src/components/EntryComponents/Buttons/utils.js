@@ -1,16 +1,16 @@
 export const selectedEntriesSelector = ({
-  Entries: { items, filteredItems, selectedItems, showOnlyPublic },
+  Entries: { items, filteredItems, selectedItemsMap, showOnlyPublic },
 }) => ({
   entriesSelected: items
     .concat(filteredItems)
     .filter(
       ({ id, is_public, _shouldDelete }) =>
-        (showOnlyPublic ? is_public && !_shouldDelete : !_shouldDelete) && selectedItems[id],
+        (showOnlyPublic ? is_public && !_shouldDelete : !_shouldDelete) && selectedItemsMap[id],
     ),
-  selectedItems,
+  selectedItemsMap,
 })
 
 export const selectedItemsAreEqual = (
-  { selectedItems: prevSelectedItems },
-  { selectedItems: nextSelectedItems },
+  { selectedItemsMap: prevSelectedItems },
+  { selectedItemsMap: nextSelectedItems },
 ) => Object.keys(prevSelectedItems).length === Object.keys(nextSelectedItems).length

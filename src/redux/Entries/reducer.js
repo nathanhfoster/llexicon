@@ -89,7 +89,7 @@ const DEFAULT_STATE_ENTRIES = {
   previous: null,
   item: { id: null, isPending: false },
   items: [FIRST_JOUNRAL_ENTRY],
-  selectedItems: {},
+  selectedItemsMap: {},
   filteredItems: [],
   isPending: false,
   error: null,
@@ -259,7 +259,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         // ...handleFilterEntries(nextItems, state.search),
-        selectedItems: payload,
+        selectedItemsMap: payload,
       }
 
     case ENTRIES_DELETE:
