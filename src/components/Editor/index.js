@@ -1,4 +1,4 @@
-import React, { createContext, useRef, useEffect, useMemo, useCallback } from 'react'
+import React, { createContext, useRef, useState, useEffect, useMemo, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
 import ReactQuill from 'react-quill'
@@ -36,6 +36,12 @@ const Editor = ({
   const didMount = useRef(false)
 
   const bottomToolbarIsOpen = !readOnly && restOfProps.bottomToolbarIsOpen
+
+  const [showRaw, setShowRaw] = useState(false)
+
+  const toggleSetShowRaw = useCallback(() => {
+    setShowRaw(prevShowRaw => !prevShowRaw)
+  }, [])
 
   useEffect(() => {
     didMount.current = true
@@ -99,6 +105,12 @@ const Editor = ({
     },
     [handleEditorChange],
   )
+  const handleEditorRawStateChange = useCallback(
+    ({ target: { value } }) => {
+      handleEditorChange({ html: value })
+    },
+    [handleEditorChange],
+  )
 
   const toggleBottomToolbar = useCallback(
     toggle => {
@@ -115,35 +127,49 @@ const Editor = ({
       editorSelection,
       handleEditorChange,
       toggleBottomToolbar,
+      toggleSetShowRaw,
     }),
     [editorRef, editorSelection, handleEditorChange, toggleBottomToolbar],
   )
 
   return (
     <EditorConsumer.Provider value={contextValue}>
-      {children}
-      <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
-      <ReactQuill
-        id={quillId}
-        readOnly={readOnly}
-        bounds='app'
-        ref={editorRef}
-        className='Editor'
-        style={editorStyles}
-        theme={theme}
-        formats={FORMATS}
-        modules={modules}
-        value={entry.html}
-        onChange={handleEditorStateChange}
-        placeholder={placeholder}
-        onFocus={handleOnFocus}
-      />
-      <BottomToolbar
-        entry={entry}
-        canToggleToolbars={canToggleToolbars}
-        isOpen={bottomToolbarIsOpen}
-        id={restOfProps.toolbarId}
-      />
+      <div className={showRaw ? 'showRaw' : ''}>
+        {children}
+        <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
+        <ReactQuill
+          id={quillId}
+          readOnly={readOnly}
+          bounds='app'
+          ref={editorRef}
+          className='Editor'
+          style={editorStyles}
+          theme={theme}
+          formats={FORMATS}
+          modules={modules}
+          defaultValue={entry.html}
+          value={entry.html}
+          onChange={handleEditorStateChange}
+          placeholder={placeholder}
+          onFocus={handleOnFocus}
+          preserveWhitespace={false}
+          tabIndex={0}
+        />
+        <BottomToolbar
+          entry={entry}
+          canToggleToolbars={canToggleToolbars}
+          isOpen={bottomToolbarIsOpen}
+          id={restOfProps.toolbarId}
+        />
+        {showRaw && (
+          <textarea
+            className='Editor raw-editor px-3 py-2'
+            style={editorStyles}
+            onChange={handleEditorRawStateChange}
+            value={entry.html}
+          />
+        )}
+      </div>
     </EditorConsumer.Provider>
   )
 }

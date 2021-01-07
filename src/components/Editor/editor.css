@@ -4,6 +4,23 @@
   /* Default font-size */
   font-size: 1rem;
 }
+.raw-editor {
+  display: none;
+  height: 100%;
+  width: 100%;
+  resize: none;
+  border: 0;
+  outline: none;
+  position: absolute;
+  top: calc(var(--topToolbarHeight) + var(--inputHeight));
+}
+.showRaw .ql-editor {
+  display: none;
+}
+.showRaw .raw-editor {
+  display: block;
+
+}
 
 .ql-editor.ql-blank::before {
   color: var(--secondaryColor);
@@ -28,15 +45,15 @@
 }
 
 .ql-editor ul > li.ql-indent-1::before {
-  content: "\25E6";
+  content: '\25E6';
 }
 
 .ql-editor ul > li.ql-indent-2::before {
-  content: "\25A0";
+  content: '\25A0';
 }
 
 .ql-editor ul > li.ql-indent-3::before {
-  content: "\25A1";
+  content: '\25A1';
 }
 
 .ql-editor .ql-video {
