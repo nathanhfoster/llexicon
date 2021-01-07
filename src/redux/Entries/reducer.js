@@ -130,7 +130,7 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const { type, payload, search } = action
+  const { type, payload, search, isPending } = action
 
   let updatedItem
   let nextItems = []
@@ -154,7 +154,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         ...handleFilterEntries(mergeJson(state.items.concat(state.filteredItems), payload), search),
         search,
-        isPending: false,
+        isPending,
       }
 
     case ENTRIES_PENDING:
@@ -302,6 +302,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...handleFilterEntries(nextItems, payload.Entries?.search || state.search),
         isPending: DEFAULT_STATE_ENTRIES.isPending,
         error: DEFAULT_STATE_ENTRIES.error,
+        // search: DEFAULT_STATE_ENTRIES.search
       }
 
     default:

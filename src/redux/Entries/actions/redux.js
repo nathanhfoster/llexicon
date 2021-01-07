@@ -98,10 +98,11 @@ const SetEntriesPeople = payload => ({
   payload,
 })
 
-const SetSearchEntries = (search, payload) => ({
+const SetSearchEntries = (search, payload, isPending = true) => ({
   type: ENTRIES_SEARCH_FILTER,
   payload,
   search,
+  isPending,
 })
 
 const SetEntriesSortMap = (sortKey, sortUp) => ({
@@ -122,7 +123,7 @@ const ResetEntriesSortAndFilterMaps = () => ({
   type: ENTRIES_RESET_SORT_AND_FILTER_MAP,
 })
 
-const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries('', []))
+const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries('', [], false))
 
 const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries

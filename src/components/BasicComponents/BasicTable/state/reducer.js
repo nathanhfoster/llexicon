@@ -41,7 +41,7 @@ const BasicTableReducer = (state, action) => {
           state.data,
           state.sortList,
           newFilterList,
-          state.actionMenuCallback,
+          // state.actionMenuCallback,
         ),
         currentPage: 0,
       }

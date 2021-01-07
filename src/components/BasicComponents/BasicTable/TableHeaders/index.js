@@ -119,6 +119,8 @@ const TableHeaders = ({
 
   const sliceEnd = sliceStart + pageSize
 
+  const selectedDataMapLength = Object.keys(selectedDataMap).length
+
   const slicedData = useMemo(() => sortedAndFilteredData.slice(sliceStart, sliceEnd), [
     sortedAndFilteredData,
     sliceStart,
@@ -127,8 +129,7 @@ const TableHeaders = ({
 
   const allDataIsSelected = useMemo(
     () =>
-      sortedAndFilteredData.length !== 0 &&
-      sortedAndFilteredData.length === Object.keys(selectedDataMap).length,
+      sortedAndFilteredData.length !== 0 && sortedAndFilteredData.length === selectedDataMapLength,
     [selectedDataMap, sortedAndFilteredData.length],
   )
 
@@ -143,6 +144,7 @@ const TableHeaders = ({
     } else if (allSlicedDataIsSelected && !allDataIsSelected) {
       selectDataItems(sortedAndFilteredData)
     } else if (allDataIsSelected) {
+
       selectDataItems(sortedAndFilteredData, false)
     }
   }, [allDataIsSelected, allSlicedDataIsSelected, slicedData, sortedAndFilteredData])
@@ -153,7 +155,7 @@ const TableHeaders = ({
         {actionMenuCallback && (
           <Fragment>
             <th title='SelectAll' onClick={e => e.stopPropagation()} style={{ width: 50 }}>
-              <div>{Object.keys(selectedDataMap).length}</div>
+              <div>{selectedDataMapLength}</div>
               <input
                 disabled={sortedAndFilteredData.length === 0 || slicedData.length === 0}
                 type='checkbox'
