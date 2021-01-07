@@ -6,7 +6,7 @@ import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/reducer'
 import { copyStringToClipboard, shareUrl } from 'utils'
 import { GetEntryDetailUrl } from 'redux/router/actions'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/utils'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
 
 const ButtonShareEntries = ({ entries: entriesFromProps }) => {
   const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)

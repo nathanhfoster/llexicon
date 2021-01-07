@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 import { exportJSON, getValidDate } from 'utils'
 import { getTagStringFromObject } from 'redux/Entries/utils'
-import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/utils'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
 
 const ButtonClearEntries = ({ entries: entriesFromProps }) => {
   const userId = useSelector(({ User: { id } }) => id)
