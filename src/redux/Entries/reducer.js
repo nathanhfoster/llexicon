@@ -236,29 +236,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRIES_SELECTED:
-      // nextItems = state.items.concat(state.filteredItems).reduce((acc, e) => {
-      //   const _isSelected = Boolean(payload[e.id])
-      //   if (!_isSelected && e._isSelected) {
-      //     updatedItem = { ...e, _isSelected: false }
-      //   } else if (_isSelected) {
-      //     updatedItem = { ...e, _isSelected }
-      //   }
-
-      //   if (updatedItem) {
-      //     acc.push({
-      //       ...updatedItem,
-      //       _size: getStringBytes(updatedItem),
-      //     })
-      //   } else {
-      //     acc.push(e)
-      //   }
-
-      //   return acc
-      // }, [])
-
       return {
         ...state,
-        // ...handleFilterEntries(nextItems, state.search),
         selectedItemsMap: payload,
       }
 

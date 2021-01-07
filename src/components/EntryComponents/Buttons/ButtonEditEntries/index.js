@@ -181,7 +181,6 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
           ...e,
           ...entryFieldsToUpdate,
           _lastUpdated: new Date(),
-          _isSelected: false,
         }
       }
 

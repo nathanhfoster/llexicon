@@ -53,7 +53,6 @@ const EntryPreview = ({
     _shouldDelete,
     _shouldPost,
     _lastUpdated,
-    _isSelected,
   } = entryProps
 
   const firstEntryFileSource = useMemo(() => {

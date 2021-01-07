@@ -54,14 +54,13 @@ const EntriesTable = ({
     let selected = []
     const viewable = entries.reduce((acc, e) => {
       const { id, _shouldDelete, is_public } = e
-      const _isSelected = Boolean(selectedItemsMap[id])
-      const newEntry = { ...e, _isSelected }
+      const isSelected = selectedItemsMap[id]
       if (showOnlyPublic ? is_public && !_shouldDelete : !_shouldDelete) {
-        acc.push(newEntry)
+        acc.push(encodeURI)
       }
 
-      if (_isSelected) {
-        selected.push(newEntry)
+      if (isSelected) {
+        selected.push(e)
       }
 
       return acc
