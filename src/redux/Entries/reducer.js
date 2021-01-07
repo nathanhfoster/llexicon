@@ -236,30 +236,29 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRIES_SELECTED:
-      nextItems = state.items.concat(state.filteredItems).reduce((acc, e) => {
-        const _isSelected = Boolean(payload[e.id])
-        if (!_isSelected && e._isSelected) {
-          updatedItem = { ...e, _isSelected: false }
-        } else if (_isSelected) {
-          updatedItem = { ...e, _isSelected }
-        }
+      // nextItems = state.items.concat(state.filteredItems).reduce((acc, e) => {
+      //   const _isSelected = Boolean(payload[e.id])
+      //   if (!_isSelected && e._isSelected) {
+      //     updatedItem = { ...e, _isSelected: false }
+      //   } else if (_isSelected) {
+      //     updatedItem = { ...e, _isSelected }
+      //   }
 
-        if (updatedItem) {
-          acc.push({
-            ...updatedItem,
-            _size: getStringBytes(updatedItem),
-          })
-        } else {
-          acc.push(e)
-        }
+      //   if (updatedItem) {
+      //     acc.push({
+      //       ...updatedItem,
+      //       _size: getStringBytes(updatedItem),
+      //     })
+      //   } else {
+      //     acc.push(e)
+      //   }
 
-        return acc
-      }, [])
+      //   return acc
+      // }, [])
 
-      console.log(nextItems[0])
       return {
         ...state,
-        ...handleFilterEntries(nextItems, state.search),
+        // ...handleFilterEntries(nextItems, state.search),
         selectedItems: payload,
       }
 
@@ -314,9 +313,14 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case AppActionTypes.LOAD_PERSISTED_STATE:
+      nextItems =
+        payload.Entries?.items.concat(payload.Entries?.filteredItems) ||
+        state.items.concat(state.filteredItems)
+
       return {
         ...state,
         ...payload.Entries,
+        ...handleFilterEntries(nextItems, payload.Entries?.search || state.search),
         isPending: DEFAULT_STATE_ENTRIES.isPending,
         error: DEFAULT_STATE_ENTRIES.error,
       }

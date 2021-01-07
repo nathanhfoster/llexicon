@@ -1,22 +1,25 @@
-import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
+import React, { useMemo, useCallback } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'reactstrap'
 import { SelectReduxEntries } from 'redux/Entries/actions'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/utils'
 
-const mapStateToProps = ({ Entries: { items, filteredItems } }, { entries }) => ({
-  entries: entries || items.concat(filteredItems).filter(({ _isSelected }) => _isSelected),
-})
+const ButtonClearSelectedEntries = ({ entries: entriesFromProps }) => {
+  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const dispatch = useDispatch()
 
-const mapDispatchToProps = { SelectReduxEntries }
+  const disabled = useMemo(() => (entriesFromProps || entriesSelected).length === 0, [
+    entriesFromProps?.length,
+    entriesSelected.length,
+  ])
 
-const ButtonClearSelectedEntries = ({ entries, SelectReduxEntries }) => {
   const handleShareEntries = useCallback(() => {
-    SelectReduxEntries()
+    dispatch(SelectReduxEntries())
   }, [])
+
   return (
-    <Button disabled={entries.length === 0} color='accent' onClick={handleShareEntries}>
+    <Button disabled={disabled} color='accent' onClick={handleShareEntries}>
       <i className={`fas fa-minus-square mr-1`} />
       Clear
     </Button>
@@ -25,10 +28,6 @@ const ButtonClearSelectedEntries = ({ entries, SelectReduxEntries }) => {
 
 ButtonClearSelectedEntries.propTypes = {
   entries: EntriesPropTypes,
-  UpdateReduxEntries: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
 }
 
-ButtonClearSelectedEntries.defaultProps = { entries: [] }
-
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonClearSelectedEntries)
+export default ButtonClearSelectedEntries

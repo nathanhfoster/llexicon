@@ -122,7 +122,7 @@ const ResetEntriesSortAndFilterMaps = () => ({
   type: ENTRIES_RESET_SORT_AND_FILTER_MAP,
 })
 
-const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(''))
+const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries('', []))
 
 const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries

@@ -1,12 +1,12 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react'
-import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { connect } from 'react-redux'
+import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 import { BasicModal, BasicForm } from 'components'
 import { Button } from 'reactstrap'
 import { cleanObject, removeAttributeDuplicates } from 'utils'
 import { getTagStringFromObject, getTagObjectFromString } from 'redux/Entries/utils'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/utils'
 
 const tagInputs = [
   {
@@ -40,28 +40,23 @@ const peopleInputs = [
   },
 ]
 
-const mapStateToProps = (
-  { Entries: { items, filteredItems, EntryTags, EntryPeople } },
-  { entries },
-) => ({
-  entries: entries || items.concat(filteredItems).filter(({ _isSelected }) => _isSelected),
-  items,
-  filteredItems,
-  EntryTags,
-  EntryPeople,
-})
+const ButtonEditEntries = ({ entries: entriesFromProps }) => {
+  const { items, filteredItems, EntryTags, EntryPeople } = useSelector(
+    ({ Entries: { items, filteredItems, EntryTags, EntryPeople } }) => ({
+      items,
+      filteredItems,
+      EntryTags,
+      EntryPeople,
+    }),
+    shallowEqual,
+  )
+  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const entries = useMemo(() => entriesFromProps || entriesSelected, [
+    entriesFromProps,
+    entriesSelected,
+  ])
+  const dispatch = useDispatch()
 
-const mapDispatchToProps = { UpdateReduxEntries, SyncEntries }
-
-const ButtonEditEntries = ({
-  entries,
-  items,
-  filteredItems,
-  EntryTags,
-  EntryPeople,
-  UpdateReduxEntries,
-  SyncEntries,
-}) => {
   const [showEditModal, setShowEditModal] = useState(false)
   const tagsAdd = useRef(false)
   const tagsDelete = useRef(false)
@@ -198,11 +193,11 @@ const ButtonEditEntries = ({
               return acc
             }, {})
 
-      UpdateReduxEntries(payload)
+      dispatch(UpdateReduxEntries(payload))
 
       setShowEditModal(false)
 
-      SyncEntries()
+      dispatch(SyncEntries())
       resetRefs()
     },
     [entries],
@@ -396,12 +391,6 @@ const ButtonEditEntries = ({
 
 ButtonEditEntries.propTypes = {
   entries: EntriesPropTypes,
-  UpdateReduxEntries: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
 }
 
-ButtonEditEntries.defaultProps = {
-  entries: [],
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonEditEntries)
+export default ButtonEditEntries
