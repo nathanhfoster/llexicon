@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Button } from 'reactstrap'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { exportJSON, getValidDate } from 'utils'
 import { getTagStringFromObject } from 'redux/Entries/utils'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
 
-const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems } }, { entries }) => ({
-  userId: id,
-  entries: entries || items.concat(filteredItems),
-})
-
-const ButtonClearEntries = ({ userId, entries }) => {
-  
+const ButtonClearEntries = ({ entries: entriesFromProps }) => {
+  const userId = useSelector(({ User: { id } }) => id)
+  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const entries = useMemo(() => entriesFromProps || entriesSelected, [
+    entriesFromProps,
+    entriesSelected,
+  ])
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
@@ -65,7 +66,8 @@ const ButtonClearEntries = ({ userId, entries }) => {
   }
   return (
     <Button color='accent' onClick={handleExportEntries} disabled={entries.length === 0}>
-      <i className='fas fa-file-export' /> Export
+      <i className='fas fa-file-export mr-1' />
+      Export
     </Button>
   )
 }
@@ -75,6 +77,4 @@ ButtonClearEntries.propTypes = {
   entries: EntriesPropTypes,
 }
 
-ButtonClearEntries.defaultProps = {}
-
-export default connect(mapStateToProps)(ButtonClearEntries)
+export default ButtonClearEntries

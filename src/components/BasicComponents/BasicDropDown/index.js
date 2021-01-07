@@ -1,12 +1,7 @@
-import React, { useState, useMemo, memo } from 'react';
-import PropTypes from 'prop-types';
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from 'reactstrap';
-import './styles.css';
+import React, { useState, useMemo, memo, useCallback, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import './styles.css'
 
 const FUNCTION_MODIFIER = data => ({
   ...data,
@@ -16,7 +11,7 @@ const FUNCTION_MODIFIER = data => ({
     maxHeight: 200,
     // backgroundColor: "var(--primaryColor)"
   },
-});
+})
 
 const MODIFIERS = {
   setMaxHeight: {
@@ -24,31 +19,43 @@ const MODIFIERS = {
     // order: 890,
     fn: FUNCTION_MODIFIER,
   },
-};
+}
 
-const BasicDropDown = ({ options, onChange, direction, value, className }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+const BasicDropDown = ({ options, onChange, direction, value: propValue, className }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [value, setValue] = useState(propValue)
 
-  const toggle = () => setDropdownOpen(prevState => !prevState);
+  useEffect(() => {
+    setValue(propValue)
+  }, [propValue])
+
+  const toggle = () => setDropdownOpen(prevState => !prevState)
 
   const renderOptions = useMemo(
     () =>
       options.map((l, i) => {
-        const { id, value, header, disabled, divider } = l;
+        const { id, value, header, disabled, divider } = l
+        const handleClick = () => {
+          if (onChange) {
+            onChange(id, value)
+          } else {
+            setValue(value)
+          }
+        }
         return (
           <DropdownItem
             key={`${id}-${i}`}
             divider={divider}
             header={header}
             disabled={disabled}
-            onClick={() => onChange && onChange(id, value)}
+            onClick={handleClick}
           >
             {value || id}
           </DropdownItem>
-        );
+        )
       }),
     [options],
-  );
+  )
 
   return (
     <Dropdown
@@ -62,18 +69,14 @@ const BasicDropDown = ({ options, onChange, direction, value, className }) => {
       </DropdownToggle>
       <DropdownMenu modifiers={MODIFIERS}>{renderOptions}</DropdownMenu>
     </Dropdown>
-  );
-};
+  )
+}
 
 BasicDropDown.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.node,
-      ]),
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.node]),
       otherValue: PropTypes.any,
       header: PropTypes.bool,
       disabled: PropTypes.bool,
@@ -135,12 +138,12 @@ BasicDropDown.propTypes = {
   className: PropTypes.string,
   cssModule: PropTypes.object,
   toggle: PropTypes.bool, // default: true
-};
+}
 
 BasicDropDown.defaultProps = {
   options: [],
   direction: 'down',
   value: 'value',
-};
+}
 
-export default memo(BasicDropDown);
+export default memo(BasicDropDown)

@@ -7,12 +7,13 @@ import {
   mergeJson,
   handleFilterEntries,
 } from './utils'
-import { getStringBytes } from '../../utils'
+import { getStringBytes, arrayToObject } from '../../utils'
 import { isObject } from 'utils'
 import * as AwsImages from '../../images/AWS'
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
+  ENTRIES_SELECTED,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
   ENTRIES_DELETE,
@@ -88,6 +89,7 @@ const DEFAULT_STATE_ENTRIES = {
   previous: null,
   item: { id: null, isPending: false },
   items: [FIRST_JOUNRAL_ENTRY],
+  selectedItemsMap: {},
   filteredItems: [],
   isPending: false,
   error: null,
@@ -128,7 +130,10 @@ const DEFAULT_STATE_ENTRIES = {
 }
 
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
-  const { type, payload, search } = action
+  const { type, payload, search, isPending } = action
+
+  let updatedItem
+  let nextItems = []
 
   switch (type) {
     case ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC:
@@ -144,10 +149,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return { ...state, EntryPeople: payload }
 
     case ENTRIES_SEARCH_FILTER:
+      if (!payload) return { ...state, search }
       return {
         ...state,
         ...handleFilterEntries(mergeJson(state.items.concat(state.filteredItems), payload), search),
         search,
+        isPending,
       }
 
     case ENTRIES_PENDING:
@@ -203,8 +210,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRIES_UPDATE:
-      let updatedItem
-      let nextItems = state.items.concat(state.filteredItems).map(e => {
+      nextItems = state.items.concat(state.filteredItems).map(e => {
         if (payload.id === e.id) {
           updatedItem = { ...e, ...payload }
           return {
@@ -229,6 +235,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         error: DEFAULT_STATE_ENTRIES.error,
       }
 
+    case ENTRIES_SELECTED:
+      return {
+        ...state,
+        selectedItemsMap: payload,
+      }
+
     case ENTRIES_DELETE:
       return {
         ...state,
@@ -248,6 +260,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         sortMap: DEFAULT_STATE_ENTRIES.sortMap,
         filterMap: DEFAULT_STATE_ENTRIES.filterMap,
+        item: DEFAULT_STATE_ENTRIES.item,
       }
 
     case ENTRIES_SET_SORT_MAP:
@@ -279,11 +292,17 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case AppActionTypes.LOAD_PERSISTED_STATE:
+      nextItems =
+        payload.Entries?.items.concat(payload.Entries?.filteredItems) ||
+        state.items.concat(state.filteredItems)
+
       return {
         ...state,
         ...payload.Entries,
+        ...handleFilterEntries(nextItems, payload.Entries?.search || state.search),
         isPending: DEFAULT_STATE_ENTRIES.isPending,
         error: DEFAULT_STATE_ENTRIES.error,
+        // search: DEFAULT_STATE_ENTRIES.search
       }
 
     default:

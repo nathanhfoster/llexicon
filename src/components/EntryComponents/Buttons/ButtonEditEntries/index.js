@@ -1,12 +1,12 @@
-import React, { useState, useRef, useMemo, useCallback, Fragment } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React, { useState, useRef, useMemo, useCallback } from 'react'
+import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 import { BasicModal, BasicForm } from 'components'
 import { Button } from 'reactstrap'
 import { cleanObject, removeAttributeDuplicates } from 'utils'
 import { getTagStringFromObject, getTagObjectFromString } from 'redux/Entries/utils'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { EntriesPropTypes } from 'redux/Entries/propTypes'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
 
 const tagInputs = [
   {
@@ -40,28 +40,23 @@ const peopleInputs = [
   },
 ]
 
-const mapStateToProps = (
-  { Entries: { items, filteredItems, EntryTags, EntryPeople } },
-  { entries },
-) => ({
-  entries: entries || items.concat(filteredItems),
-  items,
-  filteredItems,
-  EntryTags,
-  EntryPeople,
-})
+const ButtonEditEntries = ({ entries: entriesFromProps }) => {
+  const { items, filteredItems, EntryTags, EntryPeople } = useSelector(
+    ({ Entries: { items, filteredItems, EntryTags, EntryPeople } }) => ({
+      items,
+      filteredItems,
+      EntryTags,
+      EntryPeople,
+    }),
+    shallowEqual,
+  )
+  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const entries = useMemo(() => entriesFromProps || entriesSelected, [
+    entriesFromProps,
+    entriesSelected,
+  ])
+  const dispatch = useDispatch()
 
-const mapDispatchToProps = { UpdateReduxEntries, SyncEntries }
-
-const EditEntries = ({
-  entries,
-  items,
-  filteredItems,
-  EntryTags,
-  EntryPeople,
-  UpdateReduxEntries,
-  SyncEntries,
-}) => {
   const [showEditModal, setShowEditModal] = useState(false)
   const tagsAdd = useRef(false)
   const tagsDelete = useRef(false)
@@ -186,7 +181,6 @@ const EditEntries = ({
           ...e,
           ...entryFieldsToUpdate,
           _lastUpdated: new Date(),
-          _isSelected: false,
         }
       }
 
@@ -198,13 +192,11 @@ const EditEntries = ({
               return acc
             }, {})
 
-      entries.forEach(e => {
-        UpdateReduxEntries(payload)
-      })
+      dispatch(UpdateReduxEntries(payload))
 
       setShowEditModal(false)
 
-      SyncEntries()
+      dispatch(SyncEntries())
       resetRefs()
     },
     [entries],
@@ -236,7 +228,9 @@ const EditEntries = ({
               .map(entry => entry.tags)
               .flat(1)
               .concat(EntryTags),
-          ).map(t => (entriesTagMap[t.name] === entries.length ? { ...t, selected: true } : t)),
+          )
+            .sort(({ name: a }, { name: b }) => a.localeCompare(b))
+            .map(t => (entriesTagMap[t.name] === entries.length ? { ...t, selected: true } : t)),
           'name',
         )
       }
@@ -248,7 +242,9 @@ const EditEntries = ({
               .map(entry => entry.people)
               .flat(1)
               .concat(EntryPeople),
-          ).map(p => (entriesPeopleMap[p.name] === entries.length ? { ...p, selected: true } : p)),
+          )
+            .sort(({ name: a }, { name: b }) => a.localeCompare(b))
+            .map(p => (entriesPeopleMap[p.name] === entries.length ? { ...p, selected: true } : p)),
           'name',
         )
       }
@@ -392,12 +388,8 @@ const EditEntries = ({
   )
 }
 
-EditEntries.propTypes = {
+ButtonEditEntries.propTypes = {
   entries: EntriesPropTypes,
 }
 
-EditEntries.defaultProps = {
-  entries: [],
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditEntries)
+export default ButtonEditEntries

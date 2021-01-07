@@ -1,4 +1,4 @@
-import BasicTableContext from '../state/context'
+import { BASIC_TABLE_CONTEXT_OPTIONS } from '../state/context'
 import React, { useRef, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -88,6 +88,4 @@ TableBody.propTypes = {
   colSpan: PropTypes.number,
 }
 
-export default connect(mapStateToProps, null, null, {
-  context: BasicTableContext,
-})(TableBody)
+export default connect(mapStateToProps, null, null, BASIC_TABLE_CONTEXT_OPTIONS)(TableBody)

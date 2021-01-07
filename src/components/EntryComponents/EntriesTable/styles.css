@@ -1,5 +1,7 @@
 .BasicTableActions {
   background: var(--quinaryColor);
   width: 100%;
-  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 }

@@ -35,12 +35,13 @@ const BasicInput = ({
   className,
   value,
   onChange,
-  children,
   options,
   multiple,
   min,
   max,
   step,
+  formGroup,
+  children,
   ...restOfProps
 }) => {
   const isCheckOrRadio = type === 'checkbox' || type === 'radio'
@@ -132,23 +133,39 @@ const BasicInput = ({
         {renderInput}
       </Fragment>
     )
-  }, [labelText, isCheckOrRadio, name, renderInput])
+  }, [isCheckOrRadio, name, renderInput, labelText])
+
+  const render = useMemo(
+    () => (
+      <Fragment>
+        {renderLabel}
+        {typeof valid === 'string' && (
+          <FormFeedback for={uniqueId} valid={!valid}>
+            {valid}
+          </FormFeedback>
+        )}
+        {typeof invalid === 'string' && (
+          <FormFeedback for={uniqueId} valid={!invalid}>
+            {invalid}
+          </FormFeedback>
+        )}
+        {helpText && <FormText>{helpText}</FormText>}
+      </Fragment>
+    ),
+    [helpText, invalid, renderLabel, uniqueId, valid],
+  )
 
   return (
-    <FormGroup className={className} check={isCheckOrRadio} row={row} inline={inline}>
-      {renderLabel}
-      {typeof valid === 'string' && (
-        <FormFeedback for={uniqueId} valid={!valid}>
-          {valid}
-        </FormFeedback>
+    <Fragment>
+      {formGroup ? (
+        <FormGroup className={className} check={isCheckOrRadio} row={row} inline={inline}>
+          {render}
+        </FormGroup>
+      ) : (
+        render
       )}
-      {typeof invalid === 'string' && (
-        <FormFeedback for={uniqueId} valid={!invalid}>
-          {invalid}
-        </FormFeedback>
-      )}
-      {helpText && <FormText>{helpText}</FormText>}
-    </FormGroup>
+      {children}
+    </Fragment>
   )
 }
 
@@ -156,6 +173,7 @@ BasicInput.propTypes = InputProps
 
 BasicInput.defaultProps = {
   row: false,
+  formGroup: true,
 }
 
 export default memo(BasicInput)

@@ -1,34 +1,48 @@
-import { useEffect, memo } from "react"
+import { useEffect, useMemo } from "react"
 import PropTypes from "prop-types"
 import ReactDOM from "react-dom"
 import "./styles.css"
 
-const Portal = ({ children, domNodeId }) => {
-  const window = document.getElementById(domNodeId)
-  const domNode = document.createElement("div")
+const Portal = ({ id, isOpen, className, children }) => {
+  let parentNode = useMemo(() => document.getElementById(id), [id])
 
-  useEffect(() => {
-    window.appendChild(domNode)
-    return () => {
-      window.removeChild(domNode)
+  const cachedChildren = useMemo(() => {
+    let childrenNodes = []
+
+    // while (parentNode.firstChild) {
+    //   childrenNodes.push(parentNode.firstChild)
+    //   parentNode.removeChild(parentNode.firstChild)
+    // }
+    return childrenNodes
+  }, [parentNode])
+
+  let portal = useMemo(() => {
+    if (parentNode) {
+      if (className) {
+        parentNode.className = className
+      }
     }
-  }, [])
+    return parentNode
+  }, [parentNode, className])
 
-  return domNode ? ReactDOM.createPortal(children, domNode) : null
+
+
+  return portal ? ReactDOM.createPortal(children, portal, id) : null
 }
 
 Portal.propTypes = {
+  id: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool,
+  className: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
   ]).isRequired,
-  domNodeId: PropTypes.string.isRequired,
-  isOpen: PropTypes.bool,
 }
 
 Portal.defaultProps = {
-  domNodeId: "portal-root",
+  id: "portal-root",
   isOpen: true,
 }
 
-export default memo(Portal)
+export default Portal

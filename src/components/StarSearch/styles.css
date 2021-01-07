@@ -1,6 +1,6 @@
-.StarSearch input,
+/* .StarSearch input, */
 .StarSearch .input-group-text {
-  border: 0;
+  border: inherit;
 }
 
 .StarSearch i {

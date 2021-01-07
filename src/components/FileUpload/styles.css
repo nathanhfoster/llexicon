@@ -2,7 +2,13 @@
   --maxHeightWidth: 50px;
 }
 
-.FileUploadContainer {}
+.FileUploadContainer {
+  height: 38px;
+  font-size: 1rem;
+  display: inline-block;
+  margin: 0 auto;
+  text-align: center;
+}
 
 .FileUploadContainer small {
   font-size: 1em;
@@ -13,11 +19,4 @@
   width: var(--maxHeightWidth);
   border-radius: 50%;
   object-fit: cover;
-}
-
-.FileUpload {
-
-  border: none;
-  cursor: pointer;
-  color: var(--secondaryColor);
 }

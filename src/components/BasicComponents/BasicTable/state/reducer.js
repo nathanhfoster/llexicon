@@ -1,5 +1,5 @@
-import { BasicTableActionTypes } from "./types"
-import { filterSort, getSortedAndFilteredData } from "./utils"
+import { BasicTableActionTypes } from './types'
+import { filterSort, getSortedAndFilteredData } from './utils'
 
 const {
   BASIC_TABLE_SORT,
@@ -7,12 +7,13 @@ const {
   BASIC_TABLE_SET_PAGE,
   BASIC_TABLE_SET_PAGE_SIZE,
   BASIC_TABLE_SET_DATA,
+  BASIC_TABLE_SET_SELECTED_DATA,
   BASIC_TABLE_SELECT_DATA_ITEMS,
-  BASIC_TABLE_SELECT_DATA_ITEM,
 } = BasicTableActionTypes
 
 const BasicTableReducer = (state, action) => {
   const { type, id, payload } = action
+  let newItem
 
   switch (type) {
     case BASIC_TABLE_SORT:
@@ -25,7 +26,7 @@ const BasicTableReducer = (state, action) => {
           state.data,
           newSortList,
           state.filterList,
-          state.actionMenuCallback
+          state.actionMenuCallback,
         ),
       }
 
@@ -40,7 +41,7 @@ const BasicTableReducer = (state, action) => {
           state.data,
           state.sortList,
           newFilterList,
-          state.actionMenuCallback
+          // state.actionMenuCallback,
         ),
         currentPage: 0,
       }
@@ -58,51 +59,27 @@ const BasicTableReducer = (state, action) => {
           payload,
           state.sortList,
           state.filterList,
-          state.actionMenuCallback
+          // state.actionMenuCallback,
         ),
       }
 
+    case BASIC_TABLE_SET_SELECTED_DATA:
+      return { ...state, selectedDataMap: payload }
+
     case BASIC_TABLE_SELECT_DATA_ITEMS:
-      let selectedData = []
-      const newSortedAndFilteredData = state.sortedAndFilteredData.map((d) => {
-        const updatedItem = {
-          ...d,
-          _isSelected: payload[d.id],
-        }
-
-        if (updatedItem._isSelected) selectedData.push(updatedItem)
-        return updatedItem
-      })
-
-      state.actionMenuCallback(selectedData)
-
-      return {
-        ...state,
-        sortedAndFilteredData: newSortedAndFilteredData,
-        selectedData,
-      }
-
-    case BASIC_TABLE_SELECT_DATA_ITEM:
-      let newSelectedData = []
-      const newSortedAndFilteredDataWithItem = state.sortedAndFilteredData.map(
-        (d) => {
-          const updatedItem = {
-            ...d,
-            _isSelected: d.id === id ? payload : d._isSelected,
+      newItem = Object.entries({ ...state.selectedDataMap, ...payload }).reduce(
+        (acc, [key, value]) => {
+          if (value) {
+            acc[key] = value
           }
-
-          if (updatedItem._isSelected) newSelectedData.push(updatedItem)
-
-          return updatedItem
-        }
+          return acc
+        },
+        {},
       )
-
-      state.actionMenuCallback(newSelectedData)
-
+      state.actionMenuCallback(newItem)
       return {
         ...state,
-        sortedAndFilteredData: newSortedAndFilteredDataWithItem,
-        selectedData: newSelectedData,
+        selectedDataMap: newItem,
       }
 
     default:

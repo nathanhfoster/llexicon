@@ -19,7 +19,6 @@ import {
   SetEntriesTags,
   SetEntriesPeople,
   SetSearchEntries,
-  SearchEntriesFilter,
   DeleteEntryFileFromRedux,
 } from './redux'
 
@@ -308,7 +307,7 @@ const DeleteEntry = id => dispatch => {
       return res
     })
     .catch(e => {
-      if (e.response.status === 404) {
+      if (e.response?.status === 404) {
         dispatch(DeleteReduxEntries(id))
       }
       dispatch(SetEntriesError(e))
@@ -316,13 +315,13 @@ const DeleteEntry = id => dispatch => {
 }
 
 const SearchUserEntries = search => (dispatch, getState) => {
-  dispatch(PendingEntries())
-  dispatch(SetSearchEntries(search))
+  dispatch(SetSearchEntries(search, []))
   const { id } = getState().User
+  if (!id) return
   return Axios()
     .post(`entries/${id}/search/`, qs.stringify({ search }))
     .then(({ data }) => {
-      dispatch(SetSearchEntries(search, data))
+      dispatch(SetSearchEntries(search, data, false))
       ReactGA.event({
         category: 'Search User Entries',
         action: 'User searched for entries!',
@@ -331,7 +330,7 @@ const SearchUserEntries = search => (dispatch, getState) => {
       return data
     })
     .catch(e => {
-      dispatch(SearchEntriesFilter(search, []))
+      dispatch(SetSearchEntries(search))
       dispatch(SetEntriesError(e))
     })
 }
@@ -350,18 +349,14 @@ const DeleteEntryFile = (id, entry_id) => dispatch =>
       return res
     })
     .catch(e => {
-      const { response } = e
-      if (response) {
-        const { status } = response
-        if (status === 401 || status === 404) {
-          dispatch(DeleteEntryFileFromRedux(id, entry_id))
-          dispatch(
-            SetAlert({
-              title: 'Deleted',
-              message: 'Entry File',
-            }),
-          )
-        }
+      if (e.response?.status === 401 || e.response?.status === 404) {
+        dispatch(DeleteEntryFileFromRedux(id, entry_id))
+        dispatch(
+          SetAlert({
+            title: 'Deleted',
+            message: 'Entry File',
+          }),
+        )
 
         dispatch(SetEntriesError(e))
       }

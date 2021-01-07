@@ -1,4 +1,4 @@
-import { TextEditorActionTypes } from "../TextEditor/types"
+import { TextEditorActionTypes } from '../TextEditor/types'
 
 const SetEditorState = payload => (dispatch, getState) => {
   const { title, html } = getState().TextEditor
@@ -6,12 +6,17 @@ const SetEditorState = payload => (dispatch, getState) => {
   if (!payload.html === undefined) payload.html = html
   dispatch({
     type: TextEditorActionTypes.TEXT_EDITOR_SET,
-    payload
+    payload,
   })
 }
 
 const ClearEditorState = () => ({
-  type: TextEditorActionTypes.TEXT_EDITOR_CLEAR
+  type: TextEditorActionTypes.TEXT_EDITOR_CLEAR,
 })
 
-export { SetEditorState, ClearEditorState }
+const SetBottomToolbarIsOpen = payload => ({
+  type: TextEditorActionTypes.TEXT_EDITOR_SET_BOTTOM_TOOLBAR,
+  payload,
+})
+
+export { SetEditorState, ClearEditorState, SetBottomToolbarIsOpen }

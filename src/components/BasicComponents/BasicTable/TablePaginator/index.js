@@ -1,23 +1,23 @@
-import BasicTableContext from '../state/context'
-import React, { useCallback, useMemo } from 'react';
-import { connect } from 'react-redux';
-import { Container, Row, Col, Button } from 'reactstrap';
-import BasicDropDown from '../../BasicDropDown';
-import PropTypes from 'prop-types';
-import { basicTableSetPage, basicTableSetPageSize } from '../state/actions';
-import './styles.css';
+import { BASIC_TABLE_CONTEXT_OPTIONS } from '../state/context'
+import React, { useCallback, useMemo } from 'react'
+import { connect } from 'react-redux'
+import { Container, Row, Col, Button } from 'reactstrap'
+import BasicDropDown from '../../BasicDropDown'
+import PropTypes from 'prop-types'
+import { basicTableSetPage, basicTableSetPageSize } from '../state/actions'
+import './styles.css'
 
 const mapStateToProps = ({ dataLength, currentPage, pageSize, pageSizes }) => ({
   dataLength,
   currentPage,
   pageSize,
   pageSizes,
-});
+})
 
 const mapDispatchToProps = {
   basicTableSetPage,
   basicTableSetPageSize,
-};
+}
 
 const TablePaginator = ({
   dataLength,
@@ -27,10 +27,7 @@ const TablePaginator = ({
   basicTableSetPage,
   basicTableSetPageSize,
 }) => {
-  const totalPages = useMemo(() => Math.ceil(dataLength / pageSize), [
-    dataLength,
-    pageSize,
-  ]);
+  const totalPages = useMemo(() => Math.ceil(dataLength / pageSize), [dataLength, pageSize])
 
   const pageList = useMemo(
     () =>
@@ -38,25 +35,19 @@ const TablePaginator = ({
         new Array(totalPages).fill().map((e, i) => ({ value: i + 1 })),
       ),
     [totalPages],
-  );
+  )
 
-  const disabledLeftArrow = currentPage === 0;
+  const disabledLeftArrow = currentPage === 0
 
-  const disabledRightArrow = currentPage + 1 === totalPages;
+  const disabledRightArrow = currentPage + 1 === totalPages
 
-  const navigateBack = () => basicTableSetPage(currentPage - 1);
+  const navigateBack = () => basicTableSetPage(currentPage - 1)
 
-  const navigateWithDropDown = useCallback(
-    (id, value) => basicTableSetPage(value - 1),
-    [],
-  );
+  const navigateWithDropDown = useCallback((id, value) => basicTableSetPage(value - 1), [])
 
-  const handleSetPageSize = useCallback(
-    (id, value) => basicTableSetPageSize(value),
-    [],
-  );
+  const handleSetPageSize = useCallback((id, value) => basicTableSetPageSize(value), [])
 
-  const navigateForward = () => basicTableSetPage(currentPage + 1);
+  const navigateForward = () => basicTableSetPage(currentPage + 1)
 
   const renderCurrentPage = useMemo(
     () => (
@@ -67,7 +58,7 @@ const TablePaginator = ({
       </span>
     ),
     [currentPage, totalPages],
-  );
+  )
 
   const renderPageSize = useMemo(
     () => (
@@ -78,7 +69,7 @@ const TablePaginator = ({
       </span>
     ),
     [dataLength, pageSize],
-  );
+  )
 
   return (
     <Container fluid className='BasicTablePaginator'>
@@ -101,11 +92,7 @@ const TablePaginator = ({
           />
         </Col>
         <Col xs={3} className='p-0'>
-          <BasicDropDown
-            options={pageSizes}
-            value={renderPageSize}
-            onChange={handleSetPageSize}
-          />
+          <BasicDropDown options={pageSizes} value={renderPageSize} onChange={handleSetPageSize} />
         </Col>
         <Col
           xs={3}
@@ -119,8 +106,8 @@ const TablePaginator = ({
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
 TablePaginator.propTypes = {
   dataLength: PropTypes.number.isRequired,
@@ -129,19 +116,18 @@ TablePaginator.propTypes = {
   pageSizes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.node,
-      ]),
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.node]),
       otherValue: PropTypes.any,
       header: PropTypes.bool,
       disabled: PropTypes.bool,
       divider: PropTypes.bool,
     }).isRequired,
   ),
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {
-  context: BasicTableContext,
-})(TablePaginator);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  BASIC_TABLE_CONTEXT_OPTIONS,
+)(TablePaginator)

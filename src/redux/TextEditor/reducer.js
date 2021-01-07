@@ -3,8 +3,10 @@ import { AppActionTypes } from '../App/types'
 import { DEFAULT_ENTRY_FILES } from '../Entries/reducer'
 import { getStringBytes } from '../../utils'
 import { NEW_ENTRY_ID } from 'redux/Entries/utils'
+import { testModeAPI } from 'react-ga'
 
 const defaultTextEditor = {
+  bottomToolbarIsOpen: true,
   _clearedOn: '',
   size: 0,
   author: null,
@@ -47,6 +49,9 @@ const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
   switch (type) {
     case TextEditorActionTypes.TEXT_EDITOR_SET:
       return { ...state, ...payload, _lastUpdated: new Date() }
+
+    case TextEditorActionTypes.TEXT_EDITOR_SET_BOTTOM_TOOLBAR:
+      return { ...state, bottomToolbarIsOpen: payload }
 
     case TextEditorActionTypes.TEXT_EDITOR_CLEAR:
       return {

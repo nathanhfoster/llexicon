@@ -30,10 +30,17 @@
       "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Calendar View",
-      "short_name": "Calendar",
-      "description": "Calendar View",
-      "url": "/entries/calendar",
+      "name": "Table View",
+      "short_name": "Table",
+      "description": "Table View",
+      "url": "/entries/table",
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Map View",
+      "short_name": "Map",
+      "description": "Map View",
+      "url": "/entries/map",
       "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
     },
     {

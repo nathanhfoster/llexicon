@@ -1,14 +1,14 @@
-import React, { useMemo, memo } from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { connect } from 'react-redux'
 import { BasicList } from '../..'
-import Moment from 'react-moment'
+import EntryListItem from './EntryListItem'
 import MomentJS from 'moment'
-import { GoToEntryDetail } from 'redux/router/actions'
-import Star from '../../BackgroundImage/Star'
-import TagsContainer from '../TagsContainer'
+import { SetCalendarActiveEntry, ResetCalendarActiveEntry } from 'redux/Calendar/actions'
 import './styles.css'
+
+const listItemStyles = { padding: '2px 4px', color: 'white' }
 
 const mapStateToProps = ({ Window: { innerHeight, navBarHeight, isMobile } }) => {
   const calendarTileHeight = innerHeight * 0.07 - 46 / 6
@@ -32,44 +32,13 @@ const EntryList = ({ entriesWithinView, activeDate, listHeight }) => {
           return !_shouldDelete && sameDayEvent
         })
         .map((e, i) => {
-          const {
-            id,
-            author,
-            tags,
-            people,
-            title,
-            html,
-            date_created,
-            date_created_by_author,
-            date_updated,
-            views,
-            EntryFiles,
-          } = e
-          const showImageIcon = EntryFiles.length > 0
           return {
-            id,
-            value: (
-              <div key={id} onClick={() => GoToEntryDetail(id)} className='listItem' title={title}>
-                <div className='Overflow eventTitle'>
-                  <Star size={8} color='PurpleWhite' animation={false} opacity={1} />
-                  <span className='ml-1'>{title || 'No title'}</span>
-                </div>
-
-                <div className='Overflow eventDate'>
-                  {showImageIcon && <i className='fas fa-image mr-1' />}
-                  <Moment format='h:mma'>{date_created_by_author}</Moment>
-                </div>
-
-                <TagsContainer tags={tags} />
-                <TagsContainer tags={people} emptyString='No people...' faIcon='fas fa-user' />
-              </div>
-            ),
+            id: e.id,
+            value: <EntryListItem key={e.id} {...e} />,
           }
         }),
     [entriesWithinView, activeDate],
   )
-
-  const listItemStyles = { padding: '2px 4px', color: 'white' }
 
   return (
     <BasicList list={entries} height={listHeight} itemSize={92} listItemStyles={listItemStyles} />

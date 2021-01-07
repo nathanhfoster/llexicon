@@ -7,11 +7,11 @@ const {
   BASIC_TABLE_SET_PAGE,
   BASIC_TABLE_SET_PAGE_SIZE,
   BASIC_TABLE_SET_DATA,
+  BASIC_TABLE_SET_SELECTED_DATA,
   BASIC_TABLE_SELECT_DATA_ITEMS,
-  BASIC_TABLE_SELECT_DATA_ITEM,
 } = BasicTableActionTypes
 
-const basicTableSort = (onSortCallback, sortKey, sortUp) => dispatch => {
+export const basicTableSort = (onSortCallback, sortKey, sortUp) => dispatch => {
   onSortCallback && onSortCallback(sortKey, sortUp)
   const payload = { sortKey, sortUp }
   return dispatch({
@@ -20,7 +20,7 @@ const basicTableSort = (onSortCallback, sortKey, sortUp) => dispatch => {
   })
 }
 
-const basicTableFilter = (onFilterCallback, filterKey, filterValue) => dispatch => {
+export const basicTableFilter = (onFilterCallback, filterKey, filterValue) => dispatch => {
   onFilterCallback && onFilterCallback(filterKey, filterValue)
   const payload = { filterKey, filterValue }
 
@@ -30,41 +30,30 @@ const basicTableFilter = (onFilterCallback, filterKey, filterValue) => dispatch 
   })
 }
 
-const basicTableSetPage = payload => ({
+export const basicTableSetPage = payload => ({
   type: BASIC_TABLE_SET_PAGE,
   payload,
 })
 
-const basicTableSetPageSize = payload => ({
+export const basicTableSetPageSize = payload => ({
   type: BASIC_TABLE_SET_PAGE_SIZE,
   payload,
 })
 
-const basicTableSetData = payload => ({
+export const basicTableSetData = payload => ({
   type: BASIC_TABLE_SET_DATA,
   payload,
 })
 
-const selectDataItems = (entires, selected = true) => ({
+export const basicTableSetSelectedData = payload => ({
+  type: BASIC_TABLE_SET_SELECTED_DATA,
+  payload,
+})
+
+export const selectDataItems = (entires, selected = true) => ({
   type: BASIC_TABLE_SELECT_DATA_ITEMS,
   payload: entires.reduce((acc, e) => {
     acc[e.id] = selected
     return acc
   }, {}),
 })
-
-const selectDataItem = (id, selected = true) => ({
-  type: BASIC_TABLE_SELECT_DATA_ITEM,
-  id,
-  payload: selected,
-})
-
-export {
-  basicTableSort,
-  basicTableFilter,
-  basicTableSetPage,
-  basicTableSetPageSize,
-  basicTableSetData,
-  selectDataItems,
-  selectDataItem,
-}

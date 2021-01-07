@@ -5,6 +5,7 @@ import { getStringBytes, isObject } from 'utils'
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
+  ENTRIES_SELECTED,
   ENTRY_CLEAR,
   ENTRIES_CLEAR,
   ENTRIES_DELETE,
@@ -52,7 +53,6 @@ const PostReduxEntry = entry => dispatch => {
     date_updated: entry.date_created_by_author,
   }
 
-  
   const size = getStringBytes(payload)
 
   return dispatch(
@@ -64,9 +64,14 @@ const PostReduxEntry = entry => dispatch => {
   )
 }
 
-const UpdateReduxEntries = (entryOrEntries, _lastUpdated = new Date()) => ({
+const UpdateReduxEntries = (entryOrEntriesMap, _lastUpdated = new Date()) => ({
   type: ENTRIES_UPDATE,
-  payload: entryOrEntries.id ? { ...entryOrEntries, _lastUpdated } : entryOrEntries,
+  payload: entryOrEntriesMap.id ? { ...entryOrEntriesMap, _lastUpdated } : entryOrEntriesMap,
+})
+
+const SelectReduxEntries = (selectedEntriesMap = {}) => ({
+  type: ENTRIES_SELECTED,
+  payload: selectedEntriesMap || {},
 })
 
 const ClearEntry = () => ({ type: ENTRY_CLEAR })
@@ -93,10 +98,11 @@ const SetEntriesPeople = payload => ({
   payload,
 })
 
-const SetSearchEntries = (search, payload = []) => ({
+const SetSearchEntries = (search, payload, isPending = true) => ({
   type: ENTRIES_SEARCH_FILTER,
   payload,
   search,
+  isPending,
 })
 
 const SetEntriesSortMap = (sortKey, sortUp) => ({
@@ -117,13 +123,7 @@ const ResetEntriesSortAndFilterMaps = () => ({
   type: ENTRIES_RESET_SORT_AND_FILTER_MAP,
 })
 
-const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries(''))
-
-const SearchEntriesFilter = (search, payload) => ({
-  type: ENTRIES_SEARCH_FILTER,
-  search,
-  payload,
-})
+const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries('', [], false))
 
 const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
@@ -146,6 +146,7 @@ export {
   SetEntry,
   PostReduxEntry,
   UpdateReduxEntries,
+  SelectReduxEntries,
   ClearEntry,
   ClearEntries,
   DeleteReduxEntries,
@@ -158,6 +159,5 @@ export {
   ToggleShowOnlyPublic,
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
-  SearchEntriesFilter,
   DeleteEntryFileFromRedux,
 }
