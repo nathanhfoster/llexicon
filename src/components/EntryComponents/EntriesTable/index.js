@@ -56,7 +56,7 @@ const EntriesTable = ({
       const { id, _shouldDelete, is_public } = e
       const isSelected = selectedItemsMap[id]
       if (showOnlyPublic ? is_public && !_shouldDelete : !_shouldDelete) {
-        acc.push(encodeURI)
+        acc.push(e)
       }
 
       if (isSelected) {
