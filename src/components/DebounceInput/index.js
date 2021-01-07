@@ -37,6 +37,8 @@ const DebounceInput = ({
         innerRef={inputRef}
         value={debouncedValue}
         onChange={handleInputChange}
+        type="search"
+        autoComplete="auto"
       />
       <UseDebounce
         debounceOnMount={debounceOnMount}
