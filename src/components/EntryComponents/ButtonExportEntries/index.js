@@ -1,18 +1,20 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Button } from 'reactstrap'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { exportJSON, getValidDate } from 'utils'
 import { getTagStringFromObject } from 'redux/Entries/utils'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/utils'
 
-const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems } }, { entries }) => ({
-  userId: id,
-  entries: entries || items.concat(filteredItems).filter(({ _isSelected }) => _isSelected),
-})
-
-const ButtonClearEntries = ({ userId, entries }) => {
+const ButtonClearEntries = ({ entries: entriesFromProps }) => {
+  const userId = useSelector(({ User: { id } }) => id)
+  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const entries = useMemo(() => entriesFromProps || entriesSelected, [
+    entriesFromProps,
+    entriesSelected,
+  ])
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
@@ -75,6 +77,4 @@ ButtonClearEntries.propTypes = {
   entries: EntriesPropTypes,
 }
 
-ButtonClearEntries.defaultProps = { entries: [] }
-
-export default connect(mapStateToProps)(ButtonClearEntries)
+export default ButtonClearEntries

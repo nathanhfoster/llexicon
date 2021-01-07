@@ -316,8 +316,9 @@ const DeleteEntry = id => dispatch => {
 
 const SearchUserEntries = search => (dispatch, getState) => {
   dispatch(PendingEntries())
-  dispatch(SetSearchEntries(search))
+  dispatch(SetSearchEntries(search, []))
   const { id } = getState().User
+  if (!id) return
   return Axios()
     .post(`entries/${id}/search/`, qs.stringify({ search }))
     .then(({ data }) => {

@@ -1,25 +1,21 @@
 import React, { useCallback, useMemo } from 'react'
-import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { ConfirmAction } from 'components'
 import { Button } from 'reactstrap'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/utils'
 
-const mapStateToProps = (
-  { Entries: { items, filteredItems, EntryTags, EntryPeople } },
-  { entries },
-) => ({
-  entries: entries || items.concat(filteredItems).filter(({ _isSelected }) => _isSelected),
-  items,
-  filteredItems,
-  EntryTags,
-  EntryPeople,
-})
+const ButtonDeleteEntries = ({ entries: entriesFromProps }) => {
+  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
 
-const mapDispatchToProps = { UpdateReduxEntries, SyncEntries }
+  const dispatch = useDispatch()
 
-const ButtonDeleteEntries = ({ entries, UpdateReduxEntries, SyncEntries }) => {
+  const entries = useMemo(() => entriesFromProps || entriesSelected, [
+    entriesFromProps,
+    entriesSelected,
+  ])
+
   const handleDeleteEntries = useCallback(() => {
     const getUpdatedEntry = e => ({
       ...e,
@@ -35,9 +31,9 @@ const ButtonDeleteEntries = ({ entries, UpdateReduxEntries, SyncEntries }) => {
             return acc
           }, {})
 
-    UpdateReduxEntries(payload, null)
+    dispatch(UpdateReduxEntries(payload, null))
 
-    SyncEntries()
+    dispatch(SyncEntries())
   }, [entries])
 
   const confirmationButton = useMemo(
@@ -63,10 +59,6 @@ const ButtonDeleteEntries = ({ entries, UpdateReduxEntries, SyncEntries }) => {
 
 ButtonDeleteEntries.propTypes = {
   entries: EntriesPropTypes,
-  UpdateReduxEntries: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
 }
 
-ButtonDeleteEntries.defaultProps = { entries: [] }
-
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonDeleteEntries)
+export default ButtonDeleteEntries

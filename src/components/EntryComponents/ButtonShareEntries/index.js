@@ -1,20 +1,20 @@
-import React, { useState, useCallback } from 'react'
-import PropTypes from 'prop-types'
+import React, { useMemo, useState, useCallback } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'reactstrap'
 import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/reducer'
 import { copyStringToClipboard, shareUrl } from 'utils'
 import { GetEntryDetailUrl } from 'redux/router/actions'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/utils'
 
-const mapStateToProps = ({ Entries: { items, filteredItems } }, { entries }) => ({
-  entries: entries || items.concat(filteredItems).filter(({ _isSelected }) => _isSelected),
-})
-
-const mapDispatchToProps = { UpdateReduxEntries, SyncEntries }
-
-const ButtonShareEntries = ({ entries, UpdateReduxEntries, SyncEntries }) => {
+const ButtonShareEntries = ({ entries: entriesFromProps }) => {
+  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const entries = useMemo(() => entriesFromProps || entriesSelected, [
+    entriesFromProps,
+    entriesSelected,
+  ])
+  const dispatch = useDispatch()
   const [urlCopied, setUrlCopied] = useState(false)
 
   const handleShareEntries = useCallback(() => {
@@ -51,7 +51,7 @@ const ButtonShareEntries = ({ entries, UpdateReduxEntries, SyncEntries }) => {
             return acc
           }, {})
 
-    UpdateReduxEntries(payload)
+    dispatch(UpdateReduxEntries(payload))
 
     if (navigator.share) {
       const sharePayload = {
@@ -67,7 +67,7 @@ const ButtonShareEntries = ({ entries, UpdateReduxEntries, SyncEntries }) => {
 
     setUrlCopied(true)
 
-    SyncEntries()
+    dispatch(SyncEntries())
   }, [entries])
   return (
     <Button disabled={entries.length === 0} color='accent' onClick={handleShareEntries}>
@@ -81,10 +81,6 @@ const ButtonShareEntries = ({ entries, UpdateReduxEntries, SyncEntries }) => {
 
 ButtonShareEntries.propTypes = {
   entries: EntriesPropTypes,
-  UpdateReduxEntries: PropTypes.func.isRequired,
-  SyncEntries: PropTypes.func.isRequired,
 }
 
-ButtonShareEntries.defaultProps = { entries: [] }
-
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonShareEntries)
+export default ButtonShareEntries

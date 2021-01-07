@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import PropTypes, { objectOf } from 'prop-types'
 import { connect } from 'react-redux'
 import { stripHtml, TopKFrequentStrings } from 'utils'
@@ -44,13 +44,19 @@ const EntriesTable = ({
   filterMap,
   pageSize,
 }) => {
+  const [selectedReduxEntries, setSelectedReduxEntries] = useState(selectedItems)
+
+  useEffect(() => {
+    SelectReduxEntries(selectedReduxEntries)
+  }, [selectedReduxEntries])
+
   const [viewableEntries, selectedEntries] = useMemo(() => {
     let selected = []
     const viewable = entries.reduce((acc, e) => {
       const { id, _shouldDelete, is_public } = e
       const _isSelected = Boolean(selectedItems[id])
       const newEntry = { ...e, _isSelected }
-      if (showOnlyPublic ? is_public : !_shouldDelete) {
+      if (showOnlyPublic ? is_public && !_shouldDelete : !_shouldDelete) {
         acc.push(newEntry)
       }
 
@@ -265,16 +271,13 @@ const EntriesTable = ({
 
   const onRowClick = useCallback(item => GoToEntryDetail(item.id), [])
 
-  const handleActionMenuCallback = useCallback(
-    selectedEntries => {
-      const selectedEntriesMap = selectedEntries.reduce((acc, e) => {
-        acc[e.id] = e._isSelected
-        return acc
-      }, {})
-      SelectReduxEntries(selectedEntriesMap)
-    },
-    [SelectReduxEntries],
-  )
+  const handleActionMenuCallback = useCallback(selectedEntries => {
+    const selectedEntriesMap = selectedEntries.reduce((acc, e) => {
+      acc[e.id] = e._isSelected
+      return acc
+    }, {})
+    setSelectedReduxEntries(selectedEntriesMap)
+  }, [])
 
   return (
     <BasicTable
