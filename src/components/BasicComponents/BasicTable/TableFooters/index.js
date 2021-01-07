@@ -1,17 +1,22 @@
-import BasicTableContext from '../state/context'
+import { BASIC_TABLE_CONTEXT_OPTIONS } from '../state/context'
 import React, { useMemo } from 'react'
 import { DataPropType, ColumnsPropType } from '../state/types'
 import { connect } from 'react-redux'
 import './styles.css'
 
-const mapStateToProps = ({ columns, sortedAndFilteredData, selectedData, actionMenuCallback }) => ({
+const mapStateToProps = ({
   columns,
   sortedAndFilteredData,
-  selectedData,
+  selectedDataMap,
+  actionMenuCallback,
+}) => ({
+  columns,
+  sortedAndFilteredData,
+  selectedDataMap,
   actionMenuCallback,
 })
 
-const TableFooters = ({ columns, sortedAndFilteredData, selectedData, actionMenuCallback }) => {
+const TableFooters = ({ columns, sortedAndFilteredData, selectedDataMap, actionMenuCallback }) => {
   const shouldRender = useMemo(() => columns.some(column => column.footer), [columns])
 
   const renderTableRows = useMemo(
@@ -29,7 +34,7 @@ const TableFooters = ({ columns, sortedAndFilteredData, selectedData, actionMenu
       <tfoot className='BasicTableFooter'>
         {actionMenuCallback && (
           <tr>
-            <td>{selectedData.length}</td>
+            <td>{Object.keys(selectedDataMap).length}</td>
           </tr>
         )}
         <tr>{renderTableRows}</tr>
@@ -43,6 +48,4 @@ TableFooters.propTypes = {
   columns: ColumnsPropType,
 }
 
-export default connect(mapStateToProps, null, null, {
-  context: BasicTableContext,
-})(TableFooters)
+export default connect(mapStateToProps, null, null, BASIC_TABLE_CONTEXT_OPTIONS)(TableFooters)

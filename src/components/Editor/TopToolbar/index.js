@@ -9,26 +9,28 @@ import { DEFAULT_STATE_TEXT_EDITOR } from 'redux/TextEditor/reducer'
 import { EditorConsumer } from '../'
 import './styles.css'
 
+const styles = { color: 'white' }
+
 const { html } = DEFAULT_STATE_TEXT_EDITOR
 
 const TopToolbar = ({ toolbarId, isOpen }) => {
-  const { editorRef, handleEditorChange } = useContext(EditorConsumer)
+  const { editorRef, handleEditorChange, toggleSetShowRaw } = useContext(EditorConsumer)
   const handleUndo = useCallback(() => editorRef?.current?.editor?.history.undo(), [editorRef])
 
   const handleRedo = useCallback(() => editorRef?.current?.editor?.history.redo(), [editorRef])
 
   const handleClear = useCallback(() => handleEditorChange({ html }), [])
 
-  const handleGetTAble = useCallback(() => {
-    // module.insertTable(3, 3)
-  }, [])
+  // const handleGetTAble = useCallback(() => {
+  //   module.insertTable(3, 3)
+  // }, [])
 
   return (
     <Collapse id={toolbarId} isOpen={isOpen}>
       <QuillSelectButtons />
       <QuillButtons />
 
-      <span className='ql-formats'>
+      <span className='ql-formats' style={styles}>
         <button className='ql-undo' onClick={handleUndo}>
           <i className='fas fa-undo-alt' />
         </button>
@@ -37,6 +39,9 @@ const TopToolbar = ({ toolbarId, isOpen }) => {
         </button>
         <button className='ql-clear' onClick={handleClear}>
           <i className='fas fa-times-circle' />
+        </button>
+        <button onClick={toggleSetShowRaw}>
+          <i className='fas fa-file-code'></i>
         </button>
         {/* <button className="ql-better-table">
           <i className="fas fa-table" />

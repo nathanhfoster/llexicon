@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, memo, Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { InputTypes, autoCompleteTypes } from 'components/BasicComponents/BasicInput/propTypes'
 import { Input } from 'reactstrap'
 import { UseDebounce } from '../'
 
@@ -54,12 +55,16 @@ DebounceInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   defaultValue: PropTypes.string,
   focusOnMount: PropTypes.bool,
+  type: InputTypes,
+  autoComplete: autoCompleteTypes,
 }
 
 DebounceInput.defaultProps = {
   debounceOnMount: false,
   delay: 400,
   focusOnMount: false,
+  type: 'search',
+  autoComplete: 'on',
 }
 
 export default memo(DebounceInput)

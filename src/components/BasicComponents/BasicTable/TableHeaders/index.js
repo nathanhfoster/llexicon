@@ -1,4 +1,4 @@
-import BasicTableContext from '../state/context'
+import { BASIC_TABLE_CONTEXT_OPTIONS } from '../state/context'
 import React, { Fragment, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -14,9 +14,9 @@ const mapStateToProps = ({
   sortable,
   filterable,
   sortedAndFilteredData,
-  selectedData,
   pageSize,
   currentPage,
+  selectedDataMap,
   actionMenuCallback,
 }) => ({
   columns,
@@ -26,9 +26,9 @@ const mapStateToProps = ({
   sortable,
   filterable,
   sortedAndFilteredData,
-  selectedData,
   pageSize,
   currentPage,
+  selectedDataMap,
   actionMenuCallback,
 })
 
@@ -44,9 +44,9 @@ const TableHeaders = ({
   basicTableSort,
   basicTableFilter,
   sortedAndFilteredData,
-  selectedData,
   pageSize,
   currentPage,
+  selectedDataMap,
   actionMenuCallback,
   selectDataItems,
 }) => {
@@ -119,6 +119,8 @@ const TableHeaders = ({
 
   const sliceEnd = sliceStart + pageSize
 
+  const selectedDataMapLength = Object.keys(selectedDataMap).length
+
   const slicedData = useMemo(() => sortedAndFilteredData.slice(sliceStart, sliceEnd), [
     sortedAndFilteredData,
     sliceStart,
@@ -127,34 +129,25 @@ const TableHeaders = ({
 
   const allDataIsSelected = useMemo(
     () =>
-      sortedAndFilteredData.length !== 0 && sortedAndFilteredData.length === selectedData.length,
-    [selectedData, sortedAndFilteredData.length],
+      sortedAndFilteredData.length !== 0 && sortedAndFilteredData.length === selectedDataMapLength,
+    [selectedDataMap, sortedAndFilteredData.length],
   )
 
   const allSlicedDataIsSelected = useMemo(
-    () => slicedData.length > 0 && slicedData.every(({ _isSelected }) => _isSelected),
-    [slicedData],
+    () => slicedData.length > 0 && slicedData.every(({ id }) => selectedDataMap[id]),
+    [slicedData, selectedDataMap],
   )
 
-  const handleActionMenuCallback = useCallback(
-    e => {
-      if (!allSlicedDataIsSelected) {
-        selectDataItems(selectedData.concat(slicedData))
-      } else if (allSlicedDataIsSelected && !allDataIsSelected) {
-        selectDataItems(sortedAndFilteredData)
-      } else if (allDataIsSelected) {
-        selectDataItems(sortedAndFilteredData, false)
-      }
-    },
-    [
-      selectedData,
-      allDataIsSelected,
-      allSlicedDataIsSelected,
-      selectDataItems,
-      slicedData,
-      sortedAndFilteredData,
-    ],
-  )
+  const handleActionMenuCallback = useCallback(() => {
+    if (!allSlicedDataIsSelected) {
+      selectDataItems(slicedData)
+    } else if (allSlicedDataIsSelected && !allDataIsSelected) {
+      selectDataItems(sortedAndFilteredData)
+    } else if (allDataIsSelected) {
+
+      selectDataItems(sortedAndFilteredData, false)
+    }
+  }, [allDataIsSelected, allSlicedDataIsSelected, slicedData, sortedAndFilteredData])
 
   return (
     <thead>
@@ -162,7 +155,7 @@ const TableHeaders = ({
         {actionMenuCallback && (
           <Fragment>
             <th title='SelectAll' onClick={e => e.stopPropagation()} style={{ width: 50 }}>
-              <div>{selectedData.length}</div>
+              <div>{selectedDataMapLength}</div>
               <input
                 disabled={sortedAndFilteredData.length === 0 || slicedData.length === 0}
                 type='checkbox'
@@ -187,6 +180,9 @@ TableHeaders.propTypes = {
   sortList: SortListPropType,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {
-  context: BasicTableContext,
-})(TableHeaders)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  BASIC_TABLE_CONTEXT_OPTIONS,
+)(TableHeaders)

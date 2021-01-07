@@ -1,12 +1,6 @@
-import React, {
-  createContext,
-  useRef,
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  memo,
-} from 'react'
+import React, { createContext, useRef, useState, useEffect, useMemo, useCallback } from 'react'
+import { connect } from 'react-redux'
+import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
 import ReactQuill from 'react-quill'
 import { THEMES, FORMATS, getModules } from './modules'
 import 'react-quill/dist/quill.snow.css'
@@ -22,6 +16,10 @@ import { EntryPropTypes } from 'redux/Entries/propTypes'
 
 export const EditorConsumer = createContext()
 
+const mapStateToProps = ({ TextEditor: { bottomToolbarIsOpen } }) => ({ bottomToolbarIsOpen })
+
+const mapDispatchToProps = { SetBottomToolbarIsOpen }
+
 const Editor = ({
   children,
   entry,
@@ -31,10 +29,19 @@ const Editor = ({
   placeholder,
   readOnly,
   onChange,
+  SetBottomToolbarIsOpen,
   ...restOfProps
 }) => {
   const editorRef = useRef()
   const didMount = useRef(false)
+
+  const bottomToolbarIsOpen = !readOnly && restOfProps.bottomToolbarIsOpen
+
+  const [showRaw, setShowRaw] = useState(false)
+
+  const toggleSetShowRaw = useCallback(() => {
+    setShowRaw(prevShowRaw => !prevShowRaw)
+  }, [])
 
   useEffect(() => {
     didMount.current = true
@@ -42,10 +49,6 @@ const Editor = ({
       didMount.current = false
     }
   }, [])
-
-  const [bottomToolbarIsOpen, setBottomToolbarIsOpen] = useState(
-    !readOnly && restOfProps.bottomToolbarIsOpen,
-  )
 
   const toolbarId = useMemo(() => `toolbar-${restOfProps.toolbarId}`, [restOfProps.toolbarId])
 
@@ -91,7 +94,7 @@ const Editor = ({
       const payload = { id: entry.id, ...fields }
       onChange(payload)
     },
-    [entry.id],
+    [entry.id, onChange],
   )
 
   const handleEditorStateChange = useCallback(
@@ -100,15 +103,20 @@ const Editor = ({
       if (source === 'api' && !didMount.current) return
       handleEditorChange({ html })
     },
-    [didMount.current],
+    [handleEditorChange],
+  )
+  const handleEditorRawStateChange = useCallback(
+    ({ target: { value } }) => {
+      handleEditorChange({ html: value })
+    },
+    [handleEditorChange],
   )
 
   const toggleBottomToolbar = useCallback(
-    toggle =>
-      setBottomToolbarIsOpen(currentState =>
-        toggle === true || toggle === false ? toggle : !currentState,
-      ),
-    [],
+    toggle => {
+      SetBottomToolbarIsOpen(toggle === true || toggle === false ? toggle : !bottomToolbarIsOpen)
+    },
+    [bottomToolbarIsOpen],
   )
 
   const editorSelection = editorRef?.current?.getEditorSelection()
@@ -119,35 +127,49 @@ const Editor = ({
       editorSelection,
       handleEditorChange,
       toggleBottomToolbar,
+      toggleSetShowRaw,
     }),
     [editorRef, editorSelection, handleEditorChange, toggleBottomToolbar],
   )
 
   return (
     <EditorConsumer.Provider value={contextValue}>
-      {children}
-      <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
-      <ReactQuill
-        id={quillId}
-        readOnly={readOnly}
-        bounds='app'
-        ref={editorRef}
-        className='Editor'
-        style={editorStyles}
-        theme={theme}
-        formats={FORMATS}
-        modules={modules}
-        value={entry.html}
-        onChange={handleEditorStateChange}
-        placeholder={placeholder}
-        onFocus={handleOnFocus}
-      />
-      <BottomToolbar
-        entry={entry}
-        canToggleToolbars={canToggleToolbars}
-        isOpen={bottomToolbarIsOpen}
-        id={restOfProps.toolbarId}
-      />
+      <div className={showRaw ? 'showRaw' : ''}>
+        {children}
+        <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
+        <ReactQuill
+          id={quillId}
+          readOnly={readOnly}
+          bounds='app'
+          ref={editorRef}
+          className='Editor'
+          style={editorStyles}
+          theme={theme}
+          formats={FORMATS}
+          modules={modules}
+          defaultValue={entry.html}
+          value={entry.html}
+          onChange={handleEditorStateChange}
+          placeholder={placeholder}
+          onFocus={handleOnFocus}
+          preserveWhitespace={false}
+          tabIndex={0}
+        />
+        <BottomToolbar
+          entry={entry}
+          canToggleToolbars={canToggleToolbars}
+          isOpen={bottomToolbarIsOpen}
+          id={restOfProps.toolbarId}
+        />
+        {showRaw && (
+          <textarea
+            className='Editor raw-editor px-3 py-2'
+            style={editorStyles}
+            onChange={handleEditorRawStateChange}
+            value={entry.html}
+          />
+        )}
+      </div>
     </EditorConsumer.Provider>
   )
 }
@@ -160,7 +182,7 @@ Editor.propTypes = {
   toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   canToggleToolbars: PropTypes.bool.isRequired,
   topToolbarIsOpen: PropTypes.bool,
-  bottomToolbarIsOpen: PropTypes.bool,
+  bottomToolbarIsOpen: PropTypes.bool.isRequired,
 
   // Quill
   id: PropTypes.string,
@@ -194,7 +216,6 @@ Editor.defaultProps = {
   placeholder: 'Today I have...',
   canToggleToolbars: true,
   topToolbarIsOpen: true,
-  bottomToolbarIsOpen: true,
   readOnly: false,
 }
-export default memo(Editor)
+export default connect(mapStateToProps, mapDispatchToProps)(Editor)

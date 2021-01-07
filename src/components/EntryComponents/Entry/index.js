@@ -16,7 +16,6 @@ const Entry = ({
   toolbarId,
   canToggleToolbars,
   topToolbarIsOpen,
-  bottomToolbarIsOpen,
   shouldRedirectOnDelete,
   theme,
   readOnly,
@@ -54,7 +53,6 @@ const Entry = ({
       toolbarId={toolbarId || entry.id}
       canToggleToolbars={canToggleToolbars}
       topToolbarIsOpen={topToolbarIsOpen}
-      bottomToolbarIsOpen={bottomToolbarIsOpen}
       entry={entry}
       theme={theme}
       onChange={onChange}
@@ -136,7 +134,6 @@ Entry.propTypes = {
   readOnly: PropTypes.bool.isRequired,
   entry: EntryPropTypes.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  bottomToolbarIsOpen: PropTypes.bool,
   theme: PropTypes.string,
   staticContext: PropTypes.any,
   topToolbarIsOpen: PropTypes.bool,
@@ -151,7 +148,6 @@ Entry.defaultProps = {
   readOnly: false,
   canToggleToolbars: true,
   topToolbarIsOpen: true,
-  bottomToolbarIsOpen: true,
   shouldRedirectOnDelete: false,
   theme: 'snow',
 }

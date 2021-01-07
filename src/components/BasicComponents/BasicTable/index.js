@@ -1,4 +1,4 @@
-import BasicTableContext from './state/context'
+import { BasicTableContext } from './state/context'
 import React, { useRef, useEffect, useMemo, lazy, memo } from 'react'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import PropTypes from 'prop-types'
 import { BasicTableReducer } from './state/reducer'
-import { basicTableSetData } from './state/actions'
+import { basicTableSetData, basicTableSetSelectedData } from './state/actions'
 import { getInitialState } from './state/utils'
 import { ColumnsPropType, DataPropType } from './state/types'
 import { stringMatch } from '../../../utils'
@@ -34,6 +34,17 @@ const BasicTableProvider = ({ children, ...restOfProps }) => {
     mounted.current = true
   }, [restOfProps.data])
 
+  useEffect(() => {
+    const { selectedDataMap } = store.getState()
+    if (
+      mounted.current &&
+      Object.keys(selectedDataMap).length !== Object.keys(restOfProps.selectedDataMap).length
+    ) {
+      store.dispatch(basicTableSetSelectedData(restOfProps.selectedDataMap))
+    }
+    mounted.current = true
+  }, [restOfProps.selectedDataMap])
+
   return (
     <Provider context={BasicTableContext} store={store}>
       {children}
@@ -48,6 +59,7 @@ BasicTableProvider.propTypes = {
   columns: ColumnsPropType,
   dataDisplayName: PropTypes.string.isRequired,
   data: DataPropType,
+  selectedDataMap: PropTypes.objectOf(PropTypes.bool),
   actionMenuCallback: PropTypes.func,
   getRowValue: PropTypes.func,
   onRowClick: PropTypes.func,
@@ -116,5 +128,6 @@ BasicTableProvider.defaultProps = {
         user_name: `user_name${i}`,
       }),
   ),
+  selectedDataMap: {},
 }
 export default memo(BasicTableProvider)

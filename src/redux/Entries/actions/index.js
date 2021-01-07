@@ -5,6 +5,7 @@ import {
   SetEntry,
   PostReduxEntry,
   UpdateReduxEntries,
+  SelectReduxEntries,
   ClearEntry,
   ClearEntries,
   ClearEntriesErrors,
@@ -18,7 +19,6 @@ import {
   ToggleShowOnlyPublic,
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
-  SearchEntriesFilter,
   DeleteEntryFileFromRedux,
 } from './redux'
 import {
@@ -47,6 +47,7 @@ export {
   SetEntry,
   PostReduxEntry,
   UpdateReduxEntries,
+  SelectReduxEntries,
   ClearEntry,
   ClearEntries,
   ClearEntriesErrors,
@@ -60,7 +61,6 @@ export {
   ToggleShowOnlyPublic,
   ResetEntriesSortAndFilterMaps,
   ResetSearchEntries,
-  SearchEntriesFilter,
   DeleteEntryFileFromRedux,
   // API
   CreateEntryTag,

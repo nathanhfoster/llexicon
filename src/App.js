@@ -16,6 +16,7 @@ import {
   ClearEntriesErrors,
 } from 'redux/Entries/actions'
 import { ResetMap } from 'redux/Map/actions'
+import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
 import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
 import { Admin, About, Home, PrivacyPolicy } from 'views'
 import { NavBar } from 'components'
@@ -87,6 +88,7 @@ const mapDispatchToProps = {
   ClearEntry,
   ClearEntriesErrors,
   ResetMap,
+  SetBottomToolbarIsOpen,
 }
 
 const DARK_MODE_THEME = {
@@ -94,7 +96,7 @@ const DARK_MODE_THEME = {
   '--primaryColorRGB': '41, 48, 59',
   '--secondaryColor': 'white',
   '--tertiarycolor': '#bdc3c7',
-  '--quaternaryColor': 'rgb(21, 32, 43)',
+  '--quaternaryColor': '#202933',
   '--quinaryColor': '#1f2326',
 }
 
@@ -136,6 +138,7 @@ const App = ({
   ClearEntry,
   ClearEntriesErrors,
   ResetMap,
+  SetBottomToolbarIsOpen,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const handleResize = () => SetWindow()
@@ -144,12 +147,13 @@ const App = ({
     changeTheme(userDarkMode)
   }, [userDarkMode])
   useEffect(() => {
-    const activeDate = new Date()
+    SetBottomToolbarIsOpen(true)
+    SetCalendar({ activeDate: new Date() })
+    ResetSearchEntries()
     ResetUserError()
-    SetCalendar({ activeDate })
     ResetEntriesSortAndFilterMaps()
     ResetMap()
-    ResetSearchEntries()
+
     ClearEntry()
     ClearEntriesErrors()
 
@@ -181,7 +185,7 @@ const App = ({
   return (
     <main className={userDarkMode ? 'DarkMode' : 'LightMode'}>
       <Helmet />
-      <div id='portal-root'></div>
+      <div id='portal-root' />
       <AlertNotifications />
       <NavBar prompt={prompt} promptToInstall={promptToInstall} />
       <div className='App RouteOverlay'>
@@ -280,6 +284,7 @@ App.propTypes = {
   ClearEntry: PropTypes.func.isRequired,
   ClearEntriesErrors: PropTypes.func.isRequired,
   ResetMap: PropTypes.func.isRequired,
+  SetBottomToolbarIsOpen: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

@@ -6,8 +6,8 @@ const BasicTableActionTypes = {
   BASIC_TABLE_SET_PAGE: 'BASIC_TABLE_SET_PAGE',
   BASIC_TABLE_SET_PAGE_SIZE: 'BASIC_TABLE_SET_PAGE_SIZE',
   BASIC_TABLE_SET_DATA: 'BASIC_TABLE_SET_DATA',
+  BASIC_TABLE_SET_SELECTED_DATA: 'BASIC_TABLE_SET_SELECTED_DATA',
   BASIC_TABLE_SELECT_DATA_ITEMS: 'BASIC_TABLE_SELECT_DATA_ITEMS',
-  BASIC_TABLE_SELECT_DATA_ITEM: 'BASIC_TABLE_SELECT_DATA_ITEM',
 }
 
 const ColumnPropType = PropTypes.shape({
@@ -31,8 +31,7 @@ const ColumnPropType = PropTypes.shape({
 
 const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
 
-const DataPropType = PropTypes.arrayOf(PropTypes.shape({ _isSelected: PropTypes.bool }).isRequired)
-  .isRequired
+const DataPropType = PropTypes.arrayOf(PropTypes.object).isRequired
 
 const SortListPropType = PropTypes.arrayOf(
   PropTypes.shape({
