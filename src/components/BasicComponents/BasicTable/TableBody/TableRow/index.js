@@ -8,6 +8,19 @@ import { connect } from 'react-redux'
 import { isType } from 'utils'
 import { selectDataItems } from '../../state/actions'
 
+const getTitle = (key, item, render) => {
+  const itemValue = item[key]
+  if (typeof render === isType.STRING) {
+    return render
+  } else if (typeof render === isType.FUNCTION && typeof render(item) === isType.STRING) {
+    return render(item)
+  } else if (typeof itemValue === isType.STRING) {
+    return itemValue
+  }
+
+  return ''
+}
+
 const mapStateToProps = (
   { getRowValue, onRowClick, columns, selectedDataMap, actionMenuCallback },
   { item },
@@ -43,20 +56,14 @@ const TableRow = ({
   const [firstColumn, ...restOfColumns] = columns
   const { key, render } = firstColumn
   const itemValue = item[key]
-  const title =
-    typeof render === isType.STRING ? render : typeof itemValue === isType.STRING ? itemValue : ''
+  const title = getTitle(key, item, render)
 
   const renderRestOfColumns = useMemo(
     () =>
       (actionMenuCallback ? columns : restOfColumns).map((c, j) => {
         const { key, render } = c
         const itemValue = item[key]
-        const title =
-          typeof render === isType.STRING
-            ? render
-            : typeof itemValue === isType.STRING
-            ? itemValue
-            : ''
+        const title = getTitle(key, item, render)
 
         return (
           <TableDataCell key={j} title={title}>
@@ -101,7 +108,7 @@ const TableRow = ({
       </tr>
       {open && getRowValue && (
         <tr>
-          <TableDataCell colSpan={columns.length}>
+          <TableDataCell colSpan={columns.length} title='Toggle'>
             <Collapse isOpen={open}>{getRowValue(item)}</Collapse>
           </TableDataCell>
         </tr>
@@ -111,7 +118,7 @@ const TableRow = ({
 }
 
 TableRow.propTypes = {
-  getRowValue: PropTypes.bool,
+  getRowValue: PropTypes.func,
   onRowClick: PropTypes.func,
   item: PropTypes.object,
   columns: ColumnsPropType,

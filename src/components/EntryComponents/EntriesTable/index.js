@@ -92,7 +92,7 @@ const EntriesTable = ({
       {
         title: <i className='fas fa-keyboard' />,
         key: 'html',
-        width: 90,
+        width: 120,
         defaultSortValue: sortMap.html,
         filterPlaceholder: 'Body',
         defaultFilterValue: filterMap.html,
@@ -101,7 +101,7 @@ const EntriesTable = ({
       {
         title: <i className='fas fa-tags' />,
         key: 'tags',
-        width: 110,
+        width: 120,
         sort: (a, b, sortUp) =>
           sortUp
             ? b.tags.join().localeCompare(a.tags.join())
@@ -121,7 +121,7 @@ const EntriesTable = ({
       {
         title: <i className='fas fa-users' />,
         key: 'people',
-        width: 110,
+        width: 120,
         sort: (a, b, sortUp) =>
           sortUp
             ? b.people.join().localeCompare(a.people.join())
@@ -155,7 +155,7 @@ const EntriesTable = ({
       {
         title: <i className='fas fa-calendar-day' />,
         key: 'date_created_by_author',
-        width: 100,
+        width: 120,
         sort: (a, b, sortUp) =>
           sortUp
             ? new Date(b.date_created_by_author) - new Date(a.date_created_by_author)
@@ -171,7 +171,7 @@ const EntriesTable = ({
       {
         title: <i className='fas fa-pencil-alt' />,
         key: 'date_updated',
-        width: 130,
+        width: 120,
         sort: (a, b, sortUp) =>
           sortUp
             ? new Date(b._lastUpdated || b.date_updated) -
@@ -190,7 +190,7 @@ const EntriesTable = ({
       {
         title: <i className='far fa-eye' />,
         key: 'views',
-        width: 50,
+        width: 64,
         render: ({ views }) => <span className='Center'>{views}</span>,
         defaultSortValue: sortMap.views,
         filterPlaceholder: '<=',
@@ -200,7 +200,7 @@ const EntriesTable = ({
       {
         title: <i className='fas fa-star' />,
         key: 'rating',
-        width: 50,
+        width: 64,
         render: ({ rating }) => <span className='ml-2'>{rating}</span>,
         footer: entries => {
           let validItems = 0
@@ -224,7 +224,7 @@ const EntriesTable = ({
       {
         title: <i className='fas fa-photo-video' />,
         key: 'EntryFiles',
-        width: 50,
+        width: 64,
         render: ({ EntryFiles }) => <span className='Center'>{EntryFiles.length}</span>,
         sort: (a, b, sortUp) => {
           const aLength = a.EntryFiles.length
@@ -249,7 +249,7 @@ const EntriesTable = ({
       {
         title: <i className='fas fa-hdd' />,
         key: 'id',
-        width: 65,
+        width: 80,
         sort: (a, b, sortUp) => {
           const aSize = a.size || a._size
           const bSize = b.size || b._size
