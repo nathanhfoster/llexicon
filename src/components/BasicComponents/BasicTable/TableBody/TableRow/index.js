@@ -1,5 +1,5 @@
 import { BASIC_TABLE_CONTEXT_OPTIONS } from '../../state/context'
-import React, { useState, useCallback, useMemo, Fragment, memo } from 'react'
+import React, { useState, useCallback, useMemo, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import TableDataCell from './TableDataCell'
 import { Collapse } from 'reactstrap'
@@ -125,4 +125,4 @@ export default connect(
   mapDispatchToProps,
   null,
   BASIC_TABLE_CONTEXT_OPTIONS,
-)(memo(TableRow, (p, n) => p.isSelected === n.isSelected))
+)(TableRow)
