@@ -13,6 +13,7 @@
     "localforage": "^1.9.0",
     "moment": "^2.24.0",
     "points-cluster": "^0.1.4",
+    "pretty": "^2.0.0",
     "prop-types": "^15.7.2",
     "quill-image-resize-module-react": "^3.0.0",
     "react": "^17.0.1",

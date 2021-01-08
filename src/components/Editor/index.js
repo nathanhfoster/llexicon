@@ -13,6 +13,7 @@ import TopToolbar from './TopToolbar'
 import BottomToolbar from './BottomToolbar'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
+import RawEditor from './RawEditor'
 
 export const EditorConsumer = createContext()
 
@@ -105,12 +106,6 @@ const Editor = ({
     },
     [handleEditorChange],
   )
-  const handleEditorRawStateChange = useCallback(
-    ({ target: { value } }) => {
-      handleEditorChange({ html: value })
-    },
-    [handleEditorChange],
-  )
 
   const toggleBottomToolbar = useCallback(
     toggle => {
@@ -161,14 +156,7 @@ const Editor = ({
           isOpen={bottomToolbarIsOpen}
           id={restOfProps.toolbarId}
         />
-        {showRaw && (
-          <textarea
-            className='Editor raw-editor px-3 py-2'
-            style={editorStyles}
-            onChange={handleEditorRawStateChange}
-            value={entry.html}
-          />
-        )}
+        {showRaw && <RawEditor style={editorStyles} value={entry.html} />}
       </div>
     </EditorConsumer.Provider>
   )
