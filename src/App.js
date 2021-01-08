@@ -19,7 +19,7 @@ import { ResetMap } from 'redux/Map/actions'
 import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
 import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
 import { Admin, About, Home, PrivacyPolicy } from 'views'
-import { NavBar } from 'components'
+import { LoadingScreen, NavBar } from 'components'
 import { useAddToHomescreenPrompt } from 'hooks'
 import { lazyDelay } from 'utils'
 
@@ -61,6 +61,7 @@ const {
 } = RouteMap
 
 const mapStateToProps = ({
+  App: { isPending },
   User: {
     id,
     token,
@@ -68,6 +69,7 @@ const mapStateToProps = ({
     is_superuser,
   },
 }) => ({
+  appIsLoading: isPending,
   userId: id,
   userToken: token,
   userIsSuperUser: is_superuser,
@@ -121,12 +123,13 @@ const changeTheme = darkMode =>
   darkMode ? mapThemeProperties(DARK_MODE_THEME) : mapThemeProperties(LIGHT_MODE_THEME)
 
 const App = ({
-  ResetUserError,
-  GetUserSettings,
+  appIsLoading,
   userId,
   userToken,
   userIsSuperUser,
   userDarkMode,
+  ResetUserError,
+  GetUserSettings,
   SetWindow,
   SetCalendar,
   GetUserEntries,
@@ -182,7 +185,9 @@ const App = ({
     return shouldRedirect ? () => <Redirect push to={directTo} /> : component
   }
 
-  return (
+  return appIsLoading ? (
+    <LoadingScreen />
+  ) : (
     <main className={userDarkMode ? 'DarkMode' : 'LightMode'}>
       <Helmet />
       <div id='portal-root' />
@@ -266,6 +271,7 @@ const App = ({
 }
 
 App.propTypes = {
+  appIsLoading: PropTypes.bool.isRequired,
   userId: PropTypes.number,
   userToken: PropTypes.string,
   userIsSuperUser: PropTypes.bool,

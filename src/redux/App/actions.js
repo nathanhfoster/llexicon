@@ -4,7 +4,7 @@ import ReactGA from 'react-ga'
 import { getLocalStorageCapacity } from './utils'
 const { PUBLIC_URL } = process.env
 
-const SetLocalStorageUsage = () => (dispatch, getState) => {
+export const SetLocalStorageUsage = () => (dispatch, getState) => {
   const { localStorageCapacity: localStorageCapacityFromRedux } = getState().App
   const localStorageCapacity = localStorageCapacityFromRedux || getLocalStorageCapacity()
 
@@ -26,9 +26,9 @@ const SetLocalStorageUsage = () => (dispatch, getState) => {
   }
 }
 
-const ResetRedux = () => ({ type: AppActionTypes.REDUX_RESET })
+export const ResetRedux = () => ({ type: AppActionTypes.REDUX_RESET })
 
-const GetAppVersion = () => (dispatch, getState) => {
+export const GetAppVersion = () => (dispatch, getState) => {
   const {
     App: { version },
   } = getState()
@@ -47,9 +47,9 @@ const GetAppVersion = () => (dispatch, getState) => {
     .catch(({ response }) => console.log('ERROR: ', response))
 }
 
-const LoadReducerState = state => ({
+export const LoadReducerStatePending = () => ({ type: AppActionTypes.LOAD_PERSISTED_STATE_PENDING })
+
+export const LoadReducerState = state => ({
   type: AppActionTypes.LOAD_PERSISTED_STATE,
   payload: state || {},
 })
-
-export { SetLocalStorageUsage, ResetRedux, GetAppVersion, LoadReducerState }

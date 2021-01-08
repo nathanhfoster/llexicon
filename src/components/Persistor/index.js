@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { isAFunction } from 'utils'
 import { isQuotaExceeded } from 'redux/localState'
 import localforage from 'localforage'
-import { LoadReducerState, SetLocalStorageUsage } from 'redux/App/actions'
+import { LoadReducerStatePending, LoadReducerState, SetLocalStorageUsage } from 'redux/App/actions'
 import { IndexDbKey, PersistedStorageReduxKey } from 'redux/localState'
 import { usePreviousValue } from 'hooks'
 
@@ -47,12 +47,13 @@ export const AstralTreeDB = localforage.createInstance({
 
 const mapStateToProps = state => ({ state })
 
-const mapDispatchToProps = { LoadReducerState, SetLocalStorageUsage }
+const mapDispatchToProps = { LoadReducerStatePending, LoadReducerState, SetLocalStorageUsage }
 
 const Persistor = ({
   debounce,
   whenQuotaExceeds,
   state,
+  LoadReducerStatePending,
   LoadReducerState,
   SetLocalStorageUsage,
 }) => {
@@ -61,6 +62,7 @@ const Persistor = ({
 
   useLayoutEffect(() => {
     ;(async () => {
+      LoadReducerStatePending()
       const persistedSate = await AstralTreeDB.getItem(IndexDbKey).then(s => JSON.parse(s))
       LoadReducerState(persistedSate)
       SetLocalStorageUsage()
@@ -113,6 +115,7 @@ Persistor.propTypes = {
   whenQuotaExceeds: PropTypes.func,
   state: PropTypes.objectOf(PropTypes.object),
 
+  LoadReducerStatePending: PropTypes.func.isRequired,
   LoadReducerState: PropTypes.func.isRequired,
   SetLocalStorageUsage: PropTypes.func.isRequired,
 }
