@@ -247,7 +247,6 @@ const PeopleButtonModal = ({
                 </InputGroupText>
               </InputGroupAddon>
               <DebounceInput
-                type='text'
                 value={personsName}
                 onChange={handlePeopleInputChange}
                 placeholder={placeholder}
