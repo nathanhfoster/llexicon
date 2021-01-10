@@ -133,6 +133,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   const { type, payload, search, isPending } = action
 
   let updatedItem
+  let newItem
   let nextItems = []
 
   switch (type) {
@@ -199,11 +200,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRY_SET:
+      newItem = { ...state.item, ...payload, isPending: false }
       return {
         ...state,
-        item: { ...state.item, ...payload, isPending: false, _size: getStringBytes(payload) },
+        item: { ...newItem, _size: getStringBytes(newItem) },
         ...handleFilterEntries(
-          mergeJson(state.items.concat(state.filteredItems), [payload]),
+          mergeJson(state.items.concat(state.filteredItems), [newItem]),
           state.search,
         ),
         isPending: false,
@@ -300,6 +302,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         ...payload.Entries,
         ...handleFilterEntries(nextItems, payload.Entries?.search || state.search),
+        item: payload.Entries ? { ...payload.Entries.item, isPending: false } : state.item,
         isPending: DEFAULT_STATE_ENTRIES.isPending,
         error: DEFAULT_STATE_ENTRIES.error,
         // search: DEFAULT_STATE_ENTRIES.search

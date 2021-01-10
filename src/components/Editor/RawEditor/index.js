@@ -19,7 +19,7 @@ const RawEditor = ({ style, value }) => {
       const debounce = setTimeout(() => {
         console.log('hacks')
         handleEditorChange({ html: stateValue })
-      }, 250)
+      }, 400)
 
       return () => {
         clearTimeout(debounce)

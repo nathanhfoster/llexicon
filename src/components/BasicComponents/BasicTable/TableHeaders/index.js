@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { ColumnsPropType, SortListPropType } from '../state/types'
 import TableHeader from './TableHeader'
 import { basicTableSort, basicTableFilter, selectDataItems } from '../state/actions'
+import { BasicInput } from 'components'
 
 const mapStateToProps = ({
   columns,
@@ -144,7 +145,6 @@ const TableHeaders = ({
     } else if (allSlicedDataIsSelected && !allDataIsSelected) {
       selectDataItems(sortedAndFilteredData)
     } else if (allDataIsSelected) {
-
       selectDataItems(sortedAndFilteredData, false)
     }
   }, [allDataIsSelected, allSlicedDataIsSelected, slicedData, sortedAndFilteredData])
@@ -156,7 +156,7 @@ const TableHeaders = ({
           <Fragment>
             <th title='SelectAll' onClick={e => e.stopPropagation()} style={{ width: 50 }}>
               <div>{selectedDataMapLength}</div>
-              <input
+              <BasicInput
                 disabled={sortedAndFilteredData.length === 0 || slicedData.length === 0}
                 type='checkbox'
                 checked={allSlicedDataIsSelected || allDataIsSelected}

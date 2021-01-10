@@ -190,8 +190,22 @@ const Entries = ({
         ),
         onClick: handleTabChange,
       },
+      {
+        tabId: RouteMap.ENTRIES_MAP,
+        title: {
+          name: 'Entries Map',
+          render: <i className='fas fa-map-marked-alt' />,
+        },
+        className: 'fade-in',
+        render: (
+          <Row>
+            <EntriesMap height={viewPortHeight - 46} />
+          </Row>
+        ),
+        onClick: handleTabChange,
+      },
     ],
-    [minimalEntriesListHeight, shouldRenderNewEntryButton, viewPortHeight, viewableEntries],
+    // [minimalEntriesListHeight, shouldRenderNewEntryButton, viewPortHeight, viewableEntries],
   )
 
   const fluid = useMemo(

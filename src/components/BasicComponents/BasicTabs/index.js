@@ -104,7 +104,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
     <Container className={`${className} Container`} fluid={fluid}>
       <div {...handlers}>
         <Row>
-          <Col tag={Nav} tabs xs={12}>
+          <Col className='BasicTabsNav' tag={Nav} tabs xs={12}>
             {renderTabs}
           </Col>
         </Row>

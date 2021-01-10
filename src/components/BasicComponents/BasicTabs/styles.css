@@ -2,6 +2,13 @@
    overflow-x: hidden;
 }
 
+.BasicTabsNav {
+    width: 100%;
+    overflow-x: auto;
+    display: inline-flex;
+    flex-wrap: nowrap;
+}
+
 .BasicTabsNavLink {
     color: var(--secondaryColor) !important;
 }
