@@ -156,7 +156,7 @@ const TableHeaders = ({
           <Fragment>
             <th title='SelectAll' onClick={e => e.stopPropagation()} style={{ width: 50 }}>
               <div>{selectedDataMapLength}</div>
-              <BasicInput
+              <input
                 disabled={sortedAndFilteredData.length === 0 || slicedData.length === 0}
                 type='checkbox'
                 name='SelectAll'
