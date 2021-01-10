@@ -294,14 +294,6 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         inline: true,
       },
       {
-        label: 'Should Delete',
-        name: '_shouldDelete',
-        type: 'checkbox',
-        placeholder: `Sould Delete..`,
-        inline: true,
-        defaultChecked: entries.every(({ _shouldDelete }) => _shouldDelete),
-      },
-      {
         label: 'Should Post',
         name: '_shouldPost',
         type: 'checkbox',
@@ -309,6 +301,23 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         inline: true,
         defaultChecked: entries.every(({ _shouldPost }) => _shouldPost),
       },
+      {
+        label: 'Should Update',
+        name: '_lastUpdated',
+        type: 'checkbox',
+        placeholder: `Should Update...`,
+        inline: true,
+        defaultChecked: entries.every(({ _lastUpdated }) => _lastUpdated),
+      },
+      {
+        label: 'Should Delete',
+        name: '_shouldDelete',
+        type: 'checkbox',
+        placeholder: `Sould Delete..`,
+        inline: true,
+        defaultChecked: entries.every(({ _shouldDelete }) => _shouldDelete),
+      },
+      
       {
         label: 'Is Public',
         name: 'is_public',

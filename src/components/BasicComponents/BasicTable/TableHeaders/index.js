@@ -149,6 +149,7 @@ const TableHeaders = ({
     }
   }, [allDataIsSelected, allSlicedDataIsSelected, slicedData, sortedAndFilteredData])
 
+
   return (
     <thead>
       <tr>
