@@ -87,7 +87,7 @@ const DEFAULT_STATE_ENTRIES = {
   count: null,
   next: null,
   previous: null,
-  item: { id: null, isPending: false },
+  item: null,
   items: [FIRST_JOUNRAL_ENTRY],
   selectedItemsMap: {},
   filteredItems: [],
