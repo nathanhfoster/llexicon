@@ -53,3 +53,6 @@ export const LoadReducerState = state => ({
   type: AppActionTypes.LOAD_PERSISTED_STATE,
   payload: state || {},
 })
+
+export const UploadProgress = payload => ({ type: AppActionTypes.APP_UPLOAD_PROGRESS, payload })
+export const DownloadProgress = payload => ({ type: AppActionTypes.APP_DOWNLOAD_PROGRESS, payload })

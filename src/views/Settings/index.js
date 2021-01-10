@@ -1,4 +1,4 @@
-import React, { useMemo, Fragment } from 'react'
+import React, { useMemo, useCallback, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Button } from 'reactstrap'
@@ -44,7 +44,7 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
   )
   const activeTab = pathname
 
-  const handleTabChange = tabId => RouterPush(tabId)
+  const handleTabChange = useCallback(tabId => RouterPush(tabId), [])
 
   const tabs = [
     {
@@ -58,7 +58,6 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
           <EntryStatistics />
         </Fragment>
       ),
-      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PROFILE,
@@ -70,28 +69,25 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
           <UpdateProfile />
         </Fragment>
       ),
-      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PREFERENCES,
       title: 'Preferences',
       className: 'mt-2',
       render: <Preferences />,
-      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PUSH_NOTIFICATIONS,
       title: 'Push Notifications',
       className: 'mt-2',
       render: <PushNotifications />,
-      onClick: handleTabChange,
+      width: 164,
     },
     {
       tabId: SETTINGS_STORAGE,
       title: 'Storage',
       className: 'mt-2',
       render: <Storage />,
-      onClick: handleTabChange,
     },
   ]
   return (
@@ -115,7 +111,7 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
       </Row>
       <Row>
         <Col xs={12} className='p-0'>
-          <BasicTabs activeTab={activeTab} tabs={tabs} />
+          <BasicTabs activeTab={activeTab} tabs={tabs} onClick={handleTabChange} />
         </Col>
       </Row>
     </Container>

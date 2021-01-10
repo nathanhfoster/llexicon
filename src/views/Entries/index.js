@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, lazy } from 'react'
+import React, { useEffect, useMemo, useCallback, lazy } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
@@ -32,7 +32,7 @@ const mapStateToProps = ({
   showOnlyPublic,
   TextEditor,
   viewPortHeight: innerHeight - navBarHeight,
-  pathname,
+  activeTab: pathname,
 })
 
 const mapDispatchToProps = {
@@ -46,7 +46,7 @@ const Entries = ({
   TextEditor,
   viewPortHeight,
   GetUserEntries,
-  pathname,
+  activeTab,
 }) => {
   useEffect(() => {
     if (userId) GetUserEntries(1)
@@ -61,7 +61,7 @@ const Entries = ({
 
   const shouldRenderNewEntryButton = viewableEntries.length === 0 ? true : false
 
-  if (pathname === RouteMap.ENTRIES) {
+  if (activeTab === RouteMap.ENTRIES) {
     RouterPush(RouteMap.ENTRIES_LIST)
   }
 
@@ -73,9 +73,7 @@ const Entries = ({
 
   const minimalEntriesListHeight = viewPortHeight - tabContainerHeight
 
-  const activeTab = pathname
-
-  const handleTabChange = tabId => RouterPush(tabId)
+  const handleTabChange = useCallback(tabId => RouterPush(tabId), [])
 
   const tabs = useMemo(
     () => [
@@ -91,7 +89,6 @@ const Entries = ({
             <NewEntry />
           </Row>
         ),
-        onClick: handleTabChange,
       },
       {
         tabId: RouteMap.ENTRIES_CALENDAR,
@@ -105,7 +102,6 @@ const Entries = ({
             <EntryCalendar />
           </Row>
         ),
-        onClick: handleTabChange,
       },
       {
         tabId: RouteMap.ENTRIES_FOLDERS,
@@ -123,7 +119,6 @@ const Entries = ({
             )}
           </Row>
         ),
-        onClick: handleTabChange,
       },
       {
         tabId: RouteMap.ENTRIES_MEDIA,
@@ -137,7 +132,6 @@ const Entries = ({
             <EntriesMedia entries={viewableEntries} />
           </Row>
         ),
-        onClick: handleTabChange,
       },
 
       {
@@ -156,7 +150,6 @@ const Entries = ({
             <EntriesList height={minimalEntriesListHeight} entries={viewableEntries} />
           </Row>
         ),
-        onClick: handleTabChange,
       },
       {
         tabId: RouteMap.ENTRIES_TABLE,
@@ -174,7 +167,6 @@ const Entries = ({
             <UserEntriesTable pageSize={10} />
           </Row>
         ),
-        onClick: handleTabChange,
       },
       {
         tabId: RouteMap.ENTRIES_MAP,
@@ -188,24 +180,9 @@ const Entries = ({
             <EntriesMap height={viewPortHeight - 46} />
           </Row>
         ),
-        onClick: handleTabChange,
-      },
-      {
-        tabId: RouteMap.ENTRIES_MAP,
-        title: {
-          name: 'Entries Map',
-          render: <i className='fas fa-map-marked-alt' />,
-        },
-        className: 'fade-in',
-        render: (
-          <Row>
-            <EntriesMap height={viewPortHeight - 46} />
-          </Row>
-        ),
-        onClick: handleTabChange,
       },
     ],
-    // [minimalEntriesListHeight, shouldRenderNewEntryButton, viewPortHeight, viewableEntries],
+    [minimalEntriesListHeight, shouldRenderNewEntryButton, viewPortHeight, viewableEntries],
   )
 
   const fluid = useMemo(
@@ -216,7 +193,15 @@ const Entries = ({
     [activeTab],
   )
 
-  return <BasicTabs className='EntryTabs' fluid={fluid} activeTab={activeTab} tabs={tabs} />
+  return (
+    <BasicTabs
+      className='EntryTabs'
+      fluid={fluid}
+      activeTab={activeTab}
+      tabs={tabs}
+      onClick={handleTabChange}
+    />
+  )
 }
 
 Entries.propTypes = {

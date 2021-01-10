@@ -15,7 +15,7 @@ import prototypes from 'prototypes'
 
 prototypes()
 
-const store = storeFactory()
+export const store = storeFactory()
 
 const { REACT_APP_GOOGLE_TRACKING_ID } = process.env
 

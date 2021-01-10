@@ -15,7 +15,7 @@ const getInitialState = (activeTab, defaultTab, tabs) => {
   return defaultTab || activeTab || firstTabId
 }
 
-const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
+const BasicTabs = ({ className, defaultTab, fluid, tabs, onClick, ...restOfProps }) => {
   const [activeTab, setActiveTab] = useState(
     getInitialState(restOfProps.activeTab, defaultTab, tabs),
   )
@@ -40,10 +40,19 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
 
     for (let i = 0, { length } = tabs; i < length; i++) {
       const tab = tabs[i]
-      const { tabId, title, onClick, render, mountTabOnlyWhenActive = true, className } = tab
+      const {
+        tabId,
+        title,
+        width,
+        onClick: onTabClick,
+        render,
+        mountTabOnlyWhenActive = true,
+        className,
+      } = tab
 
       const onTab = activeTab === tabId
       const titleIsObject = Boolean(typeof title === isType.OBJECT)
+      const navStyle = width ? { flex: `0 0 ${width}${typeof width === 'number' ? 'px' : ''}` } : {}
 
       // For react-swipeable
       if (onTab) {
@@ -60,10 +69,12 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
       }
 
       tabsToRender.push(
-        <NavItem key={tabId} title={titleIsObject ? title.name : title}>
+        <NavItem key={tabId} title={titleIsObject ? title.name : title} style={navStyle}>
           <NavLink
             className={`BasicTabsNavLink py-2 px-3 ${onTab ? 'active' : ''}`}
-            onClick={() => (onClick ? onClick(tabId) : handleTabChanged(tabId))}
+            onClick={() =>
+              onTabClick ? onTabClick(tabId) : onClick ? onClick(tabId) : handleTabChanged(tabId)
+            }
           >
             {titleIsObject ? title.render : title}
           </NavLink>
@@ -88,6 +99,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
       renderTabPanes: tabPanesToRender,
       previousTab,
       nextTab,
+      onClick,
     }
   }, [activeTab, tabs])
 
@@ -118,6 +130,7 @@ const BasicTabs = ({ className, defaultTab, fluid, tabs, ...restOfProps }) => {
 BasicTabs.propTypes = {
   className: PropTypes.string,
   defaultTab: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  onClick: PropTypes.func,
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       tabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
@@ -126,6 +139,7 @@ BasicTabs.propTypes = {
         PropTypes.string.isRequired,
         PropTypes.shape({ name: PropTypes.string, render: PropTypes.node }),
       ]),
+      width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       render: PropTypes.node.isRequired,
       onClick: PropTypes.func,
     }).isRequired,
