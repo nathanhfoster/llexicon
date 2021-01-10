@@ -23,7 +23,6 @@ const mapStateToProps = (
       item,
       items,
       filteredItems,
-      item: { isPending },
     },
     Window: {
       navigator: { serviceWorker },
@@ -34,7 +33,7 @@ const mapStateToProps = (
   userId: id,
   entry: item?.id ? item : items.concat(filteredItems).find(({ id }) => id == entryId),
   serviceWorkerController: serviceWorker?.controller || {},
-  isPending,
+  isPending: item?.isPending,
 })
 
 const mapDispatchToProps = {

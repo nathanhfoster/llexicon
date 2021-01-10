@@ -13,12 +13,12 @@ const FileUpload = ({ title, value, size, onChange }) => {
       onClick={handleButtonClick}
       size={size}
     >
-      <div for='fileUpload'>
+      <div htmlFor='fileUpload'>
         {!value ? <i className='fas fa-file-import mr-1' /> : <Media src={value} />}
         <Input
           hidden
           type='file'
-          name={value}
+          name='fileUpload'
           id='fileUpload'
           onChange={onChange}
           accept='.json'

@@ -159,6 +159,7 @@ const TableHeaders = ({
               <BasicInput
                 disabled={sortedAndFilteredData.length === 0 || slicedData.length === 0}
                 type='checkbox'
+                name='SelectAll'
                 checked={allSlicedDataIsSelected || allDataIsSelected}
                 onClick={e => e.stopPropagation()}
                 onChange={handleActionMenuCallback}
