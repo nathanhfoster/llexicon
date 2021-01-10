@@ -7,17 +7,17 @@ const RawEditor = ({ style, value }) => {
   const { handleEditorChange } = useContext(EditorConsumer)
   const [stateValue, setStateValue] = useState(pretty(value))
   const mounted = useRef(false)
-
+/*
   useEffect(() => {
     if (mounted.current) {
       setStateValue(pretty(value))
     }
+   mounted.current = true
   }, [value])
-
+*/
   useEffect(() => {
     if (mounted.current) {
       const debounce = setTimeout(() => {
-        console.log('hacks')
         handleEditorChange({ html: stateValue })
       }, 400)
 
