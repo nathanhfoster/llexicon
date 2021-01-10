@@ -20,7 +20,7 @@ import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
 import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
 import { Admin, About, Home, PrivacyPolicy } from 'views'
 import { LoadingScreen, NavBar } from 'components'
-import { useAddToHomescreenPrompt } from 'hooks'
+import { useAddToHomescreenPrompt,useDebounce } from 'hooks'
 import { lazyDelay } from 'utils'
 
 const Entries = lazy(() => import('./views/Entries'))
@@ -144,7 +144,7 @@ const App = ({
   SetBottomToolbarIsOpen,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const handleResize = () => SetWindow()
+  const handleResize = useDebounce(SetWindow)
 
   useEffect(() => {
     changeTheme(userDarkMode)
