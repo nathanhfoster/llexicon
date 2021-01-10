@@ -81,7 +81,7 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
       title: 'Push Notifications',
       className: 'mt-2',
       render: <PushNotifications />,
-      width: 164,
+      width: 180,
     },
     {
       tabId: SETTINGS_STORAGE,
