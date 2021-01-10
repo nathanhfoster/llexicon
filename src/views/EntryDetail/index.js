@@ -32,7 +32,7 @@ const mapStateToProps = (
   { entryId },
 ) => ({
   userId: id,
-  entry: items.concat(filteredItems).find(({ id }) => id == entryId),
+  entry: item || items.concat(filteredItems).find(({ id }) => id == entryId),
   serviceWorkerController: serviceWorker?.controller || {},
   isPending,
 })
