@@ -6,7 +6,10 @@ import { Button } from 'reactstrap'
 import { cleanObject, removeAttributeDuplicates } from 'utils'
 import { getTagStringFromObject, getTagObjectFromString } from 'redux/Entries/utils'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
+import {
+  selectedEntriesSelector,
+  selectedItemsAreEqual,
+} from 'components/EntryComponents/Buttons/utils'
 
 const tagInputs = [
   {
@@ -296,6 +299,7 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         type: 'checkbox',
         placeholder: `Sould Delete..`,
         inline: true,
+        defaultChecked: entries.every(({ _shouldDelete }) => _shouldDelete),
       },
       {
         label: 'Should Post',
@@ -303,6 +307,7 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         type: 'checkbox',
         placeholder: `Should Post...`,
         inline: true,
+        defaultChecked: entries.every(({ _shouldPost }) => _shouldPost),
       },
       {
         label: 'Is Public',
@@ -310,6 +315,7 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         type: 'checkbox',
         placeholder: `Is Public...`,
         inline: true,
+        defaultChecked: entries.every(({ is_public }) => is_public),
       },
       {
         label: 'Title',
@@ -372,7 +378,7 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         autoComplete: 'on',
       },
     ],
-    [entryPeopleOptions, entryTagsOptions, handleTags],
+    [entries, entryPeopleOptions, entryTagsOptions, handleTags],
   )
 
   return (

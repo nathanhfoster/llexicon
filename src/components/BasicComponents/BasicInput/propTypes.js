@@ -90,6 +90,7 @@ const InputProps = {
   id: PropTypes.string,
   name: PropTypes.string.isRequired,
   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  defaultChecked: PropTypes.bool,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   check: PropTypes.bool,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
