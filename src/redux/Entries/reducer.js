@@ -134,6 +134,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
 
   let newItem
   let nextItems = []
+  let nextSelectedItemsMap = {}
 
   switch (type) {
     case ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC:
@@ -217,29 +218,37 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRIES_UPDATE:
+      console.log(payload)
+      nextSelectedItemsMap = { ...state.nextSelectedItemsMap }
       nextItems = state.items.concat(state.filteredItems).map((e) => {
-        if (payload.id === e.id) {
+        if (payload.id == e.id) {
+          console.log('newItem: ', newItem, payload)
           newItem = { ...e, ...payload }
           newItem = {
             ...newItem,
             _size: getStringBytes(newItem),
           }
-          return newItem
         } else if (payload[e.id]) {
           newItem = { ...e, ...payload[e.id] }
           newItem = {
             ...newItem,
             _size: getStringBytes(newItem),
           }
-          return newItem
         }
 
-        return e
+        if (newItem && nextSelectedItemsMap[newItem.id] && newItem._shouldDelete) {
+          delete nextSelectedItemsMap[newItem.id]
+        }
+
+        return newItem || e
       })
+
+    
 
       return {
         ...state,
         ...handleFilterEntries(nextItems, state.search),
+        selectedItemsMap: nextSelectedItemsMap,
         item: newItem,
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
@@ -252,17 +261,21 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRIES_DELETE:
+      nextSelectedItemsMap = { ...state.nextSelectedItemsMap }
       return {
         ...state,
         ...handleFilterEntries(
           state.items.concat(state.filteredItems).filter(({ id }) => {
-            if (isObject(payload)) {
-              return payload[id] === undefined
+            if (nextSelectedItemsMap[id]) {
+              delete nextSelectedItemsMap[id]
             }
-            return id !== payload
+            return isObject(payload)
+              ? payload[id] === undefined
+              : id !== payload
           }),
           state.search
         ),
+        selectedItemsMap: nextSelectedItemsMap,
       }
 
     case ENTRIES_RESET_SORT_AND_FILTER_MAP:

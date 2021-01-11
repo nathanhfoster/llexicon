@@ -13,7 +13,6 @@ const Entry = ({
   height,
   showOptionsMenu,
   entry,
-  toolbarId,
   canToggleToolbars,
   topToolbarIsOpen,
   shouldRedirectOnDelete,
@@ -47,10 +46,12 @@ const Entry = ({
     [entry.id],
   )
 
+  console.log(entry.id)
+
   return (
     <Editor
       readOnly={readOnly}
-      toolbarId={toolbarId || entry.id}
+      toolbarId={entry.id}
       canToggleToolbars={canToggleToolbars}
       topToolbarIsOpen={topToolbarIsOpen}
       entry={entry}
@@ -130,7 +131,6 @@ const Entry = ({
 Entry.propTypes = {
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   showOptionsMenu: PropTypes.bool.isRequired,
-  toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   readOnly: PropTypes.bool.isRequired,
   entry: EntryPropTypes.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

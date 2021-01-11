@@ -127,6 +127,8 @@ const Editor = ({
     [editorRef, editorSelection, handleEditorChange, toggleBottomToolbar],
   )
 
+
+
   return (
     <EditorConsumer.Provider value={contextValue}>
       <div className={showRaw ? 'showRaw' : ''}>
