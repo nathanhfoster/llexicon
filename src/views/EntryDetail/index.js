@@ -13,25 +13,19 @@ import {
 import { SetCalendar } from 'redux/Calendar/actions'
 import PageNotFound from '../PageNotFound'
 import { isReadOnly } from 'redux/Entries/utils'
+import { LoadingScreen } from 'components'
 
 const Entry = lazy(() => import('../../components/EntryComponents/Entry'))
 
-const mapStateToProps = (
-  {
-    User: { id },
-    Entries: {
-      item,
-      items,
-      filteredItems,
-    },
-    Window: {
-      navigator: { serviceWorker },
-    },
+const mapStateToProps = ({
+  User: { id },
+  Entries: { item },
+  Window: {
+    navigator: { serviceWorker },
   },
-  { entryId },
-) => ({
+}) => ({
   userId: id,
-  entry: item?.id == entryId ? item : items.concat(filteredItems).find(({ id }) => id == entryId),
+  entry: item,
   serviceWorkerController: serviceWorker?.controller || {},
   isPending: item?.isPending,
 })
@@ -93,7 +87,9 @@ const EntryDetail = ({
     SyncEntries()
   }, [SyncEntries])
 
-  return entry ? (
+  return isPending ? (
+    <LoadingScreen />
+  ) : entry?.id ? (
     <Container className='Container'>
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>

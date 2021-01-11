@@ -114,11 +114,11 @@ const GetEntry = (url, id) => (dispatch, getState) => {
   dispatch(PendingEntry())
 
   const {
-    Entries: { items, filteredItems },
+    Entries: { item, items, filteredItems },
     User: { id: userLoggedIn },
   } = getState()
 
-  const entry = items.concat(filteredItems).find(entry => entry.id == id)
+  const entry = item?.id == id ? item : items.concat(filteredItems).find(entry => entry.id == id)
 
   if (entry) {
     dispatch(SetEntry(entry))

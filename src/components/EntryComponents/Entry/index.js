@@ -46,8 +46,6 @@ const Entry = ({
     [entry.id],
   )
 
-  console.log(entry.id)
-
   return (
     <Editor
       readOnly={readOnly}
@@ -65,7 +63,7 @@ const Entry = ({
           name='title'
           id='title'
           placeholder='Entry title...'
-          autoComplete="on"
+          autoComplete='on'
           value={entry.title}
           onChange={handleOnChange}
           disabled={readOnly}

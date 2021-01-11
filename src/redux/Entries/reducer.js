@@ -1,15 +1,15 @@
-import { EntriesActionTypes } from "./types"
-import { AppActionTypes } from "../App/types"
+import { EntriesActionTypes } from './types'
+import { AppActionTypes } from '../App/types'
 import {
   LINK_TO_SIGN_UP,
   BASE_JOURNAL_ENTRY_ID,
   DEFAULT_JOUNRAL_ENTRY_ID,
   mergeJson,
   handleFilterEntries,
-} from "./utils"
-import { getStringBytes, arrayToObject } from "../../utils"
-import { isObject } from "utils"
-import * as AwsImages from "../../images/AWS"
+} from './utils'
+import { getStringBytes, arrayToObject } from '../../utils'
+import { isObject } from 'utils'
+import * as AwsImages from '../../images/AWS'
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
@@ -36,7 +36,7 @@ const { ...entryFiles } = AwsImages
 
 const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
   id,
-  file_type: "image/jpeg",
+  file_type: 'image/jpeg',
   name,
   size: 870,
   url: entryFiles[name],
@@ -48,19 +48,19 @@ const defaultEntry = {
   id: DEFAULT_JOUNRAL_ENTRY_ID,
   tags: [
     {
-      name: "Excited",
+      name: 'Excited',
     },
     {
-      name: "Inspired",
+      name: 'Inspired',
     },
   ],
   people: [
     {
-      name: "Me",
+      name: 'Me',
     },
   ],
   EntryFiles: DEFAULT_ENTRY_FILES,
-  title: "My First Journal Entry",
+  title: 'My First Journal Entry',
   html: `<p class="ql-align-center"><img src="${entryFiles.Logo}" width="140"></p><br><p>After I've installed Astral Tree today, I will make a diary entry every day from now on. In case I forget to make an entry, the app will remind me with a notification in the evening. Besides pictures, videos, audio recordings or other files, I can add a location, tags or people to my journal entries.</p><p><br></p><p>If I <a href="${LINK_TO_SIGN_UP}" rel="noopener noreferrer" target="_blank">sign up</a>, my journal entries will be synced across all my devices. I am already looking forward to revisiting all those memories in a few months or years.</p>`,
   date_created: new Date(),
   date_created_by_author: new Date(),
@@ -93,33 +93,33 @@ const DEFAULT_STATE_ENTRIES = {
   filteredItems: [],
   isPending: false,
   error: null,
-  search: "",
+  search: '',
   EntryTags: [
     {
-      name: "Family",
+      name: 'Family',
     },
     {
-      name: "Friends",
+      name: 'Friends',
     },
     {
-      name: "Document",
+      name: 'Document',
     },
     {
-      name: "Link",
+      name: 'Link',
     },
     {
-      name: "Music",
+      name: 'Music',
     },
     {
-      name: "Vacation",
+      name: 'Vacation',
     },
     {
-      name: "Video",
+      name: 'Video',
     },
   ],
   EntryPeople: [
     {
-      name: "Me",
+      name: 'Me',
     },
   ],
   sortMap: {
@@ -132,7 +132,7 @@ const DEFAULT_STATE_ENTRIES = {
 const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   const { type, payload, search, isPending } = action
 
-  let newItem
+  let nextItem
   let nextItems = []
   let nextSelectedItemsMap = {}
 
@@ -143,7 +143,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case ENTRIES_SET_TAGS:
       return {
         ...state,
-        EntryTags: mergeJson(state.EntryTags, payload, "name"),
+        EntryTags: mergeJson(state.EntryTags, payload, 'name'),
       }
 
     case ENTRIES_SET_PEOPLE:
@@ -153,10 +153,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       if (!payload) return { ...state, search }
       return {
         ...state,
-        ...handleFilterEntries(
-          mergeJson(state.items.concat(state.filteredItems), payload),
-          search
-        ),
+        ...handleFilterEntries(mergeJson(state.items.concat(state.filteredItems), payload), search),
         search,
         isPending,
       }
@@ -192,11 +189,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         ...handleFilterEntries(
-          mergeJson(
-            state.items.concat(state.filteredItems),
-            results || payload
-          ),
-          state.search
+          mergeJson(state.items.concat(state.filteredItems), results || payload),
+          state.search,
         ),
         count: count || state.count,
         next: next || state.next,
@@ -206,50 +200,46 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       }
 
     case ENTRY_SET:
-      newItem = { ...state.item, ...payload, isPending: false }
+      nextItem = { ...state.item, ...payload, isPending: false }
       return {
         ...state,
-        item: { ...newItem, _size: getStringBytes(newItem) },
+        item: { ...nextItem, _size: getStringBytes(nextItem) },
         ...handleFilterEntries(
-          mergeJson(state.items.concat(state.filteredItems), [newItem]),
-          state.search
+          mergeJson(state.items.concat(state.filteredItems), [nextItem]),
+          state.search,
         ),
         isPending: false,
       }
 
     case ENTRIES_UPDATE:
-      console.log(payload)
       nextSelectedItemsMap = { ...state.nextSelectedItemsMap }
-      nextItems = state.items.concat(state.filteredItems).map((e) => {
+      nextItems = state.items.concat(state.filteredItems).map(e => {
         if (payload.id == e.id) {
-          console.log('newItem: ', newItem, payload)
-          newItem = { ...e, ...payload }
-          newItem = {
-            ...newItem,
-            _size: getStringBytes(newItem),
+          nextItem = { ...e, ...payload }
+          nextItem = {
+            ...nextItem,
+            _size: getStringBytes(nextItem),
           }
         } else if (payload[e.id]) {
-          newItem = { ...e, ...payload[e.id] }
-          newItem = {
-            ...newItem,
-            _size: getStringBytes(newItem),
+          nextItem = { ...e, ...payload[e.id] }
+          nextItem = {
+            ...nextItem,
+            _size: getStringBytes(nextItem),
           }
         }
 
-        if (newItem && nextSelectedItemsMap[newItem.id] && newItem._shouldDelete) {
-          delete nextSelectedItemsMap[newItem.id]
+        if (nextItem && nextSelectedItemsMap[nextItem.id] && nextItem._shouldDelete) {
+          delete nextSelectedItemsMap[nextItem.id]
         }
 
-        return newItem || e
+        return nextItem || e
       })
-
-    
 
       return {
         ...state,
         ...handleFilterEntries(nextItems, state.search),
         selectedItemsMap: nextSelectedItemsMap,
-        item: newItem,
+        item: nextItem,
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
       }
@@ -269,11 +259,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
             if (nextSelectedItemsMap[id]) {
               delete nextSelectedItemsMap[id]
             }
-            return isObject(payload)
-              ? payload[id] === undefined
-              : id !== payload
+            return isObject(payload) ? payload[id] === undefined : id !== payload
           }),
-          state.search
+          state.search,
         ),
         selectedItemsMap: nextSelectedItemsMap,
       }
@@ -310,7 +298,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           .concat(state.filteredItems)
           .filter(
             ({ _shouldDelete, _shouldPost, _lastUpdated }) =>
-              _shouldDelete || _shouldPost || _lastUpdated
+              _shouldDelete || _shouldPost || _lastUpdated,
           ),
       }
 
@@ -322,13 +310,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         ...payload.Entries,
-        ...handleFilterEntries(
-          nextItems,
-          payload.Entries?.search || state.search
-        ),
-        item: payload.Entries
-          ? { ...payload.Entries.item, isPending: false }
-          : state.item,
+        ...handleFilterEntries(nextItems, payload.Entries?.search || state.search),
+        item: payload.Entries ? { ...payload.Entries.item, isPending: false } : state.item,
         isPending: DEFAULT_STATE_ENTRIES.isPending,
         error: DEFAULT_STATE_ENTRIES.error,
         // search: DEFAULT_STATE_ENTRIES.search
@@ -339,9 +322,4 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   }
 }
 
-export {
-  BASE_JOURNAL_ENTRY_ID,
-  DEFAULT_ENTRY_FILES,
-  DEFAULT_STATE_ENTRIES,
-  Entries,
-}
+export { BASE_JOURNAL_ENTRY_ID, DEFAULT_ENTRY_FILES, DEFAULT_STATE_ENTRIES, Entries }
