@@ -155,7 +155,7 @@ const TableHeaders = ({
       <tr>
         {actionMenuCallback && (
           <Fragment>
-            <th title='SelectAll' onClick={e => e.stopPropagation()} style={{ width: 50 }}>
+            <th title='Select All' onClick={e => e.stopPropagation()} style={{ width: 50 }}>
               <div>{selectedDataMapLength}</div>
               <input
                 disabled={sortedAndFilteredData.length === 0 || slicedData.length === 0}

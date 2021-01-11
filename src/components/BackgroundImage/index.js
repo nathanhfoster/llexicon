@@ -17,6 +17,14 @@ const ROUTES_TO_RENDER_ROCKET_EARTH_MOON = [ROOT, ABOUT, HOME, SUPPORT]
 const BACKGROUND_IMAGE =
   "https://steamuserimages-a.akamaihd.net/ugc/1490082213003709148/10EB3DC850188A66E73C17AD9538DF8A1FE5FD9F/"
 
+const renderRocketEarthMoon = () => (
+  <BackgroundObjects>
+    <Rocket zIndex={-1} />
+    <Earth />
+    <Moon />
+  </BackgroundObjects>
+)
+
 const mapStateToProps = ({
   User: {
     Settings: { show_animated_background },
@@ -36,16 +44,6 @@ const BackgroundImage = ({
   starLength,
   pathname,
 }) => {
-  const renderRocketEarthMoon = useMemo(
-    () => (
-      <BackgroundObjects>
-        <Rocket zIndex={-1} />
-        <Earth />
-        <Moon />
-      </BackgroundObjects>
-    ),
-    []
-  )
   const renderStars = useMemo(() => <StarGenerator length={starLength} />, [
     starLength,
   ])

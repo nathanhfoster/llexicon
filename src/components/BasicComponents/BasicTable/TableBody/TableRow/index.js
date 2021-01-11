@@ -28,7 +28,7 @@ const mapStateToProps = (
   getRowValue,
   onRowClick,
   columns,
-  isSelected: selectedDataMap[item.id],
+  isSelected: Boolean(selectedDataMap[item.id]),
   actionMenuCallback,
 })
 

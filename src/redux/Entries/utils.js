@@ -35,7 +35,7 @@ const getMostRecent = (reduxData, newData) => {
   }
 
   const overWriteWithNewData =
-    hasValidDates && MomentJS(reduxDataLastUpdated).isBefore(newDataLastUpdated)
+    hasValidDates && !reduxData.id || MomentJS(reduxDataLastUpdated).isBefore(newDataLastUpdated)
 
   if (overWriteWithNewData) {
     delete reduxData._lastUpdated
@@ -138,6 +138,7 @@ export {
   DEFAULT_JOUNRAL_ENTRY_ID,
   getReduxEntryId,
   mergeJson,
+  getMostRecent,
   handleFilterEntries,
   getTagStringFromObject,
   getTagObjectFromString,

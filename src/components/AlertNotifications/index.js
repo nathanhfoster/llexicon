@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Toast, ToastHeader, ToastBody, Button } from 'reactstrap'
-import { UseDebounce } from '..'
-import { ClearAlerts, UpdateAppVersion } from 'redux/Alerts/actions'
-import './styles.css'
+import React, { useCallback } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { Toast, ToastHeader, ToastBody, Button } from "reactstrap"
+import { UseDebounce } from ".."
+import { ClearAlerts, UpdateAppVersion } from "redux/Alerts/actions"
+import "./styles.css"
 
 const mapStateToProps = ({ Alerts: { title, message, timeout } }) => ({
   title,
@@ -14,7 +14,14 @@ const mapStateToProps = ({ Alerts: { title, message, timeout } }) => ({
 
 const mapDispatchToProps = { ClearAlerts, UpdateAppVersion }
 
-const AlertNotifications = ({ icon, title, message, timeout, ClearAlerts, UpdateAppVersion }) => {
+const AlertNotifications = ({
+  icon,
+  title,
+  message,
+  timeout,
+  ClearAlerts,
+  UpdateAppVersion,
+}) => {
   const appUpdate = timeout === false
   const shouldShow = appUpdate || (title && message) ? true : false
 
@@ -24,7 +31,7 @@ const AlertNotifications = ({ icon, title, message, timeout, ClearAlerts, Update
 
   return (
     <Toast
-      className='Alert rounded'
+      className="Alert rounded"
       isOpen={shouldShow}
       appear={true}
       enter={true}
@@ -47,8 +54,8 @@ const AlertNotifications = ({ icon, title, message, timeout, ClearAlerts, Update
         <h6>{message}</h6>
 
         {appUpdate && (
-          <div className='Center'>
-            <Button onClick={UpdateAppVersion} color='accent'>
+          <div className="Center">
+            <Button onClick={UpdateAppVersion} color="accent">
               Update
             </Button>
           </div>
@@ -68,7 +75,7 @@ AlertNotifications.propTypes = {
 }
 
 AlertNotifications.defaultProps = {
-  icon: <i className='fas fa-feather-alt' />,
+  icon: <i className="fas fa-feather-alt" />,
   timeout: 3000,
 }
 
