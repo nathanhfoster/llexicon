@@ -55,10 +55,9 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  const readOnly = useMemo(() => isPending || isReadOnly(entryId, entry?.author, userId), [
-    isPending,
-    entryId,
-    entry?.author,
+  const readOnly = useMemo(() => isReadOnly(entry.id, entry.author, userId), [
+    entry.id,
+    entry.author,
     userId,
   ])
 
@@ -68,7 +67,7 @@ const EntryDetail = ({
     return () => {
       ClearEntry()
     }
-  }, [entryId])
+  }, [ClearEntry, GetUserEntryDetails, entryId])
 
   useEffect(() => {
     if (entry?.date_created_by_author && !setCalendarDateToEntryDate.current) {
@@ -76,14 +75,14 @@ const EntryDetail = ({
       SetCalendar({ activeDate })
       setCalendarDateToEntryDate.current = true
     }
-  }, [entry])
+  }, [SetCalendar, entry])
 
   const handleOnChange = useCallback(
     payload => {
       if (readOnly || !entry) return
       UpdateReduxEntries(payload)
     },
-    [entry?.id, readOnly],
+    [UpdateReduxEntries, entry, readOnly],
   )
 
   const handleOnSubmit = useCallback(() => {
@@ -106,6 +105,8 @@ const EntryDetail = ({
         </Col>
       </Row>
     </Container>
+  ) : isPending ? (
+    <LoadingScreen />
   ) : (
     <PageNotFound />
   )

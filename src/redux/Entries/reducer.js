@@ -210,10 +210,12 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           mergeJson(state.items.concat(state.filteredItems), [nextItem]),
           state.search,
         ),
-        item:
-          !state.item.id || nextItem.id == state.item.id
+        item: {
+          ...(!state.item.id || nextItem.id == state.item.id
             ? getMostRecent(state.item, nextItem)
-            : state.item,
+            : state.item),
+          isPending: false,
+        },
         isPending: false,
       }
 
@@ -245,15 +247,17 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         ...handleFilterEntries(nextItems, state.search),
         selectedItemsMap: nextSelectedItemsMap,
-        item:
-          payload?.id == state.item.id
+        item: {
+          ...(payload?.id == state.item.id
             ? getMostRecent(state.item, { ...state.item, ...payload })
             : payload[state.item.id]
             ? getMostRecent(state.item, {
                 ...state.item,
                 ...payload[state.item.id],
               })
-            : state.item,
+            : state.item),
+          isPending: false,
+        },
         isPending: false,
         error: DEFAULT_STATE_ENTRIES.error,
       }
