@@ -90,7 +90,7 @@ const EntryDetail = ({
     SyncEntries()
   }, [SyncEntries])
 
-  return isPending ? (
+  return isPending && !entry?.id ? (
     <LoadingScreen />
   ) : entry?.id ? (
     <Container className='Container'>
