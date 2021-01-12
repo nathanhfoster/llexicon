@@ -90,9 +90,7 @@ const EntryDetail = ({
     SyncEntries()
   }, [SyncEntries])
 
-  return isPending ? (
-    <LoadingScreen />
-  ) : entry?.id ? (
+  return entry?.id ? (
     <Container className='Container'>
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
@@ -108,6 +106,8 @@ const EntryDetail = ({
         </Col>
       </Row>
     </Container>
+  ) : isPending ? (
+    <LoadingScreen />
   ) : (
     <PageNotFound />
   )
