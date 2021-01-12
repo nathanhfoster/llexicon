@@ -106,8 +106,6 @@ const EntryDetail = ({
         </Col>
       </Row>
     </Container>
-  ) : isPending ? (
-    <LoadingScreen />
   ) : (
     <PageNotFound />
   )
