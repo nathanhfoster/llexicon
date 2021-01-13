@@ -22,7 +22,7 @@ import {
   DeleteEntryFileFromRedux,
 } from './redux'
 
-const GetUserEntryTags = () => (dispatch, getState) => {
+export const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`tags/${id}/view/`)
@@ -38,7 +38,7 @@ const GetUserEntryTags = () => (dispatch, getState) => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetUserEntryPeople = () => (dispatch, getState) => {
+export const GetUserEntryPeople = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`people/${id}/view/`)
@@ -53,7 +53,7 @@ const GetUserEntryPeople = () => (dispatch, getState) => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const CreateEntryTag = payload => (dispatch, getState) => {
+export const CreateEntryTag = payload => (dispatch, getState) => {
   const {
     User: { id },
   } = getState()
@@ -71,7 +71,7 @@ const CreateEntryTag = payload => (dispatch, getState) => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const ParseBase64 = (entry_id, updateEntryPayload) => async dispatch => {
+export const ParseBase64 = (entry_id, updateEntryPayload) => async dispatch => {
   const { html } = updateEntryPayload
   const base64s = htmlToArrayOfBase64(html)
   for (let i = 0; i < base64s.length; i++) {
@@ -83,7 +83,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => async dispatch => {
   return new Promise(resolve => resolve(dispatch(SetAlert({ title: 'Synced', message: 'Files' }))))
 }
 
-const AwsUpload = (entry_id, file, base64, html) => dispatch => {
+export const AwsUpload = (entry_id, file, base64, html) => dispatch => {
   const { lastModified, lastModifiedDate, name, size, type } = file
   let payload = new FormData()
   payload.append('entry_id', entry_id)
@@ -110,7 +110,7 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetEntry = (url, id) => (dispatch, getState) => {
+export const GetEntry = (url, id) => (dispatch, getState) => {
   dispatch(PendingEntry())
 
   const {
@@ -161,11 +161,12 @@ const GetEntry = (url, id) => (dispatch, getState) => {
     })
 }
 
-const GetUserEntry = id => dispatch => dispatch(GetEntry(`/entries/${id}/`, id))
+export const GetUserEntry = id => dispatch => dispatch(GetEntry(`/entries/${id}/`, id))
 
-const GetUserEntryDetails = id => dispatch => dispatch(GetEntry(`/entries/${id}/details/`, id))
+export const GetUserEntryDetails = id => dispatch =>
+  dispatch(GetEntry(`/entries/${id}/details/`, id))
 
-const GetAllUserEntries = () => (dispatch, getState) => {
+export const GetAllUserEntries = () => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
@@ -185,7 +186,7 @@ const GetAllUserEntries = () => (dispatch, getState) => {
     })
 }
 
-const GetUserEntries = (pageNumber = 1) => (dispatch, getState) => {
+export const GetUserEntries = (pageNumber = 1) => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
@@ -206,7 +207,7 @@ const GetUserEntries = (pageNumber = 1) => (dispatch, getState) => {
     })
 }
 
-const GetAllUserEntryPages = (pageNumber = 1) => dispatch => {
+export const GetAllUserEntryPages = (pageNumber = 1) => dispatch => {
   if (pageNumber) {
     dispatch(GetUserEntries(pageNumber))
       .then(({ next }) => {
@@ -220,7 +221,7 @@ const GetAllUserEntryPages = (pageNumber = 1) => dispatch => {
   }
 }
 
-const GetUserEntriesByDate = payload => (dispatch, getState) => {
+export const GetUserEntriesByDate = payload => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   if (!id) {
@@ -245,7 +246,7 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
     })
 }
 
-const PostEntry = payload => (dispatch, getState) => {
+export const PostEntry = payload => (dispatch, getState) => {
   dispatch(PendingEntries())
   return Axios()
     .post(`entries/`, qs.stringify(payload))
@@ -274,7 +275,7 @@ const PostEntry = payload => (dispatch, getState) => {
     })
 }
 
-const UpdateEntry = (id, payload) => dispatch => {
+export const UpdateEntry = (id, payload) => dispatch => {
   dispatch(PendingEntries())
   return Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
@@ -293,7 +294,7 @@ const UpdateEntry = (id, payload) => dispatch => {
     })
 }
 
-const DeleteEntry = id => dispatch => {
+export const DeleteEntry = id => dispatch => {
   dispatch(PendingEntries())
   return Axios()
     .delete(`/entries/${id}/`)
@@ -314,7 +315,28 @@ const DeleteEntry = id => dispatch => {
     })
 }
 
-const SearchUserEntries = search => (dispatch, getState) => {
+export const DeleteEntries = entriesMap => dispatch => {
+  dispatch(PendingEntries())
+  return Axios()
+    .post(`/entries/delete/`, qs.stringify({ entriesMap }))
+    .then(res => {
+      dispatch(DeleteReduxEntries(entriesMap))
+      ReactGA.event({
+        category: 'Delete Entries',
+        action: 'User deleted entries',
+        value: entriesMap,
+      })
+      return res
+    })
+    .catch(e => {
+      if (e.response?.status === 404) {
+        dispatch(DeleteReduxEntries(entriesMap))
+      }
+      dispatch(SetEntriesError(e))
+    })
+}
+
+export const SearchUserEntries = search => (dispatch, getState) => {
   dispatch(SetSearchEntries(search, []))
   const { id } = getState().User
   if (!id) return
@@ -335,7 +357,7 @@ const SearchUserEntries = search => (dispatch, getState) => {
     })
 }
 
-const DeleteEntryFile = (id, entry_id) => dispatch =>
+export const DeleteEntryFile = (id, entry_id) => dispatch =>
   Axios()
     .delete(`/files/${id}/`)
     .then(res => {
@@ -362,7 +384,7 @@ const DeleteEntryFile = (id, entry_id) => dispatch =>
       }
     })
 
-const SyncEntries = getEntryMethod => (dispatch, getState) => {
+export const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User: {
       id: UserId,
@@ -456,22 +478,4 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
   }
 
   dispatch(SetEntriesComplete())
-}
-
-export {
-  CreateEntryTag,
-  GetUserEntryTags,
-  GetUserEntryPeople,
-  GetUserEntry,
-  GetUserEntryDetails,
-  GetAllUserEntries,
-  GetAllUserEntryPages,
-  GetUserEntries,
-  GetUserEntriesByDate,
-  PostEntry,
-  UpdateEntry,
-  DeleteEntry,
-  SearchUserEntries,
-  SyncEntries,
-  DeleteEntryFile,
 }
