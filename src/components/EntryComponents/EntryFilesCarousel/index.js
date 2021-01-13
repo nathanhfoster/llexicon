@@ -107,7 +107,7 @@ const EntryFilesCarousel = ({
     ],
     [handleImageClick, handleImageDelete]
   )
-  console.log(imageFiles)
+
   return (
     <Container className={className}>
       <Row>
