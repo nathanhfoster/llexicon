@@ -6,15 +6,24 @@ import { useSelector } from 'react-redux'
 
 import { exportJSON, getValidDate } from 'utils'
 import { getTagStringFromObject } from 'redux/Entries/utils'
-import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
+import {
+  selectedEntriesSelector,
+  allEntriesSelector,
+  selectedItemsAreEqual,
+  allItemsAreEqual,
+} from 'components/EntryComponents/Buttons/utils'
 
-const ButtonClearEntries = ({ entries: entriesFromProps }) => {
+const ButtonExportEntries = ({ entries: entriesFromProps }) => {
   const userId = useSelector(({ User: { id } }) => id)
-  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const { entriesSelected } = useSelector(
+    entriesFromProps ? selectedEntriesSelector : allEntriesSelector,
+    entriesFromProps ? selectedItemsAreEqual : allItemsAreEqual,
+  )
   const entries = useMemo(() => entriesFromProps || entriesSelected, [
     entriesFromProps,
     entriesSelected,
   ])
+
   const handleExportEntries = () => {
     const formattedEntries = entries.map((entry, i) => {
       const {
@@ -72,9 +81,9 @@ const ButtonClearEntries = ({ entries: entriesFromProps }) => {
   )
 }
 
-ButtonClearEntries.propTypes = {
+ButtonExportEntries.propTypes = {
   userId: PropTypes.number,
   entries: EntriesPropTypes,
 }
 
-export default ButtonClearEntries
+export default ButtonExportEntries

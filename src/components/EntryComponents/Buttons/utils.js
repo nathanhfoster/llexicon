@@ -10,7 +10,16 @@ export const selectedEntriesSelector = ({
   selectedItemsMap,
 })
 
+export const allEntriesSelector = ({ Entries: { items, filteredItems } }) => ({
+  entriesSelected: items.concat(filteredItems),
+})
+
 export const selectedItemsAreEqual = (
   { selectedItemsMap: prevSelectedItems },
   { selectedItemsMap: nextSelectedItems },
 ) => Object.keys(prevSelectedItems).length === Object.keys(nextSelectedItems).length
+
+export const allItemsAreEqual = (
+  { entriesSelected: prevEntriesSelected },
+  { entriesSelected: nextEntriesSelected },
+) => prevEntriesSelected === nextEntriesSelected

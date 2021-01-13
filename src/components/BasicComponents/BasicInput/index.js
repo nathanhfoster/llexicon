@@ -48,8 +48,6 @@ const BasicInput = ({
 }) => {
   const isCheckOrRadio = type === 'checkbox' || type === 'radio'
 
-  console.log(name, isCheckOrRadio)
-
   const uniqueId = id || name
 
   const valid = restOfProps.valid || (typeof isValid === 'function' && isValid(value))
