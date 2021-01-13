@@ -142,18 +142,27 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
     [],
   )
 
-  const [usersSelected, setUsersSelected] = useState([])
+  const [usersSelected, setUsersSelected] = useState({})
 
   const handleActionMenuCallback = useCallback(selectedUsers => {
     setUsersSelected(selectedUsers)
   }, [])
 
+  const handleClearUsersSelected = useCallback(() => {
+    setUsersSelected({})
+  }, [])
+
   const userEmails = useMemo(() => {
-    const emails = usersSelected.reduce((acc, { email }) => `${acc.concat(email)};`, 'mailto:')
+    const emails = users.reduce((acc, { id, email }) => {
+      if (usersSelected[id] && email) {
+        acc += `${email};`
+      }
+      return acc
+    }, 'mailto:')
     const subject = '?subject=Astral%20Tree%20Support'
     const href = emails.concat(subject)
     return href
-  }, [usersSelected])
+  }, [users, usersSelected])
 
   return (
     <Container className='Admin Container'>
@@ -170,6 +179,7 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
           columns={TABLE_COLUMNS}
           dataDisplayName='Users'
           data={users}
+          selectedDataMap={usersSelected}
           getRowValue={getRowValue}
           // onSortCallback={handleSortCallback}
           // onFilterCallback={handleFilterCallback}
@@ -182,9 +192,16 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
               href={userEmails}
               target='_blank'
               rel='noopener noreferrer'
-              disabled={usersSelected.length === 0}
+              disabled={Object.keys(usersSelected).length === 0}
             >
               Email
+            </Button>
+            <Button
+              color='accent'
+              disabled={Object.keys(usersSelected).length === 0}
+              onClick={handleClearUsersSelected}
+            >
+              Clear
             </Button>
           </ButtonGroup>
         </BasicTable>
