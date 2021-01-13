@@ -12,35 +12,39 @@ import {
 } from 'components/EntryComponents/Buttons/utils'
 
 const tagInputs = [
-  {
-    label: 'Add',
-    name: 'tagsAdd',
-    type: 'checkbox',
-    className: 'mr-2',
-    inline: true,
-  },
-  {
-    label: 'Delete',
-    name: 'tagsDelete',
-    type: 'checkbox',
-    inline: true,
-  },
+  [
+    {
+      label: 'Add',
+      name: 'tagsAdd',
+      type: 'radio',
+      inline: true,
+      defaultChecked: true,
+    },
+    {
+      label: 'Delete',
+      name: 'tagsDelete',
+      type: 'radio',
+      inline: true,
+    },
+  ],
 ]
 
 const peopleInputs = [
-  {
-    label: 'Add',
-    name: 'peopleAdd',
-    type: 'checkbox',
-    className: 'mr-2',
-    inline: true,
-  },
-  {
-    label: 'Delete',
-    name: 'peopleDelete',
-    type: 'checkbox',
-    inline: true,
-  },
+  [
+    {
+      label: 'Add',
+      name: 'peopleAdd',
+      type: 'radio',
+      inline: true,
+      defaultChecked: true,
+    },
+    {
+      label: 'Delete',
+      name: 'peopleDelete',
+      type: 'radio',
+      inline: true,
+    },
+  ],
 ]
 
 const ButtonEditEntries = ({ entries: entriesFromProps }) => {
@@ -267,32 +271,34 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
 
   const inputs = useMemo(
     () => [
-      {
-        label: (
-          <div className='d-inline-flex'>
-            <span className='mr-2'>Tags</span>
-            <BasicForm inline inputs={tagInputs} onChange={handleTags} />
-          </div>
-        ),
-        name: 'tags',
-        type: 'select',
-        options: entryTagsOptions,
-        multiple: true,
-        inline: true,
-      },
-      {
-        label: (
-          <div className='d-inline-flex'>
-            <span className='mr-2'>People</span>
-            <BasicForm inline inputs={peopleInputs} onChange={handleTags} />
-          </div>
-        ),
-        name: 'people',
-        type: 'select',
-        options: entryPeopleOptions,
-        multiple: true,
-        inline: true,
-      },
+      [
+        {
+          label: (
+            <div className='d-inline-flex'>
+              <span className='mr-1'>Tags</span>
+              <BasicForm inline inputs={tagInputs} onChange={handleTags} />
+            </div>
+          ),
+          name: 'tags',
+          type: 'select',
+          options: entryTagsOptions,
+          multiple: true,
+          inline: true,
+        },
+        {
+          label: (
+            <div className='d-inline-flex'>
+              <span className='mr-1'>People</span>
+              <BasicForm inline inputs={peopleInputs} onChange={handleTags} />
+            </div>
+          ),
+          name: 'people',
+          type: 'select',
+          options: entryPeopleOptions,
+          multiple: true,
+          inline: true,
+        },
+      ],
       {
         label: 'Should Post',
         name: '_shouldPost',
@@ -302,22 +308,15 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         defaultChecked: entries.every(({ _shouldPost }) => _shouldPost),
       },
       {
-        label: 'Should Update',
-        name: '_lastUpdated',
-        type: 'checkbox',
-        placeholder: `Should Update...`,
-        inline: true,
-        defaultChecked: entries.every(({ _lastUpdated }) => _lastUpdated),
-      },
-      {
         label: 'Should Delete',
         name: '_shouldDelete',
         type: 'checkbox',
         placeholder: `Sould Delete..`,
         inline: true,
-        defaultChecked: entries.every(({ _shouldDelete }) => _shouldDelete),
+        defaultChecked:
+          !entries.every(({ _shouldPost }) => _shouldPost) &&
+          entries.every(({ _shouldDelete }) => _shouldDelete),
       },
-      
       {
         label: 'Is Public',
         name: 'is_public',
@@ -347,24 +346,26 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         placeholder: `Date Created...`,
         autoComplete: 'on',
       },
-      {
-        label: 'Views',
-        name: 'views',
-        type: 'number',
-        placeholder: '100',
-        autoComplete: 'on',
-        min: 0,
-      },
-      {
-        label: 'Rating',
-        name: 'rating',
-        type: 'number',
-        placeholder: '0',
-        autoComplete: 'on',
-        // defaultValue: 0,
-        min: 0,
-        max: 5,
-      },
+      [
+        {
+          label: 'Views',
+          name: 'views',
+          type: 'number',
+          placeholder: '100',
+          autoComplete: 'on',
+          min: 0,
+        },
+        {
+          label: 'Rating',
+          name: 'rating',
+          type: 'number',
+          placeholder: '0',
+          autoComplete: 'on',
+          // defaultValue: 0,
+          min: 0,
+          max: 5,
+        },
+      ],
       {
         label: 'Address',
         name: 'address',
@@ -372,20 +373,22 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         placeholder: `Address...`,
         autoComplete: 'on',
       },
-      {
-        label: 'Latitude',
-        name: 'latitude',
-        type: 'text',
-        placeholder: `Latitude...`,
-        autoComplete: 'on',
-      },
-      {
-        label: 'Longitude',
-        name: 'longitude',
-        type: 'text',
-        placeholder: `Longitude...`,
-        autoComplete: 'on',
-      },
+      [
+        {
+          label: 'Latitude',
+          name: 'latitude',
+          type: 'text',
+          placeholder: `Latitude...`,
+          autoComplete: 'on',
+        },
+        {
+          label: 'Longitude',
+          name: 'longitude',
+          type: 'text',
+          placeholder: `Longitude...`,
+          autoComplete: 'on',
+        },
+      ],
     ],
     [entries, entryPeopleOptions, entryTagsOptions, handleTags],
   )

@@ -10,6 +10,7 @@ import {
   FormText,
 } from 'reactstrap'
 import BasicOption from '../BasicOption'
+import { cleanObject } from 'utils'
 
 const BasicInput = ({
   id,
@@ -47,6 +48,8 @@ const BasicInput = ({
 }) => {
   const isCheckOrRadio = type === 'checkbox' || type === 'radio'
 
+  console.log(name, isCheckOrRadio)
+
   const uniqueId = id || name
 
   const valid = restOfProps.valid || (typeof isValid === 'function' && isValid(value))
@@ -64,7 +67,7 @@ const BasicInput = ({
   )
 
   const renderInput = useMemo(() => {
-    const inputProps = {
+    const inputProps = cleanObject({
       id: uniqueId,
       defaultValue,
       defaultChecked,
@@ -83,7 +86,7 @@ const BasicInput = ({
       max,
       multiple,
       step,
-    }
+    })
 
     switch (type) {
       case 'switch':

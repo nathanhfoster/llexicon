@@ -1,7 +1,8 @@
-import React, { useState, useMemo, useCallback, memo } from 'react'
-import { Button, Form } from 'reactstrap'
+import React, { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
+import { Button, Form, FormGroup, Col } from 'reactstrap'
 import { BasicFormProps } from './propTypes'
 import BasicInput from '../BasicInput'
+import { getInputValue, getState, getInputPayloadValue } from './utils'
 import './styles.css'
 
 const BasicForm = ({
@@ -16,24 +17,27 @@ const BasicForm = ({
   onCancel,
   onChange,
 }) => {
-  const [state, setState] = useState(inputs)
+  let mounted = useRef(false)
+  const [state, setState] = useState(() => getState(inputs))
+
+  useEffect(() => {
+    if (mounted.current) {
+      setState(getState(inputs))
+    }
+    mounted.current = true
+  }, [inputs])
 
   const handleSubmit = e => {
     e.preventDefault()
     if (!onSubmit) return
 
-    let payload = state.reduce((acc, { id, name, value, type, checked, files, options }) => {
-      if (name) {
-        if (type === 'radio' || type === 'checkbox') {
-          acc[name] = checked
-        } else if (type === 'select') {
-          const selectedOptions = options?.filter(({ selected }) => selected)
-          acc[name] = selectedOptions
-        } else if (type === 'file') {
-          acc[name] = files
-        } else {
-          acc[name] = value
-        }
+    const payload = state.reduce((acc, input) => {
+      if (Array.isArray(input)) {
+        input.forEach(e => {
+          acc = getInputPayloadValue(acc, e)
+        })
+      } else {
+        acc = getInputPayloadValue(acc, input)
       }
       return acc
     }, {})
@@ -41,46 +45,23 @@ const BasicForm = ({
     onSubmit(payload)
   }
 
-  const handleChange = useCallback(event => {
-    if (onChange) {
-      onChange(event)
-    } else {
-      let radioButtonSelected = false
-      const {
-        target: { id, name, value, type, checked, files, multiple, options },
-      } = event
-
+  const handleChange = useCallback(
+    event => {
+      const { target } = event
+      if (onChange) {
+        onChange(event)
+      }
       setState(prevState =>
         prevState.map(input => {
-          if (input.name === name) {
-            if (type === 'radio' || type === 'checkbox' || type === 'switch') {
-              if (type === 'radio' && checked) {
-                radioButtonSelected = true
-              }
-              return { ...input, checked }
-            } else if (
-              (type === 'select-one' || type === 'select-multiple') &&
-              options?.length > 0
-            ) {
-              let stateOptions = []
-
-              for (const { value, selected } of options) {
-                stateOptions.push({ value, selected })
-              }
-
-              return { ...input, options: stateOptions }
-            } else if (type === 'file') {
-              return { ...input, files }
-            } else {
-              return { ...input, value }
-            }
-          } else {
-            return input
+          if (Array.isArray(input)) {
+            return input.map(e => getInputValue(e, target, true))
           }
+          return getInputValue(input, target)
         }),
       )
-    }
-  }, [])
+    },
+    [onChange],
+  )
 
   const renderTitle = useMemo(
     () =>
@@ -94,10 +75,20 @@ const BasicForm = ({
 
   const renderInputs = useMemo(
     () =>
-      (onChange ? inputs : state).map((input, i) => {
-        return <BasicInput key={`${input.name}-${i}`} {...input} onChange={handleChange} />
+      state.map((input, i) => {
+        return Array.isArray(input) ? (
+          <FormGroup className='mb-0' row={true} tag='fieldset' inline={input.inline}>
+            {input.map((e, i) => (
+              <Col>
+                <BasicInput key={`${e.name}-${i}`} {...e} onChange={handleChange} />
+              </Col>
+            ))}
+          </FormGroup>
+        ) : (
+          <BasicInput key={`${input.name}-${i}`} {...input} onChange={handleChange} />
+        )
       }),
-    [inputs, , handleChange],
+    [state, handleChange],
   )
 
   return (
