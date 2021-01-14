@@ -1,18 +1,20 @@
 import 'css/index.css'
-import React, { Suspense } from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import storeFactory from './redux'
 import App from 'App'
 import { history } from 'redux/router/reducer'
-import { LoadingScreen, Persistor } from 'components'
+import { LoadingScreen } from 'components'
 import { getUserClientId } from 'redux/localState'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import * as serviceWorker from 'serviceWorker'
 import { GetAppVersion } from 'redux/App/actions'
+import { lazyDelay } from 'utils'
 import ReactGA from 'react-ga'
 import prototypes from 'prototypes'
 
+const Persistor = lazy(() => import('./components/Persistor').then(lazyDelay(1000)))
 prototypes()
 
 export const store = storeFactory()
@@ -56,7 +58,7 @@ ReactDOM.render(
     <Suspense fallback={<LoadingScreen />}>
       <Persistor />
       <ConnectedRouter history={history}>
-        <App />
+        {!store.getState().Entries.isPending && <App />}
       </ConnectedRouter>
     </Suspense>
   </Provider>,

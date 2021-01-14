@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useMemo } from 'react'
+import React, { Fragment, useReducer, useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap'
@@ -30,13 +30,11 @@ const EntryOptionsMenu = ({
   direction,
 }) => {
   const dispatch = useDispatch()
-  const [dropdownOpen, setOpen] = useState(false)
+  const [dropdownOpen, toggleOpen] = useReducer(prevState => !prevState, false)
   const [urlCopied, setUrlCopied] = useState(false)
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, toggleModal] = useReducer(prevState => !prevState, false)
   // Timeout to allow from onClick events within portal to dispatch first
-  const toggleDropdown = () => setTimeout(() => setOpen(prevropdownOpen => !prevropdownOpen), 200)
-
-  const toggleModal = () => setShowModal(prevShowModal => !prevShowModal)
+  const toggleDropdown = () => setTimeout(() => toggleOpen(), 200)
 
   const readOnly = useMemo(() => isReadOnly(entryId, author, userId), [entryId, author, userId])
 

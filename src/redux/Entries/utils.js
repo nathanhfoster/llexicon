@@ -117,6 +117,7 @@ export const getTagObjectFromString = s =>
   }, [])
 
 export const isReadOnly = (entryId, entryAuthor, userId) => {
+  if (!entryId) return true
   const entryIsStoredInTheBackend = !entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
   const userNotLoggedInButAuthorExistsAndEntryStoredInBackend =

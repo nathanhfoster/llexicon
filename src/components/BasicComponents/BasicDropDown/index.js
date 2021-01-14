@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo, useCallback, useEffect } from 'react'
+import React, { useState, useMemo, memo, useEffect, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import './styles.css'
@@ -22,14 +22,12 @@ const MODIFIERS = {
 }
 
 const BasicDropDown = ({ options, onChange, direction, value: propValue, className }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [dropdownOpen, toggle] = useReducer(prevState => !prevState, false)
   const [value, setValue] = useState(propValue)
 
   useEffect(() => {
     setValue(propValue)
   }, [propValue])
-
-  const toggle = () => setDropdownOpen(prevState => !prevState)
 
   const renderOptions = useMemo(
     () =>

@@ -1,4 +1,4 @@
-import React, { useState, memo, Fragment, cloneElement } from 'react'
+import React, { useReducer, memo, Fragment, cloneElement } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, shallowEqual } from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
@@ -21,9 +21,9 @@ const BasicModal = ({
   size,
   toggle,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, toggleIsOpen] = useReducer(prevState => !prevState, show)
 
-  const handleToggle = () => (toggle ? toggle() : setIsOpen(prevIsOpen => !prevIsOpen))
+  const handleToggle = () => (toggle ? toggle() : toggleIsOpen())
 
   const handleClose = () => {
     onCancelCallback && onCancelCallback()

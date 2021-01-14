@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect } from 'react'
+import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { isAFunction } from 'utils'
@@ -60,11 +60,11 @@ const Persistor = ({
   // console.log(state.Entries.items)
   const prevState = usePreviousValue(state)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     ;(async () => {
       LoadReducerStatePending()
       const persistedSate = await AstralTreeDB.getItem(IndexDbKey).then(s => JSON.parse(s))
-      LoadReducerState(persistedSate)
+      await LoadReducerState(persistedSate)
       SetLocalStorageUsage()
     })()
   }, [])

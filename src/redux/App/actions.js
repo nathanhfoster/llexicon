@@ -49,10 +49,14 @@ export const GetAppVersion = () => (dispatch, getState) => {
 
 export const LoadReducerStatePending = () => ({ type: AppActionTypes.LOAD_PERSISTED_STATE_PENDING })
 
-export const LoadReducerState = state => ({
-  type: AppActionTypes.LOAD_PERSISTED_STATE,
-  payload: state || {},
-})
+export const LoadReducerState = state => dispatch => {
+  const payload = state || {}
+  dispatch({
+    type: AppActionTypes.LOAD_PERSISTED_STATE,
+    payload,
+  })
+  return new Promise(resolve => resolve(payload))
+}
 
 export const UploadProgress = payload => ({ type: AppActionTypes.APP_UPLOAD_PROGRESS, payload })
 export const DownloadProgress = payload => ({ type: AppActionTypes.APP_DOWNLOAD_PROGRESS, payload })

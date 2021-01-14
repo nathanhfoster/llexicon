@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import {
   Container,
@@ -48,9 +48,7 @@ const PeopleButtonModal = ({
     if (UserId) GetUserEntryPeople()
   }, [])
 
-  const [show, setShow] = useState(false)
-
-  const handleToogle = useCallback(() => setShow(prevShow => !prevShow), [])
+  const [show, toggleShow] = useReducer(prevState => !prevState, false)
 
   const [{ people, personsName }, setState] = useState(getInitialState(restOfProps))
 
@@ -180,7 +178,7 @@ const PeopleButtonModal = ({
   return (
     <ToolbarModal
       show={show}
-      toggle={handleToogle}
+      toggle={toggleShow}
       title='Add People'
       onSaveCallback={handleSavePeople}
       onCancelCallback={resetState}

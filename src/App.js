@@ -19,15 +19,14 @@ import { ResetMap } from 'redux/Map/actions'
 import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
 import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
 import { Admin, About, Home, PrivacyPolicy } from 'views'
-import { LoadingScreen, NavBar } from 'components'
-import { useAddToHomescreenPrompt,useDebounce } from 'hooks'
-import { lazyDelay } from 'utils'
+import { NavBar } from 'components'
+import { useAddToHomescreenPrompt, useDebounce } from 'hooks'
 
 const Entries = lazy(() => import('./views/Entries'))
 const Helmet = lazy(() => import('./views/Helmet'))
 const AlertNotifications = lazy(() => import('./components/AlertNotifications'))
 const Account = lazy(() => import('./views/Account'))
-const BackgroundImage = lazy(() => import('./components/BackgroundImage').then(lazyDelay(200)))
+const BackgroundImage = lazy(() => import('./components/BackgroundImage'))
 const Settings = lazy(() => import('./views/Settings'))
 const Support = lazy(() => import('./views/Support'))
 const EntryDetail = lazy(() => import('./views/EntryDetail'))
@@ -68,7 +67,9 @@ const mapStateToProps = ({
     Settings: { dark_mode },
     is_superuser,
   },
+  Entries: { items },
 }) => ({
+  items,
   appIsLoading: isPending,
   userId: id,
   userToken: token,
@@ -123,6 +124,7 @@ const changeTheme = darkMode =>
   darkMode ? mapThemeProperties(DARK_MODE_THEME) : mapThemeProperties(LIGHT_MODE_THEME)
 
 const App = ({
+  items,
   appIsLoading,
   userId,
   userToken,
@@ -143,6 +145,7 @@ const App = ({
   ResetMap,
   SetBottomToolbarIsOpen,
 }) => {
+  console.log(items)
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const handleResize = useDebounce(SetWindow)
 
@@ -185,9 +188,7 @@ const App = ({
     return shouldRedirect ? () => <Redirect push to={directTo} /> : component
   }
 
-  return appIsLoading ? (
-    <LoadingScreen />
-  ) : (
+  return (
     <main className={userDarkMode ? 'DarkMode' : 'LightMode'}>
       <Helmet />
       <div id='portal-root' />

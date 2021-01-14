@@ -2,7 +2,7 @@ import { AppActionTypes } from './types'
 import { getProgressEventData } from './utils'
 
 const DEFAULT_STATE_APP = {
-  isPending: false,
+  isPending: true,
   version: new Number(1).toFixed(3),
   localStorageCapacity: null,
   localStorageUsage: null,

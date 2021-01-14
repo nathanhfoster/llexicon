@@ -57,9 +57,9 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  const readOnly = useMemo(() => isReadOnly(entry.id, entry.author, userId), [
-    entry.id,
-    entry.author,
+  const readOnly = useMemo(() => isReadOnly(entry?.id, entry?.author, userId), [
+    entry?.id,
+    entry?.author,
     userId,
   ])
 
