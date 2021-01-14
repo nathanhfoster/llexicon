@@ -1,42 +1,11 @@
 import { TextEditorActionTypes } from '../TextEditor/types'
 import { AppActionTypes } from '../App/types'
-import { DEFAULT_ENTRY_FILES } from '../Entries/reducer'
+import { defaultEntry } from '../Entries/utils'
 import { getStringBytes } from '../../utils'
-import { NEW_ENTRY_ID } from 'redux/Entries/utils'
-import { testModeAPI } from 'react-ga'
 
 const defaultTextEditor = {
+  ...defaultEntry,
   bottomToolbarIsOpen: true,
-  _clearedOn: '',
-  size: 0,
-  author: null,
-  id: NEW_ENTRY_ID,
-  tags: [
-    {
-      name: 'Excited',
-    },
-    {
-      name: 'Inspired',
-    },
-  ],
-  people: [],
-  EntryFiles: DEFAULT_ENTRY_FILES,
-  title: '',
-  html: '<p><br></p>',
-  date_created: null,
-  date_created_by_author: null,
-  date_updated: null,
-  views: 0,
-  rating: 5,
-  address: null,
-  latitude: null,
-  longitude: null,
-  is_public: false,
-
-  // Redux Only
-  _shouldDelete: false,
-  _shouldPost: true,
-  _lastUpdated: null,
 }
 
 const DEFAULT_STATE_TEXT_EDITOR = {

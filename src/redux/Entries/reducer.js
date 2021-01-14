@@ -1,16 +1,15 @@
-import { EntriesActionTypes } from "./types"
-import { AppActionTypes } from "../App/types"
+import { EntriesActionTypes } from './types'
+import { AppActionTypes } from '../App/types'
 import {
-  LINK_TO_SIGN_UP,
+  FIRST_JOUNRAL_ENTRY,
   BASE_JOURNAL_ENTRY_ID,
-  DEFAULT_JOUNRAL_ENTRY_ID,
   mergeJson,
   getMostRecent,
   handleFilterEntries,
-} from "./utils"
-import { getStringBytes, arrayToObject } from "../../utils"
-import { isObject } from "utils"
-import * as AwsImages from "../../images/AWS"
+} from './utils'
+import { getStringBytes } from '../../utils'
+import { isObject } from 'utils'
+
 const {
   ENTRY_SET,
   ENTRIES_UPDATE,
@@ -33,57 +32,6 @@ const {
   ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
 } = EntriesActionTypes
 
-const { ...entryFiles } = AwsImages
-
-const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
-  id,
-  file_type: "image/jpeg",
-  name,
-  size: 870,
-  url: entryFiles[name],
-  entry_id: DEFAULT_JOUNRAL_ENTRY_ID,
-}))
-
-const defaultEntry = {
-  author: null,
-  id: DEFAULT_JOUNRAL_ENTRY_ID,
-  tags: [
-    {
-      name: "Excited",
-    },
-    {
-      name: "Inspired",
-    },
-  ],
-  people: [
-    {
-      name: "Me",
-    },
-  ],
-  EntryFiles: DEFAULT_ENTRY_FILES,
-  title: "My First Journal Entry",
-  html: `<p class="ql-align-center"><img src="${entryFiles.Logo}" width="140"></p><br><p>After I've installed Astral Tree today, I will make a diary entry every day from now on. In case I forget to make an entry, the app will remind me with a notification in the evening. Besides pictures, videos, audio recordings or other files, I can add a location, tags or people to my journal entries.</p><p><br></p><p>If I <a href="${LINK_TO_SIGN_UP}" rel="noopener noreferrer" target="_blank">sign up</a>, my journal entries will be synced across all my devices. I am already looking forward to revisiting all those memories in a few months or years.</p>`,
-  date_created: new Date(),
-  date_created_by_author: new Date(),
-  date_updated: new Date(),
-  views: 0,
-  rating: 5,
-  address: null,
-  latitude: null,
-  longitude: null,
-  is_public: false,
-
-  // Redux Only
-  _shouldDelete: false,
-  _shouldPost: true,
-  _lastUpdated: null,
-}
-
-const FIRST_JOUNRAL_ENTRY = {
-  ...defaultEntry,
-  _size: getStringBytes(defaultEntry),
-}
-
 const DEFAULT_STATE_ENTRIES = {
   count: null,
   next: null,
@@ -94,33 +42,33 @@ const DEFAULT_STATE_ENTRIES = {
   filteredItems: [],
   isPending: false,
   error: null,
-  search: "",
+  search: '',
   EntryTags: [
     {
-      name: "Family",
+      name: 'Family',
     },
     {
-      name: "Friends",
+      name: 'Friends',
     },
     {
-      name: "Document",
+      name: 'Document',
     },
     {
-      name: "Link",
+      name: 'Link',
     },
     {
-      name: "Music",
+      name: 'Music',
     },
     {
-      name: "Vacation",
+      name: 'Vacation',
     },
     {
-      name: "Video",
+      name: 'Video',
     },
   ],
   EntryPeople: [
     {
-      name: "Me",
+      name: 'Me',
     },
   ],
   sortMap: {
@@ -144,7 +92,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
     case ENTRIES_SET_TAGS:
       return {
         ...state,
-        EntryTags: mergeJson(state.EntryTags, payload, "name"),
+        EntryTags: mergeJson(state.EntryTags, payload, 'name'),
       }
 
     case ENTRIES_SET_PEOPLE:
@@ -154,10 +102,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       if (!payload) return { ...state, search }
       return {
         ...state,
-        ...handleFilterEntries(
-          mergeJson(state.items.concat(state.filteredItems), payload),
-          search
-        ),
+        ...handleFilterEntries(mergeJson(state.items.concat(state.filteredItems), payload), search),
         search,
         isPending,
       }
@@ -193,11 +138,8 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         ...handleFilterEntries(
-          mergeJson(
-            state.items.concat(state.filteredItems),
-            results || payload
-          ),
-          state.search
+          mergeJson(state.items.concat(state.filteredItems), results || payload),
+          state.search,
         ),
         count: count || state.count,
         next: next || state.next,
@@ -214,7 +156,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         ...state,
         ...handleFilterEntries(
           mergeJson(state.items.concat(state.filteredItems), [nextItem]),
-          state.search
+          state.search,
         ),
         item: {
           ...(!state.item.id || nextItem.id == state.item.id
@@ -227,7 +169,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
 
     case ENTRIES_UPDATE:
       nextSelectedItemsMap = { ...state.nextSelectedItemsMap }
-      nextItems = state.items.concat(state.filteredItems).map((e) => {
+      nextItems = state.items.concat(state.filteredItems).map(e => {
         if (payload.id === e.id) {
           nextItem = { ...e, ...payload }
           nextItem = {
@@ -281,11 +223,9 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
             if (nextSelectedItemsMap[id]) {
               delete nextSelectedItemsMap[id]
             }
-            return isObject(payload)
-              ? payload[id] === undefined
-              : id !== payload
+            return isObject(payload) ? payload[id] === undefined : id !== payload
           }),
-          state.search
+          state.search,
         ),
         selectedItemsMap: nextSelectedItemsMap,
       }
@@ -322,7 +262,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           .concat(state.filteredItems)
           .filter(
             ({ _shouldDelete, _shouldPost, _lastUpdated }) =>
-              _shouldDelete || _shouldPost || _lastUpdated
+              _shouldDelete || _shouldPost || _lastUpdated,
           ),
       }
 
@@ -334,10 +274,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return {
         ...state,
         ...payload.Entries,
-        ...handleFilterEntries(
-          nextItems,
-          payload.Entries?.search || state.search
-        ),
+        ...handleFilterEntries(nextItems, payload.Entries?.search || state.search),
         item: DEFAULT_STATE_ENTRIES.item,
         isPending: DEFAULT_STATE_ENTRIES.isPending,
         error: DEFAULT_STATE_ENTRIES.error,
@@ -349,9 +286,4 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   }
 }
 
-export {
-  BASE_JOURNAL_ENTRY_ID,
-  DEFAULT_ENTRY_FILES,
-  DEFAULT_STATE_ENTRIES,
-  Entries,
-}
+export { BASE_JOURNAL_ENTRY_ID, DEFAULT_STATE_ENTRIES, Entries }

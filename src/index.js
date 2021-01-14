@@ -2,7 +2,9 @@ import 'css/index.css'
 import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import storeFactory from './redux'
-import App from 'App'
+import { IndexDbKey } from 'redux/localState'
+import { Persistor } from 'components'
+import { AstralTreeDB } from 'components/Persistor'
 import { history } from 'redux/router/reducer'
 import { LoadingScreen } from 'components'
 import { getUserClientId } from 'redux/localState'
@@ -14,7 +16,6 @@ import { lazyDelay } from 'utils'
 import ReactGA from 'react-ga'
 import prototypes from 'prototypes'
 
-const Persistor = lazy(() => import('./components/Persistor').then(lazyDelay(1000)))
 prototypes()
 
 export const store = storeFactory()
@@ -22,6 +23,13 @@ export const store = storeFactory()
 const { REACT_APP_GOOGLE_TRACKING_ID } = process.env
 
 const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
+
+const App = lazy(() =>
+  import('./App').then(async result => {
+    await AstralTreeDB.getItem(IndexDbKey)
+    return lazyDelay(0)(result)
+  }),
+)
 
 ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
   // debug: inDevelopmentMode,
@@ -58,7 +66,7 @@ ReactDOM.render(
     <Suspense fallback={<LoadingScreen />}>
       <Persistor />
       <ConnectedRouter history={history}>
-        {!store.getState().Entries.isPending && <App />}
+        <App />
       </ConnectedRouter>
     </Suspense>
   </Provider>,

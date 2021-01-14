@@ -1,6 +1,7 @@
 import MomentJS from 'moment'
 import { objectToArray, stringMatch, getStringBytes, getValidDate } from 'utils'
 import { RouteMap } from 'redux/router/actions'
+import * as AwsImages from '../../images/AWS'
 
 export const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
@@ -126,6 +127,57 @@ export const isReadOnly = (entryId, entryAuthor, userId) => {
   const userIsNotTheAuthor = entryAuthor && userId !== entryAuthor
 
   return Boolean(userNotLoggedInButAuthorExistsAndEntryStoredInBackend || userIsNotTheAuthor)
+}
+
+export const { ...entryFiles } = AwsImages
+
+export const DEFAULT_ENTRY_FILES = Object.keys(entryFiles).map((name, id) => ({
+  id,
+  file_type: 'image/jpeg',
+  name,
+  size: 870,
+  url: entryFiles[name],
+  entry_id: `${DEFAULT_JOUNRAL_ENTRY_ID}-${id}`,
+}))
+
+export const defaultEntry = {
+  author: null,
+  id: DEFAULT_JOUNRAL_ENTRY_ID,
+  tags: [
+    {
+      name: 'Excited',
+    },
+    {
+      name: 'Inspired',
+    },
+  ],
+  people: [
+    {
+      name: 'Me',
+    },
+  ],
+  EntryFiles: DEFAULT_ENTRY_FILES,
+  title: 'My First Journal Entry',
+  html: `<p class="ql-align-center"><img src="${entryFiles.Logo}" width="140"></p><br><p>After I've installed Astral Tree today, I will make a diary entry every day from now on. In case I forget to make an entry, the app will remind me with a notification in the evening. Besides pictures, videos, audio recordings or other files, I can add a location, tags or people to my journal entries.</p><p><br></p><p>If I <a href="${LINK_TO_SIGN_UP}" rel="noopener noreferrer" target="_blank">sign up</a>, my journal entries will be synced across all my devices. I am already looking forward to revisiting all those memories in a few months or years.</p>`,
+  date_created: new Date(),
+  date_created_by_author: new Date(),
+  date_updated: new Date(),
+  views: 0,
+  rating: 5,
+  address: null,
+  latitude: null,
+  longitude: null,
+  is_public: false,
+
+  // Redux Only
+  _shouldDelete: false,
+  _shouldPost: true,
+  _lastUpdated: null,
+}
+
+export const FIRST_JOUNRAL_ENTRY = {
+  ...defaultEntry,
+  _size: getStringBytes(defaultEntry),
 }
 
 export const selectedEntriesSelector = ({
