@@ -67,9 +67,7 @@ const mapStateToProps = ({
     Settings: { dark_mode },
     is_superuser,
   },
-  Entries: { items },
 }) => ({
-  items,
   appIsLoading: isPending,
   userId: id,
   userToken: token,
@@ -124,7 +122,6 @@ const changeTheme = darkMode =>
   darkMode ? mapThemeProperties(DARK_MODE_THEME) : mapThemeProperties(LIGHT_MODE_THEME)
 
 const App = ({
-  items,
   appIsLoading,
   userId,
   userToken,
@@ -145,7 +142,6 @@ const App = ({
   ResetMap,
   SetBottomToolbarIsOpen,
 }) => {
-  console.log(items)
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const handleResize = useDebounce(SetWindow)
 
