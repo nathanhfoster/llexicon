@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react'
+import React, { useState, useRef, useMemo, useCallback, memo } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 import { BasicModal, BasicForm } from 'components'
@@ -410,4 +410,4 @@ ButtonEditEntries.propTypes = {
   entries: EntriesPropTypes,
 }
 
-export default ButtonEditEntries
+export default memo(ButtonEditEntries)

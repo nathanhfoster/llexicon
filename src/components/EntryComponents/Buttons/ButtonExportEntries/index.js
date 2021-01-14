@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, memo } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Button } from 'reactstrap'
@@ -86,4 +86,4 @@ ButtonExportEntries.propTypes = {
   entries: EntriesPropTypes,
 }
 
-export default ButtonExportEntries
+export default memo(ButtonExportEntries)

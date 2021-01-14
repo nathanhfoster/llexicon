@@ -66,7 +66,7 @@ EntriesList.propTypes = {
 EntriesList.defaultProps = {
   height: 500,
   width: '100%',
-  itemSize: 150,
+  itemSize: 180,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EntriesList)

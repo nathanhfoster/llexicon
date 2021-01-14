@@ -1,10 +1,13 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, memo } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { useSelector, useDispatch } from 'react-redux'
 import { ConfirmAction } from 'components'
 import { Button } from 'reactstrap'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
+import {
+  selectedEntriesSelector,
+  selectedItemsAreEqual,
+} from 'components/EntryComponents/Buttons/utils'
 
 const ButtonDeleteEntries = ({ entries: entriesFromProps }) => {
   const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
@@ -61,4 +64,4 @@ ButtonDeleteEntries.propTypes = {
   entries: EntriesPropTypes,
 }
 
-export default ButtonDeleteEntries
+export default memo(ButtonDeleteEntries)
