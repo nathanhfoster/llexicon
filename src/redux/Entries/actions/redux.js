@@ -127,7 +127,9 @@ const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries('', [], f
 
 const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
-  const entryToUpdate = items.concat(filteredItems).find(({ id }) => id == entry_id)
+  const entryToUpdate = (filteredItems.length > 0 ? items.concat(filteredItems) : items).find(
+    ({ id }) => id == entry_id,
+  )
 
   if (entryToUpdate) {
     const payload = {

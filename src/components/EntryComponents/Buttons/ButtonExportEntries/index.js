@@ -11,11 +11,11 @@ import {
   allEntriesSelector,
   selectedItemsAreEqual,
   allItemsAreEqual,
-} from 'components/EntryComponents/Buttons/utils'
+} from 'redux/Entries/utils'
 
 const ButtonExportEntries = ({ entries: entriesFromProps }) => {
   const userId = useSelector(({ User: { id } }) => id)
-  const { entriesSelected } = useSelector(
+  const { entries: entriesSelected } = useSelector(
     entriesFromProps ? selectedEntriesSelector : allEntriesSelector,
     entriesFromProps ? selectedItemsAreEqual : allItemsAreEqual,
   )

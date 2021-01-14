@@ -8,12 +8,11 @@ import { formatBytes } from '../../../utils'
 import './styles.css'
 
 const mapStateToProps = ({ Entries: { items, filteredItems, count } }) => ({
-  items,
-  filteredItems,
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
   count,
 })
 
-const EntryStatistics = ({ items, filteredItems, count }) => {
+const EntryStatistics = ({ entries, count }) => {
   let sumRating = 0
   let sumRatingTimeUpdatingEntries = 0
   let previousDate = false
@@ -25,8 +24,6 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
   let entriesToPost = 0
   let entriesToUpdate = 0
   let entriesToDelete = 0
-
-  const entries = items.concat(filteredItems)
 
   let validRatedEntries = 0
 
@@ -225,8 +222,7 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
 }
 
 EntryStatistics.propTypes = {
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
 }
 
 export default connect(mapStateToProps)(memo(EntryStatistics))

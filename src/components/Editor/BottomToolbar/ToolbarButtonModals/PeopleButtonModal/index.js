@@ -18,8 +18,7 @@ import { validateTagOrPeopleString, validatedPersonNameString } from '../utlis'
 import { EntriesPropTypes, EntryPeopleProps } from 'redux/Entries/propTypes'
 
 const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems, EntryPeople } }) => ({
-  items,
-  filteredItems,
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
   UserId: id,
   EntryPeople,
 })
@@ -36,8 +35,7 @@ const getInitialState = ({ people }) => ({
 const PeopleButtonModal = ({
   UserId,
   GetUserEntryPeople,
-  items,
-  filteredItems,
+  entries,
   EntryPeople,
   entryId,
   html,
@@ -69,14 +67,13 @@ const PeopleButtonModal = ({
     () =>
       show
         ? Object.values(
-            items
-              .concat(filteredItems)
+            entries
               .map(entry => entry.people)
               .flat(1)
               .concat(EntryPeople),
           )
         : [],
-    [show, items, filteredItems, EntryPeople],
+    [show, entries, EntryPeople],
   )
 
   const [suggestedPeople, frequentPeople] = useMemo(() => {
@@ -262,8 +259,7 @@ const PeopleButtonModal = ({
 
 PeopleButtonModal.propTypes = {
   UserId: PropTypes.number,
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
   EntryPeople: EntryPeopleProps.isRequired,
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   people: EntryPeopleProps.isRequired,

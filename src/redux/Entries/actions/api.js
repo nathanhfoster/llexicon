@@ -118,7 +118,12 @@ export const GetEntry = (url, id) => (dispatch, getState) => {
     User: { id: userLoggedIn },
   } = getState()
 
-  const entry = item?.id == id ? item : items.concat(filteredItems).find(entry => entry.id == id)
+  const entry =
+    item?.id == id
+      ? item
+      : (filteredItems.length > 0 ? items.concat(filteredItems) : items).find(
+          entry => entry.id == id,
+        )
 
   if (entry) {
     dispatch(SetEntry(entry))
@@ -395,7 +400,7 @@ export const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
   dispatch(PendingEntries())
 
-  const entries = items.concat(filteredItems)
+  const entries = filteredItems.length > 0 ? items.concat(filteredItems) : items
 
   for (let i = 0, { length } = entries; i < length; i++) {
     let {

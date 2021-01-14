@@ -19,8 +19,7 @@ import { EntriesPropTypes, EntryTagsProps } from 'redux/Entries/propTypes'
 import { SUGGESTED } from './utils'
 
 const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems, EntryTags } }) => ({
-  items,
-  filteredItems,
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
   UserId: id,
   EntryTags,
 })
@@ -37,8 +36,7 @@ const getInitialState = ({ tags }) => ({
 const TagsButtonModal = ({
   UserId,
   GetUserEntryTags,
-  items,
-  filteredItems,
+  entries,
   EntryTags,
   entryId,
   html,
@@ -70,14 +68,13 @@ const TagsButtonModal = ({
     () =>
       show
         ? Object.values(
-            items
-              .concat(filteredItems)
+            entries
               .map(entry => entry.tags)
               .flat(1)
               .concat(EntryTags),
           )
         : [],
-    [EntryTags, filteredItems, items, show],
+    [EntryTags, entries, show],
   )
 
   const [suggestedTags, frequentTags] = useMemo(() => {
@@ -278,8 +275,7 @@ const TagsButtonModal = ({
 
 TagsButtonModal.propTypes = {
   UserId: PropTypes.number,
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
   EntryTags: EntryTagsProps.isRequired,
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   tags: EntryTagsProps.isRequired,

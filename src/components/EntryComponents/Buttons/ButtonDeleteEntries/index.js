@@ -4,13 +4,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ConfirmAction } from 'components'
 import { Button } from 'reactstrap'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import {
-  selectedEntriesSelector,
-  selectedItemsAreEqual,
-} from 'components/EntryComponents/Buttons/utils'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'redux/Entries/utils'
 
 const ButtonDeleteEntries = ({ entries: entriesFromProps }) => {
-  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const { entries: entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
 
   const dispatch = useDispatch()
 

@@ -6,20 +6,19 @@ import { Col } from 'reactstrap'
 import './styles.css'
 
 const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) => ({
-  items,
-  filteredItems,
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
   showOnlyPublic,
 })
 
-const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
+const EntriesRandom = ({ entries, showOnlyPublic }) => {
   const containerRef = useRef()
 
   const viewableEntries = useMemo(
     () =>
-      items
-        .concat(filteredItems)
-        .filter(({ _shouldDelete, is_public }) => (showOnlyPublic ? is_public : !_shouldDelete)),
-    [items, filteredItems, showOnlyPublic],
+      entries.filter(({ _shouldDelete, is_public }) =>
+        showOnlyPublic ? is_public : !_shouldDelete,
+      ),
+    [entries, showOnlyPublic],
   )
 
   const randomEntries = useMemo(() => {
@@ -49,8 +48,7 @@ const EntriesRandom = ({ items, filteredItems, showOnlyPublic }) => {
 }
 
 EntriesRandom.propTypes = {
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
 }
 
 export default connect(mapStateToProps)(EntriesRandom)

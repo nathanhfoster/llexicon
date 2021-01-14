@@ -6,10 +6,7 @@ import { Button } from 'reactstrap'
 import { cleanObject, removeAttributeDuplicates } from 'utils'
 import { getTagStringFromObject, getTagObjectFromString } from 'redux/Entries/utils'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import {
-  selectedEntriesSelector,
-  selectedItemsAreEqual,
-} from 'components/EntryComponents/Buttons/utils'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'redux/Entries/utils'
 
 const tagInputs = [
   [
@@ -48,16 +45,15 @@ const peopleInputs = [
 ]
 
 const ButtonEditEntries = ({ entries: entriesFromProps }) => {
-  const { items, filteredItems, EntryTags, EntryPeople } = useSelector(
+  const { entriesFromRedux, EntryTags, EntryPeople } = useSelector(
     ({ Entries: { items, filteredItems, EntryTags, EntryPeople } }) => ({
-      items,
-      filteredItems,
+      entriesFromRedux: filteredItems.length > 0 ? items.concat(filteredItems) : items,
       EntryTags,
       EntryPeople,
     }),
     shallowEqual,
   )
-  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const { entries: entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
   const entries = useMemo(() => entriesFromProps || entriesSelected, [
     entriesFromProps,
     entriesSelected,
@@ -226,12 +222,10 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
     let peopleOptions = []
 
     if (showEditModal) {
-      const reduxEntries = items.concat(filteredItems)
-
       if (entries.length > 0 || EntryTags.length > 0) {
         tagOptions = removeAttributeDuplicates(
           Object.values(
-            reduxEntries
+            entriesFromRedux
               .map(entry => entry.tags)
               .flat(1)
               .concat(EntryTags),
@@ -245,7 +239,7 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
       if (entries.length > 0 || EntryPeople.length > 0) {
         peopleOptions = removeAttributeDuplicates(
           Object.values(
-            reduxEntries
+            entriesFromRedux
               .map(entry => entry.people)
               .flat(1)
               .concat(EntryPeople),
@@ -260,8 +254,7 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
     return [tagOptions, peopleOptions]
   }, [
     showEditModal,
-    items,
-    filteredItems,
+    entriesFromRedux,
     entries.length,
     EntryTags,
     EntryPeople,

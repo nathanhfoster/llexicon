@@ -45,8 +45,7 @@ const mapStateToProps = state => {
   return {
     localStorageReduxUsage,
     indexDBStorageReduxUsage,
-    items,
-    filteredItems,
+    entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
     // entriesStorageUsage,
     version,
     localStorageCapacity,
@@ -59,8 +58,7 @@ const mapStateToProps = state => {
 const LocalStorage = ({
   localStorageReduxUsage,
   indexDBStorageReduxUsage,
-  items,
-  filteredItems,
+  entries,
   entriesStorageUsage,
   version,
   localStorageCapacity,
@@ -79,8 +77,8 @@ const LocalStorage = ({
   )
 
   const serverUsage = useMemo(
-    () => items.concat(filteredItems).reduce((usage, entry) => (usage += entry.size || 0), 0),
-    [items, filteredItems],
+    () => entries.reduce((usage, entry) => (usage += entry.size || 0), 0),
+    [entries],
   )
 
   const serverStorageLabel = `${formatBytes(serverUsage)} / ${formatBytes(SERVER_STORAGE_LIMIT)}`
@@ -153,8 +151,7 @@ const LocalStorage = ({
 
 LocalStorage.propTypes = {
   localStorageReduxUsage: PropTypes.number,
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
   version: PropTypes.string,
   localStorageUsage: PropTypes.number,
   localStorageQuota: PropTypes.number,

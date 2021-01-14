@@ -5,20 +5,18 @@ import { EntryCards, Header } from '../..'
 import { Col } from 'reactstrap'
 
 const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) => ({
-  items,
-  filteredItems,
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
   showOnlyPublic,
 })
 
-const EntriesMostViewed = ({ items, filteredItems, showOnlyPublic }) => {
+const EntriesMostViewed = ({ entries, showOnlyPublic }) => {
   const containerRef = useRef()
   const entriesMostViewed = useMemo(
     () =>
-      items
-        .concat(filteredItems)
+      entries
         .filter(({ _shouldDelete, is_public }) => (showOnlyPublic ? is_public : !_shouldDelete))
         .sort((a, b) => b.views - a.views),
-    [items, filteredItems, showOnlyPublic],
+    [entries, showOnlyPublic],
   )
 
   return (
@@ -34,8 +32,7 @@ const EntriesMostViewed = ({ items, filteredItems, showOnlyPublic }) => {
 }
 
 EntriesMostViewed.propTypes = {
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
 }
 
 export default connect(mapStateToProps)(EntriesMostViewed)

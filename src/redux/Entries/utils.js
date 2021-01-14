@@ -2,19 +2,19 @@ import MomentJS from 'moment'
 import { objectToArray, stringMatch, getStringBytes, getValidDate } from 'utils'
 import { RouteMap } from 'redux/router/actions'
 
-const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
+export const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
-const BASE_JOURNAL_ENTRY_ID = 'Entry-'
+export const BASE_JOURNAL_ENTRY_ID = 'Entry-'
 
-const NEW_ENTRY_ID = 'NewEntry'
+export const NEW_ENTRY_ID = 'NewEntry'
 
-const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
+export const getReduxEntryId = () => `${BASE_JOURNAL_ENTRY_ID}${new Date().getTime()}`
 
-const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
+export const DEFAULT_JOUNRAL_ENTRY_ID = getReduxEntryId()
 
-const getDate = ({ _lastUpdated, date_updated }) => _lastUpdated || date_updated
+export const getDate = ({ _lastUpdated, date_updated }) => _lastUpdated || date_updated
 
-const getMostRecent = (reduxData, newData) => {
+export const getMostRecent = (reduxData, newData) => {
   let newItem = { ...newData, ...reduxData }
 
   if (newData.views > reduxData.views) {
@@ -47,7 +47,7 @@ const getMostRecent = (reduxData, newData) => {
   return { ...newItem, _size: getStringBytes(newItem) }
 }
 
-const mergeJson = (reduxData, newData, key = 'id') => {
+export const mergeJson = (reduxData, newData, key = 'id') => {
   // Order matters. You want to merge the reduxData into the newData
   const allData = reduxData.concat(newData)
   let mergeMap = {}
@@ -67,10 +67,10 @@ const mergeJson = (reduxData, newData, key = 'id') => {
   return objectToArray(mergeMap)
 }
 
-const tagOrPeopleMatch = (tagsOrPeople, search) =>
+export const tagOrPeopleMatch = (tagsOrPeople, search) =>
   tagsOrPeople.some(({ name }) => stringMatch(name, search))
 
-const handleFilterEntries = (entries, search) => {
+export const handleFilterEntries = (entries, search) => {
   if (!search) return { items: entries, filteredItems: [] }
   let cachedFilteredEntries = []
 
@@ -97,7 +97,7 @@ const handleFilterEntries = (entries, search) => {
   }
 }
 
-const getTagStringFromObject = obj =>
+export const getTagStringFromObject = obj =>
   obj.reduce((acc, { name }, i, { length }) => {
     if (length === 1 || i === length - 1) {
       acc += name
@@ -108,7 +108,7 @@ const getTagStringFromObject = obj =>
     return acc
   }, '')
 
-const getTagObjectFromString = s =>
+export const getTagObjectFromString = s =>
   s.split(',').reduce((acc, name) => {
     if (name) {
       acc.push({ name })
@@ -116,7 +116,7 @@ const getTagObjectFromString = s =>
     return acc
   }, [])
 
-const isReadOnly = (entryId, entryAuthor, userId) => {
+export const isReadOnly = (entryId, entryAuthor, userId) => {
   const entryIsStoredInTheBackend = !entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
 
   const userNotLoggedInButAuthorExistsAndEntryStoredInBackend =
@@ -127,16 +127,26 @@ const isReadOnly = (entryId, entryAuthor, userId) => {
   return Boolean(userNotLoggedInButAuthorExistsAndEntryStoredInBackend || userIsNotTheAuthor)
 }
 
-export {
-  LINK_TO_SIGN_UP,
-  BASE_JOURNAL_ENTRY_ID,
-  NEW_ENTRY_ID,
-  DEFAULT_JOUNRAL_ENTRY_ID,
-  getReduxEntryId,
-  mergeJson,
-  getMostRecent,
-  handleFilterEntries,
-  getTagStringFromObject,
-  getTagObjectFromString,
-  isReadOnly,
-}
+export const selectedEntriesSelector = ({
+  Entries: { items, filteredItems, selectedItemsMap, showOnlyPublic },
+}) => ({
+  entries: (filteredItems.length > 0 ? items.concat(filteredItems) : items).filter(
+    ({ id, is_public, _shouldDelete }) =>
+      (showOnlyPublic ? is_public && !_shouldDelete : !_shouldDelete) && selectedItemsMap[id],
+  ),
+  selectedItemsMap,
+})
+
+export const selectedItemsAreEqual = (
+  { selectedItemsMap: prevSelectedItems },
+  { selectedItemsMap: nextSelectedItems },
+) => Object.keys(prevSelectedItems).length === Object.keys(nextSelectedItems).length
+
+export const allEntriesSelector = ({ Entries: { items, filteredItems } }) => ({
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
+})
+
+export const allItemsAreEqual = (
+  { entries: prevEntriesSelected },
+  { entries: nextEntriesSelected },
+) => prevEntriesSelected === nextEntriesSelected

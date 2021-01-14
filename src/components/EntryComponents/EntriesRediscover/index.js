@@ -6,18 +6,16 @@ import Moment from 'react-moment'
 import { Col } from 'reactstrap'
 
 const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) => ({
-  items,
-  filteredItems,
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
   showOnlyPublic,
 })
 
-const EntriesRediscover = ({ items, filteredItems, showOnlyPublic }) => {
+const EntriesRediscover = ({ entries, showOnlyPublic }) => {
   const containerRef = useRef()
   const today = new Date()
   const entriesOnThisDay = useMemo(
     () =>
-      items
-        .concat(filteredItems)
+      entries
         .filter(({ date_created_by_author, _shouldDelete, is_public }) => {
           if (_shouldDelete || is_public !== showOnlyPublic) return false
           const entryDate = new Date(date_created_by_author)
@@ -30,7 +28,7 @@ const EntriesRediscover = ({ items, filteredItems, showOnlyPublic }) => {
           const bDate = new Date(b.date_created_by_author)
           return bDate - aDate
         }),
-    [items, filteredItems, showOnlyPublic],
+    [entries, showOnlyPublic],
   )
 
   return (
@@ -49,8 +47,7 @@ const EntriesRediscover = ({ items, filteredItems, showOnlyPublic }) => {
 }
 
 EntriesRediscover.propTypes = {
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
 }
 
 export default connect(mapStateToProps)(EntriesRediscover)
