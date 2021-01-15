@@ -1,22 +1,25 @@
-import React, { useState, useMemo, useCallback } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import GoogleMapReact from 'google-map-react'
-import MarkerCluster from './MarkerCluster'
-import Marker from './Marker'
-import { SetMapBoundsCenterZoom } from 'redux/Map/actions'
-import { SetUserLocation } from 'redux/User/actions'
-import useMapControl from './Controls/useMapControl'
-import MapSearchBox from './Controls/MapSearchBox'
-import UserLocationButton from './Controls/Buttons/UserLocationButton'
-import createClusters from './functions/createClusters'
-import formatLocations from './functions/formatLocations'
-import { EntryPropTypes } from 'redux/Entries/propTypes'
-import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from './constants'
+import React, { useState, useMemo, useCallback } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import GoogleMapReact from "google-map-react"
+import MarkerCluster from "./MarkerCluster"
+import Marker from "./Marker"
+import { SetMapBoundsCenterZoom } from "redux/Map/actions"
+import { SetUserLocation } from "redux/User/actions"
+import useMapControl from "./Controls/useMapControl"
+import MapSearchBox from "./Controls/MapSearchBox"
+import UserLocationButton from "./Controls/Buttons/UserLocationButton"
+import createClusters from "./functions/createClusters"
+import formatLocations from "./functions/formatLocations"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import { DEFAULT_MAP_OPTIONS, GOOGLE_MAP_CONTROL_POSITIONS } from "./constants"
 
 const { REACT_APP_GOOGLE_LOCATION_API } = process.env
 
-const mapStateToProps = ({ Map: { bounds, center, zoom }, User: { location } }) => ({
+const mapStateToProps = ({
+  Map: { bounds, center, zoom },
+  User: { location },
+}) => ({
   bounds,
   center,
   zoom,
@@ -49,7 +52,9 @@ const BasicMap = ({
 
   const { mapInstance, mapApi, mapRef } = state
 
-  const formattedLocations = useMemo(() => formatLocations(locations), [locations])
+  const formattedLocations = useMemo(() => formatLocations(locations), [
+    locations,
+  ])
 
   center.lat = parseFloat(center.lat)
   center.lng = parseFloat(center.lng)
@@ -75,7 +80,7 @@ const BasicMap = ({
 
   const onGoogleApiLoaded = useCallback(({ map, maps, ref }) => {
     if (!mapInstance) {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         mapInstance: map,
         mapApi: maps,
@@ -85,7 +90,7 @@ const BasicMap = ({
   }, [])
 
   const panTo = useCallback(
-    boundsCenterZoom => {
+    (boundsCenterZoom) => {
       if (
         boundsCenterZoom.bounds &&
         !(boundsCenterZoom.bounds.ne.lat && boundsCenterZoom.bounds.sw.lat)
@@ -95,7 +100,7 @@ const BasicMap = ({
 
       SetMapBoundsCenterZoom(boundsCenterZoom)
     },
-    [SetMapBoundsCenterZoom],
+    [SetMapBoundsCenterZoom]
   )
 
   const handleChange = useCallback(
@@ -104,14 +109,14 @@ const BasicMap = ({
 
       panTo(boundsCenterZoom)
     },
-    [panTo],
+    [panTo]
   )
 
   const renderMarkerClusters = useMemo(() => {
     if (!mapInstance) {
       return null
     }
-    return markerClusters.map(item => {
+    return markerClusters.map((item) => {
       const { id, numPoints, points, ...props } = item
       if (numPoints === 1) {
         const { id, ...props } = points[0]
@@ -147,14 +152,22 @@ const BasicMap = ({
   useMapControl({
     map: mapInstance,
     controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.TOP_LEFT,
-    children: <MapSearchBox mapApi={mapApi} panTo={panTo} onChange={onChange} />,
-    width: 'calc(100% - 48px)',
+    children: (
+      <MapSearchBox mapApi={mapApi} panTo={panTo} onChange={onChange} />
+    ),
+    width: "calc(100% - 48px)",
   })
+
+  // address: null,
+  // latitude: null,
+  // longitude: null,
 
   useMapControl({
     map: mapInstance,
     controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
-    children: <UserLocationButton panTo={panTo} SetUserLocation={SetUserLocation} />,
+    children: (
+      <UserLocationButton panTo={panTo} SetUserLocation={SetUserLocation} />
+    ),
   })
 
   return (
@@ -184,7 +197,7 @@ const BasicMap = ({
         )}
         {shouldRenderUserLocation && (
           <Marker
-            key='MyLocation'
+            key="MyLocation"
             lat={UserLocation.latitude}
             lng={UserLocation.longitude}
             renderUserLocation={renderUserLocation}
@@ -212,7 +225,7 @@ BasicMap.propTypes = {
 BasicMap.defaultProps = {
   renderUserLocation: true,
   height: 500,
-  width: '100%',
+  width: "100%",
   options: DEFAULT_MAP_OPTIONS,
   locations: [],
   getAddressOnMarkerClick: false,

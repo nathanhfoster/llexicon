@@ -23,6 +23,7 @@ export const SIZE_OPTIONS = [
 
 const Sizes = () => (
   <QuillSelect
+    title="Size"
     className="size"
     options={SIZE_OPTIONS}
     // defaultValue="12px"

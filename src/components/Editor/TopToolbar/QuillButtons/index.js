@@ -4,26 +4,30 @@ import "./styles.css"
 
 const BUTTONS = [
   [
-    { name: "bold" },
-    { name: "italic" },
-    { name: "underline" },
-    { name: "strike" },
-    { name: "blockquote" },
-    { name: "code-block" },
+    { title: "Bold", name: "bold" },
+    { title: "Italic", name: "italic" },
+    { title: "Underline", name: "underline" },
+    { title: "Strike", name: "strike" },
+    { title: "Blockquote", name: "blockquote" },
+    { title: "Code Block", name: "code-block" },
   ],
   [
-    { name: "script", value: "sub" },
-    { name: "script", value: "super" },
+    { title: "Sub", name: "script", value: "sub" },
+    { title: "Super", name: "script", value: "super" },
   ],
   [
-    { name: "list", value: "ordered" },
-    { name: "list", value: "bullet" },
-    { name: "indent", value: "-1" },
-    { name: "indent", value: "+1" },
-    { name: "direction", value: "rtl" },
+    { title: "Ordered List", name: "list", value: "ordered" },
+    { title: "Bullet List", name: "list", value: "bullet" },
+    { title: "Add Indent", name: "indent", value: "-1" },
+    { title: "Subtract Indent", name: "indent", value: "+1" },
+    { title: "Direction", name: "direction", value: "rtl" },
   ],
-  [{ name: "link" }, { name: "image" }, { name: "video" }],
-  [{ name: "clean" }],
+  [
+    { title: "Link", name: "link" },
+    { title: "Image", name: "image" },
+    { title: "Video", name: "video" },
+  ],
+  [{ title: "Clear Styles", name: "clean" }],
 ]
 
 const renderButtonGroup = (key, buttons) => (
@@ -35,8 +39,10 @@ const renderButtons = (buttons) =>
     if (Array.isArray(button)) {
       return renderButtonGroup(i, button)
     } else {
-      const { name, value } = button
-      return <button key={i} className={`ql-${name}`} value={value} />
+      const { name, value, title } = button
+      return (
+        <button key={i} title={title} className={`ql-${name}`} value={value} />
+      )
     }
   })
 

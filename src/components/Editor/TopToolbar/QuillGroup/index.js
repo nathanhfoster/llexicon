@@ -1,9 +1,7 @@
-import React from "react"
+import React, { memo } from "react"
 
-const QuillGroup = ({ style, children }) => (
-  <span className="ql-formats" style={style}>
-    {children}
-  </span>
+const QuillGroup = ({ children }) => (
+  <span className="ql-formats">{children}</span>
 )
 
-export default QuillGroup
+export default memo(QuillGroup)

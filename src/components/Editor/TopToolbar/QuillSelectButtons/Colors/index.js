@@ -41,6 +41,7 @@ const OPTIONS = [
 
 const Colors = () => (
   <QuillSelect
+    title="Color"
     className="color"
     options={OPTIONS}
     onChange={(e) => e.persist()}

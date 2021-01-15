@@ -14,8 +14,9 @@ const OPTIONS = [
   "lucida",
 ]
 
-const Fonts = ({}) => (
+const Fonts = () => (
   <QuillSelect
+    title="Font"
     className="font"
     options={OPTIONS}
     // defaultValue="roboto"
