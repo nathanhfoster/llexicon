@@ -25,7 +25,10 @@ const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
     case TextEditorActionTypes.TEXT_EDITOR_CLEAR:
       return {
         ...DEFAULT_STATE_TEXT_EDITOR,
+        title: '',
+        html: '<p><br/></p>',
         tags: [],
+        people: [],
         EntryFiles: [],
         rating: 0,
         _clearedOn: new Date(),
