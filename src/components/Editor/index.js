@@ -1,23 +1,32 @@
-import React, { createContext, useRef, useState, useEffect, useMemo, useCallback } from 'react'
-import { connect } from 'react-redux'
-import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
-import ReactQuill from 'react-quill'
-import { THEMES, FORMATS, getModules } from './modules'
-import 'react-quill/dist/quill.snow.css'
-import 'react-quill/dist/quill.bubble.css'
-import 'react-quill/dist/quill.core.css'
+import React, {
+  createContext,
+  useRef,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react"
+import { connect } from "react-redux"
+import { SetBottomToolbarIsOpen } from "redux/TextEditor/actions"
+import ReactQuill from "react-quill"
+import { THEMES, FORMATS, getModules } from "./modules"
+import "react-quill/dist/quill.snow.css"
+import "react-quill/dist/quill.bubble.css"
+import "react-quill/dist/quill.core.css"
 // import "quill-emoji/dist/quill-emoji.css"
 // import "quill-mention/dist/quill.mention.min.css"
-import './styles.css'
-import TopToolbar from './TopToolbar'
-import BottomToolbar from './BottomToolbar'
-import PropTypes from 'prop-types'
-import { EntryPropTypes } from 'redux/Entries/propTypes'
-import RawEditor from './RawEditor'
+import "./styles.css"
+import TopToolbar from "./TopToolbar"
+import BottomToolbar from "./BottomToolbar"
+import PropTypes from "prop-types"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import RawEditor from "./RawEditor"
 
 export const EditorConsumer = createContext()
 
-const mapStateToProps = ({ TextEditor: { bottomToolbarIsOpen } }) => ({ bottomToolbarIsOpen })
+const mapStateToProps = ({ TextEditor: { bottomToolbarIsOpen } }) => ({
+  bottomToolbarIsOpen,
+})
 
 const mapDispatchToProps = { SetBottomToolbarIsOpen }
 
@@ -41,7 +50,7 @@ const Editor = ({
   const [showRaw, setShowRaw] = useState(false)
 
   const toggleSetShowRaw = useCallback(() => {
-    setShowRaw(prevShowRaw => !prevShowRaw)
+    setShowRaw((prevShowRaw) => !prevShowRaw)
   }, [])
 
   useEffect(() => {
@@ -51,67 +60,71 @@ const Editor = ({
     }
   }, [])
 
-  const toolbarId = useMemo(() => `toolbar-${restOfProps.toolbarId}`, [restOfProps.toolbarId])
+  const toolbarId = useMemo(() => `toolbar-${restOfProps.toolbarId}`, [
+    restOfProps.toolbarId,
+  ])
 
   const quillId = useMemo(() => toolbarId.toString(), [toolbarId])
 
-  const modules = useMemo(() => getModules(toolbarId, restOfProps.topToolbarIsOpen), [
-    toolbarId,
-    restOfProps.topToolbarIsOpen,
-  ])
+  const modules = useMemo(
+    () => getModules(toolbarId, restOfProps.topToolbarIsOpen),
+    [toolbarId, restOfProps.topToolbarIsOpen]
+  )
 
-  const topToolbarIsOpen = useMemo(() => !readOnly && restOfProps.topToolbarIsOpen, [
-    readOnly,
-    restOfProps.topToolbarIsOpen,
-  ])
+  const topToolbarIsOpen = useMemo(
+    () => !readOnly && restOfProps.topToolbarIsOpen,
+    [readOnly, restOfProps.topToolbarIsOpen]
+  )
 
-  const canToggleToolbars = useMemo(() => !readOnly && restOfProps.canToggleToolbars, [
-    readOnly,
-    restOfProps.canToggleToolbars,
-  ])
+  const canToggleToolbars = useMemo(
+    () => !readOnly && restOfProps.canToggleToolbars,
+    [readOnly, restOfProps.canToggleToolbars]
+  )
 
   const editorStyles = useMemo(
     () => ({
       height: readOnly
-        ? 'calc(100vh - var(--navBarHeight) - var(--inputHeight))'
+        ? "calc(100vh - var(--navBarHeight) - var(--inputHeight))"
         : bottomToolbarIsOpen
-        ? 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))'
-        : 'calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))',
+        ? "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolbarHeight) - var(--bottomToolBarToggleContainerHeight))"
+        : "calc(100vh - var(--navBarHeight) - var(--inputHeight) - var(--topToolbarHeight) - var(--bottomToolBarToggleContainerHeight))",
     }),
-    [readOnly, bottomToolbarIsOpen],
+    [readOnly, bottomToolbarIsOpen]
   )
 
   const handleOnFocus = useCallback(
-    range => {
+    (range) => {
       if (editorRef && editorRef.current) {
         editorRef.current.setEditorSelection(editorRef.current.editor, range)
       }
     },
-    [editorRef],
+    [editorRef]
   )
 
   const handleEditorChange = useCallback(
-    fields => {
+    (fields) => {
       const payload = { id: entry.id, ...fields }
       onChange(payload)
     },
-    [entry.id, onChange],
+    [entry.id, onChange]
   )
 
   const handleEditorStateChange = useCallback(
     (html, delta, source, editor) => {
       // console.log('handleEditorStateChange: ', delta, source, editor)
-      if (source === 'api' && !didMount.current) return
+      if (source === "api" && !didMount.current) return
       handleEditorChange({ html })
     },
-    [handleEditorChange],
+    [handleEditorChange]
   )
 
   const toggleBottomToolbar = useCallback(
-    toggle => {
-      SetBottomToolbarIsOpen(toggle === true || toggle === false ? toggle : !bottomToolbarIsOpen)
+    (toggle) => {
+      SetBottomToolbarIsOpen(
+        toggle === true || toggle === false ? toggle : !bottomToolbarIsOpen
+      )
     },
-    [bottomToolbarIsOpen],
+    [bottomToolbarIsOpen]
   )
 
   const editorSelection = editorRef?.current?.getEditorSelection()
@@ -124,22 +137,26 @@ const Editor = ({
       toggleBottomToolbar,
       toggleSetShowRaw,
     }),
-    [editorRef, editorSelection, handleEditorChange, toggleBottomToolbar],
+    [editorRef, editorSelection, handleEditorChange, toggleBottomToolbar]
   )
-
-
 
   return (
     <EditorConsumer.Provider value={contextValue}>
-      <div className={showRaw ? 'showRaw' : ''}>
+      <div className={showRaw ? "showRaw" : ""}>
         {children}
-        <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
+        <i className="no-print">
+          <TopToolbar
+            toolbarId={toolbarId}
+            editorRef={editorRef}
+            isOpen={topToolbarIsOpen}
+          />
+        </i>
         <ReactQuill
           id={quillId}
           readOnly={readOnly}
-          bounds='app'
+          bounds="app"
           ref={editorRef}
-          className='Editor'
+          className="Editor"
           style={editorStyles}
           theme={theme}
           formats={FORMATS}
@@ -152,12 +169,14 @@ const Editor = ({
           preserveWhitespace={false}
           tabIndex={0}
         />
-        <BottomToolbar
-          entry={entry}
-          canToggleToolbars={canToggleToolbars}
-          isOpen={bottomToolbarIsOpen}
-          id={restOfProps.toolbarId}
-        />
+        <i className="no-print">
+          <BottomToolbar
+            entry={entry}
+            canToggleToolbars={canToggleToolbars}
+            isOpen={bottomToolbarIsOpen}
+            id={restOfProps.toolbarId}
+          />
+        </i>
         {showRaw && <RawEditor style={editorStyles} value={entry.html} />}
       </div>
     </EditorConsumer.Provider>
@@ -169,7 +188,8 @@ Editor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   entry: EntryPropTypes.isRequired,
   onChange: PropTypes.func,
-  toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
   canToggleToolbars: PropTypes.bool.isRequired,
   topToolbarIsOpen: PropTypes.bool,
   bottomToolbarIsOpen: PropTypes.bool.isRequired,
@@ -200,10 +220,10 @@ Editor.propTypes = {
 
 Editor.defaultProps = {
   theme: THEMES.SNOW,
-  height: '100%',
-  width: '100%',
+  height: "100%",
+  width: "100%",
   toolbarId: 1,
-  placeholder: 'Today I have...',
+  placeholder: "Today I have...",
   canToggleToolbars: true,
   topToolbarIsOpen: true,
   readOnly: false,

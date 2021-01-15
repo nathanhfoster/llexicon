@@ -1,4 +1,5 @@
 import React, { memo } from "react"
+import QuillGroup from "../QuillGroup"
 import "./styles.css"
 
 const BUTTONS = [
@@ -26,9 +27,7 @@ const BUTTONS = [
 ]
 
 const renderButtonGroup = (key, buttons) => (
-  <span key={key} className="ql-formats">
-    {renderButtons(buttons)}
-  </span>
+  <QuillGroup key={key}>{renderButtons(buttons)}</QuillGroup>
 )
 
 const renderButtons = (buttons) =>
