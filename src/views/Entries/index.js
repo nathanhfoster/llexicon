@@ -24,16 +24,12 @@ const mapStateToProps = ({
   Entries: { items, showOnlyPublic },
   TextEditor,
   Window: { innerHeight, navBarHeight },
-  router: {
-    location: { pathname },
-  },
 }) => ({
   userId: id,
   entries: items,
   showOnlyPublic,
   TextEditor,
   viewPortHeight: innerHeight - navBarHeight,
-  // activeTab: pathname,
 })
 
 const mapDispatchToProps = {
@@ -47,7 +43,6 @@ const Entries = ({
   TextEditor,
   viewPortHeight,
   GetUserEntries,
- // activeTab,
 }) => {
   const { pathname: activeTab } = useLocation()
   useEffect(() => {
