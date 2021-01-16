@@ -144,13 +144,13 @@ const Editor = ({
     <EditorConsumer.Provider value={contextValue}>
       <div className={showRaw ? "showRaw" : ""}>
         {children}
-        <i className="no-print">
+        <div className="no-print">
           <TopToolbar
             toolbarId={toolbarId}
             editorRef={editorRef}
             isOpen={topToolbarIsOpen}
           />
-        </i>
+        </div>
         <ReactQuill
           id={quillId}
           readOnly={readOnly}
@@ -169,14 +169,14 @@ const Editor = ({
           preserveWhitespace={false}
           tabIndex={0}
         />
-        <i className="no-print">
+        <div className="no-print">
           <BottomToolbar
             entry={entry}
             canToggleToolbars={canToggleToolbars}
             isOpen={bottomToolbarIsOpen}
             id={restOfProps.toolbarId}
           />
-        </i>
+        </div>
         {showRaw && <RawEditor style={editorStyles} value={entry.html} />}
       </div>
     </EditorConsumer.Provider>
