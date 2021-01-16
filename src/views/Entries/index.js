@@ -8,6 +8,7 @@ import { BasicTabs, NewEntryButton } from '../../components'
 import { UserEntriesTable } from '../../containers'
 import NewEntry from '../NewEntry'
 import { GetUserEntries } from 'redux/Entries/actions'
+import { useLocation } from 'react-router-dom'
 import './styles.css'
 
 const EntryCalendar = lazy(() => import('../../components/EntryComponents/EntryCalendar'))
@@ -32,7 +33,7 @@ const mapStateToProps = ({
   showOnlyPublic,
   TextEditor,
   viewPortHeight: innerHeight - navBarHeight,
-  activeTab: pathname,
+  // activeTab: pathname,
 })
 
 const mapDispatchToProps = {
@@ -46,8 +47,9 @@ const Entries = ({
   TextEditor,
   viewPortHeight,
   GetUserEntries,
-  activeTab,
+ // activeTab,
 }) => {
+  const { pathname: activeTab } = useLocation()
   useEffect(() => {
     if (userId) GetUserEntries(1)
   }, [userId])
