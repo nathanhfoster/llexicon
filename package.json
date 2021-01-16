@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@looop/quill-image-resize-module-react": "^3.1.5",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "form-data": "^3.0.0",
@@ -14,7 +15,6 @@
     "points-cluster": "^0.1.4",
     "pretty": "^2.0.0",
     "prop-types": "^15.7.2",
-    "quill-image-resize-module-react": "^3.1.5",
     "react": "^17.0.1",
     "react-calendar": "^3.3.0",
     "react-dom": "^17.0.1",
