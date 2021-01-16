@@ -18,7 +18,6 @@ export const LOCAL_STORAGE_REDUCERS = [
   'User',
   // 'TextEditor',
   'Window',
-  'router',
 ]
 
 export const INDEX_DB_REDUCERS = [
@@ -31,7 +30,6 @@ export const INDEX_DB_REDUCERS = [
   // 'User',
   'TextEditor',
   // 'Window',
-  // 'router',
 ]
 
 export const DATEBASE_SIZE = 5000 * 1024 * 1024
