@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { RouteMap, RouterGoBack } from 'redux/router/actions'
 import { SetApiResponseStatus } from 'redux/Alerts/actions'
 import { stringMatch } from '../../../utils'
@@ -21,19 +22,14 @@ const getSubtitles = apiResponseStatus => {
   }
 }
 
-const mapStateToProps = ({
-  Alerts: { apiResponseStatus },
-  router: {
-    location: { pathname },
-  },
-}) => ({
+const mapStateToProps = ({ Alerts: { apiResponseStatus } }) => ({
   apiResponseStatus,
-  pathname,
 })
 
 const mapDispatchToProps = { SetApiResponseStatus }
 
-const ApiStatusResponse = ({ apiResponseStatus, SetApiResponseStatus, pathname }) => {
+const ApiStatusResponse = ({ apiResponseStatus, SetApiResponseStatus }) => {
+  const { pathname } = useLocation()
   useEffect(() => {
     const isOnEntryDetailView = stringMatch(pathname, ENTRY_DETAIL.replace(':entryId', ''))
     // Fix apiResponseStatus

@@ -1,6 +1,5 @@
 import { AppActionTypes } from "redux/App/types"
 import { CalendarActionTypes } from "../Calendar/types"
-import { from } from "form-data"
 
 const { CALENDAR_SET, CALENDAR_SET_ACTIVE_ENTRY } = CalendarActionTypes
 

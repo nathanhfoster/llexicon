@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { BasicTabs, Header, PushNotifications } from '../../components'
 import EntryStatistics from './EntryStatistics'
@@ -22,17 +23,15 @@ const {
   SETTINGS_STORAGE,
 } = RouteMap
 
-const mapStateToProps = ({
-  Alerts: { serviceWorkerRegistration },
-  App: { version },
-  router: {
-    location: { pathname },
-  },
-}) => ({ serviceWorkerRegistration, appVersion: version, pathname })
+const mapStateToProps = ({ Alerts: { serviceWorkerRegistration }, App: { version } }) => ({
+  serviceWorkerRegistration,
+  appVersion: version,
+})
 
 const mapDispatchToProps = { UpdateAppVersion }
 
-const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVersion }) => {
+const Settings = ({ serviceWorkerRegistration, appVersion, UpdateAppVersion }) => {
+  const { pathname } = useLocation()
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
 
   const appVerisionText = useMemo(
@@ -121,7 +120,6 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
 Settings.propTypes = {
   serviceWorkerRegistration: PropTypes.object,
   appVersion: PropTypes.string,
-  pathname: PropTypes.string.isRequired,
   UpdateAppVersion: PropTypes.func.isRequired,
 }
 

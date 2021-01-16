@@ -1,6 +1,7 @@
 import React, { useMemo, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { RouteMap } from 'redux/router/actions'
 import { Media } from 'reactstrap'
 import StarGenerator from './StarGenerator'
@@ -30,16 +31,13 @@ const mapStateToProps = ({
     Settings: { show_animated_background },
   },
   Window: { innerHeight, innerWidth },
-  router: {
-    location: { pathname },
-  },
 }) => ({
   show_animated_background,
   starLength: Math.ceil((innerHeight + innerWidth) / 5),
-  pathname,
 })
 
-const BackgroundImage = ({ show_animated_background, starLength, pathname }) => {
+const BackgroundImage = ({ show_animated_background, starLength }) => {
+  const { pathname } = useLocation()
   const renderStars = useMemo(() => <StarGenerator length={starLength} />, [starLength])
 
   return (

@@ -1,17 +1,12 @@
-import React  from 'react'
+import React, { memo } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { Button } from 'reactstrap'
 import { RouterPush } from 'redux/router/actions'
 import './styles.css'
 
-const mapStateToProps = ({
-  router: {
-    location: { search },
-  },
-}) => ({ search })
-
-const EntryFolder = ({ title, search }) => {
+const EntryFolder = ({ title }) => {
+  const { search } = useLocation()
   const handleOnClickCallback = () => {
     RouterPush(search.concat(`+${title}`))
   }
@@ -32,4 +27,4 @@ const EntryFolder = ({ title, search }) => {
 
 EntryFolder.propTypes = { title: PropTypes.string }
 
-export default connect(mapStateToProps)(EntryFolder)
+export default memo(EntryFolder)

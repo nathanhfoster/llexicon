@@ -7,7 +7,6 @@ import { DEFAULT_STATE_TEXT_EDITOR, TextEditor } from './TextEditor/reducer'
 import { DEFAULT_STATE_ENTRIES, Entries } from './Entries/reducer'
 import { DEFAULT_STATE_MAP, Map } from './Map/reducer'
 import { DEFAULT_STATE_WINDOW, Window } from './Window/reducer'
-import { DEFAULT_STATE_ROUTER, router } from './router/reducer'
 
 const Reducers = {
   Admin,
@@ -19,7 +18,6 @@ const Reducers = {
   User,
   TextEditor,
   Window,
-  router,
 }
 
 export {
@@ -33,5 +31,4 @@ export {
   DEFAULT_STATE_USER,
   DEFAULT_STATE_TEXT_EDITOR,
   DEFAULT_STATE_WINDOW,
-  DEFAULT_STATE_ROUTER,
 }

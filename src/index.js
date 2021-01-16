@@ -9,7 +9,7 @@ import { history } from 'redux/router/reducer'
 import { LoadingScreen } from 'components'
 import { getUserClientId } from 'redux/localState'
 import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
+import { Router } from 'react-router-dom'
 import * as serviceWorker from 'serviceWorker'
 import { GetAppVersion } from 'redux/App/actions'
 import { lazyDelay } from 'utils'
@@ -65,9 +65,9 @@ ReactDOM.render(
   <Provider store={store}>
     <Suspense fallback={<LoadingScreen />}>
       <Persistor />
-      <ConnectedRouter history={history}>
+      <Router history={history}>
         <App />
-      </ConnectedRouter>
+      </Router>
     </Suspense>
   </Provider>,
   document.getElementById('root'),

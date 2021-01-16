@@ -21,6 +21,7 @@ import {
   SetSearchEntries,
   DeleteEntryFileFromRedux,
 } from './redux'
+import { history } from '../../router/reducer'
 
 export const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
@@ -251,17 +252,12 @@ export const GetUserEntriesByDate = payload => (dispatch, getState) => {
     })
 }
 
-export const PostEntry = payload => (dispatch, getState) => {
+export const PostEntry = payload => dispatch => {
   dispatch(PendingEntries())
   return Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
-      const {
-        router: {
-          location: { pathname },
-        },
-      } = getState()
-
+      const { pathname } = history.location
       if (pathname.includes(payload.id)) {
         const newRoute = pathname.replace(payload.id, data.id)
         RouterPush(newRoute)
