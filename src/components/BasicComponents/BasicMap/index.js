@@ -158,10 +158,6 @@ const BasicMap = ({
     width: "calc(100% - 48px)",
   })
 
-  // address: null,
-  // latitude: null,
-  // longitude: null,
-
   useMapControl({
     map: mapInstance,
     controlPosition: GOOGLE_MAP_CONTROL_POSITIONS.RIGHT_BOTTOM,
