@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { EditorConsumer } from '../'
 import pretty from 'pretty'
 
-const RawEditor = ({ style, value }) => {
+const RawEditor = ({ style, placeholder, value }) => {
   const { handleEditorChange } = useContext(EditorConsumer)
   const [stateValue, setStateValue] = useState(pretty(value))
   const mounted = useRef(false)
@@ -35,6 +35,7 @@ const RawEditor = ({ style, value }) => {
     <textarea
       className='Editor raw-editor px-3 py-2'
       style={style}
+      placeholder={placeholder}
       value={stateValue}
       onChange={handleEditorRawStateChange}
     />
