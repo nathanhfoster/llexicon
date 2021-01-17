@@ -177,7 +177,7 @@ const Editor = ({
             id={restOfProps.toolbarId}
           />
         </div>
-        {showRaw && <RawEditor style={editorStyles} value={entry.html} />}
+        {showRaw && <RawEditor style={editorStyles} placeholder={placeholder} value={entry.html} />}
       </div>
     </EditorConsumer.Provider>
   )
