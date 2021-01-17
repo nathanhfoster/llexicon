@@ -44,6 +44,7 @@ const RawEditor = ({ style, placeholder, value }) => {
 
 RawEditor.propTypes = {
   style: PropTypes.shape({ height: PropTypes.string }).isRequired,
+  placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
 }
 
