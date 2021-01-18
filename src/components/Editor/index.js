@@ -144,7 +144,7 @@ const Editor = ({
     <EditorConsumer.Provider value={contextValue}>
       <div className={showRaw ? "showRaw" : ""}>
         {children}
-        <div className="no-print">
+        <div className="d-print-none">
           <TopToolbar
             toolbarId={toolbarId}
             editorRef={editorRef}
@@ -169,7 +169,7 @@ const Editor = ({
           preserveWhitespace={false}
           tabIndex={0}
         />
-        <div className="no-print">
+        <div className="d-print-none">
           <BottomToolbar
             entry={entry}
             canToggleToolbars={canToggleToolbars}
@@ -177,7 +177,13 @@ const Editor = ({
             id={restOfProps.toolbarId}
           />
         </div>
-        {showRaw && <RawEditor style={editorStyles} placeholder={placeholder} value={entry.html} />}
+        {showRaw && (
+          <RawEditor
+            style={editorStyles}
+            placeholder={placeholder}
+            value={entry.html}
+          />
+        )}
       </div>
     </EditorConsumer.Provider>
   )
