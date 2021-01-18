@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useLayoutEffect, useEffect } from "react"
+import React, { memo, useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
 import { Button } from "reactstrap"
 import defaultStyles from "./defaultStyles"
@@ -29,9 +29,9 @@ const UserLocationButton = ({
       center: { lat: latitude, lng: longitude },
       zoom: 16,
     })
-  }, [panTo])
+  }, [panTo, geoState?.position?.coords])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (map?.controls[controlPosition]) {
       const firstKey = Object.keys(map?.controls[controlPosition])[0]
       if (map?.controls[controlPosition][firstKey]?.length > 0) {
@@ -44,21 +44,16 @@ const UserLocationButton = ({
           map.controls[controlPosition][
             firstKey
           ][0].children[0].removeEventListener("click", handleOnClick)
+          SetUserLocation(null)
         }
       }
     }
-  }, [controlPosition, handleOnClick, map.controls])
-
-  useEffect(() => {
-    return () => {
-      SetUserLocation(null)
-    }
-  }, [SetUserLocation])
+  }, [controlPosition, handleOnClick, SetUserLocation, map.controls])
 
   return isSupported ? (
     <Button
       color="white"
-      disabled={!geoState.position}
+      disabled={isRetrieving || !geoState.position}
       style={{ ...defaultStyles, padding: 0 }}
     >
       <i className="fas fa-user-circle fa-2x" aria-label="myLocation" />
