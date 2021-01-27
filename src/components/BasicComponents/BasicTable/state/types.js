@@ -11,13 +11,13 @@ const BasicTableActionTypes = {
 }
 
 const ColumnPropType = PropTypes.shape({
+  key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   title: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
     PropTypes.object,
     PropTypes.func,
   ]),
-  key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   render: PropTypes.func,
   footer: PropTypes.func,

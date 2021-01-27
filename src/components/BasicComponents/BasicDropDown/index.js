@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo, useEffect, useReducer } from 'react'
+import React, { useState, useMemo, memo, useEffect, useReducer, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import './styles.css'
@@ -21,18 +21,21 @@ const MODIFIERS = {
   },
 }
 
-const BasicDropDown = ({ options, onChange, direction, value: propValue, className }) => {
+const BasicDropDown = ({ options, onChange, direction, value: propValue, className, color }) => {
+  const mounted = useRef(false)
   const [dropdownOpen, toggle] = useReducer(prevState => !prevState, false)
-  const [value, setValue] = useState(propValue)
-
+  const [value, setValue] = useState(propValue || options[0].value)
   useEffect(() => {
-    setValue(propValue)
+    if (mounted.current) {
+      setValue(propValue)
+    }
+    mounted.current = true
   }, [propValue])
 
   const renderOptions = useMemo(
     () =>
       options.map((l, i) => {
-        const { id, value, header, disabled, divider } = l
+        const { id, value, ...restOfProps } = l
         const handleClick = () => {
           if (onChange) {
             onChange(id, value)
@@ -41,18 +44,12 @@ const BasicDropDown = ({ options, onChange, direction, value: propValue, classNa
           }
         }
         return (
-          <DropdownItem
-            key={`${id}-${i}`}
-            divider={divider}
-            header={header}
-            disabled={disabled}
-            onClick={handleClick}
-          >
+          <DropdownItem key={`${id}-${i}`} onClick={handleClick} {...restOfProps}>
             {value || id}
           </DropdownItem>
         )
       }),
-    [options],
+    [onChange, options],
   )
 
   return (
@@ -62,7 +59,7 @@ const BasicDropDown = ({ options, onChange, direction, value: propValue, classNa
       direction={direction}
       className={`BasicDropDown ${className}`}
     >
-      <DropdownToggle caret color='primary' className={`BasicDropDownToggle`}>
+      <DropdownToggle caret color={color} className={`BasicDropDownToggle`}>
         {value}
       </DropdownToggle>
       <DropdownMenu modifiers={MODIFIERS}>{renderOptions}</DropdownMenu>
@@ -79,6 +76,7 @@ BasicDropDown.propTypes = {
       header: PropTypes.bool,
       disabled: PropTypes.bool,
       divider: PropTypes.bool,
+      title: PropTypes.string,
     }).isRequired,
   ),
   onChange: PropTypes.func,
@@ -141,7 +139,8 @@ BasicDropDown.propTypes = {
 BasicDropDown.defaultProps = {
   options: [],
   direction: 'down',
-  value: 'value',
+  value: '',
+  color: 'primary',
 }
 
 export default memo(BasicDropDown)

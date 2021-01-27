@@ -23,6 +23,7 @@ const FileUpload = ({ title, value, size, onChange }) => {
           onChange={onChange}
           accept='.json'
           multiple={false}
+          title={title}
         />
         {title}
       </div>

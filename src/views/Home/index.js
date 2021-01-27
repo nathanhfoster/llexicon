@@ -1,7 +1,7 @@
 import React, { useMemo, lazy, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
+import { Container, Row, Col, ButtonGroup, Button, ButtonToolbar } from 'reactstrap'
 import { AddToHomeScreen, BasicCard, Header, EntriesToggleShowOnlyPublic } from '../../components'
 import LogoImage from '../../components/BackgroundImage/LogoImage'
 import { RouterPush, RouteMap } from 'redux/router/actions'
@@ -28,15 +28,17 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
 
   const homeCardText = useMemo(
     () => (
-      <ButtonGroup aria-label='Navigation' size='lg'>
-        <Button
-          color={!userIsLoggedIn ? 'info' : 'success'}
-          onClick={() => RouterPush(!userIsLoggedIn ? RouteMap.ABOUT : RouteMap.SETTINGS_ENTRIES)}
-        >
-          {!userIsLoggedIn ? 'Learn More' : 'Settings'}
-        </Button>
-        <EntriesToggleShowOnlyPublic />
-      </ButtonGroup>
+      <ButtonToolbar>
+        <ButtonGroup aria-label='Navigation' size='lg'>
+          <Button
+            color={!userIsLoggedIn ? 'info' : 'success'}
+            onClick={() => RouterPush(!userIsLoggedIn ? RouteMap.ABOUT : RouteMap.SETTINGS_ENTRIES)}
+          >
+            {!userIsLoggedIn ? 'Learn More' : 'Settings'}
+          </Button>
+          <EntriesToggleShowOnlyPublic />
+        </ButtonGroup>
+      </ButtonToolbar>
     ),
     [userIsLoggedIn],
   )
@@ -64,9 +66,9 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
         <UserEntriesTable />
       </Row>
       <Row>
-          <EntriesRediscover />
-          <EntriesMostViewed />
-          <EntriesRandom />
+        <EntriesRediscover />
+        <EntriesMostViewed />
+        <EntriesRandom />
       </Row>
     </Container>
   )

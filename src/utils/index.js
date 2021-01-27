@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import ReactGA from 'react-ga'
 import MomentJS from 'moment'
+import { keys } from 'localforage'
 
 const isType = {
   UNDEFINED: 'undefined',
@@ -722,6 +723,29 @@ const SRC_REGEX = /(?<=src=").*?(?=[\?"])/
 const SRC_REGEX_GLOBAL = /(?<=src=").*?(?=[\?"])/gm
 const YOUTUBE_VIDEO_ID = /youtube\.com.*(\?v=|\/embed\/)(.{11})/
 
+const downloadCSV = (
+  columns = [['Column 1', 'Column 2']],
+  rows = [
+    ['Row 1 Col 1', 'Row 1 Col 2'],
+    ['Row 2 Col 1', 'Row 2 Col 2'],
+  ],
+) => {
+  const content = columns
+    .concat(rows)
+    .map(e => {
+      const row = e.join(',')
+      console.log(row)
+      return row
+    })
+    .join('\r\n')
+  const csvContent = `data:text/csv;charset=utf-8,${content}`
+  const encodedUri = encodeURI(csvContent)
+  window.open(encodedUri)
+}
+
+const omit = (arrayOfObjects = [], keysToOmit = []) =>
+  arrayOfObjects.filter(e => !keysToOmit.some(key => key === (typeof e === 'string' ? e : e[key])))
+
 export {
   isType,
   DOCUMENT_FORMAT,
@@ -789,4 +813,6 @@ export {
   SRC_REGEX,
   SRC_REGEX_GLOBAL,
   YOUTUBE_VIDEO_ID,
+  downloadCSV,
+  omit,
 }

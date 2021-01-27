@@ -19,9 +19,9 @@ const ImportExportEntries = ({ userId, SyncEntries, GetAllUserEntryPages }) => {
   )
 
   return (
-    <ButtonGroup style={{ width: '100%' }} className='pb-1'>
-      <Button color='accent' onClick={GetAllEntries} disabled={!userId}>
-        <i className='fas fa-cloud-download-alt' /> Download and Sync
+    <ButtonGroup className='pb-1'>
+      <Button color='accent' onClick={GetAllEntries} disabled={!userId} title='Download and Sync'>
+        <i className='fas fa-cloud-download-alt' /> Sync
       </Button>
       <ImportEntries />
       <ButtonExportEntries />

@@ -1,10 +1,9 @@
-import React, { useMemo, memo } from 'react'
+import React, { useMemo, useCallback, memo, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { Button } from 'reactstrap'
 import { useSelector } from 'react-redux'
 
-import { exportJSON, getValidDate } from 'utils'
+import { exportJSON, getValidDate, downloadCSV } from 'utils'
 import { getTagStringFromObject } from 'redux/Entries/utils'
 import {
   selectedEntriesSelector,
@@ -12,6 +11,13 @@ import {
   selectedItemsAreEqual,
   allItemsAreEqual,
 } from 'redux/Entries/utils'
+import BasicDropDown from 'components/BasicComponents/BasicDropDown'
+
+const EXPORT_BUTTON = (
+  <span>
+    <i className='fas fa-file-export mr-1' /> Export
+  </span>
+)
 
 const ButtonExportEntries = ({ entries: entriesFromProps }) => {
   const userId = useSelector(({ User: { id } }) => id)
@@ -73,11 +79,78 @@ const ButtonExportEntries = ({ entries: entriesFromProps }) => {
 
     exportJSON(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
   }
+
+  const handleExportToCSV = () => {
+    const columns = [
+      'id',
+      'title',
+      'html',
+      // 'tags',
+      // 'people',
+      // 'address',
+      // 'date_created_by_author',
+      // 'date_updated',
+      // 'views',
+      // 'rating',
+      // 'EntryFiles',
+      // 'is_public',
+    ]
+    const rows = entries.map(entry => {
+      let row = columns.map(c => JSON.stringify(entry[c]))
+      return row
+    })
+    console.log([columns])
+    console.log(rows)
+    downloadCSV([columns], rows)
+  }
+
+  const options = useMemo(() => {
+    const disabled = entries.length === 0
+    return [
+      {
+        id: 'csv',
+        title: 'Export CSV File',
+        value: (
+          <Fragment>
+            <i className='fas fa-file-csv mr-1' />
+            CSV
+          </Fragment>
+        ),
+        disabled,
+      },
+      {
+        id: 'json',
+        title: 'Export JSON File',
+        value: (
+          <Fragment>
+            <i className='fas fa-file-csv mr-1' />
+            JSON
+          </Fragment>
+        ),
+        disabled,
+      },
+    ]
+  }, [entries.length])
+
+  const handleOnChange = useCallback((id, value) => {
+    switch (id) {
+      case 'csv':
+        handleExportToCSV()
+        break
+      case 'json':
+        handleExportEntries()
+        break
+      default:
+    }
+  }, [])
+
   return (
-    <Button color='accent' onClick={handleExportEntries} disabled={entries.length === 0}>
-      <i className='fas fa-file-export mr-1' />
-      Export
-    </Button>
+    <BasicDropDown
+      options={options}
+      onChange={handleOnChange}
+      color='accent'
+      value={EXPORT_BUTTON}
+    />
   )
 }
 

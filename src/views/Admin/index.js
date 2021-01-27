@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import UserEntriesTable from './UserEntriesTable'
 import { BasicTable, Header } from '../../components'
 import Moment from 'react-moment'
-import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
+import { Container, Row, Col, ButtonGroup, Button, ButtonToolbar } from 'reactstrap'
 import { GetAllUsers, GetAllUserEntries } from 'redux/Admin/actions'
 import { stringMatch } from '../../utils'
 
@@ -185,25 +185,27 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
           // onFilterCallback={handleFilterCallback}
           actionMenuCallback={handleActionMenuCallback}
         >
-          <ButtonGroup className='BasicTableActions'>
-            <Button
-              color='accent'
-              tag='a'
-              href={userEmails}
-              target='_blank'
-              rel='noopener noreferrer'
-              disabled={Object.keys(usersSelected).length === 0}
-            >
-              Email
-            </Button>
-            <Button
-              color='accent'
-              disabled={Object.keys(usersSelected).length === 0}
-              onClick={handleClearUsersSelected}
-            >
-              Clear
-            </Button>
-          </ButtonGroup>
+          <ButtonToolbar>
+            <ButtonGroup>
+              <Button
+                color='accent'
+                tag='a'
+                href={userEmails}
+                target='_blank'
+                rel='noopener noreferrer'
+                disabled={Object.keys(usersSelected).length === 0}
+              >
+                Email
+              </Button>
+              <Button
+                color='accent'
+                disabled={Object.keys(usersSelected).length === 0}
+                onClick={handleClearUsersSelected}
+              >
+                Clear
+              </Button>
+            </ButtonGroup>
+          </ButtonToolbar>
         </BasicTable>
       </Row>
     </Container>
