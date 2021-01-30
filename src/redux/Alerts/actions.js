@@ -1,18 +1,18 @@
-import { AlertActionTypes } from "../Alerts/types"
+import actions from '../actionTypes'
 
-const SetApiResponseStatus = (payload) => ({
-  type: AlertActionTypes.ALERTS_SET_API_RESPONSE_STATUS,
+export const SetApiResponseStatus = payload => ({
+  type: actions.ALERTS_SET_API_RESPONSE_STATUS,
   payload,
 })
 
-const SetAlert = (payload) => ({
-  type: AlertActionTypes.ALERTS_SET_MESSAGE,
+export const SetAlert = payload => ({
+  type: actions.ALERTS_SET_MESSAGE,
   payload,
 })
 
-const ClearAlerts = () => ({ type: AlertActionTypes.ALERTS_CLEAR })
+export const ClearAlerts = () => ({ type: actions.ALERTS_CLEAR })
 
-const UpdateAppVersion = () => (dispatch, getState) => {
+export const UpdateAppVersion = () => (dispatch, getState) => {
   const { serviceWorkerRegistration } = getState().Alerts
   dispatch(ClearAlerts())
 
@@ -22,7 +22,7 @@ const UpdateAppVersion = () => (dispatch, getState) => {
   //  } })
 
   if (serviceWorkerRegistration?.waiting)
-    serviceWorkerRegistration.waiting.postMessage({ type: "SKIP_WAITING" })
+    serviceWorkerRegistration.waiting.postMessage({ type: 'SKIP_WAITING' })
   setTimeout(() => {
     // const currentUrl = window.location.href
     // window.close()
@@ -31,5 +31,3 @@ const UpdateAppVersion = () => (dispatch, getState) => {
     window.location.reload()
   }, 400)
 }
-
-export { SetApiResponseStatus, SetAlert, ClearAlerts, UpdateAppVersion }

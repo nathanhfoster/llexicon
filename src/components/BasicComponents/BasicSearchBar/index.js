@@ -10,7 +10,7 @@ import {
 } from "reactstrap"
 import { DebounceInput } from "../../"
 
-const BasicSearchBar = ({ placeholder, onSubmit }) => {
+export const BasicSearchBar = ({ placeholder, onSubmit }) => {
   const [searchValue, setSearchValue] = useState("")
 
   const handleOnChange = (value) => setSearchValue(value)

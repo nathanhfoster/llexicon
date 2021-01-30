@@ -1,11 +1,11 @@
-import React, { Fragment, memo } from "react"
-import PropTypes from "prop-types"
-import { Progress } from "reactstrap"
-import "./styles.css"
+import React, { Fragment, memo } from 'react'
+import PropTypes from 'prop-types'
+import { Progress } from 'reactstrap'
+import './styles.css'
 
-const colors = ["success", "info", "warning", "danger"]
+const colors = ['success', 'info', 'warning', 'danger']
 
-const getColor = (percentage) => {
+const getColor = percentage => {
   if (percentage >= 90) return colors[3]
   if (percentage >= 75) return colors[2]
   if (percentage >= 50) return colors[1]
@@ -17,7 +17,7 @@ const getColor = (percentage) => {
 const getPercentageDone = (numerator, denominator) =>
   Number((numerator / denominator) * 100).toFixed(2)
 
-const BasicProgress = ({ label, showPercentage, bars, ...restOfProps }) => {
+export const BasicProgress = ({ label, showPercentage, bars, ...restOfProps }) => {
   const percentage = getPercentageDone(restOfProps.value, restOfProps.max)
   const color = getColor(percentage)
 
@@ -40,7 +40,7 @@ const BasicProgress = ({ label, showPercentage, bars, ...restOfProps }) => {
 
   return (
     <Fragment>
-      {label && <div className="text-center">{label}</div>}
+      {label && <div className='text-center'>{label}</div>}
       {shouldRenderMultipleBars ? (
         <Progress multi>{renderBars}</Progress>
       ) : (
@@ -61,7 +61,7 @@ BasicProgress.propTypes = {
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       showPercentage: PropTypes.bool,
-    })
+    }),
   ),
 
   bar: PropTypes.bool,

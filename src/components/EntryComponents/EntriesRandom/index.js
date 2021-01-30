@@ -10,7 +10,7 @@ const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) 
   showOnlyPublic,
 })
 
-const EntriesRandom = ({ entries, showOnlyPublic }) => {
+export const EntriesRandom = ({ entries, showOnlyPublic }) => {
   const containerRef = useRef()
 
   const viewableEntries = useMemo(

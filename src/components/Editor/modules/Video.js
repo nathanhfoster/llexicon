@@ -10,6 +10,9 @@ export const cleanUrl = url =>
     .replace('youtu.be/', 'youtube.com/embed/')
 
 class Video extends BlockEmbed {
+  constructor(props) {
+    super(props)
+  }
   static create(value) {
     value = cleanUrl(value)
     const editorRef = document.getElementById('TextEditor')

@@ -44,7 +44,7 @@ const peopleInputs = [
   ],
 ]
 
-const ButtonEditEntries = ({ entries: entriesFromProps }) => {
+export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
   const { entriesFromRedux, EntryTags, EntryPeople } = useSelector(
     ({ Entries: { items, filteredItems, EntryTags, EntryPeople } }) => ({
       entriesFromRedux: filteredItems.length > 0 ? items.concat(filteredItems) : items,
@@ -156,7 +156,6 @@ const ButtonEditEntries = ({ entries: entriesFromProps }) => {
           )
         }
         if (Object.keys(tagMap).length > 0 && tagsDelete.current) {
-          console.log(tagMap, e.tags)
           entryFieldsToUpdate.tags = e.tags.reduce((acc, t) => {
             if (!tagMap[t.name]) {
               acc.push(t)

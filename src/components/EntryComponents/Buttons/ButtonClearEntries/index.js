@@ -4,7 +4,7 @@ import { ClearEntries } from 'redux/Entries/actions'
 import { ConfirmAction } from 'components'
 import { Button } from 'reactstrap'
 
-const ButtonClearEntries = () => {
+export const ButtonClearEntries = () => {
   const dispatch = useDispatch()
   const handleClearEntries = useCallback(() => {
     dispatch(ClearEntries())

@@ -14,7 +14,7 @@ const mapStateToProps = ({ Alerts: { title, message, timeout } }) => ({
 
 const mapDispatchToProps = { ClearAlerts, UpdateAppVersion }
 
-const AlertNotifications = ({
+export const AlertNotifications = ({
   icon,
   title,
   message,

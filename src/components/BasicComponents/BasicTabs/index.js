@@ -15,7 +15,7 @@ const getInitialState = (activeTab, defaultTab, tabs) => {
   return defaultTab || activeTab || firstTabId
 }
 
-const BasicTabs = ({ className, defaultTab, fluid, tabs, onClick, ...restOfProps }) => {
+export const BasicTabs = ({ className, defaultTab, fluid, tabs, onClick, ...restOfProps }) => {
   const [activeTab, setActiveTab] = useState(
     getInitialState(restOfProps.activeTab, defaultTab, tabs),
   )

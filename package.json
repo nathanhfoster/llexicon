@@ -11,6 +11,7 @@
     "history": "^4.10.1",
     "jquery": "^3.5.1",
     "localforage": "^1.9.0",
+    "localforage-driver-memory": "^1.0.5",
     "moment": "^2.24.0",
     "points-cluster": "^0.1.4",
     "pretty": "^2.0.0",
@@ -19,7 +20,6 @@
     "react-calendar": "^3.3.0",
     "react-dom": "^17.0.1",
     "react-facebook-login": "^4.1.1",
-    "react-ga": "^3.3.0",
     "react-google-login": "^5.1.10",
     "react-helmet": "^6.1.0",
     "react-image-lightbox": "^5.1.1",
@@ -55,5 +55,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.3",
+    "@testing-library/user-event": "^12.6.2",
+    "faker": "^5.2.0"
   }
 }

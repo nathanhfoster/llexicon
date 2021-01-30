@@ -36,7 +36,7 @@ const mapStateToProps = ({
   starLength: Math.ceil((innerHeight + innerWidth) / 5),
 })
 
-const BackgroundImage = ({ show_animated_background, starLength }) => {
+export const BackgroundImage = ({ show_animated_background, starLength }) => {
   const { pathname } = useLocation()
   const renderStars = useMemo(() => <StarGenerator length={starLength} />, [starLength])
 

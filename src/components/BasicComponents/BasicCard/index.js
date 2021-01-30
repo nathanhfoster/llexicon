@@ -4,7 +4,7 @@ import { Card, CardHeader, CardText, CardBody, CardTitle } from 'reactstrap'
 import { isType } from '../../../utils'
 import './styles.css'
 
-const BasicCard = ({
+export const BasicCard = ({
   selected,
   tag,
   href,

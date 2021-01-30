@@ -6,7 +6,7 @@ import {
   GetEntryDetailUrl,
 } from "redux/router/actions"
 
-const EntryDataCellLink = ({ className, entryId, children }) => {
+export const EntryDataCellLink = ({ className, entryId, children }) => {
   const entryDetailUrl = GetEntryDetailUrl(entryId)
   const route = RouterLinkPush(entryDetailUrl)
   const handleOnClick = e => e.stopPropagation()

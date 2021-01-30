@@ -42,7 +42,7 @@ const baseFormHeaders = payload => ({
   'Content-Type': `multipart/form-data; boundary=${payload._boundary}`,
 })
 
-const isNotLoggedInAxios = () => {
+export const isNotLoggedInAxios = () => {
   return axios.create({ baseURL: 'https://offline_mode' })
 }
 
@@ -67,7 +67,7 @@ Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/R
 }
 */
 
-const Axios = props => {
+export const Axios = props => {
   const { authToken, responseType = 'json' } = props ? props : {}
   const {
     token: userToken,
@@ -88,7 +88,7 @@ const Axios = props => {
   })
 }
 
-const AxiosOffline = (responseType = 'json') => {
+export const AxiosOffline = (responseType = 'json') => {
   const { token } = getUser()
 
   return axios.create({
@@ -104,7 +104,7 @@ const AxiosOffline = (responseType = 'json') => {
   })
 }
 
-const AxiosForm = props => {
+export const AxiosForm = props => {
   const { authToken, payload } = props ? props : {}
   const { token: userToken } = getUser()
   const token = authToken || userToken
@@ -119,7 +119,7 @@ const AxiosForm = props => {
   })
 }
 
-const AxiosData = (token, payload) => {
+export const AxiosData = (token, payload) => {
   return axios.create({
     ...axiosDefaults,
     withCredentials: token ? true : false,
@@ -135,7 +135,7 @@ const AxiosData = (token, payload) => {
 
 // dispatchActions is an array of actions that will be
 // recursively called using .then promise since an action that => or returns Axios() is a promise.
-const Sync = dispatchActions => async dispatch => {
+export const Sync = dispatchActions => async dispatch => {
   if (!Array.isArray(dispatchActions)) return await dispatch(dispatchActions)
   if (dispatchActions.length === 0) return
   const [firstAction, ...restOfActions] = dispatchActions
@@ -147,5 +147,3 @@ const Sync = dispatchActions => async dispatch => {
       return
     })
 }
-
-export { isNotLoggedInAxios, Axios, AxiosOffline, AxiosForm, AxiosData, Sync }

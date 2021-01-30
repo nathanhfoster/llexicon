@@ -1,24 +1,29 @@
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types'
 
-const EntryTagProps = PropTypes.shape({
+export const stringOrDatePropType = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.instanceOf(Date),
+])
+
+export const EntryTagProps = PropTypes.shape({
   name: PropTypes.string,
   date_created: PropTypes.string,
   date_updated: PropTypes.string,
   authors: PropTypes.arrayOf(PropTypes.number),
 })
 
-const EntryTagsProps = PropTypes.arrayOf(EntryTagProps)
+export const EntryTagsProps = PropTypes.arrayOf(EntryTagProps)
 
-const EntryPersonProps = PropTypes.shape({
+export const EntryPersonProps = PropTypes.shape({
   name: PropTypes.string,
   date_created: PropTypes.string,
   date_updated: PropTypes.string,
   authors: PropTypes.arrayOf(PropTypes.number),
 })
 
-const EntryPeopleProps = PropTypes.arrayOf(EntryPersonProps)
+export const EntryPeopleProps = PropTypes.arrayOf(EntryPersonProps)
 
-const EntryFileProps = PropTypes.shape({
+export const EntryFileProps = PropTypes.shape({
   id: PropTypes.number,
   file_type: PropTypes.string,
   name: PropTypes.string,
@@ -27,66 +32,40 @@ const EntryFileProps = PropTypes.shape({
   date_created: PropTypes.string,
   date_updated: PropTypes.string,
   date_modified: PropTypes.string,
-  entry_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  entry_id: PropTypes.number,
 })
 
-const EntryFilesProps = PropTypes.arrayOf(EntryFileProps)
+export const EntryFilesProps = PropTypes.arrayOf(EntryFileProps)
 
-const EntryRatingProps = PropTypes.oneOf([0, 1, 2, 3, 4, 5])
+export const EntryRatingProps = PropTypes.oneOf([0, 1, 2, 3, 4, 5])
 
-const EntryPropType = {
-  size: PropTypes.number,
+export const EntryPropType = {
+  id: PropTypes.number,
   author: PropTypes.number,
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  tags: EntryTagsProps,
-  people: EntryPeopleProps,
-  EntryFiles: EntryFilesProps,
   title: PropTypes.string,
   html: PropTypes.string,
-  date_created: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.instanceOf(Date),
-  ]),
-  date_created_by_author: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.instanceOf(Date),
-  ]),
-  date_updated: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.instanceOf(Date),
-  ]),
+  tags: EntryTagsProps,
+  people: EntryPeopleProps,
+  address: PropTypes.string,
+  latitude: PropTypes.number,
+  longitude: PropTypes.number,
+  date_created: stringOrDatePropType,
+  date_created_by_author: stringOrDatePropType,
+  date_updated: stringOrDatePropType,
   views: PropTypes.number,
   rating: EntryRatingProps,
-  address: PropTypes.string,
-  latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  EntryFiles: EntryFilesProps,
   is_public: PropTypes.bool,
-
+  size: PropTypes.number,
   // Redux Only
   _size: PropTypes.number,
   _shouldDelete: PropTypes.bool,
   _shouldPost: PropTypes.bool,
-  _lastUpdated: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.instanceOf(Date),
-  ]),
+  _lastUpdated: stringOrDatePropType,
   _image: PropTypes.string,
-  _calendarDate: PropTypes.instanceOf(Date),
+  _calendarDate: stringOrDatePropType,
 }
 
-const EntryPropTypes = PropTypes.shape(EntryPropType)
+export const EntryPropTypes = PropTypes.shape(EntryPropType)
 
-const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)
-
-export {
-  EntryTagProps,
-  EntryTagsProps,
-  EntryPersonProps,
-  EntryPeopleProps,
-  EntryFileProps,
-  EntryFilesProps,
-  EntryRatingProps,
-  EntryPropType,
-  EntryPropTypes,
-  EntriesPropTypes,
-}
+export const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)

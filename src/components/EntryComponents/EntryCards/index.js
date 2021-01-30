@@ -8,7 +8,7 @@ import { useScrollable } from 'hooks'
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
-const EntryCards = ({ className, entries, minimal, containerRef }) => {
+export const EntryCards = ({ className, entries, minimal, containerRef }) => {
   const [viewableEntriesRange, setViewableEntriesRange] = useState(DEFAULT_VIEWABLE_ENTRIES_RANGE)
 
   const [beginOffset, endOffset] = viewableEntriesRange

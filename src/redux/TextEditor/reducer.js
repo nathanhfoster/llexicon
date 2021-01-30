@@ -1,5 +1,4 @@
-import { TextEditorActionTypes } from '../TextEditor/types'
-import { AppActionTypes } from '../App/types'
+import actions from '../actionTypes'
 import { defaultEntry } from '../Entries/utils'
 import { getStringBytes } from '../../utils'
 
@@ -8,21 +7,21 @@ const defaultTextEditor = {
   bottomToolbarIsOpen: true,
 }
 
-const DEFAULT_STATE_TEXT_EDITOR = {
+export const DEFAULT_STATE_TEXT_EDITOR = {
   ...defaultTextEditor,
   _size: getStringBytes(defaultTextEditor),
 }
 
-const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
+export const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
   const { type, payload } = action
   switch (type) {
-    case TextEditorActionTypes.TEXT_EDITOR_SET:
+    case actions.TEXT_EDITOR_SET:
       return { ...state, ...payload, _lastUpdated: new Date() }
 
-    case TextEditorActionTypes.TEXT_EDITOR_SET_BOTTOM_TOOLBAR:
+    case actions.TEXT_EDITOR_SET_BOTTOM_TOOLBAR:
       return { ...state, bottomToolbarIsOpen: payload }
 
-    case TextEditorActionTypes.TEXT_EDITOR_CLEAR:
+    case actions.TEXT_EDITOR_CLEAR:
       return {
         ...DEFAULT_STATE_TEXT_EDITOR,
         title: '',
@@ -34,7 +33,7 @@ const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
         _clearedOn: new Date(),
       }
 
-    case AppActionTypes.REDUX_RESET:
+    case actions.REDUX_RESET:
       return {
         ...DEFAULT_STATE_TEXT_EDITOR,
         tags: [],
@@ -43,12 +42,10 @@ const TextEditor = (state = DEFAULT_STATE_TEXT_EDITOR, action) => {
         _clearedOn: new Date(),
       }
 
-    case AppActionTypes.LOAD_PERSISTED_STATE:
+    case actions.LOAD_PERSISTED_STATE:
       return payload?.TextEditor || state
 
     default:
       return state
   }
 }
-
-export { DEFAULT_STATE_TEXT_EDITOR, TextEditor }

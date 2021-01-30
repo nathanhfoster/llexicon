@@ -1,9 +1,7 @@
 import { lazy } from 'react'
-import ReactGA from 'react-ga'
 import MomentJS from 'moment'
-import { keys } from 'localforage'
 
-const isType = {
+export const isType = {
   UNDEFINED: 'undefined',
   NULL: 'object',
   BOOLEAN: 'boolean',
@@ -15,7 +13,7 @@ const isType = {
   OBJECT: 'object',
 }
 
-const DOCUMENT_FORMAT = {
+export const DOCUMENT_FORMAT = {
   xml: 'XML',
   pdf: 'PDF',
   txt: 'TXT',
@@ -33,7 +31,7 @@ const DOCUMENT_FORMAT = {
   msg: 'MSG',
 }
 
-const DOCUMENT_MIME_TYPE = {
+export const DOCUMENT_MIME_TYPE = {
   XML: 'application/xml',
   PDF: 'application/pdf',
   TXT: 'text/plain',
@@ -49,20 +47,21 @@ const DOCUMENT_MIME_TYPE = {
   XLSX: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 }
 
-Number.prototype.toFixedNumber = function (digits, base) {
-  let pow = Math.pow(base || 10, digits)
-  return Math.round(this * pow) / pow
+export const FILE_NAME_EXTENSIONS = {
+  'text/json': 'json',
+  'text/csv;charset=utf-8;': 'csv',
 }
 
-const DeepClone = arrayOrObj => JSON.parse(JSON.stringify(arrayOrObj))
+export const DeepClone = arrayOrObj => JSON.parse(JSON.stringify(arrayOrObj))
 
-const getObjectLength = obj => Object.keys(obj).length
+export const getObjectLength = obj => Object.keys(obj).length
 
-const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
-const getRandomFloat = (min, max, fix = 3) => (Math.random() * (min - max) + max).toFixedNumber(fix)
+export const getRandomFloat = (min, max, fix = 3) =>
+  (Math.random() * (min - max) + max).toFixedNumber(fix)
 
-const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
+export const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
   let newObj = DeepClone(obj)
   const keyFound = newObj[keyOrValueToRemove] ? true : false
   const isValue = !keyFound
@@ -78,7 +77,7 @@ const removeKeyOrValueFromObject = (obj, keyOrValueToRemove) => {
   return newObj
 }
 
-const mapObject = (object = {}, props = []) => {
+export const mapObject = (object = {}, props = []) => {
   if (typeof props === 'string') {
     if (object[props]) {
       const value = object[props]
@@ -100,17 +99,17 @@ const mapObject = (object = {}, props = []) => {
   return object
 }
 
-const isEquivalent = (obj1, obj2) => JSON.stringify(obj1) === JSON.stringify(obj2)
+export const isEquivalent = (obj1, obj2) => JSON.stringify(obj1) === JSON.stringify(obj2)
 
-const isOnline = last_login => new Date() - new Date(last_login) <= 1000 * 60 * 5
+export const isOnline = last_login => new Date() - new Date(last_login) <= 1000 * 60 * 5
 
-const findMaxInt = (arrayOfObjs, prop) => Math.max(...arrayOfObjs.map(e => e[prop]))
+export const findMaxInt = (arrayOfObjs, prop) => Math.max(...arrayOfObjs.map(e => e[prop]))
 
-const sortedMap = map => new Map([...map.entries()].sort().sort((a, b) => b[1] - a[1]))
+export const sortedMap = map => new Map([...map.entries()].sort().sort((a, b) => b[1] - a[1]))
 
-const removeArrayDuplicates = array => [...new Set(array)]
+export const removeArrayDuplicates = array => [...new Set(array)]
 
-const removeAttributeDuplicates = (array, objAttr = 'id', props) => {
+export const removeAttributeDuplicates = (array, objAttr = 'id', props) => {
   let map = new Map()
 
   if (props) {
@@ -131,7 +130,7 @@ const removeAttributeDuplicates = (array, objAttr = 'id', props) => {
   return [...map.values()]
 }
 
-const filterMapArray = (array = [], uniqueKey = 'id', props) => {
+export const filterMapArray = (array = [], uniqueKey = 'id', props) => {
   if (!uniqueKey && !props) {
     return array
   }
@@ -146,9 +145,9 @@ const filterMapArray = (array = [], uniqueKey = 'id', props) => {
   return array
 }
 
-const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e))
+export const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e))
 
-const TopKFrequentStrings = (arrayOfObjs, prop = 'id', k = arrayOfObjs.length) => {
+export const TopKFrequentStrings = (arrayOfObjs, prop = 'id', k = arrayOfObjs.length) => {
   if (!arrayOfObjs) return []
   let map = new Map()
   for (let i = 0, { length } = arrayOfObjs; i < length; i++) {
@@ -160,7 +159,7 @@ const TopKFrequentStrings = (arrayOfObjs, prop = 'id', k = arrayOfObjs.length) =
   return newArray
 }
 
-const getUrlImageBase64 = url =>
+export const getUrlImageBase64 = url =>
   fetch(url)
     .then(response => response.blob())
     .then(
@@ -173,7 +172,7 @@ const getUrlImageBase64 = url =>
         }),
     )
 
-const getCanvasImageBase64 = (img, outputFormat = 'image/jpeg', quality = 1) =>
+export const getCanvasImageBase64 = (img, outputFormat = 'image/jpeg', quality = 1) =>
   new Promise((resolve, reject) => {
     let canvas = document.createElement('canvas')
     canvas.width = img.width
@@ -184,7 +183,7 @@ const getCanvasImageBase64 = (img, outputFormat = 'image/jpeg', quality = 1) =>
     resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ''))
   })
 
-const getImageBase64 = image =>
+export const getImageBase64 = image =>
   new Promise((resolve, reject) => {
     let reader = new FileReader()
     if (!image) reject(image)
@@ -193,8 +192,8 @@ const getImageBase64 = image =>
     reader.onerror = error => reject(error)
   })
 
-const exportJSON = (data, name = 'formattedJson') => {
-  const fileName = `${name}.json`
+export const exportFile = (data, name = 'formattedJson', type = 'text/json') => {
+  const fileName = `${name}.${FILE_NAME_EXTENSIONS[type]}`
   // const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data))
   // let downloadAnchorNode = document.createElement('a')
   // downloadAnchorNode.setAttribute('href', dataStr)
@@ -208,22 +207,80 @@ const exportJSON = (data, name = 'formattedJson') => {
     return
   }
 
-  if (typeof data === 'object') {
+  if (typeof data === 'object' && type === 'text/json') {
     data = JSON.stringify(data, undefined, 4)
   }
 
-  let blob = new Blob([data], { type: 'text/json' }),
+  let blob = new Blob([data], { type }),
     e = document.createEvent('MouseEvents'),
     a = document.createElement('a')
+  if (window.navigator?.msSaveBlob) {
+    // IE 10+
+    window.navigator.msSaveBlob(blob, fileName)
+  } else if (window.navigator?.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(blob, fileName)
+    return
+  } else if (window.URL?.createObjectURL) {
+    a.download = fileName
+    a.href = window.URL.createObjectURL(blob)
+    a.dataset.downloadurl = [type, a.download, a.href].join(':')
+    e.initMouseEvent(
+      'click',
+      true,
+      false,
+      window,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      false,
+      false,
+      false,
+      0,
+      null,
+    )
+    a.dispatchEvent(e)
+  }
 
-  a.download = fileName
-  a.href = window.URL.createObjectURL(blob)
-  a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
-  e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-  a.dispatchEvent(e)
+  return data
 }
 
-const loadJSON = file =>
+export const processCsvRow = row => {
+  let finalVal = ''
+  for (let j = 0; j < row.length; j++) {
+    let innerValue = row[j]?.toString() || ''
+    if (row[j] instanceof Date) {
+      innerValue = row[j].toLocaleString()
+    }
+    let result = innerValue.replace(/"/g, '""')
+    if (result.search(/("|,|\n)/g) >= 0) result = '"' + result + '"'
+    if (j > 0) finalVal += ','
+    finalVal += result
+  }
+  return finalVal + '\n'
+}
+
+export const downloadCSV = (
+  c = ['C1', 'C2', 'C3'],
+  r = [
+    ['R1 Col 1', 'R1C2', 'R1C3'],
+    ['R2 Col 1', 'R2C2', 'R2C3'],
+  ],
+  filename = 'formattedCsv',
+) => {
+  const rows = [c, ...r]
+
+  let csvFile = ''
+  for (let i = 0; i < rows.length; i++) {
+    csvFile += processCsvRow(rows[i])
+  }
+
+  return exportFile(csvFile, filename, 'text/csv;charset=utf-8;')
+}
+
+export const loadJSON = file =>
   new Promise((resolve, reject) => {
     let reader = new FileReader()
     reader.readAsText(file)
@@ -234,7 +291,7 @@ const loadJSON = file =>
     reader.onerror = error => reject(error)
   })
 
-const htmlToArrayOfBase64 = html => {
+export const htmlToArrayOfBase64 = html => {
   const [first, ...data] = html.split('data:')
   const arrayOfBase64 = data.reduce((result, e) => {
     const url = `data:${e.split('"')[0]}`
@@ -244,7 +301,7 @@ const htmlToArrayOfBase64 = html => {
   return arrayOfBase64
 }
 
-const isDecodable = (str, opts) => {
+export const isDecodable = (str, opts) => {
   if (str instanceof Boolean || typeof str === 'boolean') {
     return false
   }
@@ -273,16 +330,16 @@ const isDecodable = (str, opts) => {
   return new RegExp('^' + regex + '$', 'gi').test(str)
 }
 
-const htmlToArrayOfFiles = (html, filename) =>
+export const htmlToArrayOfFiles = (html, filename) =>
   htmlToArrayOfBase64(html).map(base64 => {
     const file = getFileFromBase64(base64, filename)
     return file
   })
 
-const getImageBlob = image =>
+export const getImageBlob = image =>
   new Promise((resolve, reject) => resolve(window.URL.createObjectURL(image)))
 
-const getFileFromBase64 = (dataurl, filename) => {
+export const getFileFromBase64 = (dataurl, filename) => {
   let arr = dataurl.split(','),
     mime = arr[0].match(/:(.*?);/)[1],
     type = mime.split('/')[1],
@@ -295,7 +352,7 @@ const getFileFromBase64 = (dataurl, filename) => {
   return new File([u8arr], `${filename}.${type}`, { type: mime })
 }
 
-const joinStrings = objectArray => {
+export const joinStrings = objectArray => {
   if (!objectArray || objectArray.length < 1) {
     return objectArray
   }
@@ -310,7 +367,7 @@ const joinStrings = objectArray => {
   return objectArray
 }
 
-const splitStrings = value => {
+export const splitStrings = value => {
   if (!value) return value
   switch (typeof value) {
     case 'string':
@@ -322,9 +379,9 @@ const splitStrings = value => {
   }
 }
 
-const importTextFileEntries = files => {}
+export const importTextFileEntries = files => {}
 
-const readmultifiles = e => {
+export const readmultifiles = e => {
   const files = e.currentTarget.files
   Object.keys(files).forEach(i => {
     const file = files[i]
@@ -333,16 +390,15 @@ const readmultifiles = e => {
       const { result } = reader
       //server call for uploading or reading the files one-by-one
       //by using 'reader.result' or 'file'
-      console.log('readmultifiles: ', result)
     }
     reader.readAsBinaryString(file)
   })
 }
 
-const lazyDelay = time => promiseResult =>
+export const lazyDelay = time => promiseResult =>
   new Promise(resolve => setTimeout(() => resolve(promiseResult), time))
 
-const lazyLoadWithTimeOut = (min, max, componentPath) =>
+export const lazyLoadWithTimeOut = (min, max, componentPath) =>
   lazy(() => {
     return new Promise(resolve => setTimeout(resolve, getRandomInt(min, max))).then(
       () =>
@@ -352,7 +408,7 @@ const lazyLoadWithTimeOut = (min, max, componentPath) =>
     )
   })
 
-const addDynamicScript = (scriptId, url, callback = null) => {
+export const addDynamicScript = (scriptId, url, callback = null) => {
   const head = document.getElementsByTagName('head')[0]
   const existingScript = document.getElementById(scriptId)
 
@@ -372,12 +428,12 @@ const addDynamicScript = (scriptId, url, callback = null) => {
   if (existingScript && callback) callback()
 }
 
-const capitalizeFirstLetter = string => {
+export const capitalizeFirstLetter = string => {
   if (typeof string === 'string' || string instanceof String)
     return `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 }
 
-const debounce = (func, delay = 400) => {
+export const debounce = (func, delay = 400) => {
   let debounceTimer
   return function (...args) {
     const context = this
@@ -388,7 +444,7 @@ const debounce = (func, delay = 400) => {
   }
 }
 
-const throttled = (func, delay = 1000) => {
+export const throttled = (func, delay = 1000) => {
   let lastCall = 0
   return function (...args) {
     const now = new Date().getTime()
@@ -400,7 +456,7 @@ const throttled = (func, delay = 1000) => {
   }
 }
 
-const copyStringToClipboard = s => {
+export const copyStringToClipboard = s => {
   if (navigator.clipboard) {
     return navigator.clipboard
       .writeText(s)
@@ -409,7 +465,6 @@ const copyStringToClipboard = s => {
         return text
       })
       .catch(error => {
-        console.log('Something went wrong', error)
         return error
       })
   } else {
@@ -427,9 +482,11 @@ const copyStringToClipboard = s => {
     // Remove temporary element
     document.body.removeChild(el)
   }
+
+  return Promise.resolve(s)
 }
 
-const cleanObject = (obj, truthyCheck = false) => {
+export const cleanObject = (obj, truthyCheck = false) => {
   for (const key in obj) {
     if (truthyCheck && !obj[key]) {
       delete obj[key]
@@ -444,13 +501,13 @@ const cleanObject = (obj, truthyCheck = false) => {
   return obj
 }
 
-const stripHtml = html => {
-  let tmp = document.createElement('DIV')
+export const stripHtml = html => {
+  let tmp = document.createElement('div')
   tmp.innerHTML = html
   return tmp.textContent || tmp.innerText || ''
 }
 
-const fuzzySearch = (s, p, caseSensitive = false, maxLength = 1000) => {
+export const fuzzySearch = (s, p, caseSensitive = false, maxLength = 1000) => {
   // s = s.substr(0, maxLength)
   // p = p.substr(0, maxLength)
   if (!caseSensitive) {
@@ -486,15 +543,15 @@ const fuzzySearch = (s, p, caseSensitive = false, maxLength = 1000) => {
   return true
 }
 
-const replaceAll = (str, mapObj) => {
+export const replaceAll = (str, mapObj) => {
   let re = new RegExp(Object.keys(mapObj).join('|'), 'gi')
 
   return str.replace(re, matched => mapObj[matched.toLowerCase()])
 }
 
-const escapeRegExp = string => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
+export const escapeRegExp = string => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 
-const stringMatch = (s1, s2, caseSensitive = false) => {
+export const stringMatch = (s1, s2, caseSensitive = false) => {
   s1 = s1 || ''
   s2 = s2 || ''
   const flags = caseSensitive ? 'g' : 'gi'
@@ -505,7 +562,7 @@ const stringMatch = (s1, s2, caseSensitive = false) => {
   return s1.match(regexMatch)
 }
 
-const formatBytes = (bytes, decimals = 2) => {
+export const formatBytes = (bytes, decimals = 2) => {
   if (0 === bytes) return '0B'
   const fix = 0 > decimals ? 0 : decimals
   const d = Math.floor(Math.log(bytes) / Math.log(1024))
@@ -514,49 +571,26 @@ const formatBytes = (bytes, decimals = 2) => {
   }`
 }
 
-const getStringBytes = object => parseInt(JSON.stringify(object).split(/%..|./).length - 1)
+export const getStringBytes = object => parseInt(JSON.stringify(object).split(/%..|./).length - 1)
 
-const shareUrl = ({ url, title, text }) => {
-  if (!navigator.share) return
-  navigator
-    .share({
-      url,
-      title,
-      text,
-    })
-    .then(response => {
-      console.log('Successfully shared: ', response)
-      ReactGA.event({
-        category: 'Share Url',
-        action: 'User shared a url!',
-        value: url,
-      })
-    })
-    .catch(error => {
-      console.log(error)
-    })
+export const shareUrl = ({ url, title, text, files }) => {
+  let payload = {
+    url,
+    title,
+    text,
+  }
+
+  if (files && navigator.canShare && navigator.canShare({ files })) {
+    payload.files = files
+  }
+
+  return navigator
+    .share(payload)
+    .then(response => ({ data: payload, response }))
+    .catch(error => ({ data: payload, error }))
 }
 
-const shareFile = file => {
-  let filesArray = [file]
-  if (!navigator.canShare || !navigator.canShare({ files: filesArray })) return
-  navigator
-    .share({
-      files: filesArray,
-      title: 'My File',
-      text: 'Here, Sharing my files. Keep it safe',
-    })
-    .then(() => {
-      console.log('Share was successful.')
-      ReactGA.event({
-        category: 'Share File',
-        action: 'User shared a file!',
-      })
-    })
-    .catch(error => console.log('Sharing failed', error))
-}
-
-const deepParseJson = jsonString => {
+export const deepParseJson = (jsonString, receiver) => {
   // if not stringified json rather a simple string value then JSON.parse will throw error
   // otherwise continue recursion
   if (typeof jsonString === 'string') {
@@ -566,7 +600,7 @@ const deepParseJson = jsonString => {
       return jsonString
     }
     try {
-      return deepParseJson(JSON.parse(jsonString))
+      return deepParseJson(JSON.parse(jsonString, receiver))
     } catch (err) {
       return jsonString
     }
@@ -587,7 +621,7 @@ const deepParseJson = jsonString => {
 }
 
 // Only usable served with HTTPS
-const getSHA256 = async message => {
+export const getSHA256 = async message => {
   const encoder = new TextEncoder()
   const msgUint8 = encoder.encode(message) // encode as (utf-8) Uint8Array
   const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8) // hash the message
@@ -596,7 +630,7 @@ const getSHA256 = async message => {
   return hashHex
 }
 
-const showFile = (blob, name, extension) => {
+export const showFile = (blob, name, extension) => {
   // It is necessary to create a new blob object with mime-type explicitly set
   // otherwise only Chrome works like it should
   let newBlob = new Blob([blob], { type: DOCUMENT_MIME_TYPE[extension] })
@@ -621,7 +655,7 @@ const showFile = (blob, name, extension) => {
   }, 100)
 }
 
-const differenceBetweenStrings = (s1, s2) => {
+export const differenceBetweenStrings = (s1, s2) => {
   if (typeof s1 !== isType.STRING) {
     s1 = JSON.stringify(s1)
   }
@@ -631,14 +665,14 @@ const differenceBetweenStrings = (s1, s2) => {
   return s2.split('').reduce((diff, val, i) => (val != s1.charAt(i) ? (diff += val) : diff), '')
 }
 
-const isAFunction = value => value instanceof Function || typeof value === isType.FUNCTION
+export const isAFunction = value => value instanceof Function || typeof value === isType.FUNCTION
 
-const isObject = value => {
+export const isObject = value => {
   const type = typeof value
   return value != null && (type === isType.OBJECT || isAFunction(value))
 }
 
-const shallowEquals = (a, b) => {
+export const shallowEquals = (a, b) => {
   if (a === b) return true
   if (!(a || b)) return true
   // if ((!a && b) || (!b && a)) return false;
@@ -658,17 +692,7 @@ const shallowEquals = (a, b) => {
   return true
 }
 
-const getValidDate = s => {
-  const date = new Date(s)
-
-  if (typeof date === isType.STRING || date.getTime() !== date.getTime()) {
-    return null
-  }
-
-  return date
-}
-
-const getLocalDateTimeNoSeconds = (date, displaySeconds = false) => {
+export const getLocalDateTimeNoSeconds = (date, displaySeconds = false) => {
   // 2020-11-10T19:38
   return MomentJS(date).format(`YYYY-MM-DDTHH:mm${displaySeconds ? ':ss' : ''}`)
 
@@ -677,8 +701,8 @@ const getLocalDateTimeNoSeconds = (date, displaySeconds = false) => {
   //   .slice(0, 19)
 }
 
-const nFormatter = (num, digits = 0) => {
-  var si = [
+export const nFormatter = (num, digits = 0) => {
+  let si = [
     { value: 1, symbol: '' },
     { value: 1e3, symbol: 'k' },
     { value: 1e6, symbol: 'M' },
@@ -687,8 +711,8 @@ const nFormatter = (num, digits = 0) => {
     { value: 1e15, symbol: 'P' },
     { value: 1e18, symbol: 'E' },
   ]
-  var rx = /\.0+$|(\.[0-9]*[1-9])0+$/
-  var i
+  let rx = /\.0+$|(\.[0-9]*[1-9])0+$/
+  let i
   for (i = si.length - 1; i > 0; i--) {
     if (num >= si[i].value) {
       break
@@ -697,14 +721,14 @@ const nFormatter = (num, digits = 0) => {
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
 
-const arrayToObject = (arrayOfObjects, primaryKey = 'id') =>
+export const arrayToObject = (arrayOfObjects, primaryKey = 'id') =>
   arrayOfObjects.reduce((acc, e) => {
     const id = e[primaryKey]
     acc[id] = e
     return acc
   }, {})
 
-const objectToArray = (
+export const objectToArray = (
   objectOfObjects,
   callback = (acc, e) => {
     acc.push(e)
@@ -714,105 +738,27 @@ const objectToArray = (
 ) => Object.values(objectOfObjects).reduce((acc, e) => callback(acc, e), initialValue)
 
 // sd, mq, hq, maxres
-const getYouTubeThumnail = (videoId, quality = 'sd') =>
+export const getYouTubeThumnail = (videoId, quality = 'sd') =>
   `https://img.youtube.com/vi/${videoId}/${quality}default.jpg`
 
-const I_FRAME_REGEX = /(?:<iframe[^>]*)(?:(?:\/>)|(?:>.*?<\/iframe>))/gm
-const IMAGE_REGEX = /<img.*?src="([^"]+)".*?>/gm
-const SRC_REGEX = /(?<=src=").*?(?=[\?"])/
-const SRC_REGEX_GLOBAL = /(?<=src=").*?(?=[\?"])/gm
-const YOUTUBE_VIDEO_ID = /youtube\.com.*(\?v=|\/embed\/)(.{11})/
+export const I_FRAME_REGEX = /(?:<iframe[^>]*)(?:(?:\/>)|(?:>.*?<\/iframe>))/gm
+export const IMAGE_REGEX = /<img.*?src="([^"]+)".*?>/gm
+export const SRC_REGEX = /(?<=src=").*?(?=[\?"])/
+export const SRC_REGEX_GLOBAL = /(?<=src=").*?(?=[\?"])/gm
+export const YOUTUBE_VIDEO_ID = /youtube\.com.*(\?v=|\/embed\/)(.{11})/
 
-const downloadCSV = (
-  columns = [['Column 1', 'Column 2']],
-  rows = [
-    ['Row 1 Col 1', 'Row 1 Col 2'],
-    ['Row 2 Col 1', 'Row 2 Col 2'],
-  ],
-) => {
-  const content = columns
-    .concat(rows)
-    .map(e => {
-      const row = e.join(',')
-      console.log(row)
-      return row
-    })
-    .join('\r\n')
-  const csvContent = `data:text/csv;charset=utf-8,${content}`
-  const encodedUri = encodeURI(csvContent)
-  window.open(encodedUri)
-}
-
-const omit = (arrayOfObjects = [], keysToOmit = []) =>
+export const omit = (arrayOfObjects = [], keysToOmit = []) =>
   arrayOfObjects.filter(e => !keysToOmit.some(key => key === (typeof e === 'string' ? e : e[key])))
 
-export {
-  isType,
-  DOCUMENT_FORMAT,
-  DOCUMENT_MIME_TYPE,
-  DeepClone,
-  getObjectLength,
-  getRandomInt,
-  getRandomFloat,
-  arrayToObject,
-  objectToArray,
-  removeKeyOrValueFromObject,
-  mapObject,
-  isEquivalent,
-  isOnline,
-  findMaxInt,
-  sortedMap,
-  removeArrayDuplicates,
-  removeAttributeDuplicates,
-  filterMapArray,
-  isSubset,
-  TopKFrequentStrings,
-  getUrlImageBase64,
-  getCanvasImageBase64,
-  getImageBase64,
-  exportJSON,
-  loadJSON,
-  htmlToArrayOfBase64,
-  isDecodable,
-  htmlToArrayOfFiles,
-  getImageBlob,
-  getFileFromBase64,
-  joinStrings,
-  splitStrings,
-  importTextFileEntries,
-  readmultifiles,
-  lazyDelay,
-  lazyLoadWithTimeOut,
-  addDynamicScript,
-  capitalizeFirstLetter,
-  debounce,
-  throttled,
-  copyStringToClipboard,
-  cleanObject,
-  stripHtml,
-  fuzzySearch,
-  replaceAll,
-  stringMatch,
-  formatBytes,
-  getStringBytes,
-  shareUrl,
-  shareFile,
-  deepParseJson,
-  getSHA256,
-  showFile,
-  differenceBetweenStrings,
-  isAFunction,
-  isObject,
-  shallowEquals,
-  getValidDate,
-  getLocalDateTimeNoSeconds,
-  nFormatter,
-  getYouTubeThumnail,
-  I_FRAME_REGEX,
-  IMAGE_REGEX,
-  SRC_REGEX,
-  SRC_REGEX_GLOBAL,
-  YOUTUBE_VIDEO_ID,
-  downloadCSV,
-  omit,
+export const dateFormat = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/
+
+export const getValidDate = (s, getIsoString = false) => {
+  if (typeof s === isType.STRING && dateFormat.test(s)) {
+    const date = new Date(s)
+    return getIsoString ? `${date.toISOString()}` : date
+  }
+
+  return s
 }
+
+export const jsonParseDates = (key, value) => getValidDate(value, true)

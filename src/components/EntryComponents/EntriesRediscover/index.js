@@ -10,7 +10,7 @@ const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) 
   showOnlyPublic,
 })
 
-const EntriesRediscover = ({ entries, showOnlyPublic }) => {
+export const EntriesRediscover = ({ entries, showOnlyPublic }) => {
   const containerRef = useRef()
   const today = new Date()
   const entriesOnThisDay = useMemo(

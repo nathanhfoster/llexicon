@@ -30,7 +30,7 @@ const mapStateToProps = ({ Alerts: { serviceWorkerRegistration }, App: { version
 
 const mapDispatchToProps = { UpdateAppVersion }
 
-const Settings = ({ serviceWorkerRegistration, appVersion, UpdateAppVersion }) => {
+export const Settings = ({ serviceWorkerRegistration, appVersion, UpdateAppVersion }) => {
   const { pathname } = useLocation()
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
 

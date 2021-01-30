@@ -1,7 +1,7 @@
-import { AppActionTypes } from './types'
+import actions from '../actionTypes'
 import { getProgressEventData } from './utils'
 
-const DEFAULT_STATE_APP = {
+export const DEFAULT_STATE_APP = {
   isPending: true,
   version: new Number(1).toFixed(3),
   localStorageCapacity: null,
@@ -12,31 +12,31 @@ const DEFAULT_STATE_APP = {
   downloadProgress: {},
 }
 
-const App = (state = DEFAULT_STATE_APP, action) => {
+export const App = (state = DEFAULT_STATE_APP, action) => {
   const { type, payload } = action
   switch (type) {
-    case AppActionTypes.APP_SET_VERSION:
+    case actions.APP_SET_VERSION:
       return { ...state, version: payload.toFixed(3) }
 
-    case AppActionTypes.APP_SET_LOCAL_STORAGE_USAGE:
+    case actions.APP_SET_LOCAL_STORAGE_USAGE:
       return { ...state, ...payload }
 
-    case AppActionTypes.APP_UPLOAD_PROGRESS:
+    case actions.APP_UPLOAD_PROGRESS:
       return {
         ...state,
         uploadProgress: getProgressEventData(payload),
       }
 
-    case AppActionTypes.APP_DOWNLOAD_PROGRESS:
+    case actions.APP_DOWNLOAD_PROGRESS:
       return { ...state, downloadProgress: getProgressEventData(payload) }
 
-    case AppActionTypes.REDUX_RESET:
+    case actions.REDUX_RESET:
       return state
 
-    case AppActionTypes.LOAD_PERSISTED_STATE_PENDING:
+    case actions.LOAD_PERSISTED_STATE_PENDING:
       return { ...state, isPending: true }
 
-    case AppActionTypes.LOAD_PERSISTED_STATE:
+    case actions.LOAD_PERSISTED_STATE:
       return {
         ...state,
         isPending: false,
@@ -48,5 +48,3 @@ const App = (state = DEFAULT_STATE_APP, action) => {
       return state
   }
 }
-
-export { DEFAULT_STATE_APP, App }

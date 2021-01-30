@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { FixedSizeList } from "react-window"
 import "./styles.css"
 
-class BasicList extends PureComponent {
+export class BasicList extends PureComponent {
   constructor(props) {
     super(props)
 

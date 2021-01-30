@@ -1,7 +1,6 @@
-import { UserActionTypes } from './types'
-import { AppActionTypes } from '../App/types'
+import actions from '../actionTypes'
 
-const DEFAULT_STATE_USER = {
+export const DEFAULT_STATE_USER = {
   token: null,
   id: null,
   picture: null,
@@ -38,20 +37,20 @@ const DEFAULT_STATE_USER = {
   error: null,
 }
 
-const User = (state = DEFAULT_STATE_USER, action) => {
+export const User = (state = DEFAULT_STATE_USER, action) => {
   const { type, payload } = action
 
   switch (type) {
-    case UserActionTypes.USER_PENDING:
+    case actions.USER_PENDING:
       return { ...state, pending: payload }
 
-    case UserActionTypes.USER_ERROR:
+    case actions.USER_ERROR:
       return { ...state, error: payload, pending: false }
 
-    case UserActionTypes.USER_RESET_ERROR:
+    case actions.USER_RESET_ERROR:
       return { ...state, error: DEFAULT_STATE_USER.error }
 
-    case UserActionTypes.USER_SET:
+    case actions.USER_SET:
       return {
         ...state,
         ...payload,
@@ -59,13 +58,13 @@ const User = (state = DEFAULT_STATE_USER, action) => {
         error: null,
       }
 
-    case UserActionTypes.USER_SET_LOCATION:
+    case actions.USER_SET_LOCATION:
       return { ...state, location: { ...state.location, ...payload } }
 
-    case UserActionTypes.USER_RESET_LOCATION:
+    case actions.USER_RESET_LOCATION:
       return { ...state, location: DEFAULT_STATE_USER.location }
 
-    case UserActionTypes.USER_SET_SETTINGS:
+    case actions.USER_SET_SETTINGS:
       return {
         ...state,
         Settings: { ...state.Settings, ...payload },
@@ -73,15 +72,13 @@ const User = (state = DEFAULT_STATE_USER, action) => {
         error: null,
       }
 
-    case AppActionTypes.REDUX_RESET:
+    case actions.REDUX_RESET:
       return DEFAULT_STATE_USER
 
-    // case AppActionTypes.LOAD_PERSISTED_STATE:
+    // case actions.LOAD_PERSISTED_STATE:
     //   return payload?.User || state
 
     default:
       return state
   }
 }
-
-export { DEFAULT_STATE_USER, User }

@@ -101,7 +101,7 @@ const mapDispatchToProps = {
   GetUserEntriesByDate,
 }
 
-const NavBar = ({ userId, userIsSuperUser, isMobile, UserLogout, prompt, promptToInstall }) => {
+export const NavBar = ({ userId, userIsSuperUser, isMobile, UserLogout, prompt, promptToInstall }) => {
   const [collapsed, setCollapse] = useState(true)
 
   const toggleHamburgerMenu = useCallback(() => setCollapse(current => !current), [])

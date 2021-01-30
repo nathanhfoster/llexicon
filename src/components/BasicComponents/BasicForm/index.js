@@ -5,7 +5,7 @@ import BasicInput from '../BasicInput'
 import { getInputValue, getState, getInputPayloadValue } from './utils'
 import './styles.css'
 
-const BasicForm = ({
+export const BasicForm = ({
   className,
   inline,
   title,

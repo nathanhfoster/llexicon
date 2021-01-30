@@ -1,5 +1,5 @@
 import {
-  Reducers,
+  RootReducer,
   DEFAULT_STATE_ADMIN,
   DEFAULT_STATE_ALERTS,
   DEFAULT_STATE_APP,
@@ -11,16 +11,14 @@ import {
   DEFAULT_STATE_WINDOW,
 } from './RootReducer'
 import thunk from 'redux-thunk'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { PersistedStorageReduxKey } from 'redux/localState'
 import { deepParseJson } from 'utils'
 
-const RootReducer = combineReducers(Reducers)
+export const { NODE_ENV } = process.env
 
-const { NODE_ENV } = process.env
-
-const getPersistedState = () => {
+export const getPersistedState = () => {
   let state = {}
   try {
     state = deepParseJson(localStorage.getItem(PersistedStorageReduxKey))
@@ -30,7 +28,7 @@ const getPersistedState = () => {
   return state
 }
 
-const storeFactory = () => {
+export const storeFactory = () => {
   const inDevelopmentMode = NODE_ENV == 'development'
 
   const middleWares = inDevelopmentMode

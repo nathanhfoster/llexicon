@@ -4,7 +4,7 @@ import { InputProps } from 'components/BasicComponents/BasicInput/propTypes'
 import { Input } from 'reactstrap'
 import { UseDebounce } from '../'
 
-const DebounceInput = ({
+export const DebounceInput = ({
   debounceOnMount,
   delay,
   onChange,

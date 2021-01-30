@@ -5,7 +5,7 @@ import { Button } from 'reactstrap'
 import { SelectReduxEntries } from 'redux/Entries/actions'
 import { selectedEntriesSelector, selectedItemsAreEqual } from 'redux/Entries/utils'
 
-const ButtonClearSelectedEntries = ({ entries: entriesFromProps }) => {
+export const ButtonClearSelectedEntries = ({ entries: entriesFromProps }) => {
   const { entries } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
   const dispatch = useDispatch()
 

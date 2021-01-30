@@ -1,49 +1,27 @@
-import { EntriesActionTypes } from '../types'
+import actions from '../../actionTypes'
 import { getReduxEntryId } from '../utils'
 import { getStringBytes, isObject } from 'utils'
 
-const {
-  ENTRY_SET,
-  ENTRIES_UPDATE,
-  ENTRIES_SELECTED,
-  ENTRY_CLEAR,
-  ENTRIES_CLEAR,
-  ENTRIES_DELETE,
-  ENTRIES_SET_TAGS,
-  ENTRIES_SET_PEOPLE,
-  ENTRIES_PENDING,
-  ENTRY_PENDING,
-  ENTRIES_ERROR,
-  ENTRIES_ERROR_CLEAR,
-  ENTRIES_COMPLETE,
-  ENTRIES_SET,
-  ENTRIES_SEARCH_FILTER,
-  ENTRIES_SET_SORT_MAP,
-  ENTRIES_SET_FILTER_MAP,
-  ENTRIES_RESET_SORT_AND_FILTER_MAP,
-  ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
-} = EntriesActionTypes
+export const PendingEntries = () => ({ type: actions.ENTRIES_PENDING })
 
-const PendingEntries = () => ({ type: ENTRIES_PENDING })
+export const PendingEntry = () => ({ type: actions.ENTRY_PENDING })
 
-const PendingEntry = () => ({ type: ENTRY_PENDING })
+export const SetEntriesComplete = () => ({ type: actions.ENTRIES_COMPLETE })
 
-const SetEntriesComplete = () => ({ type: ENTRIES_COMPLETE })
-
-const SetEntriesError = e => {
+export const SetEntriesError = e => {
   const payload = JSON.parse(JSON.stringify(e))
   // console.log(payload)
-  return { type: ENTRIES_ERROR, payload }
+  return { type: actions.ENTRIES_ERROR, payload }
 }
 
-const ClearEntriesErrors = () => ({ type: ENTRIES_ERROR_CLEAR })
+export const ClearEntriesErrors = () => ({ type: actions.ENTRIES_ERROR_CLEAR })
 
-const SetEntry = payload => ({
-  type: ENTRY_SET,
+export const SetEntry = payload => ({
+  type: actions.ENTRY_SET,
   payload,
 })
 
-const PostReduxEntry = entry => dispatch => {
+export const PostReduxEntry = entry => dispatch => {
   const payload = {
     ...entry,
     id: getReduxEntryId(),
@@ -64,68 +42,68 @@ const PostReduxEntry = entry => dispatch => {
   )
 }
 
-const UpdateReduxEntries = (entryOrEntriesMap, _lastUpdated = new Date()) => ({
-  type: ENTRIES_UPDATE,
+export const UpdateReduxEntries = (entryOrEntriesMap, _lastUpdated = new Date()) => ({
+  type: actions.ENTRIES_UPDATE,
   payload: entryOrEntriesMap.id ? { ...entryOrEntriesMap, _lastUpdated } : entryOrEntriesMap,
 })
 
-const SelectReduxEntries = (selectedEntriesMap = {}) => ({
-  type: ENTRIES_SELECTED,
+export const SelectReduxEntries = (selectedEntriesMap = {}) => ({
+  type: actions.ENTRIES_SELECTED,
   payload: selectedEntriesMap || {},
 })
 
-const ClearEntry = () => ({ type: ENTRY_CLEAR })
+export const ClearEntry = () => ({ type: actions.ENTRY_CLEAR })
 
-const ClearEntries = () => ({ type: ENTRIES_CLEAR })
+export const ClearEntries = () => ({ type: actions.ENTRIES_CLEAR })
 
-const DeleteReduxEntries = entriesToDelete => ({
-  type: ENTRIES_DELETE,
+export const DeleteReduxEntries = entriesToDelete => ({
+  type: actions.ENTRIES_DELETE,
   payload: entriesToDelete,
 })
 
-const SetEntries = payload => ({
-  type: ENTRIES_SET,
+export const SetEntries = payload => ({
+  type: actions.ENTRIES_SET,
   payload,
 })
 
-const SetEntriesTags = payload => ({
-  type: ENTRIES_SET_TAGS,
+export const SetEntriesTags = payload => ({
+  type: actions.ENTRIES_SET_TAGS,
   payload,
 })
 
-const SetEntriesPeople = payload => ({
-  type: ENTRIES_SET_PEOPLE,
+export const SetEntriesPeople = payload => ({
+  type: actions.ENTRIES_SET_PEOPLE,
   payload,
 })
 
-const SetSearchEntries = (search, payload, isPending = true) => ({
-  type: ENTRIES_SEARCH_FILTER,
+export const SetSearchEntries = (search, payload, isPending = true) => ({
+  type: actions.ENTRIES_SEARCH_FILTER,
   payload,
   search,
   isPending,
 })
 
-const SetEntriesSortMap = (sortKey, sortUp) => ({
-  type: ENTRIES_SET_SORT_MAP,
+export const SetEntriesSortMap = (sortKey, sortUp) => ({
+  type: actions.ENTRIES_SET_SORT_MAP,
   payload: { sortKey, sortUp },
 })
 
-const SetEntriesFilterMap = (filterKey, searchValue) => ({
-  type: ENTRIES_SET_FILTER_MAP,
+export const SetEntriesFilterMap = (filterKey, searchValue) => ({
+  type: actions.ENTRIES_SET_FILTER_MAP,
   payload: { filterKey, searchValue },
 })
 
-const ToggleShowOnlyPublic = () => ({
-  type: ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
+export const ToggleShowOnlyPublic = () => ({
+  type: actions.ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
 })
 
-const ResetEntriesSortAndFilterMaps = () => ({
-  type: ENTRIES_RESET_SORT_AND_FILTER_MAP,
+export const ResetEntriesSortAndFilterMaps = () => ({
+  type: actions.ENTRIES_RESET_SORT_AND_FILTER_MAP,
 })
 
-const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries('', [], false))
+export const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries('', [], false))
 
-const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
+export const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
   const { items, filteredItems } = getState().Entries
   const entryToUpdate = (filteredItems.length > 0 ? items.concat(filteredItems) : items).find(
     ({ id }) => id == entry_id,
@@ -137,29 +115,4 @@ const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {
     }
     dispatch(UpdateReduxEntries(payload))
   }
-}
-
-export {
-  PendingEntries,
-  PendingEntry,
-  SetEntriesComplete,
-  SetEntriesError,
-  ClearEntriesErrors,
-  SetEntry,
-  PostReduxEntry,
-  UpdateReduxEntries,
-  SelectReduxEntries,
-  ClearEntry,
-  ClearEntries,
-  DeleteReduxEntries,
-  SetEntries,
-  SetEntriesTags,
-  SetEntriesPeople,
-  SetSearchEntries,
-  SetEntriesSortMap,
-  SetEntriesFilterMap,
-  ToggleShowOnlyPublic,
-  ResetEntriesSortAndFilterMaps,
-  ResetSearchEntries,
-  DeleteEntryFileFromRedux,
 }

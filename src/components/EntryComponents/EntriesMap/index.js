@@ -15,7 +15,7 @@ const mapDispatchToProps = {
   SetEditorState,
 }
 
-const EntriesMap = ({ entries, showOnlyPublic, height }) => {
+export const EntriesMap = ({ entries, showOnlyPublic, height }) => {
   const viewableEntries = useMemo(
     () =>
       entries.filter(({ _shouldDelete, is_public }) =>

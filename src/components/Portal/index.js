@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import ReactDOM from "react-dom"
 import "./styles.css"
 
-const Portal = ({ id, isOpen, className, children }) => {
+export const Portal = ({ id, isOpen, className, children }) => {
   let parentNode = useMemo(() => document.getElementById(id), [id])
 
   const cachedChildren = useMemo(() => {

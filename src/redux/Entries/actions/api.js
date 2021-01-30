@@ -6,7 +6,6 @@ import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from 'utils'
 import { getTagStringFromObject } from '../utils'
 import FormData from 'form-data'
 import qs from 'qs'
-import ReactGA from 'react-ga'
 import {
   PendingEntries,
   PendingEntry,
@@ -29,11 +28,6 @@ export const GetUserEntryTags = () => (dispatch, getState) => {
     .get(`tags/${id}/view/`)
     .then(({ data }) => {
       dispatch(SetEntriesTags(data))
-      ReactGA.event({
-        category: 'Get User Entry Tags',
-        action: 'User got their entry tags!',
-        value: id,
-      })
       return data
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
@@ -45,11 +39,6 @@ export const GetUserEntryPeople = () => (dispatch, getState) => {
     .get(`people/${id}/view/`)
     .then(({ data }) => {
       dispatch(SetEntriesPeople(data))
-      ReactGA.event({
-        category: 'Get User Entry People',
-        action: 'User got their entry people!',
-        value: id,
-      })
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -63,11 +52,6 @@ export const CreateEntryTag = payload => (dispatch, getState) => {
     .post(`tags/`, qs.stringify(newPayload))
     .then(({ data }) => {
       dispatch(SetEntriesTags(data))
-      ReactGA.event({
-        category: 'Create Entry Tag',
-        action: 'User created a entry tag!',
-        value: id,
-      })
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
@@ -101,11 +85,6 @@ export const AwsUpload = (entry_id, file, base64, html) => dispatch => {
         html: html.replace(base64, data.url),
       }
       dispatch(UpdateEntry(entry_id, updateEntryPayload))
-      ReactGA.event({
-        category: 'Aws Upload',
-        action: 'User created a EntryFile in Aws',
-        value: data.url,
-      })
       return data
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
@@ -130,7 +109,7 @@ export const GetEntry = (url, id) => (dispatch, getState) => {
     dispatch(SetEntry(entry))
   }
 
-  if (id.includes(BASE_JOURNAL_ENTRY_ID)) {
+  if (id?.includes(BASE_JOURNAL_ENTRY_ID)) {
     return isNotLoggedInAxios()
   }
 
@@ -138,11 +117,6 @@ export const GetEntry = (url, id) => (dispatch, getState) => {
     .get(url)
     .then(({ data }) => {
       dispatch(SetEntry(data))
-      ReactGA.event({
-        category: 'Get Entry',
-        action: 'User is looking at entry!',
-        value: id,
-      })
       return data
     })
     .catch(e => {
@@ -179,11 +153,6 @@ export const GetAllUserEntries = () => (dispatch, getState) => {
     .get(`/entries/${id}/view/`)
     .then(({ data }) => {
       dispatch(SetEntries(data))
-      ReactGA.event({
-        category: 'Get All User Entries',
-        action: 'User is got all their entries!',
-        value: id,
-      })
       dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
       return data
     })
@@ -199,12 +168,6 @@ export const GetUserEntries = (pageNumber = 1) => (dispatch, getState) => {
     .get(`/entries/${id}/page/?page=${pageNumber}`)
     .then(({ data }) => {
       dispatch(SetEntries(data))
-      ReactGA.event({
-        category: 'Get User Entries Page',
-        action: 'User got a entry page!',
-        label: pageNumber.toString(),
-        value: id,
-      })
       dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
       return data
     })
@@ -238,12 +201,6 @@ export const GetUserEntriesByDate = payload => (dispatch, getState) => {
     .post(`/entries/${id}/view_by_date/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch(SetEntries(data))
-      ReactGA.event({
-        category: 'Get User Entries By Date',
-        action: 'User got a entry page!',
-        label: JSON.stringify(payload),
-        value: id,
-      })
       dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
       return data
     })
@@ -264,11 +221,6 @@ export const PostEntry = payload => dispatch => {
       }
       dispatch(SetEntry(data))
       dispatch(DeleteReduxEntries(payload.id))
-      ReactGA.event({
-        category: 'Post Entry',
-        action: 'User posted a new entry!',
-        value: data.id,
-      })
       return { ...data, _shouldPost: false, _lastUpdated: null }
     })
     .catch(e => {
@@ -282,11 +234,6 @@ export const UpdateEntry = (id, payload) => dispatch => {
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch(UpdateReduxEntries(data, null))
-      ReactGA.event({
-        category: 'Update Entry',
-        action: 'User updated a new entry!',
-        value: data.id,
-      })
 
       return data
     })
@@ -301,11 +248,6 @@ export const DeleteEntry = id => dispatch => {
     .delete(`/entries/${id}/`)
     .then(res => {
       dispatch(DeleteReduxEntries(id))
-      ReactGA.event({
-        category: 'Delete Entry',
-        action: 'User deleted a new entry!',
-        value: id,
-      })
       return res
     })
     .catch(e => {
@@ -322,11 +264,6 @@ export const DeleteEntries = entriesMap => dispatch => {
     .post(`/entries/delete/`, qs.stringify({ entriesMap }))
     .then(res => {
       dispatch(DeleteReduxEntries(entriesMap))
-      ReactGA.event({
-        category: 'Delete Entries',
-        action: 'User deleted entries',
-        value: entriesMap,
-      })
       return res
     })
     .catch(e => {
@@ -345,11 +282,6 @@ export const SearchUserEntries = search => (dispatch, getState) => {
     .post(`entries/${id}/search/`, qs.stringify({ search }))
     .then(({ data }) => {
       dispatch(SetSearchEntries(search, data, false))
-      ReactGA.event({
-        category: 'Search User Entries',
-        action: 'User searched for entries!',
-        value: search,
-      })
       return data
     })
     .catch(e => {

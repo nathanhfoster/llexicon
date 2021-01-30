@@ -9,7 +9,7 @@ import { stripHtml } from 'utils'
 
 import './styles.css'
 
-const EntryMinimal = ({
+export const EntryMinimal = ({
   id,
   title,
   html,

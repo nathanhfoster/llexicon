@@ -7,7 +7,7 @@ import './styles.css'
 
 const mapStateToProps = ({ App: { version } }) => ({ version })
 
-const Footer = ({ version }) => (
+export const Footer = ({ version }) => (
   <Container fluid tag='footer' className='MainFooter'>
     <Row>
       <Col xs={12}>

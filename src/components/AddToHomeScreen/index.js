@@ -13,7 +13,7 @@ const mapStateToProps = ({
   },
 }) => ({ isInStandalone, isOnMobileBrowser, userAgent })
 
-const AddToHomeScreenModal = ({
+export const AddToHomeScreenModal = ({
   width,
   isInStandalone,
   isOnMobileBrowser,

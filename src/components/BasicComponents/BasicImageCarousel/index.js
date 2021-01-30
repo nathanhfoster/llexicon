@@ -7,7 +7,7 @@ import { EntryPropType } from 'redux/Entries/propTypes'
 
 import './styles.css'
 
-const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps }) => {
+export const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps }) => {
   const mounted = useRef(false)
   const [state, dispatch] = useReducer(reducer, getInitialState(restOfProps))
   const { images, photoIndex, isOpen, imageOffset } = state

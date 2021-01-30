@@ -1,28 +1,24 @@
-const RouteMap = {
-  ROOT: "/",
-  SETTINGS: "/settings",
-  SETTINGS_ENTRIES: "/settings/entries",
-  SETTINGS_PROFILE: "/settings/profile",
-  SETTINGS_PREFERENCES: "/settings/preferences",
-  SETTINGS_PUSH_NOTIFICATIONS: "/settings/push-notifications",
-  SETTINGS_STORAGE: "/settings/storage",
-  SUPPORT: "/support",
-  ABOUT: "/about",
-  ADMIN: "/admin",
-  HOME: "/home",
-  NEW_ENTRY: "/new-entry",
-  ENTRIES_CALENDAR: "/entries/calendar",
-  ENTRY_DETAIL: "/entry/:entryId",
-  ENTRIES: "/entries",
-  ENTRIES_LIST: "/entries/list",
-  ENTRIES_TABLE: "/entries/table",
-  ENTRIES_MAP: "/entries/map",
-  ENTRIES_FOLDERS: "/entries/folders",
-  ENTRIES_MEDIA: '/entries/media',
-  LOGIN: "/login",
-  SIGNUP: "/sign-up",
-  PASSWORD_RESET: "/password-reset",
-  PRIVACY_POLICY: "/privacy-policy",
-}
-
-export { RouteMap }
+export const ROOT = '/'
+export const SETTINGS = '/settings'
+export const SETTINGS_ENTRIES = '/settings/entries'
+export const SETTINGS_PROFILE = '/settings/profile'
+export const SETTINGS_PREFERENCES = '/settings/preferences'
+export const SETTINGS_PUSH_NOTIFICATIONS = '/settings/push-notifications'
+export const SETTINGS_STORAGE = '/settings/storage'
+export const SUPPORT = '/support'
+export const ABOUT = '/about'
+export const ADMIN = '/admin'
+export const HOME = '/home'
+export const NEW_ENTRY = '/new-entry'
+export const ENTRIES_CALENDAR = '/entries/calendar'
+export const ENTRY_DETAIL = '/entry/:entryId'
+export const ENTRIES = '/entries'
+export const ENTRIES_LIST = '/entries/list'
+export const ENTRIES_TABLE = '/entries/table'
+export const ENTRIES_MAP = '/entries/map'
+export const ENTRIES_FOLDERS = '/entries/folders'
+export const ENTRIES_MEDIA = '/entries/media'
+export const LOGIN = '/login'
+export const SIGNUP = '/sign-up'
+export const PASSWORD_RESET = '/password-reset'
+export const PRIVACY_POLICY = '/privacy-policy'

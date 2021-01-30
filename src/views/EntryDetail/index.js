@@ -43,7 +43,7 @@ const mapDispatchToProps = {
   UpdateReduxEntries,
 }
 
-const EntryDetail = ({
+export const EntryDetail = ({
   entryId,
   userId,
   entry,

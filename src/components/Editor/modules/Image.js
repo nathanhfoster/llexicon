@@ -1,12 +1,15 @@
-import { Quill } from "react-quill"
-const Parchment = Quill.import("parchment")
-const BaseImage = Quill.import("formats/image")
+import { Quill } from 'react-quill'
+const Parchment = Quill.import('parchment')
+const BaseImage = Quill.import('formats/image')
 
-const ATTRIBUTES = ["alt", "height", "width", "style"]
+const ATTRIBUTES = ['alt', 'height', 'width', 'style']
 
-const WHITE_STYLE = ["margin", "display", "float"]
+const WHITE_STYLE = ['margin', 'display', 'float']
 
 class Image extends BaseImage {
+  constructor(props) {
+    super(props)
+  }
   static formats(domNode) {
     return ATTRIBUTES.reduce(function (formats, attribute) {
       if (domNode.hasAttribute(attribute)) {
@@ -19,7 +22,7 @@ class Image extends BaseImage {
   format(name, value) {
     if (ATTRIBUTES.indexOf(name) > -1) {
       if (value) {
-        if (name === "style") {
+        if (name === 'style') {
           value = this.sanitize_style(value)
         }
         this.domNode.setAttribute(name, value)
@@ -32,11 +35,11 @@ class Image extends BaseImage {
   }
 
   sanitize_style(style) {
-    let style_arr = style.split(";")
-    let allow_style = ""
+    let style_arr = style.split(';')
+    let allow_style = ''
     style_arr.forEach((v, i) => {
-      if (WHITE_STYLE.indexOf(v.trim().split(":")[0]) !== -1) {
-        allow_style += v + ";"
+      if (WHITE_STYLE.indexOf(v.trim().split(':')[0]) !== -1) {
+        allow_style += v + ';'
       }
     })
     return allow_style

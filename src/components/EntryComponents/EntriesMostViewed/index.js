@@ -9,7 +9,7 @@ const mapStateToProps = ({ Entries: { items, filteredItems, showOnlyPublic } }) 
   showOnlyPublic,
 })
 
-const EntriesMostViewed = ({ entries, showOnlyPublic }) => {
+export const EntriesMostViewed = ({ entries, showOnlyPublic }) => {
   const containerRef = useRef()
   const entriesMostViewed = useMemo(
     () =>

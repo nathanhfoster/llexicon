@@ -1,9 +1,15 @@
-import React, { useState, memo } from "react"
-import PropTypes from "prop-types"
-import { Carousel, CarouselItem, CarouselControl, CarouselIndicators, CarouselCaption } from "reactstrap"
-import "./styles.css"
+import React, { useState, memo } from 'react'
+import PropTypes from 'prop-types'
+import {
+  Carousel,
+  CarouselItem,
+  CarouselControl,
+  CarouselIndicators,
+  CarouselCaption,
+} from 'reactstrap'
+import './styles.css'
 
-const BasicCarousel = ({ images, autoPlay }) => {
+export const BasicCarousel = ({ images, autoPlay }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [animating, setAnimating] = useState(false)
 
@@ -41,8 +47,8 @@ const BasicCarousel = ({ images, autoPlay }) => {
     <Carousel autoPlay={autoPlay} activeIndex={activeIndex} next={next} previous={previous}>
       <CarouselIndicators items={images} activeIndex={activeIndex} onClickHandler={goToIndex} />
       {slides}
-      <CarouselControl direction="prev" directionText="Previous" onClickHandler={previous} />
-      <CarouselControl direction="next" directionText="Next" onClickHandler={next} />
+      <CarouselControl direction='prev' directionText='Previous' onClickHandler={previous} />
+      <CarouselControl direction='next' directionText='Next' onClickHandler={next} />
     </Carousel>
   )
 }
@@ -56,14 +62,15 @@ BasicCarousel.propTypes = {
       captionText: PropTypes.string,
       href: PropTypes.string,
       height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    })
+      width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
   ),
-  autoPlay: PropTypes.bool.isRequired
+  autoPlay: PropTypes.bool.isRequired,
 }
 
 BasicCarousel.defaultProps = {
-  autoPlay: true
+  autoPlay: true,
+  images: [],
 }
 
 export default memo(BasicCarousel)

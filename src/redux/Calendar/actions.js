@@ -1,17 +1,13 @@
-import { CalendarActionTypes } from "../Calendar/types"
-const { CALENDAR_SET, CALENDAR_SET_ACTIVE_ENTRY } = CalendarActionTypes
+import actions from '../actionTypes'
 
-const SetCalendar = (payload) => ({
-  type: CALENDAR_SET,
+export const SetCalendar = payload => ({
+  type: actions.CALENDAR_SET,
   payload,
 })
 
-const SetCalendarActiveEntry = (payload) => ({
-  type: CALENDAR_SET_ACTIVE_ENTRY,
+export const SetCalendarActiveEntry = payload => ({
+  type: actions.CALENDAR_SET_ACTIVE_ENTRY,
   payload,
 })
 
-const ResetCalendarActiveEntry = () => (dispatch) =>
-  dispatch(SetCalendarActiveEntry({}))
-
-export { SetCalendar, SetCalendarActiveEntry, ResetCalendarActiveEntry }
+export const ResetCalendarActiveEntry = () => dispatch => dispatch(SetCalendarActiveEntry({}))

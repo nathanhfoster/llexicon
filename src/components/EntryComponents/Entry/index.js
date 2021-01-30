@@ -15,7 +15,7 @@ import "./styles.css"
 
 const Editor = lazy(() => import("../../Editor"))
 
-const Entry = ({
+export const Entry = ({
   height,
   showOptionsMenu,
   entry,

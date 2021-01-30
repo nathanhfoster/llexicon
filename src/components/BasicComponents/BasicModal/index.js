@@ -4,7 +4,7 @@ import { useSelector, shallowEqual } from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import './styles.css'
 
-const BasicModal = ({
+export const BasicModal = ({
   show,
   title,
   onClick,

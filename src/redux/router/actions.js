@@ -1,12 +1,12 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { RouteMap } from './types'
+import * as RouteMap from './types'
 import { history } from './reducer'
 import { removeArrayDuplicates } from '../../utils'
 
-const MAX_PATH_HISTORY_LENGTH = 21
+export const MAX_PATH_HISTORY_LENGTH = 21
 
-const getHistoryState = route => {
+export const getHistoryState = route => {
   const { pathname, state } = history.location
   let newState = {}
   if (!(state && state.pathHistory)) {
@@ -26,14 +26,14 @@ const getHistoryState = route => {
   return newState
 }
 
-const ValidateHistroy = () => {
+export const ValidateHistroy = () => {
   if (!history || !history.location) {
     return false
   }
   return true
 }
 
-const RouterPush = route => {
+export const RouterPush = route => {
   if (!ValidateHistroy()) return {}
 
   const newState = getHistoryState(route)
@@ -41,7 +41,7 @@ const RouterPush = route => {
   history.push(route, newState)
 }
 
-const RouterLinkPush = route => {
+export const RouterLinkPush = route => {
   if (!ValidateHistroy()) return {}
   const newState = {
     pathname: route,
@@ -51,7 +51,7 @@ const RouterLinkPush = route => {
   return newState
 }
 
-const RouterGoBack = (
+export const RouterGoBack = (
   shouldRedirect = false,
   redirectRoutesToIgnore = [RouteMap.LOGIN, RouteMap.SIGNUP, RouteMap.PASSWORD_RESET],
 ) => {
@@ -79,8 +79,8 @@ const RouterGoBack = (
   }
 }
 
-const GetEntryDetailUrl = id => RouteMap.ENTRY_DETAIL.replace(':entryId', id)
+export const GetEntryDetailUrl = id => RouteMap.ENTRY_DETAIL.replace(':entryId', id)
 
-const GoToEntryDetail = id => RouterPush(GetEntryDetailUrl(id))
+export const GoToEntryDetail = id => RouterPush(GetEntryDetailUrl(id))
 
-export { RouteMap, RouterPush, RouterLinkPush, RouterGoBack, GetEntryDetailUrl, GoToEntryDetail }
+export { RouteMap }

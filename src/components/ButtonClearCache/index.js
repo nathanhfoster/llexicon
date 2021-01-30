@@ -7,7 +7,7 @@ import { ConfirmAction } from 'components'
 import { AstralTreeDB } from 'components/Persistor'
 import { Button } from 'reactstrap'
 
-const ButtonClearCache = () => {
+export const ButtonClearCache = () => {
   const dispatch = useDispatch()
   const handleClearCache = useCallback(() => {
     AstralTreeDB.clear().then(() => {

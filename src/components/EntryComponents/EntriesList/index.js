@@ -24,7 +24,7 @@ const mapDispatchToProps = {
   GetUserEntries,
 }
 
-const EntriesList = ({
+export const EntriesList = ({
   nextEntryPage,
   entriesSearch,
   height,

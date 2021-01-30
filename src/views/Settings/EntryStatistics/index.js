@@ -92,15 +92,18 @@ const EntryStatistics = ({ entries, count }) => {
     if (currentWordCount < minimumWordsInAnEntry) minimumWordsInAnEntry = currentWordCount
     if (currentWordCount > maximumWordsInAnEntry) maximumWordsInAnEntry = currentWordCount
 
-    for (let j = 0, l = tags.length; j < l; j++) {
-      const { name } = tags[j]
+    if (tags?.length) {
+      for (let j = 0, l = tags.length; j < l; j++) {
+        const { name } = tags[j]
 
-      tagCountMap[name] = tagCountMap[name] + 1 || 1
+        tagCountMap[name] = tagCountMap[name] + 1 || 1
+      }
     }
-
-    for (let k = 0, len = people.length; k < len; k++) {
-      const { name } = people[k]
-      peopleCountMap[name] = peopleCountMap[name] + 1 || 1
+    if (people?.length) {
+      for (let k = 0, len = people.length; k < len; k++) {
+        const { name } = people[k]
+        peopleCountMap[name] = peopleCountMap[name] + 1 || 1
+      }
     }
   }
 

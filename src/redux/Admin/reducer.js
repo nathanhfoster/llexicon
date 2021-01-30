@@ -1,28 +1,27 @@
-import { AdminActionTypes } from './types'
-import { EntriesActionTypes } from '../Entries/types'
-import { AppActionTypes } from '../App/types'
+import actions from '../actionTypes'
+
 import { getStringBytes } from 'utils'
 
-const DEFAULT_STATE_ADMIN = {
+export const DEFAULT_STATE_ADMIN = {
   users: { isPending: false, items: [], item: null },
 }
 
-const Admin = (state = DEFAULT_STATE_ADMIN, action) => {
+export const Admin = (state = DEFAULT_STATE_ADMIN, action) => {
   const { type, id, payload } = action
   switch (type) {
-    case AdminActionTypes.ADMIN_USERS_PENDING:
+    case actions.ADMIN_USERS_PENDING:
       return {
         ...state,
         users: { ...state.users, isPending: true },
       }
 
-    case AdminActionTypes.ADMIN_SET_USERS:
+    case actions.ADMIN_SET_USERS:
       return {
         ...state,
         users: { ...state.users, isPending: false, items: payload },
       }
 
-    case AdminActionTypes.ADMIN_SET_USERS_ENTRIES:
+    case actions.ADMIN_SET_USERS_ENTRIES:
       const userEntries = payload.reduce((entryMap, userEntry) => {
         const { id, author } = userEntry
         const isArray = entryMap[author] ? true : false
@@ -44,7 +43,7 @@ const Admin = (state = DEFAULT_STATE_ADMIN, action) => {
         },
       }
 
-    case AdminActionTypes.ADMIN_SET_USER_ENTRIES_DETAILS:
+    case actions.ADMIN_SET_USER_ENTRIES_DETAILS:
       return {
         ...state,
         users: {
@@ -61,19 +60,19 @@ const Admin = (state = DEFAULT_STATE_ADMIN, action) => {
         },
       }
 
-    case AdminActionTypes.ADMIN_SET_USER_ENTRY:
+    case actions.ADMIN_SET_USER_ENTRY:
       return {
         ...state,
         users: { ...state.users, isPending: false, item: payload },
       }
 
-    case AppActionTypes.REDUX_RESET:
+    case actions.REDUX_RESET:
       return DEFAULT_STATE_ADMIN
 
-    case AppActionTypes.LOAD_PERSISTED_STATE:
+    case actions.LOAD_PERSISTED_STATE:
       return payload?.Admin || state
 
-    case EntriesActionTypes.ENTRIES_UPDATE:
+    case actions.ENTRIES_UPDATE:
       let updatedItem
       return {
         ...state,
@@ -100,7 +99,7 @@ const Admin = (state = DEFAULT_STATE_ADMIN, action) => {
         },
       }
 
-    case EntriesActionTypes.ENTRIES_DELETE:
+    case actions.ENTRIES_DELETE:
       return {
         ...state,
         users: {
@@ -117,5 +116,3 @@ const Admin = (state = DEFAULT_STATE_ADMIN, action) => {
       return state
   }
 }
-
-export { DEFAULT_STATE_ADMIN, Admin }

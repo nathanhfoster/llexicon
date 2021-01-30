@@ -28,7 +28,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = { SetMapBoundsCenterZoom, SetUserLocation }
 
-const BasicMap = ({
+export const BasicMap = ({
   entry,
   center,
   bounds,

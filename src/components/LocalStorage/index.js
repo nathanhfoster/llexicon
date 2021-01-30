@@ -55,7 +55,7 @@ const mapStateToProps = state => {
   }
 }
 
-const LocalStorage = ({
+export const LocalStorage = ({
   localStorageReduxUsage,
   indexDBStorageReduxUsage,
   entries,
@@ -162,6 +162,6 @@ LocalStorage.propTypes = {
   }),
 }
 
-LocalStorage.defaultProps = {}
+LocalStorage.defaultProps = { entries: [] }
 
 export default connect(mapStateToProps)(LocalStorage)

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { useSelector } from 'react-redux'
 
-import { exportJSON, getValidDate, downloadCSV } from 'utils'
-import { getTagStringFromObject } from 'redux/Entries/utils'
+import { exportFile, downloadCSV } from 'utils'
+import { getEntryTransform, entryKeyTransform } from 'redux/Entries/utils'
 import {
   selectedEntriesSelector,
   allEntriesSelector,
@@ -19,7 +19,7 @@ const EXPORT_BUTTON = (
   </span>
 )
 
-const ButtonExportEntries = ({ entries: entriesFromProps }) => {
+export const ButtonExportEntries = ({ entries: entriesFromProps }) => {
   const userId = useSelector(({ User: { id } }) => id)
   const { entries: entriesSelected } = useSelector(
     entriesFromProps ? selectedEntriesSelector : allEntriesSelector,
@@ -29,80 +29,6 @@ const ButtonExportEntries = ({ entries: entriesFromProps }) => {
     entriesFromProps,
     entriesSelected,
   ])
-
-  const handleExportEntries = () => {
-    const formattedEntries = entries.map((entry, i) => {
-      const {
-        id,
-        author,
-        tags,
-        people,
-        title,
-        html,
-        date_created,
-        date_created_by_author,
-        date_updated,
-        views,
-        rating,
-        address,
-        latitude,
-        longitude,
-        is_public,
-        ...restOfProps
-      } = entry
-
-      let entries = {
-        id,
-        author,
-        tags: getTagStringFromObject(tags),
-        people: getTagStringFromObject(people),
-        title,
-        html,
-        date_created: getValidDate(date_created),
-        date_created_by_author: getValidDate(date_created_by_author),
-        date_updated: getValidDate(date_updated),
-        views,
-        rating,
-        address,
-        latitude,
-        longitude,
-        is_public,
-        ...restOfProps,
-      }
-
-      if (userId) {
-        entries['author'] = userId
-      }
-
-      return entries
-    })
-
-    exportJSON(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
-  }
-
-  const handleExportToCSV = () => {
-    const columns = [
-      'id',
-      'title',
-      'html',
-      // 'tags',
-      // 'people',
-      // 'address',
-      // 'date_created_by_author',
-      // 'date_updated',
-      // 'views',
-      // 'rating',
-      // 'EntryFiles',
-      // 'is_public',
-    ]
-    const rows = entries.map(entry => {
-      let row = columns.map(c => JSON.stringify(entry[c]))
-      return row
-    })
-    console.log([columns])
-    console.log(rows)
-    downloadCSV([columns], rows)
-  }
 
   const options = useMemo(() => {
     const disabled = entries.length === 0
@@ -135,14 +61,27 @@ const ButtonExportEntries = ({ entries: entriesFromProps }) => {
   const handleOnChange = useCallback((id, value) => {
     switch (id) {
       case 'csv':
-        handleExportToCSV()
+        const columns = entryKeyTransform.map(({ key }) => key)
+        const rows = entries.map(entry => getEntryTransform(entry, false))
+
+        downloadCSV(columns, rows, `Astral-Tree-Entries-${new Date()}`)
         break
       case 'json':
-        handleExportEntries()
+        const formattedEntries = entries.map((entry, i) => {
+          let newEntry = getEntryTransform(entry)
+
+          if (userId) {
+            newEntry['author'] = userId
+          }
+
+          return newEntry
+        })
+
+        exportFile(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
         break
       default:
     }
-  }, [])
+  }, [entries, userId])
 
   return (
     <BasicDropDown

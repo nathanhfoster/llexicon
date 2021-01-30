@@ -10,7 +10,7 @@ import { EditorConsumer } from '../../Editor'
 import { ConfirmAction } from 'components'
 import './styles.css'
 
-const EntryFilesCarousel = ({ className, files, overflowX, overflowY, whiteSpace }) => {
+export const EntryFilesCarousel = ({ className, files, overflowX, overflowY, whiteSpace }) => {
   const { entries } = useSelector(allEntriesSelector, allItemsAreEqual)
   const dispatch = useDispatch()
   const { editorRef, editorSelection } = useContext(EditorConsumer)

@@ -17,7 +17,7 @@ import {
 const ENTRIES_RENDER_OFFSET = 6
 const DEFAULT_VIEWABLE_ENTRIES_RANGE = [0, ENTRIES_RENDER_OFFSET * 2]
 
-const EntriesMedia = ({ entries }) => {
+export const EntriesMedia = ({ entries }) => {
   const [viewableEntriesRange, setViewableEntriesRange] = useState(
     DEFAULT_VIEWABLE_ENTRIES_RANGE
   )

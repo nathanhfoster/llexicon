@@ -1,38 +1,9 @@
-import { EntriesActionTypes } from './types'
-import { AppActionTypes } from '../App/types'
-import {
-  FIRST_JOUNRAL_ENTRY,
-  BASE_JOURNAL_ENTRY_ID,
-  mergeJson,
-  getMostRecent,
-  handleFilterEntries,
-} from './utils'
+import actions from '../actionTypes'
+import { FIRST_JOUNRAL_ENTRY, mergeJson, getMostRecent, handleFilterEntries } from './utils'
 import { getStringBytes } from '../../utils'
 import { isObject } from 'utils'
 
-const {
-  ENTRY_SET,
-  ENTRIES_UPDATE,
-  ENTRIES_SELECTED,
-  ENTRY_CLEAR,
-  ENTRIES_CLEAR,
-  ENTRIES_DELETE,
-  ENTRIES_SET_TAGS,
-  ENTRIES_SET_PEOPLE,
-  ENTRIES_PENDING,
-  ENTRY_PENDING,
-  ENTRIES_ERROR,
-  ENTRIES_ERROR_CLEAR,
-  ENTRIES_COMPLETE,
-  ENTRIES_SET,
-  ENTRIES_SEARCH_FILTER,
-  ENTRIES_SET_SORT_MAP,
-  ENTRIES_SET_FILTER_MAP,
-  ENTRIES_RESET_SORT_AND_FILTER_MAP,
-  ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC,
-} = EntriesActionTypes
-
-const DEFAULT_STATE_ENTRIES = {
+export const DEFAULT_STATE_ENTRIES = {
   count: null,
   next: null,
   previous: null,
@@ -78,7 +49,7 @@ const DEFAULT_STATE_ENTRIES = {
   showOnlyPublic: false,
 }
 
-const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
+export const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   const { type, payload, search, isPending } = action
 
   let nextItem
@@ -86,20 +57,21 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
   let nextSelectedItemsMap = {}
 
   switch (type) {
-    case ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC:
+    case actions.ENTRIES_TOGGLE_SHOW_ONLY_PUBLIC:
       return { ...state, showOnlyPublic: !state.showOnlyPublic }
 
-    case ENTRIES_SET_TAGS:
+    case actions.ENTRIES_SET_TAGS:
       return {
         ...state,
         EntryTags: mergeJson(state.EntryTags, payload, 'name'),
       }
 
-    case ENTRIES_SET_PEOPLE:
+    case actions.ENTRIES_SET_PEOPLE:
       return { ...state, EntryPeople: payload }
 
-    case ENTRIES_SEARCH_FILTER:
+    case actions.ENTRIES_SEARCH_FILTER:
       if (!payload) return { ...state, search }
+
       return {
         ...state,
         ...handleFilterEntries(mergeJson(state.items.concat(state.filteredItems), payload), search),
@@ -107,33 +79,34 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         isPending,
       }
 
-    case ENTRIES_PENDING:
+    case actions.ENTRIES_PENDING:
       return { ...state, isPending: true }
 
-    case ENTRY_PENDING:
+    case actions.ENTRY_PENDING:
       return { ...state, item: { ...state.item, isPending: true } }
 
-    case ENTRIES_ERROR:
+    case actions.ENTRIES_ERROR:
       return { ...state, isPending: false, error: payload }
 
-    case ENTRIES_ERROR_CLEAR:
+    case actions.ENTRIES_ERROR_CLEAR:
       return { ...state, isPending: false, error: DEFAULT_STATE_ENTRIES.error }
 
-    case ENTRIES_COMPLETE:
+    case actions.ENTRIES_COMPLETE:
       return { ...state, isPending: false, error: DEFAULT_STATE_ENTRIES.error }
 
-    case ENTRY_CLEAR:
+    case actions.ENTRY_CLEAR:
       return { ...state, item: DEFAULT_STATE_ENTRIES.item }
 
-    case ENTRIES_CLEAR:
+    case actions.ENTRIES_CLEAR:
       return {
         ...state,
         item: DEFAULT_STATE_ENTRIES.item,
         items: [],
         filteredItems: [],
+        selectedItemsMap: DEFAULT_STATE_ENTRIES.selectedItemsMap,
       }
 
-    case ENTRIES_SET:
+    case actions.ENTRIES_SET:
       const { count, next, previous, results } = payload
       return {
         ...state,
@@ -148,7 +121,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         error: DEFAULT_STATE_ENTRIES.error,
       }
 
-    case ENTRY_SET:
+    case actions.ENTRY_SET:
       nextItem = { ...state.item, ...payload, isPending: false }
       nextItem = { ...nextItem, _size: getStringBytes(nextItem) }
 
@@ -167,7 +140,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         isPending: false,
       }
 
-    case ENTRIES_UPDATE:
+    case actions.ENTRIES_UPDATE:
       nextSelectedItemsMap = { ...state.nextSelectedItemsMap }
       nextItems = state.items.concat(state.filteredItems).map(e => {
         if (payload.id === e.id) {
@@ -208,13 +181,13 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         error: DEFAULT_STATE_ENTRIES.error,
       }
 
-    case ENTRIES_SELECTED:
+    case actions.ENTRIES_SELECTED:
       return {
         ...state,
         selectedItemsMap: payload,
       }
 
-    case ENTRIES_DELETE:
+    case actions.ENTRIES_DELETE:
       nextSelectedItemsMap = { ...state.nextSelectedItemsMap }
       return {
         ...state,
@@ -230,7 +203,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         selectedItemsMap: nextSelectedItemsMap,
       }
 
-    case ENTRIES_RESET_SORT_AND_FILTER_MAP:
+    case actions.ENTRIES_RESET_SORT_AND_FILTER_MAP:
       return {
         ...state,
         sortMap: DEFAULT_STATE_ENTRIES.sortMap,
@@ -238,14 +211,14 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         item: DEFAULT_STATE_ENTRIES.item,
       }
 
-    case ENTRIES_SET_SORT_MAP:
+    case actions.ENTRIES_SET_SORT_MAP:
       const { sortKey, sortUp } = payload
       return {
         ...state,
         sortMap: { ...state.sortMap, [sortKey]: sortUp },
       }
 
-    case ENTRIES_SET_FILTER_MAP:
+    case actions.ENTRIES_SET_FILTER_MAP:
       const { filterKey, searchValue } = payload
       return {
         ...state,
@@ -255,7 +228,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
         },
       }
 
-    case AppActionTypes.REDUX_RESET:
+    case actions.REDUX_RESET:
       return {
         ...DEFAULT_STATE_ENTRIES,
         items: state.items
@@ -266,7 +239,7 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           ),
       }
 
-    case AppActionTypes.LOAD_PERSISTED_STATE:
+    case actions.LOAD_PERSISTED_STATE:
       nextItems =
         payload.Entries?.items.concat(payload.Entries?.filteredItems) ||
         state.items.concat(state.filteredItems)
@@ -285,5 +258,3 @@ const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
       return state
   }
 }
-
-export { BASE_JOURNAL_ENTRY_ID, DEFAULT_STATE_ENTRIES, Entries }

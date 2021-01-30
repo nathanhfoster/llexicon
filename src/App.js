@@ -121,8 +121,7 @@ const mapThemeProperties = themeObject => {
 const changeTheme = darkMode =>
   darkMode ? mapThemeProperties(DARK_MODE_THEME) : mapThemeProperties(LIGHT_MODE_THEME)
 
-const App = ({
-  appIsLoading,
+export const App = ({
   userId,
   userToken,
   userIsSuperUser,
@@ -210,11 +209,7 @@ const App = ({
             path={[ROOT, HOME]}
             render={() => <Home prompt={prompt} promptToInstall={promptToInstall} />}
           />
-          {/* <Route
-            path={ROOT}
-            render={() => <Redirect to={HOME} />}
-            exact={true}
-          /> */}
+          {/* <Route path={ROOT} render={() => <Redirect to={HOME} />} exact={true} /> */}
           <Route
             exact
             path={[LOGIN, SIGNUP, PASSWORD_RESET]}
@@ -268,7 +263,6 @@ const App = ({
 }
 
 App.propTypes = {
-  appIsLoading: PropTypes.bool.isRequired,
   userId: PropTypes.number,
   userToken: PropTypes.string,
   userIsSuperUser: PropTypes.bool,

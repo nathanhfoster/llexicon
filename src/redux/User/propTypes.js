@@ -1,6 +1,6 @@
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types'
 
-const SocialAuthenticationProps = PropTypes.shape({
+export const SocialAuthenticationProps = PropTypes.shape({
   provider: PropTypes.string,
   provider_id: PropTypes.string,
   user: PropTypes.number,
@@ -11,15 +11,17 @@ const SocialAuthenticationProps = PropTypes.shape({
   email: PropTypes.string,
   picture: PropTypes.string,
 })
-const SocialAuthenticationsProps = PropTypes.arrayOf(SocialAuthenticationProps)
+export const SocialAuthenticationsProps = PropTypes.arrayOf(SocialAuthenticationProps)
 
-const groupProps = PropTypes.number
-const groupsProps = PropTypes.arrayOf(groupProps)
+export const groupProps = PropTypes.number
 
-const userPermissionProps = PropTypes.number
-const userPermissionsProps = PropTypes.arrayOf(userPermissionProps)
+export const groupsProps = PropTypes.arrayOf(groupProps)
 
-const settingsProps = PropTypes.shape({
+export const userPermissionProps = PropTypes.number
+
+export const userPermissionsProps = PropTypes.arrayOf(userPermissionProps)
+
+export const settingsProps = PropTypes.shape({
   show_animated_background: PropTypes.bool,
   push_messages: PropTypes.bool,
   offline_mode: PropTypes.bool,
@@ -27,7 +29,7 @@ const settingsProps = PropTypes.shape({
   user: PropTypes.number,
 })
 
-const UserProps = PropTypes.shape({
+export const UserProps = PropTypes.shape({
   token: PropTypes.string,
   id: PropTypes.number,
   picture: PropTypes.string,
@@ -49,14 +51,3 @@ const UserProps = PropTypes.shape({
   google_id: PropTypes.string,
   uploaded_picture: PropTypes.string,
 })
-
-export {
-  SocialAuthenticationProps,
-  SocialAuthenticationsProps,
-  groupProps,
-  groupsProps,
-  userPermissionProps,
-  userPermissionsProps,
-  settingsProps,
-  UserProps,
-}

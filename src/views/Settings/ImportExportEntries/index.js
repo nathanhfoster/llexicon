@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { ButtonGroup, Button } from 'reactstrap'
 import { ImportEntries, ButtonExportEntries } from 'components'
 import { connect } from 'react-redux'
-
 import { SyncEntries, GetAllUserEntryPages } from 'redux/Entries/actions'
 
 const mapStateToProps = ({ User: { id } }) => ({

@@ -1,7 +1,14 @@
 import React, { Fragment, useReducer, useState, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap'
+import {
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+  Input,
+} from 'reactstrap'
 import {
   BasicModal,
   ConfirmAction,
@@ -14,13 +21,13 @@ import { copyStringToClipboard, shareUrl } from 'utils'
 import { RouterGoBack, GetEntryDetailUrl } from 'redux/router/actions'
 import { useDispatch } from 'react-redux'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/reducer'
+import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils'
 import { isReadOnly } from 'redux/Entries/utils'
 import './styles.css'
 
 const mapStateToProps = ({ User: { id } }) => ({ userId: id })
 
-const EntryOptionsMenu = ({
+export const EntryOptionsMenu = ({
   entryId,
   title,
   is_public,
@@ -33,8 +40,12 @@ const EntryOptionsMenu = ({
   const [dropdownOpen, toggleOpen] = useReducer(prevState => !prevState, false)
   const [urlCopied, setUrlCopied] = useState(false)
   const [showModal, toggleModal] = useReducer(prevState => !prevState, false)
+  const [text, setText] = useState('Check out my journal entry: ')
+
   // Timeout to allow from onClick events within portal to dispatch first
-  const toggleDropdown = () => setTimeout(() => toggleOpen(), 200)
+  const toggleDropdown = () => {
+    setTimeout(() => toggleOpen(), 200)
+  }
 
   const readOnly = useMemo(() => isReadOnly(entryId, author, userId), [entryId, author, userId])
 
@@ -48,7 +59,16 @@ const EntryOptionsMenu = ({
   const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
   const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
 
-  const handleSync = useCallback(() => dispatch(SyncEntries()), [])
+  const stopPropagation = useCallback(e => e.stopPropagation(), [])
+
+  const selectText = useCallback(e => {
+    stopPropagation(e)
+    e.target.select()
+  }, [])
+
+  const handleTextChange = useCallback(e => setText(e.target.value), [])
+
+  const handleSync = useCallback(() => dispatch(SyncEntries()), [dispatch])
 
   const handleEditorChange = useCallback(
     fields => {
@@ -56,7 +76,7 @@ const EntryOptionsMenu = ({
       dispatch(UpdateReduxEntries(payload))
       handleSync()
     },
-    [entryId],
+    [dispatch, entryId, handleSync],
   )
 
   const handleDelete = useCallback(() => {
@@ -70,30 +90,38 @@ const EntryOptionsMenu = ({
 
       handleSync()
     }, 200)
-  }, [])
+  }, [handleSync, shouldRedirectOnDelete])
 
-  const handleCopyAndMakePublic = useCallback(() => {
-    copyStringToClipboard(url)
-    setUrlCopied(true)
-    !is_public && handleEditorChange({ is_public: true })
-  }, [is_public])
+  const handleCopyAndMakePublic = useCallback(
+    e => {
+      stopPropagation(e)
+      copyStringToClipboard(`${text} ${url}`)
+      setUrlCopied(true)
+      !is_public && handleEditorChange({ is_public: true })
+    },
+    [is_public, text, url],
+  )
 
   const handleToggleIsPublic = useCallback(() => {
     setUrlCopied(false)
     handleEditorChange({ is_public: !is_public })
   }, [is_public])
 
-  const handleShareOnMobile = useCallback(() => {
-    !readOnly && handleEditorChange({ is_public: true })
+  const handleShareOnMobile = useCallback(
+    e => {
+      stopPropagation(e)
+      !readOnly && handleEditorChange({ is_public: true })
 
-    const sharePayload = {
-      url,
-      title,
-      text: 'Check out my journal entry: ',
-    }
+      const sharePayload = {
+        url,
+        title,
+        text,
+      }
 
-    shareUrl(sharePayload)
-  }, [is_public, url, title])
+      shareUrl(sharePayload)
+    },
+    [readOnly, url, title, text],
+  )
 
   const basicModalFooter = useMemo(
     () => (
@@ -106,7 +134,7 @@ const EntryOptionsMenu = ({
         </Button>
       </Fragment>
     ),
-    [],
+    [handleDelete],
   )
 
   return (
@@ -123,29 +151,41 @@ const EntryOptionsMenu = ({
       {(dropdownOpen || showModal) && (
         <Portal>
           <DropdownMenu right className='EntryOptionsDropDown'>
-            <DropdownItem header>
+            <DropdownItem disabled={readOnly} onClick={stopPropagation} onFocus={stopPropagation}>
+              <Input
+                className='mb-1'
+                value={text}
+                placeholder={text}
+                disabled={readOnly}
+                onChange={handleTextChange}
+                onClick={stopPropagation}
+                onFocus={selectText}
+                autoComplete='on'
+                type='textarea'
+              />
               <Button
-                color={!canShareOnMobileDevice ? 'secondary' : 'accent'}
+                color='accent'
                 className='EntryOptionsMenuShareButton'
-                disabled={!canShareOnMobileDevice}
-                onClick={handleShareOnMobile}
+                disabled={readOnly}
+                onClick={canShareOnMobileDevice ? handleShareOnMobile : handleCopyAndMakePublic}
+                onFocus={stopPropagation}
               >
-                <i className='fas fa-share mr-1' />
+                {canShareOnMobileDevice ? (
+                  <i className='fas fa-share mr-1' />
+                ) : (
+                  <i className={`fas fa-${urlCopied ? 'check' : 'clipboard'} mr-1`} />
+                )}
                 <span>{url}</span>
               </Button>
             </DropdownItem>
             <DropdownItem divider />
             <div className='SocialMediaShareContainer'>
-              <ShareOnFaceBook url={url} />
-              <ShareOnLinkedIn url={url} />
-              <ShareOnTwitter text={`Check my journal entry: ${url}`} />
+              <ShareOnFaceBook url={url} onClick={stopPropagation} />
+              <ShareOnLinkedIn url={url} onClick={stopPropagation} />
+              <ShareOnTwitter text={`${text} ${url}`} onClick={stopPropagation} />
             </div>
             <DropdownItem divider />
             <Fragment>
-              <DropdownItem onClick={handleCopyAndMakePublic} disabled={readOnly}>
-                <i className={`fas fa-${urlCopied ? 'check' : 'clipboard'} mr-1`} />
-                Copy and make public
-              </DropdownItem>
               <DropdownItem onClick={handleToggleIsPublic} disabled={readOnly}>
                 <i className={`fas fa-lock${is_public ? '-open' : ''} mr-1`} />
                 {`Make ${is_public ? 'Private' : 'Public'}`}

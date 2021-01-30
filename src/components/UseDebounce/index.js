@@ -1,7 +1,7 @@
 import { useRef, useEffect, memo } from 'react'
 import PropTypes from 'prop-types'
 
-const UseDebounce = ({ debounceOnMount, value, delay, onChange }) => {
+export const UseDebounce = ({ debounceOnMount, value, delay, onChange }) => {
   const mounted = useRef(debounceOnMount)
 
   useEffect(() => {

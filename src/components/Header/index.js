@@ -2,7 +2,7 @@ import React, { useMemo, memo } from 'react'
 import PropTypes from 'prop-types'
 import './styles.css'
 
-const Header = ({ children, className, fill, color, center, ...restOfProps }) => {
+export const Header = ({ children, className, fill, color, center, ...restOfProps }) => {
   const styles = useMemo(
     () => ({
       backgroundColor: fill,

@@ -1,7 +1,15 @@
 import MomentJS from 'moment'
-import { objectToArray, stringMatch, getStringBytes, getValidDate } from 'utils'
+import {
+  objectToArray,
+  stringMatch,
+  getStringBytes,
+  getValidDate,
+  jsonParseDates,
+  isType,
+} from 'utils'
 import { RouteMap } from 'redux/router/actions'
 import * as AwsImages from '../../images/AWS'
+import { EntryPropType } from './propTypes'
 
 export const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
@@ -68,7 +76,7 @@ export const mergeJson = (reduxData, newData, key = 'id') => {
   return objectToArray(mergeMap)
 }
 
-export const tagOrPeopleMatch = (tagsOrPeople, search) =>
+export const tagOrPeopleMatch = (tagsOrPeople = [], search) =>
   tagsOrPeople.some(({ name }) => stringMatch(name, search))
 
 export const handleFilterEntries = (entries, search) => {
@@ -92,30 +100,36 @@ export const handleFilterEntries = (entries, search) => {
     }
   })
 
-  return {
-    filteredItems: cachedFilteredEntries,
-    items: filteredEntries,
-  }
+  return { items: filteredEntries, filteredItems: cachedFilteredEntries }
 }
 
-export const getTagStringFromObject = obj =>
-  obj.reduce((acc, { name }, i, { length }) => {
+export const getStringFromObject = (obj, key = 'name') => {
+  if (!Array.isArray(obj)) return obj
+  return obj.reduce((acc, e, i, { length }) => {
+    const value = e[key]
     if (length === 1 || i === length - 1) {
-      acc += name
+      acc += value
     } else {
-      acc += `${name},`
+      acc += `${value},`
     }
 
     return acc
   }, '')
+}
 
-export const getTagObjectFromString = s =>
-  s.split(',').reduce((acc, name) => {
+export const getObjectFromString = (s, key = 'name') => {
+  if (typeof s !== isType.STRING || !s) return s
+  return s.split(',').reduce((acc, name) => {
     if (name) {
-      acc.push({ name })
+      acc.push({ [key]: name })
     }
     return acc
   }, [])
+}
+
+export const getTagStringFromObject = tagOrPeople => getStringFromObject(tagOrPeople)
+
+export const getTagObjectFromString = s => getObjectFromString(s)
 
 export const isReadOnly = (entryId, entryAuthor, userId) => {
   if (!entryId) return true
@@ -180,6 +194,108 @@ export const FIRST_JOUNRAL_ENTRY = {
   _size: getStringBytes(defaultEntry),
 }
 
+export const entryTagOrPeopleTransform = (tagsOrPeople, shouldExport = true) => {
+  if (shouldExport) {
+    return getTagStringFromObject(tagsOrPeople)
+  }
+  return getTagObjectFromString(tagsOrPeople)
+}
+
+export const entryDateTransform = date => getValidDate(date)
+
+export const arrayOfObjectsTransform = (EntryFiles, shouldExport = true) => {
+  if (shouldExport) {
+    return JSON.stringify(EntryFiles)
+  }
+  return JSON.parse(EntryFiles || '[]', jsonParseDates)
+}
+
+export const stringToIntegerTransform = (s, shouldExport = true) => {
+  if (shouldExport) {
+    return `${s}`
+  }
+  const int = parseInt(s)
+
+  return int
+}
+
+export const stringToFloatTransform = (s, shouldExport = true) => {
+  if (shouldExport) {
+    return `${s}`
+  }
+  const float = parseFloat(s)
+
+  return float
+}
+
+export const stringToBoolTransform = (s, shouldExport = true) => {
+  if (shouldExport) {
+    if (s === true) return 'true'
+    return 'false'
+  }
+
+  if (s === true) return true
+  if (s === 'true') return true
+  return false
+}
+
+export const entryKeyTransform = Object.keys(EntryPropType).map(key => {
+  let entryTransform = { key }
+
+  switch (key) {
+    case 'id':
+    case 'author':
+    case 'views':
+    case 'rating':
+    case 'size':
+    case '_size':
+      entryTransform.transform = stringToIntegerTransform
+      break
+    case 'latitude':
+    case 'longitude':
+      entryTransform.transform = stringToFloatTransform
+      break
+    case 'is_public':
+    case '_shouldDelete':
+    case '_shouldPost':
+      entryTransform.transform = stringToBoolTransform
+      break
+    case 'tags':
+    case 'people':
+      entryTransform.transform = entryTagOrPeopleTransform
+      break
+    case 'date_created':
+    case 'date_created_by_author':
+    case 'date_updated':
+    case '_lastUpdated':
+    case '_calendarDate':
+      entryTransform.transform = entryDateTransform
+      break
+    case 'EntryFiles':
+      entryTransform.transform = arrayOfObjectsTransform
+      break
+
+    default:
+      entryTransform.transform = e => e
+  }
+
+  return entryTransform
+})
+
+export const getEntryTransform = (entry, returnObject = true, shouldExport = true) =>
+  entryKeyTransform.reduce(
+    (acc, { key, transform }) => {
+      const newEntryKey = transform(entry[key], shouldExport)
+      if (returnObject) {
+        acc[key] = newEntryKey
+      } else {
+        acc.push(newEntryKey)
+      }
+      return acc
+    },
+    returnObject ? {} : [],
+  )
+
 export const selectedEntriesSelector = ({
   Entries: { items, filteredItems, selectedItemsMap, showOnlyPublic },
 }) => ({
@@ -203,3 +319,12 @@ export const allItemsAreEqual = (
   { entries: prevEntriesSelected },
   { entries: nextEntriesSelected },
 ) => prevEntriesSelected === nextEntriesSelected
+
+export const findOneEntrySelector = entryId => ({ Entries: { items, filteredItems } }) => ({
+  entry: (filteredItems.length > 0 ? items.concat(filteredItems) : items).find(
+    ({ id }) => id === entryId,
+  ),
+})
+
+export const findOneEntryAreEqual = ({ entry: prevEntrySelected }, { entry: nextEntrySelected }) =>
+  prevEntrySelected === nextEntrySelected

@@ -1,9 +1,8 @@
-import { AppActionTypes } from 'redux/App/types'
-import { MapActionTypes } from './types'
+import actions from '../actionTypes'
 
-const CENTER_OF_US = { lat: 39.8097343, lng: -98.5556199 }
+export const CENTER_OF_US = { lat: 39.8097343, lng: -98.5556199 }
 
-const DEFAULT_STATE_MAP = {
+export const DEFAULT_STATE_MAP = {
   center: CENTER_OF_US,
   bounds: {
     nw: {
@@ -26,22 +25,20 @@ const DEFAULT_STATE_MAP = {
   zoom: 4,
 }
 
-const Map = (state = DEFAULT_STATE_MAP, action) => {
+export const Map = (state = DEFAULT_STATE_MAP, action) => {
   const { type, payload } = action
 
   switch (type) {
-    case MapActionTypes.MAP_SET_BOUNDS_CENTER_ZOOM:
+    case actions.MAP_SET_BOUNDS_CENTER_ZOOM:
       return { ...state, ...payload }
 
-    case MapActionTypes.MAP_RESET:
+    case actions.MAP_RESET:
       return DEFAULT_STATE_MAP
 
-    case AppActionTypes.LOAD_PERSISTED_STATE:
+    case actions.LOAD_PERSISTED_STATE:
       return payload?.Map || state
 
     default:
       return state
   }
 }
-
-export { DEFAULT_STATE_MAP, Map }

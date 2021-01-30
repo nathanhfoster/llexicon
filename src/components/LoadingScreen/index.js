@@ -1,7 +1,7 @@
 import React from "react"
 import "./styles.css"
 
-const LoadingScreen = () => (
+export const LoadingScreen = () => (
   <div className="LoadingScreenContainer">
     <svg x="0" y="0">
       <g clipPath="url(#clip-path)">

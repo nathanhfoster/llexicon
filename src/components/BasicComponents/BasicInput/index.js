@@ -12,7 +12,7 @@ import {
 import BasicOption from '../BasicOption'
 import { cleanObject } from 'utils'
 
-const BasicInput = ({
+export const BasicInput = ({
   id,
   name,
   defaultValue,

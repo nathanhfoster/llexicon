@@ -1,11 +1,8 @@
-import { MapActionTypes } from "./types"
-import ReactGA from "react-ga"
+import actions from '../actionTypes'
 
-const SetMapBoundsCenterZoom = (payload) => ({
-  type: MapActionTypes.MAP_SET_BOUNDS_CENTER_ZOOM,
+export const SetMapBoundsCenterZoom = payload => ({
+  type: actions.MAP_SET_BOUNDS_CENTER_ZOOM,
   payload,
 })
 
-const ResetMap = () => ({ type: MapActionTypes.MAP_RESET })
-
-export { SetMapBoundsCenterZoom, ResetMap }
+export const ResetMap = () => ({ type: actions.MAP_RESET })

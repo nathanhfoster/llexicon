@@ -32,7 +32,7 @@ const mapDispatchToProps = {
   SelectReduxEntries,
 }
 
-const EntriesTable = ({
+export const EntriesTable = ({
   showOnlyPublic,
   selectedItemsMap,
   SetEntriesSortMap,
@@ -201,19 +201,6 @@ const EntriesTable = ({
         key: 'rating',
         width: 64,
         render: ({ rating }) => <span className='ml-2'>{rating}</span>,
-        footer: entries => {
-          let validItems = 0
-          const ratingSum = entries.reduce((count, { rating }) => {
-            if (rating !== 0) {
-              count += rating
-              validItems += 1
-            }
-            return count
-          }, 0)
-          const averageRating = (ratingSum / validItems).toFixed(1)
-
-          return <span>{averageRating > 0 ? averageRating : 0}</span>
-        },
         defaultSortValue: sortMap.rating,
         filterPlaceholder: '<=',
         defaultFilterValue: filterMap.rating,
@@ -224,7 +211,7 @@ const EntriesTable = ({
         title: <i className='fas fa-photo-video' />,
         key: 'EntryFiles',
         width: 64,
-        render: ({ EntryFiles }) => <span className='Center'>{EntryFiles.length}</span>,
+        render: ({ EntryFiles }) => <span className='Center'>{EntryFiles?.length || 0}</span>,
         sort: (a, b, sortUp) => {
           const aLength = a.EntryFiles.length
           const bLength = b.EntryFiles.length
