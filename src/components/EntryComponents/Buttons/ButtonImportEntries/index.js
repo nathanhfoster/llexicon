@@ -1,12 +1,12 @@
 import React, { useCallback, memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { loadJSON } from 'utils'
-import FileUpload from '../../FileUpload'
+import FileUpload from '../../../FileUpload'
 import { SetEntries } from 'redux/Entries/actions'
 import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils'
 import { getEntryTransform } from 'redux/Entries/utils'
 
-export const ImportEntries = () => {
+export const ButtonImportEntries = () => {
   const dispatch = useDispatch()
 
   const importEntries = useCallback(({ target: { files: { 0: file }, value } }) => {
@@ -25,4 +25,4 @@ export const ImportEntries = () => {
   return <FileUpload onChange={importEntries} />
 }
 
-export default memo(ImportEntries)
+export default memo(ButtonImportEntries)

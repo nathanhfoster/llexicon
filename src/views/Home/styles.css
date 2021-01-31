@@ -3,9 +3,9 @@
 
 .HomeRow {
   background: rgba(0, 0, 0, 0.5);
-  max-height: 424px;
   overflow-y: auto;
   width: 100%;
+  color: var(--secondaryColor);
 }
 
 .AboutFeatureIcon {

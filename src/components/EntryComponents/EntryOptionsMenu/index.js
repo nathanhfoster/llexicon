@@ -56,7 +56,7 @@ export const EntryOptionsMenu = ({
     return fullUrl
   }, [entryId])
 
-  const entryIsLocalOnly = entryId.toString().includes(BASE_JOURNAL_ENTRY_ID)
+  const entryIsLocalOnly = entryId?.toString().includes(BASE_JOURNAL_ENTRY_ID)
   const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
 
   const stopPropagation = useCallback(e => e.stopPropagation(), [])

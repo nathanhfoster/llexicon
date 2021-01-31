@@ -17,7 +17,7 @@ import {
   ButtonShareEntries,
   ButtonClearSelectedEntries,
   ButtonDeleteEntries,
-  ImportEntries,
+  ButtonImportEntries,
 } from 'components'
 import { ButtonToolbar, ButtonGroup } from 'reactstrap'
 
@@ -276,7 +276,7 @@ export const EntriesTable = ({
     >
       <ButtonToolbar>
         <ButtonGroup>
-          <ImportEntries />
+          <ButtonImportEntries />
           <ButtonExportEntries entries={selectedEntries} />
           <ButtonEditEntries entries={selectedEntries} />
           <ButtonShareEntries entries={selectedEntries} />

@@ -34,6 +34,9 @@ const {
   ENTRIES_MAP,
   ENTRIES_FOLDERS,
   ENTRIES_MEDIA,
+  ENTRIES_REDISCOVER,
+  ENTRIES_MOST_VIEWED,
+  ENTRIES_RANDOM,
   LOGIN,
   SETTINGS,
   SETTINGS_ENTRIES,
@@ -90,6 +93,29 @@ export const ENTRY_LINKS = [
   },
 ]
 
+export const ENTRY_LINKS_PAGES = [
+  {
+    dropdownItem: true,
+    route: ENTRIES_REDISCOVER,
+    title: 'REDISCOVER',
+    icon: <i className='fab fa-searchengin NavBarImage' />,
+  },
+  {
+    dropdownItem: true,
+    route: ENTRIES_MOST_VIEWED,
+    title: 'MOST VIEWED',
+    icon: <i className='fas fa-fire-alt NavBarImage' />,
+  },
+  {
+    dropdownItem: true,
+    route: ENTRIES_RANDOM,
+    title: 'RANDOM',
+    icon: <i className='fas fa-random NavBarImage' />,
+  },
+]
+
+export const ALL_ENTRY_LINKS = ENTRY_LINKS.concat(ENTRY_LINKS_PAGES)
+
 const mapStateToProps = ({ User: { id, is_superuser }, Window: { isMobile } }) => ({
   userId: id,
   userIsSuperUser: is_superuser,
@@ -101,7 +127,14 @@ const mapDispatchToProps = {
   GetUserEntriesByDate,
 }
 
-export const NavBar = ({ userId, userIsSuperUser, isMobile, UserLogout, prompt, promptToInstall }) => {
+export const NavBar = ({
+  userId,
+  userIsSuperUser,
+  isMobile,
+  UserLogout,
+  prompt,
+  promptToInstall,
+}) => {
   const [collapsed, setCollapse] = useState(true)
 
   const toggleHamburgerMenu = useCallback(() => setCollapse(current => !current), [])
@@ -151,7 +184,7 @@ export const NavBar = ({ userId, userIsSuperUser, isMobile, UserLogout, prompt, 
             ENTRIES
           </span>
         ),
-        links: ENTRY_LINKS,
+        links: ALL_ENTRY_LINKS,
       },
       {
         route: LOGIN,

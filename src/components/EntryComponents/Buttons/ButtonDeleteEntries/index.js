@@ -40,7 +40,6 @@ export const ButtonDeleteEntries = ({ entries: entriesFromProps }) => {
     () => (
       <Button color='danger'>
         <i className='fas fa-trash-alt mr-1' />
-        Delete
       </Button>
     ),
     [],

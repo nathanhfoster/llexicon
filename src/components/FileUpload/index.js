@@ -39,7 +39,6 @@ FileUpload.propTypes = {
 }
 
 FileUpload.defaultProps = {
-  title: 'Import',
   size: 'lg',
 }
 

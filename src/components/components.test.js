@@ -45,7 +45,7 @@ import { EntryFolders } from './EntryComponents/EntryFolders'
 // import { EntryMinimal } from './EntryComponents/EntryMinimal'
 // import { EntryNavButtons } from './EntryComponents/EntryNavButtons'
 // import { EntryOptionsMenu } from './EntryComponents/EntryOptionsMenu'
-import { ImportEntries } from './EntryComponents/ImportEntries'
+import { ButtonImportEntries } from './EntryComponents/Buttons/ButtonImportEntries'
 import { NewEntryButton } from './EntryComponents/NewEntryButton'
 import { RatingIcon } from './EntryComponents/RatingIcon'
 import { RatingStar } from './EntryComponents/RatingStar'
@@ -115,7 +115,7 @@ const componentsToTest = {
   // EntryMinimal,
   // EntryNavButtons,
   // EntryOptionsMenu,
-  ImportEntries,
+  ButtonImportEntries,
   NewEntryButton,
   RatingIcon,
   RatingStar,

@@ -19,7 +19,7 @@ import { ResetMap } from 'redux/Map/actions'
 import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
 import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
 import { Admin, About, Home, PrivacyPolicy } from 'views'
-import { NavBar } from 'components'
+import { NavBar, EntriesRediscover, EntriesMostViewed, EntriesRandom } from 'components'
 import { useAddToHomescreenPrompt, useDebounce } from 'hooks'
 
 const Entries = lazy(() => import('./views/Entries'))
@@ -56,6 +56,9 @@ const {
   ENTRIES_MEDIA,
   ENTRIES_TABLE,
   ENTRIES_MAP,
+  ENTRIES_REDISCOVER,
+  ENTRIES_MOST_VIEWED,
+  ENTRIES_RANDOM,
   PRIVACY_POLICY,
 } = RouteMap
 
@@ -109,6 +112,8 @@ const LIGHT_MODE_THEME = {
   '--quaternaryColor': '#dfe6e9',
   '--quinaryColor': '#bdc3c7',
 }
+
+const ENTRIES_CONTAINER_HEIGHTS = 'calc(100vh - 48px - 32px - 36px)'
 
 const mapThemeProperties = themeObject => {
   let root = document.documentElement
@@ -254,7 +259,22 @@ export const App = ({
             ]}
             render={() => <Entries />}
           />
-          <Route exact path={[PRIVACY_POLICY]} render={() => <PrivacyPolicy />} />
+          <Route
+            exact
+            path={ENTRIES_REDISCOVER}
+            render={() => <EntriesRediscover height={ENTRIES_CONTAINER_HEIGHTS} />}
+          />
+          <Route
+            exact
+            path={ENTRIES_MOST_VIEWED}
+            render={() => <EntriesMostViewed height={ENTRIES_CONTAINER_HEIGHTS} />}
+          />
+          <Route
+            exact
+            path={ENTRIES_RANDOM}
+            render={() => <EntriesRandom height={ENTRIES_CONTAINER_HEIGHTS} />}
+          />
+          <Route exact path={PRIVACY_POLICY} render={() => <PrivacyPolicy />} />
           <Route render={() => <PageNotFound />} />
         </Switch>
       </div>

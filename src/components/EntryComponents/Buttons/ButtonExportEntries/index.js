@@ -15,7 +15,7 @@ import BasicDropDown from 'components/BasicComponents/BasicDropDown'
 
 const EXPORT_BUTTON = (
   <span>
-    <i className='fas fa-file-export mr-1' /> Export
+    <i className='fas fa-file-export mr-1' />
   </span>
 )
 
@@ -58,30 +58,33 @@ export const ButtonExportEntries = ({ entries: entriesFromProps }) => {
     ]
   }, [entries.length])
 
-  const handleOnChange = useCallback((id, value) => {
-    switch (id) {
-      case 'csv':
-        const columns = entryKeyTransform.map(({ key }) => key)
-        const rows = entries.map(entry => getEntryTransform(entry, false))
+  const handleOnChange = useCallback(
+    (id, value) => {
+      switch (id) {
+        case 'csv':
+          const columns = entryKeyTransform.map(({ key }) => key)
+          const rows = entries.map(entry => getEntryTransform(entry, false))
 
-        downloadCSV(columns, rows, `Astral-Tree-Entries-${new Date()}`)
-        break
-      case 'json':
-        const formattedEntries = entries.map((entry, i) => {
-          let newEntry = getEntryTransform(entry)
+          downloadCSV(columns, rows, `Astral-Tree-Entries-${new Date()}`)
+          break
+        case 'json':
+          const formattedEntries = entries.map((entry, i) => {
+            let newEntry = getEntryTransform(entry)
 
-          if (userId) {
-            newEntry['author'] = userId
-          }
+            if (userId) {
+              newEntry['author'] = userId
+            }
 
-          return newEntry
-        })
+            return newEntry
+          })
 
-        exportFile(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
-        break
-      default:
-    }
-  }, [entries, userId])
+          exportFile(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
+          break
+        default:
+      }
+    },
+    [entries, userId],
+  )
 
   return (
     <BasicDropDown

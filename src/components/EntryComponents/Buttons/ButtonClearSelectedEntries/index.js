@@ -21,7 +21,6 @@ export const ButtonClearSelectedEntries = ({ entries: entriesFromProps }) => {
   return (
     <Button disabled={disabled} color='accent' onClick={handleShareEntries}>
       <i className={`fas fa-minus-square mr-1`} />
-      Clear
     </Button>
   )
 }

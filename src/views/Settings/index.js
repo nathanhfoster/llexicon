@@ -2,10 +2,16 @@ import React, { useMemo, useCallback, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { Container, Row, Col, Button } from 'reactstrap'
-import { BasicTabs, Header, PushNotifications } from '../../components'
+import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
+import {
+  BasicTabs,
+  Header,
+  PushNotifications,
+  ButtonSyncEntries,
+  ButtonImportEntries,
+  ButtonExportEntries,
+} from 'components'
 import EntryStatistics from './EntryStatistics'
-import ImportExportEntries from './ImportExportEntries'
 import AccountDetails from './AccountDetails'
 import UpdateProfile from './UpdateProfile'
 import Storage from './Storage'
@@ -53,7 +59,11 @@ export const Settings = ({ serviceWorkerRegistration, appVersion, UpdateAppVersi
       className: 'mt-2',
       render: (
         <Fragment>
-          <ImportExportEntries />
+          <ButtonGroup className='pb-1'>
+            <ButtonSyncEntries />
+            <ButtonImportEntries />
+            <ButtonExportEntries />
+          </ButtonGroup>
           <EntryStatistics />
         </Fragment>
       ),

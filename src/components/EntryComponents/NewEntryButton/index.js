@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { Button, ButtonGroup } from 'reactstrap'
 import { RouteMap, RouterPush } from 'redux/router/actions'
-import { ImportEntries } from 'components'
+import { ButtonImportEntries } from 'components'
 
 export const NewEntryButton = () => (
   <ButtonGroup>
@@ -9,7 +9,7 @@ export const NewEntryButton = () => (
       <i className='fas fa-feather-alt mr-1' />
       Create a new journal entry
     </Button>
-    <ImportEntries />
+    <ButtonImportEntries />
   </ButtonGroup>
 )
 

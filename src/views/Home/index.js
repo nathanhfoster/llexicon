@@ -66,9 +66,9 @@ const Home = ({ userIsLoggedIn, prompt, promptToInstall }) => {
         <UserEntriesTable />
       </Row>
       <Row>
-        <EntriesRediscover />
-        <EntriesMostViewed />
-        <EntriesRandom />
+        <EntriesRediscover headerLink />
+        <EntriesMostViewed headerLink />
+        <EntriesRandom headerLink />
       </Row>
     </Container>
   )

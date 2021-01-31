@@ -250,7 +250,7 @@ export const exportFile = (data, name = 'formattedJson', type = 'text/json') => 
 export const processCsvRow = row => {
   let finalVal = ''
   for (let j = 0; j < row.length; j++) {
-    let innerValue = row[j]?.toString() || ''
+    let innerValue = row[j]?.toString?.() || ''
     if (row[j] instanceof Date) {
       innerValue = row[j].toLocaleString()
     }

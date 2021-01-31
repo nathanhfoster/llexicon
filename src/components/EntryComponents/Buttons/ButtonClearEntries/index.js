@@ -16,7 +16,6 @@ export const ButtonClearEntries = () => {
       button={
         <Button color='danger'>
           <i className='fas fa-trash-alt mr-1' />
-          Clear Entries
         </Button>
       }
     />

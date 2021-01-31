@@ -74,7 +74,6 @@ export const ButtonShareEntries = ({ entries: entriesFromProps }) => {
       <i
         className={`fas fa-${urlCopied ? 'check' : navigator.share ? 'share' : 'clipboard'} mr-1`}
       />
-      Share
     </Button>
   )
 }

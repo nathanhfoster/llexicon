@@ -77,7 +77,6 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
     () => (
       <Button color='accent' onClick={() => setShowEditModal(true)}>
         <i className='fas fa-edit mr-1' />
-        Edit
       </Button>
     ),
     [],
