@@ -195,14 +195,14 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
                 rel='noopener noreferrer'
                 disabled={Object.keys(usersSelected).length === 0}
               >
-                Email
+                <i className="fas fa-mail-bulk"/>
               </Button>
               <Button
                 color='accent'
                 disabled={Object.keys(usersSelected).length === 0}
                 onClick={handleClearUsersSelected}
               >
-                Clear
+                <i className="fas fa-minus-square"/>
               </Button>
             </ButtonGroup>
           </ButtonToolbar>
