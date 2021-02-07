@@ -1,13 +1,14 @@
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types"
 
 const BasicTableActionTypes = {
-  BASIC_TABLE_SORT: 'BASIC_TABLE_SORT',
-  BASIC_TABLE_FILTER: 'BASIC_TABLE_FILTER',
-  BASIC_TABLE_SET_PAGE: 'BASIC_TABLE_SET_PAGE',
-  BASIC_TABLE_SET_PAGE_SIZE: 'BASIC_TABLE_SET_PAGE_SIZE',
-  BASIC_TABLE_SET_DATA: 'BASIC_TABLE_SET_DATA',
-  BASIC_TABLE_SET_SELECTED_DATA: 'BASIC_TABLE_SET_SELECTED_DATA',
-  BASIC_TABLE_SELECT_DATA_ITEMS: 'BASIC_TABLE_SELECT_DATA_ITEMS',
+  BASIC_TABLE_SORT: "BASIC_TABLE_SORT",
+  BASIC_TABLE_FILTER: "BASIC_TABLE_FILTER",
+  BASIC_TABLE_SET_PAGE: "BASIC_TABLE_SET_PAGE",
+  BASIC_TABLE_SET_PAGE_SIZE: "BASIC_TABLE_SET_PAGE_SIZE",
+  BASIC_TABLE_SET_DATA: "BASIC_TABLE_SET_DATA",
+  BASIC_TABLE_SET_SELECTED_DATA: "BASIC_TABLE_SET_SELECTED_DATA",
+  BASIC_TABLE_SELECT_DATA_ITEMS: "BASIC_TABLE_SELECT_DATA_ITEMS",
+  BASIC_TABLE_SET_COLUMNS: "BASIC_TABLE_SET_COLUMNS",
 }
 
 const ColumnPropType = PropTypes.shape({
@@ -21,12 +22,18 @@ const ColumnPropType = PropTypes.shape({
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   render: PropTypes.func,
   footer: PropTypes.func,
-  sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(['string'])]),
+  sort: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["string"])]),
   defaultSortValue: PropTypes.bool,
-  filter: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(['string', 'number', 'date'])]),
+  filter: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.oneOf(["string", "number", "date"]),
+  ]),
   defaultFilterValue: PropTypes.string,
   filterPlaceholder: PropTypes.string,
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 })
 
 const ColumnsPropType = PropTypes.arrayOf(ColumnPropType)
@@ -37,7 +44,13 @@ const SortListPropType = PropTypes.arrayOf(
   PropTypes.shape({
     key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     sortUp: PropTypes.oneOf([false, true, null]),
-  }),
+  })
 )
 
-export { BasicTableActionTypes, ColumnPropType, ColumnsPropType, DataPropType, SortListPropType }
+export {
+  BasicTableActionTypes,
+  ColumnPropType,
+  ColumnsPropType,
+  DataPropType,
+  SortListPropType,
+}

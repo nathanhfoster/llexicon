@@ -1,5 +1,11 @@
 import actions from '../actionTypes'
-import { FIRST_JOUNRAL_ENTRY, mergeJson, getMostRecent, handleFilterEntries } from './utils'
+import {
+  FIRST_JOUNRAL_ENTRY,
+  mergeJson,
+  getMostRecent,
+  handleFilterEntries,
+  DEFAULT_TABLE_COLUMNS,
+} from './utils'
 import { getStringBytes } from '../../utils'
 import { isObject } from 'utils'
 
@@ -46,6 +52,7 @@ export const DEFAULT_STATE_ENTRIES = {
     date_updated: true,
   },
   filterMap: {},
+  tableColumns: DEFAULT_TABLE_COLUMNS,
   showOnlyPublic: false,
 }
 
@@ -226,6 +233,12 @@ export const Entries = (state = DEFAULT_STATE_ENTRIES, action) => {
           ...state.filterMap,
           [filterKey]: searchValue,
         },
+      }
+
+    case actions.ENTRIES_SET_TABLE_COLUMNS:
+      return {
+        ...state,
+        tableColumns: payload,
       }
 
     case actions.REDUX_RESET:

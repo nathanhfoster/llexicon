@@ -1,20 +1,24 @@
-import { BasicTableContext } from './state/context'
-import React, { useRef, useEffect, useMemo, memo } from 'react'
-import PropTypes from 'prop-types'
-import { createStore, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import Table from './Table'
-import { BasicTableReducer } from './state/reducer'
-import { basicTableSetData, basicTableSetSelectedData } from './state/actions'
-import { getInitialState } from './state/utils'
-import { ColumnsPropType, DataPropType } from './state/types'
-import { stringMatch } from '../../../utils'
+import { BasicTableContext } from "./state/context"
+import React, { useRef, useEffect, useMemo, memo } from "react"
+import PropTypes from "prop-types"
+import { createStore, applyMiddleware } from "redux"
+import { Provider } from "react-redux"
+import thunk from "redux-thunk"
+import { composeWithDevTools } from "redux-devtools-extension"
+import Table from "./Table"
+import { BasicTableReducer } from "./state/reducer"
+import {
+  basicTableSetData,
+  basicTableSetSelectedData,
+  basicTableSetPayload,
+} from "./state/actions"
+import { getInitialState } from "./state/utils"
+import { ColumnsPropType, DataPropType } from "./state/types"
+import { stringMatch } from "../../../utils"
 
 const { NODE_ENV } = process.env
 
-const inDevelopmentMode = NODE_ENV == 'development'
+const inDevelopmentMode = NODE_ENV == "development"
 
 const middleWares = inDevelopmentMode
   ? composeWithDevTools(applyMiddleware(thunk))
@@ -24,8 +28,9 @@ export const BasicTableProvider = ({ children, ...restOfProps }) => {
   let mounted = useRef(false)
 
   const store = useMemo(
-    () => createStore(BasicTableReducer, getInitialState(restOfProps), middleWares),
-    [],
+    () =>
+      createStore(BasicTableReducer, getInitialState(restOfProps), middleWares),
+    []
   )
 
   useEffect(() => {
@@ -41,6 +46,13 @@ export const BasicTableProvider = ({ children, ...restOfProps }) => {
     }
     mounted.current = true
   }, [restOfProps.selectedDataMap])
+
+  useEffect(() => {
+    if (mounted.current) {
+      store.dispatch(basicTableSetPayload(restOfProps.columns))
+    }
+    mounted.current = true
+  }, [restOfProps.columns])
 
   return (
     <Provider context={BasicTableContext} store={store}>
@@ -74,7 +86,11 @@ BasicTableProvider.propTypes = {
   pageSize: PropTypes.number.isRequired,
   pageSizes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
   // Custom ref handler that will be assigned to the "ref" of the inner <table> element
-  innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object]),
+  innerRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+    PropTypes.object,
+  ]),
 }
 
 BasicTableProvider.defaultProps = {
@@ -90,32 +106,35 @@ BasicTableProvider.defaultProps = {
   pageSizes: [5, 15, 25, 50, 100],
   columns: [
     {
-      title: '#',
-      key: 'id',
+      title: "#",
+      key: "id",
       width: 25,
     },
     {
-      title: 'First Name',
-      key: 'first_name',
+      title: "First Name",
+      key: "first_name",
       width: 100,
-      filter: 'string',
+      filter: "string",
     },
     {
-      title: 'Last Name',
-      key: 'last_name',
+      title: "Last Name",
+      key: "last_name",
       width: 200,
-      filter: 'string',
+      filter: "string",
     },
     {
-      title: 'Username',
-      key: 'user_name',
-      render: item => <a href='#'>{`Delete ${item.user_name}`}</a>,
+      title: "Username",
+      key: "user_name",
+      render: (item) => <a href="#">{`Delete ${item.user_name}`}</a>,
       sort: (a, b, sortUp) =>
-        sortUp ? b.user_name.localeCompare(a.user_name) : a.user_name.localeCompare(b.user_name),
-      filter: filterValue => item => stringMatch(item.user_name, filterValue),
+        sortUp
+          ? b.user_name.localeCompare(a.user_name)
+          : a.user_name.localeCompare(b.user_name),
+      filter: (filterValue) => (item) =>
+        stringMatch(item.user_name, filterValue),
     },
   ],
-  dataDisplayName: 'Data',
+  dataDisplayName: "Data",
   data: new Array(25).fill().map(
     (e, i) =>
       (e = {
@@ -123,7 +142,7 @@ BasicTableProvider.defaultProps = {
         first_name: `first_name${i}`,
         last_name: `last_name${i}`,
         user_name: `user_name${i}`,
-      }),
+      })
   ),
   selectedDataMap: {},
 }

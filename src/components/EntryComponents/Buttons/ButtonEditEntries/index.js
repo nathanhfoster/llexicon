@@ -1,26 +1,32 @@
-import React, { useState, useRef, useMemo, useCallback, memo } from 'react'
-import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { useSelector, shallowEqual, useDispatch } from 'react-redux'
-import { BasicModal, BasicForm } from 'components'
-import { Button } from 'reactstrap'
-import { cleanObject, removeAttributeDuplicates } from 'utils'
-import { getTagStringFromObject, getTagObjectFromString } from 'redux/Entries/utils'
-import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { selectedEntriesSelector, selectedItemsAreEqual } from 'redux/Entries/utils'
+import React, { useState, useRef, useMemo, useCallback, memo } from "react"
+import { EntriesPropTypes } from "redux/Entries/propTypes"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { BasicModal, BasicForm } from "components"
+import { Button } from "reactstrap"
+import { cleanObject, removeAttributeDuplicates } from "utils"
+import {
+  getTagStringFromObject,
+  getTagObjectFromString,
+} from "redux/Entries/utils"
+import { UpdateReduxEntries, SyncEntries } from "redux/Entries/actions"
+import {
+  selectedEntriesSelector,
+  selectedItemsAreEqual,
+} from "redux/Entries/utils"
 
 const tagInputs = [
   [
     {
-      label: 'Add',
-      name: 'tagsAdd',
-      type: 'radio',
+      label: "Add",
+      name: "tagsAdd",
+      type: "radio",
       inline: true,
       defaultChecked: true,
     },
     {
-      label: 'Delete',
-      name: 'tagsDelete',
-      type: 'radio',
+      label: "Delete",
+      name: "tagsDelete",
+      type: "radio",
       inline: true,
     },
   ],
@@ -29,16 +35,16 @@ const tagInputs = [
 const peopleInputs = [
   [
     {
-      label: 'Add',
-      name: 'peopleAdd',
-      type: 'radio',
+      label: "Add",
+      name: "peopleAdd",
+      type: "radio",
       inline: true,
       defaultChecked: true,
     },
     {
-      label: 'Delete',
-      name: 'peopleDelete',
-      type: 'radio',
+      label: "Delete",
+      name: "peopleDelete",
+      type: "radio",
       inline: true,
     },
   ],
@@ -47,13 +53,17 @@ const peopleInputs = [
 export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
   const { entriesFromRedux, EntryTags, EntryPeople } = useSelector(
     ({ Entries: { items, filteredItems, EntryTags, EntryPeople } }) => ({
-      entriesFromRedux: filteredItems.length > 0 ? items.concat(filteredItems) : items,
+      entriesFromRedux:
+        filteredItems.length > 0 ? items.concat(filteredItems) : items,
       EntryTags,
       EntryPeople,
     }),
-    shallowEqual,
+    shallowEqual
   )
-  const { entries: entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const { entries: entriesSelected } = useSelector(
+    selectedEntriesSelector,
+    selectedItemsAreEqual
+  )
   const entries = useMemo(() => entriesFromProps || entriesSelected, [
     entriesFromProps,
     entriesSelected,
@@ -75,11 +85,11 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
 
   const modalButton = useMemo(
     () => (
-      <Button color='accent' onClick={() => setShowEditModal(true)}>
-        <i className='fas fa-edit mr-1' />
+      <Button color="accent" onClick={() => setShowEditModal(true)}>
+        <i className="fas fa-edit" />
       </Button>
     ),
-    [],
+    []
   )
 
   const [entriesTagMap, entriesPeopleMap] = useMemo(
@@ -97,27 +107,27 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
 
               return acc
             },
-            [{}, {}],
+            [{}, {}]
           )
         : [{}, {}],
-    [entries, showEditModal],
+    [entries, showEditModal]
   )
 
   const handleTags = useCallback(({ target: { name, checked } }) => {
     switch (name) {
-      case 'tagsAdd':
+      case "tagsAdd":
         tagsAdd.current = checked
         break
 
-      case 'tagsDelete':
+      case "tagsDelete":
         tagsDelete.current = checked
         break
 
-      case 'peopleAdd':
+      case "peopleAdd":
         peopleAdd.current = checked
         break
 
-      case 'peopleDelete':
+      case "peopleDelete":
         peopleDelete.current = checked
         break
 
@@ -127,7 +137,7 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
   }, [])
 
   const handleEditEntries = useCallback(
-    formPayload => {
+    (formPayload) => {
       let tagMap = {}
       let peopleMap = {}
       formPayload.tags = formPayload.tags?.reduce((acc, { value }) => {
@@ -147,11 +157,11 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
 
       let entryFieldsToUpdate = cleanObject(formPayload)
 
-      const getUpdatedEntry = e => {
+      const getUpdatedEntry = (e) => {
         if (tagsAdd.current) {
           entryFieldsToUpdate.tags = removeAttributeDuplicates(
             (entryFieldsToUpdate.tags || []).concat(e.tags),
-            'name',
+            "name"
           )
         }
         if (Object.keys(tagMap).length > 0 && tagsDelete.current) {
@@ -166,7 +176,7 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         if (peopleAdd.current) {
           entryFieldsToUpdate.people = removeAttributeDuplicates(
             (entryFieldsToUpdate.people || []).concat(e.people),
-            'name',
+            "name"
           )
         }
         if (Object.keys(tagMap).length > 0 && peopleDelete.current) {
@@ -200,7 +210,7 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
       dispatch(SyncEntries())
       resetRefs()
     },
-    [entries],
+    [entries]
   )
 
   const handleCancel = useCallback(() => {
@@ -210,12 +220,12 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
 
   const [entryTagsOptions, entryPeopleOptions] = useMemo(() => {
     let tagOptions = [
-      { name: 'Document' },
-      { name: 'Dream' },
-      { name: 'Family' },
-      { name: 'Friends' },
-      { name: 'Quote' },
-      { name: 'Vacation' },
+      { name: "Document" },
+      { name: "Dream" },
+      { name: "Family" },
+      { name: "Friends" },
+      { name: "Quote" },
+      { name: "Vacation" },
     ]
     let peopleOptions = []
 
@@ -224,13 +234,17 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         tagOptions = removeAttributeDuplicates(
           Object.values(
             entriesFromRedux
-              .map(entry => entry.tags)
+              .map((entry) => entry.tags)
               .flat(1)
-              .concat(EntryTags),
+              .concat(EntryTags)
           )
             .sort(({ name: a }, { name: b }) => a.localeCompare(b))
-            .map(t => (entriesTagMap[t.name] === entries.length ? { ...t, selected: true } : t)),
-          'name',
+            .map((t) =>
+              entriesTagMap[t.name] === entries.length
+                ? { ...t, selected: true }
+                : t
+            ),
+          "name"
         )
       }
 
@@ -238,13 +252,17 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
         peopleOptions = removeAttributeDuplicates(
           Object.values(
             entriesFromRedux
-              .map(entry => entry.people)
+              .map((entry) => entry.people)
               .flat(1)
-              .concat(EntryPeople),
+              .concat(EntryPeople)
           )
             .sort(({ name: a }, { name: b }) => a.localeCompare(b))
-            .map(p => (entriesPeopleMap[p.name] === entries.length ? { ...p, selected: true } : p)),
-          'name',
+            .map((p) =>
+              entriesPeopleMap[p.name] === entries.length
+                ? { ...p, selected: true }
+                : p
+            ),
+          "name"
         )
       }
     }
@@ -265,43 +283,43 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
       [
         {
           label: (
-            <div className='d-inline-flex'>
-              <span className='mr-1'>Tags</span>
+            <div className="d-inline-flex">
+              <span className="mr-1">Tags</span>
               <BasicForm inline inputs={tagInputs} onChange={handleTags} />
             </div>
           ),
-          name: 'tags',
-          type: 'select',
+          name: "tags",
+          type: "select",
           options: entryTagsOptions,
           multiple: true,
           inline: true,
         },
         {
           label: (
-            <div className='d-inline-flex'>
-              <span className='mr-1'>People</span>
+            <div className="d-inline-flex">
+              <span className="mr-1">People</span>
               <BasicForm inline inputs={peopleInputs} onChange={handleTags} />
             </div>
           ),
-          name: 'people',
-          type: 'select',
+          name: "people",
+          type: "select",
           options: entryPeopleOptions,
           multiple: true,
           inline: true,
         },
       ],
       {
-        label: 'Should Post',
-        name: '_shouldPost',
-        type: 'checkbox',
+        label: "Should Post",
+        name: "_shouldPost",
+        type: "checkbox",
         placeholder: `Should Post...`,
         inline: true,
         defaultChecked: entries.every(({ _shouldPost }) => _shouldPost),
       },
       {
-        label: 'Should Delete',
-        name: '_shouldDelete',
-        type: 'checkbox',
+        label: "Should Delete",
+        name: "_shouldDelete",
+        type: "checkbox",
         placeholder: `Sould Delete..`,
         inline: true,
         defaultChecked:
@@ -309,90 +327,96 @@ export const ButtonEditEntries = ({ entries: entriesFromProps }) => {
           entries.every(({ _shouldDelete }) => _shouldDelete),
       },
       {
-        label: 'Is Public',
-        name: 'is_public',
-        type: 'checkbox',
+        label: "Is Public",
+        name: "is_public",
+        type: "checkbox",
         placeholder: `Is Public...`,
         inline: true,
         defaultChecked: entries.every(({ is_public }) => is_public),
       },
       {
-        label: 'Title',
-        name: 'title',
-        type: 'text',
+        label: "Title",
+        name: "title",
+        type: "text",
         placeholder: `Tile...`,
-        autoComplete: 'on',
+        autoComplete: "on",
       },
       {
-        label: 'HTML',
-        name: 'html',
-        type: 'textarea',
+        label: "HTML",
+        name: "html",
+        type: "textarea",
         placeholder: `Html...`,
-        autoComplete: 'on',
+        autoComplete: "on",
       },
       {
-        label: 'Date Created',
-        name: 'date_created_by_author',
-        type: 'datetime-local',
+        label: "Date Created",
+        name: "date_created_by_author",
+        type: "datetime-local",
         placeholder: `Date Created...`,
-        autoComplete: 'on',
+        autoComplete: "on",
       },
       [
         {
-          label: 'Views',
-          name: 'views',
-          type: 'number',
-          placeholder: '100',
-          autoComplete: 'on',
+          label: "Views",
+          name: "views",
+          type: "number",
+          placeholder: "100",
+          autoComplete: "on",
           min: 0,
         },
         {
-          label: 'Rating',
-          name: 'rating',
-          type: 'number',
-          placeholder: '0',
-          autoComplete: 'on',
+          label: "Rating",
+          name: "rating",
+          type: "number",
+          placeholder: "0",
+          autoComplete: "on",
           // defaultValue: 0,
           min: 0,
           max: 5,
         },
       ],
       {
-        label: 'Address',
-        name: 'address',
-        type: 'text',
+        label: "Address",
+        name: "address",
+        type: "text",
         placeholder: `Address...`,
-        autoComplete: 'on',
+        autoComplete: "on",
       },
       [
         {
-          label: 'Latitude',
-          name: 'latitude',
-          type: 'text',
+          label: "Latitude",
+          name: "latitude",
+          type: "text",
           placeholder: `Latitude...`,
-          autoComplete: 'on',
+          autoComplete: "on",
         },
         {
-          label: 'Longitude',
-          name: 'longitude',
-          type: 'text',
+          label: "Longitude",
+          name: "longitude",
+          type: "text",
           placeholder: `Longitude...`,
-          autoComplete: 'on',
+          autoComplete: "on",
         },
       ],
     ],
-    [entries, entryPeopleOptions, entryTagsOptions, handleTags],
+    [entries, entryPeopleOptions, entryTagsOptions, handleTags]
   )
 
   return (
     <BasicModal
       show={showEditModal}
       disabled={entries.length === 0}
-      title={`Edit ${entries.length === 1 ? 'entry' : `these ${entries.length} entries`}`}
+      title={`Edit ${
+        entries.length === 1 ? "entry" : `these ${entries.length} entries`
+      }`}
       button={modalButton}
       footer={null}
     >
-      <BasicForm onSubmit={handleEditEntries} onCancel={handleCancel} inputs={inputs} />
+      <BasicForm
+        onSubmit={handleEditEntries}
+        onCancel={handleCancel}
+        inputs={inputs}
+      />
     </BasicModal>
   )
 }

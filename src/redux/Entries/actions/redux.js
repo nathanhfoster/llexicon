@@ -101,6 +101,11 @@ export const ResetEntriesSortAndFilterMaps = () => ({
   type: actions.ENTRIES_RESET_SORT_AND_FILTER_MAP,
 })
 
+export const SetTableColumns = (payload) => ({
+  type: actions.ENTRIES_SET_TABLE_COLUMNS,
+  payload,
+})
+
 export const ResetSearchEntries = () => dispatch => dispatch(SetSearchEntries('', [], false))
 
 export const DeleteEntryFileFromRedux = (id, entry_id) => (dispatch, getState) => {

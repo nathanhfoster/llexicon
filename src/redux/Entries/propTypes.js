@@ -69,3 +69,5 @@ export const EntryPropType = {
 export const EntryPropTypes = PropTypes.shape(EntryPropType)
 
 export const EntriesPropTypes = PropTypes.arrayOf(EntryPropTypes)
+
+export const TableColumnsPropType = PropTypes.arrayOf(PropTypes.oneOf(Object.keys(EntryPropType)))

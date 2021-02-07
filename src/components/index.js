@@ -22,6 +22,8 @@ export { default as ButtonClearEntries } from './EntryComponents/Buttons/ButtonC
 export { default as ButtonClearSelectedEntries } from './EntryComponents/Buttons/ButtonClearSelectedEntries'
 export { default as ButtonExportEntries } from './EntryComponents/Buttons/ButtonExportEntries'
 export { default as ButtonEditEntries } from './EntryComponents/Buttons/ButtonEditEntries'
+export { default as ButtonEditTableColumns } from './EntryComponents/Buttons/ButtonEditTableColumns'
+
 export { default as ButtonShareEntries } from './EntryComponents/Buttons/ButtonShareEntries'
 export { default as ButtonDeleteEntries } from './EntryComponents/Buttons/ButtonDeleteEntries'
 export { default as ButtonImportEntries } from './EntryComponents/Buttons/ButtonImportEntries'

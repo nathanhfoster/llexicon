@@ -11,6 +11,21 @@ import { RouteMap } from 'redux/router/actions'
 import * as AwsImages from '../../images/AWS'
 import { EntryPropType } from './propTypes'
 
+export const DEFAULT_TABLE_COLUMNS = [
+  'title',
+  'html',
+  'tags',
+  'people',
+  'address',
+  'date_created_by_author',
+  'date_updated',
+  'views',
+  'rating',
+  'EntryFiles',
+  'is_public',
+  'id',
+]
+
 export const LINK_TO_SIGN_UP = `${RouteMap.SIGNUP}`
 
 export const BASE_JOURNAL_ENTRY_ID = 'Entry-'
