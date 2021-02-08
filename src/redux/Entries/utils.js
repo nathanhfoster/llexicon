@@ -79,6 +79,9 @@ export const mergeJson = (reduxData, newData, key = 'id') => {
   for (let i = 0, { length } = allData; i < length; i++) {
     const item = allData[i]
     const id = item[key]
+    if (!id) {
+      item[key] = getReduxEntryId()
+    }
 
     if (!mergeMap[id]) {
       mergeMap[id] = item
@@ -230,6 +233,10 @@ export const stringToIntegerTransform = (s, shouldExport = true) => {
     return `${s}`
   }
   const int = parseInt(s)
+
+  if(isNaN(int)) {
+    return s
+  }
 
   return int
 }
