@@ -92,7 +92,7 @@ export const mergeJson = (reduxData, newData, key = 'id') => {
 }
 
 export const tagOrPeopleMatch = (tagsOrPeople = [], search) =>
-  tagsOrPeople.some(({ name }) => stringMatch(name, search))
+  tagsOrPeople?.some(({ name }) => stringMatch(name, search))
 
 export const handleFilterEntries = (entries, search) => {
   if (!search) return { items: entries, filteredItems: [] }

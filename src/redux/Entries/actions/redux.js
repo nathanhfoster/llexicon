@@ -10,7 +10,6 @@ export const SetEntriesComplete = () => ({ type: actions.ENTRIES_COMPLETE })
 
 export const SetEntriesError = e => {
   const payload = JSON.parse(JSON.stringify(e))
-  // console.log(payload)
   return { type: actions.ENTRIES_ERROR, payload }
 }
 
