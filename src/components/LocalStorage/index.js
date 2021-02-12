@@ -76,10 +76,9 @@ export const LocalStorage = ({
     [indexDBStorageReduxUsage],
   )
 
-  const serverUsage = useMemo(
-    () => entries.reduce((usage, entry) => (usage += entry.size || 0), 0),
-    [entries],
-  )
+  const serverUsage = useMemo(() => entries.reduce((usage, { size }) => (usage += size || 0), 0), [
+    entries,
+  ])
 
   const serverStorageLabel = `${formatBytes(serverUsage)} / ${formatBytes(SERVER_STORAGE_LIMIT)}`
 

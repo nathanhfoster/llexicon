@@ -30,12 +30,13 @@ export const ButtonClearCache = () => {
   }, [])
   return (
     <ConfirmAction
-      message='Are you sure you want to clear your cache? Everything will be erased.'
+      message='Are you sure you want to clear your local storage and cache?'
       onConfirm={handleClearCache}
       button={
         <Button color='danger'>
           <i className='fas fa-trash-alt mr-1' />
-          Clear Cache
+          <i className='fas fa-hdd mr-1' />
+          <i className='fas fa-database' />
         </Button>
       }
     />

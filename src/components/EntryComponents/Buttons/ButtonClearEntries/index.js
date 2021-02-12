@@ -11,11 +11,12 @@ export const ButtonClearEntries = () => {
   }, [])
   return (
     <ConfirmAction
-      message='Are you sure you want to clear your entries?'
+      message='Are you sure you want to clear your local entries entries?'
       onConfirm={handleClearEntries}
       button={
-        <Button color='danger'>
+        <Button color='danger' title='Clear Entries'>
           <i className='fas fa-trash-alt mr-1' />
+          <i className='fas fa-feather-alt' />
         </Button>
       }
     />
