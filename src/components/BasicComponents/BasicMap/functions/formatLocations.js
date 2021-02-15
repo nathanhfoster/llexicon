@@ -1,16 +1,19 @@
 const formatLocations = locations =>
-  locations.reduce((result, item) => {
+  locations.reduce((acc, item) => {
     const { latitude, longitude, ...props } = item
 
     if (latitude && longitude) {
-      return result.concat({
-        ...props,
-        lat: parseFloat(latitude.toString()),
-        lng: parseFloat(longitude.toString())
-      })
-    } else {
-      return result
+      const lat = parseFloat(latitude.toString())
+      const lng = parseFloat(longitude.toString())
+      if (lat && lng) {
+        acc.push({
+          ...props,
+          lat,
+          lng,
+        })
+      }
     }
+    return acc
   }, [])
 
 export default formatLocations

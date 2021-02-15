@@ -50,7 +50,9 @@ export class EntriesList extends PureComponent {
         className='fade-in px-0 py-1'
         style={style}
         onMouseEnter={handleOnHover}
+        onFocus={handleOnHover}
         onMouseLeave={handleOnLeave}
+        onBlur={handleOnLeave}
       >
         <EntryMinimal {...entry} index={index} hover={index == scrollToItem} />
       </Col>
