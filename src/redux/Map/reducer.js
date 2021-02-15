@@ -23,6 +23,7 @@ export const DEFAULT_STATE_MAP = {
     },
   },
   zoom: 4,
+  hoveredChildKey: null,
 }
 
 export const Map = (state = DEFAULT_STATE_MAP, action) => {

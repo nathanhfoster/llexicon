@@ -1,11 +1,14 @@
-import React, { memo } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import PreviewBox from './PreviewBox'
 import Stick from './Stick'
 import { markerStyle } from './styles'
+import { connect } from 'react-redux'
+
+const mapStateToProps = ({ Map: { hoveredChildKey } }) => ({ hoveredChildKey })
 
 const getShouldShowPreview = ({ $hover, hoveredChildKey, $dimensionKey }) =>
-  $hover || hoveredChildKey === $dimensionKey
+  $hover || hoveredChildKey == $dimensionKey
 
 const Marker = props => {
   const { $onMouseAllow, zIndex } = props
@@ -64,4 +67,4 @@ Marker.propTypes = {
 
 Marker.defaultProps = { inGroup: false, zIndex: 1 }
 
-export default memo(Marker)
+export default connect(mapStateToProps)(Marker)

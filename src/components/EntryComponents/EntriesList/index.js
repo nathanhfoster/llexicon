@@ -5,15 +5,7 @@ import { Col } from 'reactstrap'
 import { BasicList, EntryMinimal } from '../..'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { GetUserEntries } from 'redux/Entries/actions'
-const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
-  const entry = data[index]
-
-  return (
-    <Col key={entry.id} xs={12} className='fade-in px-0 py-1' style={style}>
-      <EntryMinimal {...entry} />
-    </Col>
-  )
-}
+import { SetMapBoundsCenterZoom } from 'redux/Map/actions'
 
 const mapStateToProps = ({ Entries: { next, search } }) => ({
   nextEntryPage: next,
@@ -22,6 +14,7 @@ const mapStateToProps = ({ Entries: { next, search } }) => ({
 
 const mapDispatchToProps = {
   GetUserEntries,
+  SetMapBoundsCenterZoom,
 }
 
 export const EntriesList = ({
@@ -32,6 +25,8 @@ export const EntriesList = ({
   itemSize,
   entries,
   GetUserEntries,
+  SetMapBoundsCenterZoom,
+  ˇ,
 }) => {
   const handleOnScrollToBottomOfListCallback = useCallback(() => {
     if (entriesSearch || !nextEntryPage) {
@@ -43,6 +38,27 @@ export const EntriesList = ({
 
     GetUserEntries(pageNumber)
   }, [entriesSearch, nextEntryPage])
+
+  const renderMinimalEntries = useCallback(({ data, index, style, isScrolling }) => {
+    const entry = data[index]
+    const handleOnHover = () => {
+      const { id, latitude, longitude } = entry
+      const center = { lat: latitude, lng: longitude }
+      SetMapBoundsCenterZoom({ hoveredChildKey: id, center, zoom: 16 })
+    }
+    return (
+      <Col
+        key={entry.id}
+        xs={12}
+        className='fade-in px-0 py-1'
+        style={style}
+        onMouseEnter={handleOnHover}
+      >
+        <EntryMinimal {...entry} />
+      </Col>
+    )
+  }, [])
+
   return (
     <BasicList
       height={height}
@@ -61,6 +77,7 @@ EntriesList.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   GetUserEntries: PropTypes.func.isRequired,
+  SetMapBoundsCenterZoom: PropTypes.func.isRequired,
 }
 
 EntriesList.defaultProps = {

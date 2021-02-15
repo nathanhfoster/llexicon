@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useCallback, lazy } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { Row } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import { RouteMap, RouterPush } from 'redux/router/actions'
 import { BasicTabs, NewEntryButton } from '../../components'
 import { UserEntriesTable } from '../../containers'
@@ -23,13 +23,13 @@ const mapStateToProps = ({
   User: { id },
   Entries: { items, showOnlyPublic },
   TextEditor,
-  Window: { innerHeight, navBarHeight },
+  Window: { innerHeight, navBarHeight, isMobile },
 }) => ({
   userId: id,
   entries: items,
   showOnlyPublic,
   TextEditor,
-  viewPortHeight: innerHeight - navBarHeight,
+  viewPortHeight: (innerHeight - navBarHeight - 46) / (isMobile ? 2 : 1),
 })
 
 const mapDispatchToProps = {
@@ -47,7 +47,7 @@ const Entries = ({
   const { pathname: activeTab } = useLocation()
   useEffect(() => {
     if (userId) GetUserEntries(1)
-  }, [userId])
+  }, [GetUserEntries, userId])
   const viewableEntries = useMemo(
     () =>
       entries
@@ -65,10 +65,6 @@ const Entries = ({
   if (TextEditor.latitude && TextEditor.longitude) {
     viewableEntries.push({ ...TextEditor })
   }
-
-  const tabContainerHeight = 46
-
-  const minimalEntriesListHeight = viewPortHeight - tabContainerHeight
 
   const handleTabChange = useCallback(tabId => RouterPush(tabId), [])
 
@@ -144,7 +140,7 @@ const Entries = ({
           </Row>
         ) : (
           <Row>
-            <EntriesList height={minimalEntriesListHeight} entries={viewableEntries} />
+            <EntriesList height={viewPortHeight} entries={viewableEntries} />
           </Row>
         ),
       },
@@ -174,12 +170,12 @@ const Entries = ({
         className: 'fade-in',
         render: (
           <Row>
-            <EntriesMap height={viewPortHeight - 46} />
+            <EntriesMap height={viewPortHeight} />
           </Row>
         ),
       },
     ],
-    [minimalEntriesListHeight, shouldRenderNewEntryButton, viewPortHeight, viewableEntries],
+    [shouldRenderNewEntryButton, viewableEntries, viewPortHeight],
   )
 
   const fluid = useMemo(
