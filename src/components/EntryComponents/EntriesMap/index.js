@@ -12,19 +12,29 @@ import formatLocations from 'components/BasicComponents/BasicMap/functions/forma
 const mapStateToProps = ({
   Entries: { items, showOnlyPublic },
   Map: { bounds, center, zoom },
+  Window: { innerHeight, navBarHeight, isMobile },
 }) => ({
   entries: items,
   showOnlyPublic,
   bounds,
   center,
   zoom,
+  viewPortHeight: innerHeight - navBarHeight - 46,
 })
 
 const mapDispatchToProps = {
   SetEditorState,
 }
 
-export const EntriesMap = ({ entries, showOnlyPublic, height, center, bounds, zoom }) => {
+export const EntriesMap = ({
+  entries,
+  showOnlyPublic,
+  height,
+  center,
+  bounds,
+  zoom,
+  viewPortHeight,
+}) => {
   const viewableEntries = useMemo(
     () =>
       entries.filter(({ _shouldDelete, is_public }) =>
@@ -62,16 +72,24 @@ export const EntriesMap = ({ entries, showOnlyPublic, height, center, bounds, zo
     }
   }, [])
 
+  const shouldRenderList = entriesInMapView.length > 0
+
   return (
     <Container fluid className='Container'>
       <Row>
-        <Col className='p-0' xs={{ size: 12, order: 2 }} md={{ size: 3, order: 1 }}>
-          <EntriesList height={height} entries={entriesInMapView} />
-        </Col>
-        <Col className='p-0' xs={{ size: 12, order: 1 }} md={{ size: 9, order: 2 }}>
+        {shouldRenderList && (
+          <Col className='p-0' xs={{ size: 12, order: 2 }} md={{ size: 3, order: 1 }}>
+            <EntriesList height={height} entries={entriesInMapView} />
+          </Col>
+        )}
+        <Col
+          className='p-0'
+          xs={{ size: 12, order: 1 }}
+          md={{ size: shouldRenderList ? 9 : 12, order: 2 }}
+        >
           <BasicMap
             showList
-            height={height}
+            height={shouldRenderList ? height : viewPortHeight}
             getAddressOnMarkerClick
             locations={viewableEntries}
             onChange={handleOnChange}
@@ -85,6 +103,11 @@ export const EntriesMap = ({ entries, showOnlyPublic, height, center, bounds, zo
 EntriesMap.propTypes = {
   entries: EntryPropTypes,
   height: PropTypes.number.isRequired,
+  showOnlyPublic: PropTypes.bool,
+  center: PropTypes.shape({ lat: PropTypes.number, lng: PropTypes.number }),
+  bounds: PropTypes.number,
+  zoom: PropTypes.number,
+  viewPortHeight: PropTypes.number,
   SetEditorState: PropTypes.func.isRequired,
 }
 
