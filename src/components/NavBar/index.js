@@ -73,12 +73,12 @@ export const ENTRY_LINKS = [
     title: 'MEDIA',
     icon: <i className='fas fa-photo-video NavBarImage' />,
   },
-  {
-    dropdownItem: true,
-    route: ENTRIES_LIST,
-    title: 'LIST',
-    icon: <i className='fas fa-th-list NavBarImage' />,
-  },
+  // {
+  //   dropdownItem: true,
+  //   route: ENTRIES_LIST,
+  //   title: 'LIST',
+  //   icon: <i className='fas fa-th-list NavBarImage' />,
+  // },
   {
     dropdownItem: true,
     route: ENTRIES_TABLE,

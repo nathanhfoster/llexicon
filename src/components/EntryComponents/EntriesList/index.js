@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { createRef, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
@@ -19,6 +19,12 @@ const mapDispatchToProps = {
 }
 
 export class EntriesList extends PureComponent {
+  debounceSetMap = createRef()
+
+  componentWillUnmount() {
+    const { SetMapBoundsCenterZoom } = this.props
+    SetMapBoundsCenterZoom({ hoveredChildKey: null })
+  }
   handleOnScrollToBottomOfListCallback = () => {
     const { entriesSearch, nextEntryPage, GetUserEntries } = this.props
     if (entriesSearch || !nextEntryPage) {
@@ -36,13 +42,19 @@ export class EntriesList extends PureComponent {
     const entry = data[index]
     const handleOnHover = () => {
       const { id, latitude, longitude } = entry
-      const center = { lat: latitude, lng: longitude }
-      SetMapBoundsCenterZoom({ hoveredChildKey: id, center, zoom: 16 })
+
+      let payload = { hoveredChildKey: id }
+      if (latitude && longitude) {
+        const center = { lat: latitude, lng: longitude }
+        payload = {
+          ...payload,
+          center,
+        }
+      }
+      clearTimeout(this.debounceSetMap)
+      this.debounceSetMap = setTimeout(() => SetMapBoundsCenterZoom(payload), 150)
     }
 
-    const handleOnLeave = () => {
-      SetMapBoundsCenterZoom({ hoveredChildKey: null })
-    }
     return (
       <Col
         key={entry.id}
@@ -51,8 +63,6 @@ export class EntriesList extends PureComponent {
         style={style}
         onMouseEnter={handleOnHover}
         onFocus={handleOnHover}
-        onMouseLeave={handleOnLeave}
-        onBlur={handleOnLeave}
       >
         <EntryMinimal {...entry} index={index} hover={index == scrollToItem} />
       </Col>
