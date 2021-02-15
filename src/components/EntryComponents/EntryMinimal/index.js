@@ -1,5 +1,6 @@
 import React, { Fragment, memo } from 'react'
-import { EntryPropTypes } from 'redux/Entries/propTypes'
+import PropTypes from 'prop-types'
+import { EntryPropType } from 'redux/Entries/propTypes'
 import { Badge, Container, Row, Col } from 'reactstrap'
 import { GoToEntryDetail } from 'redux/router/actions'
 import Moment from 'react-moment'
@@ -27,6 +28,7 @@ export const EntryMinimal = ({
   rating,
   is_public,
   author,
+  hover,
 }) => {
   const showFileIcon = EntryFiles.length > 0
   const showLocationIcon = latitude && longitude
@@ -37,7 +39,7 @@ export const EntryMinimal = ({
     <Container
       fluid
       tag={Badge}
-      className='EntryMinimal p-2'
+      className={`EntryMinimal ${hover ? 'EntryMinimalHover' : ''} p-2`}
       onClick={handleContainerClick}
       title={title}
     >
@@ -94,6 +96,8 @@ export const EntryMinimal = ({
   )
 }
 
-EntryMinimal.propTypes = EntryPropTypes
+EntryMinimal.propTypes = { ...EntryPropType, hover: PropTypes.bool }
+
+EntryMinimal.defualtProps = { hover: false }
 
 export default memo(EntryMinimal)

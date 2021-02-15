@@ -4,14 +4,17 @@ import PreviewBox from './PreviewBox'
 import Stick from './Stick'
 import { markerStyle } from './styles'
 import { connect } from 'react-redux'
+import { SetMapBoundsCenterZoom } from 'redux/Map/actions'
 
 const mapStateToProps = ({ Map: { hoveredChildKey } }) => ({ hoveredChildKey })
+
+const mapDispatchToProps = { SetMapBoundsCenterZoom }
 
 const getShouldShowPreview = ({ $hover, hoveredChildKey, $dimensionKey }) =>
   $hover || hoveredChildKey == $dimensionKey
 
 const Marker = props => {
-  const { $onMouseAllow, zIndex } = props
+  const { $dimensionKey, $onMouseAllow, zIndex, SetMapBoundsCenterZoom } = props
   const shouldShowPreview = getShouldShowPreview(props)
 
   const style = {
@@ -19,12 +22,18 @@ const Marker = props => {
     zIndex: shouldShowPreview ? 1000 : zIndex,
   }
 
-  const onMouseEnter = () => $onMouseAllow(true)
+  const onMouseEnter = () => {
+    $onMouseAllow(true)
+    SetMapBoundsCenterZoom({ hoveredChildKey: $dimensionKey })
+  }
 
-  const onMouseLeave = () => $onMouseAllow(false)
+  const onMouseLeave = () => {
+    $onMouseAllow(false)
+    SetMapBoundsCenterZoom({ hoveredChildKey: null })
+  }
 
   return (
-    <div style={style} onMouseEnter={onMouseEnter}>
+    <div style={style} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {shouldShowPreview && <PreviewBox {...props} onMouseLeave={onMouseLeave} />}
       <Stick {...props} shouldShowPreview={shouldShowPreview} />
     </div>
@@ -67,4 +76,4 @@ Marker.propTypes = {
 
 Marker.defaultProps = { inGroup: false, zIndex: 1 }
 
-export default connect(mapStateToProps)(Marker)
+export default connect(mapStateToProps, mapDispatchToProps)(Marker)

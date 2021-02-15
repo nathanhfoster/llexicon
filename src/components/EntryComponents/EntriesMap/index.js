@@ -6,17 +6,25 @@ import { EntryPropTypes } from 'redux/Entries/propTypes'
 import { SetEditorState } from 'redux/TextEditor/actions'
 import { RouteMap, RouterPush, GoToEntryDetail } from 'redux/router/actions'
 import { Container, Row, Col } from 'reactstrap'
+import createClusters from 'components/BasicComponents/BasicMap/functions/createClusters'
+import formatLocations from 'components/BasicComponents/BasicMap/functions/formatLocations'
 
-const mapStateToProps = ({ Entries: { items, showOnlyPublic } }) => ({
+const mapStateToProps = ({
+  Entries: { items, showOnlyPublic },
+  Map: { bounds, center, zoom },
+}) => ({
   entries: items,
   showOnlyPublic,
+  bounds,
+  center,
+  zoom,
 })
 
 const mapDispatchToProps = {
   SetEditorState,
 }
 
-export const EntriesMap = ({ entries, showOnlyPublic, height }) => {
+export const EntriesMap = ({ entries, showOnlyPublic, height, center, bounds, zoom }) => {
   const viewableEntries = useMemo(
     () =>
       entries.filter(({ _shouldDelete, is_public }) =>
@@ -24,6 +32,17 @@ export const EntriesMap = ({ entries, showOnlyPublic, height }) => {
       ),
     [entries, showOnlyPublic],
   )
+
+  const entriesInMapView = useMemo(() => {
+    const formattedLocations = formatLocations(viewableEntries)
+    const clusters = createClusters(formattedLocations, {
+      center,
+      bounds,
+      zoom,
+    })
+    const entries = clusters.map(({ points }) => points).flat(1)
+    return entries
+  }, [viewableEntries, center, bounds, zoom])
 
   const handleOnChange = useCallback(({ entryId, address, latitude, longitude }) => {
     if (!entryId) return
@@ -47,10 +66,11 @@ export const EntriesMap = ({ entries, showOnlyPublic, height }) => {
     <Container fluid className='Container'>
       <Row>
         <Col className='p-0' xs={{ size: 12, order: 2 }} md={{ size: 3, order: 1 }}>
-          <EntriesList height={height} entries={entries} />
+          <EntriesList height={height} entries={entriesInMapView} />
         </Col>
         <Col className='p-0' xs={{ size: 12, order: 1 }} md={{ size: 9, order: 2 }}>
           <BasicMap
+            showList
             height={height}
             getAddressOnMarkerClick
             locations={viewableEntries}

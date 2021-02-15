@@ -7,7 +7,7 @@
   text-align: inherit;
 }
 
-.EntryMinimal:hover {
+.EntryMinimalHover, .EntryMinimal:hover {
   color: var(--secondaryColor);
   background: var(--primaryColor);
   cursor: pointer;
