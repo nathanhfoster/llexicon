@@ -16,7 +16,7 @@ const EntryFolders = lazy(() => import('../../components/EntryComponents/EntryFo
 
 const EntriesMedia = lazy(() => import('../../components/EntryComponents/EntriesMedia'))
 
-// const EntriesList = lazy(() => import('../../components/EntryComponents/EntriesList'))
+const EntriesList = lazy(() => import('../../components/EntryComponents/EntriesList'))
 const EntriesMap = lazy(() => import('../../components/EntryComponents/EntriesMap'))
 
 const mapStateToProps = ({
@@ -126,24 +126,23 @@ const Entries = ({
           </Row>
         ),
       },
-
-      // {
-      //   tabId: RouteMap.ENTRIES_LIST,
-      //   title: {
-      //     name: 'Entries List',
-      //     render: <i className='fas fa-th-list' />,
-      //   },
-      //   className: 'fade-in',
-      //   render: shouldRenderNewEntryButton ? (
-      //     <Row>
-      //       <NewEntryButton />
-      //     </Row>
-      //   ) : (
-      //     <Row>
-      //       <EntriesList height={viewPortHeight} entries={viewableEntries} />
-      //     </Row>
-      //   ),
-      // },
+      {
+        tabId: RouteMap.ENTRIES_LIST,
+        title: {
+          name: 'Entries List',
+          render: <i className='fas fa-th-list' />,
+        },
+        className: 'fade-in',
+        render: shouldRenderNewEntryButton ? (
+          <Row>
+            <NewEntryButton />
+          </Row>
+        ) : (
+          <Row>
+            <EntriesList height={viewPortHeight} entries={viewableEntries} />
+          </Row>
+        ),
+      },
       {
         tabId: RouteMap.ENTRIES_TABLE,
         title: {
