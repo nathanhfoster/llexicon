@@ -29,7 +29,8 @@ const mapStateToProps = ({
   entries: items,
   showOnlyPublic,
   TextEditor,
-  viewPortHeight: (innerHeight - navBarHeight - 46) / (isMobile ? 2 : 1),
+  listHeight: innerHeight - navBarHeight - 46,
+  mapHeight: (innerHeight - navBarHeight - 46) / (isMobile ? 2 : 1),
 })
 
 const mapDispatchToProps = {
@@ -41,7 +42,8 @@ const Entries = ({
   entries,
   showOnlyPublic,
   TextEditor,
-  viewPortHeight,
+  listHeight,
+  mapHeight,
   GetUserEntries,
 }) => {
   const { pathname: activeTab } = useLocation()
@@ -139,7 +141,7 @@ const Entries = ({
           </Row>
         ) : (
           <Row>
-            <EntriesList height={viewPortHeight} entries={viewableEntries} />
+            <EntriesList height={listHeight} entries={viewableEntries} />
           </Row>
         ),
       },
@@ -169,12 +171,12 @@ const Entries = ({
         className: 'fade-in',
         render: (
           <Row>
-            <EntriesMap height={viewPortHeight} />
+            <EntriesMap height={mapHeight} />
           </Row>
         ),
       },
     ],
-    [shouldRenderNewEntryButton, viewableEntries, viewPortHeight],
+    [shouldRenderNewEntryButton, viewableEntries, listHeight, mapHeight],
   )
 
   const fluid = useMemo(
@@ -204,7 +206,8 @@ Entries.propTypes = {
   userId: PropTypes.number,
   entries: EntriesPropTypes,
   TextEditor: PropTypes.object,
-
+  listHeight: PropTypes.number.isRequired,
+  mapHeight: PropTypes.number.isRequired,
   GetUserEntries: PropTypes.func.isRequired,
 }
 
