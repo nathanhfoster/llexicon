@@ -563,13 +563,13 @@ export const stringMatch = (s1, s2, caseSensitive = false) => {
 }
 
 export const formatBytes = (bytes, decimals = 2) => {
-  if (0 === bytes) return '0B'
-  const fix = 0 > decimals ? 0 : decimals
-  const d = Math.floor(Math.log(bytes) / Math.log(1024))
-  return `${parseFloat((bytes / Math.pow(1024, d)).toFixed(fix))}${
+  if (bytes === 0) return '0B';
+  const fix = decimals < 0 ? 0 : decimals;
+  const d = Math.floor(Math.log(bytes) / Math.log(1024));
+  return `${parseFloat((bytes / (1024 ** d)).toFixed(fix))}${
     ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][d]
-  }`
-}
+  }`;
+};
 
 export const getStringBytes = object => parseInt(JSON.stringify(object).split(/%..|./).length - 1)
 
