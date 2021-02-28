@@ -571,6 +571,19 @@ export const formatBytes = (bytes, decimals = 2) => {
   }`;
 };
 
+export const getSetOfObjects = (arrayOfObjects, key = 'id') => {
+  const keyMap = {};
+
+  return arrayOfObjects.reduce((acc, e) => {
+    const primaryKey = e[key];
+    if (!keyMap[primaryKey]) {
+      keyMap[primaryKey] = true;
+      acc.push(e);
+    }
+    return acc;
+  }, []);
+};
+
 export const getStringBytes = object => parseInt(JSON.stringify(object).split(/%..|./).length - 1)
 
 export const shareUrl = ({ url, title, text, files }) => {

@@ -136,7 +136,7 @@ export const getStringFromObject = (obj, key = 'name') => {
 }
 
 export const getObjectFromString = (s, key = 'name') => {
-  if (typeof s !== isType.STRING || !s) return s
+  if (typeof s !== isType.STRING || !s) return []
   return s.split(',').reduce((acc, name) => {
     if (name) {
       acc.push({ [key]: name })
