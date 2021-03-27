@@ -1,4 +1,4 @@
-import { downloadCSV, shareUrl, copyStringToClipboard } from './'
+import { deepEquals, downloadCSV, shareUrl, copyStringToClipboard } from './'
 import { getEntryTransform, entryKeyTransform } from 'redux/Entries/utils'
 import { mockEntriesWithBadData } from 'redux/testUtils'
 import { random, internet, system } from 'faker'
@@ -13,6 +13,16 @@ const oldNavigator = navigator
 const mockString = random.word()
 
 let payload
+
+describe('deepEquals', () => {
+  it('Should return true when objects are equal', () => {
+    const obj1 = { key1: 1, key2: 'test' }
+    const obj2 = obj1
+    const result = deepEquals(obj1, obj2)
+    const expected = true
+    expect(result).toBe(expected)
+  })
+})
 
 describe('downloadCSV util', () => {
   beforeEach(() => {
