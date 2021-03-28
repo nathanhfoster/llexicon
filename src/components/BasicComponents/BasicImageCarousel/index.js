@@ -1,28 +1,29 @@
-import React, { useRef, useReducer, useEffect, useMemo, useCallback, memo } from 'react'
+import React, { useReducer, useEffect, useMemo, useCallback, memo } from 'react'
 import PropTypes from 'prop-types'
 import { ActionTypes, getInitialState, reducer } from './state'
 import Lightbox from 'react-image-lightbox'
+import { useMounted } from 'hooks'
 import { Media } from 'reactstrap'
 import { EntryPropType } from 'redux/Entries/propTypes'
 
 import './styles.css'
 
 export const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...restOfProps }) => {
-  const mounted = useRef(false)
+  const mounted = useMounted()
   const [state, dispatch] = useReducer(reducer, getInitialState(restOfProps))
   const { images, photoIndex, isOpen, imageOffset } = state
   useEffect(() => {
-    if (mounted.current) {
+    if (mounted) {
       dispatch({ type: ActionTypes.SET_INDEX_AND_OPEN, payload: restOfProps })
     }
-    mounted.current = true
+    mounted = true
   }, [restOfProps.photoIndex, restOfProps.isOpen])
 
   useEffect(() => {
-    if (mounted.current) {
+    if (mounted) {
       dispatch({ type: ActionTypes.SET_IS_OPEN, payload: restOfProps })
     }
-    mounted.current = true
+    mounted = true
   }, [restOfProps.images])
 
   const [mainSrc, prevSrc, nextSrc] = useMemo(() => {

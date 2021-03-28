@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, memo, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { InputProps } from 'components/BasicComponents/BasicInput/propTypes'
 import { Input } from 'reactstrap'
+import { useMounted } from 'hooks'
 import { UseDebounce } from '../'
 
 export const DebounceInput = ({
@@ -13,16 +14,15 @@ export const DebounceInput = ({
   focusOnMount,
   ...restOfInputProps
 }) => {
-  const mounted = useRef(false)
+  const mounted = useMounted()
   const inputRef = useRef()
   const [debouncedValue, setDebouncedValue] = useState(defaultValue || value)
   const handleInputChange = ({ target: { value } }) => setDebouncedValue(value)
 
   useEffect(() => {
-    if (mounted.current) {
+    if (mounted) {
       setDebouncedValue(value)
     }
-    mounted.current = true
   }, [value])
 
   useEffect(() => {
@@ -64,7 +64,7 @@ DebounceInput.defaultProps = {
   focusOnMount: false,
   type: 'search',
   autoComplete: 'on',
-  name: 'debounce'
+  name: 'debounce',
 }
 
 export default memo(DebounceInput)

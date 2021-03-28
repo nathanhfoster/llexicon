@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react'
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react'
 import { Button, Form, FormGroup, Col } from 'reactstrap'
 import { BasicFormProps } from './propTypes'
 import BasicInput from '../BasicInput'
+import { useMounted } from 'hooks'
 import { getInputValue, getState, getInputPayloadValue } from './utils'
 import './styles.css'
 
@@ -17,14 +18,13 @@ export const BasicForm = ({
   onCancel,
   onChange,
 }) => {
-  let mounted = useRef(false)
+  const mounted = useMounted()
   const [state, setState] = useState(() => getState(inputs))
 
   useEffect(() => {
-    if (mounted.current) {
+    if (mounted) {
       setState(getState(inputs))
     }
-    mounted.current = true
   }, [inputs])
 
   const handleSubmit = e => {

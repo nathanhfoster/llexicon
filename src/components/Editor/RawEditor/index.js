@@ -1,22 +1,22 @@
-import React, { useContext, useState, useRef, useEffect, useCallback, memo } from 'react'
+import React, { useContext, useState, useEffect, useCallback, memo } from 'react'
 import PropTypes from 'prop-types'
 import { EditorConsumer } from '../'
+import { useMounted } from 'hooks'
 import pretty from 'pretty'
 
 const RawEditor = ({ style, placeholder, value }) => {
   const { handleEditorChange } = useContext(EditorConsumer)
   const [stateValue, setStateValue] = useState(pretty(value))
-  const mounted = useRef(false)
-/*
+  const mounted = useMounted()
+  /*
   useEffect(() => {
-    if (mounted.current) {
+    if (mounted) {
       setStateValue(pretty(value))
     }
-   mounted.current = true
   }, [value])
 */
   useEffect(() => {
-    if (mounted.current) {
+    if (mounted) {
       const debounce = setTimeout(() => {
         handleEditorChange({ html: stateValue })
       }, 400)
@@ -25,12 +25,12 @@ const RawEditor = ({ style, placeholder, value }) => {
         clearTimeout(debounce)
       }
     }
-    mounted.current = true
   }, [handleEditorChange, stateValue])
 
   const handleEditorRawStateChange = useCallback(({ target: { value } }) => {
     setStateValue(value)
   }, [])
+
   return (
     <textarea
       className='Editor raw-editor px-3 py-2'

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef, useMemo, memo } from 'react'
+import React, { useState, useEffect, useMemo, memo } from 'react'
 import PropTypes from 'prop-types'
 import { Container, Row, Col, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
+import { useMounted } from 'hooks'
 import { isType } from '../../../utils'
 import { useSwipeable } from 'react-swipeable'
 import './styles.css'
@@ -20,12 +21,10 @@ export const BasicTabs = ({ className, defaultTab, fluid, tabs, onClick, ...rest
     getInitialState(restOfProps.activeTab, defaultTab, tabs),
   )
 
-  const mounted = useRef()
+  const mounted = useMounted()
 
   useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true
-    } else {
+    if (mounted) {
       setActiveTab(restOfProps.activeTab)
     }
   }, [restOfProps.activeTab])
