@@ -1,7 +1,7 @@
 import React, { useState, useMemo, memo, useEffect, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-import { useMounted } from 'utils'
+import { useMounted } from 'hooks'
 import './styles.css'
 
 const FUNCTION_MODIFIER = data => ({
