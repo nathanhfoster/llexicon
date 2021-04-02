@@ -16,14 +16,12 @@ export const BasicImageCarousel = ({ toolbarButtons, imageClickCallback, ...rest
     if (mounted) {
       dispatch({ type: ActionTypes.SET_INDEX_AND_OPEN, payload: restOfProps })
     }
-    mounted = true
   }, [restOfProps.photoIndex, restOfProps.isOpen])
 
   useEffect(() => {
     if (mounted) {
       dispatch({ type: ActionTypes.SET_IS_OPEN, payload: restOfProps })
     }
-    mounted = true
   }, [restOfProps.images])
 
   const [mainSrc, prevSrc, nextSrc] = useMemo(() => {
