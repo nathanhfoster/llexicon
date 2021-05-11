@@ -9,6 +9,7 @@ import actions from '../actionTypes'
 import faker, { random } from 'faker'
 import { isAFunction, getStringBytes } from 'utils'
 import { handleFilterEntries, mergeJson, getMostRecent } from './utils'
+import runReducerTests from '../runReducerTests'
 const {
   number,
   float,
@@ -48,7 +49,7 @@ const initialState = {
 let nextItem
 let nextItems
 
-const Tests = [
+const tests = [
   {
     action: { type: 'RETURNING_INITIAL_STATE' },
     expectedState: initialState,
@@ -243,16 +244,4 @@ const Tests = [
   },
 ]
 
-describe('Entries reducer', () => {
-  const runTest = ({ state = initialState, action, expectedState }, testNumber) => {
-    const resolvedAction = isAFunction(action) ? action(state) : action
-    const resolvedExpectedState = isAFunction(expectedState)
-      ? expectedState(state, resolvedAction)
-      : expectedState
-    return it(`Test ${testNumber} should handle ${resolvedAction.type} action type`, () => {
-      expect(EntriesReducer(state, resolvedAction)).toEqual(resolvedExpectedState)
-    })
-  }
-
-  Tests.forEach((test, i) => runTest(test, i))
-})
+runReducerTests(EntriesReducer, DEFAULT_STATE_ENTRIES, tests)
