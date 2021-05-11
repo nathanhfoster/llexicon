@@ -39,7 +39,7 @@ export default (reducer, initialState, tests) => {
   )
 
   const actionTypeTestsNotCovered = otherActionTypes.map(type => ({
-    name: `The ${type} action type should be covered in the tests because it is changing the state of the ${reducer.name}`,
+    name: `The ${type} action type should be covered in the tests because it is changing the state of the ${reducer.name} reducer`,
     state: undefined,
     action: { type },
   }))
@@ -51,14 +51,14 @@ export default (reducer, initialState, tests) => {
       const testNamePrefix = `Test ${testNumber}`
       return it(
         name
-          ? `${testNamePrefix} ${name} reducer`
+          ? `${testNamePrefix} ${name}`
           : `${testNamePrefix} should handle ${action.type} action type`,
         () => {
-          const resolvedAction = isAFunction(action) ? action(state) : action
+          const resolvedAction = isFunction(action) ? action(state) : action
           const returnedState = reducer(state, resolvedAction)
 
           // expectedState by default is initialState
-          const resolvedExpectedState = isAFunction(expectedState)
+          const resolvedExpectedState = isFunction(expectedState)
             ? expectedState(returnedState, resolvedAction)
             : expectedState || initialState
 
