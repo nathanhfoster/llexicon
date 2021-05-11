@@ -59,7 +59,7 @@ export default (reducer, initialState, tests) => {
 
           // expectedState by default is initialState
           const resolvedExpectedState = isAFunction(expectedState)
-            ? expectedState(state, resolvedAction)
+            ? expectedState(returnedState, resolvedAction)
             : expectedState || initialState
 
           expect(returnedState).toEqual(resolvedExpectedState)
