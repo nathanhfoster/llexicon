@@ -47,7 +47,10 @@ export default (reducer, initialState, tests) => {
   testsCopy = testsCopy.concat(actionTypeTestsNotCovered)
 
   describe(reducer.name, () => {
-    const runTest = ({ name, state, action, expectedState }, testNumber) => {
+    const runTest = (
+      { name, state = initialState, action, expectedState = initialState },
+      testNumber,
+    ) => {
       const testNamePrefix = `Test ${testNumber}`
       return it(
         name
@@ -59,8 +62,8 @@ export default (reducer, initialState, tests) => {
 
           // expectedState by default is initialState
           const resolvedExpectedState = isFunction(expectedState)
-            ? expectedState(returnedState, resolvedAction)
-            : expectedState || initialState
+            ? expectedState(state, resolvedAction)
+            : expectedState
 
           expect(returnedState).toEqual(resolvedExpectedState)
         },
