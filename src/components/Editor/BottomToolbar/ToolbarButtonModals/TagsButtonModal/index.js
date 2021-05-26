@@ -53,7 +53,6 @@ const TagsButtonModal = ({
 
 
   const [{ tags, tagName }, setState] = useState(getInitialState(restOfProps))
-  console.log(tags)
 
   const resetState = useCallback(() => setState(getInitialState(restOfProps)), [restOfProps])
 
