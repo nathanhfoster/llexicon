@@ -16,12 +16,12 @@ const deepEquals = (a, b, logging = false) => {
     if (arrA && arrB) {
       length = a.length
       if (length != b.length) {
-        logging && console.log("length != b.length ", length, b.length)
+        console.assert(logging, "length != b.length ", length, b.length)
         return false
       }
       for (i = length; i-- !== 0; ) {
         if (!deepEquals(a[i], b[i], logging)) {
-          logging && console.log("!deepEquals(a[i], b[i]) ", a[i], b[i])
+          console.assert(logging, "!deepEquals(a[i], b[i]) ", a[i], b[i])
           return false
         }
       }
@@ -29,14 +29,14 @@ const deepEquals = (a, b, logging = false) => {
     }
 
     if (arrA != arrB) {
-      logging && console.log("arrA != arrB ", arrA, arrB)
+      console.assert(logging, "arrA != arrB ", arrA, arrB)
       return false
     }
 
     var dateA = a instanceof Date,
       dateB = b instanceof Date
     if (dateA != dateB) {
-      logging && console.log("dateA != dateB ", dateA, dateB)
+      console.assert(logging, "dateA != dateB ", dateA, dateB)
       return false
     }
     if (dateA && dateB) return a.getTime() == b.getTime()
@@ -44,7 +44,7 @@ const deepEquals = (a, b, logging = false) => {
     var regexpA = a instanceof RegExp,
       regexpB = b instanceof RegExp
     if (regexpA != regexpB) {
-      logging && console.log("regexpA != regexpB ", regexpA, regexpB)
+      console.assert(logging, "regexpA != regexpB ", regexpA, regexpB)
       return false
     }
     if (regexpA && regexpB) return a.toString() == b.toString()
@@ -53,21 +53,19 @@ const deepEquals = (a, b, logging = false) => {
     length = keys.length
 
     if (length !== keyList(b).length) {
-      logging &&
-        console.log("length !== keyList(b).length ", length, keyList(b).length)
+      console.assert(logging, "length !== keyList(b).length ", length, keyList(b).length)
       return false
     }
 
     for (i = length; i-- !== 0; )
       if (!hasProp.call(b, keys[i])) {
-        logging && console.log("!hasProp.call(b, keys[i])", b, keys[i])
+        console.assert(logging, "!hasProp.call(b, keys[i])", b, keys[i])
         return false
       }
 
     // custom handling for DOM elements
     if (hasElementType && a instanceof Element) {
-      logging &&
-        console.log("hasElementType && a instanceof Element", hasElementType, a)
+      console.assert(logging, "hasElementType && a instanceof Element", hasElementType, a)
       return false
     }
 
@@ -83,7 +81,7 @@ const deepEquals = (a, b, logging = false) => {
       } else {
         // all other properties should be traversed as usual
         if (!deepEquals(a[key], b[key], logging)) {
-          logging && console.log("!deepEquals(a[key], b[key])", a[key], b[key])
+          console.assert(logging, "!deepEquals(a[key], b[key])", a[key], b[key])
           return false
         }
       }
@@ -92,8 +90,7 @@ const deepEquals = (a, b, logging = false) => {
     return true
   }
   const strictEquality = a !== a && b !== b
-  logging &&
-    console.log(
+  console.assert(logging,
       "strictEquality",
       strictEquality,
       "a !== a && b !== b \n",
