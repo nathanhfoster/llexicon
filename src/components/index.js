@@ -29,6 +29,7 @@ export { default as ButtonDeleteEntries } from './EntryComponents/Buttons/Button
 export { default as ButtonImportEntries } from './EntryComponents/Buttons/ButtonImportEntries'
 export { default as ButtonSyncEntries } from './EntryComponents/Buttons/ButtonSyncEntries'
 
+export { default as Conditional } from './Conditional'
 export { default as EntriesList } from './EntryComponents/EntriesList'
 export { default as EntriesMostViewed } from './EntryComponents/EntriesMostViewed'
 export { default as EntriesRandom } from './EntryComponents/EntriesRandom'

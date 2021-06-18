@@ -1,47 +1,41 @@
-import { useEffect, useMemo } from "react"
-import PropTypes from "prop-types"
-import ReactDOM from "react-dom"
-import "./styles.css"
+import { useRef, useState, useLayoutEffect } from 'react'
+import PropTypes from 'prop-types'
+import ReactDOM from 'react-dom'
 
-export const Portal = ({ id, isOpen, className, children }) => {
-  let parentNode = useMemo(() => document.getElementById(id), [id])
+const GET_ELEMENT_BY_ID_LIMIT = 3
 
-  const cachedChildren = useMemo(() => {
-    let childrenNodes = []
+const Portal = ({ id, isOpen, className, children }) => {
+  if (isOpen === false) return null
 
-    // while (parentNode.firstChild) {
-    //   childrenNodes.push(parentNode.firstChild)
-    //   parentNode.removeChild(parentNode.firstChild)
-    // }
-    return childrenNodes
-  }, [parentNode])
+  const getElementByIdCount = useRef(0)
+  const [parentNode, setParentNode] = useState(null)
 
-  let portal = useMemo(() => {
-    if (parentNode) {
-      if (className) {
-        parentNode.className = className
-      }
+  useLayoutEffect(() => {
+    if (!parentNode && getElementByIdCount.current < GET_ELEMENT_BY_ID_LIMIT) {
+      const node = document.getElementById(id)
+      setParentNode(node)
+      getElementByIdCount.current++
     }
-    return parentNode
+  }, [parentNode, id])
+
+  useLayoutEffect(() => {
+    if (!parentNode && className) {
+      parentNode.className = className
+    }
   }, [parentNode, className])
 
-
-
-  return portal ? ReactDOM.createPortal(children, portal, id) : null
+  return parentNode ? ReactDOM.createPortal(children, parentNode, id) : null
 }
 
 Portal.propTypes = {
   id: PropTypes.string.isRequired,
   isOpen: PropTypes.bool,
   className: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 Portal.defaultProps = {
-  id: "portal-root",
+  id: 'portal-root',
   isOpen: true,
 }
 
