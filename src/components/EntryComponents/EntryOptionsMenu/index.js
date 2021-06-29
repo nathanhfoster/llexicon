@@ -1,6 +1,14 @@
-import React, { Fragment, useReducer, useState, useCallback, useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React, {
+  useReducer,
+  useState,
+  useCallback,
+  useMemo,
+  Fragment,
+  Children,
+  cloneElement,
+} from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   ButtonDropdown,
   DropdownToggle,
@@ -8,24 +16,29 @@ import {
   DropdownItem,
   Button,
   Input,
-} from 'reactstrap'
+} from 'reactstrap';
+
 import {
   BasicModal,
   ConfirmAction,
+  ShareCode,
+  ShareOnEmail,
   ShareOnFaceBook,
+  ShareOnFaceBookMessenger,
   ShareOnLinkedIn,
   ShareOnTwitter,
+  ShareWhatsApp,
   Portal,
-} from '../..'
-import { copyStringToClipboard, shareUrl } from 'utils'
-import { RouterGoBack, GetEntryDetailUrl } from 'redux/router/actions'
-import { useDispatch } from 'react-redux'
-import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils'
-import { isReadOnly } from 'redux/Entries/utils'
-import './styles.css'
+} from '../..';
+import { copyStringToClipboard, shareUrl } from 'utils';
+import { RouterGoBack, GetEntryDetailUrl } from 'redux/router/actions';
+import { useDispatch } from 'react-redux';
+import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions';
+import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils';
+import { isReadOnly } from 'redux/Entries/utils';
+import './styles.css';
 
-const mapStateToProps = ({ User: { id } }) => ({ userId: id })
+const mapStateToProps = ({ User: { id } }) => ({ userId: id });
 
 export const EntryOptionsMenu = ({
   entryId,
@@ -36,92 +49,92 @@ export const EntryOptionsMenu = ({
   shouldRedirectOnDelete,
   direction,
 }) => {
-  const dispatch = useDispatch()
-  const [dropdownOpen, toggleOpen] = useReducer(prevState => !prevState, false)
-  const [urlCopied, setUrlCopied] = useState(false)
-  const [showModal, toggleModal] = useReducer(prevState => !prevState, false)
-  const [text, setText] = useState('Check out my journal entry: ')
+  const dispatch = useDispatch();
+  const [dropdownOpen, toggleOpen] = useReducer(prevState => !prevState, false);
+  const [urlCopied, setUrlCopied] = useState(false);
+  const [showModal, toggleModal] = useReducer(prevState => !prevState, false);
+  const [text, setText] = useState('Check out my journal entry: ');
 
   // Timeout to allow from onClick events within portal to dispatch first
   const toggleDropdown = () => {
-    setTimeout(() => toggleOpen(), 200)
-  }
+    setTimeout(() => toggleOpen(), 200);
+  };
 
-  const readOnly = useMemo(() => isReadOnly(entryId, author, userId), [entryId, author, userId])
+  const readOnly = useMemo(() => isReadOnly(entryId, author, userId), [entryId, author, userId]);
 
   const url = useMemo(() => {
-    const { origin } = window.location
-    const entryDetailUrl = GetEntryDetailUrl(entryId)
-    const fullUrl = `${origin}${entryDetailUrl}`
-    return fullUrl
-  }, [entryId])
+    const { origin } = window.location;
+    const entryDetailUrl = GetEntryDetailUrl(entryId);
+    const fullUrl = `${origin}${entryDetailUrl}`;
+    return fullUrl;
+  }, [entryId]);
 
-  const entryIsLocalOnly = entryId?.toString().includes(BASE_JOURNAL_ENTRY_ID)
-  const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share
+  const entryIsLocalOnly = entryId?.toString().includes(BASE_JOURNAL_ENTRY_ID);
+  const canShareOnMobileDevice = !entryIsLocalOnly && navigator.share;
 
-  const stopPropagation = useCallback(e => e.stopPropagation(), [])
+  const stopPropagation = useCallback(e => e.stopPropagation(), []);
 
   const selectText = useCallback(e => {
-    stopPropagation(e)
-    e.target.select()
-  }, [])
+    stopPropagation(e);
+    e.target.select();
+  }, []);
 
-  const handleTextChange = useCallback(e => setText(e.target.value), [])
+  const handleTextChange = useCallback(e => setText(e.target.value), []);
 
-  const handleSync = useCallback(() => dispatch(SyncEntries()), [dispatch])
+  const handleSync = useCallback(() => dispatch(SyncEntries()), [dispatch]);
 
   const handleEditorChange = useCallback(
     fields => {
-      const payload = { id: entryId, ...fields }
-      dispatch(UpdateReduxEntries(payload))
-      handleSync()
+      const payload = { id: entryId, ...fields };
+      dispatch(UpdateReduxEntries(payload));
+      handleSync();
     },
     [dispatch, entryId, handleSync],
-  )
+  );
 
   const handleDelete = useCallback(() => {
-    shouldRedirectOnDelete && RouterGoBack()
+    shouldRedirectOnDelete && RouterGoBack();
     setTimeout(() => {
       handleEditorChange({
         _shouldDelete: true,
         _shouldPost: false,
         _lastUpdated: null,
-      })
+      });
 
-      handleSync()
-    }, 200)
-  }, [handleSync, shouldRedirectOnDelete])
+      handleSync();
+    }, 200);
+  }, [handleSync, shouldRedirectOnDelete]);
 
   const handleCopyAndMakePublic = useCallback(
     e => {
-      stopPropagation(e)
-      copyStringToClipboard(`${text} ${url}`)
-      setUrlCopied(true)
-      !is_public && handleEditorChange({ is_public: true })
+      stopPropagation(e);
+      copyStringToClipboard(`${text} ${url}`);
+      setUrlCopied(true);
+      !is_public && handleEditorChange({ is_public: true });
     },
     [is_public, text, url],
-  )
+  );
 
   const handleToggleIsPublic = useCallback(() => {
-    setUrlCopied(false)
-    handleEditorChange({ is_public: !is_public })
-  }, [is_public])
+    setUrlCopied(false);
+    handleEditorChange({ is_public: !is_public });
+  }, [is_public]);
 
   const handleShareOnMobile = useCallback(
     e => {
-      stopPropagation(e)
-      !readOnly && handleEditorChange({ is_public: true })
+      stopPropagation(e);
+      !readOnly && handleEditorChange({ is_public: true });
 
       const sharePayload = {
         url,
         title,
         text,
-      }
+      };
 
-      shareUrl(sharePayload)
+      shareUrl(sharePayload);
     },
     [readOnly, url, title, text],
-  )
+  );
 
   const basicModalFooter = useMemo(
     () => (
@@ -135,7 +148,19 @@ export const EntryOptionsMenu = ({
       </Fragment>
     ),
     [handleDelete],
-  )
+  );
+
+  const Buttons = (
+    <Fragment>
+      {/* <ShareCode url={url} /> */}
+      <ShareOnEmail subject='Astral Tree Jounal Entry' body={url} />
+      <ShareOnFaceBook url={url} />
+      <ShareOnFaceBookMessenger url={url} />
+      <ShareOnLinkedIn url={url} />
+      <ShareOnTwitter text={`${text} ${url}`} />
+      <ShareWhatsApp text={`${text} ${url}`} />
+    </Fragment>
+  );
 
   return (
     <ButtonDropdown
@@ -180,9 +205,9 @@ export const EntryOptionsMenu = ({
             </DropdownItem>
             <DropdownItem divider />
             <div className='SocialMediaShareContainer'>
-              <ShareOnFaceBook url={url} onClick={stopPropagation} />
-              <ShareOnLinkedIn url={url} onClick={stopPropagation} />
-              <ShareOnTwitter text={`${text} ${url}`} onClick={stopPropagation} />
+              {Children.toArray(Buttons).map(button =>
+                cloneElement(button, { onClick: stopPropagation }),
+              )}
             </div>
             <DropdownItem divider />
             <Fragment>
@@ -215,19 +240,19 @@ export const EntryOptionsMenu = ({
         </Portal>
       )}
     </ButtonDropdown>
-  )
-}
+  );
+};
 
 EntryOptionsMenu.propTypes = {
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string,
   is_public: PropTypes.bool.isRequired,
   shouldRedirectOnDelete: PropTypes.bool,
-}
+};
 
 EntryOptionsMenu.defaultProps = {
   shouldRedirectOnDelete: false,
   direction: 'down',
-}
+};
 
-export default connect(mapStateToProps)(EntryOptionsMenu)
+export default connect(mapStateToProps)(EntryOptionsMenu);

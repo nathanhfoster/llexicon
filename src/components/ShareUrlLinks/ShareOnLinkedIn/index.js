@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ShareUrlLinks from '../ShareUrlLinks';
+import React from 'react'
+import PropTypes from 'prop-types'
+import ShareUrlLinks from '../ShareUrlLinks'
 
 const ShareOnLinkedIn = props => (
   <ShareUrlLinks
@@ -11,15 +11,15 @@ const ShareOnLinkedIn = props => (
   >
     <i className='fab fa-linkedin-in' />
   </ShareUrlLinks>
-);
+)
 
 ShareOnLinkedIn.propTypes = {
   url: PropTypes.string.isRequired,
   title: PropTypes.string,
   summary: PropTypes.string,
   source: PropTypes.string,
-};
+}
 
-ShareOnLinkedIn.defaultProps = { title: 'LinkedIn', url: window.location.origin };
+ShareOnLinkedIn.defaultProps = { title: 'LinkedIn', url: window.location.origin }
 
-export default ShareOnLinkedIn;
+export default ShareOnLinkedIn
