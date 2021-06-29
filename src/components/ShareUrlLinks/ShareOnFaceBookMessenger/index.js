@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ShareUrlLinks from '../ShareUrlLinks';
 import { FacebookMessenger } from '../../../images/SVG';
+const { REACT_APP_FACEBOOK_API } = process.env;
 
 const ShareOnFaceBookMessenger = ({ url, ...restOfProps }) => (
   <ShareUrlLinks
     {...restOfProps}
     href='https://www.facebook.com/dialog/send'
-    app_id={583933058891864}
+    app_id={REACT_APP_FACEBOOK_API}
     link={url}
     redirect_uri={`https%3A%2F%2Fecocart.io%2Fshare%2F1d1084`}
     parameterString='app_id, link, redirect_uri'
