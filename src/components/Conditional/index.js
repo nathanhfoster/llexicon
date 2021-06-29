@@ -1,4 +1,4 @@
-import React from 'react';
+import { Children } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -31,7 +31,7 @@ const Conditional = ({ show, childrenKeysToRender, children }) => {
    *  The childrenKeysToRender or childKey strings can have a ',' as a delinator
    */
   const childrenToRender =
-    children.filter(({ key: childKey }, index) => {
+    Children.toArray(children).filter(({ key: childKey }, index) => {
       if (!childKey) {
         throw new TypeError(`Child component at index: ${index} does not have a key!`);
       }
