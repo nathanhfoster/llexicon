@@ -762,27 +762,18 @@ export const YOUTUBE_VIDEO_ID = /youtube\.com.*(\?v=|\/embed\/)(.{11})/;
 
 /**
  * Removes object keys
- * @param {Array.<Object>|Object.<String, *>} object - The object to be filtered
- * @param {Array.<String>} keysToOmit  - The array of keys to be omiited
+ * @param {Array.<Object>|Array.<String>|Array.<Number>|Object.<String, *>} object - The object to be filtered
+ * @param {Array.<string>} keysToOmit - The array of keys to be omiited
  * @returns {Array.<Object>|Object.<String, *>} - The new object
  */
 export const omit = (object = [], keysToOmit = []) => {
   if (Array.isArray(object)) {
     return object.filter(
-      e => !keysToOmit.some(key => key === (typeof e === 'string' ? e : e[key])),
+      e => !keysToOmit.some(key => key === (typeof e === 'object' ? e[key] : e))
     );
   }
 
-  return keysToOmit.reduce(
-    (acc, key) => {
-      if (key in acc) {
-        delete acc[key];
-      }
-
-      return acc;
-    },
-    { ...object },
-  );
+  return keysToOmit.reduce((acc, key) => (delete acc[key], acc), { ...object });
 };
 
 export const dateFormat =
