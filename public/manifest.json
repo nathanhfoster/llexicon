@@ -3,7 +3,34 @@
   "short_name": "Astral Tree",
   "description": "Capture the essence of your life with a free online journal and diary app",
   "author": "Nathan Foster",
-  "keywords": ["react", "redux", "journal", "diary", "astral", "tree", "pwa", "free", "django"],
+  "offline_enabled": true,
+  "background": {
+    "persistent": true,
+    "service_worker": "service-worker.js"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "journal",
+    "diary",
+    "astral",
+    "tree",
+    "pwa",
+    "free",
+    "django"
+  ],
+  "categories": [
+    "tools",
+    "store",
+    "free",
+    "themed",
+    "offline",
+    "diary",
+    "astral",
+    "tree",
+    "pwa",
+    "free"
+  ],
   "icons": [
     {
       "src": "assets/android-chrome-144x144.png",
@@ -27,28 +54,48 @@
       "short_name": "Create",
       "description": "Create a new entry",
       "url": "/new-entry",
-      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "assets/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Table View",
       "short_name": "Table",
       "description": "Table View",
       "url": "/entries/table",
-      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "assets/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Map View",
       "short_name": "Map",
       "description": "Map View",
       "url": "/entries/map",
-      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "assets/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Open Settings",
       "short_name": "Settings",
       "description": "View your settings",
       "url": "/settings/entries",
-      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "assets/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ],
   "background_color": "#29303b",

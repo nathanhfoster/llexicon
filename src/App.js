@@ -152,6 +152,7 @@ export const App = ({
   useEffect(() => {
     changeTheme(userDarkMode)
   }, [userDarkMode])
+  
   useEffect(() => {
     SetBottomToolbarIsOpen(true)
     SetCalendar({ activeDate: new Date() })
