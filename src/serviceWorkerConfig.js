@@ -1,4 +1,3 @@
-import ReactGA from 'react-ga';
 import { SetAlert } from './redux/Alerts/actions';
 import { GetAppVersion } from './redux/App/actions';
 const { PUBLIC_URL } = process.env;
@@ -67,12 +66,6 @@ const config = store => ({
                   serviceWorkerRegistration: registration
                 })
               );
-
-              ReactGA.event({
-                category: 'Update Service Worker',
-                action: "User's service worker is going to SKIP_WAITING",
-                value: message
-              });
             })
             .catch(e =>
               console.log('GetAppVersion failed in Service Worker Update: ', e)
