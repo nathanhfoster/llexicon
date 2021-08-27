@@ -1,6 +1,6 @@
-import React, { useContext, useMemo, useCallback, Fragment } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React, { useContext, useMemo, useCallback, memo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { allEntriesSelector, allItemsAreEqual } from 'redux/Entries/utils'
 import { BasicImageCarousel } from '../..'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { EntryFilesProps } from 'redux/Entries/propTypes'
@@ -10,33 +10,18 @@ import { EditorConsumer } from '../../Editor'
 import { ConfirmAction } from 'components'
 import './styles.css'
 
-const mapStateToProps = ({ Entries: { items, filteredItems } }) => ({
-  items,
-  filteredItems,
-})
-
-const mapDispatchToProps = { DeleteEntryFile }
-
-const EntryFilesCarousel = ({
-  className,
-  files,
-  overflowX,
-  overflowY,
-  whiteSpace,
-  items,
-  filteredItems,
-  DeleteEntryFile,
-}) => {
+export const EntryFilesCarousel = ({ className, files, overflowX, overflowY, whiteSpace }) => {
+  const { entries } = useSelector(allEntriesSelector, allItemsAreEqual)
+  const dispatch = useDispatch()
   const { editorRef, editorSelection } = useContext(EditorConsumer)
 
   const AllEntryFiles = useMemo(
     () =>
-      items
-        .concat(filteredItems)
+      entries
         .map(item => item.EntryFiles)
         .flat(1)
         .sort((a, b) => new Date(b?.date_updated) - new Date(a?.date_updated)),
-    [items, filteredItems],
+    [entries],
   )
 
   const imageFiles = useMemo(() => {
@@ -81,13 +66,10 @@ const EntryFilesCarousel = ({
     [editorRef, editorSelection],
   )
 
-  const handleImageDelete = useCallback(
-    ({ images, photoIndex, isOpen }) => {
-      const { id, entry_id } = images[photoIndex]
-      DeleteEntryFile(id, entry_id)
-    },
-    [DeleteEntryFile],
-  )
+  const handleImageDelete = useCallback(({ images, photoIndex, isOpen }) => {
+    const { id, entry_id } = images[photoIndex]
+    dispatch(DeleteEntryFile(id, entry_id))
+  }, [])
 
   const toolbarButtons = useMemo(
     () => [
@@ -134,4 +116,4 @@ EntryFilesCarousel.defaultProps = {
   whiteSpace: 'nowrap',
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntryFilesCarousel)
+export default memo(EntryFilesCarousel)

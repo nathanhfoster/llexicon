@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 
-const MetaTags = ({ title, siteName, url, description, image }) => (
+export const MetaTags = ({ title, siteName, url, description, image }) => (
   <html lang='en'>
     <head>
       <meta property='og:type' content='website' />

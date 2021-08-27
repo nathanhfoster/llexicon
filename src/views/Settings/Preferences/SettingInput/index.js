@@ -1,11 +1,9 @@
-import React, { useState, memo } from 'react'
+import React, { useReducer, memo } from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, Label, Input, Tooltip } from 'reactstrap'
 
 const SettingInput = ({ settingKey, disabled, onClick, title, tooltipTitle, checked }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const toggleTooltip = () => setIsOpen(!isOpen)
+  const [isOpen, toggleTooltip] = useReducer(prevState => !prevState, false)
 
   const handleOnClick = () => onClick(settingKey)
 

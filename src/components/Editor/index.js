@@ -13,14 +13,17 @@ import TopToolbar from './TopToolbar'
 import BottomToolbar from './BottomToolbar'
 import PropTypes from 'prop-types'
 import { EntryPropTypes } from 'redux/Entries/propTypes'
+import RawEditor from './RawEditor'
 
 export const EditorConsumer = createContext()
 
-const mapStateToProps = ({ TextEditor: { bottomToolbarIsOpen } }) => ({ bottomToolbarIsOpen })
+const mapStateToProps = ({ TextEditor: { bottomToolbarIsOpen } }) => ({
+  bottomToolbarIsOpen,
+})
 
 const mapDispatchToProps = { SetBottomToolbarIsOpen }
 
-const Editor = ({
+export const Editor = ({
   children,
   entry,
   theme,
@@ -105,12 +108,6 @@ const Editor = ({
     },
     [handleEditorChange],
   )
-  const handleEditorRawStateChange = useCallback(
-    ({ target: { value } }) => {
-      handleEditorChange({ html: value })
-    },
-    [handleEditorChange],
-  )
 
   const toggleBottomToolbar = useCallback(
     toggle => {
@@ -136,7 +133,9 @@ const Editor = ({
     <EditorConsumer.Provider value={contextValue}>
       <div className={showRaw ? 'showRaw' : ''}>
         {children}
-        <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
+        <div className='d-print-none'>
+          <TopToolbar toolbarId={toolbarId} editorRef={editorRef} isOpen={topToolbarIsOpen} />
+        </div>
         <ReactQuill
           id={quillId}
           readOnly={readOnly}
@@ -155,20 +154,15 @@ const Editor = ({
           preserveWhitespace={false}
           tabIndex={0}
         />
-        <BottomToolbar
-          entry={entry}
-          canToggleToolbars={canToggleToolbars}
-          isOpen={bottomToolbarIsOpen}
-          id={restOfProps.toolbarId}
-        />
-        {showRaw && (
-          <textarea
-            className='Editor raw-editor px-3 py-2'
-            style={editorStyles}
-            onChange={handleEditorRawStateChange}
-            value={entry.html}
+        <div className='d-print-none'>
+          <BottomToolbar
+            entry={entry}
+            canToggleToolbars={canToggleToolbars}
+            isOpen={bottomToolbarIsOpen}
+            id={restOfProps.toolbarId}
           />
-        )}
+        </div>
+        {showRaw && <RawEditor style={editorStyles} placeholder={placeholder} value={entry.html} />}
       </div>
     </EditorConsumer.Provider>
   )
@@ -196,7 +190,6 @@ Editor.propTypes = {
   tabIndex: PropTypes.number,
   bounds: PropTypes.string,
   scrollingContainer: PropTypes.string,
-  onChange: PropTypes.func,
   onChangeSelection: PropTypes.func,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
@@ -209,6 +202,7 @@ Editor.propTypes = {
 }
 
 Editor.defaultProps = {
+  entry: {},
   theme: THEMES.SNOW,
   height: '100%',
   width: '100%',

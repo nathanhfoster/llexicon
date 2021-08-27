@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, useReducer } from 'react'
 import PropTypes from 'prop-types'
 import {
   Container,
@@ -18,8 +18,7 @@ import { validateTagOrPeopleString, validatedPersonNameString } from '../utlis'
 import { EntriesPropTypes, EntryPeopleProps } from 'redux/Entries/propTypes'
 
 const mapStateToProps = ({ User: { id }, Entries: { items, filteredItems, EntryPeople } }) => ({
-  items,
-  filteredItems,
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
   UserId: id,
   EntryPeople,
 })
@@ -36,8 +35,7 @@ const getInitialState = ({ people }) => ({
 const PeopleButtonModal = ({
   UserId,
   GetUserEntryPeople,
-  items,
-  filteredItems,
+  entries,
   EntryPeople,
   entryId,
   html,
@@ -50,9 +48,7 @@ const PeopleButtonModal = ({
     if (UserId) GetUserEntryPeople()
   }, [])
 
-  const [show, setShow] = useState(false)
-
-  const handleToogle = useCallback(() => setShow(prevShow => !prevShow), [])
+  const [show, toggleShow] = useReducer(prevState => !prevState, false)
 
   const [{ people, personsName }, setState] = useState(getInitialState(restOfProps))
 
@@ -69,14 +65,13 @@ const PeopleButtonModal = ({
     () =>
       show
         ? Object.values(
-            items
-              .concat(filteredItems)
+            entries
               .map(entry => entry.people)
               .flat(1)
               .concat(EntryPeople),
           )
         : [],
-    [show, items, filteredItems, EntryPeople],
+    [show, entries, EntryPeople],
   )
 
   const [suggestedPeople, frequentPeople] = useMemo(() => {
@@ -183,7 +178,7 @@ const PeopleButtonModal = ({
   return (
     <ToolbarModal
       show={show}
-      toggle={handleToogle}
+      toggle={toggleShow}
       title='Add People'
       onSaveCallback={handleSavePeople}
       onCancelCallback={resetState}
@@ -247,7 +242,6 @@ const PeopleButtonModal = ({
                 </InputGroupText>
               </InputGroupAddon>
               <DebounceInput
-                type='text'
                 value={personsName}
                 onChange={handlePeopleInputChange}
                 placeholder={placeholder}
@@ -263,8 +257,7 @@ const PeopleButtonModal = ({
 
 PeopleButtonModal.propTypes = {
   UserId: PropTypes.number,
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
   EntryPeople: EntryPeopleProps.isRequired,
   entryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   people: EntryPeopleProps.isRequired,

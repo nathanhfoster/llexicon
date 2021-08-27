@@ -30,7 +30,7 @@ const mapDispatchToProps = {
   GetUserEntriesByDate,
 }
 
-const EntryCalendar = ({
+export const EntryCalendar = ({
   entries,
   activeDate,
   view,

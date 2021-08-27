@@ -45,8 +45,7 @@ const mapStateToProps = state => {
   return {
     localStorageReduxUsage,
     indexDBStorageReduxUsage,
-    items,
-    filteredItems,
+    entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
     // entriesStorageUsage,
     version,
     localStorageCapacity,
@@ -56,11 +55,10 @@ const mapStateToProps = state => {
   }
 }
 
-const LocalStorage = ({
+export const LocalStorage = ({
   localStorageReduxUsage,
   indexDBStorageReduxUsage,
-  items,
-  filteredItems,
+  entries,
   entriesStorageUsage,
   version,
   localStorageCapacity,
@@ -78,10 +76,9 @@ const LocalStorage = ({
     [indexDBStorageReduxUsage],
   )
 
-  const serverUsage = useMemo(
-    () => items.concat(filteredItems).reduce((usage, entry) => (usage += entry.size || 0), 0),
-    [items, filteredItems],
-  )
+  const serverUsage = useMemo(() => entries.reduce((usage, { size }) => (usage += size || 0), 0), [
+    entries,
+  ])
 
   const serverStorageLabel = `${formatBytes(serverUsage)} / ${formatBytes(SERVER_STORAGE_LIMIT)}`
 
@@ -153,8 +150,7 @@ const LocalStorage = ({
 
 LocalStorage.propTypes = {
   localStorageReduxUsage: PropTypes.number,
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
   version: PropTypes.string,
   localStorageUsage: PropTypes.number,
   localStorageQuota: PropTypes.number,
@@ -165,6 +161,6 @@ LocalStorage.propTypes = {
   }),
 }
 
-LocalStorage.defaultProps = {}
+LocalStorage.defaultProps = { entries: [] }
 
 export default connect(mapStateToProps)(LocalStorage)

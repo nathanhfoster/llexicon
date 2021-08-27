@@ -5,7 +5,7 @@ const LOCAL_STORAGE_LIMIT = 10 * 1024 * 1024
 const LOCAL_STORAGE_QOUTA_LIMIT_TEST = 'qoutaLimitTest'
 const LOCAL_STORAGE_QOUTA_LIMIT_TEST_ITERATIONS = ~~(LOCAL_STORAGE_LIMIT / 100)
 
-const getLocalStorageCapacity = () => {
+export const getLocalStorageCapacity = () => {
   let i = 0
   let previousLocalStorage = ''
   try {
@@ -29,4 +29,23 @@ const getLocalStorageCapacity = () => {
   }
 }
 
-export { getLocalStorageCapacity }
+export const getProgressEventData = progressEvent =>
+  [
+    'bubbles',
+    'cancelBubble',
+    'cancelable',
+    'composed',
+    'defaultPrevented',
+    'eventPhase',
+    'isTrusted',
+    'lengthComputable',
+    'loaded',
+    'path',
+    'returnValue',
+    'timeStamp',
+    'total',
+    'type',
+  ].reduce((acc, e) => {
+    acc[e] = progressEvent[e]
+    return acc
+  }, {})

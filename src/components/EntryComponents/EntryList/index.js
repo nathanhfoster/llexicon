@@ -20,7 +20,7 @@ const mapStateToProps = ({ Window: { innerHeight, navBarHeight, isMobile } }) =>
   }
 }
 
-const EntryList = ({ entriesWithinView, activeDate, listHeight }) => {
+export const EntryList = ({ entriesWithinView, activeDate, listHeight }) => {
   const entries = useMemo(
     () =>
       entriesWithinView

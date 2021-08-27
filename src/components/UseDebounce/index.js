@@ -1,18 +1,18 @@
-import { useRef, useEffect, memo } from 'react'
+import { useEffect, memo } from 'react'
 import PropTypes from 'prop-types'
+import { useMounted } from 'hooks'
 
-const UseDebounce = ({ debounceOnMount, value, delay, onChange }) => {
-  const mounted = useRef(debounceOnMount)
+export const UseDebounce = ({ debounceOnMount, value, delay, onChange }) => {
+  const mounted = useMounted(debounceOnMount)
 
   useEffect(() => {
-    if (mounted.current && delay) {
+    if (mounted && delay) {
       const debounce = setTimeout(() => onChange(value), delay)
 
       return () => {
         clearTimeout(debounce)
       }
     }
-    mounted.current = true
   }, [value])
 
   return null

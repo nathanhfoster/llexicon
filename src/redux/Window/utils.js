@@ -1,13 +1,14 @@
-const isOnMobileBrowser = (userAgent) =>
-  /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
+import { isAFunction } from 'utils'
 
-const getConnectionProps = ({
+export const isOnMobileBrowser = userAgent => /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
+
+export const getConnectionProps = ({ downlink, effectiveType, onchange, rtt, saveDate }) => ({
   downlink,
   effectiveType,
   onchange,
   rtt,
   saveDate,
-}) => ({ downlink, effectiveType, onchange, rtt, saveDate })
+})
 
 const getScreenProps = ({
   availHeight,
@@ -31,7 +32,7 @@ const getScreenProps = ({
   width,
 })
 
-const getNavigatorProps = ({
+export const getNavigatorProps = ({
   appCodeName,
   appName,
   appVersion,
@@ -105,17 +106,10 @@ const getNavigatorProps = ({
   vendorSub,
 })
 
-const getWindowDimensions = () => {
-  const isClient = typeof window === "object"
+export const getWindowDimensions = () => {
+  const isClient = typeof window === 'object'
   if (!isClient) return {}
-  const {
-    innerHeight,
-    innerWidth,
-    screen,
-    matchMedia,
-    navigator,
-    performance,
-  } = window
+  const { innerHeight, innerWidth, screen, matchMedia, navigator, performance } = window
 
   const isMobile = innerWidth < 768
 
@@ -129,9 +123,7 @@ const getWindowDimensions = () => {
     isMobile,
     // navBarHeight: isMobile ? 64 : 68,
     navBarHeight: 64,
-    isInStandalone: matchMedia("(display-mode: standalone)").matches,
+    isInStandalone: isAFunction(matchMedia) && matchMedia('(display-mode: standalone)').matches,
     isOnMobileBrowser: isOnMobileBrowser(window.navigator.userAgent),
   }
 }
-
-export { isOnMobileBrowser, getWindowDimensions }

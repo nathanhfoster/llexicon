@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import UserEntriesTable from './UserEntriesTable'
 import { BasicTable, Header } from '../../components'
 import Moment from 'react-moment'
-import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
+import { Container, Row, Col, ButtonGroup, Button, ButtonToolbar } from 'reactstrap'
 import { GetAllUsers, GetAllUserEntries } from 'redux/Admin/actions'
 import { stringMatch } from '../../utils'
 
@@ -142,18 +142,27 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
     [],
   )
 
-  const [usersSelected, setUsersSelected] = useState([])
+  const [usersSelected, setUsersSelected] = useState({})
 
   const handleActionMenuCallback = useCallback(selectedUsers => {
     setUsersSelected(selectedUsers)
   }, [])
 
+  const handleClearUsersSelected = useCallback(() => {
+    setUsersSelected({})
+  }, [])
+
   const userEmails = useMemo(() => {
-    const emails = usersSelected.reduce((acc, { email }) => `${acc.concat(email)};`, 'mailto:')
+    const emails = users.reduce((acc, { id, email }) => {
+      if (usersSelected[id] && email) {
+        acc += `${email};`
+      }
+      return acc
+    }, 'mailto:')
     const subject = '?subject=Astral%20Tree%20Support'
     const href = emails.concat(subject)
     return href
-  }, [usersSelected])
+  }, [users, usersSelected])
 
   return (
     <Container className='Admin Container'>
@@ -170,23 +179,33 @@ const Admin = ({ isPending, users, GetAllUsers, GetAllUserEntries }) => {
           columns={TABLE_COLUMNS}
           dataDisplayName='Users'
           data={users}
+          selectedDataMap={usersSelected}
           getRowValue={getRowValue}
           // onSortCallback={handleSortCallback}
           // onFilterCallback={handleFilterCallback}
           actionMenuCallback={handleActionMenuCallback}
         >
-          <ButtonGroup className='BasicTableActions'>
-            <Button
-              color='accent'
-              tag='a'
-              href={userEmails}
-              target='_blank'
-              rel='noopener noreferrer'
-              disabled={usersSelected.length === 0}
-            >
-              Email
-            </Button>
-          </ButtonGroup>
+          <ButtonToolbar>
+            <ButtonGroup>
+              <Button
+                color='accent'
+                tag='a'
+                href={userEmails}
+                target='_blank'
+                rel='noopener noreferrer'
+                disabled={Object.keys(usersSelected).length === 0}
+              >
+                <i className="fas fa-mail-bulk"/>
+              </Button>
+              <Button
+                color='accent'
+                disabled={Object.keys(usersSelected).length === 0}
+                onClick={handleClearUsersSelected}
+              >
+                <i className="fas fa-minus-square"/>
+              </Button>
+            </ButtonGroup>
+          </ButtonToolbar>
         </BasicTable>
       </Row>
     </Container>

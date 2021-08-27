@@ -1,5 +1,5 @@
 import { Quill } from "react-quill"
-import ImageResize from "quill-image-resize-module-react"
+import ImageResize from "@looop/quill-image-resize-module-react"
 // import QuillBetterTable from "quill-better-table"
 // import * as QuillTableUI from "quill-table-ui"
 

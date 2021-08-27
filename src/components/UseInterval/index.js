@@ -1,7 +1,7 @@
-import { memo, useEffect, useRef } from "react"
-import PropTypes from "prop-types"
+import { memo, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 
-const UseInterval = ({ callback, delay = 5000 }) => {
+export const UseInterval = ({ callback, delay = 5000 }) => {
   const savedCallback = useRef()
 
   // Remember the latest function.
@@ -25,7 +25,7 @@ const UseInterval = ({ callback, delay = 5000 }) => {
 
 UseInterval.propTypes = {
   callback: PropTypes.func,
-  delay: PropTypes.number
+  delay: PropTypes.number,
 }
 
 export default memo(UseInterval)

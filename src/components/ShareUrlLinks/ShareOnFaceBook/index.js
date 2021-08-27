@@ -1,19 +1,24 @@
-import React, { memo } from "react"
-import PropTypes from "prop-types"
-import ShareUrl from "../"
+import React from 'react';
+import PropTypes from 'prop-types';
+import ShareUrlLinks from '../ShareUrlLinks';
 
-const ShareOnFacebook = ({ url, restOfProps }) => (
-  <ShareUrl href={`https://www.facebook.com/sharer/sharer.php?u=${url}`} url={url} {...restOfProps}>
-    <i className="fab fa-facebook-square" />
-  </ShareUrl>
-)
+const ShareOnFacebook = ({ url, ...restOfProps }) => (
+  <ShareUrlLinks
+    {...restOfProps}
+    href={`https://www.facebook.com/sharer/sharer.php`}
+    u={url}
+    parameterString='u'
+  >
+    <i className='fab fa-facebook-f' />
+  </ShareUrlLinks>
+);
 
 ShareOnFacebook.propTypes = {
   title: PropTypes.string,
   text: PropTypes.string,
   url: PropTypes.string.isRequired,
-}
+};
 
-ShareOnFacebook.defaultProps = { title: 'Facebook', text: 'Facebook', url: window.location.href }
+ShareOnFacebook.defaultProps = { title: 'Facebook', text: 'Facebook', url: window.location.origin };
 
-export default memo(ShareOnFacebook)
+export default ShareOnFacebook;

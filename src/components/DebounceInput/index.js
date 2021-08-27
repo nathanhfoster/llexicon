@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect, memo, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { InputTypes, autoCompleteTypes } from 'components/BasicComponents/BasicInput/propTypes'
+import { InputProps } from 'components/BasicComponents/BasicInput/propTypes'
 import { Input } from 'reactstrap'
+import { useMounted } from 'hooks'
 import { UseDebounce } from '../'
 
-const DebounceInput = ({
+export const DebounceInput = ({
   debounceOnMount,
   delay,
   onChange,
@@ -13,16 +14,15 @@ const DebounceInput = ({
   focusOnMount,
   ...restOfInputProps
 }) => {
-  const mounted = useRef(false)
+  const mounted = useMounted()
   const inputRef = useRef()
   const [debouncedValue, setDebouncedValue] = useState(defaultValue || value)
   const handleInputChange = ({ target: { value } }) => setDebouncedValue(value)
 
   useEffect(() => {
-    if (mounted.current) {
+    if (mounted) {
       setDebouncedValue(value)
     }
-    mounted.current = true
   }, [value])
 
   useEffect(() => {
@@ -50,13 +50,12 @@ const DebounceInput = ({
 }
 
 DebounceInput.propTypes = {
+  ...InputProps,
   debounceOnMount: PropTypes.bool.isRequired,
   delay: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
   onChange: PropTypes.func.isRequired,
   defaultValue: PropTypes.string,
   focusOnMount: PropTypes.bool,
-  type: InputTypes,
-  autoComplete: autoCompleteTypes,
 }
 
 DebounceInput.defaultProps = {
@@ -65,6 +64,7 @@ DebounceInput.defaultProps = {
   focusOnMount: false,
   type: 'search',
   autoComplete: 'on',
+  name: 'debounce',
 }
 
 export default memo(DebounceInput)

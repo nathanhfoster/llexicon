@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FormGroup, Input, Media, Button } from 'reactstrap'
 import './styles.css'
 
-const FileUpload = ({ title, value, size, onChange }) => {
+export const FileUpload = ({ title, value, size, onChange }) => {
   const handleButtonClick = () => document.getElementById('fileUpload').click()
   return (
     <FormGroup
@@ -13,16 +13,17 @@ const FileUpload = ({ title, value, size, onChange }) => {
       onClick={handleButtonClick}
       size={size}
     >
-      <div for='fileUpload'>
+      <div htmlFor='fileUpload'>
         {!value ? <i className='fas fa-file-import mr-1' /> : <Media src={value} />}
         <Input
           hidden
           type='file'
-          name={value}
+          name='fileUpload'
           id='fileUpload'
           onChange={onChange}
-          accept='.json'
+          accept='.json,.csv'
           multiple={false}
+          title={title}
         />
         {title}
       </div>
@@ -38,7 +39,6 @@ FileUpload.propTypes = {
 }
 
 FileUpload.defaultProps = {
-  title: 'Import',
   size: 'lg',
 }
 

@@ -19,15 +19,14 @@ import { ResetMap } from 'redux/Map/actions'
 import { SetBottomToolbarIsOpen } from 'redux/TextEditor/actions'
 import { RouteMap, RouterGoBack, RouterLinkPush } from 'redux/router/actions'
 import { Admin, About, Home, PrivacyPolicy } from 'views'
-import { NavBar } from 'components'
-import { useAddToHomescreenPrompt } from 'hooks'
-import { lazyDelay } from 'utils'
+import { NavBar, EntriesRediscover, EntriesMostViewed, EntriesRandom } from 'components'
+import { useAddToHomescreenPrompt, useDebounce } from 'hooks'
 
 const Entries = lazy(() => import('./views/Entries'))
 const Helmet = lazy(() => import('./views/Helmet'))
 const AlertNotifications = lazy(() => import('./components/AlertNotifications'))
 const Account = lazy(() => import('./views/Account'))
-const BackgroundImage = lazy(() => import('./components/BackgroundImage').then(lazyDelay(200)))
+const BackgroundImage = lazy(() => import('./components/BackgroundImage'))
 const Settings = lazy(() => import('./views/Settings'))
 const Support = lazy(() => import('./views/Support'))
 const EntryDetail = lazy(() => import('./views/EntryDetail'))
@@ -57,10 +56,14 @@ const {
   ENTRIES_MEDIA,
   ENTRIES_TABLE,
   ENTRIES_MAP,
+  ENTRIES_REDISCOVER,
+  ENTRIES_MOST_VIEWED,
+  ENTRIES_RANDOM,
   PRIVACY_POLICY,
 } = RouteMap
 
 const mapStateToProps = ({
+  App: { isPending },
   User: {
     id,
     token,
@@ -68,6 +71,7 @@ const mapStateToProps = ({
     is_superuser,
   },
 }) => ({
+  appIsLoading: isPending,
   userId: id,
   userToken: token,
   userIsSuperUser: is_superuser,
@@ -109,6 +113,8 @@ const LIGHT_MODE_THEME = {
   '--quinaryColor': '#bdc3c7',
 }
 
+const ENTRIES_CONTAINER_HEIGHTS = 'calc(100vh - 48px - 32px - 36px)'
+
 const mapThemeProperties = themeObject => {
   let root = document.documentElement
 
@@ -120,13 +126,13 @@ const mapThemeProperties = themeObject => {
 const changeTheme = darkMode =>
   darkMode ? mapThemeProperties(DARK_MODE_THEME) : mapThemeProperties(LIGHT_MODE_THEME)
 
-const App = ({
-  ResetUserError,
-  GetUserSettings,
+export const App = ({
   userId,
   userToken,
   userIsSuperUser,
   userDarkMode,
+  ResetUserError,
+  GetUserSettings,
   SetWindow,
   SetCalendar,
   GetUserEntries,
@@ -141,11 +147,12 @@ const App = ({
   SetBottomToolbarIsOpen,
 }) => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const handleResize = () => SetWindow()
+  const handleResize = useDebounce(SetWindow)
 
   useEffect(() => {
     changeTheme(userDarkMode)
   }, [userDarkMode])
+  
   useEffect(() => {
     SetBottomToolbarIsOpen(true)
     SetCalendar({ activeDate: new Date() })
@@ -208,11 +215,7 @@ const App = ({
             path={[ROOT, HOME]}
             render={() => <Home prompt={prompt} promptToInstall={promptToInstall} />}
           />
-          {/* <Route
-            path={ROOT}
-            render={() => <Redirect to={HOME} />}
-            exact={true}
-          /> */}
+          {/* <Route path={ROOT} render={() => <Redirect to={HOME} />} exact={true} /> */}
           <Route
             exact
             path={[LOGIN, SIGNUP, PASSWORD_RESET]}
@@ -257,7 +260,22 @@ const App = ({
             ]}
             render={() => <Entries />}
           />
-          <Route exact path={[PRIVACY_POLICY]} render={() => <PrivacyPolicy />} />
+          <Route
+            exact
+            path={ENTRIES_REDISCOVER}
+            render={() => <EntriesRediscover height={ENTRIES_CONTAINER_HEIGHTS} />}
+          />
+          <Route
+            exact
+            path={ENTRIES_MOST_VIEWED}
+            render={() => <EntriesMostViewed height={ENTRIES_CONTAINER_HEIGHTS} />}
+          />
+          <Route
+            exact
+            path={ENTRIES_RANDOM}
+            render={() => <EntriesRandom height={ENTRIES_CONTAINER_HEIGHTS} />}
+          />
+          <Route exact path={PRIVACY_POLICY} render={() => <PrivacyPolicy />} />
           <Route render={() => <PageNotFound />} />
         </Switch>
       </div>

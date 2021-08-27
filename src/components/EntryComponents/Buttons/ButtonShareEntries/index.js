@@ -1,15 +1,15 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState, useCallback, memo } from 'react'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'reactstrap'
-import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/reducer'
+import { BASE_JOURNAL_ENTRY_ID } from 'redux/Entries/utils'
 import { copyStringToClipboard, shareUrl } from 'utils'
 import { GetEntryDetailUrl } from 'redux/router/actions'
 import { UpdateReduxEntries, SyncEntries } from 'redux/Entries/actions'
-import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
+import { selectedEntriesSelector, selectedItemsAreEqual } from 'redux/Entries/utils'
 
-const ButtonShareEntries = ({ entries: entriesFromProps }) => {
-  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+export const ButtonShareEntries = ({ entries: entriesFromProps }) => {
+  const { entries: entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
   const entries = useMemo(() => entriesFromProps || entriesSelected, [
     entriesFromProps,
     entriesSelected,
@@ -74,7 +74,6 @@ const ButtonShareEntries = ({ entries: entriesFromProps }) => {
       <i
         className={`fas fa-${urlCopied ? 'check' : navigator.share ? 'share' : 'clipboard'} mr-1`}
       />
-      Share
     </Button>
   )
 }
@@ -83,4 +82,4 @@ ButtonShareEntries.propTypes = {
   entries: EntriesPropTypes,
 }
 
-export default ButtonShareEntries
+export default memo(ButtonShareEntries)

@@ -11,7 +11,7 @@ const mapStateToProps = ({
   width: availWidth,
 })
 
-const ViewPortContainer = ({ height, width, className, children }) => {
+export const ViewPortContainer = ({ height, width, className, children }) => {
   const containerStyles = { height, width }
   return (
     <div className={className} style={containerStyles}>

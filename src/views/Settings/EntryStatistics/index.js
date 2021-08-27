@@ -8,12 +8,11 @@ import { formatBytes } from '../../../utils'
 import './styles.css'
 
 const mapStateToProps = ({ Entries: { items, filteredItems, count } }) => ({
-  items,
-  filteredItems,
+  entries: filteredItems.length > 0 ? items.concat(filteredItems) : items,
   count,
 })
 
-const EntryStatistics = ({ items, filteredItems, count }) => {
+const EntryStatistics = ({ entries, count }) => {
   let sumRating = 0
   let sumRatingTimeUpdatingEntries = 0
   let previousDate = false
@@ -25,8 +24,6 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
   let entriesToPost = 0
   let entriesToUpdate = 0
   let entriesToDelete = 0
-
-  const entries = items.concat(filteredItems)
 
   let validRatedEntries = 0
 
@@ -95,15 +92,18 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
     if (currentWordCount < minimumWordsInAnEntry) minimumWordsInAnEntry = currentWordCount
     if (currentWordCount > maximumWordsInAnEntry) maximumWordsInAnEntry = currentWordCount
 
-    for (let j = 0, l = tags.length; j < l; j++) {
-      const { name } = tags[j]
+    if (tags?.length) {
+      for (let j = 0, l = tags.length; j < l; j++) {
+        const { name } = tags[j]
 
-      tagCountMap[name] = tagCountMap[name] + 1 || 1
+        tagCountMap[name] = tagCountMap[name] + 1 || 1
+      }
     }
-
-    for (let k = 0, len = people.length; k < len; k++) {
-      const { name } = people[k]
-      peopleCountMap[name] = peopleCountMap[name] + 1 || 1
+    if (people?.length) {
+      for (let k = 0, len = people.length; k < len; k++) {
+        const { name } = people[k]
+        peopleCountMap[name] = peopleCountMap[name] + 1 || 1
+      }
     }
   }
 
@@ -225,8 +225,7 @@ const EntryStatistics = ({ items, filteredItems, count }) => {
 }
 
 EntryStatistics.propTypes = {
-  items: EntriesPropTypes,
-  filteredItems: EntriesPropTypes,
+  entries: EntriesPropTypes,
 }
 
 export default connect(mapStateToProps)(memo(EntryStatistics))

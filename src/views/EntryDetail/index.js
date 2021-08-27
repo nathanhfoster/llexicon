@@ -13,17 +13,14 @@ import {
 import { SetCalendar } from 'redux/Calendar/actions'
 import PageNotFound from '../PageNotFound'
 import { isReadOnly } from 'redux/Entries/utils'
+import { LoadingScreen } from 'components'
 
 const Entry = lazy(() => import('../../components/EntryComponents/Entry'))
 
 const mapStateToProps = (
   {
     User: { id },
-    Entries: {
-      items,
-      filteredItems,
-      item: { isPending },
-    },
+    Entries: { item, items, filteredItems },
     Window: {
       navigator: { serviceWorker },
     },
@@ -31,9 +28,11 @@ const mapStateToProps = (
   { entryId },
 ) => ({
   userId: id,
-  entry: items.concat(filteredItems).find(({ id }) => id == entryId),
+  entry: (filteredItems.length > 0 ? items.concat(filteredItems) : items).find(
+    ({ id }) => id == entryId,
+  ),
   serviceWorkerController: serviceWorker?.controller || {},
-  isPending,
+  isPending: item?.isPending,
 })
 
 const mapDispatchToProps = {
@@ -44,7 +43,7 @@ const mapDispatchToProps = {
   UpdateReduxEntries,
 }
 
-const EntryDetail = ({
+export const EntryDetail = ({
   entryId,
   userId,
   entry,
@@ -58,9 +57,8 @@ const EntryDetail = ({
 }) => {
   let setCalendarDateToEntryDate = useRef(false)
 
-  const readOnly = useMemo(() => isPending || isReadOnly(entryId, entry?.author, userId), [
-    isPending,
-    entryId,
+  const readOnly = useMemo(() => isReadOnly(entry?.id, entry?.author, userId), [
+    entry?.id,
     entry?.author,
     userId,
   ])
@@ -71,7 +69,7 @@ const EntryDetail = ({
     return () => {
       ClearEntry()
     }
-  }, [entryId])
+  }, [ClearEntry, GetUserEntryDetails, entryId])
 
   useEffect(() => {
     if (entry?.date_created_by_author && !setCalendarDateToEntryDate.current) {
@@ -79,21 +77,21 @@ const EntryDetail = ({
       SetCalendar({ activeDate })
       setCalendarDateToEntryDate.current = true
     }
-  }, [entry])
+  }, [SetCalendar, entry])
 
   const handleOnChange = useCallback(
     payload => {
       if (readOnly || !entry) return
       UpdateReduxEntries(payload)
     },
-    [entry?.id, readOnly],
+    [UpdateReduxEntries, entry, readOnly],
   )
 
   const handleOnSubmit = useCallback(() => {
     SyncEntries()
   }, [SyncEntries])
 
-  return entry ? (
+  return entry?.id ? (
     <Container className='Container'>
       {/* {!readOnly && <ResolveEntryConflictModal entry={entry} />} */}
       <Row>
@@ -109,6 +107,8 @@ const EntryDetail = ({
         </Col>
       </Row>
     </Container>
+  ) : isPending ? (
+    <LoadingScreen />
   ) : (
     <PageNotFound />
   )

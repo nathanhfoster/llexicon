@@ -1,23 +1,7 @@
-import React, { memo } from "react"
-import PropTypes from "prop-types"
-
-const ShareUrl = ({ children, ...restOfProps }) => (
-  <a {...restOfProps} onClick={(e) => e.stopPropagation()}>
-    {children}
-  </a>
-)
-
-ShareUrl.propTypes = {
-  title: PropTypes.string,
-  text: PropTypes.string,
-  href: PropTypes.string.isRequired,
-  target: PropTypes.oneOf(["_self", "_blank", "_parent", "_top"]),
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]),
-}
-
-ShareUrl.defaultProps = { target: "_blank" }
-
-export default memo(ShareUrl)
+export { default as ShareCode } from './ShareCode';
+export { default as ShareOnEmail } from './ShareOnEmail';
+export { default as ShareOnFaceBook } from './ShareOnFaceBook';
+export { default as ShareOnFaceBookMessenger } from './ShareOnFaceBookMessenger';
+export { default as ShareOnLinkedIn } from './ShareOnLinkedIn';
+export { default as ShareOnTwitter } from './ShareOnTwitter';
+export { default as ShareWhatsApp } from './ShareWhatsApp';

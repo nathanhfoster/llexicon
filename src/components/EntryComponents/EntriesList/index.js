@@ -1,39 +1,32 @@
-import React, { useCallback } from 'react'
+import React, { createRef, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
 import { BasicList, EntryMinimal } from '../..'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { GetUserEntries } from 'redux/Entries/actions'
-const renderMinimalEntries = ({ data, index, style, isScrolling }) => {
-  const entry = data[index]
+import { SetMapBoundsCenterZoom } from 'redux/Map/actions'
 
-  return (
-    <Col key={entry.id} xs={12} className='fade-in px-0 py-1' style={style}>
-      <EntryMinimal {...entry} />
-    </Col>
-  )
-}
-
-const mapStateToProps = ({ Entries: { next, search } }) => ({
+const mapStateToProps = ({ Entries: { next, search }, Map: { hoveredChildKey } }, { entries }) => ({
   nextEntryPage: next,
   entriesSearch: search,
+  scrollToItem: entries.findIndex(({ id }) => id == hoveredChildKey),
 })
 
 const mapDispatchToProps = {
   GetUserEntries,
+  SetMapBoundsCenterZoom,
 }
 
-const EntriesList = ({
-  nextEntryPage,
-  entriesSearch,
-  height,
-  width,
-  itemSize,
-  entries,
-  GetUserEntries,
-}) => {
-  const handleOnScrollToBottomOfListCallback = useCallback(() => {
+export class EntriesList extends PureComponent {
+  debounceSetMap = createRef()
+
+  componentWillUnmount() {
+    const { SetMapBoundsCenterZoom } = this.props
+    SetMapBoundsCenterZoom({ hoveredChildKey: null })
+  }
+  handleOnScrollToBottomOfListCallback = () => {
+    const { entriesSearch, nextEntryPage, GetUserEntries } = this.props
     if (entriesSearch || !nextEntryPage) {
       return
     }
@@ -42,18 +35,54 @@ const EntriesList = ({
     const pageNumber = split[1]
 
     GetUserEntries(pageNumber)
-  }, [entriesSearch, nextEntryPage])
-  return (
-    <BasicList
-      height={height}
-      width={width}
-      list={entries}
-      itemCount={entries.length}
-      itemSize={itemSize}
-      render={renderMinimalEntries}
-      onScrollToBottomOfListCallback={handleOnScrollToBottomOfListCallback}
-    />
-  )
+  }
+
+  renderMinimalEntries = ({ data, index, style, isScrolling }) => {
+    const { scrollToItem, SetMapBoundsCenterZoom } = this.props
+    const entry = data[index]
+    const handleOnHover = () => {
+      const { id, latitude, longitude } = entry
+
+      let payload = { hoveredChildKey: id }
+      if (latitude && longitude) {
+        const center = { lat: latitude, lng: longitude }
+        payload = {
+          ...payload,
+          center,
+        }
+      }
+      clearTimeout(this.debounceSetMap)
+      this.debounceSetMap = setTimeout(() => SetMapBoundsCenterZoom(payload), 150)
+    }
+
+    return (
+      <Col
+        key={entry.id}
+        xs={12}
+        className='fade-in px-0 py-1'
+        style={style}
+        onMouseEnter={handleOnHover}
+        onFocus={handleOnHover}
+      >
+        <EntryMinimal {...entry} index={index} hover={index == scrollToItem} />
+      </Col>
+    )
+  }
+  render() {
+    const { scrollToItem, height, width, itemSize, entries, ˇ } = this.props
+    return (
+      <BasicList
+        height={height}
+        width={width}
+        list={entries}
+        itemCount={entries.length}
+        itemSize={itemSize}
+        render={this.renderMinimalEntries}
+        onScrollToBottomOfListCallback={this.handleOnScrollToBottomOfListCallback}
+        scrollToItem={scrollToItem}
+      />
+    )
+  }
 }
 
 EntriesList.propTypes = {
@@ -61,12 +90,13 @@ EntriesList.propTypes = {
   height: PropTypes.number.isRequired,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   GetUserEntries: PropTypes.func.isRequired,
+  SetMapBoundsCenterZoom: PropTypes.func.isRequired,
 }
 
 EntriesList.defaultProps = {
   height: 500,
   width: '100%',
-  itemSize: 150,
+  itemSize: 180,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EntriesList)

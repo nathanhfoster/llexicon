@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { EntryTagsProps } from 'redux/Entries/propTypes'
 import './styles.css'
 
-const TagsContainer = ({
+export const TagsContainer = ({
   children,
   tags,
   minimalView,
@@ -42,17 +42,18 @@ const TagsContainer = ({
 
   const renderMinimalTags = useMemo(() => {
     const initialString = '| '
-    const mininmalString = tags.reduce(
-      (mininmalString, tag) => mininmalString + `${tag.name} | `,
-      initialString,
-    )
+    const mininmalString =
+      (Array.isArray(tags) ? tags : []).reduce(
+        (mininmalString, tag) => mininmalString + `${tag.name} | `,
+        initialString,
+      ) || ''
     if (mininmalString === initialString) return null
     else return <span>{mininmalString}</span>
   }, [tags])
 
   const renderTags = useMemo(
     () =>
-      tags.map(({ name }, i) => (
+      (Array.isArray(tags) ? tags : []).map(({ name }, i) => (
         <Badge
           key={name}
           className={`TagContainer fade-in ${tagContainerClassName} ${
@@ -64,7 +65,7 @@ const TagsContainer = ({
           <span className='TagTitle'>{name}</span>
         </Badge>
       )),
-    [tags],
+    [tags, faIcon, hoverable, onClick, showTagIcon, tagContainerClassName],
   )
 
   return (
@@ -104,6 +105,7 @@ TagsContainer.propTypes = {
 }
 
 TagsContainer.defaultProps = {
+  tags: [],
   height: 'auto',
   maxHeight: 'auto',
   fontSize: 'inherit',

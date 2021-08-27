@@ -1,19 +1,24 @@
-import React, { useMemo, useCallback, lazy, memo } from 'react'
-import PropTypes from 'prop-types'
-import { EntryPropTypes } from 'redux/Entries/propTypes'
-import { InputGroup, Input, InputGroupAddon, InputGroupText, Button } from 'reactstrap'
-import { BasicInput, EntryOptionsMenu } from '../../'
-import { DEFAULT_STATE_TEXT_EDITOR } from 'redux/TextEditor/reducer'
-import { getLocalDateTimeNoSeconds, nFormatter } from 'utils'
-import './styles.css'
+import React, { useMemo, useCallback, lazy, memo } from "react"
+import PropTypes from "prop-types"
+import { EntryPropTypes } from "redux/Entries/propTypes"
+import {
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  Button,
+} from "reactstrap"
+import { BasicInput, EntryOptionsMenu } from "../../"
+import { DEFAULT_STATE_TEXT_EDITOR } from "redux/TextEditor/reducer"
+import { getLocalDateTimeNoSeconds, nFormatter } from "utils"
+import "./styles.css"
 
-const Editor = lazy(() => import('../../Editor'))
+const Editor = lazy(() => import("../../Editor"))
 
-const Entry = ({
+export const Entry = ({
   height,
   showOptionsMenu,
   entry,
-  toolbarId,
   canToggleToolbars,
   topToolbarIsOpen,
   shouldRedirectOnDelete,
@@ -22,9 +27,10 @@ const Entry = ({
   onChange,
   onSubmit,
 }) => {
-  const activeDate = useMemo(() => getLocalDateTimeNoSeconds(entry.date_created_by_author), [
-    entry.date_created_by_author,
-  ])
+  const activeDate = useMemo(
+    () => getLocalDateTimeNoSeconds(entry.date_created_by_author),
+    [entry.date_created_by_author]
+  )
 
   const editorStateHtmlIsBlank = entry.html === DEFAULT_STATE_TEXT_EDITOR.html
 
@@ -32,7 +38,7 @@ const Entry = ({
 
   const handleOnChange = useCallback(
     ({ target: { name, value } }) => {
-      if (name === 'date_created_by_author' && value) {
+      if (name === "date_created_by_author" && value) {
         onChange({
           id: entry.id,
           [name]: value,
@@ -44,13 +50,13 @@ const Entry = ({
         })
       }
     },
-    [entry.id],
+    [entry.id]
   )
 
   return (
     <Editor
       readOnly={readOnly}
-      toolbarId={toolbarId || entry.id}
+      toolbarId={entry.id}
       canToggleToolbars={canToggleToolbars}
       topToolbarIsOpen={topToolbarIsOpen}
       entry={entry}
@@ -58,12 +64,12 @@ const Entry = ({
       onChange={onChange}
       height={height}
     >
-      <InputGroup key={`EntryTitle-${entry.id}`} className='EntryInput EntryInputTitle'>
+      <InputGroup className="EntryInput EntryInputTitle">
         <Input
-          type='text'
-          name='title'
-          id='title'
-          placeholder='Entry title...'
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Entry title..."
           autoComplete="on"
           value={entry.title}
           onChange={handleOnChange}
@@ -85,13 +91,13 @@ const Entry = ({
             />
           </InputGroupText>
         </InputGroupAddon> */}
-        <InputGroupAddon addonType='append'>
-          <InputGroupText className='p-0'>
+        <InputGroupAddon addonType="append">
+          <InputGroupText className="p-0">
             <BasicInput
-              type='datetime-local'
-              step='0'
-              name='date_created_by_author'
-              autoComplete='on'
+              type="datetime-local"
+              step="0"
+              name="date_created_by_author"
+              autoComplete="on"
               readOnly={readOnly}
               disabled={readOnly}
               value={activeDate}
@@ -99,20 +105,24 @@ const Entry = ({
             />
           </InputGroupText>
         </InputGroupAddon>
-        <InputGroupAddon addonType='append' onClick={!submitDisabled ? onSubmit : null}>
+        <InputGroupAddon
+          addonType="append"
+          className="no-print"
+          onClick={!submitDisabled ? onSubmit : null}
+        >
           <InputGroupText
             tag={Button}
-            color='accent'
+            color="accent"
             disabled={submitDisabled}
             // type="submit"
           >
-            <i className='fas fa-save' style={{ fontSize: 20 }} />
+            <i className="fas fa-save" style={{ fontSize: 20 }} />
           </InputGroupText>
         </InputGroupAddon>
         {showOptionsMenu && (
-          <InputGroupAddon addonType='append'>
+          <InputGroupAddon addonType="append" className="no-print">
             <InputGroupText
-              className='p-0'
+              className="p-0"
               tag={EntryOptionsMenu}
               onChange={onChange}
               entryId={entry.id}
@@ -130,7 +140,6 @@ const Entry = ({
 Entry.propTypes = {
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   showOptionsMenu: PropTypes.bool.isRequired,
-  toolbarId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   readOnly: PropTypes.bool.isRequired,
   entry: EntryPropTypes.isRequired,
   containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -143,13 +152,13 @@ Entry.propTypes = {
 }
 
 Entry.defaultProps = {
-  height: '100%',
+  height: "100%",
   showOptionsMenu: false,
   readOnly: false,
   canToggleToolbars: true,
   topToolbarIsOpen: true,
   shouldRedirectOnDelete: false,
-  theme: 'snow',
+  theme: "snow",
 }
 
 export default memo(Entry)

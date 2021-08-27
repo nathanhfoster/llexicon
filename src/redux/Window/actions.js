@@ -1,7 +1,5 @@
-import { WindowActionTypes } from "./types"
+import actions from '../actionTypes'
 
-const SetWindow = () => ({
-  type: WindowActionTypes.SET_WINDOW,
+export const SetWindow = () => ({
+  type: actions.SET_WINDOW,
 })
-
-export { SetWindow }

@@ -10,7 +10,7 @@ const mapStateToProps = ({ Entries: { showOnlyPublic } }) => ({
 
 const mapDispatchToProps = { ToggleShowOnlyPublic }
 
-const EntriesToggleShowOnlyPublic = ({ showOnlyPublic, ToggleShowOnlyPublic }) => {
+export const EntriesToggleShowOnlyPublic = ({ showOnlyPublic, ToggleShowOnlyPublic }) => {
   const handleOnClick = () => {
     ToggleShowOnlyPublic()
   }

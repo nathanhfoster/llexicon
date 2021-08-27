@@ -1,5 +1,9 @@
-import { BasicTableActionTypes } from './types'
-import { filterSort, getSortedAndFilteredData } from './utils'
+import { BasicTableActionTypes } from "./types"
+import {
+  filterSort,
+  getSortedAndFilteredData,
+  getSortAndFilterList,
+} from "./utils"
 
 const {
   BASIC_TABLE_SORT,
@@ -9,6 +13,7 @@ const {
   BASIC_TABLE_SET_DATA,
   BASIC_TABLE_SET_SELECTED_DATA,
   BASIC_TABLE_SELECT_DATA_ITEMS,
+  BASIC_TABLE_SET_COLUMNS,
 } = BasicTableActionTypes
 
 const BasicTableReducer = (state, action) => {
@@ -26,7 +31,7 @@ const BasicTableReducer = (state, action) => {
           state.data,
           newSortList,
           state.filterList,
-          state.actionMenuCallback,
+          state.actionMenuCallback
         ),
       }
 
@@ -40,7 +45,7 @@ const BasicTableReducer = (state, action) => {
         ...getSortedAndFilteredData(
           state.data,
           state.sortList,
-          newFilterList,
+          newFilterList
           // state.actionMenuCallback,
         ),
         currentPage: 0,
@@ -58,13 +63,16 @@ const BasicTableReducer = (state, action) => {
         ...getSortedAndFilteredData(
           payload,
           state.sortList,
-          state.filterList,
+          state.filterList
           // state.actionMenuCallback,
         ),
       }
 
     case BASIC_TABLE_SET_SELECTED_DATA:
       return { ...state, selectedDataMap: payload }
+
+    case BASIC_TABLE_SET_COLUMNS:
+      return { ...state, ...getSortAndFilterList(payload), columns: payload }
 
     case BASIC_TABLE_SELECT_DATA_ITEMS:
       newItem = Object.entries({ ...state.selectedDataMap, ...payload }).reduce(
@@ -74,7 +82,7 @@ const BasicTableReducer = (state, action) => {
           }
           return acc
         },
-        {},
+        {}
       )
       state.actionMenuCallback(newItem)
       return {

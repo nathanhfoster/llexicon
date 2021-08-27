@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { BasicModal } from '../'
 import { Button } from 'reactstrap'
 
-const ConfirmAction = ({ button, title, message, onConfirm, onCancel, size, disabled }) => {
+export const ConfirmAction = ({ button, title, message, onConfirm, onCancel, size, disabled }) => {
   const handleConfirm = useCallback(() => {
     if (onConfirm) onConfirm()
   }, [onConfirm])

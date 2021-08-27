@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux'
 import { DEFAULT_STATE_ADMIN, Admin } from './Admin/reducer'
 import { DEFAULT_STATE_ALERTS, Alerts } from './Alerts/reducer'
 import { DEFAULT_STATE_APP, App } from './App/reducer'
@@ -7,9 +8,8 @@ import { DEFAULT_STATE_TEXT_EDITOR, TextEditor } from './TextEditor/reducer'
 import { DEFAULT_STATE_ENTRIES, Entries } from './Entries/reducer'
 import { DEFAULT_STATE_MAP, Map } from './Map/reducer'
 import { DEFAULT_STATE_WINDOW, Window } from './Window/reducer'
-import { DEFAULT_STATE_ROUTER, router } from './router/reducer'
 
-const Reducers = {
+export const Reducers = {
   Admin,
   Alerts,
   App,
@@ -19,11 +19,11 @@ const Reducers = {
   User,
   TextEditor,
   Window,
-  router,
 }
 
+export const RootReducer = combineReducers(Reducers)
+
 export {
-  Reducers,
   DEFAULT_STATE_ADMIN,
   DEFAULT_STATE_ALERTS,
   DEFAULT_STATE_APP,
@@ -33,5 +33,4 @@ export {
   DEFAULT_STATE_USER,
   DEFAULT_STATE_TEXT_EDITOR,
   DEFAULT_STATE_WINDOW,
-  DEFAULT_STATE_ROUTER,
 }

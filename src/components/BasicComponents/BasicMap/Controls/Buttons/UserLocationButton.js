@@ -1,11 +1,16 @@
-import React, { memo, useCallback, useLayoutEffect, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { Button } from 'reactstrap'
-import defaultStyles from './defaultStyles'
-import { CENTER_OF_US, DEFAULT_ZOOM } from '../../constants'
-import { useGeolocation } from 'hooks'
+import React, { memo, useCallback, useEffect } from "react"
+import PropTypes from "prop-types"
+import { Button } from "reactstrap"
+import defaultStyles from "./defaultStyles"
+import { CENTER_OF_US, DEFAULT_ZOOM } from "../../constants"
+import { useGeolocation } from "hooks"
 
-const UserLocationButton = ({ map, controlPosition, panTo, SetUserLocation }) => {
+const UserLocationButton = ({
+  map,
+  controlPosition,
+  panTo,
+  SetUserLocation,
+}) => {
   const [geoState, { onChange }] = useGeolocation({
     enableHighAccuracy: true,
     timeout: 0xffffffff,
@@ -24,36 +29,34 @@ const UserLocationButton = ({ map, controlPosition, panTo, SetUserLocation }) =>
       center: { lat: latitude, lng: longitude },
       zoom: 16,
     })
-  }, [geoState, panTo])
+  }, [panTo, geoState?.position?.coords])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (map?.controls[controlPosition]) {
       const firstKey = Object.keys(map?.controls[controlPosition])[0]
       if (map?.controls[controlPosition][firstKey]?.length > 0) {
         map.controls[controlPosition][firstKey][0].children[0].addEventListener(
-          'click',
-          handleOnClick,
+          "click",
+          handleOnClick
         )
 
         return () => {
-          map.controls[controlPosition][firstKey][0].children[0].removeEventListener(
-            'click',
-            handleOnClick,
-          )
+          map.controls[controlPosition][
+            firstKey
+          ][0].children[0].removeEventListener("click", handleOnClick)
+          SetUserLocation(null)
         }
       }
     }
-  }, [controlPosition, handleOnClick, map.controls])
-
-  useEffect(() => {
-    return () => {
-      SetUserLocation(null)
-    }
-  }, [SetUserLocation])
+  }, [controlPosition, handleOnClick, SetUserLocation, map.controls])
 
   return isSupported ? (
-    <Button color='white' disabled={!geoState.position} style={{ ...defaultStyles, padding: 0 }}>
-      <i className='fas fa-user-circle fa-2x' aria-label='myLocation' />
+    <Button
+      color="white"
+      disabled={isRetrieving || !geoState.position}
+      style={{ ...defaultStyles, padding: 0 }}
+    >
+      <i className="fas fa-user-circle fa-2x" aria-label="myLocation" />
     </Button>
   ) : null
 }

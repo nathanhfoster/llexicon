@@ -2,15 +2,15 @@ import React, { useMemo, memo } from 'react'
 import PropTypes from 'prop-types'
 import './styles.css'
 
-const Header = ({ children, className, fill, color, center, ...restOfProps }) => {
-  const styles = useMemo(
-    () => ({
+export const Header = ({ children, className, fill, color, center, href, ...restOfProps }) => {
+  const styles = useMemo(() => {
+    const defaultColor = color || !href ? 'var(--secondaryColor)' : ''
+    return {
       backgroundColor: fill,
-      color,
+      color: defaultColor,
       ...restOfProps,
-    }),
-    [color, fill, restOfProps],
-  )
+    }
+  }, [color, fill, href, restOfProps])
 
   const cName = useMemo(() => {
     let name = 'Header'
@@ -24,9 +24,13 @@ const Header = ({ children, className, fill, color, center, ...restOfProps }) =>
     }
 
     return name
-  }, [])
+  }, [center, className])
 
-  return (
+  return href ? (
+    <a className={cName} style={styles} href={href}>
+      {children}
+    </a>
+  ) : (
     <div className={cName} style={styles}>
       {children}
     </div>
@@ -39,13 +43,13 @@ Header.propTypes = {
   color: PropTypes.string.isRequired,
   fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   center: PropTypes.bool,
+  href: PropTypes.string,
 }
 
 Header.defaultProps = {
   children: <h1>Header</h1>,
   className: 'Header',
   fill: '',
-  color: 'var(--secondaryColor)',
   fontSize: '2em',
   center: true,
 }

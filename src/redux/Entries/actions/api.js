@@ -6,7 +6,6 @@ import { getFileFromBase64, htmlToArrayOfBase64, cleanObject } from 'utils'
 import { getTagStringFromObject } from '../utils'
 import FormData from 'form-data'
 import qs from 'qs'
-import ReactGA from 'react-ga'
 import {
   PendingEntries,
   PendingEntry,
@@ -21,39 +20,30 @@ import {
   SetSearchEntries,
   DeleteEntryFileFromRedux,
 } from './redux'
+import { history } from '../../router/reducer'
 
-const GetUserEntryTags = () => (dispatch, getState) => {
+export const GetUserEntryTags = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`tags/${id}/view/`)
     .then(({ data }) => {
       dispatch(SetEntriesTags(data))
-      ReactGA.event({
-        category: 'Get User Entry Tags',
-        action: 'User got their entry tags!',
-        value: id,
-      })
       return data
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetUserEntryPeople = () => (dispatch, getState) => {
+export const GetUserEntryPeople = () => (dispatch, getState) => {
   const { id } = getState().User
   return Axios()
     .get(`people/${id}/view/`)
     .then(({ data }) => {
       dispatch(SetEntriesPeople(data))
-      ReactGA.event({
-        category: 'Get User Entry People',
-        action: 'User got their entry people!',
-        value: id,
-      })
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const CreateEntryTag = payload => (dispatch, getState) => {
+export const CreateEntryTag = payload => (dispatch, getState) => {
   const {
     User: { id },
   } = getState()
@@ -62,16 +52,11 @@ const CreateEntryTag = payload => (dispatch, getState) => {
     .post(`tags/`, qs.stringify(newPayload))
     .then(({ data }) => {
       dispatch(SetEntriesTags(data))
-      ReactGA.event({
-        category: 'Create Entry Tag',
-        action: 'User created a entry tag!',
-        value: id,
-      })
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const ParseBase64 = (entry_id, updateEntryPayload) => async dispatch => {
+export const ParseBase64 = (entry_id, updateEntryPayload) => async dispatch => {
   const { html } = updateEntryPayload
   const base64s = htmlToArrayOfBase64(html)
   for (let i = 0; i < base64s.length; i++) {
@@ -83,7 +68,7 @@ const ParseBase64 = (entry_id, updateEntryPayload) => async dispatch => {
   return new Promise(resolve => resolve(dispatch(SetAlert({ title: 'Synced', message: 'Files' }))))
 }
 
-const AwsUpload = (entry_id, file, base64, html) => dispatch => {
+export const AwsUpload = (entry_id, file, base64, html) => dispatch => {
   const { lastModified, lastModifiedDate, name, size, type } = file
   let payload = new FormData()
   payload.append('entry_id', entry_id)
@@ -100,31 +85,31 @@ const AwsUpload = (entry_id, file, base64, html) => dispatch => {
         html: html.replace(base64, data.url),
       }
       dispatch(UpdateEntry(entry_id, updateEntryPayload))
-      ReactGA.event({
-        category: 'Aws Upload',
-        action: 'User created a EntryFile in Aws',
-        value: data.url,
-      })
       return data
     })
     .catch(e => console.log(JSON.parse(JSON.stringify(e))))
 }
 
-const GetEntry = (url, id) => (dispatch, getState) => {
+export const GetEntry = (url, id) => (dispatch, getState) => {
   dispatch(PendingEntry())
 
   const {
-    Entries: { items, filteredItems },
+    Entries: { item, items, filteredItems },
     User: { id: userLoggedIn },
   } = getState()
 
-  const entry = items.concat(filteredItems).find(entry => entry.id == id)
+  const entry =
+    item?.id == id
+      ? item
+      : (filteredItems.length > 0 ? items.concat(filteredItems) : items).find(
+          entry => entry.id == id,
+        )
 
   if (entry) {
     dispatch(SetEntry(entry))
   }
 
-  if (id.includes(BASE_JOURNAL_ENTRY_ID)) {
+  if (id?.includes(BASE_JOURNAL_ENTRY_ID)) {
     return isNotLoggedInAxios()
   }
 
@@ -132,11 +117,6 @@ const GetEntry = (url, id) => (dispatch, getState) => {
     .get(url)
     .then(({ data }) => {
       dispatch(SetEntry(data))
-      ReactGA.event({
-        category: 'Get Entry',
-        action: 'User is looking at entry!',
-        value: id,
-      })
       return data
     })
     .catch(e => {
@@ -161,22 +141,18 @@ const GetEntry = (url, id) => (dispatch, getState) => {
     })
 }
 
-const GetUserEntry = id => dispatch => dispatch(GetEntry(`/entries/${id}/`, id))
+export const GetUserEntry = id => dispatch => dispatch(GetEntry(`/entries/${id}/`, id))
 
-const GetUserEntryDetails = id => dispatch => dispatch(GetEntry(`/entries/${id}/details/`, id))
+export const GetUserEntryDetails = id => dispatch =>
+  dispatch(GetEntry(`/entries/${id}/details/`, id))
 
-const GetAllUserEntries = () => (dispatch, getState) => {
+export const GetAllUserEntries = () => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/view/`)
     .then(({ data }) => {
       dispatch(SetEntries(data))
-      ReactGA.event({
-        category: 'Get All User Entries',
-        action: 'User is got all their entries!',
-        value: id,
-      })
       dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
       return data
     })
@@ -185,19 +161,13 @@ const GetAllUserEntries = () => (dispatch, getState) => {
     })
 }
 
-const GetUserEntries = (pageNumber = 1) => (dispatch, getState) => {
+export const GetUserEntries = (pageNumber = 1) => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   return Axios()
     .get(`/entries/${id}/page/?page=${pageNumber}`)
     .then(({ data }) => {
       dispatch(SetEntries(data))
-      ReactGA.event({
-        category: 'Get User Entries Page',
-        action: 'User got a entry page!',
-        label: pageNumber.toString(),
-        value: id,
-      })
       dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
       return data
     })
@@ -206,7 +176,7 @@ const GetUserEntries = (pageNumber = 1) => (dispatch, getState) => {
     })
 }
 
-const GetAllUserEntryPages = (pageNumber = 1) => dispatch => {
+export const GetAllUserEntryPages = (pageNumber = 1) => dispatch => {
   if (pageNumber) {
     dispatch(GetUserEntries(pageNumber))
       .then(({ next }) => {
@@ -220,7 +190,7 @@ const GetAllUserEntryPages = (pageNumber = 1) => dispatch => {
   }
 }
 
-const GetUserEntriesByDate = payload => (dispatch, getState) => {
+export const GetUserEntriesByDate = payload => (dispatch, getState) => {
   dispatch(PendingEntries())
   const { id } = getState().User
   if (!id) {
@@ -231,12 +201,6 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
     .post(`/entries/${id}/view_by_date/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch(SetEntries(data))
-      ReactGA.event({
-        category: 'Get User Entries By Date',
-        action: 'User got a entry page!',
-        label: JSON.stringify(payload),
-        value: id,
-      })
       dispatch(SetAlert({ title: 'Received', message: 'Entries' }))
       return data
     })
@@ -245,28 +209,18 @@ const GetUserEntriesByDate = payload => (dispatch, getState) => {
     })
 }
 
-const PostEntry = payload => (dispatch, getState) => {
+export const PostEntry = payload => dispatch => {
   dispatch(PendingEntries())
   return Axios()
     .post(`entries/`, qs.stringify(payload))
     .then(({ data }) => {
-      const {
-        router: {
-          location: { pathname },
-        },
-      } = getState()
-
+      const { pathname } = history.location
       if (pathname.includes(payload.id)) {
         const newRoute = pathname.replace(payload.id, data.id)
         RouterPush(newRoute)
       }
       dispatch(SetEntry(data))
       dispatch(DeleteReduxEntries(payload.id))
-      ReactGA.event({
-        category: 'Post Entry',
-        action: 'User posted a new entry!',
-        value: data.id,
-      })
       return { ...data, _shouldPost: false, _lastUpdated: null }
     })
     .catch(e => {
@@ -274,17 +228,12 @@ const PostEntry = payload => (dispatch, getState) => {
     })
 }
 
-const UpdateEntry = (id, payload) => dispatch => {
+export const UpdateEntry = (id, payload) => dispatch => {
   dispatch(PendingEntries())
   return Axios()
     .patch(`/entries/${id}/update_entry/`, qs.stringify(payload))
     .then(({ data }) => {
       dispatch(UpdateReduxEntries(data, null))
-      ReactGA.event({
-        category: 'Update Entry',
-        action: 'User updated a new entry!',
-        value: data.id,
-      })
 
       return data
     })
@@ -293,17 +242,12 @@ const UpdateEntry = (id, payload) => dispatch => {
     })
 }
 
-const DeleteEntry = id => dispatch => {
+export const DeleteEntry = id => dispatch => {
   dispatch(PendingEntries())
   return Axios()
     .delete(`/entries/${id}/`)
     .then(res => {
       dispatch(DeleteReduxEntries(id))
-      ReactGA.event({
-        category: 'Delete Entry',
-        action: 'User deleted a new entry!',
-        value: id,
-      })
       return res
     })
     .catch(e => {
@@ -314,7 +258,23 @@ const DeleteEntry = id => dispatch => {
     })
 }
 
-const SearchUserEntries = search => (dispatch, getState) => {
+export const DeleteEntries = entriesMap => dispatch => {
+  dispatch(PendingEntries())
+  return Axios()
+    .post(`/entries/delete/`, qs.stringify({ entriesMap }))
+    .then(res => {
+      dispatch(DeleteReduxEntries(entriesMap))
+      return res
+    })
+    .catch(e => {
+      if (e.response?.status === 404) {
+        dispatch(DeleteReduxEntries(entriesMap))
+      }
+      dispatch(SetEntriesError(e))
+    })
+}
+
+export const SearchUserEntries = search => (dispatch, getState) => {
   dispatch(SetSearchEntries(search, []))
   const { id } = getState().User
   if (!id) return
@@ -322,11 +282,6 @@ const SearchUserEntries = search => (dispatch, getState) => {
     .post(`entries/${id}/search/`, qs.stringify({ search }))
     .then(({ data }) => {
       dispatch(SetSearchEntries(search, data, false))
-      ReactGA.event({
-        category: 'Search User Entries',
-        action: 'User searched for entries!',
-        value: search,
-      })
       return data
     })
     .catch(e => {
@@ -335,7 +290,7 @@ const SearchUserEntries = search => (dispatch, getState) => {
     })
 }
 
-const DeleteEntryFile = (id, entry_id) => dispatch =>
+export const DeleteEntryFile = (id, entry_id) => dispatch =>
   Axios()
     .delete(`/files/${id}/`)
     .then(res => {
@@ -362,7 +317,7 @@ const DeleteEntryFile = (id, entry_id) => dispatch =>
       }
     })
 
-const SyncEntries = getEntryMethod => (dispatch, getState) => {
+export const SyncEntries = getEntryMethod => (dispatch, getState) => {
   const {
     User: {
       id: UserId,
@@ -373,7 +328,7 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
 
   dispatch(PendingEntries())
 
-  const entries = items.concat(filteredItems)
+  const entries = filteredItems.length > 0 ? items.concat(filteredItems) : items
 
   for (let i = 0, { length } = entries; i < length; i++) {
     let {
@@ -456,22 +411,4 @@ const SyncEntries = getEntryMethod => (dispatch, getState) => {
   }
 
   dispatch(SetEntriesComplete())
-}
-
-export {
-  CreateEntryTag,
-  GetUserEntryTags,
-  GetUserEntryPeople,
-  GetUserEntry,
-  GetUserEntryDetails,
-  GetAllUserEntries,
-  GetAllUserEntryPages,
-  GetUserEntries,
-  GetUserEntriesByDate,
-  PostEntry,
-  UpdateEntry,
-  DeleteEntry,
-  SearchUserEntries,
-  SyncEntries,
-  DeleteEntryFile,
 }

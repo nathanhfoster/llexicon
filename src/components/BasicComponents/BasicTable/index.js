@@ -1,16 +1,18 @@
 import { BasicTableContext } from './state/context'
-import React, { useRef, useEffect, useMemo, lazy, memo } from 'react'
+import React, { useEffect, useMemo, memo } from 'react'
+import PropTypes from 'prop-types'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import PropTypes from 'prop-types'
+import Table from './Table'
 import { BasicTableReducer } from './state/reducer'
-import { basicTableSetData, basicTableSetSelectedData } from './state/actions'
+import { basicTableSetData, basicTableSetSelectedData, basicTableSetPayload } from './state/actions'
+import { useMounted } from 'hooks'
 import { getInitialState } from './state/utils'
 import { ColumnsPropType, DataPropType } from './state/types'
 import { stringMatch } from '../../../utils'
-const Table = lazy(() => import('./Table'))
+
 const { NODE_ENV } = process.env
 
 const inDevelopmentMode = NODE_ENV == 'development'
@@ -19,8 +21,8 @@ const middleWares = inDevelopmentMode
   ? composeWithDevTools(applyMiddleware(thunk))
   : applyMiddleware(thunk)
 
-const BasicTableProvider = ({ children, ...restOfProps }) => {
-  let mounted = useRef(false)
+export const BasicTableProvider = ({ children, ...restOfProps }) => {
+  const mounted = useMounted()
 
   const store = useMemo(
     () => createStore(BasicTableReducer, getInitialState(restOfProps), middleWares),
@@ -28,22 +30,22 @@ const BasicTableProvider = ({ children, ...restOfProps }) => {
   )
 
   useEffect(() => {
-    if (mounted.current) {
+    if (mounted) {
       store.dispatch(basicTableSetData(restOfProps.data))
     }
-    mounted.current = true
   }, [restOfProps.data])
 
   useEffect(() => {
-    const { selectedDataMap } = store.getState()
-    if (
-      mounted.current &&
-      Object.keys(selectedDataMap).length !== Object.keys(restOfProps.selectedDataMap).length
-    ) {
+    if (mounted) {
       store.dispatch(basicTableSetSelectedData(restOfProps.selectedDataMap))
     }
-    mounted.current = true
   }, [restOfProps.selectedDataMap])
+
+  useEffect(() => {
+    if (mounted) {
+      store.dispatch(basicTableSetPayload(restOfProps.columns))
+    }
+  }, [restOfProps.columns])
 
   return (
     <Provider context={BasicTableContext} store={store}>

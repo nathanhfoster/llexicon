@@ -1,10 +1,9 @@
-import React, { useRef, useEffect, useState, useCallback, useMemo, lazy } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React, { useRef, useEffect, useState, useCallback, useMemo, lazy, memo } from 'react'
+import { useLocation } from 'react-router-dom'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem, Button } from 'reactstrap'
 import { NavLink } from 'react-router-dom'
-import { RouterPush } from 'redux/router/actions'
+import { RouterPush, RouteMap } from 'redux/router/actions'
 import { filterMapArray } from 'utils'
 import './styles.css'
 
@@ -12,18 +11,15 @@ const EntryCards = lazy(() => import('../EntryCards'))
 const EntryFolder = lazy(() => import('./EntryFolder'))
 const BASE_FOLDER_DIRECTORY_URL = 'folders?folder=All'
 
-const mapStateToProps = ({
-  router: {
-    location: { search },
-  },
-}) => ({ search })
+export const EntryFolders = ({ entries }) => {
+  const { pathname, search } = useLocation()
 
-const EntryFolders = ({ entries, search }) => {
   const containerRef = useRef()
 
   useEffect(() => {
-    if (!search) RouterPush(BASE_FOLDER_DIRECTORY_URL)
-  }, [search])
+    if (!search && RouteMap.ENTRIES_FOLDERS.includes(pathname))
+      RouterPush(BASE_FOLDER_DIRECTORY_URL)
+  }, [pathname, search])
 
   const [minimizeEntryCards, setMinimizeEntryCards] = useState(true)
 
@@ -118,9 +114,8 @@ const EntryFolders = ({ entries, search }) => {
 
 EntryFolders.propTypes = {
   entries: EntriesPropTypes,
-  search: PropTypes.string.isRequired,
 }
 
-EntryFolders.defaultProps = { search: '' }
+EntryFolders.defaultProps = { search: '', entries: [] }
 
-export default connect(mapStateToProps)(EntryFolders)
+export default memo(EntryFolders)

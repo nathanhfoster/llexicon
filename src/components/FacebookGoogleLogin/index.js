@@ -7,7 +7,7 @@ import { SocialAuthentication } from "redux/Actions/SocialAuthentication"
 import "./styles.css"
 const { REACT_APP_FACEBOOK_API, REACT_APP_GOOGLE_API } = process.env
 
-const FacebookGoogleLogin = () => {
+export const FacebookGoogleLogin = () => {
   const dispatch = useDispatch()
   const responseFacebook = response => {
     const {

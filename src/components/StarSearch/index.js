@@ -27,7 +27,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = { SetSearchEntries, ResetSearchEntries, SearchUserEntries }
 
-const StarSearch = ({
+export const StarSearch = ({
   isMobile,
   search,
   adminIsPending,

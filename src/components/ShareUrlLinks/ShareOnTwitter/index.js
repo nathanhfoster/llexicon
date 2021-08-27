@@ -1,11 +1,16 @@
-import React, { memo } from "react"
-import PropTypes from "prop-types"
-import ShareUrl from "../"
+import React from 'react'
+import PropTypes from 'prop-types'
+import ShareUrlLinks from '../ShareUrlLinks'
 
-const ShareOnTwitter = ({ text, ...restOfProps }) => (
-  <ShareUrl href={`https://twitter.com/intent/tweet?text=${text}`} text={text} {...restOfProps}>
-    <i className="fab fa-twitter-square" />
-  </ShareUrl>
+const ShareOnTwitter = props => (
+  <ShareUrlLinks
+    {...props}
+    href='https://twitter.com/intent/tweet'
+    parameterString='text'
+    dataAction='share/whatsapp/share'
+  >
+    <i className='fab fa-twitter' />
+  </ShareUrlLinks>
 )
 
 ShareOnTwitter.propTypes = {
@@ -15,7 +20,7 @@ ShareOnTwitter.propTypes = {
 
 ShareOnTwitter.defaultProps = {
   title: 'Twitter',
-  text: `Check my journal entry: ${window.location.href}`,
+  text: `Check this out: ${window.location.origin}`,
 }
 
-export default memo(ShareOnTwitter)
+export default ShareOnTwitter

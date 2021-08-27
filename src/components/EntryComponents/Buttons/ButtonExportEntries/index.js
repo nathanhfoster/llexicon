@@ -1,80 +1,104 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback, memo, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { EntriesPropTypes } from 'redux/Entries/propTypes'
-import { Button } from 'reactstrap'
 import { useSelector } from 'react-redux'
 
-import { exportJSON, getValidDate } from 'utils'
-import { getTagStringFromObject } from 'redux/Entries/utils'
-import { selectedEntriesSelector, selectedItemsAreEqual } from 'components/EntryComponents/Buttons/utils'
+import { exportFile, downloadCSV } from 'utils'
+import { getEntryTransform, entryKeyTransform } from 'redux/Entries/utils'
+import {
+  selectedEntriesSelector,
+  allEntriesSelector,
+  selectedItemsAreEqual,
+  allItemsAreEqual,
+} from 'redux/Entries/utils'
+import BasicDropDown from 'components/BasicComponents/BasicDropDown'
 
-const ButtonClearEntries = ({ entries: entriesFromProps }) => {
+const EXPORT_BUTTON = (
+  <span>
+    <i className='fas fa-file-export mr-1' />
+  </span>
+)
+
+export const ButtonExportEntries = ({ entries: entriesFromProps }) => {
   const userId = useSelector(({ User: { id } }) => id)
-  const { entriesSelected } = useSelector(selectedEntriesSelector, selectedItemsAreEqual)
+  const { entries: entriesSelected } = useSelector(
+    entriesFromProps ? selectedEntriesSelector : allEntriesSelector,
+    entriesFromProps ? selectedItemsAreEqual : allItemsAreEqual,
+  )
   const entries = useMemo(() => entriesFromProps || entriesSelected, [
     entriesFromProps,
     entriesSelected,
   ])
-  const handleExportEntries = () => {
-    const formattedEntries = entries.map((entry, i) => {
-      const {
-        id,
-        author,
-        tags,
-        people,
-        title,
-        html,
-        date_created,
-        date_created_by_author,
-        date_updated,
-        views,
-        rating,
-        address,
-        latitude,
-        longitude,
-        is_public,
-        ...restOfProps
-      } = entry
 
-      let entries = {
-        id,
-        author,
-        tags: getTagStringFromObject(tags),
-        people: getTagStringFromObject(people),
-        title,
-        html,
-        date_created: getValidDate(date_created),
-        date_created_by_author: getValidDate(date_created_by_author),
-        date_updated: getValidDate(date_updated),
-        views,
-        rating,
-        address,
-        latitude,
-        longitude,
-        is_public,
-        ...restOfProps,
+  const options = useMemo(() => {
+    const disabled = entries.length === 0
+    return [
+      {
+        id: 'csv',
+        title: 'Export CSV File',
+        value: (
+          <Fragment>
+            <i className='fas fa-file-csv mr-1' />
+            CSV
+          </Fragment>
+        ),
+        disabled,
+      },
+      {
+        id: 'json',
+        title: 'Export JSON File',
+        value: (
+          <Fragment>
+            <i className='fas fa-file-csv mr-1' />
+            JSON
+          </Fragment>
+        ),
+        disabled,
+      },
+    ]
+  }, [entries.length])
+
+  const handleOnChange = useCallback(
+    (id, value) => {
+      switch (id) {
+        case 'csv':
+          const columns = entryKeyTransform.map(({ key }) => key)
+          const rows = entries.map(entry => getEntryTransform(entry, false))
+
+          downloadCSV(columns, rows, `Astral-Tree-Entries-${new Date()}`)
+          break
+        case 'json':
+          const formattedEntries = entries.map((entry, i) => {
+            let newEntry = getEntryTransform(entry)
+
+            if (userId) {
+              newEntry['author'] = userId
+            }
+
+            return newEntry
+          })
+
+          exportFile(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
+          break
+        default:
       }
+    },
+    [entries, userId],
+  )
 
-      if (userId) {
-        entries['author'] = userId
-      }
-
-      return entries
-    })
-
-    exportJSON(formattedEntries, `Astral-Tree-Entries-${new Date()}`)
-  }
   return (
-    <Button color='accent' onClick={handleExportEntries} disabled={entries.length === 0}>
-      <i className='fas fa-file-export mr-1' />
-      Export
-    </Button>
+    <BasicDropDown
+      options={options}
+      onChange={handleOnChange}
+      color='accent'
+      value={EXPORT_BUTTON}
+    />
   )
 }
 
-ButtonClearEntries.propTypes = {
+ButtonExportEntries.propTypes = {
   userId: PropTypes.number,
   entries: EntriesPropTypes,
 }
 
-export default ButtonClearEntries
+export default memo(ButtonExportEntries)

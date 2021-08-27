@@ -1,5 +1,5 @@
-import { Entries } from 'views'
-import { BasicTableActionTypes } from './types'
+import { Entries } from "views"
+import { BasicTableActionTypes } from "./types"
 
 const {
   BASIC_TABLE_SORT,
@@ -9,9 +9,12 @@ const {
   BASIC_TABLE_SET_DATA,
   BASIC_TABLE_SET_SELECTED_DATA,
   BASIC_TABLE_SELECT_DATA_ITEMS,
+  BASIC_TABLE_SET_COLUMNS,
 } = BasicTableActionTypes
 
-export const basicTableSort = (onSortCallback, sortKey, sortUp) => dispatch => {
+export const basicTableSort = (onSortCallback, sortKey, sortUp) => (
+  dispatch
+) => {
   onSortCallback && onSortCallback(sortKey, sortUp)
   const payload = { sortKey, sortUp }
   return dispatch({
@@ -20,7 +23,9 @@ export const basicTableSort = (onSortCallback, sortKey, sortUp) => dispatch => {
   })
 }
 
-export const basicTableFilter = (onFilterCallback, filterKey, filterValue) => dispatch => {
+export const basicTableFilter = (onFilterCallback, filterKey, filterValue) => (
+  dispatch
+) => {
   onFilterCallback && onFilterCallback(filterKey, filterValue)
   const payload = { filterKey, filterValue }
 
@@ -30,23 +35,28 @@ export const basicTableFilter = (onFilterCallback, filterKey, filterValue) => di
   })
 }
 
-export const basicTableSetPage = payload => ({
+export const basicTableSetPage = (payload) => ({
   type: BASIC_TABLE_SET_PAGE,
   payload,
 })
 
-export const basicTableSetPageSize = payload => ({
+export const basicTableSetPageSize = (payload) => ({
   type: BASIC_TABLE_SET_PAGE_SIZE,
   payload,
 })
 
-export const basicTableSetData = payload => ({
+export const basicTableSetData = (payload) => ({
   type: BASIC_TABLE_SET_DATA,
   payload,
 })
 
-export const basicTableSetSelectedData = payload => ({
+export const basicTableSetSelectedData = (payload) => ({
   type: BASIC_TABLE_SET_SELECTED_DATA,
+  payload,
+})
+
+export const basicTableSetPayload = (payload) => ({
+  type: BASIC_TABLE_SET_COLUMNS,
   payload,
 })
 

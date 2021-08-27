@@ -1,38 +1,35 @@
-import { AlertActionTypes } from "../Alerts/types"
-import { AppActionTypes } from "../App/types"
+import actions from '../actionTypes'
 
-const DEFAULT_STATE_ALERTS = {
+export const DEFAULT_STATE_ALERTS = {
   apiResponseStatus: 404,
-  title: "",
-  message: "",
+  title: '',
+  message: '',
   timeout: 3000,
   serviceWorkerRegistration: null,
 }
 
-const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
+export const Alerts = (state = DEFAULT_STATE_ALERTS, action) => {
   const { type, payload } = action
   switch (type) {
-    case AlertActionTypes.ALERTS_SET_API_RESPONSE_STATUS:
+    case actions.ALERTS_SET_API_RESPONSE_STATUS:
       return { ...state, apiResponseStatus: payload }
 
-    case AlertActionTypes.ALERTS_SET_MESSAGE:
+    case actions.ALERTS_SET_MESSAGE:
       return { ...state, ...payload }
 
-    case AlertActionTypes.ALERTS_CLEAR:
+    case actions.ALERTS_CLEAR:
       return {
         ...DEFAULT_STATE_ALERTS,
         apiResponseStatus: state.apiResponseStatus,
       }
 
-    case AppActionTypes.REDUX_RESET:
+    case actions.REDUX_RESET:
       return DEFAULT_STATE_ALERTS
 
-      case AppActionTypes.LOAD_PERSISTED_STATE:
-        return { ...state, ...payload.Alerts, timeout: DEFAULT_STATE_ALERTS.timeout }
+    case actions.LOAD_PERSISTED_STATE:
+      return { ...state, ...payload.Alerts, timeout: DEFAULT_STATE_ALERTS.timeout }
 
     default:
       return state
   }
 }
-
-export { DEFAULT_STATE_ALERTS, Alerts }

@@ -1,70 +1,45 @@
-import 'css/index.css'
-import React, { lazy, Suspense } from 'react'
-import ReactDOM from 'react-dom'
-import storeFactory from './redux'
-import App from 'App'
-import { history } from 'redux/router/reducer'
-import { LoadingScreen } from 'components'
-import { getUserClientId } from 'redux/localState'
-import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
-import * as serviceWorker from 'serviceWorker'
-import { GetAppVersion } from 'redux/App/actions'
-import ReactGA from 'react-ga'
-import prototypes from 'prototypes'
+import 'css/index.css';
+import React, { lazy, Suspense } from 'react';
+import ReactDOM from 'react-dom';
+import storeFactory from './redux';
+import { IndexDbKey } from 'redux/localState';
+import { Persistor, LoadingScreen } from 'components';
+import { AstralTreeDB } from 'components/Persistor';
+import { history } from 'redux/router/reducer';
+import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
+import { GetAppVersion } from 'redux/App/actions';
+import { lazyDelay } from 'utils';
+import prototypes from 'prototypes';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import serviceWorkerConfig from './serviceWorkerConfig';
 
-const Persistor = lazy(() => import('./components/Persistor'))
+prototypes();
 
-prototypes()
+export const store = storeFactory();
 
-const store = storeFactory()
-
-const { REACT_APP_GOOGLE_TRACKING_ID } = process.env
-
-const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
-
-ReactGA.initialize(REACT_APP_GOOGLE_TRACKING_ID, {
-  // debug: inDevelopmentMode,
-  // titleCase: false,
-  // dimension14: "userIdUsernameEmail",
-  gaOptions: {
-    userId,
-    version,
-    appVersion,
-    userIdUsernameEmail,
-  },
-})
-// Initialize google analytics page view tracking
-history.listen(location => {
-  const { userId, version, appVersion, userIdUsernameEmail } = getUserClientId()
-  const page = location.pathname
-
-  // ReactGA.set({ dimension1: "test" })
-  // ReactGA.pageview(page, { dimension1: "test" }) // Record a pageview for the given page
-
-  ReactGA.set({ userId, version, appVersion, userIdUsernameEmail, page }) // Update the user's current page
-  ReactGA.pageview(page) // Record a pageview for the given page
-})
-
-// ReactGA.ga((tracker) => {
-
-//   ReactGA.set({ dimension1: profileId });
-
-//   ReactGA.pageview(pageName, { dimension1: profileId });
-// })
+const App = lazy(() =>
+  import('./App').then(async result => {
+    // for testing purposes
+    if (document.getElementById('root')) {
+      await AstralTreeDB.getItem(IndexDbKey);
+    }
+    return lazyDelay(0)(result);
+  })
+);
 
 ReactDOM.render(
   <Provider store={store}>
     <Suspense fallback={<LoadingScreen />}>
       <Persistor />
-      <ConnectedRouter history={history}>
+      <Router history={history}>
         <App />
-      </ConnectedRouter>
+      </Router>
     </Suspense>
   </Provider>,
-  document.getElementById('root'),
-)
+  document.getElementById('root') || document.createElement('div') // for testing purposes
+);
 
-store.dispatch(GetAppVersion())
+store.dispatch(GetAppVersion());
 
-serviceWorker.register(serviceWorker.serviceWorkerConfig(store))
+serviceWorkerRegistration.register(serviceWorkerConfig(store));

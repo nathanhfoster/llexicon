@@ -5,7 +5,7 @@ import { RouterPush } from "redux/router/actions"
 
 import { ENTRY_LINKS } from "../../NavBar"
 
-const EntryNavButtons = ({ size }) => {
+export const EntryNavButtons = ({ size }) => {
   const renderButtons = useMemo(
     () =>
       ENTRY_LINKS.map(({ title, route, icon }, i) => (

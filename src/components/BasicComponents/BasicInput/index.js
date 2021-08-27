@@ -10,12 +10,15 @@ import {
   FormText,
 } from 'reactstrap'
 import BasicOption from '../BasicOption'
+import { cleanObject } from 'utils'
 
-const BasicInput = ({
+export const BasicInput = ({
   id,
   name,
   defaultValue,
-  check,
+  defaultChecked,
+  value,
+  checked,
   label,
   type,
   placeholder,
@@ -33,7 +36,6 @@ const BasicInput = ({
   row,
   inline,
   className,
-  value,
   onChange,
   options,
   multiple,
@@ -63,10 +65,12 @@ const BasicInput = ({
   )
 
   const renderInput = useMemo(() => {
-    const inputProps = {
+    const inputProps = cleanObject({
       id: uniqueId,
       defaultValue,
+      defaultChecked,
       value,
+      checked,
       type,
       name,
       placeholder,
@@ -80,7 +84,7 @@ const BasicInput = ({
       max,
       multiple,
       step,
-    }
+    })
 
     switch (type) {
       case 'switch':
@@ -93,7 +97,9 @@ const BasicInput = ({
   }, [
     uniqueId,
     defaultValue,
+    defaultChecked,
     value,
+    checked,
     type,
     name,
     placeholder,

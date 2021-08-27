@@ -1,6 +1,6 @@
-import React, { memo }  from "react"
-import Color from "../QuillSelect"
+import React, { memo } from "react"
+import QuillSelect from "../QuillSelect"
 
-const Backgrounds = () => <Color className="background" />
+const Backgrounds = () => <QuillSelect title="Background" className="background" />
 
 export default memo(Backgrounds)

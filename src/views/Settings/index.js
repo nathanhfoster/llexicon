@@ -1,10 +1,17 @@
-import React, { useMemo, Fragment } from 'react'
+import React, { useMemo, useCallback, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Button } from 'reactstrap'
-import { BasicTabs, Header, PushNotifications } from '../../components'
+import { useLocation } from 'react-router-dom'
+import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
+import {
+  BasicTabs,
+  Header,
+  PushNotifications,
+  ButtonSyncEntries,
+  ButtonImportEntries,
+  ButtonExportEntries,
+} from 'components'
 import EntryStatistics from './EntryStatistics'
-import ImportExportEntries from './ImportExportEntries'
 import AccountDetails from './AccountDetails'
 import UpdateProfile from './UpdateProfile'
 import Storage from './Storage'
@@ -22,17 +29,15 @@ const {
   SETTINGS_STORAGE,
 } = RouteMap
 
-const mapStateToProps = ({
-  Alerts: { serviceWorkerRegistration },
-  App: { version },
-  router: {
-    location: { pathname },
-  },
-}) => ({ serviceWorkerRegistration, appVersion: version, pathname })
+const mapStateToProps = ({ Alerts: { serviceWorkerRegistration }, App: { version } }) => ({
+  serviceWorkerRegistration,
+  appVersion: version,
+})
 
 const mapDispatchToProps = { UpdateAppVersion }
 
-const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVersion }) => {
+export const Settings = ({ serviceWorkerRegistration, appVersion, UpdateAppVersion }) => {
+  const { pathname } = useLocation()
   if (pathname === SETTINGS) RouterPush(SETTINGS_ENTRIES)
 
   const appVerisionText = useMemo(
@@ -44,7 +49,7 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
   )
   const activeTab = pathname
 
-  const handleTabChange = tabId => RouterPush(tabId)
+  const handleTabChange = useCallback(tabId => RouterPush(tabId), [])
 
   const tabs = [
     {
@@ -54,11 +59,14 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
       className: 'mt-2',
       render: (
         <Fragment>
-          <ImportExportEntries />
+          <ButtonGroup className='pb-1'>
+            <ButtonSyncEntries />
+            <ButtonImportEntries />
+            <ButtonExportEntries />
+          </ButtonGroup>
           <EntryStatistics />
         </Fragment>
       ),
-      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PROFILE,
@@ -70,28 +78,25 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
           <UpdateProfile />
         </Fragment>
       ),
-      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PREFERENCES,
       title: 'Preferences',
       className: 'mt-2',
       render: <Preferences />,
-      onClick: handleTabChange,
     },
     {
       tabId: SETTINGS_PUSH_NOTIFICATIONS,
       title: 'Push Notifications',
       className: 'mt-2',
       render: <PushNotifications />,
-      onClick: handleTabChange,
+      width: 180,
     },
     {
       tabId: SETTINGS_STORAGE,
       title: 'Storage',
       className: 'mt-2',
       render: <Storage />,
-      onClick: handleTabChange,
     },
   ]
   return (
@@ -115,7 +120,7 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
       </Row>
       <Row>
         <Col xs={12} className='p-0'>
-          <BasicTabs activeTab={activeTab} tabs={tabs} />
+          <BasicTabs activeTab={activeTab} tabs={tabs} onClick={handleTabChange} />
         </Col>
       </Row>
     </Container>
@@ -125,7 +130,6 @@ const Settings = ({ serviceWorkerRegistration, appVersion, pathname, UpdateAppVe
 Settings.propTypes = {
   serviceWorkerRegistration: PropTypes.object,
   appVersion: PropTypes.string,
-  pathname: PropTypes.string.isRequired,
   UpdateAppVersion: PropTypes.func.isRequired,
 }
 

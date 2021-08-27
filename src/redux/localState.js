@@ -10,12 +10,15 @@ import {
   DEFAULT_STATE_WINDOW,
 } from './RootReducer'
 
-const IndexDbKey = 'AstralTreeDB'
-const LocalStorageReduxKey = 'ReduxStore'
-const PersistedStorageReduxKey = `persist:${LocalStorageReduxKey}`
-const LocalStorageFilesKey = 'Files'
+export const IndexDbKey = 'AstralTreeDB'
 
-const cleanHtml = array =>
+export const LocalStorageReduxKey = 'ReduxStore'
+
+export const PersistedStorageReduxKey = `persist:${LocalStorageReduxKey}`
+
+export const LocalStorageFilesKey = 'Files'
+
+export const cleanHtml = array =>
   array.map(
     item =>
       (item = {
@@ -24,7 +27,7 @@ const cleanHtml = array =>
       }),
   )
 
-const saveState = (localStorageKey, value, dispatch) => {
+export const saveState = (localStorageKey, value, dispatch) => {
   const stateValue = JSON.stringify(value)
   try {
     localStorage.setItem(localStorageKey, stateValue)
@@ -48,7 +51,7 @@ const saveState = (localStorageKey, value, dispatch) => {
   }
 }
 
-const getState = localStorageKey => {
+export const getState = localStorageKey => {
   let state = null
 
   const localStateString = localStorage.getItem(localStorageKey)
@@ -62,11 +65,12 @@ const getState = localStorageKey => {
   return state
 }
 
-const clearLocalStorage = () => localStorage.clear()
+export const clearLocalStorage = () => localStorage.clear()
 
-const clearReduxStoreFromLocalStorage = () => localStorage.removeItem(PersistedStorageReduxKey)
+export const clearReduxStoreFromLocalStorage = () =>
+  localStorage.removeItem(PersistedStorageReduxKey)
 
-const removeState = (localStorageKey, keyOrValueToRemove) => {
+export const removeState = (localStorageKey, keyOrValueToRemove) => {
   if (keyOrValueToRemove) {
     const state = getState(localStorageKey)
     const newState = removeKeyOrValueFromObject(state, keyOrValueToRemove)
@@ -76,21 +80,21 @@ const removeState = (localStorageKey, keyOrValueToRemove) => {
   }
 }
 
-const getBlob = key => getState(LocalStorageFilesKey)[key]
+export const getBlob = key => getState(LocalStorageFilesKey)[key]
 
-const getFile = key => {
+export const getFile = key => {
   const state = getFilesState()
   const file = state[key]
   return file
 }
 
-const getFilesState = () => getState(LocalStorageFilesKey)
+export const getFilesState = () => getState(LocalStorageFilesKey)
 
-const getFilesStateLength = () => getObjectLength(getFilesState())
+export const getFilesStateLength = () => getObjectLength(getFilesState())
 
-const saveFileState = files => saveState(LocalStorageFilesKey, files)
+export const saveFileState = files => saveState(LocalStorageFilesKey, files)
 
-const appendFileToState = (key, imageBase64) => {
+export const appendFileToState = (key, imageBase64) => {
   let state = getState(LocalStorageFilesKey)
 
   state[key] = imageBase64
@@ -98,22 +102,23 @@ const appendFileToState = (key, imageBase64) => {
   saveState(LocalStorageFilesKey, state)
 }
 
-const removeFilesFromState = () => removeState(LocalStorageFilesKey)
+export const removeFilesFromState = () => removeState(LocalStorageFilesKey)
 
-const removeFileFromState = file => removeState(LocalStorageFilesKey, file)
+export const removeFileFromState = file => removeState(LocalStorageFilesKey, file)
 
-const getReduxState = () => getState(LocalStorageReduxKey)
+export const getReduxState = () => getState(LocalStorageReduxKey)
 
-const getPersistedReduxStore = () => getState(PersistedStorageReduxKey)
+export const getPersistedReduxStore = () => getState(PersistedStorageReduxKey)
 
-const saveReduxState = () => (dispatch, getState) => saveState(LocalStorageReduxKey, getState())
+export const saveReduxState = () => (dispatch, getState) =>
+  saveState(LocalStorageReduxKey, getState())
 
-const persistReduxState = () => (dispatch, getState) =>
+export const persistReduxState = () => (dispatch, getState) =>
   saveState(PersistedStorageReduxKey, getState())
 
-const removeReduxState = () => removeState(LocalStorageReduxKey)
+export const removeReduxState = () => removeState(LocalStorageReduxKey)
 
-const Clean = array => {
+export const Clean = array => {
   for (let i = 0; i < array.length; i++) {
     const item = array[i]
     if (item.hasOwnProperty('html')) delete item.html
@@ -122,7 +127,7 @@ const Clean = array => {
   return array.filter(e => e)
 }
 
-const isQuotaExceeded = e => {
+export const isQuotaExceeded = e => {
   let quotaExceeded = false
   if (e) {
     if (e.code) {
@@ -145,7 +150,7 @@ const isQuotaExceeded = e => {
   return quotaExceeded
 }
 
-const getUser = () => {
+export const getUser = () => {
   let userFromLocalStorage = {}
   const persistedReduxStore = localStorage.getItem(PersistedStorageReduxKey)
 
@@ -167,7 +172,7 @@ const getUser = () => {
   return userFromLocalStorage
 }
 
-const getUserClientId = () => {
+export const getUserClientId = () => {
   let userClientId = {}
   const persistedStore = localStorage.getItem(PersistedStorageReduxKey)
 
@@ -191,31 +196,7 @@ const getUserClientId = () => {
   return userClientId
 }
 
-const handleQuotaExceeded = e => {
+export const handleQuotaExceeded = e => {
   if (isQuotaExceeded(e)) {
   }
-}
-
-export {
-  IndexDbKey,
-  LocalStorageReduxKey,
-  PersistedStorageReduxKey,
-  clearLocalStorage,
-  clearReduxStoreFromLocalStorage,
-  getFile,
-  getFilesState,
-  getFilesStateLength,
-  getReduxState,
-  getPersistedReduxStore,
-  saveFileState,
-  appendFileToState,
-  removeFilesFromState,
-  removeFileFromState,
-  saveReduxState,
-  persistReduxState,
-  removeReduxState,
-  getUser,
-  getUserClientId,
-  handleQuotaExceeded,
-  isQuotaExceeded,
 }

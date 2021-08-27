@@ -2,7 +2,13 @@ import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 import './styles.css'
 
-const RatingStar = ({ value, filled, onMouseEnterCallback, onMouseLeaveCallback, onClick }) => {
+export const RatingStar = ({
+  value,
+  filled,
+  onMouseEnterCallback,
+  onMouseLeaveCallback,
+  onClick,
+}) => {
   const handleMouseEnter = () => onMouseEnterCallback && onMouseEnterCallback(value)
 
   const handleMouseLeave = () => onMouseLeaveCallback && onMouseLeaveCallback(value)

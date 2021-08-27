@@ -7,7 +7,7 @@ import './styles.css'
 
 const TIME_TO_WAIT_FOR_LIST_ITEM_ON_CLICK = 200
 
-class SearchList extends PureComponent {
+export class SearchList extends PureComponent {
   constructor(props) {
     super(props)
     this.searchListRef = createRef()
