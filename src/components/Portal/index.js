@@ -18,7 +18,7 @@ const Portal = ({ id, isOpen, className, children }) => {
   }, [parentNode, id])
 
   useLayoutEffect(() => {
-    if (!parentNode && className) {
+    if (parentNode && className) {
       parentNode.className = className
     }
   }, [parentNode, className])
