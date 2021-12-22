@@ -107,7 +107,7 @@ export const findMaxInt = (arrayOfObjs, prop) => Math.max(...arrayOfObjs.map(e =
 
 export const sortedMap = map => new Map([...map.entries()].sort().sort((a, b) => b[1] - a[1]));
 
-export const removeArrayDuplicates = array => [...new Set(array)];
+export const removeArrayDuplicates = array => Array.from(new Set(array));
 
 export const removeAttributeDuplicates = (array, objAttr = 'id', props) => {
   let map = new Map();
