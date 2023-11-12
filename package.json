@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@looop/quill-image-resize-module-react": "^3.1.5",
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "bootstrap": "^4.5.3",
     "form-data": "^3.0.0",
     "google-map-react": "^2.1.9",
